@@ -5,7 +5,7 @@ import { ImageGeneratorService } from './services/image-generator.service.js';
 import { WordPressService } from './services/wordpress.service.js';
 import { PostHistory } from './utils/history.js';
 import { logger } from './utils/logger.js';
-import type { PostResult, BatchResult } from './types/index.js';
+import type { PostResult, BatchResult, MediaUploadResult } from './types/index.js';
 
 async function main(): Promise<void> {
   const startedAt = new Date().toISOString();
@@ -61,44 +61,52 @@ async function main(): Promise<void> {
       // 6a. Generate content (Claude)
       const content = await contentService.generateContent(keyword);
 
-      // 6b. Generate images (Gemini) - graceful failure
-      let featuredImageId: number | undefined;
-      const inlineImageUrls: string[] = [];
+      // 6b. Generate images (Gemini)
+      const images = await imageService.generateImages(content.imagePrompts);
 
-      try {
-        const images = await imageService.generateImages(content.imagePrompts);
+      // 6c. Upload featured image (MANDATORY)
+      let featuredMediaResult: MediaUploadResult | undefined;
+      if (images.featured.length > 0) {
+        const slug = `post-${Date.now()}`;
+        featuredMediaResult = await wpService.uploadMedia(
+          images.featured,
+          `${slug}-featured.png`,
+        );
+      }
+      if (!featuredMediaResult) {
+        throw new Error(`Featured image is required but generation failed for "${keyword.title}"`);
+      }
 
-        // Upload featured image
-        if (images.featured.length > 0) {
-          const slug = keyword.title.replace(/[^a-zA-Z0-9가-힣]/g, '-').substring(0, 50);
-          featuredImageId = await wpService.uploadMedia(
-            images.featured,
-            `${slug}-featured.png`,
-          );
-        }
-
-        // Upload inline images
-        for (let i = 0; i < images.inline.length; i++) {
+      // 6d. Upload inline images (graceful - individual failures skipped)
+      const inlineImages: Array<{ url: string; caption: string }> = [];
+      for (let i = 0; i < images.inline.length; i++) {
+        try {
           if (images.inline[i].length > 0) {
-            const slug = keyword.title.replace(/[^a-zA-Z0-9가-힣]/g, '-').substring(0, 50);
-            const mediaId = await wpService.uploadMedia(
+            const slug = `post-${Date.now()}`;
+            const mediaResult = await wpService.uploadMedia(
               images.inline[i],
               `${slug}-inline-${i + 1}.png`,
             );
-            // Get media URL for inline insertion
-            inlineImageUrls.push(`${config.WP_URL}/wp-json/wp/v2/media/${mediaId}`);
+            inlineImages.push({
+              url: mediaResult.sourceUrl,
+              caption: content.imageCaptions?.[i + 1] ?? `${content.title} 이미지 ${i + 1}`,
+            });
           }
+        } catch (error) {
+          logger.warn(
+            `Inline image ${i + 1} upload failed, skipping: ${error instanceof Error ? error.message : error}`,
+          );
         }
-      } catch (error) {
-        logger.warn(
-          `Image generation/upload failed for "${keyword.title}", posting without images: ${error instanceof Error ? error.message : error}`,
-        );
       }
 
-      // 6c. Create WordPress post
-      const post = await wpService.createPost(content, featuredImageId, inlineImageUrls);
+      // 6e. Create WordPress post
+      const post = await wpService.createPost(
+        content,
+        featuredMediaResult.mediaId,
+        inlineImages,
+      );
 
-      // 6d. Record history
+      // 6f. Record history
       await history.addEntry({
         keyword: keyword.title,
         postId: post.postId,

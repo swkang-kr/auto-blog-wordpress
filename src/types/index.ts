@@ -14,6 +14,13 @@ export interface BlogContent {
   tags: string[];
   category: string;
   imagePrompts: string[];
+  imageCaptions: string[];
+}
+
+/** WordPress 미디어 업로드 결과 */
+export interface MediaUploadResult {
+  mediaId: number;
+  sourceUrl: string;
 }
 
 /** Gemini API가 생성한 이미지 결과 */

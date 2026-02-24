@@ -1,7 +1,7 @@
 import axios, { type AxiosInstance } from 'axios';
 import { logger } from '../utils/logger.js';
 import { WordPressError } from '../types/errors.js';
-import type { BlogContent, PublishedPost } from '../types/index.js';
+import type { BlogContent, PublishedPost, MediaUploadResult } from '../types/index.js';
 
 export class WordPressService {
   private api: AxiosInstance;
@@ -17,7 +17,7 @@ export class WordPressService {
     });
   }
 
-  async uploadMedia(imageBuffer: Buffer, filename: string): Promise<number> {
+  async uploadMedia(imageBuffer: Buffer, filename: string): Promise<MediaUploadResult> {
     logger.debug(`Uploading media: ${filename}`);
     try {
       const response = await this.api.post('/media', imageBuffer, {
@@ -27,8 +27,9 @@ export class WordPressService {
         },
       });
       const mediaId = response.data.id as number;
-      logger.info(`Media uploaded: ID=${mediaId}`);
-      return mediaId;
+      const sourceUrl = (response.data.source_url ?? response.data.guid?.rendered ?? '') as string;
+      logger.info(`Media uploaded: ID=${mediaId}, URL=${sourceUrl}`);
+      return { mediaId, sourceUrl };
     } catch (error) {
       throw new WordPressError(`Failed to upload media: ${filename}`, error);
     }
@@ -37,23 +38,34 @@ export class WordPressService {
   async createPost(
     content: BlogContent,
     featuredImageId?: number,
-    inlineImageUrls?: string[],
+    inlineImages?: Array<{ url: string; caption: string }>,
   ): Promise<PublishedPost> {
-    // Insert inline images into HTML
     let html = content.html;
-    if (inlineImageUrls && inlineImageUrls.length > 0) {
-      const imgTags = inlineImageUrls
-        .map((url) => `<figure><img src="${url}" alt="${content.title}" /></figure>`)
-        .join('\n');
-      // Insert after first </h2> to place images after the first section
-      const firstH2End = html.indexOf('</h2>');
-      if (firstH2End !== -1) {
-        const insertPos = html.indexOf('</h2>', firstH2End + 5);
-        if (insertPos !== -1) {
-          html = html.slice(0, insertPos + 5) + '\n' + imgTags + '\n' + html.slice(insertPos + 5);
+
+    // Replace image placeholders with Naver-style figure elements
+    if (inlineImages && inlineImages.length > 0) {
+      for (let i = 0; i < inlineImages.length; i++) {
+        const placeholder = `<!--IMAGE_PLACEHOLDER_${i + 1}-->`;
+        const figureHtml =
+          `<figure style="margin:30px 0; text-align:center;">` +
+          `<img src="${inlineImages[i].url}" alt="${inlineImages[i].caption}" style="max-width:100%; height:auto; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1);" />` +
+          `<figcaption style="margin-top:10px; font-size:13px; color:#888; line-height:1.5;">${inlineImages[i].caption}</figcaption>` +
+          `</figure>`;
+
+        if (html.includes(placeholder)) {
+          html = html.replace(placeholder, figureHtml);
+        } else {
+          logger.warn(`Placeholder ${placeholder} not found, using fallback insertion`);
+          html = this.insertImageAfterNthHeading(html, figureHtml, i + 1);
         }
       }
     }
+
+    // Remove any remaining unused placeholders
+    html = html.replace(/<!--IMAGE_PLACEHOLDER_\d+-->/g, '');
+
+    // Strip emoji/symbol characters that WordPress converts to low-quality SVG images
+    html = html.replace(/[\u{1F300}-\u{1FFFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{2300}-\u{23FF}\u{25A0}-\u{25FF}\u{2B50}-\u{2B55}\u{FE00}-\u{FE0F}\u{200D}]/gu, '');
 
     const categoryId = await this.getOrCreateCategory(content.category);
     const tagIds = await this.getOrCreateTags(content.tags);
@@ -80,8 +92,37 @@ export class WordPressService {
       logger.info(`Post published: ID=${post.postId} URL=${post.url}`);
       return post;
     } catch (error) {
-      throw new WordPressError(`Failed to create post: "${content.title}"`, error);
+      const detail = axios.isAxiosError(error)
+        ? `${error.response?.status} ${JSON.stringify(error.response?.data ?? error.message)}`
+        : (error instanceof Error ? error.message : String(error));
+      throw new WordPressError(`Failed to create post: "${content.title}" - ${detail}`, error);
     }
+  }
+
+  private insertImageAfterNthHeading(html: string, imgHtml: string, n: number): string {
+    const headingEndRegex = /<\/h[23]>/gi;
+    let match: RegExpExecArray | null;
+    let count = 0;
+
+    while ((match = headingEndRegex.exec(html)) !== null) {
+      count++;
+      if (count === n) {
+        const afterHeading = html.indexOf('</p>', match.index + match[0].length);
+        if (afterHeading !== -1) {
+          const insertPos = afterHeading + 4;
+          return html.slice(0, insertPos) + '\n' + imgHtml + '\n' + html.slice(insertPos);
+        }
+        const insertPos = match.index + match[0].length;
+        return html.slice(0, insertPos) + '\n' + imgHtml + '\n' + html.slice(insertPos);
+      }
+    }
+
+    // Not enough headings — insert before closing div
+    const lastDiv = html.lastIndexOf('</div>');
+    if (lastDiv !== -1) {
+      return html.slice(0, lastDiv) + '\n' + imgHtml + '\n' + html.slice(lastDiv);
+    }
+    return html + '\n' + imgHtml;
   }
 
   async getOrCreateCategory(name: string): Promise<number> {

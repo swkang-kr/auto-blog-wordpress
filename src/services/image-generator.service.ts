@@ -14,7 +14,7 @@ export class ImageGeneratorService {
     logger.info(`Generating ${prompts.length} images...`);
 
     const model = this.client.getGenerativeModel({
-      model: 'gemini-2.0-flash-exp',
+      model: 'gemini-2.0-flash-exp-image-generation',
       generationConfig: {
         responseModalities: ['image', 'text'] as unknown as undefined,
       } as Record<string, unknown>,
@@ -24,8 +24,8 @@ export class ImageGeneratorService {
 
     for (let i = 0; i < prompts.length; i++) {
       const styleSuffix = i === 0
-        ? ', professional blog header, clean modern style, 1200x630 resolution'
-        : ', professional blog illustration, clean modern style, 800x450 resolution';
+        ? ', digital illustration, wide composition for blog hero banner, vivid colors, high detail, 16:9 aspect ratio, professional editorial quality, no text or watermark'
+        : ', digital illustration, clean composition, bright natural lighting, detailed and sharp, editorial blog style, no text or watermark, 16:9 aspect ratio';
 
       const fullPrompt = prompts[i] + styleSuffix;
 
@@ -46,19 +46,28 @@ export class ImageGeneratorService {
         }
 
         if (imageBuffer) {
-          results.push(imageBuffer);
-          logger.info(`Image ${i + 1} generated (${(imageBuffer.length / 1024).toFixed(1)}KB)`);
+          // Check for duplicate: skip if identical size to any previous image
+          const isDuplicate = results.some((prev) =>
+            prev.length === imageBuffer!.length && prev.compare(imageBuffer!) === 0
+          );
+          if (isDuplicate) {
+            logger.warn(`Image ${i + 1} is duplicate of a previous image, skipping`);
+          } else {
+            results.push(imageBuffer);
+            logger.info(`Image ${i + 1} generated (${(imageBuffer.length / 1024).toFixed(1)}KB)`);
+          }
         } else {
           logger.warn(`Image ${i + 1} generation returned no image data`);
         }
       } catch (error) {
-        const imgError = new ImageGenerationError(`Image ${i + 1} generation failed`, error);
+        const detail = error instanceof Error ? error.message : String(error);
+        const imgError = new ImageGenerationError(`Image ${i + 1} generation failed: ${detail}`, error);
         logger.warn(imgError.message);
       }
 
       // Rate limit: wait between requests
       if (i < prompts.length - 1) {
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        await new Promise((resolve) => setTimeout(resolve, 3000));
       }
     }
 
