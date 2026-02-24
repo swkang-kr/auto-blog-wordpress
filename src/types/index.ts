@@ -9,10 +9,12 @@ export interface TrendKeyword {
 /** Claude API가 생성한 블로그 콘텐츠 */
 export interface BlogContent {
   title: string;
+  titleKr: string;
   html: string;
   htmlKr: string;
   excerpt: string;
   tags: string[];
+  tagsKr: string[];
   category: string;
   imagePrompts: string[];
   imageCaptions: string[];

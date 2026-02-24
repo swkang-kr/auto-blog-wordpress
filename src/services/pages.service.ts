@@ -14,7 +14,7 @@ const TOGGLE_BUTTON =
   `한국어로 보기</button></div>`;
 
 function wrapBilingual(en: string, kr: string): string {
-  return `<div class="bilingual-post">${TOGGLE_BUTTON}<div class="content-en" style="display:block">${en}</div><div class="content-kr" style="display:none">${kr}</div></div>`;
+  return `<div class="bilingual-post">${TOGGLE_BUTTON}<div class="content-en" lang="en" style="display:block">${en}</div><div class="content-kr" lang="ko" style="display:none">${kr}</div><noscript><div lang="ko">${kr}</div></noscript></div>`;
 }
 
 // Shared inline styles

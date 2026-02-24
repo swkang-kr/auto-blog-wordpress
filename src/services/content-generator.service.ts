@@ -8,13 +8,15 @@ Given a trending keyword, write a comprehensive blog post in ENGLISH, and also p
 
 Rules:
 1. title: Catchy, search-optimized English title (under 60 characters)
-2. html: English blog post in HTML format (800-1,000+ words, inline CSS styled)
-3. htmlKr: Korean translation of the SAME content (identical HTML structure, identical IMAGE_PLACEHOLDER positions)
-4. Include a table of contents at the beginning
-5. Use a natural, authoritative English tone
-6. excerpt: English meta description under 160 characters
-7. tags: 5-10 related English keywords
-8. category: One best-fit English category name
+2. titleKr: Korean translation of the title
+3. html: English blog post in HTML format (800-1,000+ words, inline CSS styled)
+4. htmlKr: Korean translation of the SAME content (identical HTML structure, identical IMAGE_PLACEHOLDER positions)
+5. Include a table of contents at the beginning
+6. Use a natural, authoritative English tone
+7. excerpt: English meta description under 160 characters
+8. tags: 5-10 related English keywords
+9. tagsKr: Korean translations of the same tags (same count, same order)
+10. category: One best-fit English category name
 
 E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness) Rules:
 - Cite relevant statistics and data where available
@@ -66,7 +68,7 @@ IMPORTANT: Respond with pure JSON only. Do NOT use markdown code blocks (\`\`\`)
 Escape double quotes (") inside field values as \\".
 
 JSON format:
-{"title":"English Title","html":"<div style=\\"max-width:760px;...\\">...English content...</div>","htmlKr":"<div style=\\"max-width:760px;...\\">...Korean translation...</div>","excerpt":"English meta description","tags":["tag1","tag2"],"category":"CategoryName","imagePrompts":["A detailed scene of... (50+ words)","...","...","..."],"imageCaptions":["Short English caption 1","caption 2","caption 3","caption 4"]}`;
+{"title":"English Title","titleKr":"한국어 제목","html":"<div style=\\"max-width:760px;...\\">...English content...</div>","htmlKr":"<div style=\\"max-width:760px;...\\">...Korean translation...</div>","excerpt":"English meta description","tags":["tag1","tag2"],"tagsKr":["태그1","태그2"],"category":"CategoryName","imagePrompts":["A detailed scene of... (50+ words)","...","...","..."],"imageCaptions":["Short English caption 1","caption 2","caption 3","caption 4"]}`;
 
 export class ContentGeneratorService {
   private client: Anthropic;
@@ -118,10 +120,18 @@ Write an in-depth blog post about this trending keyword. Provide both English (h
       content.imageCaptions.push(`${content.title} related image`);
     }
 
-    // Ensure htmlKr exists (fallback to html if missing)
+    // Ensure Korean fields exist (fallback if missing)
     if (!content.htmlKr) {
       logger.warn('htmlKr missing from Claude response, using html as fallback');
       content.htmlKr = content.html;
+    }
+    if (!content.titleKr) {
+      logger.warn('titleKr missing from Claude response, using title as fallback');
+      content.titleKr = content.title;
+    }
+    if (!content.tagsKr || content.tagsKr.length === 0) {
+      logger.warn('tagsKr missing from Claude response, using tags as fallback');
+      content.tagsKr = content.tags;
     }
 
     if (!content.title || !content.html) {
