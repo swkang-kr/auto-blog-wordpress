@@ -14,6 +14,8 @@ const envSchema = z.object({
   SITE_NAME: z.string().default('TrendHunt'),
   SITE_OWNER: z.string().default(''),
   CONTACT_EMAIL: z.string().default('snix.kr@gmail.com'),
+  GOOGLE_SITE_VERIFICATION: z.string().default(''),
+  NAVER_SITE_VERIFICATION: z.string().default(''),
 });
 
 export type AppConfig = z.infer<typeof envSchema>;

@@ -4,6 +4,7 @@ import { ContentGeneratorService } from './services/content-generator.service.js
 import { ImageGeneratorService } from './services/image-generator.service.js';
 import { WordPressService } from './services/wordpress.service.js';
 import { PagesService } from './services/pages.service.js';
+import { SeoService } from './services/seo.service.js';
 import { PostHistory } from './utils/history.js';
 import { logger } from './utils/logger.js';
 import type { PostResult, BatchResult, MediaUploadResult } from './types/index.js';
@@ -28,6 +29,14 @@ async function main(): Promise<void> {
     await pagesService.ensureRequiredPages(config.SITE_NAME, config.SITE_OWNER, config.CONTACT_EMAIL);
   } catch (error) {
     logger.warn(`Failed to create required pages: ${error instanceof Error ? error.message : error}`);
+  }
+
+  // 2.6. Ensure search engine verification meta tags
+  const seoService = new SeoService(config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD);
+  try {
+    await seoService.ensureVerificationMetaTags(config.GOOGLE_SITE_VERIFICATION, config.NAVER_SITE_VERIFICATION);
+  } catch (error) {
+    logger.warn(`SEO verification setup failed: ${error instanceof Error ? error.message : error}`);
   }
 
   // 3. History

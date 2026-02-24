@@ -31,9 +31,11 @@ jobs:
           WP_URL: ${{ secrets.WP_URL }}
           WP_USERNAME: ${{ secrets.WP_USERNAME }}
           WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
-          TRENDS_COUNTRY: EN
+          TRENDS_COUNTRY: KR
           POST_COUNT: '3'
           LOG_LEVEL: info
+          GOOGLE_SITE_VERIFICATION: ${{ secrets.GOOGLE_SITE_VERIFICATION }}
+          NAVER_SITE_VERIFICATION: ${{ secrets.NAVER_SITE_VERIFICATION }}
 
       - name: Commit post history
         run: |
