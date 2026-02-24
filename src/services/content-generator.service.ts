@@ -8,12 +8,19 @@ const SYSTEM_PROMPT = `당신은 한국의 네이버 블로그 스타일에 능�
 
 규칙:
 1. 제목: 검색 유입을 높이는 매력적인 제목 (60자 이내)
-2. 본문: 2,000자 이상의 HTML 형식 (네이버 블로그 스타일 inline CSS 적용)
+2. 본문: 4,000자 이상의 HTML 형식 (약 800~1,000단어, 네이버 블로그 스타일 inline CSS 적용)
 3. 글 시작에 목차를 포함하세요
 4. 자연스럽고 전문가적인 한국어 톤 사용
 5. 메타 디스크립션: 160자 이내 요약
 6. 태그: 관련 키워드 5~10개
 7. 카테고리: 가장 적합한 카테고리 1개
+
+★ E-E-A-T (경험, 전문성, 권위성, 신뢰성) 강화 규칙:
+- 관련 통계나 데이터가 있다면 수치를 인용하세요
+- "전문가들에 따르면", "관련 연구에 의하면" 등 전문가적 분석을 포함하세요
+- 독자가 바로 활용할 수 있는 실용적인 조언과 팁을 최소 3개 이상 포함하세요
+- 주제에 대한 배경 설명, 현재 상황, 전망을 체계적으로 서술하세요
+- 단순 나열이 아닌, 깊이 있는 분석과 인사이트를 제공하세요
 
 ★ 이미지 프롬프트 규칙 (매우 중요):
 - imagePrompts 배열에 정확히 4개의 영문 이미지 프롬프트를 생성하세요
@@ -44,6 +51,7 @@ const SYSTEM_PROMPT = `당신은 한국의 네이버 블로그 스타일에 능�
 - 글 말미에 요약 또는 마무리 인사를 포함하세요
 - 절대로 이모지(emoji)나 유니코드 특수기호를 HTML에 사용하지 마세요 (WordPress가 저품질 SVG 이미지로 변환합니다)
 - 목록 구분이 필요하면 숫자(1. 2. 3.)나 하이픈(-)만 사용하세요
+- 본문 마지막에 반드시 다음 면책 문구를 포함하세요: <p style="margin:40px 0 0 0; padding-top:20px; border-top:1px solid #eee; font-size:13px; color:#999; line-height:1.6;">이 글은 트렌드 정보를 기반으로 작성되었으며, 정보 제공 목적으로만 활용됩니다. 정확한 내용은 공식 출처를 통해 확인해 주세요.</p>
 
 중요: 반드시 순수 JSON만 응답하세요. 마크다운 코드블록(\`\`\`)을 사용하지 마세요.
 html 필드의 값에서 큰따옴표(")는 반드시 \\"로 이스케이프하세요.
@@ -53,9 +61,11 @@ JSON 형식:
 
 export class ContentGeneratorService {
   private client: Anthropic;
+  private siteOwner: string;
 
-  constructor(apiKey: string) {
+  constructor(apiKey: string, siteOwner?: string) {
     this.client = new Anthropic({ apiKey });
+    this.siteOwner = siteOwner || '';
   }
 
   async generateContent(keyword: TrendKeyword): Promise<BlogContent> {
@@ -99,6 +109,23 @@ export class ContentGeneratorService {
 
     if (!content.title || !content.html) {
       throw new ContentGenerationError(`Incomplete content generated for "${keyword.title}"`);
+    }
+
+    // Add author byline if SITE_OWNER is set
+    if (this.siteOwner) {
+      const bylineHtml =
+        `<div style="margin:30px 0 0 0; padding:20px 24px; background:#f8f9fa; border-radius:8px; display:flex; align-items:center; gap:16px;">` +
+        `<div style="width:48px; height:48px; background:#0066FF; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-size:20px; font-weight:700; flex-shrink:0;">${this.siteOwner.charAt(0).toUpperCase()}</div>` +
+        `<div><p style="margin:0; font-weight:700; font-size:15px; color:#222;">작성자: ${this.siteOwner}</p>` +
+        `<p style="margin:4px 0 0 0; font-size:13px; color:#888;">트렌드 분석 및 콘텐츠 전문가</p></div></div>`;
+
+      // Insert before the closing </div> of the main wrapper
+      const lastDivIdx = content.html.lastIndexOf('</div>');
+      if (lastDivIdx !== -1) {
+        content.html = content.html.slice(0, lastDivIdx) + bylineHtml + '\n</div>';
+      } else {
+        content.html += bylineHtml;
+      }
     }
 
     logger.info(`Content generated: "${content.title}" (${content.html.length} chars)`);

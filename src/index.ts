@@ -3,6 +3,7 @@ import { GoogleTrendsService } from './services/google-trends.service.js';
 import { ContentGeneratorService } from './services/content-generator.service.js';
 import { ImageGeneratorService } from './services/image-generator.service.js';
 import { WordPressService } from './services/wordpress.service.js';
+import { PagesService } from './services/pages.service.js';
 import { PostHistory } from './utils/history.js';
 import { logger } from './utils/logger.js';
 import type { PostResult, BatchResult, MediaUploadResult } from './types/index.js';
@@ -17,9 +18,17 @@ async function main(): Promise<void> {
 
   // 2. Services
   const trendsService = new GoogleTrendsService();
-  const contentService = new ContentGeneratorService(config.ANTHROPIC_API_KEY);
+  const contentService = new ContentGeneratorService(config.ANTHROPIC_API_KEY, config.SITE_OWNER);
   const imageService = new ImageGeneratorService(config.GEMINI_API_KEY);
-  const wpService = new WordPressService(config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD);
+  const wpService = new WordPressService(config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD, config.SITE_OWNER);
+
+  // 2.5. Ensure required pages exist (AdSense compliance)
+  const pagesService = new PagesService(config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD);
+  try {
+    await pagesService.ensureRequiredPages(config.SITE_NAME, config.SITE_OWNER, config.CONTACT_EMAIL);
+  } catch (error) {
+    logger.warn(`Failed to create required pages: ${error instanceof Error ? error.message : error}`);
+  }
 
   // 3. History
   const history = new PostHistory();

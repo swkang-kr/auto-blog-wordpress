@@ -11,6 +11,9 @@ const envSchema = z.object({
   TRENDS_COUNTRY: z.string().default('KR'),
   POST_COUNT: z.coerce.number().min(1).max(10).default(5),
   LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error']).default('info'),
+  SITE_NAME: z.string().default('TrendHunt'),
+  SITE_OWNER: z.string().default(''),
+  CONTACT_EMAIL: z.string().default('snix.kr@gmail.com'),
 });
 
 export type AppConfig = z.infer<typeof envSchema>;

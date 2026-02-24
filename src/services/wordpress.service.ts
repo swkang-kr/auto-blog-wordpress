@@ -5,11 +5,15 @@ import type { BlogContent, PublishedPost, MediaUploadResult } from '../types/ind
 
 export class WordPressService {
   private api: AxiosInstance;
+  private wpUrl: string;
+  private siteOwner: string;
 
-  constructor(wpUrl: string, username: string, appPassword: string) {
+  constructor(wpUrl: string, username: string, appPassword: string, siteOwner?: string) {
+    this.wpUrl = wpUrl.replace(/\/+$/, '');
+    this.siteOwner = siteOwner || '';
     const token = Buffer.from(`${username}:${appPassword}`).toString('base64');
     this.api = axios.create({
-      baseURL: `${wpUrl.replace(/\/+$/, '')}/wp-json/wp/v2`,
+      baseURL: `${this.wpUrl}/wp-json/wp/v2`,
       headers: {
         Authorization: `Basic ${token}`,
       },
@@ -66,6 +70,32 @@ export class WordPressService {
 
     // Strip emoji/symbol characters that WordPress converts to low-quality SVG images
     html = html.replace(/[\u{1F300}-\u{1FFFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{2300}-\u{23FF}\u{25A0}-\u{25FF}\u{2B50}-\u{2B55}\u{FE00}-\u{FE0F}\u{200D}]/gu, '');
+
+    // Inject JSON-LD structured data (BlogPosting schema)
+    const jsonLd = {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: content.title,
+      description: content.excerpt,
+      datePublished: new Date().toISOString(),
+      dateModified: new Date().toISOString(),
+      ...(this.siteOwner ? {
+        author: {
+          '@type': 'Person',
+          name: this.siteOwner,
+        },
+      } : {}),
+      publisher: {
+        '@type': 'Organization',
+        name: this.siteOwner || 'TrendHunt',
+      },
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': this.wpUrl,
+      },
+    };
+    const jsonLdScript = `<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>\n`;
+    html = jsonLdScript + html;
 
     const categoryId = await this.getOrCreateCategory(content.category);
     const tagIds = await this.getOrCreateTags(content.tags);
