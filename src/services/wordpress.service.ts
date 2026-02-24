@@ -39,14 +39,10 @@ export class WordPressService {
     }
   }
 
-  async createPost(
-    content: BlogContent,
-    featuredImageId?: number,
+  private replaceImagePlaceholders(
+    html: string,
     inlineImages?: Array<{ url: string; caption: string }>,
-  ): Promise<PublishedPost> {
-    let html = content.html;
-
-    // Replace image placeholders with Naver-style figure elements
+  ): string {
     if (inlineImages && inlineImages.length > 0) {
       for (let i = 0; i < inlineImages.length; i++) {
         const placeholder = `<!--IMAGE_PLACEHOLDER_${i + 1}-->`;
@@ -70,6 +66,30 @@ export class WordPressService {
 
     // Strip emoji/symbol characters that WordPress converts to low-quality SVG images
     html = html.replace(/[\u{1F300}-\u{1FFFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{2300}-\u{23FF}\u{25A0}-\u{25FF}\u{2B50}-\u{2B55}\u{FE00}-\u{FE0F}\u{200D}]/gu, '');
+
+    return html;
+  }
+
+  async createPost(
+    content: BlogContent,
+    featuredImageId?: number,
+    inlineImages?: Array<{ url: string; caption: string }>,
+  ): Promise<PublishedPost> {
+    // Replace image placeholders in both English and Korean HTML
+    const htmlEn = this.replaceImagePlaceholders(content.html, inlineImages);
+    const htmlKr = this.replaceImagePlaceholders(content.htmlKr, inlineImages);
+
+    // Assemble bilingual toggle UI
+    const toggleButton = `<div style="text-align:right; margin:0 0 20px 0;">` +
+      `<button onclick="(function(b){var p=b.closest('.bilingual-post');var en=p.querySelector('.content-en');var kr=p.querySelector('.content-kr');if(en.style.display!=='none'){en.style.display='none';kr.style.display='block';b.textContent='Read in English';}else{en.style.display='block';kr.style.display='none';b.textContent='\\ud55c\\uad6d\\uc5b4\\ub85c \\ubcf4\\uae30';}})(this)" ` +
+      `style="padding:8px 20px; background:#0066FF; color:#fff; border:none; border-radius:20px; cursor:pointer; font-size:14px;">` +
+      `한국어로 보기</button></div>`;
+
+    let html = `<div class="bilingual-post">` +
+      toggleButton +
+      `<div class="content-en" style="display:block">${htmlEn}</div>` +
+      `<div class="content-kr" style="display:none">${htmlKr}</div>` +
+      `</div>`;
 
     // Inject JSON-LD structured data (BlogPosting schema)
     const jsonLd = {

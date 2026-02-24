@@ -10,6 +10,7 @@ export interface TrendKeyword {
 export interface BlogContent {
   title: string;
   html: string;
+  htmlKr: string;
   excerpt: string;
   tags: string[];
   category: string;
