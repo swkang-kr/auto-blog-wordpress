@@ -8,7 +8,7 @@ on:
 jobs:
   post:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
 
     steps:
       - name: Checkout repository
@@ -31,8 +31,8 @@ jobs:
           WP_URL: ${{ secrets.WP_URL }}
           WP_USERNAME: ${{ secrets.WP_USERNAME }}
           WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
-          TRENDS_COUNTRY: KR
-          POST_COUNT: '5'
+          TRENDS_COUNTRY: EN
+          POST_COUNT: '3'
           LOG_LEVEL: info
 
       - name: Commit post history
