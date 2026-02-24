@@ -1,0 +1,44 @@
+name: Daily Blog Post
+
+on:
+  schedule:
+    - cron: '0 15 * * *'  # UTC 15:00 = KST 00:00
+  workflow_dispatch:        # Manual trigger
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run auto blog posting
+        run: npm run start
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USERNAME: ${{ secrets.WP_USERNAME }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          TRENDS_COUNTRY: KR
+          POST_COUNT: '5'
+          LOG_LEVEL: info
+
+      - name: Commit post history
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/post-history.json
+          git diff --staged --quiet || git commit -m "chore: update post history [skip ci]"
+          git push

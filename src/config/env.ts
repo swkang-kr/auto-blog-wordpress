@@ -1,0 +1,27 @@
+import 'dotenv/config';
+import { z } from 'zod';
+import { ConfigError } from '../types/errors.js';
+
+const envSchema = z.object({
+  ANTHROPIC_API_KEY: z.string().min(1, 'ANTHROPIC_API_KEY is required'),
+  GEMINI_API_KEY: z.string().min(1, 'GEMINI_API_KEY is required'),
+  WP_URL: z.string().url('WP_URL must be a valid URL'),
+  WP_USERNAME: z.string().min(1, 'WP_USERNAME is required'),
+  WP_APP_PASSWORD: z.string().min(1, 'WP_APP_PASSWORD is required'),
+  TRENDS_COUNTRY: z.string().default('KR'),
+  POST_COUNT: z.coerce.number().min(1).max(10).default(5),
+  LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error']).default('info'),
+});
+
+export type AppConfig = z.infer<typeof envSchema>;
+
+export function loadConfig(): AppConfig {
+  const result = envSchema.safeParse(process.env);
+  if (!result.success) {
+    const errors = result.error.issues
+      .map((i) => `  - ${i.path.join('.')}: ${i.message}`)
+      .join('\n');
+    throw new ConfigError(`Environment variable validation failed:\n${errors}`);
+  }
+  return result.data;
+}

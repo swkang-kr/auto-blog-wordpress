@@ -1,0 +1,40 @@
+{
+  "name": "auto-blog-wordpress",
+  "version": "0.1.0",
+  "description": "Google Trends 기반 WordPress 자동 블로그 포스팅 시스템",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "build": "tsc",
+    "lint": "eslint src/",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "wordpress",
+    "google-trends",
+    "auto-blog",
+    "claude",
+    "gemini"
+  ],
+  "author": "snixk",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.78.0",
+    "@google/generative-ai": "^0.24.1",
+    "axios": "^1.13.5",
+    "dotenv": "^17.3.1",
+    "google-trends-api": "^4.9.2",
+    "winston": "^3.19.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/node": "^25.3.0",
+    "eslint": "^10.0.2",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "version": "2.0",
+  "lastUpdated": "2026-02-24T11:00:00.000Z",
+  "activeFeatures": ["auto-blog-wordpress"],
+  "primaryFeature": "auto-blog-wordpress",
+  "features": {
+    "auto-blog-wordpress": {
+      "phase": "act",
+      "matchRate": 94,
+      "iterationCount": 1,
+      "startedAt": "2026-02-24T15:00:00.000Z",
+      "documents": {
+        "plan": "docs/01-plan/features/auto-blog-wordpress.plan.md",
+        "design": "docs/02-design/features/auto-blog-wordpress.design.md",
+        "analysis": "docs/03-analysis/auto-blog-wordpress.analysis.md"
+      },
+      "phaseNumber": 5,
+      "doCompleted": true
+    }
+  },
+  "pipeline": {
+    "currentPhase": 1,
+    "level": "Dynamic",
+    "phaseHistory": []
+  },
+  "session": {
+    "startedAt": "2026-02-24T10:12:24.092Z",
+    "onboardingCompleted": true,
+    "lastActivity": "2026-02-24T11:00:00.000Z"
+  },
+  "history": [
+    {
+      "action": "plan_created",
+      "feature": "auto-blog-wordpress",
+      "timestamp": "2026-02-24T15:00:00.000Z"
+    },
+    {
+      "action": "design_created",
+      "feature": "auto-blog-wordpress",
+      "timestamp": "2026-02-24T15:10:00.000Z"
+    },
+    {
+      "action": "do_completed",
+      "feature": "auto-blog-wordpress",
+      "timestamp": "2026-02-24T10:40:00.000Z"
+    },
+    {
+      "action": "check_completed",
+      "feature": "auto-blog-wordpress",
+      "matchRate": 89,
+      "timestamp": "2026-02-24T10:50:00.000Z"
+    },
+    {
+      "action": "act_iteration_1",
+      "feature": "auto-blog-wordpress",
+      "matchRate": 94,
+      "timestamp": "2026-02-24T11:00:00.000Z"
+    }
+  ]
+}
