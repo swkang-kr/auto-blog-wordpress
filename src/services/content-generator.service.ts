@@ -118,7 +118,11 @@ export class ContentGeneratorService {
     const { niche, analysis } = researched;
     logger.info(`Generating content for: "${analysis.selectedKeyword}" [${niche.name} / ${analysis.contentType}]`);
 
-    const userPrompt = `Niche: "${niche.name}" (${niche.category})
+    const today = new Date().toISOString().split('T')[0];
+    const year = new Date().getFullYear();
+
+    const userPrompt = `Today's Date: ${today}
+Niche: "${niche.name}" (${niche.category})
 Content Type: ${analysis.contentType}
 Primary Keyword: "${analysis.selectedKeyword}"
 Suggested Title: "${analysis.suggestedTitle}"
@@ -127,6 +131,7 @@ Search Intent: ${analysis.searchIntent}
 Related Keywords to Include: ${analysis.relatedKeywordsToInclude.join(', ')}
 
 Write an in-depth ${analysis.contentType} blog post about "${analysis.selectedKeyword}" for the ${niche.name} niche.
+IMPORTANT: All information, statistics, recommendations, and references must be current as of ${year}. Do NOT use outdated data from previous years. Mention "${year}" where relevant (e.g., "Best AI Tools in ${year}", "As of ${year}").
 Use the unique angle: "${analysis.uniqueAngle}"
 Naturally incorporate these LSI keywords: ${analysis.relatedKeywordsToInclude.join(', ')}
 

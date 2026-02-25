@@ -2,35 +2,33 @@
 
 ## Project: auto-blog-wordpress
 
-### Last Analysis: 2026-02-24 (Iteration 1)
-- Feature: auto-blog-wordpress (full system)
-- Match Rate: 94% (weighted) -- PASS
-- Previous: 89% (Iter0) -> 94% (Iter1), +5%
+### Last Analysis: 2026-02-25 (Niche SEO Transformation)
+- Feature: Niche-based SEO keyword research system (11-point plan)
+- Match Rate: 98% (weighted) -- PASS
+- Previous analyses: 89% (Iter0, old system) -> 94% (Iter1, old system) -> 98% (new system)
 - Status: PASS (above 90% threshold)
 - Report: `docs/03-analysis/auto-blog-wordpress.analysis.md`
 
-### Iteration 1 Fixes Verified
-1. RESOLVED: `src/types/errors.ts` created (AppError + 5 subclasses)
-2. RESOLVED: Custom errors applied to all 4 services + config/env.ts
-3. RESOLVED: eslint installed (^10.0.2 in devDependencies)
+### Transformation Summary (RSS -> Niche SEO)
+- All 11 planned changes fully implemented (11/11 = 100%)
+- 114 individual check items: 112 match, 2 gap, 0 missing
+- Only gaps: `.env.example` still has stale `TRENDS_COUNTRY` and `POST_COUNT`
 
-### Remaining Gaps (Non-blocking, documentation-level)
-1. **Medium**: WordPressService.createPost 3rd param: `inlineImageIds: number[]` -> `inlineImageUrls: string[]`
-2. **Low**: Package versions in design doc outdated (6 version gaps)
-3. **Low**: PostHistory.load() return type: design `Promise<PostHistoryData>` vs impl `Promise<void>`
-4. **Low**: GoogleTrendsService retry: design 1 retry vs impl 2 retries
+### Remaining Gaps (Non-blocking)
+1. **Low**: `.env.example` L13 still shows `TRENDS_COUNTRY=KR` (should be `TRENDS_GEO=US`)
+2. **Low**: `.env.example` L14 still shows `POST_COUNT=3` (should be removed)
+3. **Info**: Old design doc still describes RSS-based system (needs update/replacement)
 
-### Project Structure
-- Config: `src/config/env.ts` (zod validation, ConfigError)
-- Types: `src/types/index.ts` (9 interfaces), `src/types/errors.ts` (6 error classes)
-- Services: `src/services/*.service.ts` (4 services, all with custom errors)
-- Utils: `src/utils/` (logger, retry, history)
-- Entry: `src/index.ts` (orchestrator)
-- CI/CD: `.github/workflows/daily-post.yml`
-- Design: `docs/02-design/features/auto-blog-wordpress.design.md`
+### Project Structure (Post-Transformation)
+- Config: `src/config/env.ts` (zod, TRENDS_GEO), `src/config/niches.ts` (3 niches)
+- Types: `src/types/index.ts` (ContentType, NicheConfig, TrendsData, KeywordAnalysis, ResearchedKeyword + 6 existing), `src/types/errors.ts` (7 error classes incl. KeywordResearchError), `src/types/google-trends-api.d.ts`
+- Services: 6 total - google-trends, keyword-research (NEW), content-generator, image-generator, wordpress, pages, seo
+- Utils: `src/utils/` (logger, retry, history with niche support)
+- Entry: `src/index.ts` (niche loop orchestrator)
+- CI/CD: `.github/workflows/daily-post.yml` (cron 02:30 UTC, 45min timeout)
 
 ### Architecture Level
 - Starter level (config/, services/, utils/, types/)
 - Clean dependency direction confirmed
 - No circular dependencies
-- types/errors.ts has no external deps (domain layer independent)
+- KeywordResearchService composes GoogleTrendsService internally

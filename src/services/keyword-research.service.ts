@@ -60,7 +60,12 @@ export class KeywordResearchService {
         ).join('\n')
       : 'No trends data available. Use your knowledge to select the best keyword from the seed keywords.';
 
+    const today = new Date().toISOString().split('T')[0];
+    const year = new Date().getFullYear();
+
     const prompt = `You are an SEO keyword research expert. Analyze the following data for the "${niche.name}" niche and select the BEST keyword and content type for a blog post.
+
+IMPORTANT: Today's date is ${today}. All content must be written for ${year}. Use the most current information, trends, and data available for ${year}.
 
 ## Niche Info
 - Name: ${niche.name}
