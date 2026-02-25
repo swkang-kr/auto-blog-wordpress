@@ -83,6 +83,13 @@ Rules:
 12. tagsKr: Korean translations of the same tags (same count, same order)
 13. category: One best-fit English category name
 
+Accuracy Rules (CRITICAL):
+- NEVER cite specific version numbers for AI/software products that change frequently (e.g., do NOT write "Claude Opus 3.5", "GPT-4o", "Gemini 2.0 Pro")
+- Instead, refer to products by brand name only: "Claude by Anthropic", "ChatGPT by OpenAI", "Gemini by Google"
+- You may say "the latest version of Claude" but NEVER invent or guess a version number
+- NEVER fabricate specific benchmark scores, pricing, or statistics you are not certain about
+- If you are unsure about current details, use hedging language: "typically starts around $20/month", "known for strong performance in..."
+
 E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness) Rules:
 - Cite relevant statistics and data where available
 - Include expert analysis ("According to experts...", "Research suggests...")
