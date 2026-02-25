@@ -32,12 +32,16 @@ async function main(): Promise<void> {
     logger.warn(`Failed to create required pages: ${error instanceof Error ? error.message : error}`);
   }
 
-  // 2.6. Ensure search engine verification meta tags
+  // 2.6. Ensure search engine verification meta tags + GA4
   const seoService = new SeoService(config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD);
   try {
-    await seoService.ensureVerificationMetaTags(config.GOOGLE_SITE_VERIFICATION, config.NAVER_SITE_VERIFICATION);
+    await seoService.ensureHeaderScripts({
+      googleCode: config.GOOGLE_SITE_VERIFICATION,
+      naverCode: config.NAVER_SITE_VERIFICATION,
+      gaMeasurementId: config.GA_MEASUREMENT_ID,
+    });
   } catch (error) {
-    logger.warn(`SEO verification setup failed: ${error instanceof Error ? error.message : error}`);
+    logger.warn(`SEO/GA setup failed: ${error instanceof Error ? error.message : error}`);
   }
 
   // 3. History

@@ -15,13 +15,28 @@ export class SeoService {
     });
   }
 
-  async ensureVerificationMetaTags(googleCode?: string, naverCode?: string): Promise<void> {
-    if (!googleCode && !naverCode) return;
+  async ensureHeaderScripts(options: {
+    googleCode?: string;
+    naverCode?: string;
+    gaMeasurementId?: string;
+  }): Promise<void> {
+    const { googleCode, naverCode, gaMeasurementId } = options;
+    if (!googleCode && !naverCode && !gaMeasurementId) return;
 
-    const metaTags: string[] = [];
-    if (googleCode) metaTags.push(`<meta name="google-site-verification" content="${googleCode}" />`);
-    if (naverCode) metaTags.push(`<meta name="naver-site-verification" content="${naverCode}" />`);
-    const headerHtml = metaTags.join('\n');
+    const parts: string[] = [];
+
+    // Verification meta tags
+    if (googleCode) parts.push(`<meta name="google-site-verification" content="${googleCode}" />`);
+    if (naverCode) parts.push(`<meta name="naver-site-verification" content="${naverCode}" />`);
+
+    // Google Analytics 4
+    if (gaMeasurementId) {
+      parts.push(`<!-- Google Analytics 4 -->`);
+      parts.push(`<script async src="https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}"></script>`);
+      parts.push(`<script>\nwindow.dataLayer = window.dataLayer || [];\nfunction gtag(){dataLayer.push(arguments);}\ngtag('js', new Date());\ngtag('config', '${gaMeasurementId}');\n</script>`);
+    }
+
+    const headerHtml = parts.join('\n');
 
     // Step 1: Install and activate WPCode plugin
     const pluginReady = await this.ensurePlugin();
@@ -33,10 +48,15 @@ export class SeoService {
     // Step 2: Try to set header meta tags via plugin option
     const configured = await this.trySetHeader(headerHtml);
     if (configured) {
-      logger.info('Verification meta tags configured successfully');
+      logger.info('Header scripts (verification + GA4) configured successfully');
     } else {
       this.logManualInstructions(headerHtml);
     }
+  }
+
+  /** @deprecated Use ensureHeaderScripts instead */
+  async ensureVerificationMetaTags(googleCode?: string, naverCode?: string): Promise<void> {
+    return this.ensureHeaderScripts({ googleCode, naverCode });
   }
 
   private async ensurePlugin(): Promise<boolean> {

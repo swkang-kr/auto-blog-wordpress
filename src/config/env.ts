@@ -13,6 +13,7 @@ const envSchema = z.object({
   SITE_NAME: z.string().default('TrendHunt'),
   SITE_OWNER: z.string().default(''),
   CONTACT_EMAIL: z.string().default('snix.kr@gmail.com'),
+  GA_MEASUREMENT_ID: z.string().default(''),
   GOOGLE_SITE_VERIFICATION: z.string().default(''),
   NAVER_SITE_VERIFICATION: z.string().default(''),
 });
