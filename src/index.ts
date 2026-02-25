@@ -48,6 +48,10 @@ async function main(): Promise<void> {
   const history = new PostHistory();
   await history.load();
 
+  // 3.5. Fetch existing posts for internal linking
+  const existingPosts = await wpService.getRecentPosts(50);
+  logger.info(`Fetched ${existingPosts.length} existing posts for internal linking`);
+
   // 4. Process each niche
   const results: PostResult[] = [];
   let skippedCount = 0;
@@ -68,39 +72,33 @@ async function main(): Promise<void> {
         continue;
       }
 
-      // 4c. Generate content (Claude)
-      const content = await contentService.generateContent(researched);
+      // 4c. Generate content (Claude) with internal links
+      const content = await contentService.generateContent(researched, existingPosts);
 
       // 4d. Generate images (Gemini)
       const images = await imageService.generateImages(content.imagePrompts);
 
-      // 4e. Upload featured image (MANDATORY)
+      // 4e. Upload featured image (MANDATORY) - WebP with SEO filename & ALT
+      const keyword = researched.analysis.selectedKeyword;
       let featuredMediaResult: MediaUploadResult | undefined;
       if (images.featured.length > 0) {
-        const slug = `post-${Date.now()}`;
-        featuredMediaResult = await wpService.uploadMedia(
-          images.featured,
-          `${slug}-featured.png`,
-        );
+        const filename = ImageGeneratorService.buildFilename(keyword, 'featured');
+        const altText = content.imageCaptions?.[0] ?? content.title;
+        featuredMediaResult = await wpService.uploadMedia(images.featured, filename, altText);
       }
       if (!featuredMediaResult) {
-        throw new Error(`Featured image is required but generation failed for "${researched.analysis.selectedKeyword}"`);
+        throw new Error(`Featured image is required but generation failed for "${keyword}"`);
       }
 
-      // 4f. Upload inline images (graceful - individual failures skipped)
+      // 4f. Upload inline images (graceful) - WebP with SEO filename & ALT
       const inlineImages: Array<{ url: string; caption: string }> = [];
       for (let i = 0; i < images.inline.length; i++) {
         try {
           if (images.inline[i].length > 0) {
-            const slug = `post-${Date.now()}`;
-            const mediaResult = await wpService.uploadMedia(
-              images.inline[i],
-              `${slug}-inline-${i + 1}.png`,
-            );
-            inlineImages.push({
-              url: mediaResult.sourceUrl,
-              caption: content.imageCaptions?.[i + 1] ?? `${content.title} image ${i + 1}`,
-            });
+            const filename = ImageGeneratorService.buildFilename(keyword, `section-${i + 1}`);
+            const caption = content.imageCaptions?.[i + 1] ?? `${content.title} image ${i + 1}`;
+            const mediaResult = await wpService.uploadMedia(images.inline[i], filename, caption);
+            inlineImages.push({ url: mediaResult.sourceUrl, caption });
           }
         } catch (error) {
           logger.warn(

@@ -1,7 +1,7 @@
 import axios, { type AxiosInstance } from 'axios';
 import { logger } from '../utils/logger.js';
 import { WordPressError } from '../types/errors.js';
-import type { BlogContent, PublishedPost, MediaUploadResult } from '../types/index.js';
+import type { BlogContent, PublishedPost, MediaUploadResult, ExistingPost } from '../types/index.js';
 
 export class WordPressService {
   private api: AxiosInstance;
@@ -21,17 +21,60 @@ export class WordPressService {
     });
   }
 
-  async uploadMedia(imageBuffer: Buffer, filename: string): Promise<MediaUploadResult> {
-    logger.debug(`Uploading media: ${filename}`);
+  async getRecentPosts(count: number = 50): Promise<ExistingPost[]> {
+    try {
+      const { data } = await this.api.get('/posts', {
+        params: { per_page: count, status: 'publish', _fields: 'title,link,categories' },
+      });
+
+      const posts = data as Array<{ title: { rendered: string }; link: string; categories: number[] }>;
+
+      // Fetch category names
+      const catIds = [...new Set(posts.flatMap((p) => p.categories))];
+      const catMap = new Map<number, string>();
+      if (catIds.length > 0) {
+        const { data: cats } = await this.api.get('/categories', {
+          params: { include: catIds.join(','), per_page: 100, _fields: 'id,name' },
+        });
+        for (const c of cats as Array<{ id: number; name: string }>) {
+          catMap.set(c.id, c.name);
+        }
+      }
+
+      return posts.map((p) => ({
+        title: p.title.rendered.replace(/&#8217;/g, "'").replace(/&#8211;/g, '-').replace(/&amp;/g, '&'),
+        url: p.link,
+        category: catMap.get(p.categories[0]) || 'Uncategorized',
+      }));
+    } catch (error) {
+      logger.warn(`Failed to fetch existing posts: ${error instanceof Error ? error.message : error}`);
+      return [];
+    }
+  }
+
+  async uploadMedia(imageBuffer: Buffer, filename: string, altText?: string): Promise<MediaUploadResult> {
+    const isWebP = filename.endsWith('.webp');
+    const contentType = isWebP ? 'image/webp' : 'image/png';
+    logger.debug(`Uploading media: ${filename} (${contentType}, ${(imageBuffer.length / 1024).toFixed(0)}KB)`);
     try {
       const response = await this.api.post('/media', imageBuffer, {
         headers: {
-          'Content-Type': 'image/png',
+          'Content-Type': contentType,
           'Content-Disposition': `attachment; filename="${filename}"`,
         },
       });
       const mediaId = response.data.id as number;
       const sourceUrl = (response.data.source_url ?? response.data.guid?.rendered ?? '') as string;
+
+      // Set ALT text for SEO
+      if (altText) {
+        try {
+          await this.api.post(`/media/${mediaId}`, { alt_text: altText });
+        } catch {
+          logger.warn(`Failed to set ALT text for media ${mediaId}`);
+        }
+      }
+
       logger.info(`Media uploaded: ID=${mediaId}, URL=${sourceUrl}`);
       return { mediaId, sourceUrl };
     } catch (error) {
@@ -133,7 +176,7 @@ export class WordPressService {
 
     logger.info(`Creating post: "${content.title}"`);
     try {
-      const response = await this.api.post('/posts', {
+      const postData: Record<string, unknown> = {
         title: content.title,
         content: html,
         excerpt: content.excerpt,
@@ -141,7 +184,11 @@ export class WordPressService {
         categories: [categoryId],
         tags: tagIds,
         featured_media: featuredImageId ?? 0,
-      });
+      };
+      if (content.slug) {
+        postData.slug = content.slug;
+      }
+      const response = await this.api.post('/posts', postData);
 
       const post: PublishedPost = {
         postId: response.data.id,

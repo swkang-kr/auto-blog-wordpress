@@ -1,7 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { logger } from '../utils/logger.js';
 import { ContentGenerationError } from '../types/errors.js';
-import type { ResearchedKeyword, BlogContent } from '../types/index.js';
+import type { ResearchedKeyword, BlogContent, ExistingPost } from '../types/index.js';
 
 const SYSTEM_PROMPT = `You are an SEO expert blog writer skilled in writing engaging, high-quality English content for a global audience.
 Given a researched keyword with niche context, write a comprehensive blog post in ENGLISH, and also provide a Korean translation.
@@ -29,6 +29,18 @@ Given a researched keyword with niche context, write a comprehensive blog post i
 - Provide a clear verdict/winner for each use case
 - End with "Which Should You Choose?" recommendation
 
+## Anti-AI Detection Writing Rules (CRITICAL)
+You MUST write like an experienced human blogger, NOT like an AI. Avoid these AI-telltale patterns:
+- NEVER use: "In today's fast-paced world", "In the ever-evolving landscape", "It's worth noting that", "When it comes to", "In this comprehensive guide", "Let's dive in", "Without further ado", "At the end of the day", "Game-changer", "Revolutionize", "Cutting-edge", "Seamless", "Leverage", "Robust", "Harness the power"
+- NEVER start sentences with "Whether you're a... or a..."
+- NEVER use filler transitions like "Moreover", "Furthermore", "Additionally", "It is important to note"
+- AVOID overly balanced "on one hand / on the other hand" structures
+- AVOID generic conclusions like "In conclusion, X offers a powerful solution for Y"
+- Instead: Use specific numbers, personal opinions, concrete examples, casual connectors ("Look,", "Here's the thing:", "Honestly,", "I tested this for 2 weeks and...")
+- Write with a clear POINT OF VIEW - take sides, make bold claims, share specific experiences
+- Use varied sentence lengths: mix short punchy sentences with longer explanatory ones
+- Include imperfections that real writers have: rhetorical questions, mild humor, occasional informality
+
 ## Niche-Specific Tone
 - Food & Recipes: Friendly, warm, encouraging ("You'll love how easy this is!")
 - Personal Finance: Trustworthy, data-driven, reassuring ("Research shows that...")
@@ -40,17 +52,35 @@ Given a researched keyword with niche context, write a comprehensive blog post i
 - Include keyword variations throughout
 - Write compelling meta description with primary keyword
 
+## Internal Links (IMPORTANT for SEO)
+- You will be given a list of existing blog posts on this site
+- Include 2-4 internal links to relevant existing posts within the article body
+- Use natural anchor text that fits the sentence context (e.g., "check out our guide on [AI productivity tools](URL)" or "as we covered in our [GPT comparison article](URL)")
+- Link style: <a href="URL" style="color:#0066FF; text-decoration:underline;">anchor text</a>
+- Distribute internal links throughout the article, not clustered in one section
+- Only link to posts that are genuinely relevant to the current topic
+- If no existing posts are relevant, skip internal links
+
+## External Links (IMPORTANT for E-E-A-T)
+- Include 2-4 external links to authoritative sources
+- Examples: official product websites, research papers, reputable news articles, government/educational sites
+- Use rel="noopener noreferrer" and target="_blank" for external links
+- Link style: <a href="URL" target="_blank" rel="noopener noreferrer" style="color:#0066FF; text-decoration:underline;">anchor text</a>
+- External links must point to REAL, well-known URLs (e.g., anthropic.com, openai.com, nerdwallet.com, allrecipes.com)
+- NEVER fabricate or guess URLs - only use official domains you are confident exist
+
 Rules:
 1. title: Catchy, search-optimized English title (under 60 characters)
 2. titleKr: Korean translation of the title
-3. html: English blog post in HTML format (800-1,000+ words, inline CSS styled)
-4. htmlKr: Korean translation of the SAME content (identical HTML structure, identical IMAGE_PLACEHOLDER positions)
-5. Include a table of contents at the beginning
-6. Use a natural, authoritative English tone matching the niche
-7. excerpt: English meta description under 160 characters
-8. tags: 5-10 related English keywords
-9. tagsKr: Korean translations of the same tags (same count, same order)
-10. category: One best-fit English category name
+3. slug: Short, clean URL slug (3-5 words max, lowercase, hyphens, include year). Example: "claude-ai-best-features-2026" NOT "claude-ai-7-best-features-and-how-to-use-them-in-2026"
+5. html: English blog post in HTML format (800-1,000+ words, inline CSS styled)
+6. htmlKr: Korean translation of the SAME content (identical HTML structure, identical IMAGE_PLACEHOLDER positions)
+7. Include a table of contents at the beginning
+8. Use a natural, authoritative English tone matching the niche
+9. excerpt: English meta description under 160 characters
+10. tags: 5-10 related English keywords
+11. tagsKr: Korean translations of the same tags (same count, same order)
+12. category: One best-fit English category name
 
 E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness) Rules:
 - Cite relevant statistics and data where available
@@ -103,7 +133,7 @@ IMPORTANT: Respond with pure JSON only. Do NOT use markdown code blocks (\`\`\`)
 Escape double quotes (") inside field values as \\".
 
 JSON format:
-{"title":"English Title","titleKr":"한국어 제목","html":"<div style=\\"max-width:760px;...\\">...English content...</div>","htmlKr":"<div style=\\"max-width:760px;...\\">...Korean translation...</div>","excerpt":"English meta description","tags":["tag1","tag2"],"tagsKr":["태그1","태그2"],"category":"CategoryName","imagePrompts":["A detailed scene of... (50+ words)","...","...","..."],"imageCaptions":["Short English caption 1","caption 2","caption 3","caption 4"]}`;
+{"title":"English Title","titleKr":"한국어 제목","slug":"topic-keyword-2026","html":"<div style=\\"max-width:760px;...\\">...English content...</div>","htmlKr":"<div style=\\"max-width:760px;...\\">...Korean translation...</div>","excerpt":"English meta description","tags":["tag1","tag2"],"tagsKr":["태그1","태그2"],"category":"CategoryName","imagePrompts":["A detailed scene of... (50+ words)","...","...","..."],"imageCaptions":["Short English caption 1","caption 2","caption 3","caption 4"]}`;
 
 export class ContentGeneratorService {
   private client: Anthropic;
@@ -114,12 +144,21 @@ export class ContentGeneratorService {
     this.siteOwner = siteOwner || '';
   }
 
-  async generateContent(researched: ResearchedKeyword): Promise<BlogContent> {
+  async generateContent(researched: ResearchedKeyword, existingPosts?: ExistingPost[]): Promise<BlogContent> {
     const { niche, analysis } = researched;
     logger.info(`Generating content for: "${analysis.selectedKeyword}" [${niche.name} / ${analysis.contentType}]`);
 
     const today = new Date().toISOString().split('T')[0];
     const year = new Date().getFullYear();
+
+    // Build internal links section
+    let internalLinksSection = '';
+    if (existingPosts && existingPosts.length > 0) {
+      const postList = existingPosts
+        .map((p) => `- "${p.title}" [${p.category}]: ${p.url}`)
+        .join('\n');
+      internalLinksSection = `\n\nExisting Blog Posts (use for internal links - pick 2-4 relevant ones):\n${postList}`;
+    }
 
     const userPrompt = `Today's Date: ${today}
 Niche: "${niche.name}" (${niche.category})
@@ -128,12 +167,13 @@ Primary Keyword: "${analysis.selectedKeyword}"
 Suggested Title: "${analysis.suggestedTitle}"
 Unique Angle: ${analysis.uniqueAngle}
 Search Intent: ${analysis.searchIntent}
-Related Keywords to Include: ${analysis.relatedKeywordsToInclude.join(', ')}
+Related Keywords to Include: ${analysis.relatedKeywordsToInclude.join(', ')}${internalLinksSection}
 
 Write an in-depth ${analysis.contentType} blog post about "${analysis.selectedKeyword}" for the ${niche.name} niche.
 IMPORTANT: All information, statistics, recommendations, and references must be current as of ${year}. Do NOT use outdated data from previous years. Mention "${year}" where relevant (e.g., "Best AI Tools in ${year}", "As of ${year}").
 Use the unique angle: "${analysis.uniqueAngle}"
 Naturally incorporate these LSI keywords: ${analysis.relatedKeywordsToInclude.join(', ')}
+Include 2-4 internal links to relevant existing posts listed above, and 2-4 external links to authoritative sources (official sites, research, reputable articles).
 
 Provide both English (html) and Korean translation (htmlKr). Respond with pure JSON only.`;
 
@@ -184,6 +224,20 @@ Provide both English (html) and Korean translation (htmlKr). Respond with pure J
 
     if (!content.title || !content.html) {
       throw new ContentGenerationError(`Incomplete content generated for "${analysis.selectedKeyword}"`);
+    }
+
+    // Ensure slug exists (fallback: generate from title)
+    if (!content.slug) {
+      const yr = new Date().getFullYear();
+      content.slug = content.title
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '')
+        .split('-')
+        .slice(0, 5)
+        .join('-') + `-${yr}`;
     }
 
     // Add author byline if SITE_OWNER is set (dual language)

@@ -1,13 +1,64 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import sharp from 'sharp';
 import { logger } from '../utils/logger.js';
 import { ImageGenerationError } from '../types/errors.js';
 import type { ImageResult } from '../types/index.js';
+
+const TARGET_MAX_KB = 200;
+const TARGET_MIN_KB = 100;
 
 export class ImageGeneratorService {
   private client: GoogleGenerativeAI;
 
   constructor(apiKey: string) {
     this.client = new GoogleGenerativeAI(apiKey);
+  }
+
+  /**
+   * Generate an SEO-friendly filename from keyword.
+   * e.g. "Claude AI: 7 Best Features" → "claude-ai-7-best-features-2026"
+   */
+  static buildFilename(keyword: string, suffix: string): string {
+    const year = new Date().getFullYear();
+    const slug = keyword
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '')
+      .substring(0, 60);
+    return `${slug}-${suffix}-${year}.webp`;
+  }
+
+  /**
+   * Convert image buffer to WebP format, compressed to 100-200KB.
+   */
+  private async toWebP(buffer: Buffer): Promise<Buffer> {
+    const originalKB = buffer.length / 1024;
+
+    // Start with quality 80 and adjust
+    let quality = 80;
+    let result = await sharp(buffer).webp({ quality }).toBuffer();
+    let resultKB = result.length / 1024;
+
+    // If too large, reduce quality
+    while (resultKB > TARGET_MAX_KB && quality > 20) {
+      quality -= 10;
+      result = await sharp(buffer).webp({ quality }).toBuffer();
+      resultKB = result.length / 1024;
+    }
+
+    // If still too large, resize down
+    if (resultKB > TARGET_MAX_KB) {
+      const meta = await sharp(buffer).metadata();
+      const scale = Math.sqrt(TARGET_MAX_KB / resultKB);
+      const newWidth = Math.round((meta.width || 1200) * scale);
+      result = await sharp(buffer).resize(newWidth).webp({ quality: 75 }).toBuffer();
+      resultKB = result.length / 1024;
+    }
+
+    logger.debug(`WebP conversion: ${originalKB.toFixed(0)}KB → ${resultKB.toFixed(0)}KB (quality: ${quality})`);
+    return result;
   }
 
   async generateImages(prompts: string[]): Promise<ImageResult> {
@@ -53,8 +104,10 @@ export class ImageGeneratorService {
           if (isDuplicate) {
             logger.warn(`Image ${i + 1} is duplicate of a previous image, skipping`);
           } else {
-            results.push(imageBuffer);
-            logger.info(`Image ${i + 1} generated (${(imageBuffer.length / 1024).toFixed(1)}KB)`);
+            // Convert to WebP and compress
+            const webpBuffer = await this.toWebP(imageBuffer);
+            results.push(webpBuffer);
+            logger.info(`Image ${i + 1} generated & compressed to WebP (${(webpBuffer.length / 1024).toFixed(0)}KB)`);
           }
         } else {
           logger.warn(`Image ${i + 1} generation returned no image data`);

@@ -44,6 +44,7 @@ export interface ResearchedKeyword {
 export interface BlogContent {
   title: string;
   titleKr: string;
+  slug?: string;
   html: string;
   htmlKr: string;
   excerpt: string;
@@ -72,6 +73,13 @@ export interface PublishedPost {
   url: string;
   title: string;
   featuredImageId: number;
+}
+
+/** 내부 링크용 기존 포스트 정보 */
+export interface ExistingPost {
+  title: string;
+  url: string;
+  category: string;
 }
 
 /** 포스팅 이력 (중복 방지용) */
