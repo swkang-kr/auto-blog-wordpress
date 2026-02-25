@@ -78,9 +78,10 @@ Rules:
 7. Include a table of contents at the beginning
 8. Use a natural, authoritative English tone matching the niche
 9. excerpt: English meta description under 160 characters
-10. tags: 5-10 related English keywords
-11. tagsKr: Korean translations of the same tags (same count, same order)
-12. category: One best-fit English category name
+10. excerptKr: Korean meta description under 160 characters (for standalone Korean post SEO)
+11. tags: 5-10 related English keywords
+12. tagsKr: Korean translations of the same tags (same count, same order)
+13. category: One best-fit English category name
 
 E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness) Rules:
 - Cite relevant statistics and data where available
@@ -133,7 +134,7 @@ IMPORTANT: Respond with pure JSON only. Do NOT use markdown code blocks (\`\`\`)
 Escape double quotes (") inside field values as \\".
 
 JSON format:
-{"title":"English Title","titleKr":"한국어 제목","slug":"topic-keyword-2026","html":"<div style=\\"max-width:760px;...\\">...English content...</div>","htmlKr":"<div style=\\"max-width:760px;...\\">...Korean translation...</div>","excerpt":"English meta description","tags":["tag1","tag2"],"tagsKr":["태그1","태그2"],"category":"CategoryName","imagePrompts":["A detailed scene of... (50+ words)","...","...","..."],"imageCaptions":["Short English caption 1","caption 2","caption 3","caption 4"]}`;
+{"title":"English Title","titleKr":"한국어 제목","slug":"topic-keyword-2026","html":"<div style=\\"max-width:760px;...\\">...English content...</div>","htmlKr":"<div style=\\"max-width:760px;...\\">...Korean translation...</div>","excerpt":"English meta description","excerptKr":"한국어 메타 설명","tags":["tag1","tag2"],"tagsKr":["태그1","태그2"],"category":"CategoryName","imagePrompts":["A detailed scene of... (50+ words)","...","...","..."],"imageCaptions":["Short English caption 1","caption 2","caption 3","caption 4"]}`;
 
 export class ContentGeneratorService {
   private client: Anthropic;
@@ -220,6 +221,10 @@ Provide both English (html) and Korean translation (htmlKr). Respond with pure J
     if (!content.tagsKr || content.tagsKr.length === 0) {
       logger.warn('tagsKr missing from Claude response, using tags as fallback');
       content.tagsKr = content.tags;
+    }
+    if (!content.excerptKr) {
+      logger.warn('excerptKr missing from Claude response, using excerpt as fallback');
+      content.excerptKr = content.excerpt;
     }
 
     if (!content.title || !content.html) {

@@ -207,6 +207,102 @@ export class WordPressService {
     }
   }
 
+  /**
+   * Create a standalone Korean post with its own slug, linked to the EN post via hreflang.
+   */
+  async createKoreanPost(
+    content: BlogContent,
+    featuredImageId: number,
+    inlineImages: Array<{ url: string; caption: string }>,
+    enPostUrl: string,
+  ): Promise<PublishedPost> {
+    // Replace image placeholders in Korean HTML (same inline images)
+    const htmlKr = this.replaceImagePlaceholders(content.htmlKr, inlineImages);
+
+    // Build Korean tag pills
+    const tagStyle = `display:inline-block; padding:4px 12px; margin:0 6px 6px 0; background:#f0f4ff; color:#0066FF; border-radius:14px; font-size:13px; text-decoration:none;`;
+    const tagsKrHtml = (content.tagsKr || content.tags).map((t) => `<span style="${tagStyle}">${this.escapeHtml(t)}</span>`).join('');
+    const tagSection = `<div style="margin:30px 0 0 0; padding-top:20px; border-top:1px solid #eee;"><p style="margin:0 0 8px 0; font-size:14px; font-weight:600; color:#666;">태그</p><div>${tagsKrHtml}</div></div>`;
+
+    // "Read in English" button at the top
+    const enLinkButton = `<div style="text-align:right; margin:0 0 20px 0;">` +
+      `<a href="${this.escapeHtml(enPostUrl)}" style="display:inline-block; padding:8px 20px; background:#0066FF; color:#fff; border-radius:20px; font-size:14px; text-decoration:none;">Read in English</a></div>`;
+
+    let html = enLinkButton + htmlKr + tagSection;
+
+    // JSON-LD for Korean post
+    const jsonLd = {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: content.titleKr,
+      description: content.excerptKr || content.excerpt,
+      inLanguage: 'ko',
+      datePublished: new Date().toISOString(),
+      dateModified: new Date().toISOString(),
+      ...(this.siteOwner ? {
+        author: { '@type': 'Person', name: this.siteOwner },
+      } : {}),
+      publisher: {
+        '@type': 'Organization',
+        name: this.siteOwner || 'TrendHunt',
+      },
+      mainEntityOfPage: { '@type': 'WebPage', '@id': this.wpUrl },
+    };
+    html = `<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>\n` + html;
+
+    const categoryId = await this.getOrCreateCategory(content.category);
+    const tagIds = await this.getOrCreateTags(content.tagsKr || content.tags);
+
+    const krSlug = (content.slug || 'post') + '-kr';
+    const krTitle = content.titleKr || content.title;
+
+    logger.info(`Creating Korean post: "${krTitle}" (slug: ${krSlug})`);
+    try {
+      const postData: Record<string, unknown> = {
+        title: krTitle,
+        content: html,
+        excerpt: content.excerptKr || content.excerpt,
+        status: 'publish',
+        slug: krSlug,
+        categories: [categoryId],
+        tags: tagIds,
+        featured_media: featuredImageId,
+        meta: { hreflang_en: enPostUrl },
+      };
+      const response = await this.api.post('/posts', postData);
+
+      const post: PublishedPost = {
+        postId: response.data.id,
+        url: response.data.link,
+        title: krTitle,
+        featuredImageId,
+      };
+
+      logger.info(`Korean post published: ID=${post.postId} URL=${post.url}`);
+      return post;
+    } catch (error) {
+      const detail = axios.isAxiosError(error)
+        ? `${error.response?.status} ${JSON.stringify(error.response?.data ?? error.message)}`
+        : (error instanceof Error ? error.message : String(error));
+      throw new WordPressError(`Failed to create Korean post: "${krTitle}" - ${detail}`, error);
+    }
+  }
+
+  /**
+   * Update post meta fields (e.g., hreflang_ko, hreflang_en).
+   */
+  async updatePostMeta(postId: number, meta: Record<string, string>): Promise<void> {
+    try {
+      await this.api.post(`/posts/${postId}`, { meta });
+      logger.info(`Post meta updated: ID=${postId}, keys=${Object.keys(meta).join(',')}`);
+    } catch (error) {
+      const detail = axios.isAxiosError(error)
+        ? `${error.response?.status} ${JSON.stringify(error.response?.data ?? error.message)}`
+        : (error instanceof Error ? error.message : String(error));
+      logger.warn(`Failed to update post meta for ID=${postId}: ${detail}`);
+    }
+  }
+
   private escapeHtml(text: string): string {
     return text.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }

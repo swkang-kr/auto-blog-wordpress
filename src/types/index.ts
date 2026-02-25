@@ -48,6 +48,7 @@ export interface BlogContent {
   html: string;
   htmlKr: string;
   excerpt: string;
+  excerptKr: string;
   tags: string[];
   tagsKr: string[];
   category: string;
@@ -87,6 +88,8 @@ export interface PostHistoryEntry {
   keyword: string;
   postId: number;
   postUrl: string;
+  postIdKr?: number;
+  postUrlKr?: string;
   publishedAt: string;
   niche?: string;
   contentType?: ContentType;
@@ -106,6 +109,8 @@ export interface PostResult {
   success: boolean;
   postId?: number;
   postUrl?: string;
+  postIdKr?: number;
+  postUrlKr?: string;
   error?: string;
   duration: number;
 }

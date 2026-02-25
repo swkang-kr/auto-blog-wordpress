@@ -2,14 +2,17 @@ import axios, { type AxiosInstance } from 'axios';
 import { logger } from '../utils/logger.js';
 
 const WPCODE_SLUG = 'insert-headers-and-footers';
+const HREFLANG_SNIPPET_TITLE = 'Auto Blog hreflang SEO';
 
 export class SeoService {
   private api: AxiosInstance;
+  private wpUrl: string;
 
   constructor(wpUrl: string, username: string, appPassword: string) {
+    this.wpUrl = wpUrl.replace(/\/+$/, '');
     const token = Buffer.from(`${username}:${appPassword}`).toString('base64');
     this.api = axios.create({
-      baseURL: `${wpUrl.replace(/\/+$/, '')}/wp-json/wp/v2`,
+      baseURL: `${this.wpUrl}/wp-json/wp/v2`,
       headers: { Authorization: `Basic ${token}` },
       timeout: 30000,
     });
@@ -52,6 +55,96 @@ export class SeoService {
     } else {
       this.logManualInstructions(headerHtml);
     }
+  }
+
+  /**
+   * Ensure hreflang PHP snippet is installed via Code Snippets plugin.
+   * Registers post meta (hreflang_ko, hreflang_en) and outputs <link rel="alternate"> in wp_head.
+   */
+  async ensureHreflangSnippet(): Promise<void> {
+    const snippetsApi = axios.create({
+      baseURL: `${this.wpUrl}/wp-json/wp/v2`,
+      headers: this.api.defaults.headers as Record<string, string>,
+      timeout: 30000,
+    });
+
+    // The PHP code that will run on the WordPress site
+    const phpCode = `
+// Register hreflang post meta for REST API
+add_action('init', function() {
+    register_post_meta('post', 'hreflang_ko', [
+        'show_in_rest' => true,
+        'single' => true,
+        'type' => 'string',
+        'sanitize_callback' => 'esc_url_raw',
+    ]);
+    register_post_meta('post', 'hreflang_en', [
+        'show_in_rest' => true,
+        'single' => true,
+        'type' => 'string',
+        'sanitize_callback' => 'esc_url_raw',
+    ]);
+});
+
+// Output hreflang link tags in <head>
+add_action('wp_head', function() {
+    if (!is_singular('post')) return;
+    $post_id = get_the_ID();
+    $ko_url = get_post_meta($post_id, 'hreflang_ko', true);
+    $en_url = get_post_meta($post_id, 'hreflang_en', true);
+    $current_url = get_permalink($post_id);
+    if ($ko_url) {
+        echo '<link rel="alternate" hreflang="en" href="' . esc_url($current_url) . '" />' . "\\n";
+        echo '<link rel="alternate" hreflang="ko" href="' . esc_url($ko_url) . '" />' . "\\n";
+        echo '<link rel="alternate" hreflang="x-default" href="' . esc_url($current_url) . '" />' . "\\n";
+    }
+    if ($en_url) {
+        echo '<link rel="alternate" hreflang="ko" href="' . esc_url($current_url) . '" />' . "\\n";
+        echo '<link rel="alternate" hreflang="en" href="' . esc_url($en_url) . '" />' . "\\n";
+        echo '<link rel="alternate" hreflang="x-default" href="' . esc_url($en_url) . '" />' . "\\n";
+    }
+});`.trim();
+
+    // Try Code Snippets plugin REST API first
+    try {
+      const { data: snippets } = await snippetsApi.get(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`.replace(snippetsApi.defaults.baseURL || '', ''),
+        { baseURL: this.wpUrl },
+      );
+      const existing = (snippets as Array<{ id: number; name: string }>)
+        .find((s) => s.name === HREFLANG_SNIPPET_TITLE);
+      if (existing) {
+        logger.info(`hreflang snippet already exists (ID=${existing.id}), skipping`);
+        return;
+      }
+
+      await axios.post(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        {
+          name: HREFLANG_SNIPPET_TITLE,
+          code: phpCode,
+          scope: 'global',
+          active: true,
+          priority: 10,
+        },
+        {
+          headers: this.api.defaults.headers as Record<string, string>,
+          timeout: 30000,
+        },
+      );
+      logger.info('hreflang PHP snippet installed via Code Snippets plugin');
+      return;
+    } catch {
+      logger.debug('Code Snippets plugin API not available, trying mu-plugins fallback');
+    }
+
+    // Fallback: create as mu-plugin via WordPress filesystem (manual instruction)
+    logger.warn('=== hreflang Snippet Manual Setup Required ===');
+    logger.warn('Install the "Code Snippets" plugin, then add the following PHP snippet:');
+    logger.warn(`Title: ${HREFLANG_SNIPPET_TITLE}`);
+    logger.warn(phpCode);
+    logger.warn('Or add it to your theme functions.php');
+    logger.warn('============================================');
   }
 
   /** @deprecated Use ensureHeaderScripts instead */

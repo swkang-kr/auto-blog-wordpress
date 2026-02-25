@@ -44,6 +44,13 @@ async function main(): Promise<void> {
     logger.warn(`SEO/GA setup failed: ${error instanceof Error ? error.message : error}`);
   }
 
+  // 2.7. Ensure hreflang PHP snippet for bilingual SEO
+  try {
+    await seoService.ensureHreflangSnippet();
+  } catch (error) {
+    logger.warn(`hreflang snippet setup failed: ${error instanceof Error ? error.message : error}`);
+  }
+
   // 3. History
   const history = new PostHistory();
   await history.load();
@@ -107,18 +114,41 @@ async function main(): Promise<void> {
         }
       }
 
-      // 4g. Create WordPress post
+      // 4g. Create WordPress post (English)
       const post = await wpService.createPost(
         content,
         featuredMediaResult.mediaId,
         inlineImages,
       );
 
-      // 4h. Record history
+      // 4h. Create standalone Korean post + hreflang linking
+      let krPostId: number | undefined;
+      let krPostUrl: string | undefined;
+      try {
+        const krPost = await wpService.createKoreanPost(
+          content,
+          featuredMediaResult.mediaId,
+          inlineImages,
+          post.url,
+        );
+        krPostId = krPost.postId;
+        krPostUrl = krPost.url;
+
+        // Update EN post meta with hreflang_ko pointing to KR post
+        await wpService.updatePostMeta(post.postId, { hreflang_ko: krPost.url });
+
+        logger.info(`Bilingual posts linked: EN(${post.postId}) <-> KR(${krPost.postId})`);
+      } catch (error) {
+        logger.warn(`Korean post creation failed (EN post is still live): ${error instanceof Error ? error.message : error}`);
+      }
+
+      // 4i. Record history
       await history.addEntry({
         keyword: researched.analysis.selectedKeyword,
         postId: post.postId,
         postUrl: post.url,
+        postIdKr: krPostId,
+        postUrlKr: krPostUrl,
         publishedAt: new Date().toISOString(),
         niche: niche.id,
         contentType: researched.analysis.contentType,
@@ -130,6 +160,8 @@ async function main(): Promise<void> {
         success: true,
         postId: post.postId,
         postUrl: post.url,
+        postIdKr: krPostId,
+        postUrlKr: krPostUrl,
         duration: Date.now() - postStart,
       });
     } catch (error) {
@@ -164,7 +196,8 @@ async function main(): Promise<void> {
 
   for (const r of results) {
     if (r.success) {
-      logger.info(`  [OK] [${r.niche}] "${r.keyword}" → ${r.postUrl} (${r.duration}ms)`);
+      const krInfo = r.postUrlKr ? ` | KR: ${r.postUrlKr}` : '';
+      logger.info(`  [OK] [${r.niche}] "${r.keyword}" → ${r.postUrl}${krInfo} (${r.duration}ms)`);
     } else {
       logger.error(`  [FAIL] [${r.niche}] "${r.keyword}" → ${r.error}`);
     }
