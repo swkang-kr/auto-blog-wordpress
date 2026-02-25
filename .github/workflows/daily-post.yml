@@ -2,8 +2,8 @@ name: Daily Blog Post
 
 on:
   schedule:
-    - cron: '30 2 * * *'  # UTC 02:30 = KST 11:30
-  workflow_dispatch:        # Manual trigger
+    - cron: '30 2 */2 * *'  # UTC 02:30 every other day = KST 11:30 격일
+  workflow_dispatch:          # Manual trigger
 
 permissions:
   contents: write
@@ -39,6 +39,7 @@ jobs:
           GA_MEASUREMENT_ID: ${{ secrets.GA_MEASUREMENT_ID }}
           GOOGLE_SITE_VERIFICATION: ${{ secrets.GOOGLE_SITE_VERIFICATION }}
           NAVER_SITE_VERIFICATION: ${{ secrets.NAVER_SITE_VERIFICATION }}
+          DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
 
       - name: Commit post history
         run: |
