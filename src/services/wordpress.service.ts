@@ -307,6 +307,19 @@ export class WordPressService {
     return text.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 
+  private decodeHtmlEntities(text: string): string {
+    return text
+      .replace(/&#8217;/g, "'")
+      .replace(/&#8216;/g, "'")
+      .replace(/&#8211;/g, '-')
+      .replace(/&#8212;/g, '--')
+      .replace(/&amp;/g, '&')
+      .replace(/&quot;/g, '"')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&#039;/g, "'");
+  }
+
   private insertImageAfterNthHeading(html: string, imgHtml: string, n: number): string {
     const headingEndRegex = /<\/h[23]>/gi;
     let match: RegExpExecArray | null;
@@ -338,15 +351,27 @@ export class WordPressService {
       const search = await this.api.get('/categories', { params: { search: name } });
       const categories = search.data as { id: number; name: string }[];
       const existing = categories.find(
-        (c) => c.name.toLowerCase() === name.toLowerCase(),
+        (c) => this.decodeHtmlEntities(c.name).toLowerCase() === name.toLowerCase(),
       );
       if (existing) return existing.id;
     } catch {
       // continue to create
     }
 
-    const response = await this.api.post('/categories', { name });
-    return response.data.id as number;
+    try {
+      const response = await this.api.post('/categories', { name });
+      return response.data.id as number;
+    } catch (error) {
+      // WordPress returns 400 term_exists with the existing term_id
+      if (axios.isAxiosError(error) && error.response?.status === 400) {
+        const termId = error.response.data?.data?.term_id;
+        if (termId) {
+          logger.debug(`Category "${name}" already exists (term_id=${termId})`);
+          return termId as number;
+        }
+      }
+      throw error;
+    }
   }
 
   async getOrCreateTags(names: string[]): Promise<number[]> {
@@ -356,7 +381,7 @@ export class WordPressService {
         const search = await this.api.get('/tags', { params: { search: name } });
         const tags = search.data as { id: number; name: string }[];
         const existing = tags.find(
-          (t) => t.name.toLowerCase() === name.toLowerCase(),
+          (t) => this.decodeHtmlEntities(t.name).toLowerCase() === name.toLowerCase(),
         );
         if (existing) {
           ids.push(existing.id);
@@ -370,6 +395,14 @@ export class WordPressService {
         const response = await this.api.post('/tags', { name });
         ids.push(response.data.id as number);
       } catch (error) {
+        // WordPress returns 400 term_exists with the existing term_id
+        if (axios.isAxiosError(error) && error.response?.status === 400) {
+          const termId = error.response.data?.data?.term_id;
+          if (termId) {
+            ids.push(termId as number);
+            continue;
+          }
+        }
         logger.warn(`Failed to create tag "${name}": ${error instanceof Error ? error.message : error}`);
       }
     }

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { loadConfig } from './config/env.js';
 import { NICHES } from './config/niches.js';
 import { KeywordResearchService } from './services/keyword-research.service.js';
@@ -122,6 +123,9 @@ async function main(): Promise<void> {
       );
 
       // 4h. Create standalone Korean post + hreflang linking
+      // Brief delay to avoid WordPress server socket hang up on consecutive requests
+      await new Promise((r) => setTimeout(r, 3000));
+
       let krPostId: number | undefined;
       let krPostUrl: string | undefined;
       try {
@@ -135,6 +139,7 @@ async function main(): Promise<void> {
         krPostUrl = krPost.url;
 
         // Update EN post meta with hreflang_ko pointing to KR post
+        await new Promise((r) => setTimeout(r, 2000));
         await wpService.updatePostMeta(post.postId, { hreflang_ko: krPost.url });
 
         logger.info(`Bilingual posts linked: EN(${post.postId}) <-> KR(${krPost.postId})`);
@@ -165,7 +170,9 @@ async function main(): Promise<void> {
         duration: Date.now() - postStart,
       });
     } catch (error) {
-      const message = error instanceof Error ? error.message : String(error);
+      const message = axios.isAxiosError(error)
+        ? `${error.response?.status} ${JSON.stringify(error.response?.data ?? error.message)}`
+        : (error instanceof Error ? error.message : String(error));
       logger.error(`Failed to process niche "${niche.name}": ${message}`);
       results.push({
         keyword: niche.name,
