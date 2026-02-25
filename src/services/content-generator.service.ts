@@ -1,10 +1,44 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { logger } from '../utils/logger.js';
 import { ContentGenerationError } from '../types/errors.js';
-import type { TrendKeyword, BlogContent } from '../types/index.js';
+import type { ResearchedKeyword, BlogContent } from '../types/index.js';
 
 const SYSTEM_PROMPT = `You are an SEO expert blog writer skilled in writing engaging, high-quality English content for a global audience.
-Given a trending keyword, write a comprehensive blog post in ENGLISH, and also provide a Korean translation.
+Given a researched keyword with niche context, write a comprehensive blog post in ENGLISH, and also provide a Korean translation.
+
+## Content Type Guidelines
+
+### How-to Content
+- Structure as a step-by-step guide with numbered steps
+- Include prerequisite/materials section at the beginning
+- Each step should have a clear action and explanation
+- Add pro tips and common mistakes to avoid
+- End with a summary checklist
+
+### Best X for Y Content
+- Create a ranked list with clear #1, #2, #3 etc.
+- Include a comparison table with key features
+- For each item: brief overview, pros, cons, best for whom
+- Include a "How We Evaluated" section for credibility
+- End with a clear recommendation summary
+
+### X vs Y Content
+- Start with a brief overview of both options
+- Create a detailed comparison table
+- Compare across 5-7 key criteria
+- Provide a clear verdict/winner for each use case
+- End with "Which Should You Choose?" recommendation
+
+## Niche-Specific Tone
+- Food & Recipes: Friendly, warm, encouraging ("You'll love how easy this is!")
+- Personal Finance: Trustworthy, data-driven, reassuring ("Research shows that...")
+- AI Tools & Reviews: Technical yet accessible, up-to-date, objective ("Based on our testing...")
+
+## SEO Requirements
+- Naturally incorporate all provided LSI/related keywords
+- Use the primary keyword in the first paragraph
+- Include keyword variations throughout
+- Write compelling meta description with primary keyword
 
 Rules:
 1. title: Catchy, search-optimized English title (under 60 characters)
@@ -12,7 +46,7 @@ Rules:
 3. html: English blog post in HTML format (800-1,000+ words, inline CSS styled)
 4. htmlKr: Korean translation of the SAME content (identical HTML structure, identical IMAGE_PLACEHOLDER positions)
 5. Include a table of contents at the beginning
-6. Use a natural, authoritative English tone
+6. Use a natural, authoritative English tone matching the niche
 7. excerpt: English meta description under 160 characters
 8. tags: 5-10 related English keywords
 9. tagsKr: Korean translations of the same tags (same count, same order)
@@ -49,6 +83,7 @@ HTML Style Rules (Naver Blog Style with inline CSS):
 - Table of contents: <div style="background:#f0f4ff; padding:24px 30px; border-radius:12px; margin:24px 0 36px 0;"><p style="font-weight:700; font-size:17px; margin:0 0 12px 0; color:#0066FF;">Table of Contents</p><ol style="margin:0; padding-left:20px; line-height:2.0; color:#555;">
 - Divider: <hr style="border:none; height:1px; background:linear-gradient(to right, #ddd, #eee, #ddd); margin:36px 0;">
 - Key point box: <div style="background:#fff8e1; border:1px solid #ffe082; padding:20px 24px; border-radius:8px; margin:24px 0;"><p style="margin:0; font-weight:600; color:#f57f17; margin-bottom:8px;">Key Point</p><p style="margin:0; color:#555; line-height:1.7;">content</p></div>
+- Comparison table: <table style="width:100%; border-collapse:collapse; margin:24px 0;"><tr style="background:#f0f4ff;"><th style="padding:12px 16px; border:1px solid #ddd; text-align:left;">...</th></tr><tr><td style="padding:12px 16px; border:1px solid #ddd;">...</td></tr></table>
 - Mark image positions with <!--IMAGE_PLACEHOLDER_1-->, <!--IMAGE_PLACEHOLDER_2-->, <!--IMAGE_PLACEHOLDER_3--> comments
 - Distribute image placeholders evenly across the article (one after each major section)
 - Include a summary or closing statement at the end
@@ -79,15 +114,23 @@ export class ContentGeneratorService {
     this.siteOwner = siteOwner || '';
   }
 
-  async generateContent(keyword: TrendKeyword): Promise<BlogContent> {
-    logger.info(`Generating content for keyword: "${keyword.title}"`);
+  async generateContent(researched: ResearchedKeyword): Promise<BlogContent> {
+    const { niche, analysis } = researched;
+    logger.info(`Generating content for: "${analysis.selectedKeyword}" [${niche.name} / ${analysis.contentType}]`);
 
-    const userPrompt = `Keyword: "${keyword.title}"
-Description: "${keyword.description}"
-Source: ${keyword.source}
-Search Volume: ${keyword.traffic}
+    const userPrompt = `Niche: "${niche.name}" (${niche.category})
+Content Type: ${analysis.contentType}
+Primary Keyword: "${analysis.selectedKeyword}"
+Suggested Title: "${analysis.suggestedTitle}"
+Unique Angle: ${analysis.uniqueAngle}
+Search Intent: ${analysis.searchIntent}
+Related Keywords to Include: ${analysis.relatedKeywordsToInclude.join(', ')}
 
-Write an in-depth blog post about this trending keyword. Provide both English (html) and Korean translation (htmlKr). Respond with pure JSON only.`;
+Write an in-depth ${analysis.contentType} blog post about "${analysis.selectedKeyword}" for the ${niche.name} niche.
+Use the unique angle: "${analysis.uniqueAngle}"
+Naturally incorporate these LSI keywords: ${analysis.relatedKeywordsToInclude.join(', ')}
+
+Provide both English (html) and Korean translation (htmlKr). Respond with pure JSON only.`;
 
     const stream = this.client.messages.stream({
       model: 'claude-sonnet-4-5-20250929',
@@ -104,7 +147,7 @@ Write an in-depth blog post about this trending keyword. Provide both English (h
 
     logger.debug(`Raw Claude response length: ${text.length} chars`);
 
-    const content = parseJsonResponse(text, keyword.title);
+    const content = parseJsonResponse(text, analysis.selectedKeyword);
 
     // Ensure imageCaptions exists
     if (!content.imageCaptions || content.imageCaptions.length === 0) {
@@ -116,7 +159,7 @@ Write an in-depth blog post about this trending keyword. Provide both English (h
     // Ensure at least 4 image prompts
     while (content.imagePrompts.length < 4) {
       logger.warn(`Only ${content.imagePrompts.length} image prompts, padding to 4`);
-      content.imagePrompts.push(`Detailed illustration related to ${keyword.title}, vivid colors, editorial style`);
+      content.imagePrompts.push(`Detailed illustration related to ${analysis.selectedKeyword}, vivid colors, editorial style`);
       content.imageCaptions.push(`${content.title} related image`);
     }
 
@@ -135,7 +178,7 @@ Write an in-depth blog post about this trending keyword. Provide both English (h
     }
 
     if (!content.title || !content.html) {
-      throw new ContentGenerationError(`Incomplete content generated for "${keyword.title}"`);
+      throw new ContentGenerationError(`Incomplete content generated for "${analysis.selectedKeyword}"`);
     }
 
     // Add author byline if SITE_OWNER is set (dual language)

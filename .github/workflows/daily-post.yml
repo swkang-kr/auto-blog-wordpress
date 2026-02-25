@@ -2,7 +2,7 @@ name: Daily Blog Post
 
 on:
   schedule:
-    - cron: '0 15 * * *'  # UTC 15:00 = KST 00:00
+    - cron: '30 2 * * *'  # UTC 02:30 = KST 11:30
   workflow_dispatch:        # Manual trigger
 
 permissions:
@@ -11,7 +11,7 @@ permissions:
 jobs:
   post:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
 
     steps:
       - name: Checkout repository
@@ -34,8 +34,7 @@ jobs:
           WP_URL: ${{ secrets.WP_URL }}
           WP_USERNAME: ${{ secrets.WP_USERNAME }}
           WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
-          TRENDS_COUNTRY: KR
-          POST_COUNT: '3'
+          TRENDS_GEO: US
           LOG_LEVEL: info
           GOOGLE_SITE_VERIFICATION: ${{ secrets.GOOGLE_SITE_VERIFICATION }}
           NAVER_SITE_VERIFICATION: ${{ secrets.NAVER_SITE_VERIFICATION }}

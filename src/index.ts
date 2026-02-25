@@ -1,5 +1,6 @@
 import { loadConfig } from './config/env.js';
-import { GoogleTrendsService } from './services/google-trends.service.js';
+import { NICHES } from './config/niches.js';
+import { KeywordResearchService } from './services/keyword-research.service.js';
 import { ContentGeneratorService } from './services/content-generator.service.js';
 import { ImageGeneratorService } from './services/image-generator.service.js';
 import { WordPressService } from './services/wordpress.service.js';
@@ -11,14 +12,14 @@ import type { PostResult, BatchResult, MediaUploadResult } from './types/index.j
 
 async function main(): Promise<void> {
   const startedAt = new Date().toISOString();
-  logger.info('=== Auto Blog WordPress - Batch Start ===');
+  logger.info('=== Auto Blog WordPress - Niche SEO Batch Start ===');
 
   // 1. Config
   const config = loadConfig();
-  logger.info(`Country: ${config.TRENDS_COUNTRY}, Posts: ${config.POST_COUNT}`);
+  logger.info(`Geo: ${config.TRENDS_GEO}, Niches: ${NICHES.length}`);
 
   // 2. Services
-  const trendsService = new GoogleTrendsService();
+  const researchService = new KeywordResearchService(config.ANTHROPIC_API_KEY, config.TRENDS_GEO);
   const contentService = new ContentGeneratorService(config.ANTHROPIC_API_KEY, config.SITE_OWNER);
   const imageService = new ImageGeneratorService(config.GEMINI_API_KEY);
   const wpService = new WordPressService(config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD, config.SITE_OWNER);
@@ -43,46 +44,33 @@ async function main(): Promise<void> {
   const history = new PostHistory();
   await history.load();
 
-  // 4. Fetch trends
-  const keywords = await trendsService.fetchTrendingKeywords(
-    config.TRENDS_COUNTRY,
-    config.POST_COUNT,
-  );
-
-  if (keywords.length === 0) {
-    logger.warn('No trending keywords found. Exiting.');
-    return;
-  }
-
-  // 5. Filter duplicates
-  const newKeywords = keywords.filter((k) => !history.isPosted(k.title));
-  const skippedCount = keywords.length - newKeywords.length;
-
-  if (skippedCount > 0) {
-    logger.info(`Skipped ${skippedCount} already-posted keywords`);
-  }
-
-  if (newKeywords.length === 0) {
-    logger.info('All keywords already posted. Nothing to do.');
-    await history.updateLastRun();
-    return;
-  }
-
-  // 6. Process each keyword
+  // 4. Process each niche
   const results: PostResult[] = [];
+  let skippedCount = 0;
 
-  for (const keyword of newKeywords) {
+  for (const niche of NICHES) {
     const postStart = Date.now();
-    logger.info(`\n--- Processing: "${keyword.title}" ---`);
+    logger.info(`\n=== Processing Niche: "${niche.name}" ===`);
 
     try {
-      // 6a. Generate content (Claude)
-      const content = await contentService.generateContent(keyword);
+      // 4a. Keyword research
+      const postedKeywords = history.getPostedKeywordsForNiche(niche.id);
+      const researched = await researchService.researchKeyword(niche, postedKeywords);
 
-      // 6b. Generate images (Gemini)
+      // 4b. Check if already posted
+      if (history.isPosted(researched.analysis.selectedKeyword, niche.id)) {
+        logger.info(`Keyword "${researched.analysis.selectedKeyword}" already posted for niche "${niche.name}", skipping`);
+        skippedCount++;
+        continue;
+      }
+
+      // 4c. Generate content (Claude)
+      const content = await contentService.generateContent(researched);
+
+      // 4d. Generate images (Gemini)
       const images = await imageService.generateImages(content.imagePrompts);
 
-      // 6c. Upload featured image (MANDATORY)
+      // 4e. Upload featured image (MANDATORY)
       let featuredMediaResult: MediaUploadResult | undefined;
       if (images.featured.length > 0) {
         const slug = `post-${Date.now()}`;
@@ -92,10 +80,10 @@ async function main(): Promise<void> {
         );
       }
       if (!featuredMediaResult) {
-        throw new Error(`Featured image is required but generation failed for "${keyword.title}"`);
+        throw new Error(`Featured image is required but generation failed for "${researched.analysis.selectedKeyword}"`);
       }
 
-      // 6d. Upload inline images (graceful - individual failures skipped)
+      // 4f. Upload inline images (graceful - individual failures skipped)
       const inlineImages: Array<{ url: string; caption: string }> = [];
       for (let i = 0; i < images.inline.length; i++) {
         try {
@@ -107,7 +95,7 @@ async function main(): Promise<void> {
             );
             inlineImages.push({
               url: mediaResult.sourceUrl,
-              caption: content.imageCaptions?.[i + 1] ?? `${content.title} 이미지 ${i + 1}`,
+              caption: content.imageCaptions?.[i + 1] ?? `${content.title} image ${i + 1}`,
             });
           }
         } catch (error) {
@@ -117,23 +105,26 @@ async function main(): Promise<void> {
         }
       }
 
-      // 6e. Create WordPress post
+      // 4g. Create WordPress post
       const post = await wpService.createPost(
         content,
         featuredMediaResult.mediaId,
         inlineImages,
       );
 
-      // 6f. Record history
+      // 4h. Record history
       await history.addEntry({
-        keyword: keyword.title,
+        keyword: researched.analysis.selectedKeyword,
         postId: post.postId,
         postUrl: post.url,
         publishedAt: new Date().toISOString(),
+        niche: niche.id,
+        contentType: researched.analysis.contentType,
       });
 
       results.push({
-        keyword: keyword.title,
+        keyword: researched.analysis.selectedKeyword,
+        niche: niche.id,
         success: true,
         postId: post.postId,
         postUrl: post.url,
@@ -141,9 +132,10 @@ async function main(): Promise<void> {
       });
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
-      logger.error(`Failed to process "${keyword.title}": ${message}`);
+      logger.error(`Failed to process niche "${niche.name}": ${message}`);
       results.push({
-        keyword: keyword.title,
+        keyword: niche.name,
+        niche: niche.id,
         success: false,
         error: message,
         duration: Date.now() - postStart,
@@ -151,14 +143,14 @@ async function main(): Promise<void> {
     }
   }
 
-  // 7. Update last run
+  // 5. Update last run
   await history.updateLastRun();
 
-  // 8. Summary
+  // 6. Summary
   const batch: BatchResult = {
     startedAt,
     completedAt: new Date().toISOString(),
-    totalKeywords: keywords.length,
+    totalKeywords: NICHES.length,
     successCount: results.filter((r) => r.success).length,
     failureCount: results.filter((r) => !r.success).length,
     skippedCount,
@@ -170,9 +162,9 @@ async function main(): Promise<void> {
 
   for (const r of results) {
     if (r.success) {
-      logger.info(`  [OK] "${r.keyword}" → ${r.postUrl} (${r.duration}ms)`);
+      logger.info(`  [OK] [${r.niche}] "${r.keyword}" → ${r.postUrl} (${r.duration}ms)`);
     } else {
-      logger.error(`  [FAIL] "${r.keyword}" → ${r.error}`);
+      logger.error(`  [FAIL] [${r.niche}] "${r.keyword}" → ${r.error}`);
     }
   }
 

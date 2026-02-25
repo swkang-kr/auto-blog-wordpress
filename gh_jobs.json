@@ -1,0 +1,105 @@
+{
+  "total_count": 1,
+  "jobs": [
+    {
+      "id": 64701453370,
+      "run_id": 22357572985,
+      "workflow_name": "Daily Blog Post",
+      "head_branch": "master",
+      "run_url": "https://api.github.com/repos/swkang-kr/auto-blog-wordpress/actions/runs/22357572985",
+      "run_attempt": 1,
+      "node_id": "CR_kwDORXq3Ac8AAAAPEIHUOg",
+      "head_sha": "8742ea7e3d8127f8fc7d00112c6bfd6970e56f84",
+      "url": "https://api.github.com/repos/swkang-kr/auto-blog-wordpress/actions/jobs/64701453370",
+      "html_url": "https://github.com/swkang-kr/auto-blog-wordpress/actions/runs/22357572985/job/64701453370",
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-02-24T15:27:34Z",
+      "started_at": "2026-02-24T15:27:39Z",
+      "completed_at": "2026-02-24T15:36:28Z",
+      "name": "post",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-02-24T15:27:40Z",
+          "completed_at": "2026-02-24T15:27:41Z"
+        },
+        {
+          "name": "Checkout repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-02-24T15:27:41Z",
+          "completed_at": "2026-02-24T15:27:42Z"
+        },
+        {
+          "name": "Setup Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-02-24T15:27:42Z",
+          "completed_at": "2026-02-24T15:27:43Z"
+        },
+        {
+          "name": "Install dependencies",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-02-24T15:27:43Z",
+          "completed_at": "2026-02-24T15:27:46Z"
+        },
+        {
+          "name": "Run auto blog posting",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-02-24T15:27:46Z",
+          "completed_at": "2026-02-24T15:36:23Z"
+        },
+        {
+          "name": "Commit post history",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 6,
+          "started_at": "2026-02-24T15:36:23Z",
+          "completed_at": "2026-02-24T15:36:24Z"
+        },
+        {
+          "name": "Post Setup Node.js",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 11,
+          "started_at": "2026-02-24T15:36:24Z",
+          "completed_at": "2026-02-24T15:36:24Z"
+        },
+        {
+          "name": "Post Checkout repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-02-24T15:36:24Z",
+          "completed_at": "2026-02-24T15:36:24Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-02-24T15:36:24Z",
+          "completed_at": "2026-02-24T15:36:24Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/swkang-kr/auto-blog-wordpress/check-runs/64701453370",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000000000,
+      "runner_name": "GitHub Actions 1000000000",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}

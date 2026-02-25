@@ -33,6 +33,12 @@ export class WordPressError extends AppError {
   }
 }
 
+export class KeywordResearchError extends AppError {
+  constructor(message: string, cause?: unknown) {
+    super(message, 'KEYWORD_RESEARCH_ERROR', cause);
+  }
+}
+
 export class ConfigError extends AppError {
   constructor(message: string, cause?: unknown) {
     super(message, 'CONFIG_ERROR', cause);

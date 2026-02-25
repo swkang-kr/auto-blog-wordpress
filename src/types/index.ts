@@ -1,9 +1,43 @@
-/** Google Trends에서 수집한 트렌드 키워드 */
-export interface TrendKeyword {
-  title: string;
-  description: string;
-  source: string;
-  traffic: string;
+/** 콘텐츠 유형 */
+export type ContentType = 'how-to' | 'best-x-for-y' | 'x-vs-y';
+
+/** 니치 설정 */
+export interface NicheConfig {
+  id: string;
+  name: string;
+  category: string;
+  seedKeywords: string[];
+  contentTypes: ContentType[];
+}
+
+/** Google Trends API 결과 */
+export interface TrendsData {
+  keyword: string;
+  interestOverTime: number[];
+  relatedTopics: string[];
+  relatedQueries: string[];
+  averageInterest: number;
+  trendDirection: 'rising' | 'stable' | 'declining';
+  hasBreakout: boolean;
+}
+
+/** Claude 키워드 분석 결과 */
+export interface KeywordAnalysis {
+  selectedKeyword: string;
+  contentType: ContentType;
+  suggestedTitle: string;
+  uniqueAngle: string;
+  searchIntent: string;
+  estimatedCompetition: 'low' | 'medium' | 'high';
+  reasoning: string;
+  relatedKeywordsToInclude: string[];
+}
+
+/** 최종 키워드 리서치 결과 */
+export interface ResearchedKeyword {
+  niche: NicheConfig;
+  trendsData: TrendsData[];
+  analysis: KeywordAnalysis;
 }
 
 /** Claude API가 생성한 블로그 콘텐츠 */
@@ -46,6 +80,8 @@ export interface PostHistoryEntry {
   postId: number;
   postUrl: string;
   publishedAt: string;
+  niche?: string;
+  contentType?: ContentType;
 }
 
 /** 전체 포스팅 이력 파일 구조 */
@@ -58,6 +94,7 @@ export interface PostHistoryData {
 /** 개별 포스트 처리 결과 */
 export interface PostResult {
   keyword: string;
+  niche: string;
   success: boolean;
   postId?: number;
   postUrl?: string;

@@ -1,16 +1,21 @@
 declare module 'google-trends-api' {
   interface TrendOptions {
-    trendDate?: Date;
+    keyword?: string | string[];
+    startTime?: Date;
+    endTime?: Date;
     geo?: string;
     hl?: string;
     category?: number;
-    ns?: number;
+    property?: string;
+    resolution?: string;
   }
 
   const googleTrends: {
-    dailyTrends(options: TrendOptions): Promise<string>;
-    realTimeTrends(options: TrendOptions): Promise<string>;
-    interestOverTime(options: TrendOptions & { keyword: string }): Promise<string>;
+    interestOverTime(options: TrendOptions): Promise<string>;
+    relatedTopics(options: TrendOptions): Promise<string>;
+    relatedQueries(options: TrendOptions): Promise<string>;
+    dailyTrends(options: { trendDate?: Date; geo?: string }): Promise<string>;
+    realTimeTrends(options: { geo?: string; category?: string }): Promise<string>;
   };
 
   export default googleTrends;

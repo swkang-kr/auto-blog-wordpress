@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { logger } from './logger.js';
-import type { PostHistoryData, PostHistoryEntry } from '../types/index.js';
+import type { PostHistoryData, PostHistoryEntry, ContentType } from '../types/index.js';
 
 const HISTORY_FILE = path.resolve('data', 'post-history.json');
 
@@ -25,11 +25,21 @@ export class PostHistory {
     }
   }
 
-  isPosted(keyword: string): boolean {
+  isPosted(keyword: string, nicheId?: string): boolean {
     const normalized = keyword.trim().toLowerCase();
-    return this.data.entries.some(
-      (e) => e.keyword.trim().toLowerCase() === normalized,
-    );
+    return this.data.entries.some((e) => {
+      const keywordMatch = e.keyword.trim().toLowerCase() === normalized;
+      if (nicheId && e.niche) {
+        return keywordMatch && e.niche === nicheId;
+      }
+      return keywordMatch;
+    });
+  }
+
+  getPostedKeywordsForNiche(nicheId: string): string[] {
+    return this.data.entries
+      .filter((e) => e.niche === nicheId)
+      .map((e) => e.keyword);
   }
 
   async addEntry(entry: PostHistoryEntry): Promise<void> {
