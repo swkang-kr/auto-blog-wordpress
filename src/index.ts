@@ -7,6 +7,7 @@ import { ImageGeneratorService } from './services/image-generator.service.js';
 import { WordPressService } from './services/wordpress.service.js';
 import { PagesService } from './services/pages.service.js';
 import { SeoService } from './services/seo.service.js';
+import { TranslationService } from './services/translation.service.js';
 import { PostHistory } from './utils/history.js';
 import { logger } from './utils/logger.js';
 import type { PostResult, BatchResult, MediaUploadResult } from './types/index.js';
@@ -24,6 +25,12 @@ async function main(): Promise<void> {
   const contentService = new ContentGeneratorService(config.ANTHROPIC_API_KEY, config.SITE_OWNER);
   const imageService = new ImageGeneratorService(config.GEMINI_API_KEY);
   const wpService = new WordPressService(config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD, config.SITE_OWNER);
+  const translationService = config.DEEPL_API_KEY ? new TranslationService(config.DEEPL_API_KEY) : null;
+  if (translationService) {
+    logger.info('DeepL translation service enabled');
+  } else {
+    logger.warn('DEEPL_API_KEY not set, Korean content will use Claude-generated fallback');
+  }
 
   // 2.5. Ensure required pages exist (AdSense compliance)
   const pagesService = new PagesService(config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD);
@@ -80,8 +87,13 @@ async function main(): Promise<void> {
         continue;
       }
 
-      // 4c. Generate content (Claude) with internal links
-      const content = await contentService.generateContent(researched, existingPosts);
+      // 4c. Generate content (Claude EN-only) with internal links
+      let content = await contentService.generateContent(researched, existingPosts);
+
+      // 4c-2. Translate to Korean via DeepL
+      if (translationService) {
+        content = await translationService.translateContent(content);
+      }
 
       // 4d. Generate images (Gemini)
       const images = await imageService.generateImages(content.imagePrompts);

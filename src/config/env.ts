@@ -16,6 +16,7 @@ const envSchema = z.object({
   GA_MEASUREMENT_ID: z.string().default(''),
   GOOGLE_SITE_VERIFICATION: z.string().default(''),
   NAVER_SITE_VERIFICATION: z.string().default(''),
+  DEEPL_API_KEY: z.string().default(''),
 });
 
 export type AppConfig = z.infer<typeof envSchema>;

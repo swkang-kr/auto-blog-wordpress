@@ -4,7 +4,7 @@ import { ContentGenerationError } from '../types/errors.js';
 import type { ResearchedKeyword, BlogContent, ExistingPost } from '../types/index.js';
 
 const SYSTEM_PROMPT = `You are an SEO expert blog writer skilled in writing engaging, high-quality English content for a global audience.
-Given a researched keyword with niche context, write a comprehensive blog post in ENGLISH, and also provide a Korean translation.
+Given a researched keyword with niche context, write a comprehensive blog post in ENGLISH.
 
 ## Content Type Guidelines
 
@@ -71,17 +71,13 @@ You MUST write like an experienced human blogger, NOT like an AI. Avoid these AI
 
 Rules:
 1. title: Catchy, search-optimized English title (under 60 characters)
-2. titleKr: Korean translation of the title
-3. slug: Short, clean URL slug (3-5 words max, lowercase, hyphens, include year). Example: "claude-ai-best-features-2026" NOT "claude-ai-7-best-features-and-how-to-use-them-in-2026"
-5. html: English blog post in HTML format (800-1,000+ words, inline CSS styled)
-6. htmlKr: Korean translation of the SAME content (identical HTML structure, identical IMAGE_PLACEHOLDER positions)
-7. Include a table of contents at the beginning
-8. Use a natural, authoritative English tone matching the niche
-9. excerpt: English meta description under 160 characters
-10. excerptKr: Korean meta description under 160 characters (for standalone Korean post SEO)
-11. tags: 5-10 related English keywords
-12. tagsKr: Korean translations of the same tags (same count, same order)
-13. category: One best-fit English category name
+2. slug: Short, clean URL slug (3-5 words max, lowercase, hyphens, include year). Example: "claude-ai-best-features-2026" NOT "claude-ai-7-best-features-and-how-to-use-them-in-2026"
+3. html: English blog post in HTML format (800-1,000+ words, inline CSS styled)
+4. Include a table of contents at the beginning
+5. Use a natural, authoritative English tone matching the niche
+6. excerpt: English meta description under 160 characters
+7. tags: 5-10 related English keywords
+8. category: One best-fit English category name
 
 Accuracy Rules (CRITICAL):
 - NEVER cite specific version numbers for AI/software products that change frequently (e.g., do NOT write "Claude Opus 3.5", "GPT-4o", "Gemini 2.0 Pro")
@@ -127,21 +123,13 @@ HTML Style Rules (Naver Blog Style with inline CSS):
 - Include a summary or closing statement at the end
 - NEVER use emoji or unicode special symbols in HTML (WordPress converts them to low-quality SVG)
 - Use numbers (1. 2. 3.) or hyphens (-) for lists
-- The English html MUST end with this disclaimer: <p style="margin:40px 0 0 0; padding-top:20px; border-top:1px solid #eee; font-size:13px; color:#999; line-height:1.6;">This article is based on trending information and is intended for informational purposes only. Please verify details through official sources.</p>
-- The Korean htmlKr MUST end with this disclaimer: <p style="margin:40px 0 0 0; padding-top:20px; border-top:1px solid #eee; font-size:13px; color:#999; line-height:1.6;">이 글은 트렌드 정보를 기반으로 작성되었으며, 정보 제공 목적으로만 활용됩니다. 정확한 내용은 공식 출처를 통해 확인해 주세요.</p>
-
-htmlKr Translation Rules:
-- htmlKr must be a COMPLETE Korean translation of the html field
-- Keep the EXACT same HTML structure, tags, inline styles, and IMAGE_PLACEHOLDER positions
-- Only translate the text content from English to Korean
-- Use natural, professional Korean tone
-- Table of contents title should be "목차" in Korean version
+- The html MUST end with this disclaimer: <p style="margin:40px 0 0 0; padding-top:20px; border-top:1px solid #eee; font-size:13px; color:#999; line-height:1.6;">This article is based on trending information and is intended for informational purposes only. Please verify details through official sources.</p>
 
 IMPORTANT: Respond with pure JSON only. Do NOT use markdown code blocks (\`\`\`).
 Escape double quotes (") inside field values as \\".
 
 JSON format:
-{"title":"English Title","titleKr":"한국어 제목","slug":"topic-keyword-2026","html":"<div style=\\"max-width:760px;...\\">...English content...</div>","htmlKr":"<div style=\\"max-width:760px;...\\">...Korean translation...</div>","excerpt":"English meta description","excerptKr":"한국어 메타 설명","tags":["tag1","tag2"],"tagsKr":["태그1","태그2"],"category":"CategoryName","imagePrompts":["A detailed scene of... (50+ words)","...","...","..."],"imageCaptions":["Short English caption 1","caption 2","caption 3","caption 4"]}`;
+{"title":"English Title","slug":"topic-keyword-2026","html":"<div style=\\"max-width:760px;...\\">...English content...</div>","excerpt":"English meta description","tags":["tag1","tag2"],"category":"CategoryName","imagePrompts":["A detailed scene of... (50+ words)","...","...","..."],"imageCaptions":["Short English caption 1","caption 2","caption 3","caption 4"]}`;
 
 export class ContentGeneratorService {
   private client: Anthropic;
@@ -183,11 +171,11 @@ Use the unique angle: "${analysis.uniqueAngle}"
 Naturally incorporate these LSI keywords: ${analysis.relatedKeywordsToInclude.join(', ')}
 Include 2-4 internal links to relevant existing posts listed above, and 2-4 external links to authoritative sources (official sites, research, reputable articles).
 
-Provide both English (html) and Korean translation (htmlKr). Respond with pure JSON only.`;
+Respond with pure JSON only.`;
 
     const stream = this.client.messages.stream({
       model: 'claude-sonnet-4-5-20250929',
-      max_tokens: 32000,
+      max_tokens: 16000,
       temperature: 0.7,
       system: SYSTEM_PROMPT,
       messages: [{ role: 'user', content: userPrompt }],
@@ -216,23 +204,11 @@ Provide both English (html) and Korean translation (htmlKr). Respond with pure J
       content.imageCaptions.push(`${content.title} related image`);
     }
 
-    // Ensure Korean fields exist (fallback if missing)
-    if (!content.htmlKr) {
-      logger.warn('htmlKr missing from Claude response, using html as fallback');
-      content.htmlKr = content.html;
-    }
-    if (!content.titleKr) {
-      logger.warn('titleKr missing from Claude response, using title as fallback');
-      content.titleKr = content.title;
-    }
-    if (!content.tagsKr || content.tagsKr.length === 0) {
-      logger.warn('tagsKr missing from Claude response, using tags as fallback');
-      content.tagsKr = content.tags;
-    }
-    if (!content.excerptKr) {
-      logger.warn('excerptKr missing from Claude response, using excerpt as fallback');
-      content.excerptKr = content.excerpt;
-    }
+    // Set EN defaults for KR fields (will be populated by translation service)
+    content.htmlKr = content.htmlKr || content.html;
+    content.titleKr = content.titleKr || content.title;
+    content.tagsKr = content.tagsKr || content.tags;
+    content.excerptKr = content.excerptKr || content.excerpt;
 
     if (!content.title || !content.html) {
       throw new ContentGenerationError(`Incomplete content generated for "${analysis.selectedKeyword}"`);
@@ -252,39 +228,22 @@ Provide both English (html) and Korean translation (htmlKr). Respond with pure J
         .join('-') + `-${yr}`;
     }
 
-    // Add author byline if SITE_OWNER is set (dual language)
+    // Add author byline if SITE_OWNER is set
     if (this.siteOwner) {
       const initial = this.siteOwner.charAt(0).toUpperCase();
       const avatarStyle = `width:48px; height:48px; background:#0066FF; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-size:20px; font-weight:700; flex-shrink:0;`;
 
-      // English byline
       const bylineEn =
         `<div style="margin:30px 0 0 0; padding:20px 24px; background:#f8f9fa; border-radius:8px; display:flex; align-items:center; gap:16px;">` +
         `<div style="${avatarStyle}">${initial}</div>` +
         `<div><p style="margin:0; font-weight:700; font-size:15px; color:#222;">Written by: ${this.siteOwner}</p>` +
         `<p style="margin:4px 0 0 0; font-size:13px; color:#888;">Trend Analysis Expert</p></div></div>`;
 
-      // Korean byline
-      const bylineKr =
-        `<div style="margin:30px 0 0 0; padding:20px 24px; background:#f8f9fa; border-radius:8px; display:flex; align-items:center; gap:16px;">` +
-        `<div style="${avatarStyle}">${initial}</div>` +
-        `<div><p style="margin:0; font-weight:700; font-size:15px; color:#222;">작성자: ${this.siteOwner}</p>` +
-        `<p style="margin:4px 0 0 0; font-size:13px; color:#888;">트렌드 분석 전문가</p></div></div>`;
-
-      // Insert English byline before the closing </div> of the main wrapper
-      const lastDivIdxEn = content.html.lastIndexOf('</div>');
-      if (lastDivIdxEn !== -1) {
-        content.html = content.html.slice(0, lastDivIdxEn) + bylineEn + '\n</div>';
+      const lastDivIdx = content.html.lastIndexOf('</div>');
+      if (lastDivIdx !== -1) {
+        content.html = content.html.slice(0, lastDivIdx) + bylineEn + '\n</div>';
       } else {
         content.html += bylineEn;
-      }
-
-      // Insert Korean byline before the closing </div> of the main wrapper
-      const lastDivIdxKr = content.htmlKr.lastIndexOf('</div>');
-      if (lastDivIdxKr !== -1) {
-        content.htmlKr = content.htmlKr.slice(0, lastDivIdxKr) + bylineKr + '\n</div>';
-      } else {
-        content.htmlKr += bylineKr;
       }
     }
 
