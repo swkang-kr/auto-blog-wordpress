@@ -74,14 +74,14 @@ Rules:
    RULE 1 - NUMBERS: Always include a specific number (3, 5, 7, 9, 10, 12, etc.)
    RULE 2 - EMOTION WORDS: Pick ONE that fits best (do NOT reuse the same word across posts):
      Shocking / Surprising / Unbelievable / Hidden / Secret / Proven / Finally / Powerful / Embarrassing / Scary
-   RULE 3 - VARIED PATTERN: Pick ONE pattern and do NOT repeat the same pattern as previous titles:
-     A. "[N] [Emotion] [Topic] That [Outcome]"         → "5 Surprising Budget Tricks That Actually Work"
-     B. "Stop [Doing X]: [N] [Emotion] [Alternatives]" → "Stop Overspending: 7 Hidden Hacks That Save Big"
-     C. "How I [Achievement] with [N] [Emotion] Steps" → "How I Lost 10lbs with 3 Proven Steps"
-     D. "The [N] [Emotion] [Topic] Nobody Talks About"  → "The 7 Scary AI Mistakes Nobody Talks About"
-     E. "[N] Things You Didn't Know About [Topic]"     → "9 Things You Didn't Know About Meal Prep"
-     F. "Why [N] [Audience] Are [Emotion] About [Topic]" → "Why 5 Experts Are Shocked by This AI Tool"
-     G. "[N] [Emotion] Signs You're [Negative State]"  → "7 Surprising Signs You're Losing Money Daily"
+   RULE 3 - PATTERN: Choose the best-fit pattern based on niche (each pattern maps to recommended niches):
+     A. "[N] [Emotion] [Topic] That [Outcome]"          → "5 Genius Meal Preps That Save Your Week"       (Food, Productivity)
+     B. "Stop [Doing X]: [N] [Emotion] [Alternatives]"  → "Stop Wasting: 5 Hidden Money Habits That Work"  (Finance, Self-improvement)
+     C. "How I [Achievement] in [N] [Emotion] Steps"    → "How I Saved $500 in 3 Surprising Steps"          (Diet, Lifestyle)
+     D. "[N] [Emotion] [Topic] Nobody Talks About"      → "7 Scary AI Mistakes Nobody Talks About"         (AI, Tech)
+     E. "[N] Surprising Things About [Topic]"           → "9 Surprising Things About Passive Income"       (Finance, Trends)
+     F. "Why [N] Experts Are [Emotion] About [Topic]"   → "Why 5 Experts Are Shocked by This AI Tool"      (AI, Marketing)
+     G. "[N] [Emotion] Signs You're [Negative State]"   → "7 Alarming Signs You're Bad With Money"         (Finance, Psychology)
    RULE 4 - CONCISE: Keep under 50 characters (translates to ~25 Korean characters)
 2. slug: Short, clean URL slug (3-5 words max, lowercase, hyphens, include year). Example: "claude-ai-best-features-2026" NOT "claude-ai-7-best-features-and-how-to-use-them-in-2026"
 3. html: English blog post in HTML format (800-1,000+ words, inline CSS styled)
