@@ -70,19 +70,18 @@ You MUST write like an experienced human blogger, NOT like an AI. Avoid these AI
 - NEVER fabricate or guess URLs - only use official domains you are confident exist
 
 Rules:
-1. title: High-CTR clickbait-style English title (under 60 characters).
-   Use proven clickbait patterns that drive clicks while staying relevant:
-   - Numbers & lists: "7 Secrets...", "10 Mistakes...", "5 Reasons Why..."
-   - Curiosity gap: "The Real Reason Why...", "What Nobody Tells You About..."
-   - Challenge/surprise: "Stop Doing This If You Want...", "You've Been Doing X Wrong"
-   - Power words: "Shocking", "Hidden", "Proven", "Instantly", "Finally"
-   - Personal outcome: "How I Saved $500 Using...", "I Tried X for 30 Days..."
-   - Questions: "Are You Making These Mistakes?", "Is X Actually Worth It?"
-   - Urgency/FOMO: "Before It's Too Late", "While You Still Can", "Don't Miss This"
+1. title: High-CTR clickbait-style English title. MUST follow ALL 4 rules below:
+   RULE 1 - NUMBERS: Always include a specific number (5, 7, 3, 10, etc.)
+     e.g. "7 Secrets...", "5 Steps...", "3 Reasons..."
+   RULE 2 - EMOTION WORDS: Use at least one high-impact emotional trigger word
+     e.g. "Shocking", "Amazing", "Secret", "Never", "Hidden", "Unbelievable", "Finally"
+   RULE 3 - OPEN CURIOSITY ENDING: End with an open hook that makes readers want to click
+     e.g. "...You Didn't Know", "...That Actually Works", "...Experts Won't Tell You", "...Changed Everything"
+   RULE 4 - CONCISE: Keep under 50 characters (translates to ~25 Korean characters)
    Examples by niche:
-   - Food: "7 Lazy Chicken Dinners Ready in 20 Minutes (You'll Make Every Week)"
-   - Finance: "Stop Wasting Money: 5 Savings Tricks Banks Won't Tell You"
-   - AI Tools: "I Replaced My Entire Workflow with AI — Here's What Happened"
+   - Food: "7 Secret Recipes That Changed My Kitchen"
+   - Finance: "5 Shocking Ways to Save Money Nobody Tells You"
+   - AI Tools: "3 Hidden AI Tools That Actually Work"
 2. slug: Short, clean URL slug (3-5 words max, lowercase, hyphens, include year). Example: "claude-ai-best-features-2026" NOT "claude-ai-7-best-features-and-how-to-use-them-in-2026"
 3. html: English blog post in HTML format (800-1,000+ words, inline CSS styled)
 4. Include a table of contents at the beginning
