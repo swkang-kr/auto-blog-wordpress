@@ -17,6 +17,11 @@ const envSchema = z.object({
   GOOGLE_SITE_VERIFICATION: z.string().default(''),
   NAVER_SITE_VERIFICATION: z.string().default(''),
   DEEPL_API_KEY: z.string().default(''),
+  // X (Twitter) - optional, all four must be set to enable promotion
+  X_API_KEY: z.string().default(''),
+  X_API_SECRET: z.string().default(''),
+  X_ACCESS_TOKEN: z.string().default(''),
+  X_ACCESS_TOKEN_SECRET: z.string().default(''),
 });
 
 export type AppConfig = z.infer<typeof envSchema>;

@@ -8,6 +8,7 @@ import { WordPressService } from './services/wordpress.service.js';
 import { PagesService } from './services/pages.service.js';
 import { SeoService } from './services/seo.service.js';
 import { TranslationService } from './services/translation.service.js';
+import { TwitterService } from './services/twitter.service.js';
 import { PostHistory } from './utils/history.js';
 import { logger } from './utils/logger.js';
 import type { PostResult, BatchResult, MediaUploadResult } from './types/index.js';
@@ -30,6 +31,16 @@ async function main(): Promise<void> {
     logger.info('DeepL translation service enabled');
   } else {
     logger.warn('DEEPL_API_KEY not set, Korean content will use Claude-generated fallback');
+  }
+
+  const twitterService =
+    config.X_API_KEY && config.X_API_SECRET && config.X_ACCESS_TOKEN && config.X_ACCESS_TOKEN_SECRET
+      ? new TwitterService(config.X_API_KEY, config.X_API_SECRET, config.X_ACCESS_TOKEN, config.X_ACCESS_TOKEN_SECRET)
+      : null;
+  if (twitterService) {
+    logger.info('X (Twitter) promotion service enabled');
+  } else {
+    logger.info('X_API_KEY not set, skipping X promotion');
   }
 
   // 2.5. Ensure required pages exist (AdSense compliance)
@@ -166,7 +177,12 @@ async function main(): Promise<void> {
         logger.warn(`Korean post creation failed (EN post is still live): ${error instanceof Error ? error.message : error}`);
       }
 
-      // 4i. Record history
+      // 4i. X (Twitter) promotion (optional, non-blocking)
+      if (twitterService) {
+        await twitterService.promoteBlogPost(content, post);
+      }
+
+      // 4j. Record history
       await history.addEntry({
         keyword: researched.analysis.selectedKeyword,
         postId: post.postId,
