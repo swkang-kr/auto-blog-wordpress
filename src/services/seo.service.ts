@@ -3,6 +3,7 @@ import { logger } from '../utils/logger.js';
 
 const WPCODE_SLUG = 'insert-headers-and-footers';
 const HREFLANG_SNIPPET_TITLE = 'Auto Blog hreflang SEO';
+const ADSENSE_PADDING_SNIPPET_TITLE = 'Auto Blog AdSense Mobile Padding';
 
 export class SeoService {
   private api: AxiosInstance;
@@ -145,6 +146,59 @@ add_action('wp_head', function() {
     logger.warn(phpCode);
     logger.warn('Or add it to your theme functions.php');
     logger.warn('============================================');
+  }
+
+  /**
+   * Ensure mobile bottom padding snippet is installed via Code Snippets plugin.
+   * Prevents AdSense Auto Ads sticky bottom banner from covering site navigation.
+   */
+  async ensureAdSensePaddingSnippet(): Promise<void> {
+    const phpCode = `
+// Add bottom padding on mobile to prevent AdSense sticky banner from covering navigation
+add_action('wp_head', function() {
+    echo '<style>
+@media (max-width: 768px) {
+    body { padding-bottom: 70px !important; }
+    .site-footer { padding-bottom: 70px !important; }
+}
+</style>';
+});`.trim();
+
+    try {
+      const { data: snippets } = await axios.get(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        {
+          headers: this.api.defaults.headers as Record<string, string>,
+          timeout: 30000,
+        },
+      );
+      const existing = (snippets as Array<{ id: number; name: string }>)
+        .find((s) => s.name === ADSENSE_PADDING_SNIPPET_TITLE);
+      if (existing) {
+        logger.info(`AdSense padding snippet already exists (ID=${existing.id}), skipping`);
+        return;
+      }
+
+      await axios.post(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        {
+          name: ADSENSE_PADDING_SNIPPET_TITLE,
+          code: phpCode,
+          scope: 'global',
+          active: true,
+          priority: 10,
+        },
+        {
+          headers: this.api.defaults.headers as Record<string, string>,
+          timeout: 30000,
+        },
+      );
+      logger.info('AdSense mobile padding snippet installed via Code Snippets plugin');
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      logger.warn(`Failed to install AdSense padding snippet: ${msg}`);
+      logger.warn('Manually add CSS: @media (max-width:768px) { body { padding-bottom:70px !important; } }');
+    }
   }
 
   /** @deprecated Use ensureHeaderScripts instead */

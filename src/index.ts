@@ -59,6 +59,13 @@ async function main(): Promise<void> {
     logger.warn(`hreflang snippet setup failed: ${error instanceof Error ? error.message : error}`);
   }
 
+  // 2.8. Ensure mobile AdSense padding (prevent bottom banner covering navigation)
+  try {
+    await seoService.ensureAdSensePaddingSnippet();
+  } catch (error) {
+    logger.warn(`AdSense padding snippet setup failed: ${error instanceof Error ? error.message : error}`);
+  }
+
   // 3. History
   const history = new PostHistory();
   await history.load();
