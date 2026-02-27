@@ -16,6 +16,7 @@ const envSchema = z.object({
   GA_MEASUREMENT_ID: z.string().default(''),
   GOOGLE_SITE_VERIFICATION: z.string().default(''),
   NAVER_SITE_VERIFICATION: z.string().default(''),
+  INDEXNOW_KEY: z.string().default(''),
   DEEPL_API_KEY: z.string().default(''),
   // X (Twitter) - optional, all four must be set to enable promotion
   X_API_KEY: z.string().default(''),

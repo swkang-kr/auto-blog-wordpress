@@ -52,7 +52,7 @@ async function main(): Promise<void> {
   }
 
   // 2.6. Ensure search engine verification meta tags + GA4
-  const seoService = new SeoService(config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD);
+  const seoService = new SeoService(config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD, config.INDEXNOW_KEY);
   try {
     await seoService.ensureHeaderScripts({
       googleCode: config.GOOGLE_SITE_VERIFICATION,
@@ -75,6 +75,13 @@ async function main(): Promise<void> {
     await seoService.ensureAdSensePaddingSnippet();
   } catch (error) {
     logger.warn(`AdSense padding snippet setup failed: ${error instanceof Error ? error.message : error}`);
+  }
+
+  // 2.9. Ensure IndexNow key file is served (for Naver Search Advisor)
+  try {
+    await seoService.ensureIndexNowKeySnippet();
+  } catch (error) {
+    logger.warn(`IndexNow key snippet setup failed: ${error instanceof Error ? error.message : error}`);
   }
 
   // 3. History
@@ -177,12 +184,16 @@ async function main(): Promise<void> {
         logger.warn(`Korean post creation failed (EN post is still live): ${error instanceof Error ? error.message : error}`);
       }
 
-      // 4i. X (Twitter) promotion (optional, non-blocking)
+      // 4i. Notify Naver Search Advisor via IndexNow
+      const indexNowUrls = [post.url, ...(krPostUrl ? [krPostUrl] : [])];
+      await seoService.notifyIndexNow(indexNowUrls);
+
+      // 4j. X (Twitter) promotion (optional, non-blocking)
       if (twitterService) {
         await twitterService.promoteBlogPost(content, post);
       }
 
-      // 4j. Record history
+      // 4k. Record history
       await history.addEntry({
         keyword: researched.analysis.selectedKeyword,
         postId: post.postId,

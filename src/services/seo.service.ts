@@ -4,13 +4,16 @@ import { logger } from '../utils/logger.js';
 const WPCODE_SLUG = 'insert-headers-and-footers';
 const HREFLANG_SNIPPET_TITLE = 'Auto Blog hreflang SEO';
 const ADSENSE_PADDING_SNIPPET_TITLE = 'Auto Blog AdSense Mobile Padding';
+const INDEXNOW_SNIPPET_TITLE = 'Auto Blog IndexNow Key';
 
 export class SeoService {
   private api: AxiosInstance;
   private wpUrl: string;
+  private indexNowKey: string;
 
-  constructor(wpUrl: string, username: string, appPassword: string) {
+  constructor(wpUrl: string, username: string, appPassword: string, indexNowKey?: string) {
     this.wpUrl = wpUrl.replace(/\/+$/, '');
+    this.indexNowKey = indexNowKey || '';
     const token = Buffer.from(`${username}:${appPassword}`).toString('base64');
     this.api = axios.create({
       baseURL: `${this.wpUrl}/wp-json/wp/v2`,
@@ -268,5 +271,74 @@ add_action('wp_head', function() {
     logger.warn('Paste the following into the "Header" section:');
     logger.warn(headerHtml);
     logger.warn('============================');
+  }
+
+  /**
+   * Install a WordPress Code Snippet that serves the IndexNow key file.
+   * Naver Search Advisor verifies ownership by fetching /{key}.txt from the site.
+   */
+  async ensureIndexNowKeySnippet(): Promise<void> {
+    if (!this.indexNowKey) return;
+
+    const key = this.indexNowKey;
+    const phpCode = `
+// Serve IndexNow key file for Naver Search Advisor
+add_action('init', function() {
+    $request_uri = trim(parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH), '/');
+    if ($request_uri === '${key}.txt') {
+        header('Content-Type: text/plain; charset=UTF-8');
+        echo '${key}';
+        exit;
+    }
+});`.trim();
+
+    try {
+      const { data: snippets } = await axios.get(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      const existing = (snippets as Array<{ id: number; name: string }>)
+        .find((s) => s.name === INDEXNOW_SNIPPET_TITLE);
+
+      if (existing) {
+        logger.debug(`IndexNow key snippet already exists (ID=${existing.id}), skipping`);
+        return;
+      }
+
+      await axios.post(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { name: INDEXNOW_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 1 },
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      logger.info(`IndexNow key snippet installed (key=${key})`);
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      logger.warn(`Failed to install IndexNow key snippet: ${msg}`);
+    }
+  }
+
+  /**
+   * Notify Naver Search Advisor of new post URLs via IndexNow protocol.
+   * Naver will crawl and index these URLs as soon as possible.
+   */
+  async notifyIndexNow(urls: string[]): Promise<void> {
+    if (!this.indexNowKey || urls.length === 0) return;
+
+    const host = new URL(this.wpUrl).hostname;
+    const keyLocation = `${this.wpUrl}/${this.indexNowKey}.txt`;
+
+    try {
+      const response = await axios.post(
+        'https://searchadvisor.naver.com/indexnow',
+        { host, key: this.indexNowKey, keyLocation, urlList: urls },
+        { headers: { 'Content-Type': 'application/json' }, timeout: 15000 },
+      );
+      logger.info(`IndexNow: Naver notified of ${urls.length} URL(s) → status=${response.status}`);
+    } catch (error) {
+      const msg = axios.isAxiosError(error)
+        ? `${error.response?.status} ${JSON.stringify(error.response?.data ?? error.message)}`
+        : (error instanceof Error ? error.message : String(error));
+      logger.warn(`IndexNow notification failed: ${msg}`);
+    }
   }
 }
