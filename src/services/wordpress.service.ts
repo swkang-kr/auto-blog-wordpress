@@ -89,9 +89,10 @@ export class WordPressService {
     if (inlineImages && inlineImages.length > 0) {
       for (let i = 0; i < inlineImages.length; i++) {
         const placeholder = `<!--IMAGE_PLACEHOLDER_${i + 1}-->`;
+        const isFirst = i === 0;
         const figureHtml =
           `<figure style="margin:30px 0; text-align:center;">` +
-          `<img src="${inlineImages[i].url}" alt="${inlineImages[i].caption}" loading="lazy" width="760" height="428" decoding="async" style="max-width:100%; height:auto; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1);" />` +
+          `<img src="${inlineImages[i].url}" alt="${inlineImages[i].caption}" loading="${isFirst ? 'eager' : 'lazy'}" fetchpriority="${isFirst ? 'high' : 'auto'}" width="760" height="428" decoding="async" style="max-width:100%; height:auto; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1);" />` +
           `<figcaption style="margin-top:10px; font-size:13px; color:#888; line-height:1.5;">${inlineImages[i].caption}</figcaption>` +
           `</figure>`;
 
@@ -246,6 +247,9 @@ export class WordPressService {
           rank_math_description: validatedExcerpt,
           rank_math_focus_keyword: options?.keyword || '',
           rank_math_title: content.title,
+          rank_math_facebook_image: options?.featuredImageUrl || '',
+          rank_math_twitter_image: options?.featuredImageUrl || '',
+          rank_math_twitter_use_facebook_data: '1',
         },
       };
       if (content.slug) {
@@ -454,7 +458,10 @@ export class WordPressService {
     }
 
     try {
-      const response = await this.api.post('/categories', { name });
+      const response = await this.api.post('/categories', {
+        name,
+        description: `Explore in-depth guides, tips, and analysis on ${name}. Updated regularly with trending topics.`,
+      });
       return response.data.id as number;
     } catch (error) {
       // WordPress returns 400 term_exists with the existing term_id

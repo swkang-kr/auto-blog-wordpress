@@ -113,7 +113,16 @@ async function main(): Promise<void> {
       }
 
       // 4c. Generate content (Claude EN-only) with internal links
-      let content = await contentService.generateContent(researched, existingPosts);
+      // Prioritise same-category posts for topical relevance, pad with recent cross-niche
+      const nichePosts = existingPosts
+        .filter((p) => p.category.toLowerCase() === niche.category.toLowerCase())
+        .slice(0, 15);
+      const otherPosts = existingPosts
+        .filter((p) => p.category.toLowerCase() !== niche.category.toLowerCase())
+        .slice(0, 10);
+      const filteredPosts = [...nichePosts, ...otherPosts];
+
+      let content = await contentService.generateContent(researched, filteredPosts);
 
       // 4c-2. Translate to Korean via DeepL
       if (translationService) {

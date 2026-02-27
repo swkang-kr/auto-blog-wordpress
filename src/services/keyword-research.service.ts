@@ -100,7 +100,7 @@ Respond with pure JSON only. No markdown code blocks.
 
     try {
       const response = await this.client.messages.create({
-        model: 'claude-sonnet-4-5-20250929',
+        model: process.env.CLAUDE_MODEL || 'claude-sonnet-4-6',
         max_tokens: 2000,
         temperature: 0.5,
         messages: [{ role: 'user', content: prompt }],

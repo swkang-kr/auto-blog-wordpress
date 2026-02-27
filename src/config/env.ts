@@ -17,6 +17,7 @@ const envSchema = z.object({
   GOOGLE_SITE_VERIFICATION: z.string().default(''),
   NAVER_SITE_VERIFICATION: z.string().default(''),
   INDEXNOW_KEY: z.string().default(''),
+  CLAUDE_MODEL: z.string().default('claude-sonnet-4-6'),
   DEEPL_API_KEY: z.string().default(''),
   // X (Twitter) - optional, all four must be set to enable promotion
   X_API_KEY: z.string().default(''),

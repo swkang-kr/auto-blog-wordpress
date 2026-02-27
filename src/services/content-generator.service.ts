@@ -186,7 +186,7 @@ Include 2-4 internal links to relevant existing posts listed above, and 2-4 exte
 Respond with pure JSON only.`;
 
     const stream = this.client.messages.stream({
-      model: 'claude-sonnet-4-5-20250929',
+      model: process.env.CLAUDE_MODEL || 'claude-sonnet-4-6',
       max_tokens: 16000,
       temperature: 0.7,
       system: SYSTEM_PROMPT,
@@ -256,7 +256,7 @@ Respond with pure JSON only.`;
       const bylineEn =
         `<div style="margin:30px 0 0 0; padding:20px 24px; background:#f8f9fa; border-radius:8px; display:flex; align-items:center; gap:16px;">` +
         `<div style="${avatarStyle}">${initial}</div>` +
-        `<div><p style="margin:0; font-weight:700; font-size:15px; color:#222;">Written by: ${this.siteOwner}</p>` +
+        `<div><p style="margin:0; font-weight:700; font-size:15px; color:#222;">Written by: <a href="/about" style="color:#0066FF; text-decoration:none;">${this.siteOwner}</a></p>` +
         `<p style="margin:4px 0 0 0; font-size:13px; color:#888;">Trend Analysis Expert</p></div></div>`;
 
       const lastDivIdx = content.html.lastIndexOf('</div>');
