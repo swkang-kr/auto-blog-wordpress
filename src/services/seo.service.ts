@@ -1,4 +1,5 @@
 import axios, { type AxiosInstance } from 'axios';
+import { createSign } from 'crypto';
 import { logger } from '../utils/logger.js';
 
 const WPCODE_SLUG = 'insert-headers-and-footers';
@@ -7,15 +8,137 @@ const HREFLANG_SNIPPET_TITLE = 'Auto Blog hreflang SEO';
 export class SeoService {
   private api: AxiosInstance;
   private wpUrl: string;
+  private indexingSaKey: string;
 
-  constructor(wpUrl: string, username: string, appPassword: string) {
+  constructor(wpUrl: string, username: string, appPassword: string, indexingSaKey?: string) {
     this.wpUrl = wpUrl.replace(/\/+$/, '');
+    this.indexingSaKey = indexingSaKey || '';
     const token = Buffer.from(`${username}:${appPassword}`).toString('base64');
     this.api = axios.create({
       baseURL: `${this.wpUrl}/wp-json/wp/v2`,
       headers: { Authorization: `Basic ${token}` },
       timeout: 30000,
     });
+  }
+
+  /**
+   * Fetch robots.txt and warn if User-agent: * has Disallow: / (blocks all crawlers).
+   */
+  async checkRobotsTxt(): Promise<void> {
+    try {
+      const { data: raw } = await axios.get<string>(`${this.wpUrl}/robots.txt`, { timeout: 10000 });
+      const lines = raw.split('\n').map((l) => l.trim());
+
+      let inStarBlock = false;
+      let blocked = false;
+
+      for (const line of lines) {
+        if (/^user-agent:\s*\*$/i.test(line)) {
+          inStarBlock = true;
+          continue;
+        }
+        if (inStarBlock && /^user-agent:/i.test(line)) {
+          inStarBlock = false;
+        }
+        if (inStarBlock && /^disallow:\s*\/\s*$/i.test(line)) {
+          blocked = true;
+          break;
+        }
+      }
+
+      if (blocked) {
+        logger.warn('=== robots.txt WARNING ===');
+        logger.warn(`robots.txt contains "Disallow: /" for User-agent: * — all search engines are BLOCKED.`);
+        logger.warn(`Fix: WordPress Admin > Settings > Reading > uncheck "Discourage search engines"`);
+        logger.warn('=========================');
+      } else {
+        logger.info('robots.txt: OK (no blanket Disallow: / found)');
+      }
+    } catch (error) {
+      logger.warn(`robots.txt check failed: ${error instanceof Error ? error.message : error}`);
+    }
+  }
+
+  /**
+   * Check WordPress blog_public setting (0 = noindex). Fix it to 1 if needed.
+   */
+  async checkAndFixIndexingSettings(): Promise<void> {
+    try {
+      const { data: settings } = await this.api.get('/settings');
+      const blogPublic = (settings as Record<string, unknown>).blog_public;
+
+      if (blogPublic === 0 || blogPublic === '0' || blogPublic === false) {
+        logger.warn('WordPress "Discourage search engines" is ON (blog_public=0). Fixing...');
+        await this.api.post('/settings', { blog_public: 1 });
+        logger.info('blog_public set to 1 — search engines now allowed to index this site');
+      } else {
+        logger.info('WordPress indexing settings: OK (blog_public=1)');
+      }
+    } catch (error) {
+      const msg = axios.isAxiosError(error)
+        ? `${error.response?.status} ${JSON.stringify(error.response?.data ?? error.message)}`
+        : (error instanceof Error ? error.message : String(error));
+      logger.warn(`Could not check/fix indexing settings: ${msg}`);
+    }
+  }
+
+  /**
+   * Request Google to index the given URL via the Google Indexing API.
+   * Requires GOOGLE_INDEXING_SA_KEY to be set (service account JSON string).
+   */
+  async requestIndexing(url: string): Promise<void> {
+    if (!this.indexingSaKey) return;
+
+    try {
+      const accessToken = await this.getGoogleAccessToken();
+      await axios.post(
+        'https://indexing.googleapis.com/v3/urlNotifications:publish',
+        { url, type: 'URL_UPDATED' },
+        { headers: { Authorization: `Bearer ${accessToken}` }, timeout: 15000 },
+      );
+      logger.info(`Google Indexing API: requested indexing for ${url}`);
+    } catch (error) {
+      const msg = axios.isAxiosError(error)
+        ? `${error.response?.status} ${JSON.stringify(error.response?.data ?? error.message)}`
+        : (error instanceof Error ? error.message : String(error));
+      logger.warn(`Google Indexing API request failed for ${url}: ${msg}`);
+    }
+  }
+
+  private async getGoogleAccessToken(): Promise<string> {
+    const sa = JSON.parse(this.indexingSaKey) as {
+      client_email: string;
+      private_key: string;
+    };
+
+    const now = Math.floor(Date.now() / 1000);
+    const header = Buffer.from(JSON.stringify({ alg: 'RS256', typ: 'JWT' })).toString('base64url');
+    const payload = Buffer.from(
+      JSON.stringify({
+        iss: sa.client_email,
+        scope: 'https://www.googleapis.com/auth/indexing',
+        aud: 'https://oauth2.googleapis.com/token',
+        exp: now + 3600,
+        iat: now,
+      }),
+    ).toString('base64url');
+
+    const sign = createSign('RSA-SHA256');
+    sign.update(`${header}.${payload}`);
+    const signature = sign.sign(sa.private_key, 'base64url');
+
+    const jwt = `${header}.${payload}.${signature}`;
+
+    const { data } = await axios.post<{ access_token: string }>(
+      'https://oauth2.googleapis.com/token',
+      new URLSearchParams({
+        grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+        assertion: jwt,
+      }),
+      { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, timeout: 10000 },
+    );
+
+    return data.access_token;
   }
 
   async ensureHeaderScripts(options: {

@@ -22,6 +22,8 @@ const envSchema = z.object({
   X_API_SECRET: z.string().default(''),
   X_ACCESS_TOKEN: z.string().default(''),
   X_ACCESS_TOKEN_SECRET: z.string().default(''),
+  // Google Indexing API - optional, service account JSON key string
+  GOOGLE_INDEXING_SA_KEY: z.string().default(''),
 });
 
 export type AppConfig = z.infer<typeof envSchema>;

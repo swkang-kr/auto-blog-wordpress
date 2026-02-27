@@ -52,7 +52,12 @@ async function main(): Promise<void> {
   }
 
   // 2.6. Ensure search engine verification meta tags + GA4
-  const seoService = new SeoService(config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD);
+  const seoService = new SeoService(
+    config.WP_URL,
+    config.WP_USERNAME,
+    config.WP_APP_PASSWORD,
+    config.GOOGLE_INDEXING_SA_KEY || undefined,
+  );
   try {
     await seoService.ensureHeaderScripts({
       googleCode: config.GOOGLE_SITE_VERIFICATION,
@@ -69,6 +74,10 @@ async function main(): Promise<void> {
   } catch (error) {
     logger.warn(`hreflang snippet setup failed: ${error instanceof Error ? error.message : error}`);
   }
+
+  // 2.8. robots.txt 확인 + WordPress 색인 허용 설정 체크
+  await seoService.checkRobotsTxt();
+  await seoService.checkAndFixIndexingSettings();
 
   // 3. History
   const history = new PostHistory();
@@ -173,6 +182,12 @@ async function main(): Promise<void> {
       // 4i. X (Twitter) promotion (optional, non-blocking)
       if (twitterService) {
         await twitterService.promoteBlogPost(content, post);
+      }
+
+      // 4j-pre. Google Indexing API — request indexing for published URLs
+      await seoService.requestIndexing(post.url);
+      if (krPostUrl) {
+        await seoService.requestIndexing(krPostUrl);
       }
 
       // 4j. Record history
