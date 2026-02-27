@@ -326,19 +326,26 @@ add_action('init', function() {
 
     const host = new URL(this.wpUrl).hostname;
     const keyLocation = `${this.wpUrl}/${this.indexNowKey}.txt`;
+    const body = { host, key: this.indexNowKey, keyLocation, urlList: urls };
+    const headers = { 'Content-Type': 'application/json' };
 
-    try {
-      const response = await axios.post(
-        'https://searchadvisor.naver.com/indexnow',
-        { host, key: this.indexNowKey, keyLocation, urlList: urls },
-        { headers: { 'Content-Type': 'application/json' }, timeout: 15000 },
-      );
-      logger.info(`IndexNow: Naver notified of ${urls.length} URL(s) → status=${response.status}`);
-    } catch (error) {
-      const msg = axios.isAxiosError(error)
-        ? `${error.response?.status} ${JSON.stringify(error.response?.data ?? error.message)}`
-        : (error instanceof Error ? error.message : String(error));
-      logger.warn(`IndexNow notification failed: ${msg}`);
-    }
+    const endpoints: Array<{ name: string; url: string }> = [
+      { name: 'Naver', url: 'https://searchadvisor.naver.com/indexnow' },
+      { name: 'Google', url: 'https://www.google.com/indexnow' },
+    ];
+
+    await Promise.allSettled(
+      endpoints.map(async ({ name, url }) => {
+        try {
+          const response = await axios.post(url, body, { headers, timeout: 15000 });
+          logger.info(`IndexNow: ${name} notified of ${urls.length} URL(s) → status=${response.status}`);
+        } catch (error) {
+          const msg = axios.isAxiosError(error)
+            ? `${error.response?.status} ${JSON.stringify(error.response?.data ?? error.message)}`
+            : (error instanceof Error ? error.message : String(error));
+          logger.warn(`IndexNow ${name} notification failed: ${msg}`);
+        }
+      }),
+    );
   }
 }
