@@ -331,7 +331,7 @@ add_action('init', function() {
 
     const endpoints: Array<{ name: string; url: string }> = [
       { name: 'Naver', url: 'https://searchadvisor.naver.com/indexnow' },
-      { name: 'Google', url: 'https://www.google.com/indexnow' },
+      { name: 'IndexNow', url: 'https://api.indexnow.org/indexnow' },
     ];
 
     await Promise.allSettled(
