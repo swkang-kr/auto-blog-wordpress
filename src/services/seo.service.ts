@@ -9,6 +9,7 @@ export class SeoService {
   private api: AxiosInstance;
   private wpUrl: string;
   private indexingSaKey: string;
+  private indexingBlocked = false;
 
   constructor(wpUrl: string, username: string, appPassword: string, indexingSaKey?: string) {
     this.wpUrl = wpUrl.replace(/\/+$/, '');
@@ -23,6 +24,7 @@ export class SeoService {
 
   /**
    * Fetch robots.txt and warn if User-agent: * has Disallow: / (blocks all crawlers).
+   * Sets indexingBlocked=true if crawlers are blocked — requestIndexing() will be skipped.
    */
   async checkRobotsTxt(): Promise<void> {
     try {
@@ -47,9 +49,11 @@ export class SeoService {
       }
 
       if (blocked) {
+        this.indexingBlocked = true;
         logger.warn('=== robots.txt WARNING ===');
-        logger.warn(`robots.txt contains "Disallow: /" for User-agent: * — all search engines are BLOCKED.`);
-        logger.warn(`Fix: WordPress Admin > Settings > Reading > uncheck "Discourage search engines"`);
+        logger.warn('robots.txt contains "Disallow: /" for User-agent: * — all search engines are BLOCKED.');
+        logger.warn('Google Indexing API requests will be skipped until this is resolved.');
+        logger.warn('Fix: WordPress Admin > Settings > Reading > uncheck "Discourage search engines"');
         logger.warn('=========================');
       } else {
         logger.info('robots.txt: OK (no blanket Disallow: / found)');
@@ -61,6 +65,7 @@ export class SeoService {
 
   /**
    * Check WordPress blog_public setting (0 = noindex). Fix it to 1 if needed.
+   * Sets indexingBlocked=true if the fix was just applied — Google needs time to re-crawl.
    */
   async checkAndFixIndexingSettings(): Promise<void> {
     try {
@@ -70,7 +75,8 @@ export class SeoService {
       if (blogPublic === 0 || blogPublic === '0' || blogPublic === false) {
         logger.warn('WordPress "Discourage search engines" is ON (blog_public=0). Fixing...');
         await this.api.post('/settings', { blog_public: 1 });
-        logger.info('blog_public set to 1 — search engines now allowed to index this site');
+        logger.warn('blog_public set to 1 — but Google Indexing API skipped this run (robots.txt needs time to propagate).');
+        this.indexingBlocked = true;
       } else {
         logger.info('WordPress indexing settings: OK (blog_public=1)');
       }
@@ -84,10 +90,15 @@ export class SeoService {
 
   /**
    * Request Google to index the given URL via the Google Indexing API.
-   * Requires GOOGLE_INDEXING_SA_KEY to be set (service account JSON string).
+   * Skipped if GOOGLE_INDEXING_SA_KEY is not set or indexing is currently blocked
+   * (robots.txt Disallow:/ detected, or blog_public was just fixed this run).
    */
   async requestIndexing(url: string): Promise<void> {
     if (!this.indexingSaKey) return;
+    if (this.indexingBlocked) {
+      logger.warn(`Indexing skipped (site is blocked for crawlers): ${url}`);
+      return;
+    }
 
     try {
       const accessToken = await this.getGoogleAccessToken();
