@@ -157,6 +157,11 @@ async function main(): Promise<void> {
         content,
         featuredMediaResult.mediaId,
         inlineImages,
+        {
+          contentType: researched.analysis.contentType,
+          keyword: researched.analysis.selectedKeyword,
+          featuredImageUrl: featuredMediaResult.sourceUrl,
+        },
       );
 
       // 4h. Create standalone Korean post + hreflang linking

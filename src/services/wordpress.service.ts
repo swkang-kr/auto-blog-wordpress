@@ -91,7 +91,7 @@ export class WordPressService {
         const placeholder = `<!--IMAGE_PLACEHOLDER_${i + 1}-->`;
         const figureHtml =
           `<figure style="margin:30px 0; text-align:center;">` +
-          `<img src="${inlineImages[i].url}" alt="${inlineImages[i].caption}" style="max-width:100%; height:auto; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1);" />` +
+          `<img src="${inlineImages[i].url}" alt="${inlineImages[i].caption}" loading="lazy" width="760" height="428" decoding="async" style="max-width:100%; height:auto; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1);" />` +
           `<figcaption style="margin-top:10px; font-size:13px; color:#888; line-height:1.5;">${inlineImages[i].caption}</figcaption>` +
           `</figure>`;
 
@@ -117,10 +117,27 @@ export class WordPressService {
     content: BlogContent,
     featuredImageId?: number,
     inlineImages?: Array<{ url: string; caption: string }>,
+    options?: { contentType?: string; keyword?: string; featuredImageUrl?: string },
   ): Promise<PublishedPost> {
     // Replace image placeholders in both English and Korean HTML
-    const htmlEn = this.replaceImagePlaceholders(content.html, inlineImages);
-    const htmlKr = this.replaceImagePlaceholders(content.htmlKr, inlineImages);
+    let htmlEn = this.replaceImagePlaceholders(content.html, inlineImages);
+    let htmlKr = this.replaceImagePlaceholders(content.htmlKr, inlineImages);
+
+    // Validate and trim excerpt for SEO (120-160 chars)
+    const validatedExcerpt = content.excerpt.length > 160
+      ? content.excerpt.slice(0, 157) + '...'
+      : content.excerpt;
+    if (content.excerpt.length > 160) logger.warn(`Excerpt trimmed to 160 chars: "${content.title}"`);
+
+    // Add doc-toc ARIA role to Table of Contents div
+    htmlEn = htmlEn.replace(
+      /<div(\s*style="background:#f0f4ff;[^"]*")>(\s*<p[^>]*>Table of Contents<\/p>)/,
+      '<div role="doc-toc" aria-label="Table of Contents"$1>$2',
+    );
+    htmlKr = htmlKr.replace(
+      /<div(\s*style="background:#f0f4ff;[^"]*")>(\s*<p[^>]*>(?:목차|Table of Contents)<\/p>)/,
+      '<div role="doc-toc" aria-label="목차"$1>$2',
+    );
 
     // Build tag pills HTML
     const tagStyle = `display:inline-block; padding:4px 12px; margin:0 6px 6px 0; background:#f0f4ff; color:#0066FF; border-radius:14px; font-size:13px; text-decoration:none;`;
@@ -146,29 +163,70 @@ export class WordPressService {
       `</div>`;
 
     // Inject JSON-LD structured data (BlogPosting schema)
+    const wordCount = htmlEn.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
+    const nowIso = new Date().toISOString();
     const jsonLd = {
       '@context': 'https://schema.org',
       '@type': 'BlogPosting',
       headline: content.title,
-      description: content.excerpt,
-      datePublished: new Date().toISOString(),
-      dateModified: new Date().toISOString(),
-      ...(this.siteOwner ? {
-        author: {
-          '@type': 'Person',
-          name: this.siteOwner,
+      description: validatedExcerpt,
+      inLanguage: 'en',
+      articleSection: content.category,
+      wordCount,
+      datePublished: nowIso,
+      dateModified: nowIso,
+      ...(options?.featuredImageUrl ? {
+        image: {
+          '@type': 'ImageObject',
+          url: options.featuredImageUrl,
+          description: content.imageCaptions?.[0] || content.title,
         },
       } : {}),
-      publisher: {
-        '@type': 'Organization',
-        name: this.siteOwner || 'TrendHunt',
-      },
-      mainEntityOfPage: {
-        '@type': 'WebPage',
-        '@id': this.wpUrl,
-      },
+      ...(this.siteOwner ? {
+        author: { '@type': 'Person', name: this.siteOwner },
+      } : {}),
+      publisher: { '@type': 'Organization', name: this.siteOwner || 'TrendHunt' },
+      mainEntityOfPage: { '@type': 'WebPage', '@id': this.wpUrl },
     };
-    const jsonLdScript = `<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>\n`;
+
+    // FAQ schema (auto-extracted from question headings)
+    let additionalSchemas = '';
+    const faqItems = this.extractFaqItems(htmlEn);
+    if (faqItems.length >= 2) {
+      const faqSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map(({ question, answer }) => ({
+          '@type': 'Question',
+          name: question,
+          acceptedAnswer: { '@type': 'Answer', text: answer },
+        })),
+      };
+      additionalSchemas += `<script type="application/ld+json">${JSON.stringify(faqSchema)}</script>\n`;
+      logger.debug(`FAQ schema: ${faqItems.length} questions injected`);
+    }
+
+    // HowTo schema (how-to content type only)
+    if (options?.contentType === 'how-to') {
+      const steps = this.extractHowToSteps(htmlEn);
+      if (steps.length >= 2) {
+        const howToSchema = {
+          '@context': 'https://schema.org',
+          '@type': 'HowTo',
+          name: content.title,
+          description: validatedExcerpt,
+          step: steps.map(({ name, text }) => ({
+            '@type': 'HowToStep',
+            name,
+            text,
+          })),
+        };
+        additionalSchemas += `<script type="application/ld+json">${JSON.stringify(howToSchema)}</script>\n`;
+        logger.debug(`HowTo schema: ${steps.length} steps injected`);
+      }
+    }
+
+    const jsonLdScript = `<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>\n` + additionalSchemas;
     html = jsonLdScript + html;
 
     const categoryId = await this.getOrCreateCategory(content.category);
@@ -179,11 +237,16 @@ export class WordPressService {
       const postData: Record<string, unknown> = {
         title: content.title,
         content: html,
-        excerpt: content.excerpt,
+        excerpt: validatedExcerpt,
         status: 'publish',
         categories: [categoryId],
         tags: tagIds,
         featured_media: featuredImageId ?? 0,
+        meta: {
+          rank_math_description: validatedExcerpt,
+          rank_math_focus_keyword: options?.keyword || '',
+          rank_math_title: content.title,
+        },
       };
       if (content.slug) {
         postData.slug = content.slug;
@@ -301,6 +364,38 @@ export class WordPressService {
         : (error instanceof Error ? error.message : String(error));
       logger.warn(`Failed to update post meta for ID=${postId}: ${detail}`);
     }
+  }
+
+  /** Extract FAQ Q&A pairs from HTML (h2/h3 headings ending with '?') */
+  private extractFaqItems(html: string): Array<{ question: string; answer: string }> {
+    const items: Array<{ question: string; answer: string }> = [];
+    const regex = /<h[23][^>]*>(.*?)<\/h[23]>([\s\S]*?)(?=<h[23]|$)/gi;
+    let match;
+    while ((match = regex.exec(html)) !== null && items.length < 6) {
+      const question = match[1].replace(/<[^>]+>/g, '').trim();
+      if (!question.endsWith('?')) continue;
+      const paraMatch = /<p[^>]*>([\s\S]*?)<\/p>/i.exec(match[2]);
+      if (!paraMatch) continue;
+      const answer = paraMatch[1].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 300);
+      if (answer.length > 20) items.push({ question, answer });
+    }
+    return items;
+  }
+
+  /** Extract HowTo steps from HTML (h3 headings with "Step N:" prefix) */
+  private extractHowToSteps(html: string): Array<{ name: string; text: string }> {
+    const steps: Array<{ name: string; text: string }> = [];
+    const regex = /<h3[^>]*>(?:Step\s+\d+[:\s]+|\d+\.\s+)(.*?)<\/h3>([\s\S]*?)(?=<h[23]|$)/gi;
+    let match;
+    while ((match = regex.exec(html)) !== null && steps.length < 10) {
+      const name = match[1].replace(/<[^>]+>/g, '').trim();
+      const paraMatch = /<p[^>]*>([\s\S]*?)<\/p>/i.exec(match[2]);
+      const text = paraMatch
+        ? paraMatch[1].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 200)
+        : name;
+      if (name.length > 0) steps.push({ name, text });
+    }
+    return steps;
   }
 
   private escapeHtml(text: string): string {

@@ -87,7 +87,7 @@ Rules:
 3. html: English blog post in HTML format (800-1,000+ words, inline CSS styled)
 4. Include a table of contents at the beginning
 5. Use a natural, authoritative English tone matching the niche
-6. excerpt: English meta description under 160 characters
+6. excerpt: English meta description, exactly 120-160 characters (required for SEO - count carefully)
 7. tags: 5-10 related English keywords
 8. category: One best-fit English category name
 
@@ -201,6 +201,14 @@ Respond with pure JSON only.`;
     logger.debug(`Raw Claude response length: ${text.length} chars`);
 
     const content = parseJsonResponse(text, analysis.selectedKeyword);
+
+    // Validate excerpt length (120-160 chars for SEO)
+    if (content.excerpt && content.excerpt.length > 160) {
+      content.excerpt = content.excerpt.slice(0, 157) + '...';
+      logger.warn(`Excerpt trimmed to 160 chars: "${content.title}"`);
+    } else if (content.excerpt && content.excerpt.length < 100) {
+      logger.warn(`Excerpt too short (${content.excerpt.length} chars): "${content.title}"`);
+    }
 
     // Ensure imageCaptions exists
     if (!content.imageCaptions || content.imageCaptions.length === 0) {
