@@ -2,7 +2,7 @@ import googleTrends from 'google-trends-api';
 import { logger } from '../utils/logger.js';
 import { GoogleTrendsError } from '../types/errors.js';
 import { withRetry } from '../utils/retry.js';
-import type { TrendsData } from '../types/index.js';
+import type { TrendsData, RisingQuery } from '../types/index.js';
 
 const RATE_LIMIT_MS = 2500;
 
@@ -162,5 +162,95 @@ export class GoogleTrendsService {
     );
 
     return result;
+  }
+
+  /**
+   * Fetch rising queries for a broad category term (last 3 months).
+   * Rising queries have actual search momentum and lower competition
+   * than top/steady queries.
+   */
+  async fetchRisingQueries(broadTerm: string): Promise<{
+    rising: RisingQuery[];
+    top: RisingQuery[];
+    averageInterest: number;
+    trendDirection: TrendsData['trendDirection'];
+  }> {
+    logger.info(`Fetching rising queries for broad term: "${broadTerm}"`);
+
+    const endTime = new Date();
+    const startTime = new Date();
+    startTime.setMonth(startTime.getMonth() - 3); // 3-month window for recency
+
+    // 1. Interest over time (for the broad term itself)
+    let interestOverTime: number[] = [];
+    try {
+      await this.rateLimit();
+      const iotRaw = await withRetry(
+        () => googleTrends.interestOverTime({ keyword: broadTerm, startTime, endTime, geo: this.geo }),
+        2, 5000,
+      );
+      const iotData = JSON.parse(iotRaw);
+      interestOverTime = (iotData.default?.timelineData ?? []).map(
+        (d: { value: number[] }) => d.value[0] ?? 0,
+      );
+    } catch (error) {
+      logger.warn(`interestOverTime failed for "${broadTerm}": ${error instanceof Error ? error.message : error}`);
+    }
+
+    // 2. Rising + Top related queries
+    let rising: RisingQuery[] = [];
+    let top: RisingQuery[] = [];
+    try {
+      await this.rateLimit();
+      const rqRaw = await withRetry(
+        () => googleTrends.relatedQueries({ keyword: broadTerm, startTime, endTime, geo: this.geo }),
+        2, 5000,
+      );
+      const rqData = JSON.parse(rqRaw);
+
+      const topRaw = rqData.default?.rankedList?.[0]?.rankedKeyword ?? [];
+      const risingRaw = rqData.default?.rankedList?.[1]?.rankedKeyword ?? [];
+
+      top = topRaw
+        .slice(0, 15)
+        .map((item: { query: string; value: number }) => ({
+          query: item.query,
+          value: item.value,
+        }))
+        .filter((q: RisingQuery) => q.query);
+
+      rising = risingRaw
+        .slice(0, 20)
+        .map((item: { query: string; value: number; formattedValue: string }) => ({
+          query: item.query,
+          value: item.formattedValue === 'Breakout' ? 'Breakout' : (item.value ?? 0),
+        }))
+        .filter((q: RisingQuery) => q.query);
+    } catch (error) {
+      logger.warn(`relatedQueries failed for "${broadTerm}": ${error instanceof Error ? error.message : error}`);
+    }
+
+    // Trend direction from interest over time
+    let trendDirection: TrendsData['trendDirection'] = 'stable';
+    if (interestOverTime.length >= 6) {
+      const recentAvg = interestOverTime.slice(-3).reduce((a, b) => a + b, 0) / 3;
+      const olderAvg = interestOverTime.slice(0, 3).reduce((a, b) => a + b, 0) / 3;
+      if (olderAvg > 0) {
+        const change = (recentAvg - olderAvg) / olderAvg;
+        if (change > 0.15) trendDirection = 'rising';
+        else if (change < -0.15) trendDirection = 'declining';
+      }
+    }
+
+    const averageInterest = interestOverTime.length > 0
+      ? Math.round(interestOverTime.reduce((a, b) => a + b, 0) / interestOverTime.length)
+      : 0;
+
+    logger.info(
+      `Rising queries for "${broadTerm}": ${rising.length} rising, ${top.length} top, ` +
+      `avg=${averageInterest}, direction=${trendDirection}`,
+    );
+
+    return { rising, top, averageInterest, trendDirection };
   }
 }

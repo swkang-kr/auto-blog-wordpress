@@ -5,6 +5,7 @@ export const NICHES: NicheConfig[] = [
     id: 'vegetable-gardening',
     name: 'Vegetable Gardening for Beginners',
     category: 'Gardening',
+    broadTerm: 'vegetable gardening',
     seedKeywords: [
       'how to grow tomatoes in containers for beginners',
       'easiest vegetables to grow for first time gardeners',
@@ -18,6 +19,7 @@ export const NICHES: NicheConfig[] = [
     id: 'dog-care',
     name: 'Dog Care for New Owners',
     category: 'Pets',
+    broadTerm: 'puppy training',
     seedKeywords: [
       'how to crate train a puppy without crying at night',
       'best dog food for small breed puppies comparison',
@@ -31,6 +33,7 @@ export const NICHES: NicheConfig[] = [
     id: 'budget-travel',
     name: 'Budget Travel & Travel Hacking',
     category: 'Travel',
+    broadTerm: 'budget travel',
     seedKeywords: [
       'how to travel Europe on 50 dollars a day',
       'best credit cards for travel rewards beginners',
@@ -44,6 +47,7 @@ export const NICHES: NicheConfig[] = [
     id: 'diy-home-repairs',
     name: 'DIY Home Repairs & Improvements',
     category: 'Home',
+    broadTerm: 'home repair',
     seedKeywords: [
       'how to paint a room without drips step by step',
       'how to fix squeaky floorboards yourself at home',
@@ -57,6 +61,7 @@ export const NICHES: NicheConfig[] = [
     id: 'beginner-strength-training',
     name: 'Beginner Strength Training',
     category: 'Fitness',
+    broadTerm: 'strength training',
     seedKeywords: [
       'beginner strength training plan for women over 40',
       'how to do deadlifts correctly for beginners at home',

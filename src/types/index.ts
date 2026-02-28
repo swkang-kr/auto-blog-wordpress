@@ -6,8 +6,18 @@ export interface NicheConfig {
   id: string;
   name: string;
   category: string;
+  /** Broad 1-2 word term used for Google Trends rising query discovery */
+  broadTerm: string;
+  /** Fallback seed keywords used when Trends API returns no rising queries */
   seedKeywords: string[];
   contentTypes: ContentType[];
+}
+
+/** Google Trends rising query entry */
+export interface RisingQuery {
+  query: string;
+  /** Growth percentage or "Breakout" (5000%+) */
+  value: number | 'Breakout';
 }
 
 /** Google Trends API 결과 */

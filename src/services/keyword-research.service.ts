@@ -2,7 +2,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import { logger } from '../utils/logger.js';
 import { KeywordResearchError } from '../types/errors.js';
 import { GoogleTrendsService } from './google-trends.service.js';
-import type { NicheConfig, TrendsData, KeywordAnalysis, ResearchedKeyword } from '../types/index.js';
+import type { NicheConfig, TrendsData, RisingQuery, KeywordAnalysis, ResearchedKeyword } from '../types/index.js';
 
 export class KeywordResearchService {
   private client: Anthropic;
@@ -19,25 +19,46 @@ export class KeywordResearchService {
   ): Promise<ResearchedKeyword> {
     logger.info(`\n--- Keyword Research for niche: "${niche.name}" ---`);
 
-    // 1. Collect Google Trends data for each seed keyword (individual failures allowed)
+    // 1. Fetch rising queries for the niche's broad term (primary approach)
+    let risingQueries: RisingQuery[] = [];
+    let topQueries: RisingQuery[] = [];
+    let averageInterest = 0;
+    let trendDirection: TrendsData['trendDirection'] = 'stable';
+    let trendsSource = 'rising';
+
+    try {
+      const result = await this.trendsService.fetchRisingQueries(niche.broadTerm);
+      risingQueries = result.rising;
+      topQueries = result.top;
+      averageInterest = result.averageInterest;
+      trendDirection = result.trendDirection;
+    } catch (error) {
+      logger.warn(`Rising trends fetch failed for "${niche.name}": ${error instanceof Error ? error.message : error}`);
+    }
+
+    // 2. Fall back to seed keyword scanning if no rising queries found
     const trendsData: TrendsData[] = [];
-    for (const seed of niche.seedKeywords) {
-      try {
-        const data = await this.trendsService.fetchTrendsData(seed);
-        trendsData.push(data);
-      } catch (error) {
-        logger.warn(
-          `Trends data failed for seed "${seed}": ${error instanceof Error ? error.message : error}`,
-        );
+    if (risingQueries.length === 0 && topQueries.length === 0) {
+      logger.warn(`No rising queries for "${niche.name}", falling back to seed keywords`);
+      trendsSource = 'seed';
+
+      for (const seed of niche.seedKeywords) {
+        try {
+          const data = await this.trendsService.fetchTrendsData(seed);
+          trendsData.push(data);
+        } catch (error) {
+          logger.warn(`Trends data failed for seed "${seed}": ${error instanceof Error ? error.message : error}`);
+        }
       }
     }
 
-    if (trendsData.length === 0) {
-      logger.warn(`All trends data failed for niche "${niche.name}", using fallback mode`);
-    }
-
-    // 2. Ask Claude to analyze and select the best keyword + content type
-    const analysis = await this.analyzeWithClaude(niche, trendsData, postedKeywords);
+    // 3. Ask Claude to select the best keyword
+    const analysis = await this.analyzeWithClaude(
+      niche,
+      { risingQueries, topQueries, averageInterest, trendDirection, trendsSource },
+      trendsData,
+      postedKeywords,
+    );
 
     logger.info(
       `Research result for "${niche.name}": keyword="${analysis.selectedKeyword}", ` +
@@ -49,54 +70,94 @@ export class KeywordResearchService {
 
   private async analyzeWithClaude(
     niche: NicheConfig,
-    trendsData: TrendsData[],
+    risingData: {
+      risingQueries: RisingQuery[];
+      topQueries: RisingQuery[];
+      averageInterest: number;
+      trendDirection: string;
+      trendsSource: string;
+    },
+    fallbackTrendsData: TrendsData[],
     postedKeywords: string[],
   ): Promise<KeywordAnalysis> {
-    const trendsContext = trendsData.length > 0
-      ? trendsData.map((t) =>
-          `- "${t.keyword}": avg interest=${t.averageInterest}, trend=${t.trendDirection}, ` +
-          `breakout=${t.hasBreakout}, related queries=[${t.relatedQueries.slice(0, 5).join(', ')}], ` +
-          `related topics=[${t.relatedTopics.slice(0, 5).join(', ')}]`,
-        ).join('\n')
-      : 'No trends data available. Use your knowledge to select the best keyword from the seed keywords.';
-
     const today = new Date().toISOString().split('T')[0];
     const year = new Date().getFullYear();
 
+    // Build trends context
+    let trendsContext: string;
+
+    if (risingData.trendsSource === 'rising' && (risingData.risingQueries.length > 0 || risingData.topQueries.length > 0)) {
+      const risingLines = risingData.risingQueries.length > 0
+        ? risingData.risingQueries
+            .map(q => `  - "${q.query}" (${q.value === 'Breakout' ? 'Breakout 🔥' : `+${q.value}%`})`)
+            .join('\n')
+        : '  (none found)';
+
+      const topLines = risingData.topQueries.length > 0
+        ? risingData.topQueries
+            .map(q => `  - "${q.query}"`)
+            .join('\n')
+        : '  (none found)';
+
+      trendsContext = `## Google Trends Data for broad term: "${niche.broadTerm}" (last 3 months)
+- Overall interest: avg=${risingData.averageInterest}, direction=${risingData.trendDirection}
+
+### RISING Queries (growing fast — PRIORITISE THESE):
+${risingLines}
+
+### TOP Queries (consistently searched):
+${topLines}
+
+IMPORTANT: The RISING queries above represent actual search demand that is growing RIGHT NOW.
+Use them as your primary source for keyword selection. You may:
+1. Use a rising query directly as your target keyword (if it's 4+ words)
+2. Create a specific long-tail variation of a rising query (add context like "for beginners", "at home", "step by step")
+3. Combine a rising topic with a top query for a unique angle`;
+    } else {
+      // Fallback: use seed keyword trends data
+      trendsContext = fallbackTrendsData.length > 0
+        ? `## Google Trends Data (seed keyword analysis)\n` +
+          fallbackTrendsData.map((t) =>
+            `- "${t.keyword}": avg interest=${t.averageInterest}, trend=${t.trendDirection}, ` +
+            `breakout=${t.hasBreakout}, related queries=[${t.relatedQueries.slice(0, 5).join(', ')}]`,
+          ).join('\n')
+        : 'No trends data available. Use your knowledge to select the best keyword from the seed keywords.';
+    }
+
     const prompt = `You are an SEO keyword research expert. Analyze the following data for the "${niche.name}" niche and select the BEST keyword and content type for a blog post.
 
-IMPORTANT: Today's date is ${today}. All content must be written for ${year}. Use the most current information, trends, and data available for ${year}.
+IMPORTANT: Today's date is ${today}. All content must be written for ${year}.
 
 ## Niche Info
 - Name: ${niche.name}
 - Category: ${niche.category}
-- Seed Keywords: ${niche.seedKeywords.join(', ')}
+- Broad Topic: ${niche.broadTerm}
 - Allowed Content Types: ${niche.contentTypes.join(', ')}
+- Fallback Seed Keywords: ${niche.seedKeywords.join(', ')}
 
-## Google Trends Data (12-month analysis)
 ${trendsContext}
 
 ## Already Posted Keywords (AVOID these or similar topics)
 ${postedKeywords.length > 0 ? postedKeywords.map((k) => `- ${k}`).join('\n') : 'None yet'}
 
 ## Instructions
-1. Select the best keyword to target — MUST be a long-tail keyword (4+ words). Short head terms like "budgeting tips" or "AI tools" are NOT acceptable.
+1. Select the best keyword to target — MUST be a long-tail keyword (4+ words).
 2. Choose the best content type from: ${niche.contentTypes.join(', ')}
-   - how-to: Step-by-step guide (e.g., "How to Make Korean Fried Chicken at Home Without a Deep Fryer")
-   - best-x-for-y: Ranked list with comparisons (e.g., "Best Free AI Writing Tools for Bloggers on a Budget")
-   - x-vs-y: Comparison analysis (e.g., "Notion vs Obsidian for Personal Knowledge Management")
+   - how-to: Step-by-step guide
+   - best-x-for-y: Ranked list with comparisons
+   - x-vs-y: Comparison analysis
 3. Suggest a unique angle that differentiates from existing content
 4. Identify the search intent and competition level
 5. List 5-8 LSI (related) keywords to naturally include in the content
 
-IMPORTANT: Choose a keyword that is DIFFERENT from the already posted keywords.
 CRITICAL keyword selection rules — follow in strict priority order:
-1. MUST be low competition (estimatedCompetition: "low"). Reject any keyword that is medium or high competition.
-2. MUST be long-tail (4+ words). Reject any keyword shorter than 4 words.
-3. PREFER question-based keywords ("how to", "what is", "why does", "best way to")
-4. PREFER keywords with clear informational or commercial investigation intent
-5. AVOID head terms dominated by high-authority sites (NerdWallet, Forbes, Wikipedia, etc.)
-6. Rising trends and breakout topics are a bonus — but only if they also satisfy rules 1-2
+1. PRIORITISE rising queries — they have real search momentum and growing demand
+2. MUST be low competition (estimatedCompetition: "low")
+3. MUST be long-tail (4+ words). Short head terms are NOT acceptable.
+4. PREFER question-based keywords ("how to", "what is", "best way to")
+5. PREFER keywords with clear informational or commercial investigation intent
+6. MUST be different from already posted keywords
+7. AVOID head terms dominated by high-authority sites
 
 Respond with pure JSON only. No markdown code blocks.
 {"selectedKeyword":"...","contentType":"how-to|best-x-for-y|x-vs-y","suggestedTitle":"...","uniqueAngle":"...","searchIntent":"...","estimatedCompetition":"low|medium|high","reasoning":"...","relatedKeywordsToInclude":["...","..."]}`;
@@ -122,14 +183,12 @@ Respond with pure JSON only. No markdown code blocks.
   private parseAnalysis(text: string, niche: NicheConfig): KeywordAnalysis {
     let cleaned = text.replace(/```(?:json)?\s*/g, '').replace(/```\s*$/g, '').trim();
 
-    // Try direct parse
     try {
       return JSON.parse(cleaned) as KeywordAnalysis;
     } catch {
       // continue
     }
 
-    // Extract JSON with brace matching
     const startIdx = cleaned.indexOf('{');
     if (startIdx === -1) {
       throw new KeywordResearchError(`No JSON found in Claude analysis for niche "${niche.name}"`);
