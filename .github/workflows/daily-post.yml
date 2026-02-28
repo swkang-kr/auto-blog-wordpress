@@ -2,7 +2,7 @@ name: Daily Blog Post
 
 on:
   schedule:
-    - cron: '30 2 */2 * *'  # UTC 02:30 every other day = KST 11:30 격일
+    - cron: '0 14 */2 * *'  # UTC 14:00 every other day = EST 09:00 / PST 06:00 격일
   workflow_dispatch:          # Manual trigger
 
 permissions:
