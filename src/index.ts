@@ -52,7 +52,10 @@ async function main(): Promise<void> {
   }
 
   // 2.6. Ensure search engine verification meta tags + GA4
-  const seoService = new SeoService(config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD, config.INDEXNOW_KEY);
+  const seoService = new SeoService(config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD, {
+    indexNowKey: config.INDEXNOW_KEY || undefined,
+    indexingSaKey: config.GOOGLE_INDEXING_SA_KEY || undefined,
+  });
   try {
     await seoService.ensureHeaderScripts({
       googleCode: config.GOOGLE_SITE_VERIFICATION,
@@ -83,6 +86,10 @@ async function main(): Promise<void> {
   } catch (error) {
     logger.warn(`IndexNow key snippet setup failed: ${error instanceof Error ? error.message : error}`);
   }
+
+  // 2.10. Check robots.txt + WordPress indexing settings
+  await seoService.checkRobotsTxt();
+  await seoService.checkAndFixIndexingSettings();
 
   // 3. History
   const history = new PostHistory();
@@ -207,7 +214,13 @@ async function main(): Promise<void> {
         await twitterService.promoteBlogPost(content, post);
       }
 
-      // 4k. Record history
+      // 4k. Google Indexing API — request indexing for published URLs
+      await seoService.requestIndexing(post.url);
+      if (krPostUrl) {
+        await seoService.requestIndexing(krPostUrl);
+      }
+
+      // 4l. Record history
       await history.addEntry({
         keyword: researched.analysis.selectedKeyword,
         postId: post.postId,

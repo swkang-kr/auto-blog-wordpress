@@ -44,6 +44,7 @@ jobs:
           X_API_SECRET: ${{ secrets.X_API_SECRET }}
           X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
           X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}
+          GOOGLE_INDEXING_SA_KEY: ${{ secrets.GOOGLE_INDEXING_SA_KEY }}
 
       - name: Commit post history
         run: |

@@ -1,4 +1,5 @@
 import axios, { type AxiosInstance } from 'axios';
+import { createSign } from 'crypto';
 import { logger } from '../utils/logger.js';
 
 const WPCODE_SLUG = 'insert-headers-and-footers';
@@ -10,10 +11,18 @@ export class SeoService {
   private api: AxiosInstance;
   private wpUrl: string;
   private indexNowKey: string;
+  private indexingSaKey: string;
+  private indexingBlocked = false;
 
-  constructor(wpUrl: string, username: string, appPassword: string, indexNowKey?: string) {
+  constructor(
+    wpUrl: string,
+    username: string,
+    appPassword: string,
+    options?: { indexNowKey?: string; indexingSaKey?: string },
+  ) {
     this.wpUrl = wpUrl.replace(/\/+$/, '');
-    this.indexNowKey = indexNowKey || '';
+    this.indexNowKey = options?.indexNowKey || '';
+    this.indexingSaKey = options?.indexingSaKey || '';
     const token = Buffer.from(`${username}:${appPassword}`).toString('base64');
     this.api = axios.create({
       baseURL: `${this.wpUrl}/wp-json/wp/v2`,
@@ -204,9 +213,214 @@ add_action('wp_head', function() {
     }
   }
 
+  /**
+   * Install a WordPress Code Snippet that serves the IndexNow key file.
+   * Search engines verify ownership by fetching /{key}.txt from the site.
+   */
+  async ensureIndexNowKeySnippet(): Promise<void> {
+    if (!this.indexNowKey) return;
+
+    const key = this.indexNowKey;
+    const phpCode = `
+// Serve IndexNow key file for Naver Search Advisor
+add_action('init', function() {
+    $request_uri = trim(parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH), '/');
+    if ($request_uri === '${key}.txt') {
+        header('Content-Type: text/plain; charset=UTF-8');
+        echo '${key}';
+        exit;
+    }
+});`.trim();
+
+    try {
+      const { data: snippets } = await axios.get(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      const existing = (snippets as Array<{ id: number; name: string }>)
+        .find((s) => s.name === INDEXNOW_SNIPPET_TITLE);
+
+      if (existing) {
+        logger.debug(`IndexNow key snippet already exists (ID=${existing.id}), skipping`);
+        return;
+      }
+
+      await axios.post(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { name: INDEXNOW_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 1 },
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      logger.info(`IndexNow key snippet installed (key=${key})`);
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      logger.warn(`Failed to install IndexNow key snippet: ${msg}`);
+    }
+  }
+
+  /**
+   * Notify search engines of new post URLs via IndexNow protocol.
+   * Submits to Naver directly and to api.indexnow.org (distributes to Google, Bing, Yandex, etc.).
+   */
+  async notifyIndexNow(urls: string[]): Promise<void> {
+    if (!this.indexNowKey || urls.length === 0) return;
+
+    const host = new URL(this.wpUrl).hostname;
+    const keyLocation = `${this.wpUrl}/${this.indexNowKey}.txt`;
+    const body = { host, key: this.indexNowKey, keyLocation, urlList: urls };
+    const headers = { 'Content-Type': 'application/json' };
+
+    const endpoints: Array<{ name: string; url: string }> = [
+      { name: 'Naver', url: 'https://searchadvisor.naver.com/indexnow' },
+      { name: 'IndexNow', url: 'https://api.indexnow.org/indexnow' },
+    ];
+
+    await Promise.allSettled(
+      endpoints.map(async ({ name, url }) => {
+        try {
+          const response = await axios.post(url, body, { headers, timeout: 15000 });
+          logger.info(`IndexNow: ${name} notified of ${urls.length} URL(s) → status=${response.status}`);
+        } catch (error) {
+          const msg = axios.isAxiosError(error)
+            ? `${error.response?.status} ${JSON.stringify(error.response?.data ?? error.message)}`
+            : (error instanceof Error ? error.message : String(error));
+          logger.warn(`IndexNow ${name} notification failed: ${msg}`);
+        }
+      }),
+    );
+  }
+
+  /**
+   * Fetch robots.txt and warn if User-agent: * has Disallow: / (blocks all crawlers).
+   * Sets indexingBlocked=true if crawlers are blocked — requestIndexing() will be skipped.
+   */
+  async checkRobotsTxt(): Promise<void> {
+    try {
+      const { data: raw } = await axios.get<string>(`${this.wpUrl}/robots.txt`, { timeout: 10000 });
+      const lines = raw.split('\n').map((l) => l.trim());
+
+      let inStarBlock = false;
+      let blocked = false;
+
+      for (const line of lines) {
+        if (/^user-agent:\s*\*$/i.test(line)) {
+          inStarBlock = true;
+          continue;
+        }
+        if (inStarBlock && /^user-agent:/i.test(line)) {
+          inStarBlock = false;
+        }
+        if (inStarBlock && /^disallow:\s*\/\s*$/i.test(line)) {
+          blocked = true;
+          break;
+        }
+      }
+
+      if (blocked) {
+        this.indexingBlocked = true;
+        logger.warn('=== robots.txt WARNING ===');
+        logger.warn('robots.txt contains "Disallow: /" for User-agent: * — all search engines are BLOCKED.');
+        logger.warn('Google Indexing API requests will be skipped until this is resolved.');
+        logger.warn('Fix: WordPress Admin > Settings > Reading > uncheck "Discourage search engines"');
+        logger.warn('=========================');
+      } else {
+        logger.info('robots.txt: OK (no blanket Disallow: / found)');
+      }
+    } catch (error) {
+      logger.warn(`robots.txt check failed: ${error instanceof Error ? error.message : error}`);
+    }
+  }
+
+  /**
+   * Check WordPress blog_public setting (0 = noindex). Fix it to 1 if needed.
+   * Sets indexingBlocked=true if the fix was just applied — Google needs time to re-crawl.
+   */
+  async checkAndFixIndexingSettings(): Promise<void> {
+    try {
+      const { data: settings } = await this.api.get('/settings');
+      const blogPublic = (settings as Record<string, unknown>).blog_public;
+
+      if (blogPublic === 0 || blogPublic === '0' || blogPublic === false) {
+        logger.warn('WordPress "Discourage search engines" is ON (blog_public=0). Fixing...');
+        await this.api.post('/settings', { blog_public: 1 });
+        logger.warn('blog_public set to 1 — but Google Indexing API skipped this run (robots.txt needs time to propagate).');
+        this.indexingBlocked = true;
+      } else {
+        logger.info('WordPress indexing settings: OK (blog_public=1)');
+      }
+    } catch (error) {
+      const msg = axios.isAxiosError(error)
+        ? `${error.response?.status} ${JSON.stringify(error.response?.data ?? error.message)}`
+        : (error instanceof Error ? error.message : String(error));
+      logger.warn(`Could not check/fix indexing settings: ${msg}`);
+    }
+  }
+
+  /**
+   * Request Google to index the given URL via the Google Indexing API.
+   * Skipped if GOOGLE_INDEXING_SA_KEY is not set or indexing is currently blocked.
+   */
+  async requestIndexing(url: string): Promise<void> {
+    if (!this.indexingSaKey) return;
+    if (this.indexingBlocked) {
+      logger.warn(`Indexing skipped (site is blocked for crawlers): ${url}`);
+      return;
+    }
+
+    try {
+      const accessToken = await this.getGoogleAccessToken();
+      await axios.post(
+        'https://indexing.googleapis.com/v3/urlNotifications:publish',
+        { url, type: 'URL_UPDATED' },
+        { headers: { Authorization: `Bearer ${accessToken}` }, timeout: 15000 },
+      );
+      logger.info(`Google Indexing API: requested indexing for ${url}`);
+    } catch (error) {
+      const msg = axios.isAxiosError(error)
+        ? `${error.response?.status} ${JSON.stringify(error.response?.data ?? error.message)}`
+        : (error instanceof Error ? error.message : String(error));
+      logger.warn(`Google Indexing API request failed for ${url}: ${msg}`);
+    }
+  }
+
   /** @deprecated Use ensureHeaderScripts instead */
   async ensureVerificationMetaTags(googleCode?: string, naverCode?: string): Promise<void> {
     return this.ensureHeaderScripts({ googleCode, naverCode });
+  }
+
+  private async getGoogleAccessToken(): Promise<string> {
+    const sa = JSON.parse(this.indexingSaKey) as {
+      client_email: string;
+      private_key: string;
+    };
+
+    const now = Math.floor(Date.now() / 1000);
+    const header = Buffer.from(JSON.stringify({ alg: 'RS256', typ: 'JWT' })).toString('base64url');
+    const payload = Buffer.from(
+      JSON.stringify({
+        iss: sa.client_email,
+        scope: 'https://www.googleapis.com/auth/indexing',
+        aud: 'https://oauth2.googleapis.com/token',
+        exp: now + 3600,
+        iat: now,
+      }),
+    ).toString('base64url');
+
+    const sign = createSign('RSA-SHA256');
+    sign.update(`${header}.${payload}`);
+    const signature = sign.sign(sa.private_key, 'base64url');
+
+    const jwt = `${header}.${payload}.${signature}`;
+
+    const { data } = await axios.post<{ access_token: string }>(
+      'https://oauth2.googleapis.com/token',
+      new URLSearchParams({
+        grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+        assertion: jwt,
+      }),
+      { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, timeout: 10000 },
+    );
+
+    return data.access_token;
   }
 
   private async ensurePlugin(): Promise<boolean> {
@@ -271,81 +485,5 @@ add_action('wp_head', function() {
     logger.warn('Paste the following into the "Header" section:');
     logger.warn(headerHtml);
     logger.warn('============================');
-  }
-
-  /**
-   * Install a WordPress Code Snippet that serves the IndexNow key file.
-   * Naver Search Advisor verifies ownership by fetching /{key}.txt from the site.
-   */
-  async ensureIndexNowKeySnippet(): Promise<void> {
-    if (!this.indexNowKey) return;
-
-    const key = this.indexNowKey;
-    const phpCode = `
-// Serve IndexNow key file for Naver Search Advisor
-add_action('init', function() {
-    $request_uri = trim(parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH), '/');
-    if ($request_uri === '${key}.txt') {
-        header('Content-Type: text/plain; charset=UTF-8');
-        echo '${key}';
-        exit;
-    }
-});`.trim();
-
-    try {
-      const { data: snippets } = await axios.get(
-        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
-        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-      );
-      const existing = (snippets as Array<{ id: number; name: string }>)
-        .find((s) => s.name === INDEXNOW_SNIPPET_TITLE);
-
-      if (existing) {
-        logger.debug(`IndexNow key snippet already exists (ID=${existing.id}), skipping`);
-        return;
-      }
-
-      await axios.post(
-        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
-        { name: INDEXNOW_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 1 },
-        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-      );
-      logger.info(`IndexNow key snippet installed (key=${key})`);
-    } catch (error) {
-      const msg = error instanceof Error ? error.message : String(error);
-      logger.warn(`Failed to install IndexNow key snippet: ${msg}`);
-    }
-  }
-
-  /**
-   * Notify Naver Search Advisor of new post URLs via IndexNow protocol.
-   * Naver will crawl and index these URLs as soon as possible.
-   */
-  async notifyIndexNow(urls: string[]): Promise<void> {
-    if (!this.indexNowKey || urls.length === 0) return;
-
-    const host = new URL(this.wpUrl).hostname;
-    const keyLocation = `${this.wpUrl}/${this.indexNowKey}.txt`;
-    const body = { host, key: this.indexNowKey, keyLocation, urlList: urls };
-    const headers = { 'Content-Type': 'application/json' };
-
-    const endpoints: Array<{ name: string; url: string }> = [
-      { name: 'Naver', url: 'https://searchadvisor.naver.com/indexnow' },
-      { name: 'IndexNow', url: 'https://api.indexnow.org/indexnow' },
-    ];
-
-    await Promise.allSettled(
-      endpoints.map(async ({ name, url }) => {
-        try {
-          const response = await axios.post(url, body, { headers, timeout: 15000 });
-          logger.info(`IndexNow: ${name} notified of ${urls.length} URL(s) → status=${response.status}`);
-        } catch (error) {
-          const msg = axios.isAxiosError(error)
-            ? `${error.response?.status} ${JSON.stringify(error.response?.data ?? error.message)}`
-            : (error instanceof Error ? error.message : String(error));
-          logger.warn(`IndexNow ${name} notification failed: ${msg}`);
-        }
-      }),
-    );
   }
 }
