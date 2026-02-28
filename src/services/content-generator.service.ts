@@ -1,4 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk';
+import { jsonrepair } from 'jsonrepair';
 import { logger } from '../utils/logger.js';
 import { ContentGenerationError } from '../types/errors.js';
 import type { ResearchedKeyword, BlogContent, ExistingPost } from '../types/index.js';
@@ -365,12 +366,22 @@ function parseJsonResponse(text: string, keyword: string): BlogContent {
   try {
     return JSON.parse(jsonStr) as BlogContent;
   } catch {
+    // Attempt 2: fix literal newlines/tabs
     const fixed = jsonStr
       .replace(/\n/g, '\\n')
       .replace(/\r/g, '\\r')
       .replace(/\t/g, '\\t');
     try {
       return JSON.parse(fixed) as BlogContent;
+    } catch {
+      // continue
+    }
+
+    // Attempt 3: jsonrepair — handles unescaped quotes inside HTML strings
+    try {
+      const repaired = jsonrepair(jsonStr);
+      logger.warn(`JSON repaired via jsonrepair for "${keyword}"`);
+      return JSON.parse(repaired) as BlogContent;
     } catch (e) {
       logger.error(`JSON parse failed. First 500 chars: ${jsonStr.slice(0, 500)}`);
       throw new ContentGenerationError(

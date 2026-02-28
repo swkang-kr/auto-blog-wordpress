@@ -95,28 +95,40 @@ async function main(): Promise<void> {
   const existingPosts = await wpService.getRecentPosts(50);
   logger.info(`Fetched ${existingPosts.length} existing posts for internal linking`);
 
-  // 4. Process each niche
+  // 4. Two-phase pipeline
+  //    Phase A: Research + Content Generation back-to-back (maximises prompt cache HITs)
+  //    Phase B: Translate + Images + Publish for each generated post
   const results: PostResult[] = [];
   let skippedCount = 0;
 
+  interface GeneratedPost {
+    niche: typeof NICHES[number];
+    postStart: number;
+    researched: Awaited<ReturnType<typeof researchService.researchKeyword>>;
+    content: Awaited<ReturnType<typeof contentService.generateContent>>;
+  }
+
+  // ── Phase A: Research + Content Generation ──────────────────────────────
+  logger.info('\n=== Phase A: Research + Content Generation (prompt-cache optimised) ===');
+  const generated: GeneratedPost[] = [];
+
   for (const niche of NICHES) {
     const postStart = Date.now();
-    logger.info(`\n=== Processing Niche: "${niche.name}" ===`);
+    logger.info(`\n[Phase A] Niche: "${niche.name}"`);
 
     try {
-      // 4a. Keyword research
+      // A-1. Keyword research
       const postedKeywords = history.getPostedKeywordsForNiche(niche.id);
       const researched = await researchService.researchKeyword(niche, postedKeywords);
 
-      // 4b. Check if already posted
+      // A-2. Skip if already posted
       if (history.isPosted(researched.analysis.selectedKeyword, niche.id)) {
-        logger.info(`Keyword "${researched.analysis.selectedKeyword}" already posted for niche "${niche.name}", skipping`);
+        logger.info(`Already posted: "${researched.analysis.selectedKeyword}", skipping`);
         skippedCount++;
         continue;
       }
 
-      // 4c. Generate content (Claude EN-only) with internal links
-      // Prioritise same-category posts for topical relevance, pad with recent cross-niche
+      // A-3. Generate content — runs back-to-back across all niches for cache HITs
       const nichePosts = existingPosts
         .filter((p) => p.category.toLowerCase() === niche.category.toLowerCase())
         .slice(0, 15);
@@ -125,17 +137,31 @@ async function main(): Promise<void> {
         .slice(0, 10);
       const filteredPosts = [...nichePosts, ...otherPosts];
 
-      let content = await contentService.generateContent(researched, filteredPosts);
+      const content = await contentService.generateContent(researched, filteredPosts);
+      generated.push({ niche, postStart, researched, content });
+    } catch (error) {
+      const message = axios.isAxiosError(error)
+        ? `${error.response?.status} ${JSON.stringify(error.response?.data ?? error.message)}`
+        : (error instanceof Error ? error.message : String(error));
+      logger.error(`[Phase A] Failed "${niche.name}": ${message}`);
+      results.push({ keyword: niche.name, niche: niche.id, success: false, error: message, duration: Date.now() - postStart });
+    }
+  }
 
-      // 4c-2. Translate to Korean via DeepL
-      if (translationService) {
-        content = await translationService.translateContent(content);
-      }
+  // ── Phase B: Translate + Images + Publish ───────────────────────────────
+  logger.info('\n=== Phase B: Translate + Images + Publish ===');
 
-      // 4d. Generate images (Gemini)
+  for (const { niche, postStart, researched, content: rawContent } of generated) {
+    logger.info(`\n[Phase B] Niche: "${niche.name}"`);
+
+    try {
+      // B-1. Translate to Korean (Haiku — chunked by H2)
+      const content = await translationService.translateContent(rawContent);
+
+      // B-2. Generate images (Gemini)
       const images = await imageService.generateImages(content.imagePrompts);
 
-      // 4e. Upload featured image (MANDATORY) - WebP with SEO filename & ALT
+      // B-3. Upload featured image (MANDATORY)
       const keyword = researched.analysis.selectedKeyword;
       let featuredMediaResult: MediaUploadResult | undefined;
       if (images.featured.length > 0) {
@@ -147,7 +173,7 @@ async function main(): Promise<void> {
         throw new Error(`Featured image is required but generation failed for "${keyword}"`);
       }
 
-      // 4f. Upload inline images (graceful) - WebP with SEO filename & ALT
+      // B-4. Upload inline images (graceful)
       const inlineImages: Array<{ url: string; caption: string }> = [];
       for (let i = 0; i < images.inline.length; i++) {
         try {
@@ -158,13 +184,11 @@ async function main(): Promise<void> {
             inlineImages.push({ url: mediaResult.sourceUrl, caption });
           }
         } catch (error) {
-          logger.warn(
-            `Inline image ${i + 1} upload failed, skipping: ${error instanceof Error ? error.message : error}`,
-          );
+          logger.warn(`Inline image ${i + 1} upload failed, skipping: ${error instanceof Error ? error.message : error}`);
         }
       }
 
-      // 4g. Create WordPress post (English)
+      // B-5. Create WordPress post (English)
       const post = await wpService.createPost(
         content,
         featuredMediaResult.mediaId,
@@ -176,8 +200,7 @@ async function main(): Promise<void> {
         },
       );
 
-      // 4h. Create standalone Korean post + hreflang linking
-      // Brief delay to avoid WordPress server socket hang up on consecutive requests
+      // B-6. Create Korean post + hreflang linking
       await new Promise((r) => setTimeout(r, 3000));
 
       let krPostId: number | undefined;
@@ -192,31 +215,29 @@ async function main(): Promise<void> {
         krPostId = krPost.postId;
         krPostUrl = krPost.url;
 
-        // Update EN post meta with hreflang_ko pointing to KR post
         await new Promise((r) => setTimeout(r, 2000));
         await wpService.updatePostMeta(post.postId, { hreflang_ko: krPost.url });
-
         logger.info(`Bilingual posts linked: EN(${post.postId}) <-> KR(${krPost.postId})`);
       } catch (error) {
         logger.warn(`Korean post creation failed (EN post is still live): ${error instanceof Error ? error.message : error}`);
       }
 
-      // 4i. Notify Naver Search Advisor via IndexNow
+      // B-7. IndexNow
       const indexNowUrls = [post.url, ...(krPostUrl ? [krPostUrl] : [])];
       await seoService.notifyIndexNow(indexNowUrls);
 
-      // 4j. X (Twitter) promotion (optional, non-blocking)
+      // B-8. X (Twitter) promotion (optional)
       if (twitterService) {
         await twitterService.promoteBlogPost(content, post);
       }
 
-      // 4k. Google Indexing API — request indexing for published URLs
+      // B-9. Google Indexing API
       await seoService.requestIndexing(post.url);
       if (krPostUrl) {
         await seoService.requestIndexing(krPostUrl);
       }
 
-      // 4l. Record history
+      // B-10. Record history
       await history.addEntry({
         keyword: researched.analysis.selectedKeyword,
         postId: post.postId,
@@ -242,14 +263,8 @@ async function main(): Promise<void> {
       const message = axios.isAxiosError(error)
         ? `${error.response?.status} ${JSON.stringify(error.response?.data ?? error.message)}`
         : (error instanceof Error ? error.message : String(error));
-      logger.error(`Failed to process niche "${niche.name}": ${message}`);
-      results.push({
-        keyword: niche.name,
-        niche: niche.id,
-        success: false,
-        error: message,
-        duration: Date.now() - postStart,
-      });
+      logger.error(`[Phase B] Failed "${niche.name}": ${message}`);
+      results.push({ keyword: niche.name, niche: niche.id, success: false, error: message, duration: Date.now() - postStart });
     }
   }
 

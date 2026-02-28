@@ -4,6 +4,15 @@ import type { BlogContent } from '../types/index.js';
 
 const TRANSLATION_MODEL = 'claude-haiku-4-5-20251001';
 
+const TRANSLATION_SYSTEM = `You are a professional English-to-Korean translator for HTML blog posts.
+
+Rules:
+- Translate ALL visible English text content to Korean
+- Preserve ALL HTML tags and attributes EXACTLY as-is (including style="S0", style="S1", etc.)
+- Preserve all URLs (href/src values) unchanged
+- Preserve brand and product names (Claude, ChatGPT, Google, WordPress, Notion, etc.)
+- Return ONLY the translated HTML with no extra explanation or markdown fences`;
+
 export class TranslationService {
   private client: Anthropic;
 
@@ -42,6 +51,15 @@ export class TranslationService {
   }
 
   /**
+   * Split HTML into chunks at <h2 boundaries.
+   * Each chunk is small enough to fit within Haiku's 8K output token limit.
+   */
+  private splitByH2(html: string): string[] {
+    const chunks = html.split(/(?=<h2[\s>])/i);
+    return chunks.filter(chunk => chunk.trim().length > 0);
+  }
+
+  /**
    * Replace inline style values with short index placeholders to reduce token count.
    * Deduplicates identical style values so repeated patterns share the same index.
    * e.g. style="margin:0 0 20px 0; color:#333; ..." → style="S0"
@@ -58,7 +76,6 @@ export class TranslationService {
       return ` style="S${valueToIdx.get(val)}"`;
     });
 
-    logger.debug(`Style compression: ${styleValues.length} unique styles, HTML ${html.length} → ${compressed.length} chars`);
     return { compressed, styleValues };
   }
 
@@ -70,31 +87,47 @@ export class TranslationService {
     });
   }
 
-  private async translateHtml(html: string): Promise<string> {
-    const { compressed, styleValues } = this.compressStyles(html);
+  /**
+   * Translate a single HTML chunk via Haiku.
+   * Returns the original chunk on failure (EN fallback).
+   */
+  private async translateChunk(chunk: string, chunkIdx: number, total: number): Promise<string> {
+    const { compressed, styleValues } = this.compressStyles(chunk);
 
     const response = await this.client.messages.create({
       model: TRANSLATION_MODEL,
       max_tokens: 8192,
-      system: `You are a professional English-to-Korean translator for HTML blog posts.
-
-Rules:
-- Translate ALL visible English text content to Korean
-- Preserve ALL HTML tags and attributes EXACTLY as-is (including style="S0", style="S1", etc.)
-- Preserve all URLs (href/src values) unchanged
-- Preserve brand and product names (Claude, ChatGPT, Google, WordPress, Notion, etc.)
-- Return ONLY the translated HTML with no extra explanation or markdown fences`,
+      system: TRANSLATION_SYSTEM,
       messages: [
         { role: 'user', content: `Translate this HTML to Korean:\n\n${compressed}` },
       ],
     });
 
     if (response.stop_reason === 'max_tokens') {
-      throw new Error('HTML translation hit token limit — content may be too long for Haiku');
+      logger.warn(`Chunk ${chunkIdx + 1}/${total} hit token limit, using EN for this chunk`);
+      return chunk;
     }
 
     const translated = response.content[0].type === 'text' ? response.content[0].text.trim() : compressed;
     return this.restoreStyles(translated, styleValues);
+  }
+
+  private async translateHtml(html: string): Promise<string> {
+    const chunks = this.splitByH2(html);
+    logger.debug(`Translating HTML in ${chunks.length} chunks (style-compressed)`);
+
+    const translated: string[] = [];
+    for (let i = 0; i < chunks.length; i++) {
+      try {
+        const result = await this.translateChunk(chunks[i], i, chunks.length);
+        translated.push(result);
+      } catch (error) {
+        logger.warn(`Chunk ${i + 1}/${chunks.length} failed, using EN: ${error instanceof Error ? error.message : error}`);
+        translated.push(chunks[i]);
+      }
+    }
+
+    return translated.join('');
   }
 
   private async translateMetadata(
