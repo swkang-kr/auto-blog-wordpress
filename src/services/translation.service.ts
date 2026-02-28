@@ -1,61 +1,131 @@
-import * as deepl from 'deepl-node';
+import Anthropic from '@anthropic-ai/sdk';
 import { logger } from '../utils/logger.js';
 import type { BlogContent } from '../types/index.js';
 
+const TRANSLATION_MODEL = 'claude-haiku-4-5-20251001';
+
 export class TranslationService {
-  private translator: deepl.Translator;
+  private client: Anthropic;
 
   constructor(apiKey: string) {
-    this.translator = new deepl.Translator(apiKey);
+    this.client = new Anthropic({ apiKey });
   }
 
-  /**
-   * Translate English BlogContent fields to Korean using DeepL.
-   * Mutates and returns the same content object with KR fields populated.
-   * On failure, EN content is used as fallback (graceful).
-   */
   async translateContent(content: BlogContent): Promise<BlogContent> {
-    logger.info('Translating content to Korean via DeepL...');
+    logger.info('Translating content to Korean via Claude Haiku...');
 
-    // Translate HTML (preserving tags/styles)
     try {
-      const htmlResult = await this.translator.translateText(
-        content.html,
-        'en',
-        'ko',
-        { tagHandling: 'html' },
-      );
-      content.htmlKr = htmlResult.text;
+      content.htmlKr = await this.translateHtml(content.html);
     } catch (error) {
-      logger.warn(`DeepL HTML translation failed, using EN fallback: ${error instanceof Error ? error.message : error}`);
+      logger.warn(`HTML translation failed, using EN fallback: ${error instanceof Error ? error.message : error}`);
       content.htmlKr = content.html;
     }
 
-    // Translate title
     try {
-      const titleResult = await this.translator.translateText(content.title, 'en', 'ko');
-      content.titleKr = titleResult.text;
-    } catch {
+      const { titleKr, excerptKr, tagsKr } = await this.translateMetadata(
+        content.title,
+        content.excerpt,
+        content.tags,
+      );
+      content.titleKr = titleKr;
+      content.excerptKr = excerptKr;
+      content.tagsKr = tagsKr;
+    } catch (error) {
+      logger.warn(`Metadata translation failed, using EN fallback: ${error instanceof Error ? error.message : error}`);
       content.titleKr = content.title;
-    }
-
-    // Translate excerpt
-    try {
-      const excerptResult = await this.translator.translateText(content.excerpt, 'en', 'ko');
-      content.excerptKr = excerptResult.text;
-    } catch {
       content.excerptKr = content.excerpt;
-    }
-
-    // Translate tags
-    try {
-      const tagResults = await this.translator.translateText(content.tags, 'en', 'ko');
-      content.tagsKr = tagResults.map((r) => r.text);
-    } catch {
       content.tagsKr = content.tags;
     }
 
     logger.info(`Translation complete: title="${content.titleKr}"`);
     return content;
+  }
+
+  /**
+   * Replace inline style values with short index placeholders to reduce token count.
+   * Deduplicates identical style values so repeated patterns share the same index.
+   * e.g. style="margin:0 0 20px 0; color:#333; ..." → style="S0"
+   */
+  private compressStyles(html: string): { compressed: string; styleValues: string[] } {
+    const valueToIdx = new Map<string, number>();
+    const styleValues: string[] = [];
+
+    const compressed = html.replace(/ style="([^"]*)"/g, (_match, val: string) => {
+      if (!valueToIdx.has(val)) {
+        valueToIdx.set(val, styleValues.length);
+        styleValues.push(val);
+      }
+      return ` style="S${valueToIdx.get(val)}"`;
+    });
+
+    logger.debug(`Style compression: ${styleValues.length} unique styles, HTML ${html.length} → ${compressed.length} chars`);
+    return { compressed, styleValues };
+  }
+
+  /** Restore original style values from index placeholders. */
+  private restoreStyles(html: string, styleValues: string[]): string {
+    return html.replace(/ style="S(\d+)"/g, (_match, idx) => {
+      const value = styleValues[parseInt(idx, 10)];
+      return value !== undefined ? ` style="${value}"` : _match;
+    });
+  }
+
+  private async translateHtml(html: string): Promise<string> {
+    const { compressed, styleValues } = this.compressStyles(html);
+
+    const response = await this.client.messages.create({
+      model: TRANSLATION_MODEL,
+      max_tokens: 8192,
+      system: `You are a professional English-to-Korean translator for HTML blog posts.
+
+Rules:
+- Translate ALL visible English text content to Korean
+- Preserve ALL HTML tags and attributes EXACTLY as-is (including style="S0", style="S1", etc.)
+- Preserve all URLs (href/src values) unchanged
+- Preserve brand and product names (Claude, ChatGPT, Google, WordPress, Notion, etc.)
+- Return ONLY the translated HTML with no extra explanation or markdown fences`,
+      messages: [
+        { role: 'user', content: `Translate this HTML to Korean:\n\n${compressed}` },
+      ],
+    });
+
+    if (response.stop_reason === 'max_tokens') {
+      throw new Error('HTML translation hit token limit — content may be too long for Haiku');
+    }
+
+    const translated = response.content[0].type === 'text' ? response.content[0].text.trim() : compressed;
+    return this.restoreStyles(translated, styleValues);
+  }
+
+  private async translateMetadata(
+    title: string,
+    excerpt: string,
+    tags: string[],
+  ): Promise<{ titleKr: string; excerptKr: string; tagsKr: string[] }> {
+    const response = await this.client.messages.create({
+      model: TRANSLATION_MODEL,
+      max_tokens: 512,
+      messages: [
+        {
+          role: 'user',
+          content: `Translate to Korean. Respond with JSON only, no markdown.
+{"title":"${title}","excerpt":"${excerpt}","tags":${JSON.stringify(tags)}}`,
+        },
+      ],
+    });
+
+    const text = response.content[0].type === 'text' ? response.content[0].text : '';
+    const cleaned = text.replace(/```(?:json)?\s*/g, '').replace(/```\s*$/g, '').trim();
+
+    try {
+      const parsed = JSON.parse(cleaned) as { title?: string; excerpt?: string; tags?: string[] };
+      return {
+        titleKr: typeof parsed.title === 'string' ? parsed.title : title,
+        excerptKr: typeof parsed.excerpt === 'string' ? parsed.excerpt : excerpt,
+        tagsKr: Array.isArray(parsed.tags) ? parsed.tags : tags,
+      };
+    } catch {
+      return { titleKr: title, excerptKr: excerpt, tagsKr: tags };
+    }
   }
 }
