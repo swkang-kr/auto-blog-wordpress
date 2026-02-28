@@ -220,11 +220,27 @@ Respond with pure JSON only.`;
       model: process.env.CLAUDE_MODEL || 'claude-sonnet-4-6',
       max_tokens: 32000,
       temperature: 0.7,
-      system: SYSTEM_PROMPT,
+      system: [
+        {
+          type: 'text',
+          text: SYSTEM_PROMPT,
+          cache_control: { type: 'ephemeral' },
+        },
+      ],
       messages: [{ role: 'user', content: userPrompt }],
     });
 
     const response = await stream.finalMessage();
+
+    const usage = response.usage as typeof response.usage & {
+      cache_creation_input_tokens?: number;
+      cache_read_input_tokens?: number;
+    };
+    if (usage.cache_read_input_tokens) {
+      logger.info(`Prompt cache HIT: ${usage.cache_read_input_tokens} tokens read from cache (saved ~$${((usage.cache_read_input_tokens / 1_000_000) * 2.7).toFixed(4)})`);
+    } else if (usage.cache_creation_input_tokens) {
+      logger.info(`Prompt cache WRITE: ${usage.cache_creation_input_tokens} tokens written to cache`);
+    }
 
     const text =
       response.content[0].type === 'text' ? response.content[0].text : '';
