@@ -6,28 +6,42 @@ import type { ResearchedKeyword, BlogContent, ExistingPost } from '../types/inde
 const SYSTEM_PROMPT = `You are an SEO expert blog writer skilled in writing engaging, high-quality English content for a global audience.
 Given a researched keyword with niche context, write a comprehensive blog post in ENGLISH.
 
+## Content Length Requirement (CRITICAL)
+You MUST write AT LEAST 2,500 words of body content. This is non-negotiable.
+To reach 2,500+ words:
+- Each major section (H2) must have 3-5 detailed paragraphs, not 1-2
+- Each step or list item must include a full explanation, example, and practical tip
+- Include real-world examples, data points, and expert perspectives throughout
+- Add a detailed FAQ section (5-7 questions) at the end before the conclusion
+- Include a "Common Mistakes" or "What to Avoid" section
+- Add a "Pro Tips" or "Advanced Tips" section with actionable advice
+
 ## Content Type Guidelines
 
 ### How-to Content
-- Structure as a step-by-step guide with numbered steps
+- Structure as a step-by-step guide with numbered steps (minimum 6-8 steps)
 - Include prerequisite/materials section at the beginning
-- Each step should have a clear action and explanation
-- Add pro tips and common mistakes to avoid
-- End with a summary checklist
+- Each step: clear action + detailed explanation + real example + common mistake for that step
+- Add a "Troubleshooting" section for common issues
+- Add pro tips and "What Not to Do" section
+- End with a summary checklist and FAQ (5-7 Q&As)
 
 ### Best X for Y Content
-- Create a ranked list with clear #1, #2, #3 etc.
-- Include a comparison table with key features
-- For each item: brief overview, pros, cons, best for whom
+- Create a ranked list with minimum 7-10 items
+- Include a detailed comparison table with key features
+- For each item: overview (2-3 sentences), pros (3+), cons (2+), pricing, best for whom, real use case
 - Include a "How We Evaluated" section for credibility
-- End with a clear recommendation summary
+- Include a "How to Choose" buying guide section
+- End with a clear recommendation summary and FAQ (5-7 Q&As)
 
 ### X vs Y Content
-- Start with a brief overview of both options
+- Start with a detailed overview of both options (background, history, key strengths)
 - Create a detailed comparison table
-- Compare across 5-7 key criteria
+- Compare across 8-10 key criteria with in-depth analysis per criterion
+- Include real user scenarios: "Choose X if you...", "Choose Y if you..."
+- Add a "Performance Benchmarks" or "Real-World Testing" section
 - Provide a clear verdict/winner for each use case
-- End with "Which Should You Choose?" recommendation
+- End with "Which Should You Choose?" recommendation and FAQ (5-7 Q&As)
 
 ## Anti-AI Detection Writing Rules (CRITICAL)
 You MUST write like an experienced human blogger, NOT like an AI. Avoid these AI-telltale patterns:
@@ -84,7 +98,7 @@ Rules:
      G. "[N] [Emotion] Signs You're [Negative State]"   → "7 Alarming Signs You're Bad With Money"         (Finance, Psychology)
    RULE 4 - CONCISE: Keep under 50 characters (translates to ~25 Korean characters)
 2. slug: Short, clean URL slug (3-5 words max, lowercase, hyphens, include year). Example: "claude-ai-best-features-2026" NOT "claude-ai-7-best-features-and-how-to-use-them-in-2026"
-3. html: English blog post in HTML format (800-1,000+ words, inline CSS styled)
+3. html: English blog post in HTML format (2,500+ words, inline CSS styled)
 4. Include a table of contents at the beginning
 5. Use a natural, authoritative English tone matching the niche
 6. excerpt: English meta description, exactly 120-160 characters (required for SEO - count carefully)
@@ -106,10 +120,10 @@ E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness) Rules:
 - Offer deep analysis and insights, not just surface-level lists
 
 Image Prompt Rules (CRITICAL):
-- Generate exactly 4 English image prompts in the imagePrompts array
+- Generate exactly 5 English image prompts in the imagePrompts array
 - First (index 0): Featured image - visually represents the core topic
-- Remaining 3 (index 1-3): Inline images for each section
-- All 4 prompts MUST describe completely different scenes/subjects/compositions (NO duplicates!)
+- Remaining 4 (index 1-4): Inline images distributed across sections
+- All 5 prompts MUST describe completely different scenes/subjects/compositions (NO duplicates!)
 - Each prompt MUST be at least 50 words with specific details
 - Describe scene, composition, colors, mood, subjects, and background in detail
 - Describe scenes directly related to the blog content
@@ -117,7 +131,7 @@ Image Prompt Rules (CRITICAL):
 - NEVER repeat similar prompts
 
 imageCaptions Rules:
-- Generate exactly 4 English image captions in the imageCaptions array
+- Generate exactly 5 English image captions in the imageCaptions array
 - Each caption is a short English sentence describing the image (5-15 words)
 
 HTML Style Rules (Naver Blog Style with inline CSS):
@@ -130,7 +144,7 @@ HTML Style Rules (Naver Blog Style with inline CSS):
 - Divider: <hr style="border:none; height:1px; background:linear-gradient(to right, #ddd, #eee, #ddd); margin:36px 0;">
 - Key point box: <div style="background:#fff8e1; border:1px solid #ffe082; padding:20px 24px; border-radius:8px; margin:24px 0;"><p style="margin:0; font-weight:600; color:#f57f17; margin-bottom:8px;">Key Point</p><p style="margin:0; color:#555; line-height:1.7;">content</p></div>
 - Comparison table: <table style="width:100%; border-collapse:collapse; margin:24px 0;"><tr style="background:#f0f4ff;"><th style="padding:12px 16px; border:1px solid #ddd; text-align:left;">...</th></tr><tr><td style="padding:12px 16px; border:1px solid #ddd;">...</td></tr></table>
-- Mark image positions with <!--IMAGE_PLACEHOLDER_1-->, <!--IMAGE_PLACEHOLDER_2-->, <!--IMAGE_PLACEHOLDER_3--> comments
+- Mark image positions with <!--IMAGE_PLACEHOLDER_1-->, <!--IMAGE_PLACEHOLDER_2-->, <!--IMAGE_PLACEHOLDER_3-->, <!--IMAGE_PLACEHOLDER_4--> comments
 - Distribute image placeholders evenly across the article (one after each major section)
 - Include a summary or closing statement at the end
 - NEVER use emoji or unicode special symbols in HTML (WordPress converts them to low-quality SVG)
@@ -177,7 +191,7 @@ Unique Angle: ${analysis.uniqueAngle}
 Search Intent: ${analysis.searchIntent}
 Related Keywords to Include: ${analysis.relatedKeywordsToInclude.join(', ')}${internalLinksSection}
 
-Write an in-depth ${analysis.contentType} blog post about "${analysis.selectedKeyword}" for the ${niche.name} niche.
+Write an in-depth ${analysis.contentType} blog post about "${analysis.selectedKeyword}" for the ${niche.name} niche. The post MUST be at least 2,500 words. Write thoroughly — expand each section with detailed explanations, real examples, data, and expert insights. Do NOT stop early.
 IMPORTANT: All information, statistics, recommendations, and references must be current as of ${year}. Do NOT use outdated data from previous years. Mention "${year}" where relevant (e.g., "Best AI Tools in ${year}", "As of ${year}").
 Use the unique angle: "${analysis.uniqueAngle}"
 Naturally incorporate these LSI keywords: ${analysis.relatedKeywordsToInclude.join(', ')}
@@ -187,7 +201,7 @@ Respond with pure JSON only.`;
 
     const stream = this.client.messages.stream({
       model: process.env.CLAUDE_MODEL || 'claude-sonnet-4-6',
-      max_tokens: 16000,
+      max_tokens: 32000,
       temperature: 0.7,
       system: SYSTEM_PROMPT,
       messages: [{ role: 'user', content: userPrompt }],
@@ -217,9 +231,9 @@ Respond with pure JSON only.`;
       );
     }
 
-    // Ensure at least 4 image prompts
-    while (content.imagePrompts.length < 4) {
-      logger.warn(`Only ${content.imagePrompts.length} image prompts, padding to 4`);
+    // Ensure at least 5 image prompts
+    while (content.imagePrompts.length < 5) {
+      logger.warn(`Only ${content.imagePrompts.length} image prompts, padding to 5`);
       content.imagePrompts.push(`Detailed illustration related to ${analysis.selectedKeyword}, vivid colors, editorial style`);
       content.imageCaptions.push(`${content.title} related image`);
     }
