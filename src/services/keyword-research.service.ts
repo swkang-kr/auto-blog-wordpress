@@ -80,20 +80,23 @@ ${trendsContext}
 ${postedKeywords.length > 0 ? postedKeywords.map((k) => `- ${k}`).join('\n') : 'None yet'}
 
 ## Instructions
-1. Select the best keyword to target (can be a seed keyword, a related query, or a variation)
+1. Select the best keyword to target — MUST be a long-tail keyword (4+ words). Short head terms like "budgeting tips" or "AI tools" are NOT acceptable.
 2. Choose the best content type from: ${niche.contentTypes.join(', ')}
-   - how-to: Step-by-step guide (e.g., "How to Make Korean Fried Chicken at Home")
-   - best-x-for-y: Ranked list with comparisons (e.g., "Best AI Writing Tools for Bloggers in 2026")
-   - x-vs-y: Comparison analysis (e.g., "ChatGPT vs Gemini: Which AI Assistant Is Better?")
+   - how-to: Step-by-step guide (e.g., "How to Make Korean Fried Chicken at Home Without a Deep Fryer")
+   - best-x-for-y: Ranked list with comparisons (e.g., "Best Free AI Writing Tools for Bloggers on a Budget")
+   - x-vs-y: Comparison analysis (e.g., "Notion vs Obsidian for Personal Knowledge Management")
 3. Suggest a unique angle that differentiates from existing content
 4. Identify the search intent and competition level
 5. List 5-8 LSI (related) keywords to naturally include in the content
 
-IMPORTANT: Choose a keyword that is DIFFERENT from the already posted keywords. Prioritize:
-- Rising trends and breakout topics
-- Low-to-medium competition keywords
-- High search intent keywords
-- Keywords that match the niche well
+IMPORTANT: Choose a keyword that is DIFFERENT from the already posted keywords.
+CRITICAL keyword selection rules — follow in strict priority order:
+1. MUST be low competition (estimatedCompetition: "low"). Reject any keyword that is medium or high competition.
+2. MUST be long-tail (4+ words). Reject any keyword shorter than 4 words.
+3. PREFER question-based keywords ("how to", "what is", "why does", "best way to")
+4. PREFER keywords with clear informational or commercial investigation intent
+5. AVOID head terms dominated by high-authority sites (NerdWallet, Forbes, Wikipedia, etc.)
+6. Rising trends and breakout topics are a bonus — but only if they also satisfy rules 1-2
 
 Respond with pure JSON only. No markdown code blocks.
 {"selectedKeyword":"...","contentType":"how-to|best-x-for-y|x-vs-y","suggestedTitle":"...","uniqueAngle":"...","searchIntent":"...","estimatedCompetition":"low|medium|high","reasoning":"...","relatedKeywordsToInclude":["...","..."]}`;

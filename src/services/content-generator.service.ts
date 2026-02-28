@@ -84,24 +84,41 @@ You MUST write like an experienced human blogger, NOT like an AI. Avoid these AI
 - NEVER fabricate or guess URLs - only use official domains you are confident exist
 
 Rules:
-1. title: High-CTR clickbait-style English title. MUST follow ALL 4 rules below:
-   RULE 1 - NUMBERS: Always include a specific number (3, 5, 7, 9, 10, 12, etc.)
-   RULE 2 - EMOTION WORDS: Pick ONE that fits best (do NOT reuse the same word across posts):
-     Shocking / Surprising / Unbelievable / Hidden / Secret / Proven / Finally / Powerful / Embarrassing / Scary
-   RULE 3 - PATTERN: Choose the best-fit pattern based on niche (each pattern maps to recommended niches):
-     A. "[N] [Emotion] [Topic] That [Outcome]"          → "5 Genius Meal Preps That Save Your Week"       (Food, Productivity)
-     B. "Stop [Doing X]: [N] [Emotion] [Alternatives]"  → "Stop Wasting: 5 Hidden Money Habits That Work"  (Finance, Self-improvement)
-     C. "How I [Achievement] in [N] [Emotion] Steps"    → "How I Saved $500 in 3 Surprising Steps"          (Diet, Lifestyle)
-     D. "[N] [Emotion] [Topic] Nobody Talks About"      → "7 Scary AI Mistakes Nobody Talks About"         (AI, Tech)
-     E. "[N] Surprising Things About [Topic]"           → "9 Surprising Things About Passive Income"       (Finance, Trends)
-     F. "Why [N] Experts Are [Emotion] About [Topic]"   → "Why 5 Experts Are Shocked by This AI Tool"      (AI, Marketing)
-     G. "[N] [Emotion] Signs You're [Negative State]"   → "7 Alarming Signs You're Bad With Money"         (Finance, Psychology)
-   RULE 4 - CONCISE: Keep under 50 characters (translates to ~25 Korean characters)
-2. slug: Short, clean URL slug (3-5 words max, lowercase, hyphens, include year). Example: "claude-ai-best-features-2026" NOT "claude-ai-7-best-features-and-how-to-use-them-in-2026"
+1. title: High-CTR English title. Target 50-65 characters (Google SERP sweet spot). Follow these guidelines:
+   - MUST include either: a specific number, a concrete outcome/result, or a targeted audience
+   - Be SPECIFIC and CONCRETE — avoid vague superlatives ("amazing", "best ever", "shocking")
+   - Write in natural, conversational language — sound like a helpful expert, not a tabloid
+   - Choose the best-fit pattern based on content type and niche:
+     A. Specific Result: "How to [Do X] Without [Common Problem] ([Specific Method])"
+        → "How to Make Tteokbokki at Home Without Gochujang Paste"
+     B. Number + Audience: "[N] [Topic] for [Specific Audience] (That Actually Work)"
+        → "7 Korean Meal Prep Ideas for Busy Weeknights"
+     C. Honest Opinion: "I Tested [N] [Products/Methods] for [Timeframe] — Here's What Won"
+        → "I Tested 9 Budgeting Apps for 3 Months — Here's What Won"
+     D. Best with Context: "The [N] Best [Topic] for [Specific Person/Situation]"
+        → "The 6 Best Free AI Writing Tools for Solo Bloggers"
+     E. Problem-Solution: "Why [Common Approach] Fails (And the Fix That Works)"
+        → "Why Saving 10% Fails Most People (And What to Do Instead)"
+     F. Comparison with Verdict: "[X] vs [Y]: Which Is Better for [Specific Use Case]?"
+        → "Notion vs Obsidian: Which Is Better for Daily Journaling?"
+     G. Curiosity + Specificity: "[N] Things [Specific Group] Do That Most People Skip"
+        → "8 Things Korean Home Cooks Do That Most Recipes Never Mention"
+   - AVOID: "Shocking", "Unbelievable", "You Won't Believe", "This One Weird Trick"
+   - AVOID: Generic year appending just to look fresh ("Best Tools 2026") unless it's a genuine annual roundup
+2. slug: Short, clean evergreen URL slug (3-5 words max, lowercase, hyphens, NO year for how-to or comparison content).
+   Good: "korean-fried-chicken-at-home", "zero-based-budgeting-guide", "notion-vs-obsidian-comparison"
+   Bad: "korean-fried-chicken-at-home-2026", "best-budgeting-tips-2026"
+   Exception: For annual "best-of" roundups (best-x-for-y content type), you MAY include the year: "best-ai-writing-tools-2026"
 3. html: English blog post in HTML format (2,500+ words, inline CSS styled)
 4. Include a table of contents at the beginning
 5. Use a natural, authoritative English tone matching the niche
-6. excerpt: English meta description, exactly 120-160 characters (required for SEO - count carefully)
+6. excerpt: Compelling English meta description, 140-160 characters. MUST:
+   - Open with the primary keyword or a direct hook (not "In this article..." or "This post covers...")
+   - State the specific value or outcome the reader will get (e.g., "you'll learn exactly how to...", "discover the [N] methods that...")
+   - Use second person ("you", "your") to speak directly to the reader
+   - End with a complete sentence — never cut off mid-thought
+   Good: "Learn exactly how to make crispy Korean fried chicken at home in 30 minutes. No deep fryer needed — just one pan and 5 ingredients."
+   Bad: "This article covers Korean fried chicken recipes including various cooking methods and tips for making it at home."
 7. tags: 5-10 related English keywords
 8. category: One best-fit English category name
 
@@ -248,10 +265,10 @@ Respond with pure JSON only.`;
       throw new ContentGenerationError(`Incomplete content generated for "${analysis.selectedKeyword}"`);
     }
 
-    // Ensure slug exists (fallback: generate from title)
+    // Ensure slug exists (fallback: generate from title, no year for evergreen content)
     if (!content.slug) {
       const yr = new Date().getFullYear();
-      content.slug = content.title
+      const base = content.title
         .toLowerCase()
         .replace(/[^a-z0-9\s-]/g, '')
         .replace(/\s+/g, '-')
@@ -259,7 +276,10 @@ Respond with pure JSON only.`;
         .replace(/^-|-$/g, '')
         .split('-')
         .slice(0, 5)
-        .join('-') + `-${yr}`;
+        .join('-');
+      // Append year only for best-x-for-y annual roundups
+      const isBestOf = base.startsWith('best-') || base.startsWith('top-');
+      content.slug = isBestOf ? `${base}-${yr}` : base;
     }
 
     // Add author byline if SITE_OWNER is set
