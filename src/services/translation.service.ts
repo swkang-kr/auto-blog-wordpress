@@ -108,7 +108,9 @@ export class TranslationService {
       return chunk;
     }
 
-    const translated = response.content[0].type === 'text' ? response.content[0].text.trim() : compressed;
+    let translated = response.content[0].type === 'text' ? response.content[0].text.trim() : compressed;
+    // Strip markdown code fences Haiku occasionally wraps around HTML
+    translated = translated.replace(/^```(?:html)?\s*/i, '').replace(/\s*```$/g, '').trim();
     return this.restoreStyles(translated, styleValues);
   }
 
