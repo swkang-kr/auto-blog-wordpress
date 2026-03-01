@@ -18,6 +18,7 @@ const envSchema = z.object({
   NAVER_SITE_VERIFICATION: z.string().default(''),
   INDEXNOW_KEY: z.string().default(''),
   CLAUDE_MODEL: z.string().default('claude-sonnet-4-6'),
+  POST_COUNT: z.coerce.number().int().min(1).default(3),
   DEEPL_API_KEY: z.string().default(''),
   // X (Twitter) - optional, all four must be set to enable promotion
   X_API_KEY: z.string().default(''),

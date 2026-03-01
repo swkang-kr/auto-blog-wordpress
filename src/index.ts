@@ -19,7 +19,8 @@ async function main(): Promise<void> {
 
   // 1. Config
   const config = loadConfig();
-  logger.info(`Geo: ${config.TRENDS_GEO}, Niches: ${NICHES.length}`);
+  const activeNiches = NICHES.slice(0, config.POST_COUNT);
+  logger.info(`Geo: ${config.TRENDS_GEO}, Niches: ${activeNiches.length}/${NICHES.length} (POST_COUNT=${config.POST_COUNT})`);
 
   // 2. Services
   const researchService = new KeywordResearchService(config.ANTHROPIC_API_KEY, config.TRENDS_GEO);
@@ -113,7 +114,7 @@ async function main(): Promise<void> {
   logger.info('\n=== Phase A: Research + Content Generation (prompt-cache optimised) ===');
   const generated: GeneratedPost[] = [];
 
-  for (const niche of NICHES) {
+  for (const niche of activeNiches) {
     const postStart = Date.now();
     logger.info(`\n[Phase A] Niche: "${niche.name}"`);
 

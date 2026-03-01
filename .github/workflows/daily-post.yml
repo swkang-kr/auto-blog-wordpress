@@ -4,6 +4,11 @@ on:
   schedule:
     - cron: '0 14 * * 1'  # UTC 14:00 every Monday = EST 09:00 / PST 06:00 매주 월요일
   workflow_dispatch:          # Manual trigger
+    inputs:
+      post_count:
+        description: 'Number of niches to post (1-3)'
+        required: false
+        default: '3'
 
 permissions:
   contents: write
@@ -46,6 +51,7 @@ jobs:
           X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}
           GOOGLE_INDEXING_SA_KEY: ${{ secrets.GOOGLE_INDEXING_SA_KEY }}
           INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+          POST_COUNT: ${{ inputs.post_count || '3' }}
 
       - name: Commit post history
         run: |
