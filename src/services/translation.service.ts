@@ -29,6 +29,29 @@ export class TranslationService {
     return !!this.deeplApiKey && !this.deeplQuotaExhausted;
   }
 
+  async checkDeepLUsage(): Promise<void> {
+    if (!this.deeplApiKey) return;
+
+    try {
+      const response = await axios.get<{ character_count: number; character_limit: number }>(
+        'https://api-free.deepl.com/v2/usage',
+        { headers: { Authorization: `DeepL-Auth-Key ${this.deeplApiKey}` } },
+      );
+      const { character_count, character_limit } = response.data;
+      const remaining = character_limit - character_count;
+      const pct = ((character_count / character_limit) * 100).toFixed(1);
+      logger.info(
+        `DeepL usage: ${character_count.toLocaleString()} / ${character_limit.toLocaleString()} chars used (${pct}%) — ${remaining.toLocaleString()} remaining`,
+      );
+      if (remaining === 0) {
+        this.deeplQuotaExhausted = true;
+        logger.warn('DeepL quota already exhausted — will use Claude Haiku');
+      }
+    } catch (error) {
+      logger.warn(`DeepL usage check failed: ${error instanceof Error ? error.message : error}`);
+    }
+  }
+
   async translateContent(content: BlogContent): Promise<BlogContent> {
     const provider = this.canUseDeepL ? 'DeepL (Haiku fallback)' : 'Claude Haiku';
     logger.info(`Translating content to Korean via ${provider}...`);
