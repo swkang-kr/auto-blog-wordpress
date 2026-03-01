@@ -1,8 +1,10 @@
 import Anthropic from '@anthropic-ai/sdk';
+import axios from 'axios';
 import { logger } from '../utils/logger.js';
 import type { BlogContent } from '../types/index.js';
 
 const TRANSLATION_MODEL = 'claude-haiku-4-5-20251001';
+const DEEPL_API_URL = 'https://api-free.deepl.com/v2/translate';
 
 const TRANSLATION_SYSTEM = `You are a professional English-to-Korean translator for HTML blog posts.
 
@@ -15,13 +17,21 @@ Rules:
 
 export class TranslationService {
   private client: Anthropic;
+  private deeplApiKey: string | null;
+  private deeplQuotaExhausted = false;
 
-  constructor(apiKey: string) {
+  constructor(apiKey: string, deeplApiKey?: string) {
     this.client = new Anthropic({ apiKey });
+    this.deeplApiKey = deeplApiKey && deeplApiKey.trim() ? deeplApiKey.trim() : null;
+  }
+
+  private get canUseDeepL(): boolean {
+    return !!this.deeplApiKey && !this.deeplQuotaExhausted;
   }
 
   async translateContent(content: BlogContent): Promise<BlogContent> {
-    logger.info('Translating content to Korean via Claude Haiku...');
+    const provider = this.canUseDeepL ? 'DeepL (Haiku fallback)' : 'Claude Haiku';
+    logger.info(`Translating content to Korean via ${provider}...`);
 
     try {
       content.htmlKr = await this.translateHtml(content.html);
@@ -49,6 +59,60 @@ export class TranslationService {
     logger.info(`Translation complete: title="${content.titleKr}"`);
     return content;
   }
+
+  // ── DeepL ────────────────────────────────────────────────────────────────
+
+  /**
+   * Returns true when the error is a 456 quota-exceeded response.
+   * Sets deeplQuotaExhausted so all subsequent calls skip DeepL.
+   */
+  private handleDeepLError(error: unknown): boolean {
+    if (axios.isAxiosError(error) && error.response?.status === 456) {
+      this.deeplQuotaExhausted = true;
+      logger.warn('DeepL free quota exhausted — switching to Claude Haiku for remaining translations');
+      return true;
+    }
+    return false;
+  }
+
+  private async deeplTranslateHtml(html: string): Promise<string> {
+    const response = await axios.post<{ translations: Array<{ text: string }> }>(
+      DEEPL_API_URL,
+      {
+        text: [html],
+        source_lang: 'EN',
+        target_lang: 'KO',
+        tag_handling: 'html',
+      },
+      {
+        headers: {
+          Authorization: `DeepL-Auth-Key ${this.deeplApiKey}`,
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+    return response.data.translations[0].text;
+  }
+
+  private async deeplTranslateTexts(texts: string[]): Promise<string[]> {
+    const response = await axios.post<{ translations: Array<{ text: string }> }>(
+      DEEPL_API_URL,
+      {
+        text: texts,
+        source_lang: 'EN',
+        target_lang: 'KO',
+      },
+      {
+        headers: {
+          Authorization: `DeepL-Auth-Key ${this.deeplApiKey}`,
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+    return response.data.translations.map((t) => t.text);
+  }
+
+  // ── Haiku helpers (style-compressed) ─────────────────────────────────────
 
   /**
    * Split HTML into chunks at <h2 boundaries.
@@ -114,15 +178,36 @@ export class TranslationService {
     return this.restoreStyles(translated, styleValues);
   }
 
+  // ── Main translation methods ──────────────────────────────────────────────
+
   private async translateHtml(html: string): Promise<string> {
     const chunks = this.splitByH2(html);
-    logger.debug(`Translating HTML in ${chunks.length} chunks (style-compressed)`);
+    logger.debug(`Translating HTML in ${chunks.length} chunks`);
 
     const translated: string[] = [];
+
     for (let i = 0; i < chunks.length; i++) {
+      // DeepL path
+      if (this.canUseDeepL) {
+        try {
+          const result = await this.deeplTranslateHtml(chunks[i]);
+          translated.push(result);
+          logger.debug(`Chunk ${i + 1}/${chunks.length} → DeepL`);
+          continue;
+        } catch (error) {
+          const isQuota = this.handleDeepLError(error);
+          if (!isQuota) {
+            logger.warn(`DeepL chunk ${i + 1} failed, falling back to Haiku: ${error instanceof Error ? error.message : error}`);
+          }
+          // fall through to Haiku
+        }
+      }
+
+      // Haiku path
       try {
         const result = await this.translateChunk(chunks[i], i, chunks.length);
         translated.push(result);
+        logger.debug(`Chunk ${i + 1}/${chunks.length} → Haiku`);
       } catch (error) {
         logger.warn(`Chunk ${i + 1}/${chunks.length} failed, using EN: ${error instanceof Error ? error.message : error}`);
         translated.push(chunks[i]);
@@ -137,6 +222,27 @@ export class TranslationService {
     excerpt: string,
     tags: string[],
   ): Promise<{ titleKr: string; excerptKr: string; tagsKr: string[] }> {
+    // DeepL path
+    if (this.canUseDeepL) {
+      try {
+        const texts = [title, excerpt, ...tags];
+        const results = await this.deeplTranslateTexts(texts);
+        logger.debug('Metadata → DeepL');
+        return {
+          titleKr: results[0] ?? title,
+          excerptKr: results[1] ?? excerpt,
+          tagsKr: results.slice(2).length > 0 ? results.slice(2) : tags,
+        };
+      } catch (error) {
+        const isQuota = this.handleDeepLError(error);
+        if (!isQuota) {
+          logger.warn(`DeepL metadata failed, falling back to Haiku: ${error instanceof Error ? error.message : error}`);
+        }
+        // fall through to Haiku
+      }
+    }
+
+    // Haiku path
     const response = await this.client.messages.create({
       model: TRANSLATION_MODEL,
       max_tokens: 512,

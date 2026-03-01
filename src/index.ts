@@ -26,8 +26,8 @@ async function main(): Promise<void> {
   const contentService = new ContentGeneratorService(config.ANTHROPIC_API_KEY, config.SITE_OWNER);
   const imageService = new ImageGeneratorService(config.GEMINI_API_KEY);
   const wpService = new WordPressService(config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD, config.SITE_OWNER);
-  const translationService = new TranslationService(config.ANTHROPIC_API_KEY);
-  logger.info('Translation service enabled (Claude Haiku — style-compressed)');
+  const translationService = new TranslationService(config.ANTHROPIC_API_KEY, config.DEEPL_API_KEY || undefined);
+  logger.info(`Translation service enabled (${config.DEEPL_API_KEY ? 'DeepL → Haiku fallback' : 'Claude Haiku'})`);
 
   const twitterService =
     config.X_API_KEY && config.X_API_SECRET && config.X_ACCESS_TOKEN && config.X_ACCESS_TOKEN_SECRET
