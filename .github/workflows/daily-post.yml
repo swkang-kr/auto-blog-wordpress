@@ -1,8 +1,8 @@
-name: Daily Blog Post
+name: Weekly Blog Post
 
 on:
   schedule:
-    - cron: '0 14 */2 * *'  # UTC 14:00 every other day = EST 09:00 / PST 06:00 격일
+    - cron: '0 14 * * 1'  # UTC 14:00 every Monday = EST 09:00 / PST 06:00 매주 월요일
   workflow_dispatch:          # Manual trigger
 
 permissions:
