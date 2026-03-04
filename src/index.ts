@@ -219,6 +219,10 @@ async function main(): Promise<void> {
 
         await new Promise((r) => setTimeout(r, 2000));
         await wpService.updatePostMeta(post.postId, { hreflang_ko: krPost.url });
+
+        // EN 포스트에 "한국어로 보기" 링크 삽입 (KR URL 확정 후)
+        await wpService.addKoreanLink(post.postId, krPost.url, content.titleKr || content.title);
+
         logger.info(`Bilingual posts linked: EN(${post.postId}) <-> KR(${krPost.postId})`);
       } catch (error) {
         logger.warn(`Korean post creation failed (EN post is still live): ${error instanceof Error ? error.message : error}`);

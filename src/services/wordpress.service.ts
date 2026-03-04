@@ -120,9 +120,8 @@ export class WordPressService {
     inlineImages?: Array<{ url: string; caption: string }>,
     options?: { contentType?: string; keyword?: string; featuredImageUrl?: string },
   ): Promise<PublishedPost> {
-    // Replace image placeholders in both English and Korean HTML
+    // EN 콘텐츠만 포함 (KR 콘텐츠는 별도 URL로 분리 — 중복 콘텐츠 방지)
     let htmlEn = this.replaceImagePlaceholders(content.html, inlineImages);
-    let htmlKr = this.replaceImagePlaceholders(content.htmlKr, inlineImages);
 
     // Validate and trim excerpt for SEO (120-160 chars)
     const validatedExcerpt = content.excerpt.length > 160
@@ -135,33 +134,17 @@ export class WordPressService {
       /<div(\s*style="background:#f0f4ff;[^"]*")>(\s*<p[^>]*>Table of Contents<\/p>)/,
       '<div role="doc-toc" aria-label="Table of Contents"$1>$2',
     );
-    htmlKr = htmlKr.replace(
-      /<div(\s*style="background:#f0f4ff;[^"]*")>(\s*<p[^>]*>(?:목차|Table of Contents)<\/p>)/,
-      '<div role="doc-toc" aria-label="목차"$1>$2',
-    );
 
     // Build tag pills HTML
     const tagStyle = `display:inline-block; padding:4px 12px; margin:0 6px 6px 0; background:#f0f4ff; color:#0066FF; border-radius:14px; font-size:13px; text-decoration:none;`;
     const tagsEnHtml = content.tags.map((t) => `<span style="${tagStyle}">${this.escapeHtml(t)}</span>`).join('');
-    const tagsKrHtml = (content.tagsKr || content.tags).map((t) => `<span style="${tagStyle}">${this.escapeHtml(t)}</span>`).join('');
     const tagSection = (label: string, pills: string) =>
       `<div style="margin:30px 0 0 0; padding-top:20px; border-top:1px solid #eee;"><p style="margin:0 0 8px 0; font-size:14px; font-weight:600; color:#666;">${label}</p><div>${pills}</div></div>`;
 
-    // Assemble bilingual toggle UI
-    const escapedTitleEn = this.escapeHtml(content.title);
-    const escapedTitleKr = this.escapeHtml(content.titleKr || content.title);
+    // KR 링크 placeholder — addKoreanLink()로 나중에 교체됨
+    const krLinkPlaceholder = `<div id="kr-link-placeholder" style="text-align:right; margin:0 0 20px 0;"></div>`;
 
-    const toggleButton = `<div style="text-align:right; margin:0 0 20px 0;">` +
-      `<button onclick="(function(b){var p=b.closest('.bilingual-post');var en=p.querySelector('.content-en');var kr=p.querySelector('.content-kr');var t=document.querySelector('.entry-title')||document.querySelector('h1.wp-block-post-title')||document.querySelector('h1');if(en.style.display!=='none'){en.style.display='none';kr.style.display='block';b.textContent='Read in English';if(t)t.textContent=p.dataset.titleKr;document.title=p.dataset.titleKr;}else{en.style.display='block';kr.style.display='none';b.textContent='\\ud55c\\uad6d\\uc5b4\\ub85c \\ubcf4\\uae30';if(t)t.textContent=p.dataset.titleEn;document.title=p.dataset.titleEn;}})(this)" ` +
-      `style="padding:8px 20px; background:#0066FF; color:#fff; border:none; border-radius:20px; cursor:pointer; font-size:14px;">` +
-      `한국어로 보기</button></div>`;
-
-    let html = `<div class="bilingual-post" data-title-en="${escapedTitleEn}" data-title-kr="${escapedTitleKr}">` +
-      toggleButton +
-      `<div class="content-en" lang="en" style="display:block">${htmlEn}${tagSection('Tags', tagsEnHtml)}</div>` +
-      `<div class="content-kr" lang="ko" style="display:none">${htmlKr}${tagSection('태그', tagsKrHtml)}</div>` +
-      `<noscript><div lang="ko"><h2>${escapedTitleKr}</h2>${htmlKr}${tagSection('태그', tagsKrHtml)}</div></noscript>` +
-      `</div>`;
+    let html = krLinkPlaceholder + htmlEn + tagSection('Tags', tagsEnHtml);
 
     // Inject JSON-LD structured data (BlogPosting schema)
     const wordCount = htmlEn.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
@@ -352,6 +335,37 @@ export class WordPressService {
         ? `${error.response?.status} ${JSON.stringify(error.response?.data ?? error.message)}`
         : (error instanceof Error ? error.message : String(error));
       throw new WordPressError(`Failed to create Korean post: "${krTitle}" - ${detail}`, error);
+    }
+  }
+
+  /**
+   * KR 포스트 생성 후 EN 포스트에 "한국어로 보기" 링크를 추가.
+   * EN 포스트에서 KR 콘텐츠를 분리했으므로 링크로 연결.
+   */
+  async addKoreanLink(enPostId: number, krPostUrl: string, krTitle: string): Promise<void> {
+    try {
+      const { data: post } = await this.api.get(`/posts/${enPostId}`, {
+        params: { _fields: 'id,content' },
+      });
+      const currentContent = (post as { content: { rendered: string } }).content.rendered;
+
+      const krLink =
+        `<div style="text-align:right; margin:0 0 20px 0;">` +
+        `<a href="${this.escapeHtml(krPostUrl)}" style="display:inline-block; padding:8px 20px; background:#0066FF; color:#fff; border-radius:20px; font-size:14px; text-decoration:none;" hreflang="ko">` +
+        `한국어로 보기</a></div>`;
+
+      const updatedContent = currentContent.replace(
+        /<div id="kr-link-placeholder"[^>]*><\/div>/,
+        krLink,
+      );
+
+      await this.api.post(`/posts/${enPostId}`, { content: updatedContent });
+      logger.info(`Korean link added to EN post ID=${enPostId} → ${krPostUrl}`);
+    } catch (error) {
+      const detail = axios.isAxiosError(error)
+        ? `${error.response?.status} ${JSON.stringify(error.response?.data ?? error.message)}`
+        : (error instanceof Error ? error.message : String(error));
+      logger.warn(`Failed to add Korean link to post ID=${enPostId}: ${detail}`);
     }
   }
 
