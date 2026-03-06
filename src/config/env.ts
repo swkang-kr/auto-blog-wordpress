@@ -11,7 +11,7 @@ const envSchema = z.object({
   TRENDS_GEO: z.string().default('US'),
   LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error']).default('info'),
   SITE_NAME: z.string().default('TrendHunt'),
-  SITE_OWNER: z.string().default(''),
+  SITE_OWNER: z.string().default('TrendHunt'),
   CONTACT_EMAIL: z.string().default('snix.kr@gmail.com'),
   GA_MEASUREMENT_ID: z.string().default(''),
   GOOGLE_SITE_VERIFICATION: z.string().default(''),

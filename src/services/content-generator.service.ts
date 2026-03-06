@@ -354,7 +354,7 @@ Respond with pure JSON only.`;
         `<div style="margin:30px 0 0 0; padding:20px 24px; background:#f8f9fa; border-radius:8px; display:flex; align-items:center; gap:16px;">` +
         `<div style="${avatarStyle}">${initial}</div>` +
         `<div><p style="margin:0; font-weight:700; font-size:15px; color:#222;">Written by: <a href="/about" style="color:#0066FF; text-decoration:none;">${this.siteOwner}</a></p>` +
-        `<p style="margin:4px 0 0 0; font-size:13px; color:#888;">Korea Market & Trends Analyst</p></div></div>`;
+        `<p style="margin:4px 0 0 0; font-size:13px; color:#888;">Korea Market & Trends Analyst | Covering Korean tech, entertainment, and financial markets for global readers.</p></div></div>`;
 
       const lastDivIdx = content.html.lastIndexOf('</div>');
       if (lastDivIdx !== -1) {

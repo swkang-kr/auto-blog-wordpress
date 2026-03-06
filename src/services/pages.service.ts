@@ -162,7 +162,15 @@ export class PagesService {
 </ul>
 
 <h3 style="${S.h3}">About the Author</h3>
-<p style="${S.p}">${siteName} is managed by ${owner}, a Korea market and trends analyst committed to delivering high-quality, globally relevant coverage of South Korea's business landscape.</p>
+<p style="${S.p}">${siteName} is written and curated by ${owner}, a Korea market and trends analyst specializing in Korean technology, K-entertainment business models, and KOSPI/KOSDAQ investment analysis. With deep knowledge of Korean-language sources and institutional data (BOK, DART, KRX), ${owner} bridges the gap between Korean media and global readers seeking actionable insights.</p>
+
+<h3 style="${S.h3}">Editorial Standards</h3>
+<ul style="${S.ul}">
+<li>All analysis is grounded in Korean-language primary sources and official institutional data</li>
+<li>Market data is verified against KRX, DART filings, and BOK publications</li>
+<li>Content is reviewed for accuracy before publication</li>
+<li>We clearly distinguish between factual reporting and analytical commentary</li>
+</ul>
 
 <div style="${S.highlightBox}">
 <p style="margin:0; line-height:1.7; color:#555;">We welcome feedback, tips, and collaboration inquiries from readers, journalists, and industry professionals. Reach us through our <a href="/contact" style="color:#0066FF; text-decoration:none;">Contact page</a>.</p>

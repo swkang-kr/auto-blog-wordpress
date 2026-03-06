@@ -164,7 +164,12 @@ export class WordPressService {
         },
       } : {}),
       ...(this.siteOwner ? {
-        author: { '@type': 'Person', name: this.siteOwner },
+        author: {
+          '@type': 'Person',
+          name: this.siteOwner,
+          url: `${this.wpUrl}/about`,
+          description: 'Korea Market & Trends Analyst covering Korean tech, entertainment, and financial markets for a global audience.',
+        },
       } : {}),
       publisher: { '@type': 'Organization', name: this.siteOwner || 'TrendHunt' },
       mainEntityOfPage: { '@type': 'WebPage', '@id': this.wpUrl },
