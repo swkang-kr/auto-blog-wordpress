@@ -6,6 +6,7 @@ const WPCODE_SLUG = 'insert-headers-and-footers';
 const HREFLANG_SNIPPET_TITLE = 'Auto Blog hreflang SEO';
 const ADSENSE_PADDING_SNIPPET_TITLE = 'Auto Blog AdSense Mobile Padding';
 const INDEXNOW_SNIPPET_TITLE = 'Auto Blog IndexNow Key';
+const RANKMATH_REST_SNIPPET_TITLE = 'Auto Blog Rank Math REST API Meta';
 
 export class SeoService {
   private api: AxiosInstance;
@@ -379,6 +380,65 @@ add_action('init', function() {
         ? `${error.response?.status} ${JSON.stringify(error.response?.data ?? error.message)}`
         : (error instanceof Error ? error.message : String(error));
       logger.warn(`Google Indexing API request failed for ${url}: ${msg}`);
+    }
+  }
+
+  /**
+   * Register Rank Math meta fields with REST API so they can be written via WP REST.
+   * Also adds OG/canonical fallback output for posts missing Rank Math's own output.
+   */
+  async ensureRankMathRestSnippet(): Promise<void> {
+    const phpCode = `
+// Register Rank Math meta fields for REST API write access
+// (Rank Math handles OG/canonical/twitter output — this only enables REST API writes)
+add_action('init', function() {
+    \$meta_fields = [
+        'rank_math_description',
+        'rank_math_title',
+        'rank_math_focus_keyword',
+        'rank_math_facebook_image',
+        'rank_math_twitter_image',
+        'rank_math_twitter_use_facebook_data',
+    ];
+    foreach (\$meta_fields as \$field) {
+        register_post_meta('post', \$field, [
+            'show_in_rest' => true,
+            'single' => true,
+            'type' => 'string',
+            'auth_callback' => function() { return current_user_can('edit_posts'); },
+        ]);
+    }
+});`.trim();
+
+    try {
+      const { data: snippets } = await axios.get(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      const existing = (snippets as Array<{ id: number; name: string }>)
+        .find((s) => s.name === RANKMATH_REST_SNIPPET_TITLE);
+
+      if (existing) {
+        // Update existing snippet with latest code
+        await axios.put(
+          `${this.wpUrl}/wp-json/code-snippets/v1/snippets/${existing.id}`,
+          { code: phpCode, active: true },
+          { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+        );
+        logger.info(`Rank Math REST snippet updated (ID=${existing.id})`);
+        return;
+      }
+
+      await axios.post(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { name: RANKMATH_REST_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 5 },
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      logger.info('Rank Math REST meta snippet installed via Code Snippets plugin');
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      logger.warn(`Failed to install Rank Math REST snippet: ${msg}`);
+      logger.warn('Manually add via Code Snippets plugin with title: ' + RANKMATH_REST_SNIPPET_TITLE);
     }
   }
 

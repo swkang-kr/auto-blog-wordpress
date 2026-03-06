@@ -317,7 +317,15 @@ export class WordPressService {
         categories: [categoryId],
         tags: tagIds,
         featured_media: featuredImageId,
-        meta: { hreflang_en: enPostUrl },
+        meta: {
+          hreflang_en: enPostUrl,
+          rank_math_description: content.excerptKr || content.excerpt,
+          rank_math_focus_keyword: '',
+          rank_math_title: krTitle,
+          rank_math_facebook_image: '',
+          rank_math_twitter_image: '',
+          rank_math_twitter_use_facebook_data: '1',
+        },
       };
       const response = await this.api.post('/posts', postData);
 
