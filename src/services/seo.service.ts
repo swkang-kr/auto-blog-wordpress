@@ -490,7 +490,9 @@ add_action('after_setup_theme', function() {
 add_action('init', function() {
     $menu_name = 'TrendHunt Main';
     $menu_exists = wp_get_nav_menu_object($menu_name);
-    if ($menu_exists) return; // Already created
+    if ($menu_exists) {
+        wp_delete_nav_menu($menu_exists->term_id);
+    }
 
     $menu_id = wp_create_nav_menu($menu_name);
     if (is_wp_error($menu_id)) return;
