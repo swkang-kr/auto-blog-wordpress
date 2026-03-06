@@ -150,8 +150,20 @@ ${postedKeywords.length > 0 ? postedKeywords.map((k) => `- ${k}`).join('\n') : '
    - best-x-for-y: Ranked list with comparisons
    - x-vs-y: Comparison analysis
 3. Suggest a unique angle that differentiates from existing content
-4. Identify the search intent and competition level
-5. List 5-8 LSI (related) keywords to naturally include in the content
+4. Generate a suggestedTitle that is search-intent-first. Rules for suggestedTitle:
+   - MUST contain the selectedKeyword verbatim or within 1-2 filler words
+   - MUST include "Korea", "Korean", or a specific Korean brand/entity
+   - Choose the pattern matching the content type:
+     * how-to / explainer: "[How/What] [Korea topic] [qualifier]" or "[Primary Keyword] ([Year] Guide)"
+       e.g. "How to Invest in Korean Stocks as a Foreigner (2026 Guide)"
+     * best-x-for-y / x-vs-y: "[Number] Best [thing] for [audience] in [Year]" or "[X] vs [Y]: [insight]"
+       e.g. "5 Best Korean ETFs for Foreign Investors in 2026"
+     * analysis / deep-dive / news-explainer: "[Korea topic]: [what the analysis reveals]"
+       e.g. "K-pop's Business Model: How Agencies Turn Fans Into Revenue"
+   - Target 50-65 characters total
+   - NEVER use: "changing everything", "things you need to know", "the real reason X matters"
+5. Identify the search intent and competition level
+6. List 5-8 LSI (related) keywords to naturally include in the content
 
 CRITICAL keyword selection rules — follow in strict priority order:
 1. PRIORITISE rising queries — they have real search momentum and growing demand
