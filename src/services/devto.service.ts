@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { logger } from '../utils/logger.js';
+import { htmlToMarkdown } from '../utils/html-to-markdown.js';
 import type { BlogContent, PublishedPost } from '../types/index.js';
 
 const DEVTO_API = 'https://dev.to/api';
@@ -17,12 +18,14 @@ export class DevToService {
         .slice(0, 4)
         .map((tag) => tag.replace(/\s+/g, '').toLowerCase().substring(0, 30));
 
+      const bodyMarkdown = htmlToMarkdown(content.html);
+
       const response = await axios.post(
         `${DEVTO_API}/articles`,
         {
           article: {
             title: content.title,
-            body_markdown: content.html,
+            body_markdown: bodyMarkdown,
             published: true,
             canonical_url: post.url,
             tags,
