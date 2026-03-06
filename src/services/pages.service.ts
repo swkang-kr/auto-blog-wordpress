@@ -7,16 +7,6 @@ interface PageConfig {
   content: string;
 }
 
-const TOGGLE_BUTTON =
-  `<div style="text-align:right; margin:0 0 20px 0;">` +
-  `<button onclick="(function(b){var p=b.closest('.bilingual-post');var en=p.querySelector('.content-en');var kr=p.querySelector('.content-kr');if(en.style.display!=='none'){en.style.display='none';kr.style.display='block';b.textContent='Read in English';}else{en.style.display='block';kr.style.display='none';b.textContent='\\ud55c\\uad6d\\uc5b4\\ub85c \\ubcf4\\uae30';}})(this)" ` +
-  `style="padding:8px 20px; background:#0066FF; color:#fff; border:none; border-radius:20px; cursor:pointer; font-size:14px;">` +
-  `한국어로 보기</button></div>`;
-
-function wrapBilingual(en: string, kr: string): string {
-  return `<div class="bilingual-post">${TOGGLE_BUTTON}<div class="content-en" lang="en" style="display:block">${en}</div><div class="content-kr" lang="ko" style="display:none">${kr}</div><noscript><div lang="ko">${kr}</div></noscript></div>`;
-}
-
 // Shared inline styles
 const S = {
   wrapper: `max-width:760px; margin:0 auto; font-family:'Noto Sans KR',sans-serif; color:#333; line-height:1.8; font-size:16px;`,
@@ -112,10 +102,9 @@ export class PagesService {
   }
 
   private buildPrivacyPolicy(siteName: string, email: string): string {
-    const effectiveDateEn = `${new Date().toLocaleString('en-US', { month: 'long' })} ${new Date().getDate()}, ${new Date().getFullYear()}`;
-    const effectiveDateKr = `${new Date().getFullYear()}년 ${new Date().getMonth() + 1}월 ${new Date().getDate()}일`;
+    const effectiveDate = `${new Date().toLocaleString('en-US', { month: 'long' })} ${new Date().getDate()}, ${new Date().getFullYear()}`;
 
-    const en = `<div style="${S.wrapper}">
+    return `<div style="${S.wrapper}">
 <h2 style="${S.h2}">Privacy Policy</h2>
 <p style="${S.p}">${siteName} ("Site") values your privacy and complies with applicable data protection laws. This Privacy Policy explains what information we collect, how we use it, and the measures we take to protect it.</p>
 
@@ -146,98 +135,43 @@ export class PagesService {
 <h3 style="${S.h3}">6. Contact</h3>
 <p style="${S.p}">For privacy-related inquiries, please contact us at:<br>Email: ${email}</p>
 
-<p style="${S.footer}">Effective date: ${effectiveDateEn}</p>
+<p style="${S.footer}">Effective date: ${effectiveDate}</p>
 </div>`;
-
-    const kr = `<div style="${S.wrapper}">
-<h2 style="${S.h2}">개인정보처리방침</h2>
-<p style="${S.p}">${siteName}(이하 "사이트")은 이용자의 개인정보를 중요시하며, 개인정보보호법 등 관련 법령을 준수합니다. 본 개인정보처리방침은 사이트가 수집하는 정보의 종류, 이용 목적, 보호 조치에 대해 안내합니다.</p>
-
-<h3 style="${S.h3}">1. 수집하는 개인정보 항목</h3>
-<p style="${S.p}">사이트는 기본적으로 별도의 회원가입 절차 없이 이용 가능하며, 다음과 같은 정보가 자동으로 수집될 수 있습니다:</p>
-<ul style="${S.ul}">
-<li>방문 기록, IP 주소, 브라우저 종류, 접속 시간</li>
-<li>쿠키(Cookie)를 통한 이용 패턴 정보</li>
-</ul>
-
-<h3 style="${S.h3}">2. 개인정보 이용 목적</h3>
-<p style="${S.p}">수집된 정보는 다음 목적으로 활용됩니다:</p>
-<ul style="${S.ul}">
-<li>사이트 이용 통계 분석 및 서비스 개선</li>
-<li>맞춤형 광고 제공 (Google AdSense 등)</li>
-<li>부정 이용 방지 및 보안 유지</li>
-</ul>
-
-<h3 style="${S.h3}">3. 쿠키(Cookie) 사용</h3>
-<p style="${S.p}">사이트는 Google AdSense 및 Google Analytics를 사용하며, 이 서비스들은 쿠키를 통해 방문자 정보를 수집합니다. 이용자는 브라우저 설정을 통해 쿠키 저장을 거부할 수 있으나, 일부 서비스 이용에 제한이 있을 수 있습니다.</p>
-
-<h3 style="${S.h3}">4. 제3자 광고 서비스</h3>
-<p style="${S.p}">사이트는 Google AdSense를 통해 광고를 게재합니다. Google은 사용자의 관심사에 기반한 광고를 제공하기 위해 쿠키를 사용할 수 있습니다. 자세한 내용은 <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener">Google 광고 정책</a>을 참고하세요.</p>
-
-<h3 style="${S.h3}">5. 개인정보의 보유 및 파기</h3>
-<p style="${S.p}">자동 수집된 로그 정보는 통계 분석 후 일정 기간 보관 후 파기됩니다. 이용자가 개인정보의 삭제를 요청할 경우, 지체 없이 해당 정보를 파기합니다.</p>
-
-<h3 style="${S.h3}">6. 문의</h3>
-<p style="${S.p}">개인정보 관련 문의사항은 아래 이메일로 연락해 주시기 바랍니다.<br>이메일: ${email}</p>
-
-<p style="${S.footer}">시행일: ${effectiveDateKr}</p>
-</div>`;
-
-    return wrapBilingual(en, kr);
   }
 
   private buildAboutPage(siteName: string, owner: string): string {
-    const en = `<div style="${S.wrapper}">
+    return `<div style="${S.wrapper}">
 <h2 style="${S.h2}">About ${siteName}</h2>
-<p style="${S.p}">Thank you for visiting ${siteName}.</p>
+<p style="${S.p}">Thank you for visiting ${siteName} -- your go-to source for in-depth English coverage of Korean technology, entertainment, and financial markets.</p>
 
-<h3 style="${S.h3}">About This Blog</h3>
-<p style="${S.p}">${siteName} is a blog that provides in-depth analysis of the latest trends and issues. We cover topics people are most interested in based on real-time search trends, delivering accurate information and actionable insights.</p>
+<h3 style="${S.h3}">What We Cover</h3>
+<p style="${S.p}">${siteName} delivers expert analysis of South Korea's most dynamic industries for a global audience. We bridge the information gap between Korean-language sources and English-speaking readers interested in:</p>
+<ul style="${S.ul}">
+<li><strong>Korean Tech & Startups</strong> -- Samsung, Naver, Kakao, and the Pangyo startup ecosystem</li>
+<li><strong>K-Entertainment</strong> -- The business side of K-pop, K-drama, and the Hallyu wave</li>
+<li><strong>Korean Investment & Finance</strong> -- KOSPI/KOSDAQ analysis, Korean economic policy, and investment opportunities</li>
+</ul>
 
 <h3 style="${S.h3}">Our Mission</h3>
+<p style="${S.p}">Korea is one of the world's most innovative economies, but much of the best reporting stays locked in Korean-language media. We translate that insight -- not just the language, but the context, the market dynamics, and the cultural nuance -- into actionable English content.</p>
 <ul style="${S.ul}">
-<li>Timely content reflecting real-time trends</li>
-<li>Deep analysis with diverse perspectives</li>
-<li>Practical and actionable information for readers</li>
-<li>Fact-based content grounded in reliable sources</li>
+<li>Data-driven analysis grounded in Korean-language primary sources</li>
+<li>Market context that international media often misses</li>
+<li>Practical insights for investors, analysts, and Korea watchers</li>
+<li>Timely coverage reflecting real-time Korean market trends</li>
 </ul>
 
 <h3 style="${S.h3}">About the Author</h3>
-<p style="${S.p}">${siteName} is managed by ${owner}, a specialist in trend analysis and content creation, committed to delivering high-quality information to our readers.</p>
+<p style="${S.p}">${siteName} is managed by ${owner}, a Korea market and trends analyst committed to delivering high-quality, globally relevant coverage of South Korea's business landscape.</p>
 
 <div style="${S.highlightBox}">
-<p style="margin:0; line-height:1.7; color:#555;">We are constantly improving the quality of our content and always welcome feedback from our readers. If you have any questions, please reach out through our Contact page.</p>
+<p style="margin:0; line-height:1.7; color:#555;">We welcome feedback, tips, and collaboration inquiries from readers, journalists, and industry professionals. Reach us through our <a href="/contact" style="color:#0066FF; text-decoration:none;">Contact page</a>.</p>
 </div>
 </div>`;
-
-    const kr = `<div style="${S.wrapper}">
-<h2 style="${S.h2}">${siteName} 소개</h2>
-<p style="${S.p}">${siteName}에 방문해 주셔서 감사합니다.</p>
-
-<h3 style="${S.h3}">블로그 소개</h3>
-<p style="${S.p}">${siteName}은 최신 트렌드와 이슈를 빠르게 분석하여 유용한 정보를 제공하는 블로그입니다. 검색 트렌드를 기반으로 사람들이 관심 있어하는 주제를 심층적으로 다루며, 정확한 정보와 실용적인 인사이트를 전달하는 것을 목표로 합니다.</p>
-
-<h3 style="${S.h3}">운영 목적</h3>
-<ul style="${S.ul}">
-<li>실시간 트렌드를 반영한 시의성 있는 콘텐츠 제공</li>
-<li>깊이 있는 분석과 다양한 관점 제시</li>
-<li>독자에게 실질적으로 도움이 되는 정보 공유</li>
-<li>신뢰할 수 있는 출처 기반의 팩트 중심 콘텐츠</li>
-</ul>
-
-<h3 style="${S.h3}">운영자 소개</h3>
-<p style="${S.p}">${siteName}은 ${owner}이(가) 운영하고 있습니다. 트렌드 분석과 콘텐츠 작성에 전문성을 갖추고 있으며, 독자 여러분에게 양질의 정보를 전달하기 위해 노력하고 있습니다.</p>
-
-<div style="${S.highlightBox}">
-<p style="margin:0; line-height:1.7; color:#555;">${siteName}은 지속적으로 콘텐츠의 품질을 개선하고 있으며, 독자 여러분의 피드백을 항상 환영합니다. 문의사항이 있으시면 연락처 페이지를 통해 연락해 주세요.</p>
-</div>
-</div>`;
-
-    return wrapBilingual(en, kr);
   }
 
   private buildContactPage(siteName: string, email: string): string {
-    const en = `<div style="${S.wrapper}">
+    return `<div style="${S.wrapper}">
 <h2 style="${S.h2}">Contact Us</h2>
 <p style="${S.p}">If you have any questions or inquiries about ${siteName}, please get in touch using the information below.</p>
 
@@ -253,79 +187,36 @@ export class PagesService {
 <li>Advertising and business partnership inquiries</li>
 <li>Copyright-related inquiries</li>
 <li>Privacy-related requests</li>
-<li>General site usage questions</li>
+<li>Tips on Korean market developments</li>
 </ul>
 </div>`;
-
-    const kr = `<div style="${S.wrapper}">
-<h2 style="${S.h2}">연락처</h2>
-<p style="${S.p}">${siteName}에 문의사항이 있으시면 아래 연락처로 연락해 주세요.</p>
-
-<div style="${S.infoBox}">
-<h3 style="font-size:18px; color:#0066FF; margin:0 0 15px 0;">문의 방법</h3>
-<p style="margin:0 0 10px 0; line-height:1.8; color:#333; font-size:16px;">이메일: <a href="mailto:${email}" style="color:#0066FF; text-decoration:none;">${email}</a></p>
-<p style="margin:0; line-height:1.8; color:#888; font-size:14px;">영업일 기준 1~3일 이내에 회신드리겠습니다.</p>
-</div>
-
-<h3 style="${S.h3}">문의 가능 사항</h3>
-<ul style="${S.ul}">
-<li>콘텐츠 관련 문의 및 피드백</li>
-<li>광고 및 비즈니스 제휴 문의</li>
-<li>저작권 관련 문의</li>
-<li>개인정보 관련 요청</li>
-<li>기타 사이트 이용 관련 문의</li>
-</ul>
-</div>`;
-
-    return wrapBilingual(en, kr);
   }
 
   private buildDisclaimerPage(siteName: string): string {
-    const effectiveDateEn = `${new Date().toLocaleString('en-US', { month: 'long' })} ${new Date().getDate()}, ${new Date().getFullYear()}`;
-    const effectiveDateKr = `${new Date().getFullYear()}년 ${new Date().getMonth() + 1}월 ${new Date().getDate()}일`;
+    const effectiveDate = `${new Date().toLocaleString('en-US', { month: 'long' })} ${new Date().getDate()}, ${new Date().getFullYear()}`;
 
-    const en = `<div style="${S.wrapper}">
+    return `<div style="${S.wrapper}">
 <h2 style="${S.h2}">Disclaimer</h2>
 
 <h3 style="${S.h3}">1. Content Notice</h3>
-<p style="${S.p}">The content published on ${siteName} is based on trending information and is produced with the assistance of AI technology. All content is created for informational purposes only and does not constitute professional advice.</p>
+<p style="${S.p}">The content published on ${siteName} is based on trending information and publicly available Korean-language sources, produced with the assistance of AI technology. All content is created for informational purposes only and does not constitute professional financial, investment, or legal advice.</p>
 
 <h3 style="${S.h3}">2. Accuracy of Information</h3>
-<p style="${S.p}">While we strive to provide accurate information, we do not guarantee the completeness, accuracy, or reliability of our content. Any decisions or actions taken based on the information provided are at your own risk.</p>
+<p style="${S.p}">While we strive to provide accurate information sourced from reputable Korean institutions and media, we do not guarantee the completeness, accuracy, or reliability of our content. Any decisions or actions taken based on the information provided are at your own risk.</p>
 
-<h3 style="${S.h3}">3. External Links</h3>
+<h3 style="${S.h3}">3. Not Investment Advice</h3>
+<p style="${S.p}">Content discussing Korean stocks, markets, or financial instruments is for informational and educational purposes only. It does not constitute investment advice, and readers should consult a qualified financial advisor before making investment decisions.</p>
+
+<h3 style="${S.h3}">4. External Links</h3>
 <p style="${S.p}">External links on this Site are provided for reference purposes only. ${siteName} is not responsible for the content of external websites.</p>
 
-<h3 style="${S.h3}">4. Advertising</h3>
+<h3 style="${S.h3}">5. Advertising</h3>
 <p style="${S.p}">${siteName} displays advertisements through third-party services such as Google AdSense. Advertisements do not reflect ${siteName}'s opinions or endorsements. Responsibility for advertised products and services lies with the respective advertisers.</p>
 
-<h3 style="${S.h3}">5. Copyright</h3>
+<h3 style="${S.h3}">6. Copyright</h3>
 <p style="${S.p}">All content on this Site is protected by copyright law. Unauthorized reproduction, distribution, or modification is prohibited. Please credit the source when quoting.</p>
 
-<p style="${S.footer}">Effective date: ${effectiveDateEn}</p>
+<p style="${S.footer}">Effective date: ${effectiveDate}</p>
 </div>`;
-
-    const kr = `<div style="${S.wrapper}">
-<h2 style="${S.h2}">면책조항</h2>
-
-<h3 style="${S.h3}">1. 콘텐츠 안내</h3>
-<p style="${S.p}">${siteName}에 게시된 콘텐츠는 트렌드 정보를 기반으로 작성되었으며, AI 기술을 활용하여 콘텐츠 제작을 보조하고 있습니다. 모든 콘텐츠는 정보 제공 목적으로 작성되었으며, 전문적인 조언을 대체하지 않습니다.</p>
-
-<h3 style="${S.h3}">2. 정보의 정확성</h3>
-<p style="${S.p}">본 사이트는 정확한 정보를 제공하기 위해 최선을 다하고 있으나, 콘텐츠의 완전성, 정확성, 신뢰성에 대해 보증하지 않습니다. 제공된 정보를 바탕으로 한 결정이나 행동에 대한 책임은 이용자 본인에게 있습니다.</p>
-
-<h3 style="${S.h3}">3. 외부 링크</h3>
-<p style="${S.p}">사이트에 포함된 외부 링크는 참고 목적으로 제공되며, 외부 사이트의 콘텐츠에 대해 ${siteName}은 책임을 지지 않습니다.</p>
-
-<h3 style="${S.h3}">4. 광고</h3>
-<p style="${S.p}">${siteName}은 Google AdSense 등 제3자 광고 서비스를 이용하여 광고를 게재합니다. 광고 내용은 ${siteName}의 의견이나 추천을 반영하지 않으며, 광고 제품 및 서비스에 대한 책임은 해당 광고주에게 있습니다.</p>
-
-<h3 style="${S.h3}">5. 저작권</h3>
-<p style="${S.p}">본 사이트의 모든 콘텐츠는 저작권법의 보호를 받습니다. 콘텐츠의 무단 복제, 배포, 수정은 금지되며, 인용 시 출처를 명시해야 합니다.</p>
-
-<p style="${S.footer}">시행일: ${effectiveDateKr}</p>
-</div>`;
-
-    return wrapBilingual(en, kr);
   }
 }

@@ -1,5 +1,5 @@
 /** 콘텐츠 유형 */
-export type ContentType = 'how-to' | 'best-x-for-y' | 'x-vs-y';
+export type ContentType = 'how-to' | 'best-x-for-y' | 'x-vs-y' | 'analysis' | 'deep-dive' | 'news-explainer';
 
 /** 니치 설정 */
 export interface NicheConfig {
@@ -53,14 +53,10 @@ export interface ResearchedKeyword {
 /** Claude API가 생성한 블로그 콘텐츠 */
 export interface BlogContent {
   title: string;
-  titleKr: string;
   slug?: string;
   html: string;
-  htmlKr: string;
   excerpt: string;
-  excerptKr: string;
   tags: string[];
-  tagsKr: string[];
   category: string;
   imagePrompts: string[];
   imageCaptions: string[];
@@ -98,8 +94,6 @@ export interface PostHistoryEntry {
   keyword: string;
   postId: number;
   postUrl: string;
-  postIdKr?: number;
-  postUrlKr?: string;
   publishedAt: string;
   niche?: string;
   contentType?: ContentType;
@@ -119,8 +113,6 @@ export interface PostResult {
   success: boolean;
   postId?: number;
   postUrl?: string;
-  postIdKr?: number;
-  postUrlKr?: string;
   error?: string;
   duration: number;
 }

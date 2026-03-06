@@ -7,7 +7,6 @@ import { ImageGeneratorService } from './services/image-generator.service.js';
 import { WordPressService } from './services/wordpress.service.js';
 import { PagesService } from './services/pages.service.js';
 import { SeoService } from './services/seo.service.js';
-import { TranslationService } from './services/translation.service.js';
 import { TwitterService } from './services/twitter.service.js';
 import { PostHistory } from './utils/history.js';
 import { logger } from './utils/logger.js';
@@ -15,7 +14,7 @@ import type { PostResult, BatchResult, MediaUploadResult } from './types/index.j
 
 async function main(): Promise<void> {
   const startedAt = new Date().toISOString();
-  logger.info('=== Auto Blog WordPress - Niche SEO Batch Start ===');
+  logger.info('=== Auto Blog WordPress - Korea-Focused SEO Batch Start ===');
 
   // 1. Config
   const config = loadConfig();
@@ -27,9 +26,6 @@ async function main(): Promise<void> {
   const contentService = new ContentGeneratorService(config.ANTHROPIC_API_KEY, config.SITE_OWNER);
   const imageService = new ImageGeneratorService(config.GEMINI_API_KEY);
   const wpService = new WordPressService(config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD, config.SITE_OWNER);
-  const translationService = new TranslationService(config.ANTHROPIC_API_KEY, config.DEEPL_API_KEY || undefined);
-  logger.info(`Translation service enabled (${config.DEEPL_API_KEY ? 'DeepL → Haiku fallback' : 'Claude Haiku'})`);
-  await translationService.checkDeepLUsage();
 
   const twitterService =
     config.X_API_KEY && config.X_API_SECRET && config.X_ACCESS_TOKEN && config.X_ACCESS_TOKEN_SECRET
@@ -64,28 +60,21 @@ async function main(): Promise<void> {
     logger.warn(`SEO/GA setup failed: ${error instanceof Error ? error.message : error}`);
   }
 
-  // 2.7. Ensure hreflang PHP snippet for bilingual SEO
-  try {
-    await seoService.ensureHreflangSnippet();
-  } catch (error) {
-    logger.warn(`hreflang snippet setup failed: ${error instanceof Error ? error.message : error}`);
-  }
-
-  // 2.8. Ensure mobile AdSense padding (prevent bottom banner covering navigation)
+  // 2.7. Ensure mobile AdSense padding (prevent bottom banner covering navigation)
   try {
     await seoService.ensureAdSensePaddingSnippet();
   } catch (error) {
     logger.warn(`AdSense padding snippet setup failed: ${error instanceof Error ? error.message : error}`);
   }
 
-  // 2.9. Ensure IndexNow key file is served (for Naver Search Advisor)
+  // 2.8. Ensure IndexNow key file is served (for Naver Search Advisor)
   try {
     await seoService.ensureIndexNowKeySnippet();
   } catch (error) {
     logger.warn(`IndexNow key snippet setup failed: ${error instanceof Error ? error.message : error}`);
   }
 
-  // 2.10. Check robots.txt + WordPress indexing settings
+  // 2.9. Check robots.txt + WordPress indexing settings
   await seoService.checkRobotsTxt();
   await seoService.checkAndFixIndexingSettings();
 
@@ -99,7 +88,7 @@ async function main(): Promise<void> {
 
   // 4. Two-phase pipeline
   //    Phase A: Research + Content Generation back-to-back (maximises prompt cache HITs)
-  //    Phase B: Translate + Images + Publish for each generated post
+  //    Phase B: Images + Publish for each generated post
   const results: PostResult[] = [];
   let skippedCount = 0;
 
@@ -150,20 +139,17 @@ async function main(): Promise<void> {
     }
   }
 
-  // ── Phase B: Translate + Images + Publish ───────────────────────────────
-  logger.info('\n=== Phase B: Translate + Images + Publish ===');
+  // ── Phase B: Images + Publish ──────────────────────────────────────────
+  logger.info('\n=== Phase B: Images + Publish ===');
 
-  for (const { niche, postStart, researched, content: rawContent } of generated) {
+  for (const { niche, postStart, researched, content } of generated) {
     logger.info(`\n[Phase B] Niche: "${niche.name}"`);
 
     try {
-      // B-1. Translate to Korean (Haiku — chunked by H2)
-      const content = await translationService.translateContent(rawContent);
-
-      // B-2. Generate images (Gemini)
+      // B-1. Generate images (Gemini)
       const images = await imageService.generateImages(content.imagePrompts);
 
-      // B-3. Upload featured image (MANDATORY)
+      // B-2. Upload featured image (MANDATORY)
       const keyword = researched.analysis.selectedKeyword;
       let featuredMediaResult: MediaUploadResult | undefined;
       if (images.featured.length > 0) {
@@ -175,7 +161,7 @@ async function main(): Promise<void> {
         throw new Error(`Featured image is required but generation failed for "${keyword}"`);
       }
 
-      // B-4. Upload inline images (graceful)
+      // B-3. Upload inline images (graceful)
       const inlineImages: Array<{ url: string; caption: string }> = [];
       for (let i = 0; i < images.inline.length; i++) {
         try {
@@ -190,7 +176,7 @@ async function main(): Promise<void> {
         }
       }
 
-      // B-5. Create WordPress post (English)
+      // B-4. Create WordPress post (English only)
       const post = await wpService.createPost(
         content,
         featuredMediaResult.mediaId,
@@ -202,54 +188,22 @@ async function main(): Promise<void> {
         },
       );
 
-      // B-6. Create Korean post + hreflang linking
-      await new Promise((r) => setTimeout(r, 3000));
+      // B-5. IndexNow
+      await seoService.notifyIndexNow([post.url]);
 
-      let krPostId: number | undefined;
-      let krPostUrl: string | undefined;
-      try {
-        const krPost = await wpService.createKoreanPost(
-          content,
-          featuredMediaResult.mediaId,
-          inlineImages,
-          post.url,
-        );
-        krPostId = krPost.postId;
-        krPostUrl = krPost.url;
-
-        await new Promise((r) => setTimeout(r, 2000));
-        await wpService.updatePostMeta(post.postId, { hreflang_ko: krPost.url });
-
-        // EN 포스트에 "한국어로 보기" 링크 삽입 (KR URL 확정 후)
-        await wpService.addKoreanLink(post.postId, krPost.url, content.titleKr || content.title);
-
-        logger.info(`Bilingual posts linked: EN(${post.postId}) <-> KR(${krPost.postId})`);
-      } catch (error) {
-        logger.warn(`Korean post creation failed (EN post is still live): ${error instanceof Error ? error.message : error}`);
-      }
-
-      // B-7. IndexNow
-      const indexNowUrls = [post.url, ...(krPostUrl ? [krPostUrl] : [])];
-      await seoService.notifyIndexNow(indexNowUrls);
-
-      // B-8. X (Twitter) promotion (optional)
+      // B-6. X (Twitter) promotion (optional)
       if (twitterService) {
         await twitterService.promoteBlogPost(content, post);
       }
 
-      // B-9. Google Indexing API
+      // B-7. Google Indexing API
       await seoService.requestIndexing(post.url);
-      if (krPostUrl) {
-        await seoService.requestIndexing(krPostUrl);
-      }
 
-      // B-10. Record history
+      // B-8. Record history
       await history.addEntry({
         keyword: researched.analysis.selectedKeyword,
         postId: post.postId,
         postUrl: post.url,
-        postIdKr: krPostId,
-        postUrlKr: krPostUrl,
         publishedAt: new Date().toISOString(),
         niche: niche.id,
         contentType: researched.analysis.contentType,
@@ -261,8 +215,6 @@ async function main(): Promise<void> {
         success: true,
         postId: post.postId,
         postUrl: post.url,
-        postIdKr: krPostId,
-        postUrlKr: krPostUrl,
         duration: Date.now() - postStart,
       });
     } catch (error) {
@@ -293,8 +245,7 @@ async function main(): Promise<void> {
 
   for (const r of results) {
     if (r.success) {
-      const krInfo = r.postUrlKr ? ` | KR: ${r.postUrlKr}` : '';
-      logger.info(`  [OK] [${r.niche}] "${r.keyword}" → ${r.postUrl}${krInfo} (${r.duration}ms)`);
+      logger.info(`  [OK] [${r.niche}] "${r.keyword}" → ${r.postUrl} (${r.duration}ms)`);
     } else {
       logger.error(`  [FAIL] [${r.niche}] "${r.keyword}" → ${r.error}`);
     }

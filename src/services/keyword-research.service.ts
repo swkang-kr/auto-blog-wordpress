@@ -124,7 +124,7 @@ Use them as your primary source for keyword selection. You may:
         : 'No trends data available. Use your knowledge to select the best keyword from the seed keywords.';
     }
 
-    const prompt = `You are an SEO keyword research expert. Analyze the following data for the "${niche.name}" niche and select the BEST keyword and content type for a blog post.
+    const prompt = `You are an SEO keyword research expert specializing in Korea-focused English content for global readers. Analyze the following data for the "${niche.name}" niche and select the BEST keyword and content type for a blog post.
 
 IMPORTANT: Today's date is ${today}. All content must be written for ${year}.
 
@@ -143,6 +143,9 @@ ${postedKeywords.length > 0 ? postedKeywords.map((k) => `- ${k}`).join('\n') : '
 ## Instructions
 1. Select the best keyword to target — MUST be a long-tail keyword (4+ words).
 2. Choose the best content type from: ${niche.contentTypes.join(', ')}
+   - analysis: Multi-angle analysis with data and market context
+   - deep-dive: Comprehensive single-topic exploration with historical context
+   - news-explainer: Recent Korean event breakdown for international readers
    - how-to: Step-by-step guide
    - best-x-for-y: Ranked list with comparisons
    - x-vs-y: Comparison analysis
@@ -152,15 +155,17 @@ ${postedKeywords.length > 0 ? postedKeywords.map((k) => `- ${k}`).join('\n') : '
 
 CRITICAL keyword selection rules — follow in strict priority order:
 1. PRIORITISE rising queries — they have real search momentum and growing demand
-2. MUST be low competition (estimatedCompetition: "low")
-3. MUST be long-tail (4+ words). Short head terms are NOT acceptable.
-4. PREFER question-based keywords ("how to", "what is", "best way to")
-5. PREFER keywords with clear informational or commercial investigation intent
-6. MUST be different from already posted keywords
-7. AVOID head terms dominated by high-authority sites
+2. KOREA FOCUS MANDATORY: The keyword MUST relate to South Korea, Korean companies, Korean markets, K-pop/K-drama, or Korean industry. Keywords without clear Korea relevance are NOT acceptable.
+3. MUST be low competition (estimatedCompetition: "low")
+4. MUST be long-tail (4+ words). Short head terms are NOT acceptable.
+5. PREFER question-based keywords ("how to", "what is", "best way to")
+6. PREFER keywords with clear informational or commercial investigation intent
+7. MUST be different from already posted keywords
+8. AVOID head terms dominated by high-authority sites
+9. TARGET global English-speaking audience interested in Korea (investors, K-culture fans, tech watchers)
 
 Respond with pure JSON only. No markdown code blocks.
-{"selectedKeyword":"...","contentType":"how-to|best-x-for-y|x-vs-y","suggestedTitle":"...","uniqueAngle":"...","searchIntent":"...","estimatedCompetition":"low|medium|high","reasoning":"...","relatedKeywordsToInclude":["...","..."]}`;
+{"selectedKeyword":"...","contentType":"analysis|deep-dive|news-explainer|how-to|best-x-for-y|x-vs-y","suggestedTitle":"...","uniqueAngle":"...","searchIntent":"...","estimatedCompetition":"low|medium|high","reasoning":"...","relatedKeywordsToInclude":["...","..."]}`;
 
     try {
       const response = await this.client.messages.create({
@@ -180,11 +185,33 @@ Respond with pure JSON only. No markdown code blocks.
     }
   }
 
+  private validateKoreaRelevance(analysis: KeywordAnalysis): KeywordAnalysis {
+    const koreaTerms = [
+      'korea', 'korean', 'seoul', 'samsung', 'hyundai', 'lg', 'sk', 'kospi', 'kosdaq',
+      'hallyu', 'k-pop', 'kpop', 'k-drama', 'kdrama', 'k-entertainment', 'kimchi',
+      'chaebol', 'won', 'krw', 'naver', 'kakao', 'hybe', 'bts', 'blackpink',
+      'webtoon', 'hanwha', 'posco', 'kia', 'lotte', 'cj', 'pangyo', 'gangnam',
+    ];
+    const keywordLower = analysis.selectedKeyword.toLowerCase();
+    const titleLower = analysis.suggestedTitle.toLowerCase();
+    const combined = keywordLower + ' ' + titleLower;
+
+    const hasKoreaTerm = koreaTerms.some((term) => combined.includes(term));
+    if (!hasKoreaTerm) {
+      logger.warn(`Keyword "${analysis.selectedKeyword}" lacks Korea relevance, prepending "Korean"`);
+      analysis.selectedKeyword = `Korean ${analysis.selectedKeyword}`;
+      if (!analysis.suggestedTitle.toLowerCase().includes('korea')) {
+        analysis.suggestedTitle = `Korean ${analysis.suggestedTitle}`;
+      }
+    }
+    return analysis;
+  }
+
   private parseAnalysis(text: string, niche: NicheConfig): KeywordAnalysis {
     let cleaned = text.replace(/```(?:json)?\s*/g, '').replace(/```\s*$/g, '').trim();
 
     try {
-      return JSON.parse(cleaned) as KeywordAnalysis;
+      return this.validateKoreaRelevance(JSON.parse(cleaned) as KeywordAnalysis);
     } catch {
       // continue
     }
@@ -217,7 +244,7 @@ Respond with pure JSON only. No markdown code blocks.
 
     const jsonStr = cleaned.slice(startIdx, endIdx + 1);
     try {
-      return JSON.parse(jsonStr) as KeywordAnalysis;
+      return this.validateKoreaRelevance(JSON.parse(jsonStr) as KeywordAnalysis);
     } catch (e) {
       throw new KeywordResearchError(
         `Failed to parse analysis JSON for niche "${niche.name}": ${(e as Error).message}`,
