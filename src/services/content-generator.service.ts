@@ -116,66 +116,71 @@ You MUST write like an experienced human analyst, NOT like an AI. Avoid these AI
 Rules:
 1. title: High-CTR English title. Target 50-65 characters (Google SERP sweet spot).
 
-   TITLE STRATEGY: Match the search intent first, then optimize for clicks.
-   The title must reflect what someone would actually TYPE into Google, then add value signals.
+   TITLE STRATEGY: The title must mirror what someone would actually TYPE into Google,
+   then add a value signal that earns the click. Search-intent match comes first.
 
-   Select the pattern that best fits the content type and search intent:
+   Choose the pattern that fits the content type:
 
-   A. QUESTION-based (for how-to, explainer, beginner-friendly content)
-      "[How/What/Why/Is] [specific Korea topic] [context]?"
+   A. QUESTION/HOW-TO pattern (for how-to, explainer, beginner guides)
+      Format: "[How/What/Why] [specific Korea topic] [qualifier]?"
+              "[Primary Keyword] ([Year] Guide)"
       Examples:
       - "How to Invest in Korean Stocks as a Foreigner (2026 Guide)"
       - "What Is the KOSPI Index and Why Does It Matter?"
-      - "Is Korean Webtoon the Next Global Media Format?"
-      Use when: primary keyword is a question people ask on Google
+      - "How to Open a Korean Brokerage Account from Overseas"
+      Use when: keyword starts with how/what/why or has informational intent
 
-   B. GUIDE/LIST-based (for best-x, how-to, ranked content)
-      "[Primary Keyword]: [specific value promise]"
-      "[Number] Best [specific thing] for [specific audience] in [Year]"
+   B. COMPARISON/LIST pattern (for best-x-for-y, x-vs-y, ranked content)
+      Format: "[Primary Keyword]: [specific value promise]"
+              "[Number] Best [specific thing] for [specific audience] (2026)"
       Examples:
-      - "Korean ETFs for Foreign Investors: A 2026 Comparison"
-      - "5 Best Korean Fintech Apps for International Users in 2026"
-      - "Investing in KOSPI: A Step-by-Step Guide for Beginners"
-      Use when: user wants a ranked list or a specific recommendation
+      - "Korean ETFs for Foreign Investors: Top 5 Options Compared (2026)"
+      - "5 Best Korean Fintech Apps for Non-Korean Users in 2026"
+      - "KOSPI vs S&P 500: How Korean Stocks Compare in 2026"
+      Use when: user wants a recommendation or comparison
 
-   C. ANALYSIS-based (for deep-dive, market analysis, trend pieces)
-      "[Korea topic]: [what the analysis reveals]"
-      "[Primary Keyword] — [insight that changes the reader's view]"
+   C. ANALYSIS/INSIGHT pattern (for analysis, deep-dive, news-explainer)
+      Format: "[Korea topic]: [what the data/analysis reveals]"
+              "[Primary Keyword] — [insight that reframes the topic]"
       Examples:
       - "Korea's Semiconductor Strategy: What the Data Actually Shows"
       - "K-pop's Business Model: How Agencies Turn Fans Into Revenue"
-      - "KOSPI vs S&P 500: Where Korean Stocks Stand in 2026"
-      Use when: content is analytical and targets researchers/investors
+      - "Korean Startup Ecosystem: Why Foreign Investors Are Paying Attention"
+      Use when: content is analytical, research-driven, or for investors
 
-   MANDATORY TITLE RULES:
-   - Include the PRIMARY KEYWORD or its close variant in the title (SEO requirement)
-   - Target 50-65 characters total (count carefully)
-   - Include "Korea" or "Korean" explicitly — this is your niche differentiator
-   - Avoid vague superlatives: "everything", "game-changer", "revolutionary"
-   - For guides and lists: include year (2026) to signal freshness
+   MANDATORY RULES (apply to all patterns):
+   - MUST contain the PRIMARY KEYWORD or its direct variant (Google matches = bold in SERP)
+   - MUST include "Korea", "Korean", or a specific Korean brand/entity
+   - Target exactly 50-65 characters (count carefully before finalizing)
+   - For guides/lists: always append (2026) for freshness signal
    - For evergreen analysis: omit year
-   - Do NOT start with "Why [X] is changing everything" — this pattern has low CTR
+   - FORBIDDEN phrases: "changing everything", "game-changer", "things you need to know",
+     "the real reason X matters", "without further ado", "comprehensive guide to"
+   - Do NOT invent a pattern not listed above
+
 2. slug: Short, clean evergreen URL slug (3-5 words max, lowercase, hyphens, NO year for evergreen content).
    Exception: For annual roundups, you MAY include the year.
 3. html: English blog post in HTML format (2,500+ words, inline CSS styled)
 4. Include a table of contents at the beginning
 5. Use a natural, authoritative English tone with Korea expertise
-6. excerpt: Compelling English meta description, 140-160 characters. MUST:
-   - Open with the PRIMARY KEYWORD exactly as written (Google bolds matching terms in SERP)
-   - State ONE specific outcome the reader gets (not vague benefit — concrete result)
-   - Include a curiosity gap or urgency signal in the middle
-   - Use second person ("you", "your") — makes it feel personal in SERP
-   - End with a complete sentence, not a fragment
-   - Target 145-155 characters (leave 5-char buffer for Google truncation)
-   
-   GOOD examples:
-   - "Korean ETFs give foreign investors direct exposure to KOSPI gains. This 2026 guide breaks down the top 5 options, fees, and how to buy from outside Korea."
-   - "Investing in Korean stocks as a foreigner is easier than most guides admit. Here's exactly how to open an account, pick brokers, and avoid the common traps."
-   - "K-pop's business model generates billions — but most coverage misses the actual revenue mechanics. Here's how agencies really make money from their artists."
-   
-   BAD examples (avoid):
-   - "Discover everything you need to know about Korean tech trends in 2026. Learn how Korean companies are changing the global landscape." (vague, no keyword, no concrete value)
-   - "This comprehensive guide covers Korean investment options for international investors." (no hook, no urgency, no specificity)
+6. excerpt: Compelling English meta description, 145-158 characters. MUST:
+   - Open with the PRIMARY KEYWORD verbatim or within 2 words (Google bolds keyword matches in SERP)
+   - State ONE concrete outcome the reader gets — specific, not vague
+   - Include a curiosity gap OR urgency signal in the middle clause
+   - Use "you"/"your" at least once (personal = higher CTR)
+   - End with a complete sentence (never cut off mid-thought)
+   - Count characters carefully: target 145-158 (Google truncates at ~160)
+
+   GOOD examples (study the structure):
+   - "Korean ETFs let foreign investors access KOSPI gains directly. This 2026 guide covers the top 5 funds, expense ratios, and exactly how to buy from outside Korea." (157 chars)
+   - "Investing in Korean stocks as a foreigner is simpler than most guides admit. Here's how to pick a broker, open an account, and avoid the common traps." (152 chars)
+   - "K-pop's business model generates billions — but most coverage misses the actual revenue mechanics. Here's how agencies really profit from their artists." (153 chars)
+
+   BAD examples (never do this):
+   - "Discover everything about Korean tech trends in 2026." — too short, no keyword, no value
+   - "This comprehensive guide covers Korean investment for international investors." — no hook, no specificity
+   - "Learn how Korean companies are shaping the global landscape and what it means for you." — vague benefit, no keyword match
+
 7. tags: 5-10 related English keywords (include Korea-specific terms)
 8. category: One best-fit English category name
 
@@ -297,11 +302,11 @@ Respond with pure JSON only.`;
 
     const content = parseJsonResponse(text, analysis.selectedKeyword);
 
-    // Validate excerpt length (120-160 chars for SEO)
+    // Validate excerpt length (145-158 chars for SEO)
     if (content.excerpt && content.excerpt.length > 160) {
       content.excerpt = content.excerpt.slice(0, 157) + '...';
       logger.warn(`Excerpt trimmed to 160 chars: "${content.title}"`);
-    } else if (content.excerpt && content.excerpt.length < 100) {
+    } else if (content.excerpt && content.excerpt.length < 120) {
       logger.warn(`Excerpt too short (${content.excerpt.length} chars): "${content.title}"`);
     }
 
