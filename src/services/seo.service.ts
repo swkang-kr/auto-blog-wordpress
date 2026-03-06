@@ -33,6 +33,31 @@ export class SeoService {
     });
   }
 
+  /**
+   * Set WordPress site title and tagline to reflect niche focus.
+   */
+  async ensureSiteTitle(siteName: string, categories: string[]): Promise<void> {
+    const tagline = `Your Source for ${categories.join(', ')} Insights`;
+    try {
+      const { data: settings } = await this.api.get('/settings');
+      const current = settings as Record<string, unknown>;
+      const titleChanged = current.title !== siteName;
+      const taglineChanged = current.description !== tagline;
+      if (!titleChanged && !taglineChanged) {
+        logger.debug('Site title and tagline already up to date');
+        return;
+      }
+      const update: Record<string, string> = {};
+      if (titleChanged) update.title = siteName;
+      if (taglineChanged) update.description = tagline;
+      await this.api.post('/settings', update);
+      logger.info(`Site title/tagline updated: "${siteName}" — "${tagline}"`);
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      logger.warn(`Failed to update site title/tagline: ${msg}`);
+    }
+  }
+
   async ensureHeaderScripts(options: {
     googleCode?: string;
     naverCode?: string;

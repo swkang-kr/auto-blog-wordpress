@@ -68,11 +68,20 @@ async function main(): Promise<void> {
     logger.warn(`Failed to create required pages: ${error instanceof Error ? error.message : error}`);
   }
 
-  // 2.6. Ensure search engine verification meta tags + GA4
+  // 2.6. SEO service + niche-aware site settings
   const seoService = new SeoService(config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD, {
     indexNowKey: config.INDEXNOW_KEY || undefined,
     indexingSaKey: config.GOOGLE_INDEXING_SA_KEY || undefined,
   });
+  const nicheCategories = NICHES.map((n) => n.category);
+
+  try {
+    await seoService.ensureSiteTitle(config.SITE_NAME, nicheCategories);
+  } catch (error) {
+    logger.warn(`Site title setup failed: ${error instanceof Error ? error.message : error}`);
+  }
+
+  // 2.7. Ensure search engine verification meta tags + GA4
   try {
     await seoService.ensureHeaderScripts({
       googleCode: config.GOOGLE_SITE_VERIFICATION,
@@ -83,29 +92,28 @@ async function main(): Promise<void> {
     logger.warn(`SEO/GA setup failed: ${error instanceof Error ? error.message : error}`);
   }
 
-  // 2.7. Ensure mobile AdSense padding (prevent bottom banner covering navigation)
+  // 2.8. Ensure mobile AdSense padding (prevent bottom banner covering navigation)
   try {
     await seoService.ensureAdSensePaddingSnippet();
   } catch (error) {
     logger.warn(`AdSense padding snippet setup failed: ${error instanceof Error ? error.message : error}`);
   }
 
-  // 2.8. Ensure IndexNow key file is served (for Naver Search Advisor)
+  // 2.9. Ensure IndexNow key file is served (for Naver Search Advisor)
   try {
     await seoService.ensureIndexNowKeySnippet();
   } catch (error) {
     logger.warn(`IndexNow key snippet setup failed: ${error instanceof Error ? error.message : error}`);
   }
 
-  // 2.9. Ensure navigation menu matches niche categories
+  // 2.10. Ensure navigation menu matches niche categories
   try {
-    const nicheCategories = NICHES.map((n) => n.category);
     await seoService.ensureNavigationMenu(nicheCategories);
   } catch (error) {
     logger.warn(`Navigation menu setup failed: ${error instanceof Error ? error.message : error}`);
   }
 
-  // 2.10. Check robots.txt + WordPress indexing settings
+  // 2.11. Check robots.txt + WordPress indexing settings
   await seoService.checkRobotsTxt();
   await seoService.checkAndFixIndexingSettings();
 
