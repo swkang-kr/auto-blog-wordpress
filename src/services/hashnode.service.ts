@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { logger } from '../utils/logger.js';
+import { htmlToMarkdown } from '../utils/html-to-markdown.js';
 import type { BlogContent, PublishedPost } from '../types/index.js';
 
 const HASHNODE_GQL = 'https://gql.hashnode.com';
@@ -20,7 +21,14 @@ export class HashnodeService {
         name: tag,
       }));
 
-      const slug = content.slug ?? content.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+      const slug =
+        content.slug ??
+        content.title
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/(^-|-$)/g, '');
+
+      const contentMarkdown = htmlToMarkdown(content.html);
 
       const mutation = `
         mutation PublishPost($input: PublishPostInput!) {
@@ -37,7 +45,7 @@ export class HashnodeService {
           variables: {
             input: {
               title: content.title,
-              contentMarkdown: content.html,
+              contentMarkdown,
               publicationId: this.publicationId,
               slug,
               originalArticleURL: post.url,
