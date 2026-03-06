@@ -8,6 +8,8 @@ import { WordPressService } from './services/wordpress.service.js';
 import { PagesService } from './services/pages.service.js';
 import { SeoService } from './services/seo.service.js';
 import { TwitterService } from './services/twitter.service.js';
+import { DevToService } from './services/devto.service.js';
+import { HashnodeService } from './services/hashnode.service.js';
 import { PostHistory } from './utils/history.js';
 import { logger } from './utils/logger.js';
 import type { PostResult, BatchResult, MediaUploadResult } from './types/index.js';
@@ -36,6 +38,27 @@ async function main(): Promise<void> {
   } else {
     logger.info('X_API_KEY not set, skipping X promotion');
   }
+
+  const devtoService = config.DEVTO_API_KEY
+    ? new DevToService(config.DEVTO_API_KEY)
+    : null;
+  if (devtoService) {
+    logger.info('DEV.to syndication service enabled');
+  } else {
+    logger.info('DEVTO_API_KEY not set, skipping DEV.to syndication');
+  }
+
+  const hashnodeService =
+    config.HASHNODE_TOKEN && config.HASHNODE_PUBLICATION_ID
+      ? new HashnodeService(config.HASHNODE_TOKEN, config.HASHNODE_PUBLICATION_ID)
+      : null;
+  if (hashnodeService) {
+    logger.info('Hashnode syndication service enabled');
+  } else {
+    logger.info('HASHNODE_TOKEN not set, skipping Hashnode syndication');
+  }
+
+
 
   // 2.5. Ensure required pages exist (AdSense compliance)
   const pagesService = new PagesService(config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD);
@@ -74,7 +97,15 @@ async function main(): Promise<void> {
     logger.warn(`IndexNow key snippet setup failed: ${error instanceof Error ? error.message : error}`);
   }
 
-  // 2.9. Check robots.txt + WordPress indexing settings
+  // 2.9. Ensure navigation menu matches niche categories
+  try {
+    const nicheCategories = NICHES.map((n) => n.category);
+    await seoService.ensureNavigationMenu(nicheCategories);
+  } catch (error) {
+    logger.warn(`Navigation menu setup failed: ${error instanceof Error ? error.message : error}`);
+  }
+
+  // 2.10. Check robots.txt + WordPress indexing settings
   await seoService.checkRobotsTxt();
   await seoService.checkAndFixIndexingSettings();
 
@@ -196,10 +227,20 @@ async function main(): Promise<void> {
         await twitterService.promoteBlogPost(content, post);
       }
 
-      // B-7. Google Indexing API
+      // B-7. DEV.to syndication (optional)
+      if (devtoService) {
+        await devtoService.syndicateBlogPost(content, post);
+      }
+
+      // B-8. Hashnode syndication (optional)
+      if (hashnodeService) {
+        await hashnodeService.syndicateBlogPost(content, post);
+      }
+
+      // B-9. Google Indexing API
       await seoService.requestIndexing(post.url);
 
-      // B-8. Record history
+      // B-10. Record history
       await history.addEntry({
         keyword: researched.analysis.selectedKeyword,
         postId: post.postId,

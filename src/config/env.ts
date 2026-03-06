@@ -26,6 +26,11 @@ const envSchema = z.object({
   X_ACCESS_TOKEN_SECRET: z.string().default(''),
   // Google Indexing API - optional, service account JSON key string
   GOOGLE_INDEXING_SA_KEY: z.string().default(''),
+  // DEV.to - optional, enables auto-syndication to DEV.to
+  DEVTO_API_KEY: z.string().default(''),
+  // Hashnode - optional, enables auto-syndication to Hashnode
+  HASHNODE_TOKEN: z.string().default(''),
+  HASHNODE_PUBLICATION_ID: z.string().default(''),
 });
 
 export type AppConfig = z.infer<typeof envSchema>;

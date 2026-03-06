@@ -7,6 +7,7 @@ const HREFLANG_SNIPPET_TITLE = 'Auto Blog hreflang SEO';
 const ADSENSE_PADDING_SNIPPET_TITLE = 'Auto Blog AdSense Mobile Padding';
 const INDEXNOW_SNIPPET_TITLE = 'Auto Blog IndexNow Key';
 const RANKMATH_REST_SNIPPET_TITLE = 'Auto Blog Rank Math REST API Meta';
+const NAV_MENU_SNIPPET_TITLE = 'Auto Blog Navigation Menu';
 
 export class SeoService {
   private api: AxiosInstance;
@@ -439,6 +440,106 @@ add_action('init', function() {
       const msg = error instanceof Error ? error.message : String(error);
       logger.warn(`Failed to install Rank Math REST snippet: ${msg}`);
       logger.warn('Manually add via Code Snippets plugin with title: ' + RANKMATH_REST_SNIPPET_TITLE);
+    }
+  }
+
+  /**
+   * Ensure a navigation menu is registered with niche categories + static pages.
+   * Uses Code Snippets to register menu and assign items programmatically.
+   */
+  async ensureNavigationMenu(categories: string[]): Promise<void> {
+    // Build PHP menu items from niche categories
+    const categoryItems = categories
+      .map((cat) => {
+        const slug = cat.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        return `    ['label' => '${cat}', 'url' => home_url('/category/${slug}/')],`;
+      })
+      .join('\n');
+
+    const phpCode = `
+// Register and populate primary navigation menu with niche categories
+add_action('after_setup_theme', function() {
+    register_nav_menus(['primary' => 'Primary Menu']);
+});
+
+add_action('init', function() {
+    $menu_name = 'TrendHunt Main';
+    $menu_exists = wp_get_nav_menu_object($menu_name);
+    if ($menu_exists) return; // Already created
+
+    $menu_id = wp_create_nav_menu($menu_name);
+    if (is_wp_error($menu_id)) return;
+
+    // Home
+    wp_update_nav_menu_item($menu_id, 0, [
+        'menu-item-title' => 'Home',
+        'menu-item-url' => home_url('/'),
+        'menu-item-status' => 'publish',
+        'menu-item-type' => 'custom',
+        'menu-item-position' => 1,
+    ]);
+
+    // Niche categories
+    $categories = [
+${categoryItems}
+    ];
+    $pos = 2;
+    foreach ($categories as $cat) {
+        wp_update_nav_menu_item($menu_id, 0, [
+            'menu-item-title' => $cat['label'],
+            'menu-item-url' => $cat['url'],
+            'menu-item-status' => 'publish',
+            'menu-item-type' => 'custom',
+            'menu-item-position' => $pos++,
+        ]);
+    }
+
+    // About page
+    $about = get_page_by_path('about');
+    if ($about) {
+        wp_update_nav_menu_item($menu_id, 0, [
+            'menu-item-title' => 'About',
+            'menu-item-object-id' => $about->ID,
+            'menu-item-object' => 'page',
+            'menu-item-status' => 'publish',
+            'menu-item-type' => 'post_type',
+            'menu-item-position' => $pos++,
+        ]);
+    }
+
+    // Assign to primary location
+    $locations = get_theme_mod('nav_menu_locations', []);
+    $locations['primary'] = $menu_id;
+    set_theme_mod('nav_menu_locations', $locations);
+});`.trim();
+
+    try {
+      const { data: snippets } = await axios.get(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      const existing = (snippets as Array<{ id: number; name: string }>)
+        .find((s) => s.name === NAV_MENU_SNIPPET_TITLE);
+
+      if (existing) {
+        await axios.put(
+          `${this.wpUrl}/wp-json/code-snippets/v1/snippets/${existing.id}`,
+          { code: phpCode, active: true },
+          { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+        );
+        logger.info(`Navigation menu snippet updated (ID=${existing.id})`);
+        return;
+      }
+
+      await axios.post(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { name: NAV_MENU_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 10 },
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      logger.info('Navigation menu snippet installed via Code Snippets plugin');
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      logger.warn(`Failed to install navigation menu snippet: ${msg}`);
     }
   }
 
