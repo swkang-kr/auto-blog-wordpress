@@ -7,11 +7,11 @@ export const NICHES: NicheConfig[] = [
     category: 'Korean Tech',
     broadTerm: 'Korean technology',
     seedKeywords: [
-      'Samsung Galaxy AI vs iPhone comparison 2026',        // ← 높은 검색량
-      'best Korean apps for foreigners living in Korea',    // ← 실용적 의도
-      'Naver vs Google in South Korea explained',           // ← 비교 의도
-      'Korean startup ecosystem how to invest 2026',        // ← 상업적 의도  
-      'South Korea semiconductor stocks to watch',          // ← 투자 의도
+      'how to use Naver as a foreigner in Korea',
+      'Samsung Galaxy AI features explained 2026',
+      'best Korean apps for foreigners living in Seoul',
+      'Naver vs Google which is better in South Korea',
+      'South Korea AI startup investment opportunities 2026',
     ],
     contentTypes: ['analysis', 'deep-dive', 'news-explainer', 'how-to', 'x-vs-y'],
   },
@@ -21,11 +21,11 @@ export const NICHES: NicheConfig[] = [
     category: 'K-Entertainment',
     broadTerm: 'K-pop K-drama',
     seedKeywords: [
-      'how does K-pop make money business model explained', // ← 분석 의도
-      'best Korean dramas to watch on Netflix 2026',        // ← 높은 검색량
-      'HYBE stock analysis SM Entertainment investment',    // ← 투자 의도
-      'Korean webtoon apps for English readers 2026',       // ← 실용적 의도
-      'why K-pop is popular worldwide explained',           // ← 정보 탐색 의도
+      'how does K-pop make money business model explained',
+      'best Korean dramas on Netflix 2026',
+      'HYBE stock analysis buy or sell 2026',
+      'Korean webtoon apps for English readers',
+      'K-pop idol agency contracts explained for fans',
     ],
     contentTypes: ['analysis', 'deep-dive', 'news-explainer', 'best-x-for-y', 'how-to'],
   },
@@ -35,11 +35,11 @@ export const NICHES: NicheConfig[] = [
     category: 'Korean Finance',
     broadTerm: 'Korean stock market',
     seedKeywords: [
-      'how to invest in Korean stocks as a foreigner',      // ← 실제 검색어
-      'KOSPI index explained for beginners',                 // ← 검색 의도 명확
-      'best Korean ETF for international investors 2026',   // ← 상업적 의도
-      'Korean won exchange rate forecast 2026',             // ← 시의성
-      'South Korea stock market outlook 2026',              // ← 분석 의도
+      'how to invest in Korean stocks as a foreigner',
+      'best Korean ETF for international investors 2026',
+      'KOSPI index explained for beginners',
+      'how to open Korean brokerage account from abroad',
+      'Korean won exchange rate forecast analysis 2026',
     ],
     contentTypes: ['analysis', 'deep-dive', 'news-explainer', 'how-to', 'best-x-for-y'],
   },
