@@ -115,27 +115,67 @@ You MUST write like an experienced human analyst, NOT like an AI. Avoid these AI
 
 Rules:
 1. title: High-CTR English title. Target 50-65 characters (Google SERP sweet spot).
-   You MUST use exactly one of these three patterns (no exceptions):
-     A. "Why [topic] is changing everything in 2026"
-        Example: "Why Korean AI chips are changing everything in 2026"
-     B. "[Number] things you need to know about [topic]"
-        Example: "7 things you need to know about Korea's startup boom"
-     C. "The real reason [topic] matters right now"
-        Example: "The real reason KOSPI volatility matters right now"
-   Rules:
-   - [topic] MUST be Korea-related and specific (not generic)
-   - [Number] should be between 3 and 10
-   - Do NOT deviate from these patterns — no hybrid or modified versions
+
+   TITLE STRATEGY: Match the search intent first, then optimize for clicks.
+   The title must reflect what someone would actually TYPE into Google, then add value signals.
+
+   Select the pattern that best fits the content type and search intent:
+
+   A. QUESTION-based (for how-to, explainer, beginner-friendly content)
+      "[How/What/Why/Is] [specific Korea topic] [context]?"
+      Examples:
+      - "How to Invest in Korean Stocks as a Foreigner (2026 Guide)"
+      - "What Is the KOSPI Index and Why Does It Matter?"
+      - "Is Korean Webtoon the Next Global Media Format?"
+      Use when: primary keyword is a question people ask on Google
+
+   B. GUIDE/LIST-based (for best-x, how-to, ranked content)
+      "[Primary Keyword]: [specific value promise]"
+      "[Number] Best [specific thing] for [specific audience] in [Year]"
+      Examples:
+      - "Korean ETFs for Foreign Investors: A 2026 Comparison"
+      - "5 Best Korean Fintech Apps for International Users in 2026"
+      - "Investing in KOSPI: A Step-by-Step Guide for Beginners"
+      Use when: user wants a ranked list or a specific recommendation
+
+   C. ANALYSIS-based (for deep-dive, market analysis, trend pieces)
+      "[Korea topic]: [what the analysis reveals]"
+      "[Primary Keyword] — [insight that changes the reader's view]"
+      Examples:
+      - "Korea's Semiconductor Strategy: What the Data Actually Shows"
+      - "K-pop's Business Model: How Agencies Turn Fans Into Revenue"
+      - "KOSPI vs S&P 500: Where Korean Stocks Stand in 2026"
+      Use when: content is analytical and targets researchers/investors
+
+   MANDATORY TITLE RULES:
+   - Include the PRIMARY KEYWORD or its close variant in the title (SEO requirement)
+   - Target 50-65 characters total (count carefully)
+   - Include "Korea" or "Korean" explicitly — this is your niche differentiator
+   - Avoid vague superlatives: "everything", "game-changer", "revolutionary"
+   - For guides and lists: include year (2026) to signal freshness
+   - For evergreen analysis: omit year
+   - Do NOT start with "Why [X] is changing everything" — this pattern has low CTR
 2. slug: Short, clean evergreen URL slug (3-5 words max, lowercase, hyphens, NO year for evergreen content).
    Exception: For annual roundups, you MAY include the year.
 3. html: English blog post in HTML format (2,500+ words, inline CSS styled)
 4. Include a table of contents at the beginning
 5. Use a natural, authoritative English tone with Korea expertise
 6. excerpt: Compelling English meta description, 140-160 characters. MUST:
-   - Open with the primary keyword or a direct hook
-   - State the specific value or outcome the reader will get
-   - Use second person ("you", "your") to speak directly to the reader
-   - End with a complete sentence
+   - Open with the PRIMARY KEYWORD exactly as written (Google bolds matching terms in SERP)
+   - State ONE specific outcome the reader gets (not vague benefit — concrete result)
+   - Include a curiosity gap or urgency signal in the middle
+   - Use second person ("you", "your") — makes it feel personal in SERP
+   - End with a complete sentence, not a fragment
+   - Target 145-155 characters (leave 5-char buffer for Google truncation)
+   
+   GOOD examples:
+   - "Korean ETFs give foreign investors direct exposure to KOSPI gains. This 2026 guide breaks down the top 5 options, fees, and how to buy from outside Korea."
+   - "Investing in Korean stocks as a foreigner is easier than most guides admit. Here's exactly how to open an account, pick brokers, and avoid the common traps."
+   - "K-pop's business model generates billions — but most coverage misses the actual revenue mechanics. Here's how agencies really make money from their artists."
+   
+   BAD examples (avoid):
+   - "Discover everything you need to know about Korean tech trends in 2026. Learn how Korean companies are changing the global landscape." (vague, no keyword, no concrete value)
+   - "This comprehensive guide covers Korean investment options for international investors." (no hook, no urgency, no specificity)
 7. tags: 5-10 related English keywords (include Korea-specific terms)
 8. category: One best-fit English category name
 
