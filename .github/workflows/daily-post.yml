@@ -34,6 +34,7 @@ jobs:
       - name: Run auto blog posting
         run: npm run start
         env:
+          # Required
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           WP_URL: ${{ secrets.WP_URL }}
@@ -41,24 +42,47 @@ jobs:
           WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
           TRENDS_GEO: US
           LOG_LEVEL: info
+          POST_COUNT: ${{ inputs.post_count || '3' }}
+
+          # Site identity & E-E-A-T
+          SITE_NAME: ${{ secrets.SITE_NAME }}
+          SITE_OWNER: ${{ secrets.SITE_OWNER }}
+          CONTACT_EMAIL: ${{ secrets.CONTACT_EMAIL }}
+          AUTHOR_LINKEDIN: ${{ secrets.AUTHOR_LINKEDIN }}
+          AUTHOR_TWITTER: ${{ secrets.AUTHOR_TWITTER }}
+
+          # Claude model
+          CLAUDE_MODEL: ${{ secrets.CLAUDE_MODEL }}
+
+          # SEO verification
           GA_MEASUREMENT_ID: ${{ secrets.GA_MEASUREMENT_ID }}
           GOOGLE_SITE_VERIFICATION: ${{ secrets.GOOGLE_SITE_VERIFICATION }}
           NAVER_SITE_VERIFICATION: ${{ secrets.NAVER_SITE_VERIFICATION }}
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+
+          # Google APIs (Indexing, GA4, GSC)
+          GOOGLE_INDEXING_SA_KEY: ${{ secrets.GOOGLE_INDEXING_SA_KEY }}
+          GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+          GSC_SITE_URL: ${{ secrets.GSC_SITE_URL }}
+
+          # Social syndication
           X_API_KEY: ${{ secrets.X_API_KEY }}
           X_API_SECRET: ${{ secrets.X_API_SECRET }}
           X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
           X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}
-          GOOGLE_INDEXING_SA_KEY: ${{ secrets.GOOGLE_INDEXING_SA_KEY }}
-          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
           DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
           HASHNODE_TOKEN: ${{ secrets.HASHNODE_TOKEN }}
           HASHNODE_PUBLICATION_ID: ${{ secrets.HASHNODE_PUBLICATION_ID }}
-          POST_COUNT: ${{ inputs.post_count || '3' }}
 
-      - name: Commit post history
+          # Monetization & growth
+          NEWSLETTER_FORM_URL: ${{ secrets.NEWSLETTER_FORM_URL }}
+          AFFILIATE_MAP: ${{ secrets.AFFILIATE_MAP }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Commit post history and cache
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/post-history.json
+          git add data/post-history.json .cache/ || true
           git diff --staged --quiet || git commit -m "chore: update post history [skip ci]"
           git push
