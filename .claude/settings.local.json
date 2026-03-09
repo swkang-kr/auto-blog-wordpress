@@ -46,7 +46,15 @@
       "Bash(git:*)",
       "WebFetch(domain:content-whale.com)",
       "WebFetch(domain:yoast.com)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(npx tsx src/scripts/check-indexing-status.ts)",
+      "Bash(npx tsx src/scripts/request-indexing-all.ts)",
+      "Bash(npx tsc --noEmit 2>&1)",
+      "Bash(git log --format=\"%h %s\" -10 && echo \"---\" && git log -1 --format=\"%h\" | xargs -I {} git show --stat {})",
+      "Bash(wc -l /home/trendhunt/workspace/auto-blog-wordpress/src/services/*.ts /home/trendhunt/workspace/auto-blog-wordpress/src/index.ts | tail -1)",
+      "Bash(npm run typecheck 2>&1)",
+      "Bash(npm run build 2>&1)",
+      "Bash(gh secret list)"
     ]
   }
 }
