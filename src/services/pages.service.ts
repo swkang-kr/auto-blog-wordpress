@@ -32,8 +32,8 @@ export class PagesService {
     });
   }
 
-  async ensureRequiredPages(siteName: string, siteOwner: string, contactEmail: string, authorLinks?: { linkedin?: string; twitter?: string }): Promise<void> {
-    const pages = this.buildPageConfigs(siteName, siteOwner, contactEmail, authorLinks);
+  async ensureRequiredPages(siteName: string, siteOwner: string, contactEmail: string, authorLinks?: { linkedin?: string; twitter?: string }, authorBio?: string, authorCredentials?: string): Promise<void> {
+    const pages = this.buildPageConfigs(siteName, siteOwner, contactEmail, authorLinks, authorBio, authorCredentials);
 
     for (const page of pages) {
       try {
@@ -74,7 +74,7 @@ export class PagesService {
     }
   }
 
-  private buildPageConfigs(siteName: string, siteOwner: string, contactEmail: string, authorLinks?: { linkedin?: string; twitter?: string }): PageConfig[] {
+  private buildPageConfigs(siteName: string, siteOwner: string, contactEmail: string, authorLinks?: { linkedin?: string; twitter?: string }, authorBio?: string, authorCredentials?: string): PageConfig[] {
     const ownerDisplay = siteOwner || siteName;
     const emailDisplay = contactEmail || `contact@${siteName.toLowerCase().replace(/\s+/g, '')}.net`;
 
@@ -87,7 +87,7 @@ export class PagesService {
       {
         slug: 'about',
         title: 'About',
-        content: this.buildAboutPage(siteName, ownerDisplay, authorLinks),
+        content: this.buildAboutPage(siteName, ownerDisplay, authorLinks, authorBio, authorCredentials),
       },
       {
         slug: 'contact',
@@ -140,16 +140,18 @@ export class PagesService {
 </div>`;
   }
 
-  private buildAboutPage(siteName: string, owner: string, authorLinks?: { linkedin?: string; twitter?: string }): string {
+  private buildAboutPage(siteName: string, owner: string, authorLinks?: { linkedin?: string; twitter?: string }, authorBio?: string, authorCredentials?: string): string {
     // Build Person schema.org JSON-LD for author E-E-A-T
     const sameAs = [authorLinks?.linkedin, authorLinks?.twitter].filter(Boolean);
+    const credentials = authorCredentials || 'Korea Market & Trends Analyst';
+    const bio = authorBio || `${owner} is a Korea-focused analyst covering Korean technology, entertainment, and financial markets for an international audience.`;
     const personJsonLd = JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'Person',
       name: owner,
-      jobTitle: 'Korea Market & Trends Analyst',
-      description: `${owner} is a Korea-focused analyst covering Korean technology, entertainment, and financial markets for an international audience.`,
-      knowsAbout: ['Korean technology', 'K-pop industry', 'Korean stock market', 'KOSPI', 'South Korean economy', 'Korean startups', 'K-drama', 'Korean food culture'],
+      jobTitle: credentials,
+      description: bio,
+      knowsAbout: ['Korean technology', 'K-pop industry', 'Korean stock market', 'KOSPI', 'South Korean economy', 'Korean startups', 'K-drama', 'Korean food culture', 'Korean beauty industry', 'Korean cryptocurrency market'],
       knowsLanguage: ['English', 'Korean'],
       ...(sameAs.length > 0 ? { sameAs } : {}),
     });
@@ -167,6 +169,9 @@ export class PagesService {
 <li><strong>Korean Investment & Finance</strong> -- KOSPI/KOSDAQ analysis, Korean economic policy, and investment opportunities</li>
 <li><strong>Korean Food & Culture</strong> -- Authentic Korean cuisine, dining culture, and travel tips</li>
 <li><strong>Korean Language</strong> -- Learning resources, TOPIK prep, and language tips for global learners</li>
+<li><strong>K-Beauty</strong> -- Korean skincare science, product analysis, and industry trends</li>
+<li><strong>Korean Crypto & Web3</strong> -- Upbit, Bithumb, regulation analysis, and DeFi in Korea</li>
+<li><strong>Korean Automotive</strong> -- Hyundai, Kia EV strategy, and battery industry analysis</li>
 </ul>
 
 <h3 style="${S.h3}">Our Mission</h3>
@@ -180,23 +185,37 @@ export class PagesService {
 
 <h3 style="${S.h3}">About the Author</h3>
 <div itemscope itemtype="https://schema.org/Person" style="${S.infoBox}">
-<p style="${S.p}"><strong itemprop="name">${owner}</strong> is a <span itemprop="jobTitle">Korea Market & Trends Analyst</span> specializing in Korean technology, K-entertainment business models, and KOSPI/KOSDAQ investment analysis. With deep knowledge of Korean-language sources and institutional data (BOK, DART, KRX), ${owner} bridges the gap between Korean media and global readers seeking actionable insights.</p>
+<p style="${S.p}"><strong itemprop="name">${owner}</strong> is a <span itemprop="jobTitle">${credentials}</span> with expertise in Korean technology, K-entertainment business models, and KOSPI/KOSDAQ investment analysis.</p>
+<p style="${S.p}">${bio}</p>
+<p style="${S.p}">With direct access to Korean-language sources and institutional data (BOK, DART, KRX, FSC, KOSIS), ${owner} bridges the gap between Korean media and global readers seeking actionable insights.</p>
 <meta itemprop="knowsLanguage" content="English" />
 <meta itemprop="knowsLanguage" content="Korean" />
 ${authorLinks?.linkedin ? `<p style="margin:0 0 8px 0;"><a href="${authorLinks.linkedin}" target="_blank" rel="noopener noreferrer" itemprop="sameAs" style="color:#0066FF; text-decoration:none;">LinkedIn Profile</a></p>` : ''}
 ${authorLinks?.twitter ? `<p style="margin:0;"><a href="${authorLinks.twitter}" target="_blank" rel="noopener noreferrer" itemprop="sameAs" style="color:#0066FF; text-decoration:none;">X (Twitter) Profile</a></p>` : ''}
 </div>
 
-<h3 style="${S.h3}">Editorial Standards</h3>
+<h3 style="${S.h3}">Editorial Standards & Methodology</h3>
+<p style="${S.p}">Every article published on ${siteName} follows a rigorous editorial process:</p>
 <ul style="${S.ul}">
-<li>All analysis is grounded in Korean-language primary sources and official institutional data</li>
-<li>Market data is verified against KRX, DART filings, and BOK publications</li>
-<li>Content is reviewed for accuracy before publication</li>
-<li>We clearly distinguish between factual reporting and analytical commentary</li>
+<li><strong>Primary Source Verification</strong> -- All analysis is grounded in Korean-language primary sources and official institutional data (BOK, DART, KRX, KOSIS)</li>
+<li><strong>Multi-Source Cross-Reference</strong> -- Market data is verified against at least two independent sources before publication</li>
+<li><strong>Fact-Checked Statistics</strong> -- All numerical claims include source attribution and publication dates</li>
+<li><strong>Clear Opinion Labeling</strong> -- We clearly distinguish between factual reporting and analytical commentary</li>
+<li><strong>Regular Updates</strong> -- Time-sensitive content is reviewed and updated quarterly to maintain accuracy</li>
+<li><strong>Correction Policy</strong> -- If errors are identified, corrections are published promptly with transparent disclosure</li>
+</ul>
+
+<h3 style="${S.h3}">Sources We Rely On</h3>
+<p style="${S.p}">Our reporting draws from trusted Korean and international sources:</p>
+<ul style="${S.ul}">
+<li><strong>Korean Institutions</strong> -- Bank of Korea (BOK), Financial Supervisory Commission (FSC), Korea Exchange (KRX), DART corporate filings</li>
+<li><strong>Government Data</strong> -- KOSIS (Korean Statistical Information Service), MSIT, KOTRA, KISA</li>
+<li><strong>Korean Media</strong> -- Maeil Business Newspaper, Korea Economic Daily, Chosun Biz, Electronic Times</li>
+<li><strong>International</strong> -- Bloomberg, Reuters, Nikkei Asia, Statista, World Bank</li>
 </ul>
 
 <div style="${S.highlightBox}">
-<p style="margin:0; line-height:1.7; color:#555;">We welcome feedback, tips, and collaboration inquiries from readers, journalists, and industry professionals. Reach us through our <a href="/contact" style="color:#0066FF; text-decoration:none;">Contact page</a>.</p>
+<p style="margin:0; line-height:1.7; color:#555;">We welcome feedback, tips, corrections, and collaboration inquiries from readers, journalists, and industry professionals. Reach us through our <a href="/contact" style="color:#0066FF; text-decoration:none;">Contact page</a>.</p>
 </div>
 </div>`;
   }
@@ -283,6 +302,9 @@ ${authorLinks?.twitter ? `<p style="margin:0;"><a href="${authorLinks.twitter}" 
       'Korean Food': 'authentic Korean cuisine, from street food guides to home cooking recipes, with neighborhood recommendations and cultural context',
       'Korea Travel': 'practical travel and living guides for South Korea, including transportation, costs, apps, and insider tips',
       'Korean Language': 'learning Korean effectively — from Hangul basics to TOPIK preparation, with recommended apps, schools, and study strategies',
+      'K-Beauty': 'Korean skincare science, product comparisons, beauty industry analysis, and step-by-step routines for every skin type',
+      'Korean Crypto': 'South Korea\'s crypto market dynamics — Upbit, Bithumb, regulatory landscape, Kimchi premium, and Web3 innovation',
+      'Korean Automotive': 'Hyundai, Kia, and Korea\'s EV revolution — vehicle comparisons, battery technology, and investment analysis',
     };
 
     const description = nicheDescriptions[niche.category] || `everything about ${niche.category}`;
@@ -313,18 +335,56 @@ ${authorLinks?.twitter ? `<p style="margin:0;"><a href="${authorLinks.twitter}" 
     };
     const jsonLdScript = `<script type="application/ld+json">${JSON.stringify(itemListSchema)}</script>\n`;
 
+    // Group posts by content type for better organization
+    const postsByType = new Map<string, typeof posts>();
+    for (const p of posts.slice(0, 30)) {
+      // Try to infer content type from title patterns
+      const type = this.inferContentType(p.title);
+      if (!postsByType.has(type)) postsByType.set(type, []);
+      postsByType.get(type)!.push(p);
+    }
+
+    // Build organized sections
+    const typeLabels: Record<string, string> = {
+      'how-to': 'How-To Guides',
+      'analysis': 'Analysis & Deep-Dives',
+      'comparison': 'Comparisons',
+      'list': 'Top Picks & Lists',
+      'other': 'More Articles',
+    };
+
+    let organizedCards = '';
+    for (const [type, typePosts] of postsByType) {
+      const label = typeLabels[type] || typeLabels['other'];
+      const cards = typePosts.map(p => {
+        const shortTitle = p.title.length > 70 ? p.title.slice(0, 67) + '...' : p.title;
+        return `<a href="${p.url}" style="display:block; padding:16px 20px; margin:0 0 10px 0; background:#fff; border:1px solid #e5e7eb; border-radius:8px; text-decoration:none; transition:box-shadow 0.2s;">
+<p style="margin:0; font-size:15px; font-weight:600; color:#222; line-height:1.4;">${this.escapeHtml(shortTitle)}</p></a>`;
+      }).join('\n');
+      organizedCards += `<h3 style="${S.h3}">${label}</h3>\n${cards}\n`;
+    }
+
+    const maturityLabel = posts.length >= 15 ? 'Comprehensive' : posts.length >= 8 ? 'Growing' : 'Developing';
+
     return `${jsonLdScript}<div style="${S.wrapper}">
 <p style="${S.p}">Welcome to ${siteName}'s comprehensive guide to ${description}. This page serves as your central hub — bookmark it and explore the topics that interest you most.</p>
 
 <div style="${S.infoBox}">
-<p style="margin:0; font-size:15px; color:#555; line-height:1.6;">This guide is continuously updated as we publish new content. Currently featuring <strong>${posts.length} articles</strong> covering ${niche.category}. Last updated: ${new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}.</p>
+<p style="margin:0; font-size:15px; color:#555; line-height:1.6;">Collection status: <strong>${maturityLabel}</strong> (${posts.length} articles). Last updated: ${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}.</p>
 </div>
 
-<h2 style="${S.h2}">All ${niche.category} Articles</h2>
-${postCards}
+<h2 style="${S.h2}">Quick Start: Where to Begin</h2>
+<p style="${S.p}">New to ${niche.category}? Start with these seed keywords that our readers find most useful:</p>
+<ul style="${S.ul}">
+${niche.seedKeywords.slice(0, 3).map(kw => `<li>${kw}</li>`).join('\n')}
+</ul>
 
-<h2 style="${S.h2}">About This Guide</h2>
+<h2 style="${S.h2}">All ${niche.category} Articles</h2>
+${organizedCards}
+
+<h2 style="${S.h2}">About This Collection</h2>
 <p style="${S.p}">Each article in this collection is researched using Korean-language primary sources and institutional data. We cover ${niche.category} from a global perspective, making Korean expertise accessible to English-speaking readers worldwide.</p>
+<p style="${S.p}">Our editorial team monitors Google Trends, Korean media, and institutional publications to identify the most relevant topics for our global audience. New articles are published regularly based on trending search demand and reader interest.</p>
 
 <div style="${S.highlightBox}">
 <p style="margin:0; line-height:1.7; color:#555;">Looking for something specific? Use the search bar above or <a href="/contact" style="color:#0066FF; text-decoration:none;">contact us</a> to suggest a topic.</p>
@@ -332,6 +392,15 @@ ${postCards}
 
 <p style="margin:40px 0 0 0; padding-top:20px; border-top:1px solid #eee; font-size:13px; color:#999; line-height:1.6;">This guide is updated regularly with the latest ${niche.category} content for ${year}.</p>
 </div>`;
+  }
+
+  private inferContentType(title: string): string {
+    const lower = title.toLowerCase();
+    if (/^how to |step.by.step|guide to|beginner/.test(lower)) return 'how-to';
+    if (/\bvs\b|\bversus\b|comparison|compared/.test(lower)) return 'comparison';
+    if (/\bbest\b|\btop \d+\b|\branked\b|\bpicks\b/.test(lower)) return 'list';
+    if (/analysis|explained|deep.dive|why |what |breakdown/.test(lower)) return 'analysis';
+    return 'other';
   }
 
   private escapeHtml(text: string): string {

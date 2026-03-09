@@ -1,6 +1,29 @@
 /** 콘텐츠 유형 */
 export type ContentType = 'how-to' | 'best-x-for-y' | 'x-vs-y' | 'analysis' | 'deep-dive' | 'news-explainer' | 'listicle' | 'case-study' | 'product-review';
 
+/** Content freshness classification — determines update frequency */
+export type FreshnessClass = 'evergreen' | 'seasonal' | 'time-sensitive';
+
+/** Map content types to freshness class for automatic content lifecycle management */
+export const CONTENT_FRESHNESS_MAP: Record<ContentType, FreshnessClass> = {
+  'how-to': 'evergreen',
+  'deep-dive': 'evergreen',
+  'case-study': 'evergreen',
+  'best-x-for-y': 'seasonal',      // Rankings change, update quarterly
+  'x-vs-y': 'seasonal',             // Specs/features change
+  'analysis': 'seasonal',            // Data-driven, update quarterly
+  'listicle': 'seasonal',            // Lists evolve
+  'product-review': 'seasonal',
+  'news-explainer': 'time-sensitive', // Decays fast, flag for archive after 6 months
+};
+
+/** Recommended update intervals in days per freshness class */
+export const FRESHNESS_UPDATE_INTERVALS: Record<FreshnessClass, number> = {
+  'evergreen': 365,       // Annual review
+  'seasonal': 90,         // Quarterly update
+  'time-sensitive': 180,  // Archive or update flag after 6 months
+};
+
 /** 니치 설정 */
 export interface NicheConfig {
   id: string;

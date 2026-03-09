@@ -1,14 +1,14 @@
-name: Weekly Blog Post
+name: Daily Blog Post
 
 on:
   schedule:
-    - cron: '0 14 * * 1'  # UTC 14:00 every Monday = EST 09:00 / PST 06:00 매주 월요일
+    - cron: '0 14 * * *'  # UTC 14:00 every day = EST 09:00 / PST 06:00 매일
   workflow_dispatch:          # Manual trigger
     inputs:
       post_count:
-        description: 'Number of niches to post (1-3)'
+        description: 'Number of niches to post (1-2)'
         required: false
-        default: '3'
+        default: '1'
 
 permissions:
   contents: write
@@ -42,7 +42,7 @@ jobs:
           WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
           TRENDS_GEO: US
           LOG_LEVEL: info
-          POST_COUNT: ${{ inputs.post_count || '3' }}
+          POST_COUNT: ${{ inputs.post_count || '1' }}
 
           # Site identity & E-E-A-T
           SITE_NAME: ${{ secrets.SITE_NAME }}
@@ -73,6 +73,9 @@ jobs:
           DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
           HASHNODE_TOKEN: ${{ secrets.HASHNODE_TOKEN }}
           HASHNODE_PUBLICATION_ID: ${{ secrets.HASHNODE_PUBLICATION_ID }}
+
+          # Pinterest
+          PINTEREST_ACCESS_TOKEN: ${{ secrets.PINTEREST_ACCESS_TOKEN }}
 
           # Monetization & growth
           NEWSLETTER_FORM_URL: ${{ secrets.NEWSLETTER_FORM_URL }}

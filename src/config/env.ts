@@ -18,7 +18,7 @@ const envSchema = z.object({
   NAVER_SITE_VERIFICATION: z.string().default(''),
   INDEXNOW_KEY: z.string().default(''),
   CLAUDE_MODEL: z.string().default('claude-sonnet-4-6'),
-  POST_COUNT: z.coerce.number().int().min(1).default(3),
+  POST_COUNT: z.coerce.number().int().min(1).default(1),
   // X (Twitter) - optional, all four must be set to enable promotion
   X_API_KEY: z.string().default(''),
   X_API_SECRET: z.string().default(''),
@@ -32,7 +32,7 @@ const envSchema = z.object({
   HASHNODE_TOKEN: z.string().default(''),
   HASHNODE_PUBLICATION_ID: z.string().default(''),
   // Content quality & workflow
-  MIN_QUALITY_SCORE: z.coerce.number().int().min(0).max(100).default(60),
+  MIN_QUALITY_SCORE: z.coerce.number().int().min(0).max(100).default(65),
   PUBLISH_STATUS: z.enum(['publish', 'draft']).default('publish'),
   PUBLISH_INTERVAL_MINUTES: z.coerce.number().int().min(0).default(0),
   // Publish time optimization (24h format, e.g. "08:00" for 8 AM ET)
@@ -41,6 +41,8 @@ const envSchema = z.object({
   // Author identity for E-E-A-T
   AUTHOR_LINKEDIN: z.string().default(''),
   AUTHOR_TWITTER: z.string().default(''),
+  AUTHOR_BIO: z.string().default(''),
+  AUTHOR_CREDENTIALS: z.string().default(''),
   // GA4 Data API for performance feedback
   GA4_PROPERTY_ID: z.string().default(''),
   // Google Search Console for search performance feedback
@@ -52,6 +54,8 @@ const envSchema = z.object({
   // Auto-rewrite underperforming posts (0 = disabled)
   AUTO_REWRITE_COUNT: z.coerce.number().int().min(0).default(2),
   AUTO_REWRITE_MIN_AGE_DAYS: z.coerce.number().int().min(7).default(30),
+  // Pinterest - optional, enables auto-pinning for visual categories (Travel, Food, Beauty)
+  PINTEREST_ACCESS_TOKEN: z.string().default(''),
   // Newsletter form URL (Mailchimp/ConvertKit/Substack) - optional, enables in-content email CTA
   NEWSLETTER_FORM_URL: z.string().default(''),
   // Affiliate settings - optional JSON mapping of category to affiliate program URLs

@@ -17,19 +17,26 @@ export class ImageGeneratorService {
     this.imageFormat = imageFormat;
   }
 
+  /** Common stop words to remove from SEO filenames */
+  private static readonly FILENAME_STOP_WORDS = new Set([
+    'a', 'an', 'the', 'in', 'on', 'at', 'to', 'for', 'of', 'and', 'or', 'is', 'are',
+    'was', 'were', 'be', 'been', 'with', 'from', 'by', 'as', 'it', 'its', 'this', 'that',
+    'how', 'what', 'why', 'your', 'you', 'our', 'my', 'can', 'do', 'does', 'will',
+  ]);
+
   /**
-   * Generate an SEO-friendly filename from keyword.
-   * e.g. "Claude AI: 7 Best Features" → "claude-ai-7-best-features-2026"
+   * Generate an SEO-optimized filename from keyword.
+   * Removes stop words and limits to 8 meaningful words for better image search ranking.
+   * e.g. "how to invest in Korean stocks as a foreigner" → "invest-korean-stocks-foreigner-featured-2026.webp"
    */
   static buildFilename(keyword: string, suffix: string, format: 'webp' | 'avif' = 'webp'): string {
     const year = new Date().getFullYear();
-    const slug = keyword
+    const words = keyword
       .toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, '')
-      .replace(/\s+/g, '-')
-      .replace(/-+/g, '-')
-      .replace(/^-|-$/g, '')
-      .substring(0, 60);
+      .replace(/[^a-z0-9\s]/g, '')
+      .split(/\s+/)
+      .filter(w => w.length > 0 && !ImageGeneratorService.FILENAME_STOP_WORDS.has(w));
+    const slug = words.slice(0, 8).join('-');
     return `${slug}-${suffix}-${year}.${format}`;
   }
 

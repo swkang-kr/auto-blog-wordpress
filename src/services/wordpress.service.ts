@@ -659,9 +659,74 @@ export class WordPressService {
   }
 
   /**
+   * Category-based default affiliate keywords.
+   * These are auto-applied when the content matches a category, providing affiliate
+   * opportunities even without manual AFFILIATE_MAP configuration.
+   * Placeholder URLs — replace with actual affiliate links in AFFILIATE_MAP env var.
+   */
+  private static readonly CATEGORY_AFFILIATE_KEYWORDS: Record<string, Record<string, string>> = {
+    'K-Beauty': {
+      'Olive Young': '',
+      'YesStyle': '',
+      'StyleKorean': '',
+      'COSRX': '',
+      'Innisfree': '',
+    },
+    'Korea Travel': {
+      'Klook': '',
+      'KKday': '',
+      'Agoda': '',
+      'T-money': '',
+      'Airalo': '',
+    },
+    'Korean Food': {
+      'Maangchi': '',
+      'Korean grocery': '',
+      'gochugaru': '',
+    },
+    'Korean Finance': {
+      'Interactive Brokers': '',
+      'Webull': '',
+      'Tiger Brokers': '',
+    },
+    'Korean Tech': {
+      'Samsung Galaxy': '',
+      'LG OLED': '',
+    },
+    'Korean Language': {
+      'Talk To Me In Korean': '',
+      'LingoDeer': '',
+      'italki': '',
+    },
+  };
+
+  /**
+   * Get merged affiliate map: user-provided AFFILIATE_MAP overrides + category defaults.
+   * Only includes entries with non-empty URLs.
+   */
+  private getMergedAffiliateMap(userMap: Record<string, string>, category?: string): Record<string, string> {
+    const merged: Record<string, string> = {};
+    // Add category defaults (only those with URLs)
+    if (category) {
+      const categoryDefaults = WordPressService.CATEGORY_AFFILIATE_KEYWORDS[category];
+      if (categoryDefaults) {
+        for (const [kw, url] of Object.entries(categoryDefaults)) {
+          if (url) merged[kw] = url;
+        }
+      }
+    }
+    // User overrides take priority
+    for (const [kw, url] of Object.entries(userMap)) {
+      if (url) merged[kw] = url;
+    }
+    return merged;
+  }
+
+  /**
    * Inject affiliate links for known products/brands mentioned in content.
    * Uses AFFILIATE_MAP env var: JSON object mapping keyword patterns to affiliate URLs.
-   * Example: {"coupang":"https://link.coupang.com/aff?id=xxx","toss":"https://toss.im/aff?ref=xxx"}
+   * Also applies category-based default affiliate keywords when URLs are configured.
+   * Example: {"coupang":"https://link.coupang.com/aff?id=xxx","Olive Young":"https://oliveyoung.com/aff?ref=xxx"}
    */
   private injectAffiliateLinks(html: string, affiliateMap: Record<string, string>): string {
     if (Object.keys(affiliateMap).length === 0) return html;
@@ -841,9 +906,10 @@ export class WordPressService {
       htmlEn = this.injectTopicClusterLinks(htmlEn, options.existingPosts, options.subNiche, content.title);
     }
 
-    // Inject affiliate links for product/brand mentions
-    if (options?.affiliateMap && Object.keys(options.affiliateMap).length > 0) {
-      htmlEn = this.injectAffiliateLinks(htmlEn, options.affiliateMap);
+    // Inject affiliate links for product/brand mentions (merged: user map + category defaults)
+    const mergedAffiliateMap = this.getMergedAffiliateMap(options?.affiliateMap || {}, content.category);
+    if (Object.keys(mergedAffiliateMap).length > 0) {
+      htmlEn = this.injectAffiliateLinks(htmlEn, mergedAffiliateMap);
     }
 
     // Deduplicate internal links (same URL should only appear once)
@@ -948,6 +1014,23 @@ export class WordPressService {
         });
         logger.debug(`HowTo schema: ${steps.length} steps prepared`);
       }
+    }
+
+    // ImageObject schema for featured image (improves Google Image Search ranking)
+    if (options?.featuredImageUrl) {
+      jsonLdSchemas.push({
+        '@context': 'https://schema.org',
+        '@type': 'ImageObject',
+        contentUrl: options.featuredImageUrl,
+        url: options.featuredImageUrl,
+        name: `${content.title} - Featured Image`,
+        description: content.excerpt,
+        width: 1200,
+        height: 675,
+        encodingFormat: options.featuredImageUrl.endsWith('.avif') ? 'image/avif' : 'image/webp',
+        creator: { '@type': 'Organization', name: 'TrendHunt' },
+        copyrightNotice: `© ${new Date().getFullYear()} TrendHunt`,
+      });
     }
 
     // BreadcrumbList schema for navigation
@@ -1538,6 +1621,11 @@ export class WordPressService {
           }
           if (yearRegex.test(fullContent)) {
             let newContent = fullContent.replace(yearRegex, yearStr);
+            // Update the "Updated:" date in the article header if present
+            newContent = newContent.replace(
+              /<span class="ab-updated">Updated: [^<]+<\/span>/,
+              `<span class="ab-updated">Updated: ${dateFormatted}</span>`,
+            );
             // Inject "Last Updated" banner if not present
             if (!newContent.includes('Last Updated:')) {
               const banner = `<div style="background:#f0f8ff; border-left:4px solid #0066FF; padding:12px 20px; margin:0 0 24px 0; border-radius:0 8px 8px 0; font-size:14px; color:#555;"><strong>Last Updated:</strong> ${dateFormatted} — Updated with the latest information for ${currentYear}.</div>`;

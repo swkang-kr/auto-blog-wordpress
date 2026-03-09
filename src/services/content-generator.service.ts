@@ -7,21 +7,23 @@ import { costTracker } from '../utils/cost-tracker.js';
 import type { ResearchedKeyword, BlogContent, ExistingPost } from '../types/index.js';
 
 /** Layout variant for content structure diversification (anti-AI detection) */
-type LayoutVariant = 'standard' | 'narrative' | 'compact' | 'journal';
+type LayoutVariant = 'standard' | 'narrative' | 'compact' | 'journal' | 'opinion' | 'interview';
 
-const LAYOUT_VARIANTS: LayoutVariant[] = ['standard', 'narrative', 'compact', 'journal'];
+const LAYOUT_VARIANTS: LayoutVariant[] = ['standard', 'narrative', 'compact', 'journal', 'opinion', 'interview'];
 
 /**
- * Deterministic variant assignment based on niche ID.
- * Same niche always gets the same variant → maximises prompt cache HITs
- * across runs (system prompt stays identical for the same niche).
+ * Rotating variant assignment based on niche ID + date.
+ * Changes variant weekly per niche to avoid structural monotony (AI detection signal).
+ * Still deterministic within the same week for prompt cache HITs.
  */
 function getVariantForNiche(nicheId: string): LayoutVariant {
   let hash = 0;
   for (let i = 0; i < nicheId.length; i++) {
     hash = ((hash << 5) - hash + nicheId.charCodeAt(i)) | 0;
   }
-  return LAYOUT_VARIANTS[Math.abs(hash) % LAYOUT_VARIANTS.length];
+  // Add week-of-year rotation so same niche gets different layouts each week
+  const weekOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 1).getTime()) / (7 * 24 * 60 * 60 * 1000));
+  return LAYOUT_VARIANTS[Math.abs(hash + weekOfYear) % LAYOUT_VARIANTS.length];
 }
 
 /** Variant-specific structural directives */
@@ -51,6 +53,28 @@ function getVariantDirectives(variant: LayoutVariant): string {
 - Open with an "Executive Summary" H2 section (150-200 words) before the main analysis
 - FAQ: present as a numbered "Reader Questions" section with editorial-style answers
 - Author bio: place right after the executive summary`;
+    case 'opinion':
+      return `
+## Layout: Opinion Editorial
+- Open with a bold thesis statement (1 sentence, controversial or thought-provoking)
+- NO Table of Contents (opinion pieces flow naturally without navigation)
+- Key Takeaways: convert to "My Bottom Line" box with 3 strong analytical positions
+- Use first-person perspective throughout ("I believe", "In my analysis", "What I've observed")
+- Include a "Devil's Advocate" H2 section that honestly addresses the strongest counterargument
+- FAQ: replace with "Questions I Get About This" section with conversational answers
+- Author bio: place right after the thesis statement (establishes credibility early)
+- Tone: assertive, data-backed opinions — NOT wishy-washy "on the other hand" hedging`;
+    case 'interview':
+      return `
+## Layout: Expert Q&A Style
+- Structure the entire article as a curated Q&A format with an unnamed expert voice
+- Open with a brief context paragraph (who is this expert, why does their perspective matter)
+- Each H2 is a bold question; the content under it is the "expert" answer
+- Key Takeaways: present as "Quick Summary" right after the opening context
+- Table of Contents: list the questions as clickable links
+- Use blockquotes for particularly insightful "quotes" within answers
+- FAQ: naturally integrated as additional Q&A at the end
+- Author bio: place at the end with a note about editorial methodology`;
     default: // 'standard'
       return `
 ## Layout: Standard
@@ -61,16 +85,16 @@ function getVariantDirectives(variant: LayoutVariant): string {
   }
 }
 
-/** Word count targets per content type */
+/** Word count targets per content type — optimised for information density over padding (HCU-compliant) */
 const WORD_COUNT_TARGETS: Record<string, { min: number; target: number; continuation: number; rejection: number }> = {
-  'how-to':          { min: 1800, target: 2500, continuation: 1600, rejection: 1500 },
-  'best-x-for-y':   { min: 2000, target: 2800, continuation: 1800, rejection: 1600 },
-  'x-vs-y':         { min: 2000, target: 2800, continuation: 1800, rejection: 1600 },
-  'analysis':        { min: 2500, target: 3500, continuation: 2200, rejection: 2000 },
-  'deep-dive':       { min: 3000, target: 4000, continuation: 2600, rejection: 2400 },
-  'news-explainer':  { min: 2000, target: 2500, continuation: 1800, rejection: 1500 },
-  'listicle':        { min: 2000, target: 2500, continuation: 1800, rejection: 1500 },
-  'case-study':      { min: 2000, target: 3000, continuation: 1800, rejection: 1600 },
+  'how-to':          { min: 1600, target: 2200, continuation: 1400, rejection: 1200 },
+  'best-x-for-y':   { min: 1500, target: 2200, continuation: 1300, rejection: 1100 },
+  'x-vs-y':         { min: 1500, target: 2200, continuation: 1300, rejection: 1100 },
+  'analysis':        { min: 1800, target: 2500, continuation: 1600, rejection: 1400 },
+  'deep-dive':       { min: 2200, target: 3000, continuation: 2000, rejection: 1800 },
+  'news-explainer':  { min: 1400, target: 2000, continuation: 1200, rejection: 1000 },
+  'listicle':        { min: 1400, target: 2000, continuation: 1200, rejection: 1000 },
+  'case-study':      { min: 1800, target: 2500, continuation: 1600, rejection: 1400 },
 };
 
 function getWordCountTargets(contentType: string) {
@@ -109,12 +133,17 @@ ${variantDirectives}
 
 ## Anti-AI Detection Writing Rules (HIGHEST PRIORITY)
 You MUST write like an experienced human analyst, NOT like an AI:
-- NEVER use: "In today's fast-paced world", "In the ever-evolving landscape", "It's worth noting that", "When it comes to", "In this comprehensive guide", "Let's dive in", "Without further ado", "At the end of the day", "Game-changer", "Revolutionize", "Cutting-edge", "Seamless", "Leverage", "Robust", "Harness the power"
+- NEVER use: "In today's fast-paced world", "In the ever-evolving landscape", "It's worth noting that", "When it comes to", "In this comprehensive guide", "Let's dive in", "Without further ado", "At the end of the day", "Game-changer", "Revolutionize", "Cutting-edge", "Seamless", "Leverage", "Robust", "Harness the power", "Navigate the landscape", "Plays a crucial role", "A testament to", "Delve into", "Paradigm shift"
 - NEVER start sentences with "Whether you're a... or a..."
-- NEVER use filler transitions like "Moreover", "Furthermore", "Additionally", "It is important to note"
+- NEVER use filler transitions like "Moreover", "Furthermore", "Additionally", "It is important to note", "Needless to say", "It is no secret"
+- NEVER use the same sentence-opening pattern more than twice in the entire article
 - Instead: Use specific numbers, informed opinions, concrete examples, analytical connectors ("Look,", "Here's the thing:", "The data tells a different story:", "What most coverage misses is...")
 - Write with a clear POINT OF VIEW - take analytical positions, make data-backed claims
-- Use varied sentence lengths: mix short punchy sentences with longer explanatory ones
+- Use varied sentence lengths: mix short punchy sentences (5-8 words) with longer explanatory ones (20-30 words)
+- VARY paragraph structure: alternate between 1-sentence impact paragraphs, 2-sentence context paragraphs, and 3-4 sentence analytical paragraphs
+- Include at least 2 incomplete sentences or fragments for natural rhythm ("Not great. Not terrible either." / "The result? A 40% revenue jump.")
+- Use parenthetical asides sparingly but naturally (these signal human writing patterns)
+- Include at least one personal analytical judgment that starts with "Frankly," or "The uncomfortable truth is" or "What nobody is talking about:"
 
 ## Readability Rules (CRITICAL)
 - EVERY paragraph must be 3-4 sentences MAX. Break long paragraphs ruthlessly.
@@ -132,12 +161,14 @@ You MUST write like an experienced human analyst, NOT like an AI:
 
 ## Content Length Requirement (CRITICAL)
 You MUST write AT LEAST WORD_COUNT_TARGET words of body content. This is non-negotiable.
-To reach WORD_COUNT_TARGET+ words:
-- Each major section (H2) must have 3-5 detailed paragraphs, not 1-2
-- Each point must include a full explanation, Korean market context, and global implications
-- Include real data points, Korean-language source references, and expert perspectives throughout
-- Add a FAQ section (3-7 questions, match the topic's natural scope — do NOT pad with filler Q&As)
+PRIORITIZE information density over word count — every sentence must add unique value.
+To reach WORD_COUNT_TARGET+ words WITHOUT padding:
+- Each major section (H2) must have 2-4 focused paragraphs with concrete data or insights
+- NEVER pad content with generic statements, repetitive explanations, or filler transitions
+- Include real data points, Korean-language source references, and expert perspectives
+- Add a FAQ section (3-5 questions, ONLY questions readers would actually ask — NO filler Q&As)
 - Add a "Global Context" or "What This Means for Investors" signature section
+- If you run out of genuinely useful things to say, STOP — quality beats quantity
 
 ## Content Type Guidelines
 
@@ -393,8 +424,9 @@ All styling is handled by a consolidated <style> block injected at publish time.
 
 ### Article Header (MANDATORY — insert right after opening div)
 <div class="ab-header">
-<p><time datetime="YYYY-MM-DD">Published: Month DD, YYYY</time> · READING_TIME_PLACEHOLDER min read</p>
+<p><time datetime="YYYY-MM-DD">Published: Month DD, YYYY</time> · <span class="ab-updated">Updated: Month DD, YYYY</span> · READING_TIME_PLACEHOLDER min read</p>
 </div>
+Note: For new articles, set Published and Updated to the same date. The system updates the "Updated" date automatically when content is refreshed.
 
 ### Clickable Table of Contents (MANDATORY — collapsed by default on mobile)
 <details class="ab-toc">

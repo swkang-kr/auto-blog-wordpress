@@ -38,30 +38,30 @@ const CATEGORY_READABILITY_TARGETS: Record<string, [number, number]> = {
   'Korean Automotive': [55, 70], // General audience with some tech detail
 };
 
-/** Per-category minimum quality scores — finance/tech require higher standards */
+/** Per-category minimum quality scores — raised across the board for HCU compliance */
 const CATEGORY_MIN_QUALITY: Record<string, number> = {
-  'Korean Finance': 60,
-  'Korean Tech': 55,
-  'Korean Crypto': 60,
-  'K-Entertainment': 45,
-  'Korean Food': 45,
-  'Korea Travel': 45,
-  'Korean Language': 50,
-  'K-Beauty': 45,
-  'Korean Automotive': 50,
+  'Korean Finance': 70,
+  'Korean Tech': 65,
+  'Korean Crypto': 70,
+  'K-Entertainment': 60,
+  'Korean Food': 60,
+  'Korea Travel': 60,
+  'Korean Language': 65,
+  'K-Beauty': 60,
+  'Korean Automotive': 65,
 };
 
-/** Content type-specific minimum word counts */
+/** Content type-specific minimum word counts — lowered for information density over padding */
 const CONTENT_TYPE_MIN_WORDS: Record<string, number> = {
-  'deep-dive': 3000,
-  'analysis': 2500,
-  'case-study': 2500,
-  'how-to': 2200,
-  'product-review': 2200,
-  'best-x-for-y': 2000,
-  'x-vs-y': 2000,
-  'news-explainer': 1800,
-  'listicle': 1800,
+  'deep-dive': 2200,
+  'analysis': 1800,
+  'case-study': 1800,
+  'how-to': 1600,
+  'product-review': 1600,
+  'best-x-for-y': 1500,
+  'x-vs-y': 1500,
+  'news-explainer': 1400,
+  'listicle': 1400,
 };
 
 /** Get minimum quality score for a category (defaults to 45) */
@@ -135,6 +135,13 @@ export function validateContent(
     warnings.push({ category: 'ai-detection', message: `High AI-detection risk: ${aiScore}/100 (low sentence variance, uniform structure)`, severity: 'warning' });
   } else if (aiScore > 50) {
     warnings.push({ category: 'ai-detection', message: `Moderate AI-detection risk: ${aiScore}/100`, severity: 'warning' });
+  }
+
+  // Information density check: unique data points per 500 words
+  const dataPointCount = countDataPoints(plainText);
+  const densityPer500 = wordCount > 0 ? (dataPointCount / wordCount) * 500 : 0;
+  if (densityPer500 < 2 && wordCount > 1000) {
+    warnings.push({ category: 'density', message: `Low information density: ${densityPer500.toFixed(1)} data points per 500 words (target 3+)`, severity: 'warning' });
   }
 
   // ── Structure validation (max 25 points) ──
@@ -744,6 +751,27 @@ function computeAIDetectionScore(text: string): number {
   const fillerScore = fillerCount >= 5 ? 30 : fillerCount >= 3 ? 20 : fillerCount >= 1 ? 10 : 0;
 
   return Math.min(100, burstyScore + openerScore + fillerScore);
+}
+
+/**
+ * Count unique data points in text: statistics, monetary values, percentages, dates, named entities.
+ * Higher density = more informative content, less AI-typical filler.
+ */
+function countDataPoints(text: string): number {
+  const patterns = [
+    /\$[\d,.]+[BMKTbmkt]?/g,           // monetary values
+    /\d+(?:\.\d+)?%/g,                  // percentages
+    /\d{4}/g,                            // years
+    /\d+(?:,\d{3})+/g,                  // large numbers
+    /\d+\.\d+/g,                         // decimal numbers
+    /(?:billion|million|trillion|KRW|USD|won)/gi, // currency/magnitude
+  ];
+  const matches = new Set<string>();
+  for (const pattern of patterns) {
+    const found = text.match(pattern) || [];
+    for (const m of found) matches.add(m);
+  }
+  return matches.size;
 }
 
 function isCommonPhrase(phrase: string): boolean {
