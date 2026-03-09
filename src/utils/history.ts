@@ -56,16 +56,78 @@ export class PostHistory {
     return minLen > 0 && overlap / minLen >= 0.7;
   }
 
+  /** Find a history entry by WordPress post ID */
+  findByPostId(postId: number): PostHistoryEntry | undefined {
+    return this.data.entries.find((e) => e.postId === postId);
+  }
+
   getPostedKeywordsForNiche(nicheId: string): string[] {
     return this.data.entries
       .filter((e) => e.niche === nicheId)
       .map((e) => e.keyword);
   }
 
+  /**
+   * Get recent content types for a niche to enable diversity tracking.
+   * Returns last N content types used for this niche.
+   */
+  getRecentContentTypes(nicheId: string, count: number = 5): string[] {
+    return this.data.entries
+      .filter((e) => e.niche === nicheId && e.contentType)
+      .slice(-count)
+      .map((e) => e.contentType!);
+  }
+
+  /** Get entries published within the last N days (for indexing verification). */
+  getRecentEntries(days: number): PostHistoryEntry[] {
+    const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
+    return this.data.entries.filter((e) => e.publishedAt >= cutoff);
+  }
+
+  /** Get the last publish date for a category (niche ID). */
+  getLastPublishDate(nicheId: string): string | null {
+    return this.data.categoryLastPublished?.[nicheId] || null;
+  }
+
+  /** Record that a category was just published. */
+  async recordCategoryPublish(nicheId: string): Promise<void> {
+    if (!this.data.categoryLastPublished) {
+      this.data.categoryLastPublished = {};
+    }
+    this.data.categoryLastPublished[nicheId] = new Date().toISOString();
+    await this.save();
+  }
+
+  /**
+   * Get categories sorted by staleness (least recently published first).
+   * Categories that have never been published come first.
+   */
+  getCategoriesByStalenessPriority(nicheIds: string[]): string[] {
+    return [...nicheIds].sort((a, b) => {
+      const dateA = this.data.categoryLastPublished?.[a] || '1970-01-01';
+      const dateB = this.data.categoryLastPublished?.[b] || '1970-01-01';
+      return dateA.localeCompare(dateB);
+    });
+  }
+
+  /** Get all history entries (for analytics enrichment). */
+  getAllEntries(): PostHistoryEntry[] {
+    return this.data.entries;
+  }
+
   async addEntry(entry: PostHistoryEntry): Promise<void> {
     this.data.entries.push(entry);
     this.data.totalPosts = this.data.entries.length;
     await this.save();
+  }
+
+  /** Mark A/B title test as resolved for a given post */
+  async markTitleTestResolved(postId: number): Promise<void> {
+    const entry = this.data.entries.find(e => e.postId === postId);
+    if (entry) {
+      entry.titleTestResolved = true;
+      await this.save();
+    }
   }
 
   async updateLastRun(): Promise<void> {

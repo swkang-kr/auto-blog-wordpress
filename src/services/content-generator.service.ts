@@ -2,20 +2,141 @@ import Anthropic from '@anthropic-ai/sdk';
 import { jsonrepair } from 'jsonrepair';
 import { logger } from '../utils/logger.js';
 import { ContentGenerationError } from '../types/errors.js';
+import { validateContent, autoFixContent, logContentScore } from '../utils/content-validator.js';
+import { costTracker } from '../utils/cost-tracker.js';
 import type { ResearchedKeyword, BlogContent, ExistingPost } from '../types/index.js';
 
-const SYSTEM_PROMPT = `You are a Korea-focused editorial analyst writing authoritative English content for a global audience interested in South Korea's technology, entertainment, and financial markets.
+/** Layout variant for content structure diversification (anti-AI detection) */
+type LayoutVariant = 'standard' | 'narrative' | 'compact' | 'journal';
+
+const LAYOUT_VARIANTS: LayoutVariant[] = ['standard', 'narrative', 'compact', 'journal'];
+
+/**
+ * Deterministic variant assignment based on niche ID.
+ * Same niche always gets the same variant → maximises prompt cache HITs
+ * across runs (system prompt stays identical for the same niche).
+ */
+function getVariantForNiche(nicheId: string): LayoutVariant {
+  let hash = 0;
+  for (let i = 0; i < nicheId.length; i++) {
+    hash = ((hash << 5) - hash + nicheId.charCodeAt(i)) | 0;
+  }
+  return LAYOUT_VARIANTS[Math.abs(hash) % LAYOUT_VARIANTS.length];
+}
+
+/** Variant-specific structural directives */
+function getVariantDirectives(variant: LayoutVariant): string {
+  switch (variant) {
+    case 'narrative':
+      return `
+## Layout: Narrative Flow
+- Place Key Takeaways box AFTER the first H2 section (not before it)
+- Table of Contents: place at the END of the article, before the author bio
+- Open with an extended narrative hook (3-4 paragraphs before the first H2)
+- FAQ: integrate questions as H3 subheadings throughout the article body (no separate FAQ section)
+- Author bio: place immediately after the Key Takeaways box`;
+    case 'compact':
+      return `
+## Layout: Compact Briefing
+- Place Key Takeaways box at the very TOP, before the Table of Contents
+- Table of Contents: standard position (after article header)
+- Keep paragraphs to 2-3 sentences max (tighter than default)
+- FAQ: use a collapsible <details> element at the end with all Q&As
+- Author bio: place at the very end, after the disclaimer`;
+    case 'journal':
+      return `
+## Layout: Journal Analysis
+- Place Key Takeaways as a sidebar-style box (use float:right; width:40%; on desktop)
+- Table of Contents: place after the first H2 section
+- Open with an "Executive Summary" H2 section (150-200 words) before the main analysis
+- FAQ: present as a numbered "Reader Questions" section with editorial-style answers
+- Author bio: place right after the executive summary`;
+    default: // 'standard'
+      return `
+## Layout: Standard
+- Table of Contents: after article header (default position)
+- Key Takeaways: after TOC, before first H2 (default position)
+- FAQ: standard section at the end with H3 question headings
+- Author bio: before the disclaimer (default position)`;
+  }
+}
+
+/** Word count targets per content type */
+const WORD_COUNT_TARGETS: Record<string, { min: number; target: number; continuation: number; rejection: number }> = {
+  'how-to':          { min: 1800, target: 2500, continuation: 1600, rejection: 1500 },
+  'best-x-for-y':   { min: 2000, target: 2800, continuation: 1800, rejection: 1600 },
+  'x-vs-y':         { min: 2000, target: 2800, continuation: 1800, rejection: 1600 },
+  'analysis':        { min: 2500, target: 3500, continuation: 2200, rejection: 2000 },
+  'deep-dive':       { min: 3000, target: 4000, continuation: 2600, rejection: 2400 },
+  'news-explainer':  { min: 2000, target: 2500, continuation: 1800, rejection: 1500 },
+  'listicle':        { min: 2000, target: 2500, continuation: 1800, rejection: 1500 },
+  'case-study':      { min: 2000, target: 3000, continuation: 1800, rejection: 1600 },
+};
+
+function getWordCountTargets(contentType: string) {
+  return WORD_COUNT_TARGETS[contentType] || WORD_COUNT_TARGETS['analysis'];
+}
+
+/** Common English stop words to remove from slugs for cleaner URLs */
+const SLUG_STOP_WORDS = new Set([
+  'a', 'an', 'the', 'in', 'on', 'at', 'to', 'for', 'of', 'and', 'or', 'is', 'are',
+  'was', 'were', 'be', 'been', 'with', 'from', 'by', 'as', 'it', 'its', 'this', 'that',
+  'how', 'what', 'why', 'when', 'where', 'which', 'who', 'your', 'you', 'our', 'my',
+  'can', 'do', 'does', 'will', 'should', 'could', 'would', 'has', 'have', 'had',
+  'not', 'but', 'if', 'about', 'into', 'through', 'just', 'also', 'than', 'very',
+]);
+
+/** Optimize slug: remove stop words, limit to 6 meaningful words */
+function optimizeSlug(slug: string): string {
+  const words = slug
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+    .split('-')
+    .filter(w => w.length > 0 && !SLUG_STOP_WORDS.has(w));
+
+  return words.slice(0, 6).join('-');
+}
+
+function buildSystemPrompt(variant: LayoutVariant): string {
+  const variantDirectives = getVariantDirectives(variant);
+  return `You are a Korea-focused editorial analyst writing authoritative English content for a global audience interested in South Korea's technology, entertainment, and financial markets.
 
 You combine deep knowledge of Korean business, culture, and markets with accessible English writing that helps international readers understand Korea's global significance.
+${variantDirectives}
+
+## Anti-AI Detection Writing Rules (HIGHEST PRIORITY)
+You MUST write like an experienced human analyst, NOT like an AI:
+- NEVER use: "In today's fast-paced world", "In the ever-evolving landscape", "It's worth noting that", "When it comes to", "In this comprehensive guide", "Let's dive in", "Without further ado", "At the end of the day", "Game-changer", "Revolutionize", "Cutting-edge", "Seamless", "Leverage", "Robust", "Harness the power"
+- NEVER start sentences with "Whether you're a... or a..."
+- NEVER use filler transitions like "Moreover", "Furthermore", "Additionally", "It is important to note"
+- Instead: Use specific numbers, informed opinions, concrete examples, analytical connectors ("Look,", "Here's the thing:", "The data tells a different story:", "What most coverage misses is...")
+- Write with a clear POINT OF VIEW - take analytical positions, make data-backed claims
+- Use varied sentence lengths: mix short punchy sentences with longer explanatory ones
+
+## Readability Rules (CRITICAL)
+- EVERY paragraph must be 3-4 sentences MAX. Break long paragraphs ruthlessly.
+- First paragraph MUST open with a compelling hook. Choose from these patterns:
+  * Surprising statistic: "Korea's AI market grew 47% in..."
+  * Provocative question: "Why are global investors suddenly..."
+  * Bold claim: "Samsung just redefined what..."
+  * Anecdote/Scene-setting: "When Samsung's CEO walked into..."
+  * Contrast/Paradox: "Korea has the world's fastest internet, yet..."
+  * Direct address: "If you've been watching KOSPI this quarter..."
+  NEVER open with a generic topic introduction.
+- Use subheadings (H3) every 200-300 words to break up content
+- Mix paragraph lengths: alternate between 2-sentence punchy paragraphs and 3-4 sentence detailed ones
+- Use blockquotes for expert quotes or key data citations: <blockquote style="border-left:4px solid #0066FF; margin:24px 0; padding:16px 24px; background:#f8f9fa; font-style:italic; color:#555; line-height:1.7;">quote text</blockquote>
 
 ## Content Length Requirement (CRITICAL)
-You MUST write AT LEAST 2,500 words of body content. This is non-negotiable.
-To reach 2,500+ words:
+You MUST write AT LEAST WORD_COUNT_TARGET words of body content. This is non-negotiable.
+To reach WORD_COUNT_TARGET+ words:
 - Each major section (H2) must have 3-5 detailed paragraphs, not 1-2
 - Each point must include a full explanation, Korean market context, and global implications
 - Include real data points, Korean-language source references, and expert perspectives throughout
-- Add a detailed FAQ section (5-7 questions) at the end before the conclusion
-- Include a "Common Misconceptions" or "What Foreign Observers Get Wrong" section
+- Add a FAQ section (3-7 questions, match the topic's natural scope — do NOT pad with filler Q&As)
 - Add a "Global Context" or "What This Means for Investors" signature section
 
 ## Content Type Guidelines
@@ -25,47 +146,69 @@ To reach 2,500+ words:
 - Include market data, company financials, or industry metrics where relevant
 - Present bull and bear cases or multiple stakeholder perspectives
 - Include a "Global Context" section explaining why this matters beyond Korea
-- End with forward-looking outlook and FAQ (5-7 Q&As)
+- End with forward-looking outlook and FAQ (3-7 Q&As)
 
 ### Deep-dive
 - Comprehensive exploration of a single topic, company, or trend
 - Include historical context (how Korea got here), current state, and future trajectory
 - Incorporate interviews, earnings data, or regulatory filings where relevant
 - Include a "What This Means for Investors" or "Strategic Implications" section
-- End with key takeaways and FAQ (5-7 Q&As)
+- End with key takeaways and FAQ (3-7 Q&As)
 
 ### News-explainer
 - Break down a recent Korean news event for international readers
 - Explain the Korean context that foreign media often miss
 - Include timeline of events and key players involved
 - Add "Why This Matters Globally" section
-- End with "What to Watch Next" forward-looking section and FAQ (5-7 Q&As)
+- End with "What to Watch Next" forward-looking section and FAQ (3-7 Q&As)
 
 ### How-to Content
 - Structure as a step-by-step guide with numbered steps (minimum 6-8 steps)
 - Include prerequisite/materials section at the beginning
 - Each step: clear action + detailed explanation + real example + common mistake for that step
 - Add a "Troubleshooting" section for common issues
-- End with a summary checklist and FAQ (5-7 Q&As)
+- End with a summary checklist and FAQ (3-5 Q&As)
+- Do NOT include a "Common Misconceptions" section (not natural for how-to guides)
 
 ### Best X for Y Content
 - Create a ranked list with minimum 7-10 items
 - Include a detailed comparison table with key features
 - For each item: overview (2-3 sentences), pros (3+), cons (2+), pricing, best for whom, real use case
 - Include a "How We Evaluated" section for credibility
-- End with a clear recommendation summary and FAQ (5-7 Q&As)
+- End with a clear recommendation summary and FAQ (3-5 Q&As)
+- Do NOT include a "Common Misconceptions" section (not natural for lists)
 
 ### X vs Y Content
 - Start with a detailed overview of both options
 - Create a detailed comparison table
 - Compare across 8-10 key criteria with in-depth analysis per criterion
 - Include real user scenarios: "Choose X if you...", "Choose Y if you..."
-- End with clear verdict and FAQ (5-7 Q&As)
+- End with clear verdict and FAQ (3-5 Q&As)
+
+### Listicle
+- Quick-read format: 10-20 items with 2-3 sentences per item
+- Opening paragraph states the list criteria and why it matters
+- Each item: bold name, 2-3 sentence description, one key takeaway
+- Include a summary table at top (featured snippet target)
+- Lighter tone than analysis — focus on discoverability and shareability
+- End with "Honorable Mentions" section and FAQ (3-5 Q&As)
+
+### Case Study
+- Focus on ONE Korean company, product, or event as the subject
+- Structure: Background → Challenge → Strategy → Results → Lessons
+- Include specific data: revenue figures, growth percentages, timelines
+- Add expert quotes or industry analysis to support claims
+- Include a "Key Takeaways for [Audience]" section with actionable insights
+- Include a comparison with global equivalent (e.g., "Unlike Uber's approach...")
+- End with "What Others Can Learn" section and FAQ (3-5 Q&As)
 
 ## Niche-Specific Tone
 - Korean Tech & Startup: Insider tone — write like a Seoul-based tech journalist with Silicon Valley fluency. Reference Korean tech ecosystem specifics (Pangyo Techno Valley, government R&D programs, chaebol dynamics).
 - K-Entertainment Analysis: Business-savvy cultural analysis — go beyond fandom to explain the industry mechanics, revenue models, and global strategy. Reference HYBE, SM, JYP as business entities, not just talent agencies.
 - Korean Investment & Finance: Authoritative market analyst — cite KOSPI/KOSDAQ data, BOK policy, Korean regulatory environment. Write for investors and analysts, not casual readers.
+- Korean Food & Lifestyle: Warm, experiential tone — write like a food writer who lives in Seoul. Include specific neighborhood recommendations, Korean ingredient names with Hangul, cooking tips from Korean home cooks. Reference Korean food culture context (banchan, jesa, seasonal eating).
+- Korea Travel & Living: Practical insider guide tone — write like an expat who has navigated the system. Include specific costs in KRW/USD, real transit routes, neighborhood-level recommendations. Reference T-money, KTX, Korean apps foreigners need.
+- Korean Language & Education: Encouraging teacher tone — break down complex grammar simply. Include Hangul examples with romanization, common mistakes foreigners make, and cultural context behind language patterns. Reference TOPIK levels, Korean university programs.
 
 ## Signature Section (MANDATORY)
 Every article MUST include one of these signature sections as an H2:
@@ -82,157 +225,238 @@ This section should be 300-500 words and provide unique analytical value.
 - Cite Korean industry reports: KISA, KOTRA, Korea Creative Content Agency (KOCCA)
 - When mentioning Korean companies, include their Korean name on first reference (e.g., "Samsung Electronics (삼성전자)")
 
-## Anti-AI Detection Writing Rules (CRITICAL)
-You MUST write like an experienced human analyst, NOT like an AI. Avoid these AI-telltale patterns:
-- NEVER use: "In today's fast-paced world", "In the ever-evolving landscape", "It's worth noting that", "When it comes to", "In this comprehensive guide", "Let's dive in", "Without further ado", "At the end of the day", "Game-changer", "Revolutionize", "Cutting-edge", "Seamless", "Leverage", "Robust", "Harness the power"
-- NEVER start sentences with "Whether you're a... or a..."
-- NEVER use filler transitions like "Moreover", "Furthermore", "Additionally", "It is important to note"
-- Instead: Use specific numbers, informed opinions, concrete examples, analytical connectors ("Look,", "Here's the thing:", "The data tells a different story:", "What most coverage misses is...")
-- Write with a clear POINT OF VIEW - take analytical positions, make data-backed claims, share market insights
-- Use varied sentence lengths: mix short punchy sentences with longer explanatory ones
-
 ## SEO Requirements
 - Naturally incorporate all provided LSI/related keywords
-- Use the primary keyword in the first paragraph
+- Use the primary keyword in the first paragraph (within the hook)
 - Include keyword variations throughout
 - Write compelling meta description with primary keyword
+
+### Featured Snippet Optimization
+For informational intent keywords (starting with "what is", "how does", "why", "what are"):
+- Include a concise 40-60 word definition/answer box right after the opening paragraph
+- HTML template: <div class="ab-snippet"><p>Concise answer here.</p></div>
+- This targets Google's Featured Snippet position zero
+
+### List Featured Snippet (best-x-for-y and comparison content)
+For "best", "top", or ranked list content, include an ordered summary list right after the opening paragraph:
+<div class="ab-snippet">
+<p style="margin:0 0 12px 0; font-weight:700; font-size:16px;">Quick Summary: Top Picks</p>
+<ol style="margin:0; padding-left:20px; line-height:2.0; font-size:15px;">
+<li><strong>Item Name</strong> — Best for [use case]</li>
+</ol></div>
+This targets Google's List Featured Snippet for ranking queries.
+
+### People Also Ask (PAA) Optimization
+- Distribute 2-3 question-format H3 headings throughout the body content (NOT just in the FAQ section)
+- These should match "People Also Ask" style queries related to the topic
+- Place them where they naturally fit within the content flow
+- Example: <h3 id="is-kospi-good-investment" style="...">Is KOSPI a Good Investment in 2026?</h3>
 
 ## Internal Links (IMPORTANT for SEO)
 - You will be given a list of existing blog posts on this site
 - Include 2-4 internal links to relevant existing posts within the article body
-- Use natural anchor text that fits the sentence context
+- Use descriptive anchor text containing the target page's primary keyword, NOT generic phrases like "click here", "read more", "this article", "check this out"
+- Good: "our analysis of <a ...>HYBE's revenue model</a>"
+- Bad: "you can <a ...>read more here</a>"
 - Link style: <a href="URL" style="color:#0066FF; text-decoration:underline;">anchor text</a>
 - Distribute internal links throughout the article, not clustered in one section
 - Only link to posts that are genuinely relevant to the current topic
 
-## External Links (IMPORTANT for E-E-A-T)
-- Include 2-4 external links to authoritative sources
-- Prefer Korean institutional sources: Bank of Korea (bok.or.kr), Korea Exchange (krx.co.kr), DART (dart.fss.or.kr), KOSIS (kosis.kr)
-- Also use: official company IR pages, Bloomberg, Reuters, Nikkei Asia
-- Use rel="noopener noreferrer" and target="_blank" for external links
-- Link style: <a href="URL" target="_blank" rel="noopener noreferrer" style="color:#0066FF; text-decoration:underline;">anchor text</a>
-- NEVER fabricate or guess URLs - only use official domains you are confident exist
+## External Source Attribution (IMPORTANT for E-E-A-T)
+- Include 2-4 source attributions to authoritative sources using <cite> tags
+- Do NOT write <a href> links for external sources. Instead, use this format:
+  <cite data-source="SOURCE_KEY" data-topic="TOPIC_CONTEXT">Display Text</cite>
+- SOURCE_KEY values (use exactly these keys):
+  * Korean institutions: bok, krx, dart, kosis, fsc, ftc, msit, kotra, kisa, kocca
+  * Korean companies: samsung, hyundai, lg, skhynix, naver, kakao, coupang
+  * News/Data: bloomberg, reuters, nikkei, statista, worldbank
+  * Entertainment: hybe, sm-entertainment, jyp
+- data-topic: brief topic context for URL resolution (e.g., "markets", "earnings", "policy")
+- Example: <cite data-source="bloomberg" data-topic="markets">Bloomberg Markets</cite>
+- Example: <cite data-source="bok" data-topic="monetary-policy">Bank of Korea</cite>
+- The publishing system will automatically resolve these to verified URLs
 
-Rules:
+## Output Field Rules
+
 1. title: High-CTR English title. Target 50-65 characters (Google SERP sweet spot).
 
-   TITLE STRATEGY: The title must mirror what someone would actually TYPE into Google,
-   then add a value signal that earns the click. Search-intent match comes first.
-
    Choose the pattern that fits the content type:
+   A. QUESTION/HOW-TO: "[How/What/Why] [specific Korea topic] [qualifier]?" or "[Primary Keyword] ([Year] Guide)"
+   B. COMPARISON/LIST: "[Primary Keyword]: [specific value promise]" or "[Number] Best [thing] for [audience] (YYYY)"
+   C. ANALYSIS/INSIGHT: "[Korea topic]: [what the data/analysis reveals]" or "[Primary Keyword] -- [insight]"
 
-   A. QUESTION/HOW-TO pattern (for how-to, explainer, beginner guides)
-      Format: "[How/What/Why] [specific Korea topic] [qualifier]?"
-              "[Primary Keyword] ([Year] Guide)"
-      Examples:
-      - "How to Invest in Korean Stocks as a Foreigner (2026 Guide)"
-      - "What Is the KOSPI Index and Why Does It Matter?"
-      - "How to Open a Korean Brokerage Account from Overseas"
-      Use when: keyword starts with how/what/why or has informational intent
-
-   B. COMPARISON/LIST pattern (for best-x-for-y, x-vs-y, ranked content)
-      Format: "[Primary Keyword]: [specific value promise]"
-              "[Number] Best [specific thing] for [specific audience] (2026)"
-      Examples:
-      - "Korean ETFs for Foreign Investors: Top 5 Options Compared (2026)"
-      - "5 Best Korean Fintech Apps for Non-Korean Users in 2026"
-      - "KOSPI vs S&P 500: How Korean Stocks Compare in 2026"
-      Use when: user wants a recommendation or comparison
-
-   C. ANALYSIS/INSIGHT pattern (for analysis, deep-dive, news-explainer)
-      Format: "[Korea topic]: [what the data/analysis reveals]"
-              "[Primary Keyword] — [insight that reframes the topic]"
-      Examples:
-      - "Korea's Semiconductor Strategy: What the Data Actually Shows"
-      - "K-pop's Business Model: How Agencies Turn Fans Into Revenue"
-      - "Korean Startup Ecosystem: Why Foreign Investors Are Paying Attention"
-      Use when: content is analytical, research-driven, or for investors
-
-   MANDATORY RULES (apply to all patterns):
-   - MUST contain the PRIMARY KEYWORD or its direct variant (Google matches = bold in SERP)
+   MANDATORY:
+   - MUST contain the PRIMARY KEYWORD or its direct variant
    - MUST include "Korea", "Korean", or a specific Korean brand/entity
-   - Target exactly 50-65 characters (count carefully before finalizing)
-   - For guides/lists: always append (2026) for freshness signal
-   - For evergreen analysis: omit year
-   - FORBIDDEN phrases: "changing everything", "game-changer", "things you need to know",
-     "the real reason X matters", "without further ado", "comprehensive guide to"
-   - Do NOT invent a pattern not listed above
+   - Target exactly 50-65 characters
+   - For guides/lists: always append (YYYY) for freshness signal
+   - FORBIDDEN: "changing everything", "game-changer", "things you need to know", "comprehensive guide to"
 
 2. slug: Short, clean evergreen URL slug (3-5 words max, lowercase, hyphens, NO year for evergreen content).
-   Exception: For annual roundups, you MAY include the year.
 3. html: English blog post in HTML format (2,500+ words, inline CSS styled)
-4. Include a table of contents at the beginning
+4. Include a CLICKABLE table of contents with anchor links (see HTML rules below)
 5. Use a natural, authoritative English tone with Korea expertise
 6. excerpt: Compelling English meta description, 145-158 characters. MUST:
-   - Open with the PRIMARY KEYWORD verbatim or within 2 words (Google bolds keyword matches in SERP)
-   - State ONE concrete outcome the reader gets — specific, not vague
-   - Include a curiosity gap OR urgency signal in the middle clause
-   - Use "you"/"your" at least once (personal = higher CTR)
-   - End with a complete sentence (never cut off mid-thought)
-   - Count characters carefully: target 145-158 (Google truncates at ~160)
-
-   GOOD examples (study the structure):
-   - "Korean ETFs let foreign investors access KOSPI gains directly. This 2026 guide covers the top 5 funds, expense ratios, and exactly how to buy from outside Korea." (157 chars)
-   - "Investing in Korean stocks as a foreigner is simpler than most guides admit. Here's how to pick a broker, open an account, and avoid the common traps." (152 chars)
-   - "K-pop's business model generates billions — but most coverage misses the actual revenue mechanics. Here's how agencies really profit from their artists." (153 chars)
-
-   BAD examples (never do this):
-   - "Discover everything about Korean tech trends in 2026." — too short, no keyword, no value
-   - "This comprehensive guide covers Korean investment for international investors." — no hook, no specificity
-   - "Learn how Korean companies are shaping the global landscape and what it means for you." — vague benefit, no keyword match
+   - Open with the PRIMARY KEYWORD verbatim or within 2 words
+   - State ONE concrete outcome the reader gets
+   - Include a curiosity gap OR urgency signal
+   - Use "you"/"your" at least once
+   - End with a complete sentence
+   - Count characters carefully: target 145-158
 
 7. tags: 5-10 related English keywords (include Korea-specific terms)
 8. category: One best-fit English category name
 
-Accuracy Rules (CRITICAL):
+Accuracy Rules (CRITICAL — violating these damages site credibility):
 - NEVER cite specific version numbers for software products that change frequently
-- Refer to products by brand name only
 - NEVER fabricate specific benchmark scores, pricing, or statistics you are not certain about
-- If you are unsure about current details, use hedging language
+- NEVER write <a href> tags for external links — use <cite data-source="KEY" data-topic="TOPIC"> tags instead. The system resolves these to verified URLs automatically
+- If you cannot verify a current-year statistic, use hedging language like "as of early ${new Date().getFullYear()}", "recent estimates suggest", "according to the latest available data", or "industry sources indicate"
+- Prefer ranges over exact numbers when uncertain (e.g., "between $2-3 billion" instead of "$2.47 billion")
+- Always attribute data to a named source — never present unverified numbers as standalone facts
+- For ${new Date().getFullYear()} data: use "projected", "estimated", or "forecast" qualifiers. Most ${new Date().getFullYear()} annual data is not yet finalized — do NOT present mid-year estimates as confirmed full-year figures
+- When referencing market data (KOSPI, KRW): use "as of [month] ${new Date().getFullYear()}" or "recent trading sessions" — avoid exact closing prices unless explicitly provided in the prompt
+- NEVER invent Korean government policy names, bill numbers, or regulation titles — reference only well-known policies you are certain about
 
-Image Prompt Rules (CRITICAL):
+Image Prompt Rules:
 - Generate exactly 5 English image prompts in the imagePrompts array
 - First (index 0): Featured image - visually represents the core topic with Korean visual elements
 - Remaining 4 (index 1-4): Inline images distributed across sections
 - All 5 prompts MUST describe completely different scenes/subjects/compositions (NO duplicates!)
 - Each prompt MUST be at least 50 words with specific details
 - Include Korean visual elements where appropriate (Seoul skyline, Korean signage, Korean business settings)
-- NEVER use generic descriptions like "featured image" or "inline image"
 
 imageCaptions Rules:
-- Generate exactly 5 English image captions in the imageCaptions array
-- Each caption is a short English sentence describing the image (5-15 words)
+- Generate exactly 5 descriptive English image captions (8-20 words each)
+- Each caption MUST include the primary keyword or topic context + descriptive scene
+- Good: "Seoul's Gangnam financial district skyline showcasing Korean tech company headquarters"
+- Bad: "City skyline" or "article image 1"
+- NEVER use generic captions — every caption must be SEO-descriptive
 
-HTML Style Rules (inline CSS):
-- Wrap everything in <div style="max-width:760px; margin:0 auto; font-family:'Noto Sans KR',sans-serif; color:#333; line-height:1.8; font-size:16px;">
-- H2: <h2 style="border-left:5px solid #0066FF; padding-left:15px; font-size:22px; color:#222; margin:40px 0 20px 0;">
-- H3: <h3 style="font-size:18px; color:#444; margin:30px 0 15px 0; padding-bottom:8px; border-bottom:1px solid #eee;">
-- Paragraphs: <p style="margin:0 0 20px 0; line-height:1.8; color:#333; font-size:16px;">
-- Highlight box: <div style="background:#f8f9fa; border-left:4px solid #0066FF; padding:20px 24px; margin:24px 0; border-radius:0 8px 8px 0;"><p style="margin:0; line-height:1.7; color:#555;">content</p></div>
-- Table of contents: <div style="background:#f0f4ff; padding:24px 30px; border-radius:12px; margin:24px 0 36px 0;"><p style="font-weight:700; font-size:17px; margin:0 0 12px 0; color:#0066FF;">Table of Contents</p><ol style="margin:0; padding-left:20px; line-height:2.0; color:#555;">
-- Divider: <hr style="border:none; height:1px; background:linear-gradient(to right, #ddd, #eee, #ddd); margin:36px 0;">
-- Key point box: <div style="background:#fff8e1; border:1px solid #ffe082; padding:20px 24px; border-radius:8px; margin:24px 0;"><p style="margin:0; font-weight:600; color:#f57f17; margin-bottom:8px;">Key Point</p><p style="margin:0; color:#555; line-height:1.7;">content</p></div>
-- Comparison table: <table style="width:100%; border-collapse:collapse; margin:24px 0;"><tr style="background:#f0f4ff;"><th style="padding:12px 16px; border:1px solid #ddd; text-align:left;">...</th></tr><tr><td style="padding:12px 16px; border:1px solid #ddd;">...</td></tr></table>
-- Mark image positions with <!--IMAGE_PLACEHOLDER_1-->, <!--IMAGE_PLACEHOLDER_2-->, <!--IMAGE_PLACEHOLDER_3-->, <!--IMAGE_PLACEHOLDER_4--> comments
-- Distribute image placeholders evenly across the article (one after each major section)
-- Include a summary or closing statement at the end
-- NEVER use emoji or unicode special symbols in HTML (WordPress converts them to low-quality SVG)
+## Rich Content Formats (use when appropriate for the niche/content type)
+
+### Data Comparison Tables (Finance, Tech, Best-X-for-Y, X-vs-Y)
+When comparing items, pricing, or features, ALWAYS include a styled comparison table:
+<table style="width:100%; border-collapse:collapse; margin:24px 0; font-size:14px;">
+<tr style="background:#0066FF; color:#fff;"><th style="padding:12px 16px; text-align:left;">...</th></tr>
+<tr style="background:#fff;"><td style="padding:12px 16px; border-bottom:1px solid #eee;">...</td></tr>
+<tr style="background:#f8f9fa;"><td style="padding:12px 16px; border-bottom:1px solid #eee;">...</td></tr>
+</table>
+
+### Inline SVG Data Visualizations (ALL niches — pick the format that fits)
+Include ONE simple inline SVG infographic per article:
+<div style="margin:24px 0; padding:20px; background:#f8f9fa; border-radius:12px; text-align:center;">
+<svg viewBox="0 0 400 200" style="max-width:400px; width:100%;">
+  <!-- Use rect for bars, circle for dots, text for labels -->
+</svg>
+<p style="margin:8px 0 0 0; font-size:13px; color:#888;">Source: [data source]</p>
+</div>
+
+Niche-specific SVG formats:
+- **Finance**: Bar chart comparing key metrics (KOSPI sectors, P/E ratios, revenue)
+- **Tech**: Comparison chart showing feature/spec differences between products
+- **K-Entertainment**: Timeline showing key events or revenue milestones
+- **Korean Food**: Ingredient proportion chart or nutrition comparison
+- **Korea Travel**: Cost breakdown bars (accommodation, transport, food, activities)
+- **Korean Language**: Grammar structure chart or TOPIK level comparison
+
+Keep SVG charts simple: max 5 bars/items, clear labels, brand colors (#0066FF, #00CC66, #FF6B35).
+
+### Key Metrics Highlight (Finance, Tech analysis)
+Display key numbers prominently:
+<div class="ab-metrics">
+<div>
+<p style="margin:0; font-size:28px; font-weight:700; color:#0066FF;">$XX.XB</p>
+<p style="margin:4px 0 0 0; font-size:13px; color:#666;">Market Cap</p>
+</div></div>
+
+### Pro/Con Boxes (Best-X-for-Y, X-vs-Y)
+<div class="ab-proscons">
+<div class="ab-pros">
+<p style="margin:0 0 8px 0; font-weight:700; color:#22543d;">Pros</p>
+<ul style="margin:0; padding-left:16px; font-size:14px; line-height:1.8;"><li>...</li></ul></div>
+<div class="ab-cons">
+<p style="margin:0 0 8px 0; font-weight:700; color:#742a2a;">Cons</p>
+<ul style="margin:0; padding-left:16px; font-size:14px; line-height:1.8;"><li>...</li></ul></div></div>
+
+### Step Progress Indicator (How-to content ONLY)
+For each major step in how-to guides, use a numbered progress indicator:
+<div class="ab-step">
+<div class="ab-step-num">1</div>
+<h3 style="margin:0; font-size:18px; color:#222;">Step Title</h3></div>
+
+## HTML Structure Rules (USE CSS CLASSES — minimal inline styles)
+All styling is handled by a consolidated <style> block injected at publish time. Use CSS classes instead of inline styles wherever possible. This reduces HTML size by ~40% and improves page speed.
+
+### Wrapper
+<div class="post-content">
+
+### Article Header (MANDATORY — insert right after opening div)
+<div class="ab-header">
+<p><time datetime="YYYY-MM-DD">Published: Month DD, YYYY</time> · READING_TIME_PLACEHOLDER min read</p>
+</div>
+
+### Clickable Table of Contents (MANDATORY — collapsed by default on mobile)
+<details class="ab-toc">
+<summary>Table of Contents</summary>
+<ol>
+<li><a href="#section-slug">Section Title</a></li>
+</ol></details>
+
+### Key Takeaways Box (MANDATORY — insert right after TOC, before first H2)
+<div class="ab-takeaways">
+<p style="margin:0 0 12px 0; font-weight:700; font-size:17px; color:#0066FF;">Key Takeaways</p>
+<ul style="margin:0; padding-left:20px; line-height:2.0;">
+<li>3-5 bullet points summarizing the most important insights from the article</li>
+<li>Each bullet should be a concrete, actionable takeaway (not generic filler)</li>
+<li>Include at least one data point or specific Korean market reference</li>
+</ul>
+</div>
+
+### Heading IDs for TOC anchors
+- Every H2 MUST have an id attribute: <h2 id="section-slug">
+- Every H3: <h3 id="subsection-slug">
+- IDs: lowercase, hyphens, derived from heading text (e.g., "Global Context" → id="global-context")
+- Do NOT add inline style attributes to H2/H3 — styles are handled by CSS classes
+
+### Other Elements (use CSS classes)
+- Paragraphs: <p> (no inline style needed — .post-content p handles it)
+- Highlight box: <div class="ab-highlight"><p>content</p></div>
+- Blockquote: <blockquote>quote</blockquote>
+- Divider: <hr>
+- Key point box: <div class="ab-keypoint"><p style="margin:0; font-weight:600; color:#f57f17; margin-bottom:8px;">Key Point</p><p>content</p></div>
+- Comparison table: <div class="ab-table-wrap"><table style="width:100%; border-collapse:collapse;"><tr style="background:#f0f4ff;"><th style="padding:12px 16px; border:1px solid #ddd; text-align:left;">...</th></tr><tr><td style="padding:12px 16px; border:1px solid #ddd;">...</td></tr></table></div>
+- Image placeholders: <!--IMAGE_PLACEHOLDER_1-->, <!--IMAGE_PLACEHOLDER_2-->, <!--IMAGE_PLACEHOLDER_3-->, <!--IMAGE_PLACEHOLDER_4-->
+- Distribute image placeholders evenly (one after each major section)
+- NEVER use emoji or unicode special symbols in HTML
 - Use numbers (1. 2. 3.) or hyphens (-) for lists
-- The html MUST end with this disclaimer: <p style="margin:40px 0 0 0; padding-top:20px; border-top:1px solid #eee; font-size:13px; color:#999; line-height:1.6;">This article is based on trending information and is intended for informational purposes only. Please verify details through official sources.</p>
+- The html MUST end with: <p class="ab-disclaimer">This article is based on trending information and is intended for informational purposes only. Please verify details through official sources.</p>
+- AFTER the disclaimer, add a back-to-top link: <p style="text-align:center; margin:20px 0 0 0;"><a href="#" style="font-size:14px;">Back to Top</a></p>
 
 IMPORTANT: Respond with pure JSON only. Do NOT use markdown code blocks (\`\`\`).
 Escape double quotes (") inside field values as \\".
 
 JSON format:
-{"title":"English Title","slug":"topic-keyword","html":"<div style=\\"max-width:760px;...\\">...English content...</div>","excerpt":"English meta description","tags":["tag1","tag2"],"category":"CategoryName","imagePrompts":["A detailed scene of... (50+ words)","...","...","...","..."],"imageCaptions":["Short English caption 1","caption 2","caption 3","caption 4","caption 5"]}`;
+{"title":"English Title","slug":"topic-keyword","html":"<div style=\\"max-width:760px;...\\">...English content...</div>","excerpt":"English meta description","metaDescription":"SEO-optimized meta description for search results (145-158 chars, include primary keyword, action-oriented)","titleCandidates":["Alternative Title A (different angle)","Alternative Title B (different hook)"],"tags":["tag1","tag2"],"category":"CategoryName","imagePrompts":["A detailed scene of... (50+ words)","...","...","...","..."],"imageCaptions":["Short English caption 1","caption 2","caption 3","caption 4","caption 5"]}
+
+IMPORTANT for metaDescription: This is separate from excerpt. Write it specifically for Google search results CTR optimization. Include the primary keyword, a benefit/value proposition, and end with a subtle call to action. Target 145-158 characters.
+IMPORTANT for titleCandidates: Provide 2 alternative titles with different angles/hooks than the main title. These will be used for A/B testing.`;
+}
 
 export class ContentGeneratorService {
   private client: Anthropic;
   private siteOwner: string;
-
-  constructor(apiKey: string, siteOwner?: string) {
+  private siteUrl: string;
+  private minQualityScore: number;
+  private authorLinkedin: string;
+  private authorTwitter: string;
+  constructor(apiKey: string, siteOwner?: string, siteUrl?: string, minQualityScore?: number, authorLinks?: { linkedin?: string; twitter?: string }) {
     this.client = new Anthropic({ apiKey });
     this.siteOwner = siteOwner || '';
+    this.siteUrl = siteUrl || '';
+    this.minQualityScore = minQualityScore ?? 40;
+    this.authorLinkedin = authorLinks?.linkedin || '';
+    this.authorTwitter = authorLinks?.twitter || '';
   }
 
   async generateContent(researched: ResearchedKeyword, existingPosts?: ExistingPost[]): Promise<BlogContent> {
@@ -242,14 +466,55 @@ export class ContentGeneratorService {
     const today = new Date().toISOString().split('T')[0];
     const year = new Date().getFullYear();
 
-    // Build internal links section
+    // Build internal links section — 3-tier priority for topic cluster strengthening
     let internalLinksSection = '';
     if (existingPosts && existingPosts.length > 0) {
-      const postList = existingPosts
-        .map((p) => `- "${p.title}" [${p.category}]: ${p.url}`)
+      // Tier 1: Same sub-niche (strongest cluster link)
+      const sameSubNiche = existingPosts
+        .filter(p => p.subNiche && p.subNiche === niche.id)
+        .slice(0, 8);
+      // Tier 2: Same category but different sub-niche
+      const sameCategory = existingPosts
+        .filter(p =>
+          p.category.toLowerCase() === niche.category.toLowerCase() &&
+          !(p.subNiche && p.subNiche === niche.id),
+        )
+        .slice(0, 6);
+      // Tier 3: Cross-category (for broad topical authority)
+      const crossCategory = existingPosts
+        .filter(p => p.category.toLowerCase() !== niche.category.toLowerCase())
+        .slice(0, 4);
+      const filteredPosts = [...sameSubNiche, ...sameCategory, ...crossCategory];
+
+      const postList = filteredPosts
+        .map((p) => {
+          const kwInfo = p.keyword ? ` (keyword: "${p.keyword}")` : '';
+          const clusterTag = p.subNiche === niche.id ? ' [TOPIC CLUSTER]' : '';
+          return `- "${p.title}" [${p.category}]${kwInfo}${clusterTag}: ${p.url}`;
+        })
         .join('\n');
-      internalLinksSection = `\n\nExisting Blog Posts (use for internal links - pick 2-4 relevant ones):\n${postList}`;
+      internalLinksSection = `\n\nExisting Blog Posts (pick 2-4 relevant ones, each URL used ONLY ONCE, use their keyword or title for descriptive anchor text — NEVER use "click here" or "read more"). LINKING PRIORITY:
+1. [TOPIC CLUSTER] posts FIRST — these are sibling posts in the same topic cluster. Link to at least 1-2 of these if available.
+2. Same-category posts for broader topical authority.
+3. Cross-category posts for site-wide link equity.
+Place links naturally within body text — NOT in a list at the end.\n${postList}`;
+      // Also count cluster siblings for "More in this series" prompt
+      const clusterCount = sameSubNiche.length;
+      if (clusterCount >= 2) {
+        internalLinksSection += `\n\nIMPORTANT: This post has ${clusterCount} sibling posts in the same topic cluster. Mention at least 2 of them contextually within your article to strengthen the topic cluster.`;
+      }
     }
+
+    // Niche-specific writing directives for differentiated voice
+    const nicheDirectives: Record<string, string> = {
+      'Korean Tech': `NICHE VOICE: Write as a Seoul-based tech journalist fluent in both Korean startup culture and Silicon Valley trends. Include specific Korean tech ecosystem references (Pangyo Techno Valley, TIPS program, K-Startup Grand Challenge). Use insider terminology. Include at least one comparison with a global equivalent. When mentioning apps/services, note if they have English support.`,
+      'K-Entertainment': `NICHE VOICE: Write as a business-savvy entertainment industry analyst. Go beyond fandom — explain revenue models, contract structures, and global expansion strategies. Reference specific HYBE/SM/JYP quarterly earnings when relevant. Include at least one industry-insider perspective. Frame K-entertainment as a business story, not just culture.`,
+      'Korean Finance': `NICHE VOICE: Write as an authoritative market analyst for international investors. MUST include at least one data table (KOSPI levels, P/E ratios, or sector comparisons). Include a risk disclaimer paragraph. Reference BOK monetary policy and FSC regulations. Use precise financial terminology. Include KRW/USD context for all monetary figures.`,
+      'Korean Food': `NICHE VOICE: Write in a warm, first-person experiential tone — as if you live in Seoul and frequent local markets. Include specific Seoul neighborhood recommendations (Gwangjang Market, Mapo-gu, Itaewon). Provide Korean ingredient names with Hangul (e.g., gochugaru 고춧가루). Include at least one practical tip from Korean home cooking culture. Mention specific price ranges in KRW.`,
+      'Korea Travel': `NICHE VOICE: Write as a practical expat guide. Include specific costs in both KRW and USD. Mention exact transit routes (subway line numbers, KTX schedules). Reference essential Korean apps (Naver Map, KakaoTalk, T-money). Include neighborhood-level specificity, not just city names. Add at least one "insider tip" that typical tourist guides miss.`,
+      'Korean Language': `NICHE VOICE: Write as an encouraging Korean language teacher. Include Hangul examples with romanization for every Korean term introduced. Mention TOPIK level relevance where applicable. Include common mistakes foreigners make and how to avoid them. Reference specific textbooks or apps with pros/cons. Add cultural context behind language patterns (honorifics, age-based speech).`,
+    };
+    const nicheVoice = nicheDirectives[niche.category] || '';
 
     const userPrompt = `Today's Date: ${today}
 Niche: "${niche.name}" (${niche.category})
@@ -260,23 +525,38 @@ Unique Angle: ${analysis.uniqueAngle}
 Search Intent: ${analysis.searchIntent}
 Related Keywords to Include: ${analysis.relatedKeywordsToInclude.join(', ')}${internalLinksSection}
 
-Write an in-depth ${analysis.contentType} blog post about "${analysis.selectedKeyword}" for the ${niche.name} niche. The post MUST be at least 2,500 words. Write thoroughly — expand each section with detailed explanations, Korean market data, and expert insights. Do NOT stop early.
+${nicheVoice}
+
+Write an in-depth ${analysis.contentType} blog post about "${analysis.selectedKeyword}" for the ${niche.name} niche. The post MUST be at least ${getWordCountTargets(analysis.contentType).target} words. Write thoroughly — expand each section with detailed explanations, Korean market data, and expert insights. Do NOT stop early.
 IMPORTANT: All information, statistics, recommendations, and references must be current as of ${year}. Do NOT use outdated data from previous years. Mention "${year}" where relevant.
 Use the unique angle: "${analysis.uniqueAngle}"
 Naturally incorporate these LSI keywords: ${analysis.relatedKeywordsToInclude.join(', ')}
-Include 2-4 internal links to relevant existing posts listed above, and 2-4 external links to authoritative sources (Korean institutional sources preferred: BOK, KRX, DART, KOSIS, company IR pages).
+Include 2-4 internal links to relevant existing posts listed above, and 2-4 external source citations using <cite data-source="KEY" data-topic="TOPIC"> tags (Korean institutional sources preferred: bok, krx, dart, kosis).
 MANDATORY: Include a "Global Context" or "What This Means for Investors" signature analysis section.
 
 Respond with pure JSON only.`;
 
+    // Temperature varies by content type: analytical content needs precision, creative needs more variation
+    const temperatureMap: Record<string, number> = {
+      'analysis': 0.5, 'news-explainer': 0.5, 'case-study': 0.5,
+      'deep-dive': 0.6, 'x-vs-y': 0.6,
+      'how-to': 0.7, 'best-x-for-y': 0.7, 'listicle': 0.7,
+    };
+    const temperature = temperatureMap[analysis.contentType] ?? 0.7;
+
+    const variant = getVariantForNiche(researched.niche.id);
+    const targets = getWordCountTargets(analysis.contentType);
+    const systemPrompt = buildSystemPrompt(variant).replace(/WORD_COUNT_TARGET/g, String(targets.target));
+    logger.debug(`Using layout variant: ${variant} (niche: ${researched.niche.id}), word target: ${targets.target}`);
+
     const stream = this.client.messages.stream({
       model: process.env.CLAUDE_MODEL || 'claude-sonnet-4-6',
-      max_tokens: 32000,
-      temperature: 0.7,
+      max_tokens: 64000,
+      temperature,
       system: [
         {
           type: 'text',
-          text: SYSTEM_PROMPT,
+          text: systemPrompt,
           cache_control: { type: 'ephemeral' },
         },
       ],
@@ -289,6 +569,11 @@ Respond with pure JSON only.`;
       cache_creation_input_tokens?: number;
       cache_read_input_tokens?: number;
     };
+    costTracker.addClaudeCall(
+      process.env.CLAUDE_MODEL || 'claude-sonnet-4-6',
+      usage.input_tokens || 0,
+      usage.output_tokens || 0,
+    );
     if (usage.cache_read_input_tokens) {
       logger.info(`Prompt cache HIT: ${usage.cache_read_input_tokens} tokens read from cache (saved ~$${((usage.cache_read_input_tokens / 1_000_000) * 2.7).toFixed(4)})`);
     } else if (usage.cache_creation_input_tokens) {
@@ -302,12 +587,55 @@ Respond with pure JSON only.`;
 
     const content = parseJsonResponse(text, analysis.selectedKeyword);
 
-    // Validate excerpt length (145-158 chars for SEO)
-    if (content.excerpt && content.excerpt.length > 160) {
-      content.excerpt = content.excerpt.slice(0, 157) + '...';
-      logger.warn(`Excerpt trimmed to 160 chars: "${content.title}"`);
-    } else if (content.excerpt && content.excerpt.length < 120) {
-      logger.warn(`Excerpt too short (${content.excerpt.length} chars): "${content.title}"`);
+    // Validate and fix excerpt (145-158 chars, keyword-first, sentence-boundary trim)
+    if (content.excerpt) {
+      const keywordWords = analysis.selectedKeyword.toLowerCase().split(/\s+/).filter(w => w.length > 3);
+
+      // 1. Trim to sentence boundary if over 160 chars (avoid mid-sentence cut)
+      if (content.excerpt.length > 160) {
+        const sentences = content.excerpt.match(/[^.!?]+[.!?]+/g) || [content.excerpt];
+        let trimmed = '';
+        for (const s of sentences) {
+          if ((trimmed + s).length <= 158) {
+            trimmed += s;
+          } else {
+            break;
+          }
+        }
+        content.excerpt = trimmed.trim() || content.excerpt.slice(0, 155) + '...';
+        logger.warn(`Excerpt trimmed to sentence boundary (${content.excerpt.length} chars): "${content.title}"`);
+      }
+
+      // 2. Extend if too short
+      if (content.excerpt.length < 120) {
+        logger.warn(`Excerpt too short (${content.excerpt.length} chars), extracting from body: "${content.title}"`);
+        const bodyText = content.html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+        const sentences = bodyText.match(/[^.!?]+[.!?]+/g) || [];
+        const meaningfulSentence = sentences.find(s => s.trim().length > 30 && s.trim().length < 120);
+        if (meaningfulSentence) {
+          content.excerpt = (content.excerpt.replace(/\.?\s*$/, '. ') + meaningfulSentence.trim()).slice(0, 158);
+        } else {
+          content.excerpt = (content.excerpt.replace(/\.?\s*$/, '') + ' — your essential guide for ' + new Date().getFullYear() + '.').slice(0, 158);
+        }
+      }
+
+      // 3. Verify keyword presence — regenerate excerpt from body if missing
+      const excerptLower = content.excerpt.toLowerCase();
+      const hasKeyword = keywordWords.some(w => excerptLower.includes(w));
+      if (!hasKeyword && keywordWords.length > 0) {
+        logger.warn(`Excerpt missing keyword fragments, regenerating from body: "${content.title}"`);
+        const bodyText = content.html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+        const sentences = bodyText.match(/[^.!?]+[.!?]+/g) || [];
+        // Find first sentence containing keyword
+        const kwSentence = sentences.find(s => {
+          const sl = s.toLowerCase();
+          return keywordWords.some(w => sl.includes(w)) && s.trim().length > 60 && s.trim().length < 160;
+        });
+        if (kwSentence) {
+          content.excerpt = kwSentence.trim().slice(0, 158);
+          logger.info(`Excerpt regenerated with keyword: "${content.excerpt.slice(0, 50)}..."`);
+        }
+      }
     }
 
     // Ensure imageCaptions exists
@@ -328,53 +656,294 @@ Respond with pure JSON only.`;
       throw new ContentGenerationError(`Incomplete content generated for "${analysis.selectedKeyword}"`);
     }
 
-    // Validate actual word count (strip HTML tags)
-    const wordCount = content.html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().split(' ').filter(Boolean).length;
-    if (wordCount < 2000) {
-      logger.warn(`Content too short: "${content.title}" has only ${wordCount} words (minimum: 2,500). Proceeding with warning.`);
-    } else {
-      logger.info(`Word count: ${wordCount} words for "${content.title}"`);
+    // Validate actual word count (strip HTML tags) — try continuation before rejecting
+    let wordCount = content.html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().split(' ').filter(Boolean).length;
+    if (wordCount < targets.continuation) {
+      logger.warn(`Content short: ${wordCount}/${targets.target} words for "${content.title}" [${analysis.contentType}], requesting continuation...`);
+      try {
+        const continuationHtml = await this.requestContinuation(content, analysis.selectedKeyword, wordCount, temperature);
+        if (continuationHtml) {
+          // Insert continuation before the disclaimer
+          const disclaimerIdx = findDisclaimerIndex(content.html);
+          if (disclaimerIdx !== -1) {
+            content.html = content.html.slice(0, disclaimerIdx) + continuationHtml + '\n' + content.html.slice(disclaimerIdx);
+          } else {
+            const lastDiv = content.html.lastIndexOf('</div>');
+            if (lastDiv !== -1) {
+              content.html = content.html.slice(0, lastDiv) + continuationHtml + '\n' + content.html.slice(lastDiv);
+            }
+          }
+          wordCount = content.html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().split(' ').filter(Boolean).length;
+          logger.info(`After continuation: ${wordCount} words for "${content.title}"`);
+        }
+      } catch (contErr) {
+        logger.warn(`Continuation failed: ${contErr instanceof Error ? contErr.message : contErr}`);
+      }
+
+      if (wordCount < targets.rejection) {
+        throw new ContentGenerationError(`Content too short: "${content.title}" has only ${wordCount} words (minimum: ${targets.rejection} for ${analysis.contentType}). Regeneration required.`);
+      }
     }
+    logger.info(`Word count: ${wordCount}/${targets.target} words for "${content.title}" [${analysis.contentType}]`);
+
+    // Calculate and inject reading time (average 238 WPM for non-fiction + 12s per image)
+    const imageCount = (content.html.match(/<!--IMAGE_PLACEHOLDER_\d+-->/g) || []).length + 1; // +1 for featured
+    const readingTime = Math.max(1, Math.ceil(wordCount / 238 + imageCount * 0.2));
+    content.html = content.html.replace('READING_TIME_PLACEHOLDER', String(readingTime));
+    logger.info(`Reading time: ${readingTime} min for "${content.title}"`);
+
+    // Replace date placeholder with actual date
+    const pubDate = new Date();
+    const dateFormatted = pubDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    const dateIso = pubDate.toISOString().split('T')[0];
+    content.html = content.html.replace(/datetime="YYYY-MM-DD"/, `datetime="${dateIso}"`);
+    content.html = content.html.replace(/Published: Month DD, YYYY/, `Published: ${dateFormatted}`);
+
+    // Validate heading hierarchy (H2 before H3, no skipping levels)
+    validateHeadingHierarchy(content.html, content.title);
+
+    // Ensure TOC links have matching heading IDs (add IDs if missing)
+    content.html = ensureHeadingIds(content.html);
 
     // Ensure slug exists (fallback: generate from title, no year for evergreen content)
     if (!content.slug) {
       const yr = new Date().getFullYear();
-      const base = content.title
-        .toLowerCase()
-        .replace(/[^a-z0-9\s-]/g, '')
-        .replace(/\s+/g, '-')
-        .replace(/-+/g, '-')
-        .replace(/^-|-$/g, '')
-        .split('-')
-        .slice(0, 5)
-        .join('-');
-      // Append year only for best-x-for-y annual roundups
+      const base = optimizeSlug(content.title);
+      // Append year for time-sensitive content types
       const isBestOf = base.startsWith('best-') || base.startsWith('top-');
-      content.slug = isBestOf ? `${base}-${yr}` : base;
+      const isTimeSensitive = isBestOf || analysis.contentType === 'news-explainer';
+      content.slug = isTimeSensitive ? `${base}-${yr}` : base;
+    } else {
+      // Optimize Claude-returned slug too
+      content.slug = optimizeSlug(content.slug);
     }
 
-    // Add author byline
+    // Auto-fix common issues (mobile tables, title length, excerpt keyword, etc.)
+    const autoFixed = autoFixContent(content.html, content.title, analysis.selectedKeyword, content.excerpt);
+    content.html = autoFixed.html;
+    content.title = autoFixed.title;
+    if (autoFixed.excerpt) content.excerpt = autoFixed.excerpt;
+    if (autoFixed.fixes.length > 0) {
+      logger.info(`Auto-fixes applied: ${autoFixed.fixes.join('; ')}`);
+    }
+
+    // Content quality scoring
+    let score = validateContent(
+      content.html,
+      content.title,
+      content.excerpt,
+      analysis.selectedKeyword,
+      analysis.contentType,
+      this.siteUrl,
+      researched.niche.category,
+    );
+    logContentScore(score, content.title);
+
+    // Regenerate excerpt if score is weak
+    if (score.breakdown.excerptScore < 7) {
+      const newExcerpt = await this.regenerateExcerpt(content.title, content.excerpt, analysis.selectedKeyword);
+      if (newExcerpt) {
+        content.excerpt = newExcerpt;
+        score = validateContent(
+          content.html,
+          content.title,
+          content.excerpt,
+          analysis.selectedKeyword,
+          analysis.contentType,
+          this.siteUrl,
+          researched.niche.category,
+        );
+        logger.info(`Excerpt regenerated, new score: ${score.total}/100 (excerpt: ${score.breakdown.excerptScore})`);
+      }
+    }
+
+    if (score.total < this.minQualityScore) {
+      throw new ContentGenerationError(
+        `Content quality too low: ${score.total}/100 for "${content.title}" (minimum: ${this.minQualityScore}). ` +
+        `Issues: ${score.issues.map(i => i.message).join('; ')}. Regeneration required.`,
+      );
+    }
+
+    // Store score for downstream use
+    (content as BlogContent & { qualityScore?: number }).qualityScore = score.total;
+
+    // Add author byline with enhanced E-E-A-T identity
     if (this.siteOwner) {
       const initial = this.siteOwner.charAt(0).toUpperCase();
       const avatarStyle = `width:48px; height:48px; background:#0066FF; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-size:20px; font-weight:700; flex-shrink:0;`;
+
+      const socialLinks: string[] = [];
+      if (this.authorLinkedin) {
+        socialLinks.push(`<a href="${this.authorLinkedin}" target="_blank" rel="noopener noreferrer" style="color:#0077B5; text-decoration:none; font-size:13px;">LinkedIn</a>`);
+      }
+      if (this.authorTwitter) {
+        socialLinks.push(`<a href="${this.authorTwitter}" target="_blank" rel="noopener noreferrer" style="color:#1DA1F2; text-decoration:none; font-size:13px;">X/Twitter</a>`);
+      }
+      const socialHtml = socialLinks.length > 0
+        ? `<p style="margin:6px 0 0 0; font-size:13px;">${socialLinks.join(' · ')}</p>`
+        : '';
 
       const byline =
         `<div style="margin:30px 0 0 0; padding:20px 24px; background:#f8f9fa; border-radius:8px; display:flex; align-items:center; gap:16px;">` +
         `<div style="${avatarStyle}">${initial}</div>` +
         `<div><p style="margin:0; font-weight:700; font-size:15px; color:#222;">Written by: <a href="/about" style="color:#0066FF; text-decoration:none;">${this.siteOwner}</a></p>` +
-        `<p style="margin:4px 0 0 0; font-size:13px; color:#888;">Korea Market & Trends Analyst | Covering Korean tech, entertainment, and financial markets for global readers.</p></div></div>`;
+        `<p style="margin:4px 0 0 0; font-size:13px; color:#888;">Korea Market & Trends Analyst | Covering Korean tech, entertainment, and financial markets for global readers.</p>` +
+        `${socialHtml}</div></div>`;
 
-      const lastDivIdx = content.html.lastIndexOf('</div>');
-      if (lastDivIdx !== -1) {
-        content.html = content.html.slice(0, lastDivIdx) + byline + '\n</div>';
+      // Insert byline before the disclaimer paragraph (not at random last </div>)
+      const disclaimerIdx = findDisclaimerIndex(content.html);
+      if (disclaimerIdx !== -1) {
+        content.html = content.html.slice(0, disclaimerIdx) + byline + '\n' + content.html.slice(disclaimerIdx);
       } else {
-        content.html += byline;
+        const lastDivIdx = content.html.lastIndexOf('</div>');
+        if (lastDivIdx !== -1) {
+          content.html = content.html.slice(0, lastDivIdx) + byline + '\n</div>';
+        } else {
+          content.html += byline;
+        }
       }
     }
 
     logger.info(`Content generated: "${content.title}" (${content.html.length} chars)`);
     return content;
   }
+
+  /**
+   * Request Claude to continue/expand content that is too short.
+   * Returns additional HTML to append, or null if continuation fails.
+   */
+  private async requestContinuation(content: BlogContent, keyword: string, currentWordCount: number, temperature: number = 0.6): Promise<string | null> {
+    const neededWords = Math.max(500, 2800 - currentWordCount);
+
+    // Extract existing H2 headings for context so continuation doesn't repeat them
+    const existingHeadings = (content.html.match(/<h2[^>]*>(.*?)<\/h2>/gi) || [])
+      .map(h => h.replace(/<[^>]+>/g, '').trim());
+    const headingsList = existingHeadings.length > 0
+      ? `\nExisting sections (do NOT repeat these topics):\n${existingHeadings.map(h => `- ${h}`).join('\n')}`
+      : '';
+
+    // Extract the last 500 chars of content for tone/style continuity
+    const plainTail = content.html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(-500);
+
+    // Use FULL system prompt for continuation to maintain consistent tone and style
+    const continuationSystemPrompt = buildSystemPrompt('standard');
+
+    const prompt = `You are continuing a blog post about "${keyword}" titled "${content.title}".
+Current word count: ${currentWordCount}. Need at least ${neededWords} more words.
+${headingsList}
+
+Last 500 characters of existing content for tone matching:
+"${plainTail}"
+
+Write additional sections that seamlessly continue this article. Requirements:
+1. Match the existing tone, style, and analytical depth exactly
+2. Add NEW H2 sections with id attributes (different from existing ones listed above)
+3. Include Korean market data points, statistics, and source citations
+4. Add 2-3 FAQ questions as H3 headings ending with ?
+5. Use the same inline CSS: H2 with border-left:5px solid #0066FF; padding-left:15px; font-size:22px, paragraphs with margin:0 0 20px 0; line-height:1.8; font-size:16px
+6. Start with a natural transition from the previous content, not a new introduction
+
+Return raw HTML only, no markdown code blocks or JSON wrapper.`;
+
+    try {
+      const response = await this.client.messages.create({
+        model: process.env.CLAUDE_MODEL || 'claude-sonnet-4-6',
+        max_tokens: 8000,
+        temperature,
+        system: continuationSystemPrompt,
+        messages: [{ role: 'user', content: prompt }],
+      });
+
+      const text = response.content[0].type === 'text' ? response.content[0].text : '';
+      const cleaned = text.replace(/```(?:html)?\s*/g, '').replace(/```\s*$/g, '').trim();
+      if (cleaned.length > 200) {
+        return cleaned;
+      }
+      return null;
+    } catch {
+      return null;
+    }
+  }
+
+  /**
+   * Regenerate a weak excerpt using a focused Claude call.
+   * Returns improved excerpt or null on failure.
+   */
+  private async regenerateExcerpt(title: string, currentExcerpt: string, keyword: string): Promise<string | null> {
+    try {
+      const response = await this.client.messages.create({
+        model: process.env.CLAUDE_MODEL || 'claude-sonnet-4-6',
+        max_tokens: 200,
+        temperature: 0.3,
+        messages: [{
+          role: 'user',
+          content: `Write a compelling meta description (150-160 chars) for this blog post. It MUST contain the keyword "${keyword}" naturally. Include a clear benefit or hook for the reader.\n\nTitle: ${title}\nCurrent excerpt: ${currentExcerpt}\n\nRespond with ONLY the meta description text, no quotes or explanation.`,
+        }],
+      });
+
+      const text = response.content[0].type === 'text' ? response.content[0].text.trim() : '';
+      costTracker.addClaudeCall(
+        process.env.CLAUDE_MODEL || 'claude-sonnet-4-6',
+        response.usage?.input_tokens || 0,
+        response.usage?.output_tokens || 0,
+      );
+
+      if (text.length >= 80 && text.length <= 200) {
+        logger.info(`Excerpt regenerated: "${text.slice(0, 60)}..."`);
+        return text;
+      }
+      return null;
+    } catch (error) {
+      logger.warn(`Excerpt regeneration failed: ${error instanceof Error ? error.message : error}`);
+      return null;
+    }
+  }
+}
+
+function validateHeadingHierarchy(html: string, title: string): void {
+  const headingRegex = /<h([2-6])\b[^>]*>/gi;
+  let match;
+  let lastLevel = 1; // Start after H1 (title)
+  const issues: string[] = [];
+
+  while ((match = headingRegex.exec(html)) !== null) {
+    const level = parseInt(match[1]);
+    if (level > lastLevel + 1) {
+      issues.push(`H${level} appears after H${lastLevel} (skipped H${lastLevel + 1})`);
+    }
+    lastLevel = level;
+  }
+
+  if (issues.length > 0) {
+    logger.warn(`Heading hierarchy issues in "${title}": ${issues.join('; ')}`);
+  }
+}
+
+function ensureHeadingIds(html: string): string {
+  // Add id attributes to H2/H3 headings that don't have them
+  return html.replace(/<h([23])(\s[^>]*)?>(.*?)<\/h[23]>/gi, (match, level, attrs, text) => {
+    if (attrs && /\bid=/.test(attrs)) return match; // Already has id
+    const plainText = text.replace(/<[^>]+>/g, '').trim();
+    const id = plainText
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '')
+      .substring(0, 60);
+    const existingAttrs = attrs || '';
+    return `<h${level} id="${id}"${existingAttrs}>${text}</h${level}>`;
+  });
+}
+
+/** Find disclaimer paragraph index, supporting both CSS class and inline style formats */
+function findDisclaimerIndex(html: string): number {
+  // New class-based format
+  const classIdx = html.indexOf('<p class="ab-disclaimer"');
+  if (classIdx !== -1) return classIdx;
+  // Legacy inline style format
+  const inlineIdx = html.indexOf('<p style="margin:40px 0 0 0; padding-top:20px; border-top:1px solid #eee; font-size:13px; color:#999;');
+  return inlineIdx;
 }
 
 function parseJsonResponse(text: string, keyword: string): BlogContent {

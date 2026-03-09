@@ -1,5 +1,6 @@
 import axios, { type AxiosInstance } from 'axios';
 import { logger } from '../utils/logger.js';
+import type { ExistingPost, NicheConfig } from '../types/index.js';
 
 interface PageConfig {
   slug: string;
@@ -31,8 +32,8 @@ export class PagesService {
     });
   }
 
-  async ensureRequiredPages(siteName: string, siteOwner: string, contactEmail: string): Promise<void> {
-    const pages = this.buildPageConfigs(siteName, siteOwner, contactEmail);
+  async ensureRequiredPages(siteName: string, siteOwner: string, contactEmail: string, authorLinks?: { linkedin?: string; twitter?: string }): Promise<void> {
+    const pages = this.buildPageConfigs(siteName, siteOwner, contactEmail, authorLinks);
 
     for (const page of pages) {
       try {
@@ -73,7 +74,7 @@ export class PagesService {
     }
   }
 
-  private buildPageConfigs(siteName: string, siteOwner: string, contactEmail: string): PageConfig[] {
+  private buildPageConfigs(siteName: string, siteOwner: string, contactEmail: string, authorLinks?: { linkedin?: string; twitter?: string }): PageConfig[] {
     const ownerDisplay = siteOwner || siteName;
     const emailDisplay = contactEmail || `contact@${siteName.toLowerCase().replace(/\s+/g, '')}.net`;
 
@@ -86,7 +87,7 @@ export class PagesService {
       {
         slug: 'about',
         title: 'About',
-        content: this.buildAboutPage(siteName, ownerDisplay),
+        content: this.buildAboutPage(siteName, ownerDisplay, authorLinks),
       },
       {
         slug: 'contact',
@@ -139,8 +140,22 @@ export class PagesService {
 </div>`;
   }
 
-  private buildAboutPage(siteName: string, owner: string): string {
-    return `<div style="${S.wrapper}">
+  private buildAboutPage(siteName: string, owner: string, authorLinks?: { linkedin?: string; twitter?: string }): string {
+    // Build Person schema.org JSON-LD for author E-E-A-T
+    const sameAs = [authorLinks?.linkedin, authorLinks?.twitter].filter(Boolean);
+    const personJsonLd = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Person',
+      name: owner,
+      jobTitle: 'Korea Market & Trends Analyst',
+      description: `${owner} is a Korea-focused analyst covering Korean technology, entertainment, and financial markets for an international audience.`,
+      knowsAbout: ['Korean technology', 'K-pop industry', 'Korean stock market', 'KOSPI', 'South Korean economy', 'Korean startups', 'K-drama', 'Korean food culture'],
+      knowsLanguage: ['English', 'Korean'],
+      ...(sameAs.length > 0 ? { sameAs } : {}),
+    });
+
+    return `<script type="application/ld+json">${personJsonLd}</script>
+<div style="${S.wrapper}">
 <h2 style="${S.h2}">About ${siteName}</h2>
 <p style="${S.p}">Thank you for visiting ${siteName} -- your go-to source for in-depth English coverage of Korean technology, entertainment, and financial markets.</p>
 
@@ -150,6 +165,8 @@ export class PagesService {
 <li><strong>Korean Tech & Startups</strong> -- Samsung, Naver, Kakao, and the Pangyo startup ecosystem</li>
 <li><strong>K-Entertainment</strong> -- The business side of K-pop, K-drama, and the Hallyu wave</li>
 <li><strong>Korean Investment & Finance</strong> -- KOSPI/KOSDAQ analysis, Korean economic policy, and investment opportunities</li>
+<li><strong>Korean Food & Culture</strong> -- Authentic Korean cuisine, dining culture, and travel tips</li>
+<li><strong>Korean Language</strong> -- Learning resources, TOPIK prep, and language tips for global learners</li>
 </ul>
 
 <h3 style="${S.h3}">Our Mission</h3>
@@ -162,7 +179,13 @@ export class PagesService {
 </ul>
 
 <h3 style="${S.h3}">About the Author</h3>
-<p style="${S.p}">${siteName} is written and curated by ${owner}, a Korea market and trends analyst specializing in Korean technology, K-entertainment business models, and KOSPI/KOSDAQ investment analysis. With deep knowledge of Korean-language sources and institutional data (BOK, DART, KRX), ${owner} bridges the gap between Korean media and global readers seeking actionable insights.</p>
+<div itemscope itemtype="https://schema.org/Person" style="${S.infoBox}">
+<p style="${S.p}"><strong itemprop="name">${owner}</strong> is a <span itemprop="jobTitle">Korea Market & Trends Analyst</span> specializing in Korean technology, K-entertainment business models, and KOSPI/KOSDAQ investment analysis. With deep knowledge of Korean-language sources and institutional data (BOK, DART, KRX), ${owner} bridges the gap between Korean media and global readers seeking actionable insights.</p>
+<meta itemprop="knowsLanguage" content="English" />
+<meta itemprop="knowsLanguage" content="Korean" />
+${authorLinks?.linkedin ? `<p style="margin:0 0 8px 0;"><a href="${authorLinks.linkedin}" target="_blank" rel="noopener noreferrer" itemprop="sameAs" style="color:#0066FF; text-decoration:none;">LinkedIn Profile</a></p>` : ''}
+${authorLinks?.twitter ? `<p style="margin:0;"><a href="${authorLinks.twitter}" target="_blank" rel="noopener noreferrer" itemprop="sameAs" style="color:#0066FF; text-decoration:none;">X (Twitter) Profile</a></p>` : ''}
+</div>
 
 <h3 style="${S.h3}">Editorial Standards</h3>
 <ul style="${S.ul}">
@@ -198,6 +221,121 @@ export class PagesService {
 <li>Tips on Korean market developments</li>
 </ul>
 </div>`;
+  }
+
+  /**
+   * Create or update pillar pages for each niche (Topic Cluster hub).
+   * Each pillar page links to all posts in that niche category.
+   */
+  async ensurePillarPages(
+    niches: NicheConfig[],
+    existingPosts: ExistingPost[],
+    siteName: string,
+  ): Promise<void> {
+    for (const niche of niches) {
+      const slug = `guide-${niche.id}`;
+      const nichePosts = existingPosts.filter(
+        p => p.category.toLowerCase() === niche.category.toLowerCase(),
+      );
+
+      if (nichePosts.length < 3) {
+        logger.debug(`Skipping pillar page for "${niche.name}" — only ${nichePosts.length} posts (need 3+)`);
+        continue;
+      }
+
+      const title = `Complete Guide to ${niche.category}: Everything You Need to Know`;
+      const content = this.buildPillarPageContent(niche, nichePosts, siteName);
+
+      try {
+        const existingId = await this.getPageId(slug);
+        if (existingId) {
+          await this.api.post(`/pages/${existingId}`, {
+            title,
+            content,
+            status: 'publish',
+          });
+          logger.info(`Pillar page updated: "${title}" (/${slug}) — ${nichePosts.length} linked posts`);
+        } else {
+          await this.api.post('/pages', {
+            title,
+            slug,
+            content,
+            status: 'publish',
+          });
+          logger.info(`Pillar page created: "${title}" (/${slug}) — ${nichePosts.length} linked posts`);
+        }
+      } catch (error) {
+        const msg = error instanceof Error ? error.message : String(error);
+        logger.warn(`Failed to create pillar page for "${niche.name}": ${msg}`);
+      }
+    }
+  }
+
+  private buildPillarPageContent(
+    niche: NicheConfig,
+    posts: ExistingPost[],
+    siteName: string,
+  ): string {
+    const nicheDescriptions: Record<string, string> = {
+      'Korean Tech': 'the latest developments in Korean technology, from Samsung and Naver to Pangyo startups and AI innovation',
+      'K-Entertainment': 'the business side of K-pop, K-drama, and the global Hallyu wave — including agency strategies, revenue models, and market analysis',
+      'Korean Finance': 'Korean stock markets (KOSPI/KOSDAQ), investment strategies, BOK monetary policy, and financial opportunities for international investors',
+      'Korean Food': 'authentic Korean cuisine, from street food guides to home cooking recipes, with neighborhood recommendations and cultural context',
+      'Korea Travel': 'practical travel and living guides for South Korea, including transportation, costs, apps, and insider tips',
+      'Korean Language': 'learning Korean effectively — from Hangul basics to TOPIK preparation, with recommended apps, schools, and study strategies',
+    };
+
+    const description = nicheDescriptions[niche.category] || `everything about ${niche.category}`;
+
+    const postCards = posts
+      .slice(0, 20)
+      .map(p => {
+        const shortTitle = p.title.length > 70 ? p.title.slice(0, 67) + '...' : p.title;
+        return `<a href="${p.url}" style="display:block; padding:16px 20px; margin:0 0 10px 0; background:#fff; border:1px solid #e5e7eb; border-radius:8px; text-decoration:none; transition:box-shadow 0.2s;">
+<p style="margin:0; font-size:15px; font-weight:600; color:#222; line-height:1.4;">${this.escapeHtml(shortTitle)}</p></a>`;
+      })
+      .join('\n');
+
+    const year = new Date().getFullYear();
+
+    // ItemList JSON-LD schema for pillar pages
+    const itemListSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      name: `${niche.category} Articles`,
+      numberOfItems: posts.length,
+      itemListElement: posts.slice(0, 20).map((p, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: p.title,
+        url: p.url,
+      })),
+    };
+    const jsonLdScript = `<script type="application/ld+json">${JSON.stringify(itemListSchema)}</script>\n`;
+
+    return `${jsonLdScript}<div style="${S.wrapper}">
+<p style="${S.p}">Welcome to ${siteName}'s comprehensive guide to ${description}. This page serves as your central hub — bookmark it and explore the topics that interest you most.</p>
+
+<div style="${S.infoBox}">
+<p style="margin:0; font-size:15px; color:#555; line-height:1.6;">This guide is continuously updated as we publish new content. Currently featuring <strong>${posts.length} articles</strong> covering ${niche.category}. Last updated: ${new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}.</p>
+</div>
+
+<h2 style="${S.h2}">All ${niche.category} Articles</h2>
+${postCards}
+
+<h2 style="${S.h2}">About This Guide</h2>
+<p style="${S.p}">Each article in this collection is researched using Korean-language primary sources and institutional data. We cover ${niche.category} from a global perspective, making Korean expertise accessible to English-speaking readers worldwide.</p>
+
+<div style="${S.highlightBox}">
+<p style="margin:0; line-height:1.7; color:#555;">Looking for something specific? Use the search bar above or <a href="/contact" style="color:#0066FF; text-decoration:none;">contact us</a> to suggest a topic.</p>
+</div>
+
+<p style="margin:40px 0 0 0; padding-top:20px; border-top:1px solid #eee; font-size:13px; color:#999; line-height:1.6;">This guide is updated regularly with the latest ${niche.category} content for ${year}.</p>
+</div>`;
+  }
+
+  private escapeHtml(text: string): string {
+    return text.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 
   private buildDisclaimerPage(siteName: string): string {

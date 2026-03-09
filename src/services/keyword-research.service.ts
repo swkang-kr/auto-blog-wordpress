@@ -2,20 +2,75 @@ import Anthropic from '@anthropic-ai/sdk';
 import { logger } from '../utils/logger.js';
 import { KeywordResearchError } from '../types/errors.js';
 import { GoogleTrendsService } from './google-trends.service.js';
-import type { NicheConfig, TrendsData, RisingQuery, KeywordAnalysis, ResearchedKeyword } from '../types/index.js';
+import { getSeasonalSuggestionsForNiche } from '../utils/korean-calendar.js';
+import { costTracker } from '../utils/cost-tracker.js';
+import type { NicheConfig, TrendsData, RisingQuery, KeywordAnalysis, ResearchedKeyword, ExistingPost } from '../types/index.js';
 
 export class KeywordResearchService {
   private client: Anthropic;
   private trendsService: GoogleTrendsService;
+  private performanceInsights: string;
+  private existingPosts: ExistingPost[];
+  private existingPostTitles: string[];
 
   constructor(apiKey: string, geo: string) {
     this.client = new Anthropic({ apiKey });
     this.trendsService = new GoogleTrendsService(geo);
+    this.performanceInsights = '';
+    this.existingPosts = [];
+    this.existingPostTitles = [];
+  }
+
+  /** Set GA4 performance insights to include in keyword research prompts */
+  setPerformanceInsights(insights: string): void {
+    this.performanceInsights = insights;
+  }
+
+  /** Set existing post titles for similarity-based dedup */
+  setExistingPosts(posts: ExistingPost[]): void {
+    this.existingPosts = posts;
+    this.existingPostTitles = posts.map(p => p.title.toLowerCase());
+  }
+
+  /**
+   * Semantic similarity between two texts using unigram + bigram overlap.
+   * Bigrams capture phrase-level meaning (e.g., "korean stocks" vs "korean drama").
+   * Returns 0-1 where 1 = identical token sets.
+   */
+  private textSimilarity(a: string, b: string): number {
+    const stopWords = new Set(['the', 'a', 'an', 'in', 'on', 'at', 'to', 'for', 'of', 'and', 'or', 'is', 'are', 'was', 'were', 'be', 'been', 'how', 'what', 'why', 'your', 'you', 'this', 'that', 'with']);
+    const tokenize = (s: string) => s.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => w.length > 2 && !stopWords.has(w));
+
+    const wordsA = tokenize(a);
+    const wordsB = tokenize(b);
+    if (wordsA.length === 0 || wordsB.length === 0) return 0;
+
+    // Unigram overlap (weight: 0.4)
+    const setA = new Set(wordsA);
+    const setB = new Set(wordsB);
+    let unigramIntersection = 0;
+    for (const word of setA) if (setB.has(word)) unigramIntersection++;
+    const unigramScore = unigramIntersection / Math.min(setA.size, setB.size);
+
+    // Bigram overlap (weight: 0.6) — captures phrase-level similarity
+    const bigramsA = new Set<string>();
+    const bigramsB = new Set<string>();
+    for (let i = 0; i < wordsA.length - 1; i++) bigramsA.add(`${wordsA[i]} ${wordsA[i + 1]}`);
+    for (let i = 0; i < wordsB.length - 1; i++) bigramsB.add(`${wordsB[i]} ${wordsB[i + 1]}`);
+
+    if (bigramsA.size === 0 || bigramsB.size === 0) return unigramScore;
+
+    let bigramIntersection = 0;
+    for (const bg of bigramsA) if (bigramsB.has(bg)) bigramIntersection++;
+    const bigramScore = bigramIntersection / Math.min(bigramsA.size, bigramsB.size);
+
+    return 0.4 * unigramScore + 0.6 * bigramScore;
   }
 
   async researchKeyword(
     niche: NicheConfig,
     postedKeywords: string[],
+    recentContentTypes?: string[],
   ): Promise<ResearchedKeyword> {
     logger.info(`\n--- Keyword Research for niche: "${niche.name}" ---`);
 
@@ -52,33 +107,66 @@ export class KeywordResearchService {
       }
     }
 
-    // 3. Ask Claude to select the best keyword (retry up to 2 times on Korea relevance rejection)
+    // 3. Ask Claude to select the best keyword (retry on Korea relevance or cannibalization)
+    const MAX_ATTEMPTS = 4;
     let analysis: KeywordAnalysis | undefined;
-    for (let attempt = 1; attempt <= 3; attempt++) {
+    const rejectedKeywords: string[] = [];
+
+    for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
       try {
         analysis = await this.analyzeWithClaude(
           niche,
           { risingQueries, topQueries, averageInterest, trendDirection, trendsSource },
           trendsData,
-          postedKeywords,
+          [...postedKeywords, ...rejectedKeywords],
+          recentContentTypes,
         );
-        break;
       } catch (error) {
-        if (attempt < 3 && error instanceof KeywordResearchError && error.message.includes('no Korea relevance')) {
-          logger.warn(`Attempt ${attempt}/3: Korea relevance check failed, retrying...`);
+        if (attempt < MAX_ATTEMPTS && error instanceof KeywordResearchError && error.message.includes('no Korea relevance')) {
+          logger.warn(`Attempt ${attempt}/${MAX_ATTEMPTS}: Korea relevance check failed, retrying...`);
           continue;
         }
         throw error;
       }
+
+      if (!analysis) continue;
+
+      // Similarity-based dedup: skip cannibalized keywords and retry
+      if (this.existingPosts.length > 0) {
+        const candidateText = `${analysis.selectedKeyword} ${analysis.suggestedTitle}`;
+        const matchingPost = this.existingPosts.find(
+          p => this.textSimilarity(candidateText, p.title) > 0.6,
+        );
+        if (matchingPost) {
+          logger.warn(
+            `Attempt ${attempt}/${MAX_ATTEMPTS}: "${analysis.selectedKeyword}" too similar to existing "${matchingPost.title}" (ID: ${matchingPost.postId}). Retrying with different keyword.`,
+          );
+          rejectedKeywords.push(analysis.selectedKeyword);
+          analysis = undefined;
+          continue;
+        }
+      }
+
+      break;
     }
 
     if (!analysis) {
-      throw new KeywordResearchError(`Failed to find Korea-relevant keyword for niche "${niche.name}" after 3 attempts`);
+      throw new KeywordResearchError(`Failed to find unique Korea-relevant keyword for niche "${niche.name}" after ${MAX_ATTEMPTS} attempts`);
+    }
+
+    // Fallback volume estimation from Trends data if Claude didn't provide it
+    if (!analysis.volumeEstimate) {
+      analysis.volumeEstimate = this.estimateVolumeFromTrends(
+        averageInterest,
+        risingQueries,
+        analysis.selectedKeyword,
+      );
+      logger.debug(`Volume auto-estimated from Trends: ${analysis.volumeEstimate}`);
     }
 
     logger.info(
       `Research result for "${niche.name}": keyword="${analysis.selectedKeyword}", ` +
-      `type=${analysis.contentType}, competition=${analysis.estimatedCompetition}`,
+      `type=${analysis.contentType}, competition=${analysis.estimatedCompetition}, volume=${analysis.volumeEstimate}`,
     );
 
     return { niche, trendsData, analysis };
@@ -95,6 +183,7 @@ export class KeywordResearchService {
     },
     fallbackTrendsData: TrendsData[],
     postedKeywords: string[],
+    recentContentTypes?: string[],
   ): Promise<KeywordAnalysis> {
     const today = new Date().toISOString().split('T')[0];
     const year = new Date().getFullYear();
@@ -153,9 +242,15 @@ IMPORTANT: Today's date is ${today}. All content must be written for ${year}.
 
 ${trendsContext}
 
-## Already Posted Keywords (AVOID these or similar topics)
-${postedKeywords.length > 0 ? postedKeywords.map((k) => `- ${k}`).join('\n') : 'None yet'}
+## Already Posted Keywords (AVOID these AND semantically similar topics)
+${postedKeywords.length > 0 ? postedKeywords.slice(-30).map((k) => `- ${k}`).join('\n') : 'None yet'}
+${postedKeywords.length > 30 ? `(showing most recent 30 of ${postedKeywords.length} total)` : ''}
 
+IMPORTANT: Do NOT just avoid exact matches — avoid topics that would create content cannibalization.
+For example, if "how to invest in Korean stocks" is posted, do NOT select "investing in Korean stocks for beginners" or "Korean stock investment guide".
+${this.performanceInsights}
+${this.getSeasonalSection(niche.category)}
+${recentContentTypes && recentContentTypes.length > 0 ? `## Content Type Diversity (IMPORTANT)\nRecent content types for this niche: ${recentContentTypes.join(', ')}\nAvoid overusing the same content type. If "${recentContentTypes[recentContentTypes.length - 1]}" was used recently, PREFER a different type to maintain reader variety.\n` : ''}
 ## Instructions
 1. Select the best keyword to target — MUST be a long-tail keyword (4+ words).
 2. Choose the best content type from: ${niche.contentTypes.join(', ')}
@@ -165,6 +260,8 @@ ${postedKeywords.length > 0 ? postedKeywords.map((k) => `- ${k}`).join('\n') : '
    - how-to: Step-by-step guide
    - best-x-for-y: Ranked list with comparisons
    - x-vs-y: Comparison analysis
+   - listicle: Curated list of 10-20 items with brief descriptions per item
+   - case-study: Real-world example analysis (Background → Challenge → Strategy → Results → Lessons)
 3. Suggest a unique angle that differentiates from existing content
 4. Generate a suggestedTitle that is search-intent-first. Rules for suggestedTitle:
    - MUST contain the selectedKeyword verbatim or within 1-2 filler words
@@ -193,7 +290,7 @@ CRITICAL keyword selection rules — follow in strict priority order:
 9. TARGET global English-speaking audience interested in Korea (investors, K-culture fans, tech watchers)
 
 Respond with pure JSON only. No markdown code blocks.
-{"selectedKeyword":"...","contentType":"analysis|deep-dive|news-explainer|how-to|best-x-for-y|x-vs-y","suggestedTitle":"...","uniqueAngle":"...","searchIntent":"...","estimatedCompetition":"low|medium|high","reasoning":"...","relatedKeywordsToInclude":["...","..."]}`;
+{"selectedKeyword":"...","contentType":"analysis|deep-dive|news-explainer|how-to|best-x-for-y|x-vs-y|listicle|case-study","suggestedTitle":"...","uniqueAngle":"...","searchIntent":"...","estimatedCompetition":"low|medium|high","volumeEstimate":"high|medium|low|minimal","reasoning":"...","relatedKeywordsToInclude":["...","..."]}`;
 
     try {
       const response = await this.client.messages.create({
@@ -204,6 +301,11 @@ Respond with pure JSON only. No markdown code blocks.
       });
 
       const text = response.content[0].type === 'text' ? response.content[0].text : '';
+      costTracker.addClaudeCall(
+        process.env.CLAUDE_MODEL || 'claude-sonnet-4-6',
+        response.usage?.input_tokens || 0,
+        response.usage?.output_tokens || 0,
+      );
       return this.parseAnalysis(text, niche);
     } catch (error) {
       throw new KeywordResearchError(
@@ -211,6 +313,12 @@ Respond with pure JSON only. No markdown code blocks.
         error,
       );
     }
+  }
+
+  private getSeasonalSection(category: string): string {
+    const suggestions = getSeasonalSuggestionsForNiche(category);
+    if (suggestions.length === 0) return '';
+    return `\n## Korean Seasonal Context (consider these angles)\n${suggestions.map(s => `- ${s}`).join('\n')}\n`;
   }
 
   private validateKoreaRelevance(analysis: KeywordAnalysis): KeywordAnalysis {
@@ -235,6 +343,28 @@ Respond with pure JSON only. No markdown code blocks.
       );
     }
     return analysis;
+  }
+
+  /**
+   * Estimate search volume from Google Trends signals when Claude doesn't provide it.
+   * Uses averageInterest + rising query growth to bucket into volume tiers.
+   */
+  private estimateVolumeFromTrends(
+    averageInterest: number,
+    risingQueries: RisingQuery[],
+    keyword: string,
+  ): 'high' | 'medium' | 'low' | 'minimal' {
+    // Find if our keyword matches a rising query
+    const matchingRising = risingQueries.find(
+      (q) => keyword.toLowerCase().includes(q.query.toLowerCase()) || q.query.toLowerCase().includes(keyword.toLowerCase()),
+    );
+    const hasBreakout = matchingRising?.value === 'Breakout';
+    const growthPct = typeof matchingRising?.value === 'number' ? matchingRising.value : 0;
+
+    if (hasBreakout || averageInterest >= 70) return 'high';
+    if (growthPct >= 200 || averageInterest >= 40) return 'medium';
+    if (averageInterest >= 15 || growthPct >= 50) return 'low';
+    return 'minimal';
   }
 
   private parseAnalysis(text: string, niche: NicheConfig): KeywordAnalysis {

@@ -1,6 +1,6 @@
 import axios, { type AxiosInstance } from 'axios';
-import { createSign } from 'crypto';
 import { logger } from '../utils/logger.js';
+import { getGoogleAccessToken } from '../utils/google-auth.js';
 
 const WPCODE_SLUG = 'insert-headers-and-footers';
 const HREFLANG_SNIPPET_TITLE = 'Auto Blog hreflang SEO';
@@ -8,6 +8,12 @@ const ADSENSE_PADDING_SNIPPET_TITLE = 'Auto Blog AdSense Mobile Padding';
 const INDEXNOW_SNIPPET_TITLE = 'Auto Blog IndexNow Key';
 const RANKMATH_REST_SNIPPET_TITLE = 'Auto Blog Rank Math REST API Meta';
 const NAV_MENU_SNIPPET_TITLE = 'Auto Blog Navigation Menu';
+const JSONLD_SNIPPET_TITLE = 'Auto Blog JSON-LD Schema';
+const DARKMODE_SNIPPET_TITLE = 'Auto Blog Dark Mode CSS';
+const NOINDEX_THIN_SNIPPET_TITLE = 'Auto Blog Noindex Thin Pages';
+const RSS_OPTIMIZATION_SNIPPET_TITLE = 'Auto Blog RSS Feed Optimization';
+const IMAGE_SITEMAP_SNIPPET_TITLE = 'Auto Blog Image Sitemap Enhancement';
+const POST_CSS_SNIPPET_TITLE = 'Auto Blog Post Styles';
 
 export class SeoService {
   private api: AxiosInstance;
@@ -64,9 +70,15 @@ export class SeoService {
     gaMeasurementId?: string;
   }): Promise<void> {
     const { googleCode, naverCode, gaMeasurementId } = options;
-    if (!googleCode && !naverCode && !gaMeasurementId) return;
 
     const parts: string[] = [];
+
+    // Google Discover eligibility + image preview optimization
+    parts.push(`<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />`);
+
+    // Preconnect hints for Google Fonts (LCP optimization)
+    parts.push(`<link rel="preconnect" href="https://fonts.googleapis.com" />`);
+    parts.push(`<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />`);
 
     // Verification meta tags
     if (googleCode) parts.push(`<meta name="google-site-verification" content="${googleCode}" />`);
@@ -91,7 +103,7 @@ export class SeoService {
     // Step 2: Try to set header meta tags via plugin option
     const configured = await this.trySetHeader(headerHtml);
     if (configured) {
-      logger.info('Header scripts (verification + GA4) configured successfully');
+      logger.info('Header scripts (verification + GA4 + Discover meta) configured successfully');
     } else {
       this.logManualInstructions(headerHtml);
     }
@@ -241,6 +253,78 @@ add_action('wp_head', function() {
   }
 
   /**
+   * Install a PHP snippet that outputs JSON-LD from post meta into wp_head.
+   * Posts store JSON-LD in _autoblog_jsonld meta field instead of post content body.
+   */
+  async ensureJsonLdSnippet(): Promise<void> {
+    const phpCode = `
+// Output JSON-LD structured data from post meta into <head>
+add_action('wp_head', function() {
+    if (!is_singular('post')) return;
+    $post_id = get_the_ID();
+
+    // JSON-LD schemas
+    $jsonld_raw = get_post_meta($post_id, '_autoblog_jsonld', true);
+    if (!empty($jsonld_raw)) {
+        $schemas = json_decode($jsonld_raw, true);
+        if (is_array($schemas)) {
+            foreach ($schemas as $schema) {
+                echo '<script type="application/ld+json">' . wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . '</script>' . "\\n";
+            }
+        }
+    }
+
+    // OG article time meta tags (supplement Rank Math output)
+    $pub_time = get_post_meta($post_id, '_autoblog_published_time', true);
+    $mod_time = get_post_meta($post_id, '_autoblog_modified_time', true);
+    if ($pub_time) echo '<meta property="article:published_time" content="' . esc_attr($pub_time) . '" />' . "\\n";
+    if ($mod_time) echo '<meta property="article:modified_time" content="' . esc_attr($mod_time) . '" />' . "\\n";
+});
+
+// Register autoblog meta fields for REST API write access
+add_action('init', function() {
+    $fields = ['_autoblog_jsonld', '_autoblog_published_time', '_autoblog_modified_time'];
+    foreach ($fields as $field) {
+        register_post_meta('post', $field, [
+            'show_in_rest' => true,
+            'single' => true,
+            'type' => 'string',
+            'auth_callback' => function() { return current_user_can('edit_posts'); },
+        ]);
+    }
+});`.trim();
+
+    try {
+      const { data: snippets } = await axios.get(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      const existing = (snippets as Array<{ id: number; name: string }>)
+        .find((s) => s.name === JSONLD_SNIPPET_TITLE);
+
+      if (existing) {
+        await axios.put(
+          `${this.wpUrl}/wp-json/code-snippets/v1/snippets/${existing.id}`,
+          { code: phpCode, active: true },
+          { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+        );
+        logger.info(`JSON-LD snippet updated (ID=${existing.id})`);
+        return;
+      }
+
+      await axios.post(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { name: JSONLD_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 5 },
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      logger.info('JSON-LD wp_head snippet installed via Code Snippets plugin');
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      logger.warn(`Failed to install JSON-LD snippet: ${msg}`);
+    }
+  }
+
+  /**
    * Install a WordPress Code Snippet that serves the IndexNow key file.
    * Search engines verify ownership by fetching /{key}.txt from the site.
    */
@@ -314,6 +398,27 @@ add_action('init', function() {
         }
       }),
     );
+  }
+
+  /**
+   * Ping Bing with the sitemap URL to trigger re-crawl.
+   * Google deprecated sitemap ping in 2023, but Bing still supports it.
+   */
+  async pingSitemap(): Promise<void> {
+    const sitemapUrl = `${this.wpUrl}/sitemap_index.xml`;
+    const pingUrl = `https://www.bing.com/ping?sitemap=${encodeURIComponent(sitemapUrl)}`;
+
+    try {
+      const { status } = await axios.get(pingUrl, { timeout: 10000, validateStatus: () => true });
+      if (status === 200) {
+        logger.info(`Bing sitemap ping OK: ${sitemapUrl}`);
+      } else {
+        logger.warn(`Bing sitemap ping returned status ${status}`);
+      }
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      logger.warn(`Bing sitemap ping failed: ${msg}`);
+    }
   }
 
   /**
@@ -423,7 +528,7 @@ add_action('init', function() {
     }
 
     try {
-      const accessToken = await this.getGoogleAccessToken();
+      const accessToken = await this.getGoogleAccessTokenCached();
       await axios.post(
         'https://indexing.googleapis.com/v3/urlNotifications:publish',
         { url, type: 'URL_UPDATED' },
@@ -519,12 +624,25 @@ add_action('after_setup_theme', function() {
 add_action('init', function() {
     $menu_name = 'TrendHunt Main';
     $menu_exists = wp_get_nav_menu_object($menu_name);
-    if ($menu_exists) {
-        wp_delete_nav_menu($menu_exists->term_id);
-    }
 
-    $menu_id = wp_create_nav_menu($menu_name);
-    if (is_wp_error($menu_id)) return;
+    // If menu already exists with items, skip recreation to preserve custom edits
+    if ($menu_exists) {
+        $existing_items = wp_get_nav_menu_items($menu_exists->term_id);
+        if (!empty($existing_items)) {
+            // Assign to primary location if not already assigned
+            $locations = get_theme_mod('nav_menu_locations', []);
+            if (empty($locations['primary']) || $locations['primary'] !== $menu_exists->term_id) {
+                $locations['primary'] = $menu_exists->term_id;
+                set_theme_mod('nav_menu_locations', $locations);
+            }
+            return;
+        }
+        // Menu exists but empty — rebuild it
+        $menu_id = $menu_exists->term_id;
+    } else {
+        $menu_id = wp_create_nav_menu($menu_name);
+        if (is_wp_error($menu_id)) return;
+    }
 
     // Home
     wp_update_nav_menu_item($menu_id, 0, [
@@ -599,45 +717,490 @@ ${categoryItems}
     }
   }
 
+  /**
+   * Install dark mode CSS as a Code Snippets plugin snippet (more reliable than inline <style>).
+   * Outputs dark mode overrides for .post-content via wp_head.
+   */
+  async ensureDarkModeSnippet(): Promise<void> {
+    const phpCode = `
+// Dark mode support for Auto Blog post content
+add_action('wp_head', function() {
+    if (!is_singular('post')) return;
+    echo '<style>
+@media (prefers-color-scheme:dark){
+.post-content{background:#1a1a2e!important;color:#e0e0e0!important}
+.post-content p,.post-content li,.post-content td{color:#e0e0e0!important}
+.post-content a{color:#4da6ff!important}
+.post-content h2,.post-content h3{color:#f0f0f0!important}
+.post-content div[style*="background:#f0f4ff"],.post-content div[style*="background:#f8f9fa"],.post-content details[style*="background:#f0f4ff"]{background:#2a2a3e!important;border-color:#3a3a5e!important}
+.post-content blockquote{background:#2a2a3e!important;color:#c0c0c0!important}
+.post-content table tr[style*="background:#fff"]{background:#2a2a3e!important}
+.post-content table tr[style*="background:#f8f9fa"]{background:#222238!important}
+}
+</style>';
+});`.trim();
+
+    try {
+      const { data: snippets } = await axios.get(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      const existing = (snippets as Array<{ id: number; name: string }>)
+        .find((s) => s.name === DARKMODE_SNIPPET_TITLE);
+
+      if (existing) {
+        await axios.put(
+          `${this.wpUrl}/wp-json/code-snippets/v1/snippets/${existing.id}`,
+          { code: phpCode, active: true },
+          { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+        );
+        logger.info(`Dark mode snippet updated (ID=${existing.id})`);
+        return;
+      }
+
+      await axios.post(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { name: DARKMODE_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 10 },
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      logger.info('Dark mode CSS snippet installed via Code Snippets plugin');
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      logger.warn(`Failed to install dark mode snippet: ${msg}`);
+    }
+  }
+
+  /**
+   * Ensure thin archive pages (tag, author, date) have noindex meta tag.
+   * Prevents crawl budget waste on low-value pages while preserving link equity (follow).
+   */
+  async ensureNoindexThinPagesSnippet(): Promise<void> {
+    const phpCode = `
+// Add noindex to thin archive pages (tag, author, date) and categories with <3 posts
+add_action('wp_head', function() {
+    if (is_tag() || is_author() || is_date()) {
+        echo '<meta name="robots" content="noindex, follow" />' . "\\n";
+        return;
+    }
+    // Noindex category pages with fewer than 3 posts (thin content)
+    if (is_category()) {
+        \$cat = get_queried_object();
+        if (\$cat && \$cat->count < 3) {
+            echo '<meta name="robots" content="noindex, follow" />' . "\\n";
+        }
+    }
+});`.trim();
+
+    try {
+      const { data: snippets } = await axios.get(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      const existing = (snippets as Array<{ id: number; name: string }>)
+        .find((s) => s.name === NOINDEX_THIN_SNIPPET_TITLE);
+
+      if (existing) {
+        // Update existing snippet with latest code (includes category noindex)
+        await axios.put(
+          `${this.wpUrl}/wp-json/code-snippets/v1/snippets/${existing.id}`,
+          { code: phpCode, active: true },
+          { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+        );
+        logger.info(`Noindex thin pages snippet updated (ID=${existing.id})`);
+        return;
+      }
+
+      await axios.post(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { name: NOINDEX_THIN_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 5 },
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      logger.info('Noindex thin pages snippet installed via Code Snippets plugin');
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      logger.warn(`Failed to install noindex thin pages snippet: ${msg}`);
+    }
+  }
+
+  /**
+   * Optimize WordPress RSS feed: full content mode, 20 items, prepend featured images.
+   */
+  async ensureRssFeedOptimization(): Promise<void> {
+    // Set RSS to full content with 20 items via WordPress settings API
+    try {
+      await this.api.post('/settings', {
+        posts_per_rss: 20,
+        rss_use_excerpt: 0, // 0 = full content
+      });
+      logger.info('RSS feed settings: 20 items, full content mode');
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      logger.debug(`RSS settings update failed (may require options API): ${msg}`);
+    }
+
+    // Install snippet to prepend featured image to RSS entries
+    const phpCode = `
+// Prepend featured image to RSS feed entries for better feed reader display
+add_filter('the_content_feed', function(\$content) {
+    global \$post;
+    if (has_post_thumbnail(\$post->ID)) {
+        \$img = get_the_post_thumbnail(\$post->ID, 'large', ['style' => 'max-width:100%;height:auto;margin-bottom:16px;']);
+        \$content = \$img . \$content;
+    }
+    return \$content;
+});
+
+// Add featured image as media:content to RSS (for feed readers that support it)
+add_action('rss2_item', function() {
+    global \$post;
+    if (has_post_thumbnail(\$post->ID)) {
+        \$thumb_id = get_post_thumbnail_id(\$post->ID);
+        \$thumb_url = wp_get_attachment_image_url(\$thumb_id, 'large');
+        \$thumb_meta = wp_get_attachment_metadata(\$thumb_id);
+        if (\$thumb_url && \$thumb_meta) {
+            \$width = \$thumb_meta['width'] ?? 1200;
+            \$height = \$thumb_meta['height'] ?? 675;
+            echo '<media:content url="' . esc_url(\$thumb_url) . '" medium="image" width="' . intval(\$width) . '" height="' . intval(\$height) . '" />' . "\\n";
+        }
+    }
+});
+
+// Add media namespace to RSS
+add_filter('rss2_ns', function() {
+    echo 'xmlns:media="http://search.yahoo.com/mrss/" ';
+});`.trim();
+
+    try {
+      const { data: snippets } = await axios.get(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      const existing = (snippets as Array<{ id: number; name: string }>)
+        .find((s) => s.name === RSS_OPTIMIZATION_SNIPPET_TITLE);
+
+      if (existing) {
+        await axios.put(
+          `${this.wpUrl}/wp-json/code-snippets/v1/snippets/${existing.id}`,
+          { code: phpCode, active: true },
+          { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+        );
+        logger.info(`RSS optimization snippet updated (ID=${existing.id})`);
+        return;
+      }
+
+      await axios.post(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { name: RSS_OPTIMIZATION_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 10 },
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      logger.info('RSS feed optimization snippet installed via Code Snippets plugin');
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      logger.warn(`Failed to install RSS optimization snippet: ${msg}`);
+    }
+  }
+
+  /**
+   * Enhance wp-sitemap.xml with image entries (featured + inline images per post).
+   * Skips if Rank Math is active (it handles image sitemaps already).
+   */
+  async ensureImageSitemapSnippet(): Promise<void> {
+    // Check if Rank Math is active — it already handles image sitemaps
+    try {
+      const { data: plugins } = await this.api.get('/plugins');
+      const rankMath = (plugins as Array<{ plugin: string; status: string }>)
+        .find((p) => p.plugin.startsWith('seo-by-rank-math/'));
+      if (rankMath?.status === 'active') {
+        logger.debug('Rank Math active — skipping image sitemap snippet (Rank Math handles it)');
+        return;
+      }
+    } catch {
+      // Plugin check failed, proceed with snippet installation
+    }
+
+    const phpCode = `
+// Add images to WordPress native wp-sitemap.xml entries
+add_filter('wp_sitemaps_posts_entry', function(\$entry, \$post) {
+    \$images = [];
+
+    // Featured image
+    if (has_post_thumbnail(\$post->ID)) {
+        \$thumb_url = get_the_post_thumbnail_url(\$post->ID, 'full');
+        if (\$thumb_url) {
+            \$images[] = ['loc' => \$thumb_url];
+        }
+    }
+
+    // Inline images from post content
+    \$content = \$post->post_content;
+    if (preg_match_all('/<img[^>]+src=["\\'](https?:\\/\\/[^"\\'>]+)["\\'][^>]*>/i', \$content, \$matches)) {
+        foreach (array_unique(\$matches[1]) as \$img_url) {
+            // Only include images from our own domain
+            if (strpos(\$img_url, parse_url(home_url(), PHP_URL_HOST)) !== false) {
+                \$images[] = ['loc' => \$img_url];
+            }
+        }
+    }
+
+    if (!empty(\$images)) {
+        \$entry['image:image'] = \$images;
+    }
+
+    return \$entry;
+}, 10, 2);`.trim();
+
+    try {
+      const { data: snippets } = await axios.get(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      const existing = (snippets as Array<{ id: number; name: string }>)
+        .find((s) => s.name === IMAGE_SITEMAP_SNIPPET_TITLE);
+
+      if (existing) {
+        await axios.put(
+          `${this.wpUrl}/wp-json/code-snippets/v1/snippets/${existing.id}`,
+          { code: phpCode, active: true },
+          { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+        );
+        logger.info(`Image sitemap snippet updated (ID=${existing.id})`);
+        return;
+      }
+
+      await axios.post(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { name: IMAGE_SITEMAP_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 10 },
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      logger.info('Image sitemap enhancement snippet installed via Code Snippets plugin');
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      logger.warn(`Failed to install image sitemap snippet: ${msg}`);
+    }
+  }
+
+  /**
+   * Ensure post content CSS is loaded site-wide via Code Snippets plugin.
+   * Eliminates per-post inline <style> duplication (~3KB savings per post).
+   */
+  async ensurePostCssSnippet(): Promise<void> {
+    const phpCode = `
+// Enqueue Auto Blog post content styles site-wide (removes per-post inline CSS)
+add_action('wp_head', function() {
+    if (!is_singular('post')) return;
+    echo '<style>
+.post-content{max-width:760px;margin:0 auto;padding:0 20px;font-family:"Noto Sans KR",sans-serif;color:#333;line-height:1.7;font-size:16px}
+.post-content p{margin:0 0 20px 0;line-height:1.8;color:#333;font-size:16px}
+.post-content h2{border-left:5px solid #0066FF;padding-left:15px;font-size:22px;color:#222;margin:40px 0 20px 0}
+.post-content h3{font-size:18px;color:#444;margin:30px 0 15px 0;padding-bottom:8px;border-bottom:1px solid #eee}
+.post-content a{color:#0066FF;text-decoration:underline}
+.post-content a[target="_blank"]{color:#0066FF;text-decoration:underline}
+.post-content blockquote{border-left:4px solid #0066FF;margin:24px 0;padding:16px 24px;background:#f8f9fa;font-style:italic;color:#555;line-height:1.7}
+.post-content hr{border:none;height:1px;background:linear-gradient(to right,#ddd,#eee,#ddd);margin:36px 0}
+.post-content figure{margin:30px 0;text-align:center}
+.post-content figure img{max-width:100%;width:100%;height:auto;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);aspect-ratio:16/9;object-fit:cover}
+.post-content figcaption{margin-top:10px;font-size:13px;color:#888;line-height:1.5}
+.ab-toc{background:#f0f4ff;padding:16px 20px;border-radius:12px;margin:24px 0 36px 0}
+.ab-toc summary{font-weight:700;font-size:17px;margin:0 0 12px 0;color:#0066FF;cursor:pointer;list-style:none}
+.ab-toc ol{margin:0;padding-left:20px;line-height:2.0;color:#555}
+.ab-toc a{color:#0066FF;text-decoration:none}
+.ab-takeaways{background:#f0f4ff;border:2px solid #0066FF;padding:20px 24px;border-radius:12px;margin:0 0 36px 0}
+.ab-snippet{background:#f8f9fa;border:1px solid #e2e8f0;padding:20px;border-radius:8px;margin:0 0 24px 0}
+.ab-snippet p{margin:0;font-size:16px;line-height:1.7;color:#333}
+.ab-highlight{background:#f8f9fa;border-left:4px solid #0066FF;padding:20px 24px;margin:24px 0;border-radius:0 8px 8px 0}
+.ab-highlight p{margin:0;line-height:1.7;color:#555}
+.ab-keypoint{background:#fff8e1;border:1px solid #ffe082;padding:20px 24px;border-radius:8px;margin:24px 0}
+.ab-metrics{display:flex;flex-wrap:wrap;gap:12px;margin:24px 0}
+.ab-metrics>div{flex:1;min-width:140px;padding:16px;background:#f0f4ff;border-radius:10px;text-align:center}
+.ab-step{display:flex;align-items:center;gap:12px;margin:30px 0 15px 0}
+.ab-step-num{width:36px;height:36px;background:#0066FF;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px;flex-shrink:0}
+.ab-proscons{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px 0}
+.ab-pros{padding:16px;background:#f0fff4;border-radius:10px;border:1px solid #c6f6d5}
+.ab-cons{padding:16px;background:#fff5f5;border-radius:10px;border:1px solid #fed7d7}
+.ab-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:24px 0}
+.ab-cta{margin:30px 0;border-radius:12px;text-align:center}
+.ab-cta-newsletter{padding:28px 24px;background:linear-gradient(135deg,#0052CC 0%,#0066FF 100%);color:#fff}
+.ab-cta-newsletter p{color:#fff}
+.ab-cta-engagement{padding:24px;background:linear-gradient(135deg,#f0f4ff 0%,#e8f0fe 100%)}
+.ab-cta-share{margin:24px 0;padding:20px 24px;background:#f0f4ff;border-radius:12px;text-align:center}
+.ab-related{margin:30px 0;padding:24px;background:#f8f9fa;border-radius:12px}
+.ab-related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.ab-related-card{text-decoration:none;display:block;background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:16px;transition:box-shadow 0.2s}
+.ab-related-card:hover{box-shadow:0 4px 12px rgba(0,0,0,0.1)}
+.ab-tag{display:inline-block;padding:4px 12px;margin:0 6px 6px 0;background:#f0f4ff;color:#0066FF;border-radius:14px;font-size:13px;text-decoration:none}
+.ab-byline{margin:30px 0 0 0;padding:20px 24px;background:#f8f9fa;border-radius:8px;display:flex;align-items:center;gap:16px}
+.ab-share-btn{display:inline-block;padding:8px 16px;margin:0 8px 8px 0;border-radius:6px;text-decoration:none;font-size:14px;font-weight:600;color:#fff}
+.ab-disclaimer{margin:40px 0 0 0;padding-top:20px;border-top:1px solid #eee;font-size:13px;color:#999;line-height:1.6}
+.ab-header{margin:0 0 30px 0;padding-bottom:20px;border-bottom:1px solid #eee}
+.ab-header time{font-size:13px;color:#888}
+.ab-faq details{margin:0 0 12px 0;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden}
+.ab-faq summary{padding:14px 20px;font-weight:600;font-size:16px;color:#222;cursor:pointer;background:#f8f9fa;list-style:none}
+.ab-faq .faq-answer{padding:14px 20px}
+.ab-newsletter-cta{margin:30px 0;padding:28px 24px;background:linear-gradient(135deg,#0052CC 0%,#0066FF 100%);border-radius:12px;text-align:center;color:#fff}
+.ab-newsletter-cta input[type=email]{padding:10px 16px;border:none;border-radius:6px;font-size:15px;width:60%;max-width:300px}
+.ab-newsletter-cta button{padding:10px 24px;background:#fff;color:#0066FF;border:none;border-radius:6px;font-weight:700;font-size:15px;cursor:pointer;margin-left:8px}
+.ab-series-nav{margin:24px 0;padding:16px 20px;background:#f0f4ff;border:1px solid #d0d8ff;border-radius:10px}
+.ab-series-nav a{color:#0066FF;text-decoration:none;font-weight:500}
+@media(max-width:768px){.ab-proscons{grid-template-columns:1fr}.ab-newsletter-cta input[type=email]{width:100%;margin-bottom:8px}.ab-newsletter-cta button{margin-left:0;width:100%}}
+@media(prefers-color-scheme:dark){
+.post-content{background:#1a1a2e!important;color:#e0e0e0!important}
+.post-content p,.post-content li,.post-content td{color:#e0e0e0!important}
+.post-content a{color:#4da6ff!important}
+.post-content h2,.post-content h3{color:#f0f0f0!important}
+.post-content blockquote{background:#2a2a3e!important;color:#c0c0c0!important}
+.ab-toc{background:#2a2a3e!important}
+.ab-toc summary{color:#4da6ff!important}
+.ab-cta-engagement{background:linear-gradient(135deg,#1a1a3e 0%,#2a2a4e 100%)}
+.ab-cta-engagement p{color:#e0e0e0!important}
+.ab-cta-share{background:#2a2a3e!important}
+.ab-cta-share p{color:#e0e0e0!important}
+.ab-related{background:#2a2a3e!important}
+.ab-related-card{background:#1a1a2e!important;border-color:#3a3a5e!important}
+.ab-related-card p{color:#e0e0e0!important}
+.ab-tag{background:#2a2a4e!important;color:#4da6ff!important}
+.ab-byline{background:#2a2a3e!important}
+.ab-byline p{color:#e0e0e0!important}
+.ab-takeaways{background:#1a1a3e!important;border-color:#4a4aff!important}
+.ab-takeaways p,.ab-takeaways li{color:#e0e0e0!important}
+.ab-snippet{background:#2a2a3e!important;border-color:#3a3a5e!important}
+.ab-snippet p,.ab-snippet li{color:#e0e0e0!important}
+.ab-highlight{background:#2a2a3e!important;border-color:#4a4aff!important}
+.ab-highlight p{color:#e0e0e0!important}
+.ab-keypoint{background:#2a2a1e!important;border-color:#665500!important}
+.ab-keypoint p{color:#e0e0e0!important}
+.ab-metrics>div{background:#1a1a3e!important}
+.ab-metrics p{color:#e0e0e0!important}
+.ab-pros{background:#1a2e1a!important;border-color:#2e5e2e!important}
+.ab-cons{background:#2e1a1a!important;border-color:#5e2e2e!important}
+.ab-faq details{border-color:#3a3a5e!important}
+.ab-faq summary{background:#2a2a3e!important;color:#e0e0e0!important}
+.ab-header{border-color:#3a3a5e!important}
+.ab-disclaimer{border-color:#3a3a5e!important;color:#888!important}
+.ab-newsletter-cta{background:linear-gradient(135deg,#1a1a3e 0%,#2a2a4e 100%)!important}
+.ab-series-nav{background:#2a2a3e!important;border-color:#3a3a5e!important}
+}
+</style>';
+});`.trim();
+
+    try {
+      const { data: snippets } = await axios.get(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      const existing = (snippets as Array<{ id: number; name: string }>)
+        .find((s) => s.name === POST_CSS_SNIPPET_TITLE);
+
+      if (existing) {
+        await axios.put(
+          `${this.wpUrl}/wp-json/code-snippets/v1/snippets/${existing.id}`,
+          { code: phpCode, active: true },
+          { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+        );
+        logger.info(`Post CSS snippet updated (ID=${existing.id})`);
+        return;
+      }
+
+      await axios.post(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { name: POST_CSS_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 10 },
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      logger.info('Post CSS snippet installed via Code Snippets plugin');
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      logger.warn(`Failed to install post CSS snippet (will use inline fallback): ${msg}`);
+    }
+  }
+
+  /**
+   * Check if the post CSS snippet is active (used by WordPressService to skip inline CSS).
+   */
+  async isPostCssSnippetActive(): Promise<boolean> {
+    try {
+      const { data: snippets } = await axios.get(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      const existing = (snippets as Array<{ id: number; name: string; active: boolean }>)
+        .find((s) => s.name === POST_CSS_SNIPPET_TITLE);
+      return existing?.active === true;
+    } catch {
+      return false;
+    }
+  }
+
+  /**
+   * Verify indexing status of recently published posts via GSC URL Inspection API.
+   * Re-requests indexing for posts not yet indexed within 7 days.
+   */
+  async verifyRecentIndexing(recentUrls: string[]): Promise<void> {
+    if (!this.indexingSaKey || recentUrls.length === 0) return;
+    if (this.indexingBlocked) {
+      logger.debug('Indexing verification skipped (site blocked for crawlers)');
+      return;
+    }
+
+    let accessToken: string;
+    try {
+      accessToken = await this.getGoogleAccessTokenCached();
+    } catch {
+      logger.debug('Could not get Google access token for URL inspection');
+      return;
+    }
+
+    // GSC URL Inspection API requires searchconsole scope
+    let inspectionToken: string;
+    try {
+      inspectionToken = await getGoogleAccessToken(this.indexingSaKey, 'https://www.googleapis.com/auth/webmasters.readonly');
+    } catch {
+      logger.debug('Could not get GSC inspection token');
+      return;
+    }
+
+    const siteUrl = this.wpUrl;
+    let notIndexed = 0;
+    let reIndexed = 0;
+
+    for (const url of recentUrls.slice(0, 10)) {
+      try {
+        const { data } = await axios.post(
+          'https://searchconsole.googleapis.com/v1/urlInspection/index:inspect',
+          { inspectionUrl: url, siteUrl },
+          { headers: { Authorization: `Bearer ${inspectionToken}` }, timeout: 15000 },
+        );
+
+        const verdict = (data as { inspectionResult?: { indexStatusResult?: { verdict?: string } } })
+          ?.inspectionResult?.indexStatusResult?.verdict;
+
+        if (verdict && verdict !== 'PASS') {
+          notIndexed++;
+          logger.warn(`Not indexed: ${url} (verdict: ${verdict})`);
+          // Re-request indexing
+          await this.requestIndexing(url);
+          reIndexed++;
+        } else {
+          logger.debug(`Indexed OK: ${url}`);
+        }
+      } catch (error) {
+        const msg = error instanceof Error ? error.message : String(error);
+        logger.debug(`URL inspection failed for ${url}: ${msg}`);
+      }
+    }
+
+    if (notIndexed > 0) {
+      logger.info(`Indexing verification: ${notIndexed} not indexed, ${reIndexed} re-submitted`);
+    } else {
+      logger.info(`Indexing verification: all ${Math.min(recentUrls.length, 10)} recent URLs indexed`);
+    }
+  }
+
   /** @deprecated Use ensureHeaderScripts instead */
   async ensureVerificationMetaTags(googleCode?: string, naverCode?: string): Promise<void> {
     return this.ensureHeaderScripts({ googleCode, naverCode });
   }
 
-  private async getGoogleAccessToken(): Promise<string> {
-    const sa = JSON.parse(this.indexingSaKey) as {
-      client_email: string;
-      private_key: string;
-    };
-
-    const now = Math.floor(Date.now() / 1000);
-    const header = Buffer.from(JSON.stringify({ alg: 'RS256', typ: 'JWT' })).toString('base64url');
-    const payload = Buffer.from(
-      JSON.stringify({
-        iss: sa.client_email,
-        scope: 'https://www.googleapis.com/auth/indexing',
-        aud: 'https://oauth2.googleapis.com/token',
-        exp: now + 3600,
-        iat: now,
-      }),
-    ).toString('base64url');
-
-    const sign = createSign('RSA-SHA256');
-    sign.update(`${header}.${payload}`);
-    const signature = sign.sign(sa.private_key, 'base64url');
-
-    const jwt = `${header}.${payload}.${signature}`;
-
-    const { data } = await axios.post<{ access_token: string }>(
-      'https://oauth2.googleapis.com/token',
-      new URLSearchParams({
-        grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
-        assertion: jwt,
-      }),
-      { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, timeout: 10000 },
-    );
-
-    return data.access_token;
+  private async getGoogleAccessTokenCached(): Promise<string> {
+    return getGoogleAccessToken(this.indexingSaKey, 'https://www.googleapis.com/auth/indexing');
   }
 
   private async ensurePlugin(): Promise<boolean> {

@@ -1,46 +1,236 @@
+import { getSeasonalContext } from '../utils/korean-calendar.js';
 import type { NicheConfig } from '../types/index.js';
 
+/**
+ * Get niches sorted by seasonal relevance.
+ * Niches matching current Korean seasonal events are boosted to the front.
+ */
+export function getSeasonallyOrderedNiches(): NicheConfig[] {
+  const { events } = getSeasonalContext();
+  if (events.length === 0) return [...NICHES];
+
+  // Map seasonal events back to niche categories that are relevant right now
+  const KOREAN_EVENTS_NICHE_MAP: Record<string, string[]> = {
+    'Seollal': ['Korean Food', 'Korea Travel', 'Korean Language'],
+    'Cherry Blossom': ['Korea Travel', 'Korean Food'],
+    'Children': ['Korea Travel', 'K-Entertainment'],
+    'BIFF': ['K-Entertainment', 'Korea Travel'],
+    'Chuseok': ['Korean Food', 'Korea Travel', 'Korean Language', 'Korean Finance'],
+    'MAMA': ['K-Entertainment'],
+    'Christmas': ['Korea Travel', 'Korean Food'],
+    'New Year': ['Korea Travel', 'Korean Finance'],
+    'Summer': ['Korea Travel', 'Korean Food'],
+    'Suneung': ['Korean Language', 'K-Entertainment'],
+  };
+
+  const boostedCategories = new Set<string>();
+  for (const event of events) {
+    for (const [key, categories] of Object.entries(KOREAN_EVENTS_NICHE_MAP)) {
+      if (event.includes(key)) {
+        categories.forEach(c => boostedCategories.add(c));
+      }
+    }
+  }
+
+  if (boostedCategories.size === 0) return [...NICHES];
+
+  const boosted = NICHES.filter(n => boostedCategories.has(n.category));
+  const rest = NICHES.filter(n => !boostedCategories.has(n.category));
+  return [...boosted, ...rest];
+}
+
 export const NICHES: NicheConfig[] = [
+  // ── Korean Tech (3 sub-niches) ──
   {
-    id: 'korean-tech',
-    name: 'Korean Tech & Startup',
+    id: 'korean-tech-ai',
+    name: 'Korean AI & Semiconductors',
     category: 'Korean Tech',
-    broadTerm: 'Korean technology',
+    broadTerm: 'Korea AI semiconductor',
+    seedKeywords: [
+      'Samsung AI chip vs NVIDIA comparison 2026',
+      'SK Hynix HBM memory market share analysis',
+      'South Korea AI startup investment opportunities 2026',
+      'Korean government AI investment policy explained',
+      'how Korea became a global semiconductor powerhouse',
+    ],
+    contentTypes: ['analysis', 'deep-dive', 'news-explainer', 'x-vs-y', 'how-to', 'case-study'],
+  },
+  {
+    id: 'korean-tech-apps',
+    name: 'Korean Apps & Digital Life',
+    category: 'Korean Tech',
+    broadTerm: 'Korean apps digital',
     seedKeywords: [
       'how to use Naver as a foreigner in Korea',
-      'Samsung Galaxy AI features explained 2026',
       'best Korean apps for foreigners living in Seoul',
       'Naver vs Google which is better in South Korea',
-      'South Korea AI startup investment opportunities 2026',
+      'KakaoTalk features guide for international users',
+      'Korean digital banking apps Toss vs KakaoBank comparison',
     ],
-    contentTypes: ['analysis', 'deep-dive', 'news-explainer', 'how-to', 'x-vs-y'],
+    contentTypes: ['how-to', 'best-x-for-y', 'x-vs-y', 'analysis', 'deep-dive', 'listicle'],
   },
   {
-    id: 'k-entertainment',
-    name: 'K-Entertainment Analysis',
+    id: 'korean-tech-startups',
+    name: 'Korean Startups & VC',
+    category: 'Korean Tech',
+    broadTerm: 'Korea startup venture',
+    seedKeywords: [
+      'Pangyo Techno Valley startup ecosystem guide',
+      'top Korean unicorn startups to watch 2026',
+      'how to invest in Korean startups from abroad',
+      'Coupang business model analysis for investors',
+      'Korean government startup support programs TIPS explained',
+    ],
+    contentTypes: ['analysis', 'deep-dive', 'news-explainer', 'best-x-for-y', 'how-to', 'case-study'],
+  },
+
+  // ── K-Entertainment (2 sub-niches) ──
+  {
+    id: 'k-entertainment-music',
+    name: 'K-Pop Business & Music Industry',
     category: 'K-Entertainment',
-    broadTerm: 'K-pop K-drama',
+    broadTerm: 'K-pop business',
     seedKeywords: [
       'how does K-pop make money business model explained',
-      'best Korean dramas on Netflix 2026',
       'HYBE stock analysis buy or sell 2026',
-      'Korean webtoon apps for English readers',
       'K-pop idol agency contracts explained for fans',
+      'K-pop global revenue breakdown by market',
+      'how K-pop agencies train and debut new groups',
     ],
-    contentTypes: ['analysis', 'deep-dive', 'news-explainer', 'best-x-for-y', 'how-to'],
+    contentTypes: ['analysis', 'deep-dive', 'news-explainer', 'how-to', 'x-vs-y', 'case-study'],
   },
   {
-    id: 'korean-finance',
-    name: 'Korean Investment & Finance',
+    id: 'k-entertainment-drama',
+    name: 'K-Drama & Korean Content',
+    category: 'K-Entertainment',
+    broadTerm: 'K-drama Korean content',
+    seedKeywords: [
+      'best Korean dramas on Netflix 2026',
+      'Korean webtoon apps for English readers',
+      'how Korean dramas conquered global streaming platforms',
+      'Korean film industry Cannes Oscar winning streak explained',
+      'best Korean variety shows for international viewers',
+    ],
+    contentTypes: ['best-x-for-y', 'analysis', 'deep-dive', 'news-explainer', 'how-to', 'listicle'],
+  },
+
+  // ── Korean Finance (2 sub-niches) ──
+  {
+    id: 'korean-finance-stocks',
+    name: 'Korean Stock Market & ETFs',
     category: 'Korean Finance',
-    broadTerm: 'Korean stock market',
+    broadTerm: 'Korean stock market KOSPI',
     seedKeywords: [
       'how to invest in Korean stocks as a foreigner',
       'best Korean ETF for international investors 2026',
       'KOSPI index explained for beginners',
       'how to open Korean brokerage account from abroad',
-      'Korean won exchange rate forecast analysis 2026',
+      'top Korean blue chip stocks for long term investors',
     ],
-    contentTypes: ['analysis', 'deep-dive', 'news-explainer', 'how-to', 'best-x-for-y'],
+    contentTypes: ['how-to', 'best-x-for-y', 'analysis', 'deep-dive', 'x-vs-y', 'case-study'],
+  },
+  {
+    id: 'korean-finance-economy',
+    name: 'Korean Economy & Won',
+    category: 'Korean Finance',
+    broadTerm: 'Korean economy won exchange',
+    seedKeywords: [
+      'Korean won exchange rate forecast analysis 2026',
+      'Bank of Korea interest rate impact on investments',
+      'Korea economic outlook GDP growth forecast 2026',
+      'Korean real estate market trends for foreign investors',
+      'South Korea national pension fund investment strategy',
+    ],
+    contentTypes: ['analysis', 'deep-dive', 'news-explainer', 'how-to', 'best-x-for-y', 'case-study'],
+  },
+
+  // ── Korean Food (2 sub-niches) ──
+  {
+    id: 'korean-food-cooking',
+    name: 'Korean Cooking & Recipes',
+    category: 'Korean Food',
+    broadTerm: 'Korean cooking recipe',
+    seedKeywords: [
+      'how to make authentic Korean kimchi at home step by step',
+      'Korean skincare routine for beginners explained',
+      'easy Korean recipes for beginners at home',
+      'Korean fermented foods guide health benefits explained',
+      'Korean convenience store food must try items',
+    ],
+    contentTypes: ['how-to', 'best-x-for-y', 'deep-dive', 'analysis', 'news-explainer', 'listicle'],
+  },
+  {
+    id: 'korean-food-dining',
+    name: 'Korean Dining & Food Culture',
+    category: 'Korean Food',
+    broadTerm: 'Korean food restaurant culture',
+    seedKeywords: [
+      'best Korean street food guide for tourists in Seoul',
+      'best Korean restaurants in Seoul for foreigners',
+      'Korean BBQ etiquette guide for first timers',
+      'Michelin star Korean restaurants worth visiting',
+      'Korean food delivery apps guide for foreigners',
+    ],
+    contentTypes: ['best-x-for-y', 'how-to', 'deep-dive', 'analysis', 'news-explainer', 'listicle'],
+  },
+
+  // ── Korea Travel (2 sub-niches) ──
+  {
+    id: 'korea-travel-planning',
+    name: 'Korea Travel Planning & Tips',
+    category: 'Korea Travel',
+    broadTerm: 'South Korea travel guide',
+    seedKeywords: [
+      'best time to visit South Korea complete travel guide',
+      'how to get around Seoul public transportation guide',
+      'best neighborhoods to stay in Seoul for tourists',
+      'Korea travel tips first time visitors should know',
+      'Korea visa requirements for tourists by country',
+    ],
+    contentTypes: ['how-to', 'best-x-for-y', 'deep-dive', 'analysis', 'news-explainer', 'listicle'],
+  },
+  {
+    id: 'korea-travel-living',
+    name: 'Living in Korea as a Foreigner',
+    category: 'Korea Travel',
+    broadTerm: 'living in Korea foreigner expat',
+    seedKeywords: [
+      'cost of living in Seoul for foreigners breakdown',
+      'how to rent an apartment in Seoul as a foreigner',
+      'working in Korea as a foreigner visa guide',
+      'best cities to live in Korea besides Seoul',
+      'Korean healthcare system guide for foreigners',
+    ],
+    contentTypes: ['how-to', 'deep-dive', 'best-x-for-y', 'analysis', 'x-vs-y', 'listicle', 'case-study'],
+  },
+
+  // ── Korean Language (2 sub-niches) ──
+  {
+    id: 'korean-language-learning',
+    name: 'Learning Korean for Beginners',
+    category: 'Korean Language',
+    broadTerm: 'learn Korean language beginner',
+    seedKeywords: [
+      'best apps to learn Korean for beginners ranked',
+      'how to learn Hangul Korean alphabet step by step',
+      'Korean language study tips for self learners',
+      'Korean grammar basics explained for English speakers',
+      'best YouTube channels for learning Korean free',
+    ],
+    contentTypes: ['how-to', 'best-x-for-y', 'deep-dive', 'x-vs-y', 'analysis', 'listicle'],
+  },
+  {
+    id: 'korean-language-advanced',
+    name: 'Korean Proficiency & TOPIK',
+    category: 'Korean Language',
+    broadTerm: 'TOPIK Korean proficiency test',
+    seedKeywords: [
+      'TOPIK test preparation guide for foreigners',
+      'best Korean language schools in Seoul for foreigners',
+      'Korean honorifics system explained for advanced learners',
+      'Korean business language etiquette guide',
+      'TOPIK II writing section tips and strategies',
+    ],
+    contentTypes: ['how-to', 'best-x-for-y', 'deep-dive', 'analysis', 'x-vs-y', 'case-study'],
   },
 ];

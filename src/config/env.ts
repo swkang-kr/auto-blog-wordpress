@@ -31,6 +31,31 @@ const envSchema = z.object({
   // Hashnode - optional, enables auto-syndication to Hashnode
   HASHNODE_TOKEN: z.string().default(''),
   HASHNODE_PUBLICATION_ID: z.string().default(''),
+  // Content quality & workflow
+  MIN_QUALITY_SCORE: z.coerce.number().int().min(0).max(100).default(60),
+  PUBLISH_STATUS: z.enum(['publish', 'draft']).default('publish'),
+  PUBLISH_INTERVAL_MINUTES: z.coerce.number().int().min(0).default(0),
+  // Publish time optimization (24h format, e.g. "08:00" for 8 AM ET)
+  PUBLISH_OPTIMAL_HOUR: z.coerce.number().int().min(0).max(23).default(8),
+  PUBLISH_TIMEZONE: z.string().default('America/New_York'),
+  // Author identity for E-E-A-T
+  AUTHOR_LINKEDIN: z.string().default(''),
+  AUTHOR_TWITTER: z.string().default(''),
+  // GA4 Data API for performance feedback
+  GA4_PROPERTY_ID: z.string().default(''),
+  // Google Search Console for search performance feedback
+  GSC_SITE_URL: z.string().default(''),
+  // Slack webhook for batch failure alerting
+  SLACK_WEBHOOK_URL: z.string().default(''),
+  // Image format: webp (default) or avif (better compression, newer format)
+  IMAGE_FORMAT: z.enum(['webp', 'avif']).default('webp'),
+  // Auto-rewrite underperforming posts (0 = disabled)
+  AUTO_REWRITE_COUNT: z.coerce.number().int().min(0).default(2),
+  AUTO_REWRITE_MIN_AGE_DAYS: z.coerce.number().int().min(7).default(30),
+  // Newsletter form URL (Mailchimp/ConvertKit/Substack) - optional, enables in-content email CTA
+  NEWSLETTER_FORM_URL: z.string().default(''),
+  // Affiliate settings - optional JSON mapping of category to affiliate program URLs
+  AFFILIATE_MAP: z.string().default(''),
 });
 
 export type AppConfig = z.infer<typeof envSchema>;
