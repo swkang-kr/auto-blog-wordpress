@@ -23,25 +23,39 @@ export class WordPressService {
 
   async getRecentPosts(count: number = 50): Promise<ExistingPost[]> {
     try {
-      const { data } = await this.api.get('/posts', {
-        params: { per_page: count, status: 'publish', _fields: 'title,link,categories' },
-      });
+      const allPosts: Array<{ title: { rendered: string }; link: string; categories: number[] }> = [];
+      let page = 1;
+      const perPage = 100;
 
-      const posts = data as Array<{ title: { rendered: string }; link: string; categories: number[] }>;
+      // Paginate to fetch all published posts (up to count)
+      while (allPosts.length < count) {
+        const { data, headers } = await this.api.get('/posts', {
+          params: { per_page: Math.min(perPage, count - allPosts.length), page, status: 'publish', _fields: 'title,link,categories' },
+        });
+        const posts = data as Array<{ title: { rendered: string }; link: string; categories: number[] }>;
+        allPosts.push(...posts);
+        const totalPages = parseInt(headers['x-wp-totalpages'] || '1');
+        if (page >= totalPages) break;
+        page++;
+      }
 
       // Fetch category names
-      const catIds = [...new Set(posts.flatMap((p) => p.categories))];
+      const catIds = [...new Set(allPosts.flatMap((p) => p.categories))];
       const catMap = new Map<number, string>();
       if (catIds.length > 0) {
-        const { data: cats } = await this.api.get('/categories', {
-          params: { include: catIds.join(','), per_page: 100, _fields: 'id,name' },
-        });
-        for (const c of cats as Array<{ id: number; name: string }>) {
-          catMap.set(c.id, c.name);
+        // Fetch categories in batches of 100
+        for (let i = 0; i < catIds.length; i += 100) {
+          const batch = catIds.slice(i, i + 100);
+          const { data: cats } = await this.api.get('/categories', {
+            params: { include: batch.join(','), per_page: 100, _fields: 'id,name' },
+          });
+          for (const c of cats as Array<{ id: number; name: string }>) {
+            catMap.set(c.id, c.name);
+          }
         }
       }
 
-      return posts.map((p) => ({
+      return allPosts.map((p) => ({
         title: p.title.rendered.replace(/&#8217;/g, "'").replace(/&#8211;/g, '-').replace(/&amp;/g, '&'),
         url: p.link,
         category: catMap.get(p.categories[0]) || 'Uncategorized',
@@ -172,7 +186,7 @@ export class WordPressService {
         },
       } : {}),
       publisher: { '@type': 'Organization', name: this.siteOwner || 'TrendHunt' },
-      mainEntityOfPage: { '@type': 'WebPage', '@id': this.wpUrl },
+      mainEntityOfPage: { '@type': 'WebPage', '@id': content.slug ? `${this.wpUrl}/${content.slug}/` : this.wpUrl },
     };
 
     // FAQ schema (auto-extracted from question headings)
@@ -250,6 +264,21 @@ export class WordPressService {
       };
 
       logger.info(`Post published: ID=${post.postId} URL=${post.url}`);
+
+      // Update JSON-LD mainEntityOfPage with actual post URL
+      try {
+        const updatedHtml = html.replace(
+          /"mainEntityOfPage":\{"@type":"WebPage","@id":"[^"]*"\}/,
+          `"mainEntityOfPage":{"@type":"WebPage","@id":"${post.url}"}`,
+        );
+        if (updatedHtml !== html) {
+          await this.api.post(`/posts/${post.postId}`, { content: updatedHtml });
+          logger.debug(`JSON-LD mainEntityOfPage updated to: ${post.url}`);
+        }
+      } catch {
+        logger.warn(`Failed to update JSON-LD mainEntityOfPage for post ${post.postId}`);
+      }
+
       return post;
     } catch (error) {
       const detail = axios.isAxiosError(error)

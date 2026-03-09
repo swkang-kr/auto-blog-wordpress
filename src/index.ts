@@ -113,16 +113,17 @@ async function main(): Promise<void> {
     logger.warn(`Navigation menu setup failed: ${error instanceof Error ? error.message : error}`);
   }
 
-  // 2.11. Check robots.txt + WordPress indexing settings
+  // 2.11. Check robots.txt + WordPress indexing settings + sitemap
   await seoService.checkRobotsTxt();
   await seoService.checkAndFixIndexingSettings();
+  await seoService.verifySitemap();
 
   // 3. History
   const history = new PostHistory();
   await history.load();
 
   // 3.5. Fetch existing posts for internal linking
-  const existingPosts = await wpService.getRecentPosts(50);
+  const existingPosts = await wpService.getRecentPosts(500);
   logger.info(`Fetched ${existingPosts.length} existing posts for internal linking`);
 
   // 4. Two-phase pipeline
@@ -193,11 +194,26 @@ async function main(): Promise<void> {
       let featuredMediaResult: MediaUploadResult | undefined;
       if (images.featured.length > 0) {
         const filename = ImageGeneratorService.buildFilename(keyword, 'featured');
-        const altText = content.imageCaptions?.[0] ?? content.title;
+        const altText = `${keyword} - ${content.imageCaptions?.[0] ?? content.title}`;
         featuredMediaResult = await wpService.uploadMedia(images.featured, filename, altText);
       }
       if (!featuredMediaResult) {
-        throw new Error(`Featured image is required but generation failed for "${keyword}"`);
+        logger.warn(`Featured image generation failed for "${keyword}", attempting text-based fallback`);
+        // Generate a simple SVG placeholder with the keyword
+        const svgPlaceholder = Buffer.from(
+          `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+            <rect width="1200" height="675" fill="#0066FF"/>
+            <text x="600" y="320" text-anchor="middle" fill="#fff" font-family="sans-serif" font-size="36" font-weight="bold">${keyword.replace(/&/g, '&amp;').replace(/</g, '&lt;').substring(0, 60)}</text>
+            <text x="600" y="380" text-anchor="middle" fill="#cce0ff" font-family="sans-serif" font-size="20">TrendHunt</text>
+          </svg>`,
+        );
+        try {
+          const filename = ImageGeneratorService.buildFilename(keyword, 'featured');
+          featuredMediaResult = await wpService.uploadMedia(svgPlaceholder, filename.replace('.webp', '.svg'), `${keyword} featured image`);
+          logger.info(`Fallback SVG placeholder uploaded for "${keyword}"`);
+        } catch (fallbackError) {
+          throw new Error(`Featured image required but all attempts failed for "${keyword}": ${fallbackError instanceof Error ? fallbackError.message : fallbackError}`);
+        }
       }
 
       // B-3. Upload inline images (graceful)
@@ -207,7 +223,8 @@ async function main(): Promise<void> {
           if (images.inline[i].length > 0) {
             const filename = ImageGeneratorService.buildFilename(keyword, `section-${i + 1}`);
             const caption = content.imageCaptions?.[i + 1] ?? `${content.title} image ${i + 1}`;
-            const mediaResult = await wpService.uploadMedia(images.inline[i], filename, caption);
+            const altText = `${keyword} - ${caption}`;
+            const mediaResult = await wpService.uploadMedia(images.inline[i], filename, altText);
             inlineImages.push({ url: mediaResult.sourceUrl, caption });
           }
         } catch (error) {

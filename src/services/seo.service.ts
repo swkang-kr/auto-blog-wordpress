@@ -317,6 +317,35 @@ add_action('init', function() {
   }
 
   /**
+   * Verify sitemap.xml exists and is accessible.
+   * Rank Math generates sitemap automatically; this checks it's working.
+   */
+  async verifySitemap(): Promise<void> {
+    const sitemapUrls = [
+      `${this.wpUrl}/sitemap_index.xml`,
+      `${this.wpUrl}/sitemap.xml`,
+      `${this.wpUrl}/wp-sitemap.xml`,
+    ];
+
+    for (const url of sitemapUrls) {
+      try {
+        const { status } = await axios.get(url, { timeout: 10000, validateStatus: () => true });
+        if (status === 200) {
+          logger.info(`Sitemap OK: ${url}`);
+          return;
+        }
+      } catch {
+        // try next
+      }
+    }
+
+    logger.warn('=== SITEMAP WARNING ===');
+    logger.warn('No sitemap found. Ensure Rank Math or another SEO plugin generates sitemap_index.xml');
+    logger.warn('Submit sitemap to Google Search Console: https://search.google.com/search-console');
+    logger.warn('======================');
+  }
+
+  /**
    * Fetch robots.txt and warn if User-agent: * has Disallow: / (blocks all crawlers).
    * Sets indexingBlocked=true if crawlers are blocked — requestIndexing() will be skipped.
    */

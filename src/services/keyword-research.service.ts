@@ -52,13 +52,29 @@ export class KeywordResearchService {
       }
     }
 
-    // 3. Ask Claude to select the best keyword
-    const analysis = await this.analyzeWithClaude(
-      niche,
-      { risingQueries, topQueries, averageInterest, trendDirection, trendsSource },
-      trendsData,
-      postedKeywords,
-    );
+    // 3. Ask Claude to select the best keyword (retry up to 2 times on Korea relevance rejection)
+    let analysis: KeywordAnalysis | undefined;
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        analysis = await this.analyzeWithClaude(
+          niche,
+          { risingQueries, topQueries, averageInterest, trendDirection, trendsSource },
+          trendsData,
+          postedKeywords,
+        );
+        break;
+      } catch (error) {
+        if (attempt < 3 && error instanceof KeywordResearchError && error.message.includes('no Korea relevance')) {
+          logger.warn(`Attempt ${attempt}/3: Korea relevance check failed, retrying...`);
+          continue;
+        }
+        throw error;
+      }
+    }
+
+    if (!analysis) {
+      throw new KeywordResearchError(`Failed to find Korea-relevant keyword for niche "${niche.name}" after 3 attempts`);
+    }
 
     logger.info(
       `Research result for "${niche.name}": keyword="${analysis.selectedKeyword}", ` +
@@ -203,18 +219,20 @@ Respond with pure JSON only. No markdown code blocks.
       'hallyu', 'k-pop', 'kpop', 'k-drama', 'kdrama', 'k-entertainment', 'kimchi',
       'chaebol', 'won', 'krw', 'naver', 'kakao', 'hybe', 'bts', 'blackpink',
       'webtoon', 'hanwha', 'posco', 'kia', 'lotte', 'cj', 'pangyo', 'gangnam',
+      'bibimbap', 'soju', 'hanbok', 'tteokbokki', 'busan', 'jeju', 'incheon',
+      'chaebols', 'kbank', 'toss', 'coupang', 'baemin', 'daum', 'musinsa',
     ];
     const keywordLower = analysis.selectedKeyword.toLowerCase();
     const titleLower = analysis.suggestedTitle.toLowerCase();
-    const combined = keywordLower + ' ' + titleLower;
+    const combined = keywordLower + ' ' + titleLower + ' ' + analysis.uniqueAngle.toLowerCase();
 
     const hasKoreaTerm = koreaTerms.some((term) => combined.includes(term));
     if (!hasKoreaTerm) {
-      logger.warn(`Keyword "${analysis.selectedKeyword}" lacks Korea relevance, prepending "Korean"`);
-      analysis.selectedKeyword = `Korean ${analysis.selectedKeyword}`;
-      if (!analysis.suggestedTitle.toLowerCase().includes('korea')) {
-        analysis.suggestedTitle = `Korean ${analysis.suggestedTitle}`;
-      }
+      // Reject entirely instead of blindly prepending "Korean"
+      logger.warn(`REJECTED keyword "${analysis.selectedKeyword}" — no Korea relevance detected. Forcing Korea-focused fallback.`);
+      throw new KeywordResearchError(
+        `Keyword "${analysis.selectedKeyword}" has no Korea relevance. Claude must select a Korea-focused keyword.`,
+      );
     }
     return analysis;
   }

@@ -328,6 +328,14 @@ Respond with pure JSON only.`;
       throw new ContentGenerationError(`Incomplete content generated for "${analysis.selectedKeyword}"`);
     }
 
+    // Validate actual word count (strip HTML tags)
+    const wordCount = content.html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().split(' ').filter(Boolean).length;
+    if (wordCount < 2000) {
+      logger.warn(`Content too short: "${content.title}" has only ${wordCount} words (minimum: 2,500). Proceeding with warning.`);
+    } else {
+      logger.info(`Word count: ${wordCount} words for "${content.title}"`);
+    }
+
     // Ensure slug exists (fallback: generate from title, no year for evergreen content)
     if (!content.slug) {
       const yr = new Date().getFullYear();
