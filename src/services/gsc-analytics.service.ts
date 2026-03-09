@@ -183,6 +183,144 @@ export class GSCAnalyticsService {
   }
 
   /**
+   * Detect competitive threats: queries where our position is declining while
+   * impressions remain stable/growing (competitors are outranking us).
+   * Returns pages that need urgent content refresh to defend rankings.
+   */
+  async getCompetitiveThreats(): Promise<Array<{
+    query: string;
+    page: string;
+    currentPosition: number;
+    previousPosition: number;
+    positionDelta: number;
+    impressions: number;
+    ctr: number;
+    urgency: 'critical' | 'high' | 'medium';
+  }>> {
+    try {
+      const accessToken = await this.getAccessToken();
+
+      // Recent period (last 7 days) — query+page dimension for specific page tracking
+      const { data: recentData } = await axios.post(
+        `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(this.siteUrl)}/searchAnalytics/query`,
+        {
+          startDate: this.getDateString(-7),
+          endDate: this.getDateString(-1),
+          dimensions: ['query', 'page'],
+          rowLimit: 200,
+        },
+        { headers: { Authorization: `Bearer ${accessToken}` }, timeout: 15000 },
+      );
+
+      // Previous period (8-28 days ago)
+      const { data: previousData } = await axios.post(
+        `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(this.siteUrl)}/searchAnalytics/query`,
+        {
+          startDate: this.getDateString(-28),
+          endDate: this.getDateString(-8),
+          dimensions: ['query', 'page'],
+          rowLimit: 200,
+        },
+        { headers: { Authorization: `Bearer ${accessToken}` }, timeout: 15000 },
+      );
+
+      type GSCRow = { keys: string[]; clicks: number; impressions: number; ctr: number; position: number };
+      const recentRows = (recentData as { rows?: GSCRow[] }).rows || [];
+      const previousRows = (previousData as { rows?: GSCRow[] }).rows || [];
+
+      // Build lookup by query+page
+      const previousMap = new Map(previousRows.map(r => [`${r.keys[0]}|${r.keys[1]}`, r]));
+      const threats: Array<{
+        query: string; page: string; currentPosition: number; previousPosition: number;
+        positionDelta: number; impressions: number; ctr: number; urgency: 'critical' | 'high' | 'medium';
+      }> = [];
+
+      for (const recent of recentRows) {
+        const key = `${recent.keys[0]}|${recent.keys[1]}`;
+        const prev = previousMap.get(key);
+        if (!prev) continue;
+
+        const positionDelta = recent.position - prev.position; // positive = worse
+        const impressionsStable = recent.impressions >= prev.impressions * 0.3; // adjusted for 7d vs 21d
+
+        // Threat: position dropped 3+ places while impressions remain stable
+        if (positionDelta >= 3 && impressionsStable && recent.impressions >= 5) {
+          const urgency: 'critical' | 'high' | 'medium' =
+            positionDelta >= 10 ? 'critical' :
+            positionDelta >= 5 ? 'high' : 'medium';
+
+          threats.push({
+            query: recent.keys[0],
+            page: recent.keys[1],
+            currentPosition: recent.position,
+            previousPosition: prev.position,
+            positionDelta,
+            impressions: recent.impressions,
+            ctr: recent.ctr,
+            urgency,
+          });
+        }
+      }
+
+      return threats.sort((a, b) => {
+        const urgencyOrder = { critical: 0, high: 1, medium: 2 };
+        return urgencyOrder[a.urgency] - urgencyOrder[b.urgency] || b.positionDelta - a.positionDelta;
+      });
+    } catch (error) {
+      logger.warn(`GSC competitive threats fetch failed: ${error instanceof Error ? error.message : error}`);
+      return [];
+    }
+  }
+
+  /**
+   * Compare page performance over two 90-day windows (current vs previous).
+   * Useful for identifying long-term content trends and seasonal patterns.
+   */
+  async get90DayComparison(): Promise<Array<{
+    page: string;
+    currentClicks: number;
+    previousClicks: number;
+    changePercent: number;
+    trend: 'growing' | 'declining' | 'stable';
+  }>> {
+    try {
+      const accessToken = await this.getAccessToken();
+
+      const [{ data: currentData }, { data: previousData }] = await Promise.all([
+        axios.post(
+          `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(this.siteUrl)}/searchAnalytics/query`,
+          { startDate: this.getDateString(-90), endDate: this.getDateString(-1), dimensions: ['page'], rowLimit: 100 },
+          { headers: { Authorization: `Bearer ${accessToken}` }, timeout: 15000 },
+        ),
+        axios.post(
+          `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(this.siteUrl)}/searchAnalytics/query`,
+          { startDate: this.getDateString(-180), endDate: this.getDateString(-91), dimensions: ['page'], rowLimit: 100 },
+          { headers: { Authorization: `Bearer ${accessToken}` }, timeout: 15000 },
+        ),
+      ]);
+
+      type GSCRow = { keys: string[]; clicks: number; impressions: number; ctr: number; position: number };
+      const currentRows = (currentData as { rows?: GSCRow[] }).rows || [];
+      const previousRows = (previousData as { rows?: GSCRow[] }).rows || [];
+      const previousMap = new Map(previousRows.map(r => [r.keys[0], r.clicks]));
+
+      return currentRows
+        .filter(r => previousMap.has(r.keys[0]))
+        .map(r => {
+          const prevClicks = previousMap.get(r.keys[0])!;
+          const changePercent = prevClicks > 0 ? ((r.clicks - prevClicks) / prevClicks) * 100 : 0;
+          const trend: 'growing' | 'declining' | 'stable' =
+            changePercent > 20 ? 'growing' : changePercent < -20 ? 'declining' : 'stable';
+          return { page: r.keys[0], currentClicks: r.clicks, previousClicks: prevClicks, changePercent, trend };
+        })
+        .sort((a, b) => a.changePercent - b.changePercent);
+    } catch (error) {
+      logger.warn(`GSC 90-day comparison failed: ${error instanceof Error ? error.message : error}`);
+      return [];
+    }
+  }
+
+  /**
    * Generate performance insights string for keyword research prompts.
    * Combines top queries, striking distance keywords, and declining pages.
    */

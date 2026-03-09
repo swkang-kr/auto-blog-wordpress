@@ -18,9 +18,10 @@ export function getSeasonallyOrderedNiches(): NicheConfig[] {
     'Chuseok': ['Korean Food', 'Korea Travel', 'Korean Language', 'Korean Finance'],
     'MAMA': ['K-Entertainment'],
     'Christmas': ['Korea Travel', 'Korean Food'],
-    'New Year': ['Korea Travel', 'Korean Finance'],
-    'Summer': ['Korea Travel', 'Korean Food'],
+    'New Year': ['Korea Travel', 'Korean Finance', 'Korean Crypto'],
+    'Summer': ['Korea Travel', 'Korean Food', 'K-Beauty'],
     'Suneung': ['Korean Language', 'K-Entertainment'],
+    'Auto Show': ['Korean Automotive'],
   };
 
   const boostedCategories = new Set<string>();
@@ -232,5 +233,67 @@ export const NICHES: NicheConfig[] = [
       'TOPIK II writing section tips and strategies',
     ],
     contentTypes: ['how-to', 'best-x-for-y', 'deep-dive', 'analysis', 'x-vs-y', 'case-study'],
+  },
+
+  // ── K-Beauty (2 sub-niches) ──
+  {
+    id: 'k-beauty-skincare',
+    name: 'Korean Skincare & Beauty',
+    category: 'K-Beauty',
+    broadTerm: 'Korean skincare K-beauty',
+    seedKeywords: [
+      'best Korean skincare routine for beginners step by step',
+      'Korean sunscreen vs Western sunscreen comparison',
+      'top Korean beauty brands at Olive Young for tourists',
+      'how to build a Korean skincare routine on a budget',
+      'best Korean sheet masks ranked by dermatologists',
+    ],
+    contentTypes: ['how-to', 'best-x-for-y', 'x-vs-y', 'analysis', 'deep-dive', 'listicle'],
+  },
+  {
+    id: 'k-beauty-trends',
+    name: 'K-Beauty Industry & Trends',
+    category: 'K-Beauty',
+    broadTerm: 'K-beauty industry trend',
+    seedKeywords: [
+      'how K-beauty conquered the global skincare market',
+      'Korean beauty industry market size and growth analysis',
+      'Amorepacific vs LG Household stock analysis for investors',
+      'Korean beauty tech innovations glass skin trend explained',
+      'best Korean beauty startups disrupting the industry',
+    ],
+    contentTypes: ['analysis', 'deep-dive', 'news-explainer', 'case-study', 'best-x-for-y', 'x-vs-y'],
+  },
+
+  // ── Korean Crypto & Web3 (1 sub-niche) ──
+  {
+    id: 'korean-crypto-web3',
+    name: 'Korean Crypto & Web3',
+    category: 'Korean Crypto',
+    broadTerm: 'Korea crypto Upbit blockchain',
+    seedKeywords: [
+      'how to buy crypto in Korea Upbit vs Bithumb comparison',
+      'Korean crypto regulations travel rule explained for foreigners',
+      'why Korea is called the crypto capital of Asia',
+      'Korean blockchain projects and Web3 startups to watch',
+      'Kimchi premium explained Korean crypto price difference',
+    ],
+    contentTypes: ['how-to', 'analysis', 'deep-dive', 'news-explainer', 'x-vs-y', 'case-study'],
+  },
+
+  // ── Korean Automotive / EV (1 sub-niche) ──
+  {
+    id: 'korean-auto-ev',
+    name: 'Korean EV & Automotive Industry',
+    category: 'Korean Automotive',
+    broadTerm: 'Hyundai Kia electric vehicle Korea',
+    seedKeywords: [
+      'Hyundai Ioniq 5 vs Kia EV6 which is better comparison',
+      'how Korea became a global electric vehicle leader',
+      'Korean EV battery makers LG Samsung SK comparison',
+      'best Korean electric cars available outside Korea',
+      'Hyundai stock analysis EV strategy for investors',
+    ],
+    contentTypes: ['analysis', 'deep-dive', 'x-vs-y', 'news-explainer', 'best-x-for-y', 'case-study'],
   },
 ];

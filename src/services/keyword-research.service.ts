@@ -5,6 +5,14 @@ import { GoogleTrendsService } from './google-trends.service.js';
 import { getSeasonalSuggestionsForNiche } from '../utils/korean-calendar.js';
 import { costTracker } from '../utils/cost-tracker.js';
 import type { NicheConfig, TrendsData, RisingQuery, KeywordAnalysis, ResearchedKeyword, ExistingPost } from '../types/index.js';
+import type { GSCQueryData } from './gsc-analytics.service.js';
+
+/** SERP competition analysis result */
+interface SerpAnalysis {
+  strikingDistanceKeywords: GSCQueryData[];
+  topRankingQueries: GSCQueryData[];
+  contentGapHints: string[];
+}
 
 export class KeywordResearchService {
   private client: Anthropic;
@@ -12,6 +20,7 @@ export class KeywordResearchService {
   private performanceInsights: string;
   private existingPosts: ExistingPost[];
   private existingPostTitles: string[];
+  private serpAnalysis: SerpAnalysis | null;
 
   constructor(apiKey: string, geo: string) {
     this.client = new Anthropic({ apiKey });
@@ -19,6 +28,7 @@ export class KeywordResearchService {
     this.performanceInsights = '';
     this.existingPosts = [];
     this.existingPostTitles = [];
+    this.serpAnalysis = null;
   }
 
   /** Set GA4 performance insights to include in keyword research prompts */
@@ -30,6 +40,25 @@ export class KeywordResearchService {
   setExistingPosts(posts: ExistingPost[]): void {
     this.existingPosts = posts;
     this.existingPostTitles = posts.map(p => p.title.toLowerCase());
+  }
+
+  /** Set SERP analysis data from GSC for competitive intelligence */
+  setSerpAnalysis(strikingDistance: GSCQueryData[], topQueries: GSCQueryData[]): void {
+    const contentGapHints: string[] = [];
+    // Identify content gaps: striking distance keywords not covered by existing posts
+    for (const sd of strikingDistance.slice(0, 15)) {
+      const covered = this.existingPosts.some(p =>
+        p.title.toLowerCase().includes(sd.query.toLowerCase()) ||
+        sd.query.toLowerCase().split(/\s+/).filter(w => w.length > 3).every(w => p.title.toLowerCase().includes(w)),
+      );
+      if (!covered) {
+        contentGapHints.push(`"${sd.query}" (pos ${sd.position.toFixed(1)}, ${sd.impressions} impressions, ${(sd.ctr * 100).toFixed(1)}% CTR) — no dedicated content`);
+      }
+    }
+    this.serpAnalysis = { strikingDistanceKeywords: strikingDistance, topRankingQueries: topQueries, contentGapHints };
+    if (contentGapHints.length > 0) {
+      logger.info(`SERP analysis: Found ${contentGapHints.length} content gap(s) from striking distance keywords`);
+    }
   }
 
   /**
@@ -249,6 +278,7 @@ ${postedKeywords.length > 30 ? `(showing most recent 30 of ${postedKeywords.leng
 IMPORTANT: Do NOT just avoid exact matches — avoid topics that would create content cannibalization.
 For example, if "how to invest in Korean stocks" is posted, do NOT select "investing in Korean stocks for beginners" or "Korean stock investment guide".
 ${this.performanceInsights}
+${this.getSerpAnalysisSection()}
 ${this.getSeasonalSection(niche.category)}
 ${recentContentTypes && recentContentTypes.length > 0 ? `## Content Type Diversity (IMPORTANT)\nRecent content types for this niche: ${recentContentTypes.join(', ')}\nAvoid overusing the same content type. If "${recentContentTypes[recentContentTypes.length - 1]}" was used recently, PREFER a different type to maintain reader variety.\n` : ''}
 ## Instructions
@@ -313,6 +343,18 @@ Respond with pure JSON only. No markdown code blocks.
         error,
       );
     }
+  }
+
+  private getSerpAnalysisSection(): string {
+    if (!this.serpAnalysis || this.serpAnalysis.contentGapHints.length === 0) return '';
+    const gapLines = this.serpAnalysis.contentGapHints.slice(0, 8).map(h => `  - ${h}`).join('\n');
+    return `
+## SERP Competition Analysis (Content Gaps — HIGH PRIORITY)
+These are keywords where the site ranks position 5-20 but has NO dedicated content page.
+Creating targeted content for these can dramatically improve rankings:
+${gapLines}
+
+STRATEGY: Consider creating content that directly targets one of these content gaps, or use them as LSI keywords in your chosen topic.`;
   }
 
   private getSeasonalSection(category: string): string {

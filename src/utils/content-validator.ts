@@ -33,7 +33,41 @@ const CATEGORY_READABILITY_TARGETS: Record<string, [number, number]> = {
   'Korean Food': [60, 75],       // Lifestyle content should be accessible
   'Korea Travel': [60, 75],      // Travel guides should be easy to scan
   'Korean Language': [50, 65],   // Educational but not overly academic
+  'K-Beauty': [55, 70],          // Consumer-friendly but some science
+  'Korean Crypto': [45, 60],     // Financial/technical audience
+  'Korean Automotive': [55, 70], // General audience with some tech detail
 };
+
+/** Per-category minimum quality scores — finance/tech require higher standards */
+const CATEGORY_MIN_QUALITY: Record<string, number> = {
+  'Korean Finance': 60,
+  'Korean Tech': 55,
+  'Korean Crypto': 60,
+  'K-Entertainment': 45,
+  'Korean Food': 45,
+  'Korea Travel': 45,
+  'Korean Language': 50,
+  'K-Beauty': 45,
+  'Korean Automotive': 50,
+};
+
+/** Content type-specific minimum word counts */
+const CONTENT_TYPE_MIN_WORDS: Record<string, number> = {
+  'deep-dive': 3000,
+  'analysis': 2500,
+  'case-study': 2500,
+  'how-to': 2200,
+  'product-review': 2200,
+  'best-x-for-y': 2000,
+  'x-vs-y': 2000,
+  'news-explainer': 1800,
+  'listicle': 1800,
+};
+
+/** Get minimum quality score for a category (defaults to 45) */
+export function getMinQualityScore(category?: string): number {
+  return (category ? CATEGORY_MIN_QUALITY[category] : undefined) ?? 45;
+}
 
 export function validateContent(
   html: string,
@@ -86,9 +120,10 @@ export function validateContent(
   const plainText = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
   const wordCount = plainText.split(/\s+/).length;
 
-  if (wordCount < 1800) {
-    issues.push({ category: 'length', message: `Content too short: ${wordCount} words (minimum 1,800)`, severity: 'error' });
-    // Deduct proportionally from structure
+  // Content type-aware minimum word count
+  const typeMinWords = CONTENT_TYPE_MIN_WORDS[contentType] ?? 1800;
+  if (wordCount < typeMinWords) {
+    issues.push({ category: 'length', message: `Content too short: ${wordCount} words (minimum ${typeMinWords} for ${contentType})`, severity: 'error' });
   }
   if (wordCount < 1000) {
     issues.push({ category: 'length', message: `Content critically short: ${wordCount} words (thin content risk)`, severity: 'error' });
@@ -104,7 +139,7 @@ export function validateContent(
 
   // ── Structure validation (max 25 points) ──
   let structureScore = 25;
-  if (wordCount < 1800) structureScore -= 5;
+  if (wordCount < typeMinWords) structureScore -= 5;
 
   // 1. Signature section check
   const hasSignatureSection = /Global Context|What This Means for Investors|Why the World Is Watching/i.test(html);
@@ -159,6 +194,23 @@ export function validateContent(
     structureScore -= 2;
   }
 
+  // 5b. Duplicate heading detection (common AI pattern)
+  const allHeadings = (html.match(/<h[23][^>]*>(.*?)<\/h[23]>/gi) || [])
+    .map(h => h.replace(/<[^>]+>/g, '').trim().toLowerCase());
+  const headingCounts = new Map<string, number>();
+  for (const h of allHeadings) {
+    headingCounts.set(h, (headingCounts.get(h) || 0) + 1);
+  }
+  const duplicateHeadings = Array.from(headingCounts.entries()).filter(([, c]) => c > 1);
+  if (duplicateHeadings.length > 0) {
+    warnings.push({
+      category: 'structure',
+      message: `Duplicate headings detected: ${duplicateHeadings.map(([h, c]) => `"${h}" x${c}`).join(', ')}`,
+      severity: 'warning',
+    });
+    structureScore -= Math.min(4, duplicateHeadings.length * 2);
+  }
+
   // 6. Image placeholder count
   const imgPlaceholders = (html.match(/<!--IMAGE_PLACEHOLDER_\d+-->/g) || []).length;
   const actualImages = (html.match(/<img\s/gi) || []).length;
@@ -194,10 +246,45 @@ export function validateContent(
     seoScore -= 5;
   }
 
+  // 2b. Featured Snippet optimization check
+  const hasSnippetBox = /class="ab-snippet"/i.test(html);
+  if (!hasSnippetBox) {
+    warnings.push({ category: 'seo', message: 'No Featured Snippet box (ab-snippet) detected — add concise answer box for Position 0 targeting', severity: 'warning' });
+    seoScore -= 2;
+  } else {
+    // Validate snippet length (should be 40-60 words for definition snippets)
+    const snippetMatch = html.match(/<div class="ab-snippet">([\s\S]*?)<\/div>/i);
+    if (snippetMatch) {
+      const snippetText = snippetMatch[1].replace(/<[^>]+>/g, '').trim();
+      const snippetWords = snippetText.split(/\s+/).length;
+      if (snippetWords > 80) {
+        warnings.push({ category: 'seo', message: `Featured Snippet too long: ${snippetWords} words (target 40-60 for definition snippets)`, severity: 'warning' });
+        seoScore -= 1;
+      }
+    }
+  }
+
+  // 2c. People Also Ask (PAA) optimization — question-format H3s in body
+  const questionH3Count = (html.match(/<h3[^>]*>[^<]*\?<\/h3>/gi) || []).length;
+  if (questionH3Count < 2) {
+    warnings.push({ category: 'seo', message: `Only ${questionH3Count} question-format H3 heading(s) — add 2-3 for People Also Ask optimization`, severity: 'warning' });
+    seoScore -= 1;
+  }
+
   // 3. TOC presence
   const hasToc = /Table of Contents/i.test(html);
   if (!hasToc) {
     warnings.push({ category: 'seo', message: 'No Table of Contents detected', severity: 'warning' });
+    seoScore -= 2;
+  }
+
+  // 4. LSI keyword coverage in headings (check if related keywords appear in H2/H3)
+  const headings = (html.match(/<h[23][^>]*>(.*?)<\/h[23]>/gi) || []).map(h => h.replace(/<[^>]+>/g, '').toLowerCase());
+  const headingsText = headings.join(' ');
+  const keywordMainWords = keyword.toLowerCase().split(/\s+/).filter(w => w.length > 4);
+  const headingKeywordHits = keywordMainWords.filter(w => headingsText.includes(w)).length;
+  if (headingKeywordHits === 0 && keywordMainWords.length > 0) {
+    warnings.push({ category: 'seo', message: 'No keyword fragments found in H2/H3 headings (LSI keywords should appear in subheadings)', severity: 'warning' });
     seoScore -= 2;
   }
 
@@ -426,7 +513,16 @@ export function autoFixContent(
     },
   );
 
-  // 5. Fix generic internal link anchor texts
+  // 5. Ensure featured snippet box has proper schema markup for Google
+  if (html.includes('class="ab-snippet"') && !html.includes('data-snippet-type')) {
+    // Detect snippet type and add data attribute for potential schema.org enhancement
+    const isListSnippet = /<div class="ab-snippet">[^]*?<ol/i.test(html);
+    const snippetType = isListSnippet ? 'list' : 'definition';
+    html = html.replace(/class="ab-snippet"/g, `class="ab-snippet" data-snippet-type="${snippetType}"`);
+    fixes.push(`Added snippet type "${snippetType}" to featured snippet box`);
+  }
+
+  // 6. Fix generic internal link anchor texts
   const genericAnchors = ['click here', 'read more', 'here', 'this article', 'check this out', 'learn more'];
   html = html.replace(
     /<a\s+([^>]*href="[^"]*"[^>]*)>(.*?)<\/a>/gi,

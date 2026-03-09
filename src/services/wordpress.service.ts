@@ -6,7 +6,7 @@ import { WordPressError } from '../types/errors.js';
 import type { BlogContent, PublishedPost, MediaUploadResult, ExistingPost } from '../types/index.js';
 
 const POSTS_CACHE_FILE = join(dirname(new URL(import.meta.url).pathname), '../../.cache/posts-cache.json');
-const POSTS_CACHE_TTL_MS = 6 * 60 * 60 * 1000; // 6 hours
+const POSTS_CACHE_TTL_MS = 1 * 60 * 60 * 1000; // 1 hour
 
 export class WordPressService {
   private api: AxiosInstance;
@@ -135,6 +135,37 @@ export class WordPressService {
     }
   }
 
+  /**
+   * Generate SEO-optimized alt text for images.
+   * Combines caption with keyword context for image search discoverability.
+   */
+  private generateSeoAltText(caption: string, keyword?: string, imageIndex?: number): string {
+    const captionLower = caption.toLowerCase();
+    const kw = keyword?.toLowerCase() || '';
+    const kwWords = kw.split(/\s+/).filter(w => w.length > 3);
+
+    // If caption already contains keyword fragments, use it as-is
+    if (kwWords.length > 0 && kwWords.some(w => captionLower.includes(w))) {
+      return caption;
+    }
+
+    // Add contextual keyword suffix based on image position
+    if (keyword && imageIndex !== undefined) {
+      const suffixes = [
+        ` — ${keyword}`,
+        ` in South Korea`,
+        ` — Korean perspective`,
+        ` overview`,
+      ];
+      const suffix = suffixes[Math.min(imageIndex, suffixes.length - 1)];
+      const combined = caption + suffix;
+      // Keep alt text under 125 chars for accessibility best practices
+      return combined.length > 125 ? caption.slice(0, 122) + '...' : combined;
+    }
+
+    return caption;
+  }
+
   private replaceImagePlaceholders(
     html: string,
     inlineImages?: Array<{ url: string; caption: string }>,
@@ -143,9 +174,9 @@ export class WordPressService {
     if (inlineImages && inlineImages.length > 0) {
       for (let i = 0; i < inlineImages.length; i++) {
         const placeholder = `<!--IMAGE_PLACEHOLDER_${i + 1}-->`;
-        // Natural alt text: use caption with category context (avoid keyword stuffing)
+        // SEO-optimized alt text: keyword-enriched captions for image search
         const baseCaption = inlineImages[i].caption;
-        const altText = this.escapeHtml(baseCaption);
+        const altText = this.escapeHtml(this.generateSeoAltText(baseCaption, options?.keyword, i));
         // First inline image uses eager loading for LCP; rest use lazy loading
         const loadingAttr = i === 0 ? 'eager' : 'lazy';
         const fetchPriority = i === 0 ? ' fetchpriority="high"' : '';
@@ -676,6 +707,7 @@ export class WordPressService {
       skipInlineCss?: boolean;
       newsletterFormUrl?: string;
       titleCandidates?: string[];
+      clusterNavHtml?: string;
       affiliateMap?: Record<string, string>;
     },
   ): Promise<PublishedPost> {
@@ -822,6 +854,11 @@ export class WordPressService {
 
     // Validate external links BEFORE publish to prevent broken links from being exposed
     htmlEn = await this.validateExternalLinks(htmlEn);
+
+    // Inject cluster navigation (related articles in the same topic cluster)
+    if (options?.clusterNavHtml) {
+      htmlEn += '\n' + options.clusterNavHtml;
+    }
 
     // Skip inline CSS when site-wide snippet is active (saves ~3KB per post)
     const cssBlock = options?.skipInlineCss ? '' : this.buildConsolidatedStyleBlock() + '\n';

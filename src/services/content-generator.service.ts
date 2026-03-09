@@ -530,7 +530,13 @@ ${nicheVoice}
 Write an in-depth ${analysis.contentType} blog post about "${analysis.selectedKeyword}" for the ${niche.name} niche. The post MUST be at least ${getWordCountTargets(analysis.contentType).target} words. Write thoroughly — expand each section with detailed explanations, Korean market data, and expert insights. Do NOT stop early.
 IMPORTANT: All information, statistics, recommendations, and references must be current as of ${year}. Do NOT use outdated data from previous years. Mention "${year}" where relevant.
 Use the unique angle: "${analysis.uniqueAngle}"
-Naturally incorporate these LSI keywords: ${analysis.relatedKeywordsToInclude.join(', ')}
+LSI Keyword Integration Rules (CRITICAL for semantic SEO):
+- LSI keywords: ${analysis.relatedKeywordsToInclude.join(', ')}
+- MUST use at least 2-3 LSI keywords in H2 or H3 subheadings (e.g., if LSI includes "korean stock market outlook", use it as an H2/H3)
+- MUST use LSI keyword variations as internal link anchor text (not just the primary keyword)
+- Naturally weave remaining LSI keywords into body paragraphs (aim for each LSI keyword appearing 1-2 times)
+- Do NOT force LSI keywords unnaturally — readability always wins over keyword density
+
 Include 2-4 internal links to relevant existing posts listed above, and 2-4 external source citations using <cite data-source="KEY" data-topic="TOPIC"> tags (Korean institutional sources preferred: bok, krx, dart, kosis).
 MANDATORY: Include a "Global Context" or "What This Means for Investors" signature analysis section.
 
@@ -661,7 +667,7 @@ Respond with pure JSON only.`;
     if (wordCount < targets.continuation) {
       logger.warn(`Content short: ${wordCount}/${targets.target} words for "${content.title}" [${analysis.contentType}], requesting continuation...`);
       try {
-        const continuationHtml = await this.requestContinuation(content, analysis.selectedKeyword, wordCount, temperature);
+        const continuationHtml = await this.requestContinuation(content, analysis.selectedKeyword, wordCount, temperature, researched.niche.id);
         if (continuationHtml) {
           // Insert continuation before the disclaimer
           const disclaimerIdx = findDisclaimerIndex(content.html);
@@ -812,7 +818,7 @@ Respond with pure JSON only.`;
    * Request Claude to continue/expand content that is too short.
    * Returns additional HTML to append, or null if continuation fails.
    */
-  private async requestContinuation(content: BlogContent, keyword: string, currentWordCount: number, temperature: number = 0.6): Promise<string | null> {
+  private async requestContinuation(content: BlogContent, keyword: string, currentWordCount: number, temperature: number = 0.6, nicheId?: string): Promise<string | null> {
     const neededWords = Math.max(500, 2800 - currentWordCount);
 
     // Extract existing H2 headings for context so continuation doesn't repeat them
@@ -825,8 +831,9 @@ Respond with pure JSON only.`;
     // Extract the last 500 chars of content for tone/style continuity
     const plainTail = content.html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(-500);
 
-    // Use FULL system prompt for continuation to maintain consistent tone and style
-    const continuationSystemPrompt = buildSystemPrompt('standard');
+    // Use the niche's actual variant for consistent tone (not hardcoded 'standard')
+    const variant = nicheId ? getVariantForNiche(nicheId) : 'standard';
+    const continuationSystemPrompt = buildSystemPrompt(variant);
 
     const prompt = `You are continuing a blog post about "${keyword}" titled "${content.title}".
 Current word count: ${currentWordCount}. Need at least ${neededWords} more words.

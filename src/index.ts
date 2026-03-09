@@ -17,6 +17,7 @@ import { sendBatchSummary } from './utils/alerting.js';
 import { costTracker } from './utils/cost-tracker.js';
 import { logger } from './utils/logger.js';
 import { ContentRefreshService } from './services/content-refresh.service.js';
+import { TopicClusterService } from './services/topic-cluster.service.js';
 import type { PostResult, BatchResult, MediaUploadResult } from './types/index.js';
 import { CATEGORY_PUBLISH_TIMING } from './types/index.js';
 
@@ -176,6 +177,13 @@ async function main(): Promise<void> {
     logger.warn(`IndexNow key snippet setup failed: ${error instanceof Error ? error.message : error}`);
   }
 
+  // 2.9c. Ensure hreflang snippet for internationalization signals
+  try {
+    await seoService.ensureHreflangSnippet();
+  } catch (error) {
+    logger.warn(`Hreflang snippet setup failed: ${error instanceof Error ? error.message : error}`);
+  }
+
   // 2.10. Ensure navigation menu matches niche categories
   try {
     await seoService.ensureNavigationMenu(nicheCategories);
@@ -203,6 +211,9 @@ async function main(): Promise<void> {
     pillarUrlMap[niche.id] = `${config.WP_URL}/${pillarSlug}/`;
   }
 
+  // 2.14. Build topic clusters for cluster-aware internal linking
+  const topicClusterService = new TopicClusterService();
+
   // 3. History (already loaded in 2.0 for calendar reordering)
 
   // 3.5. GA4 + GSC Performance Feedback Loop
@@ -226,6 +237,12 @@ async function main(): Promise<void> {
       }
       ga4OptimalHour = await ga4Service.getOptimalPublishHour();
       ga4OptimalDay = await ga4Service.getOptimalPublishDay();
+
+      // Update engagement scores for freshness decay calculations
+      const topPosts = await ga4Service.getTopPerformingPosts(200);
+      if (topPosts.length > 0) {
+        await history.updateEngagementScores(topPosts);
+      }
     } catch (error) {
       logger.warn(`GA4 performance feedback failed: ${error instanceof Error ? error.message : error}`);
     }
@@ -240,6 +257,15 @@ async function main(): Promise<void> {
         insightParts.push(searchInsights);
         logger.info('GSC search insights loaded for keyword research');
       }
+      // SERP competition analysis: feed striking distance + top queries for content gap detection
+      const [strikingDistance, topQueries] = await Promise.all([
+        gscService.getStrikingDistanceKeywords(),
+        gscService.getTopQueries(30),
+      ]);
+      if (strikingDistance.length > 0 || topQueries.length > 0) {
+        researchService.setSerpAnalysis(strikingDistance, topQueries);
+        logger.info(`SERP analysis loaded: ${strikingDistance.length} striking distance, ${topQueries.length} top queries`);
+      }
     } catch (error) {
       logger.warn(`GSC search insights failed: ${error instanceof Error ? error.message : error}`);
     }
@@ -249,20 +275,54 @@ async function main(): Promise<void> {
     researchService.setPerformanceInsights(insightParts.join('\n'));
   }
 
-  // 3.55. Content decay detection — log declining pages that need refresh
+  // 3.55. Content decay detection + competitive threat monitoring
   if (config.GSC_SITE_URL && config.GOOGLE_INDEXING_SA_KEY) {
     try {
       const gscService = new GSCAnalyticsService(config.GSC_SITE_URL || config.WP_URL, config.GOOGLE_INDEXING_SA_KEY);
+
+      // Declining pages detection
       const declining = await gscService.getDecliningPages();
       if (declining.length > 0) {
         logger.warn(`\n=== Content Decay Alert: ${declining.length} declining page(s) ===`);
         for (const page of declining.slice(0, 10)) {
-          logger.warn(`  📉 ${page.page} (pos ${page.position.toFixed(1)}, ${page.clicks} clicks/7d, ${page.impressions} imp/7d)`);
+          logger.warn(`  ${page.page} (pos ${page.position.toFixed(1)}, ${page.clicks} clicks/7d, ${page.impressions} imp/7d)`);
         }
         logger.warn(`Consider running: npx tsx src/scripts/refresh-stale-posts.ts`);
       }
+
+      // Competitive threat monitoring: detect queries where competitors are outranking us
+      const threats = await gscService.getCompetitiveThreats();
+      if (threats.length > 0) {
+        const critical = threats.filter(t => t.urgency === 'critical');
+        const high = threats.filter(t => t.urgency === 'high');
+        logger.warn(`\n=== Competitive Threat Alert: ${threats.length} threat(s) detected ===`);
+        if (critical.length > 0) {
+          logger.warn(`CRITICAL (position dropped 10+):`);
+          for (const t of critical.slice(0, 5)) {
+            logger.warn(`  "${t.query}" on ${t.page} — pos ${t.previousPosition.toFixed(1)} -> ${t.currentPosition.toFixed(1)} (dropped ${t.positionDelta.toFixed(1)} places, ${t.impressions} imp)`);
+          }
+        }
+        if (high.length > 0) {
+          logger.warn(`HIGH (position dropped 5-9):`);
+          for (const t of high.slice(0, 5)) {
+            logger.warn(`  "${t.query}" on ${t.page} — pos ${t.previousPosition.toFixed(1)} -> ${t.currentPosition.toFixed(1)} (dropped ${t.positionDelta.toFixed(1)} places)`);
+          }
+        }
+
+        // Feed competitive threats into performance insights for keyword research
+        if (threats.length > 0) {
+          const threatInsights = '\n## Competitive Threats (position declining — defend these rankings)\n' +
+            threats.slice(0, 8).map(t =>
+              `  - "${t.query}" on ${t.page}: pos ${t.previousPosition.toFixed(1)} -> ${t.currentPosition.toFixed(1)} [${t.urgency}]`,
+            ).join('\n') +
+            '\nConsider creating supporting content for these keywords to reclaim rankings.';
+          researchService.setPerformanceInsights(
+            (researchService as unknown as { performanceInsights: string }).performanceInsights + threatInsights,
+          );
+        }
+      }
     } catch (error) {
-      logger.debug(`Content decay check failed: ${error instanceof Error ? error.message : error}`);
+      logger.debug(`Content decay/competitive check failed: ${error instanceof Error ? error.message : error}`);
     }
   }
 
@@ -279,6 +339,9 @@ async function main(): Promise<void> {
   }
   logger.info(`Fetched ${existingPosts.length} existing posts for internal linking`);
   researchService.setExistingPosts(existingPosts);
+
+  // Build topic clusters for cluster-aware linking and content gap detection
+  topicClusterService.buildClusters(existingPosts, history.getAllEntries(), pillarUrlMap);
 
   // 4. Two-phase pipeline
   //    Phase A: Research + Content Generation back-to-back (maximises prompt cache HITs)
@@ -451,13 +514,19 @@ async function main(): Promise<void> {
       let featuredMediaResult: MediaUploadResult | undefined;
       if (images.featured.length > 0) {
         const filename = ImageGeneratorService.buildFilename(keyword, 'featured', config.IMAGE_FORMAT);
-        // Featured image ALT: prefer human-readable caption over machine prompt
+        // Featured image ALT: keyword-optimized for image search + caption readability
         const caption = content.imageCaptions?.[0] ?? content.title;
         const captionLower = caption.toLowerCase();
         const keywordLower = keyword.toLowerCase();
-        const altText = captionLower.includes(keywordLower) || keywordLower.split(' ').filter(w => w.length > 3).some(w => captionLower.includes(w))
-          ? caption
-          : `${caption} — South Korea`;
+        const kwWords = keywordLower.split(' ').filter(w => w.length > 3);
+        let altText: string;
+        if (captionLower.includes(keywordLower) || kwWords.some(w => captionLower.includes(w))) {
+          altText = caption;
+        } else {
+          // Add keyword context for image search discoverability
+          const combined = `${caption} — ${keyword}`;
+          altText = combined.length > 125 ? `${caption} — South Korea` : combined;
+        }
         featuredMediaResult = await wpService.uploadMedia(images.featured, filename, altText);
       }
       if (!featuredMediaResult) {
@@ -542,6 +611,9 @@ async function main(): Promise<void> {
       // B-3.5. Use featured image as OG image (better social CTR than generated text overlays)
       const ogImageUrl = featuredMediaResult.sourceUrl;
 
+      // B-3.7. Generate cluster navigation HTML for related articles
+      const clusterNavHtml = topicClusterService.generateClusterNavHtml(niche.id, '');
+
       // B-4. Create WordPress post (English only)
       const post = await wpService.createPost(
         content,
@@ -560,6 +632,7 @@ async function main(): Promise<void> {
           skipInlineCss: postCssSnippetActive,
           newsletterFormUrl: config.NEWSLETTER_FORM_URL || undefined,
           titleCandidates: content.titleCandidates,
+          clusterNavHtml,
           affiliateMap: config.AFFILIATE_MAP ? (() => { try { return JSON.parse(config.AFFILIATE_MAP); } catch { return {}; } })() : undefined,
         },
       );
@@ -638,8 +711,18 @@ async function main(): Promise<void> {
         config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD,
         config.ANTHROPIC_API_KEY, config.CLAUDE_MODEL,
       );
+      const freshnessData = history.getPostsByFreshnessScore(config.AUTO_REWRITE_MIN_AGE_DAYS);
+      if (freshnessData.length > 0) {
+        const staleCount = freshnessData.filter(f => f.freshnessScore < 30).length;
+        if (staleCount > 0) {
+          logger.info(`Content freshness: ${staleCount} post(s) with freshness score < 30 (needs refresh)`);
+        }
+      }
+      const gscForRefresh = (config.GSC_SITE_URL && config.GOOGLE_INDEXING_SA_KEY)
+        ? new GSCAnalyticsService(config.GSC_SITE_URL || config.WP_URL, config.GOOGLE_INDEXING_SA_KEY)
+        : undefined;
       const rewritten = await refreshService.refreshDecliningPosts(
-        ga4Service, seoService, config.AUTO_REWRITE_COUNT, config.AUTO_REWRITE_MIN_AGE_DAYS,
+        ga4Service, seoService, config.AUTO_REWRITE_COUNT, config.AUTO_REWRITE_MIN_AGE_DAYS, freshnessData, gscForRefresh,
       );
       if (rewritten > 0) {
         logger.info(`Auto-rewrote ${rewritten} underperforming post(s)`);
@@ -649,10 +732,15 @@ async function main(): Promise<void> {
     }
   }
 
-  // 4.25. A/B title testing — evaluate posts with title candidates after 7 days
+  // 4.25. A/B title testing — multi-signal evaluation after 7+ days
+  // Uses GA4 bounce rate + GSC CTR + engagement time to decide title switches
   if (config.GA4_PROPERTY_ID && config.GOOGLE_INDEXING_SA_KEY) {
     try {
       const ga4Service = new GA4AnalyticsService(config.GA4_PROPERTY_ID, config.GOOGLE_INDEXING_SA_KEY);
+      const gscService = (config.GSC_SITE_URL && config.GOOGLE_INDEXING_SA_KEY)
+        ? new GSCAnalyticsService(config.GSC_SITE_URL || config.WP_URL, config.GOOGLE_INDEXING_SA_KEY)
+        : null;
+
       const entriesWithCandidates = history.getAllEntries()
         .filter(e => e.titleCandidates?.length && !e.titleTestResolved)
         .filter(e => {
@@ -660,31 +748,56 @@ async function main(): Promise<void> {
           return age >= 7;
         });
 
-      for (const entry of entriesWithCandidates.slice(0, 3)) {
-        try {
-          const perf = await ga4Service.getTopPerformingPosts(200);
-          const postPerf = perf.find(p => entry.postUrl.includes(p.url.replace(/^\//, '')));
-          if (!postPerf || postPerf.pageviews < 10) continue;
+      if (entriesWithCandidates.length > 0) {
+        const [ga4Perf, gscPages] = await Promise.all([
+          ga4Service.getTopPerformingPosts(200),
+          gscService ? gscService.getPagePerformance(100) : Promise.resolve([]),
+        ]);
 
-          // Low CTR indicator: high impressions but low pageviews (bounce > 60%)
-          if (postPerf.bounceRate > 0.6) {
-            const newTitle = entry.titleCandidates![0];
-            logger.info(`A/B test: Switching title for post ${entry.postId} to "${newTitle}" (bounce: ${(postPerf.bounceRate * 100).toFixed(0)}%)`);
-            await wpService.updatePostMeta(entry.postId, {
-              rank_math_title: newTitle,
-            });
-            // Update post title via REST API
-            try {
-              const wpApi = (wpService as unknown as { api: { post: (url: string, data: unknown) => Promise<unknown> } }).api;
-              await wpApi.post(`/posts/${entry.postId}`, { title: newTitle });
-            } catch {
-              logger.debug(`Could not update post title directly for ${entry.postId}`);
+        for (const entry of entriesWithCandidates.slice(0, 5)) {
+          try {
+            const postPerf = ga4Perf.find(p => entry.postUrl.includes(p.url.replace(/^\//, '')));
+            if (!postPerf || postPerf.pageviews < 10) continue;
+
+            // GSC data: check actual search CTR (more reliable than bounce rate alone)
+            const gscPage = gscPages.find(p => entry.postUrl.includes(p.page.replace(/^https?:\/\/[^/]+/, '')));
+            const searchCtr = gscPage?.ctr ?? null;
+
+            // Multi-signal decision: switch title if poor performance across signals
+            const shouldSwitch =
+              (postPerf.bounceRate > 0.65 && postPerf.avgEngagementTime < 60) || // High bounce + low engagement
+              (searchCtr !== null && searchCtr < 0.02 && (gscPage?.impressions ?? 0) > 50) || // Low CTR despite impressions
+              (postPerf.bounceRate > 0.7); // Very high bounce alone
+
+            if (shouldSwitch) {
+              // Select the best candidate (prefer shorter, more specific titles)
+              const candidates = entry.titleCandidates!;
+              const newTitle = candidates.reduce((best, c) =>
+                c.length >= 45 && c.length <= 65 && c.length < best.length ? c : best,
+                candidates[0],
+              );
+
+              const signals = [
+                `bounce: ${(postPerf.bounceRate * 100).toFixed(0)}%`,
+                `engagement: ${postPerf.avgEngagementTime.toFixed(0)}s`,
+                searchCtr !== null ? `search CTR: ${(searchCtr * 100).toFixed(1)}%` : null,
+              ].filter(Boolean).join(', ');
+
+              logger.info(`A/B test: Switching title for post ${entry.postId} to "${newTitle}" (${signals})`);
+              await wpService.updatePostMeta(entry.postId, { rank_math_title: newTitle });
+              try {
+                const wpApi = (wpService as unknown as { api: { post: (url: string, data: unknown) => Promise<unknown> } }).api;
+                await wpApi.post(`/posts/${entry.postId}`, { title: newTitle });
+              } catch {
+                logger.debug(`Could not update post title directly for ${entry.postId}`);
+              }
+            } else {
+              logger.debug(`A/B test: Post ${entry.postId} performing adequately, keeping current title`);
             }
+            await history.markTitleTestResolved(entry.postId);
+          } catch (error) {
+            logger.debug(`A/B title test failed for post ${entry.postId}: ${error instanceof Error ? error.message : error}`);
           }
-          // Mark as resolved regardless
-          await history.markTitleTestResolved(entry.postId);
-        } catch (error) {
-          logger.debug(`A/B title test failed for post ${entry.postId}: ${error instanceof Error ? error.message : error}`);
         }
       }
     } catch (error) {

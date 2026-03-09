@@ -5,6 +5,11 @@ import type { BlogContent, PublishedPost } from '../types/index.js';
 
 const HASHNODE_GQL = 'https://gql.hashnode.com';
 
+/** Hashnode is a tech/dev blog platform — syndicate tech, finance, and crypto content */
+const HASHNODE_ALLOWED_CATEGORIES = new Set([
+  'Korean Tech', 'Korean Finance', 'Korean Crypto', 'Korean Automotive',
+]);
+
 export class HashnodeService {
   private token: string;
   private publicationId: string;
@@ -16,6 +21,18 @@ export class HashnodeService {
 
   async syndicateBlogPost(content: BlogContent, post: PublishedPost): Promise<void> {
     try {
+      // Only syndicate relevant content to Hashnode
+      if (!HASHNODE_ALLOWED_CATEGORIES.has(content.category)) {
+        logger.debug(`Hashnode syndication skipped: "${content.category}" not a relevant category`);
+        return;
+      }
+
+      // Validate canonical URL before syndication
+      if (!post.url || !post.url.startsWith('http')) {
+        logger.warn(`Hashnode syndication skipped: invalid canonical URL "${post.url}"`);
+        return;
+      }
+
       const tags = content.tags.slice(0, 5).map((tag) => ({
         slug: tag.replace(/\s+/g, '-').toLowerCase(),
         name: tag,
@@ -51,6 +68,7 @@ export class HashnodeService {
               originalArticleURL: post.url,
               tags,
               subtitle: content.excerpt.substring(0, 150),
+              isOriginalOnMyBlog: false,
             },
           },
         },
@@ -63,7 +81,7 @@ export class HashnodeService {
       }
 
       const published = data.data?.publishPost?.post;
-      logger.info(`Hashnode article published: ${published?.url ?? published?.id}`);
+      logger.info(`Hashnode article published: ${published?.url ?? published?.id} (canonical: ${post.url})`);
     } catch (error) {
       logger.warn(`Hashnode syndication failed (non-critical): ${error instanceof Error ? error.message : error}`);
     }

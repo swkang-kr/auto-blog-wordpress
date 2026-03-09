@@ -5,6 +5,11 @@ import type { BlogContent, PublishedPost } from '../types/index.js';
 
 const DEVTO_API = 'https://dev.to/api';
 
+/** DEV.to is a developer platform — only syndicate tech-relevant content */
+const DEVTO_ALLOWED_CATEGORIES = new Set([
+  'Korean Tech', 'Korean Finance', 'Korean Crypto',
+]);
+
 export class DevToService {
   private apiKey: string;
 
@@ -14,6 +19,18 @@ export class DevToService {
 
   async syndicateBlogPost(content: BlogContent, post: PublishedPost): Promise<void> {
     try {
+      // Only syndicate tech-relevant content to DEV.to
+      if (!DEVTO_ALLOWED_CATEGORIES.has(content.category)) {
+        logger.debug(`DEV.to syndication skipped: "${content.category}" not a tech category`);
+        return;
+      }
+
+      // Validate canonical URL before syndication
+      if (!post.url || !post.url.startsWith('http')) {
+        logger.warn(`DEV.to syndication skipped: invalid canonical URL "${post.url}"`);
+        return;
+      }
+
       const tags = content.tags
         .slice(0, 4)
         .map((tag) => tag.replace(/\s+/g, '').toLowerCase().substring(0, 30));
@@ -35,7 +52,13 @@ export class DevToService {
         { headers: this.headers() },
       );
 
-      logger.info(`DEV.to article published: ${response.data.url ?? response.data.id}`);
+      const articleUrl = response.data.url ?? response.data.id;
+      logger.info(`DEV.to article published: ${articleUrl} (canonical: ${post.url})`);
+
+      // Verify canonical URL was set correctly
+      if (response.data.canonical_url && response.data.canonical_url !== post.url) {
+        logger.warn(`DEV.to canonical URL mismatch: expected "${post.url}", got "${response.data.canonical_url}"`);
+      }
     } catch (error) {
       logger.warn(`DEV.to syndication failed (non-critical): ${error instanceof Error ? error.message : error}`);
     }

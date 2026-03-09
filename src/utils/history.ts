@@ -51,9 +51,11 @@ export class PostHistory {
 
     const setA = new Set(wordsA);
     const overlap = wordsB.filter((w) => setA.has(w)).length;
-    const minLen = Math.min(wordsA.length, wordsB.length);
+    // Use max length to prevent short keywords from over-matching long ones
+    // e.g. "Korean ETF" should not match "how to use Korean ETF platforms for foreign investors"
+    const maxLen = Math.max(wordsA.length, wordsB.length);
 
-    return minLen > 0 && overlap / minLen >= 0.7;
+    return maxLen > 0 && overlap / maxLen >= 0.6;
   }
 
   /** Find a history entry by WordPress post ID */
@@ -76,6 +78,51 @@ export class PostHistory {
       .filter((e) => e.niche === nicheId && e.contentType)
       .slice(-count)
       .map((e) => e.contentType!);
+  }
+
+  /**
+   * Compute content freshness score (0-100) for a post based on time decay.
+   * Score decreases as content ages, weighted by content type volatility.
+   * Higher scores = fresher content, lower scores = needs refresh.
+   */
+  computeFreshnessScore(entry: PostHistoryEntry): number {
+    const ageDays = (Date.now() - new Date(entry.publishedAt).getTime()) / (1000 * 60 * 60 * 24);
+
+    // Content type decay rates (days until score drops to 50%)
+    const halfLifeDays: Record<string, number> = {
+      'news-explainer': 30,   // News ages fast
+      'analysis': 60,          // Analysis stays relevant longer
+      'how-to': 120,           // How-to guides are more evergreen
+      'best-x-for-y': 90,     // Lists need periodic updates
+      'x-vs-y': 90,           // Comparisons change with products
+      'deep-dive': 120,        // Deep dives are relatively evergreen
+      'listicle': 60,          // Listicles need fresh items
+      'product-review': 60,     // Product reviews need frequent updates
+      'case-study': 180,       // Case studies are most evergreen
+    };
+
+    const halfLife = halfLifeDays[entry.contentType || 'analysis'] || 90;
+    // Exponential decay: score = 100 * e^(-ln(2) * ageDays / halfLife)
+    const score = 100 * Math.exp(-0.693 * ageDays / halfLife);
+
+    // Engagement bonus: well-performing content decays slower
+    const engagementBonus = entry.engagementScore
+      ? Math.min(15, entry.engagementScore * 0.1)
+      : 0;
+
+    return Math.max(0, Math.min(100, Math.round(score + engagementBonus)));
+  }
+
+  /**
+   * Get posts sorted by freshness score (lowest first = needs refresh most).
+   * Useful for prioritizing content refresh candidates.
+   */
+  getPostsByFreshnessScore(minAgeDays: number = 14): Array<PostHistoryEntry & { freshnessScore: number }> {
+    const cutoff = new Date(Date.now() - minAgeDays * 24 * 60 * 60 * 1000).toISOString();
+    return this.data.entries
+      .filter(e => e.publishedAt < cutoff)
+      .map(e => ({ ...e, freshnessScore: this.computeFreshnessScore(e) }))
+      .sort((a, b) => a.freshnessScore - b.freshnessScore);
   }
 
   /** Get entries published within the last N days (for indexing verification). */
@@ -119,6 +166,42 @@ export class PostHistory {
     this.data.entries.push(entry);
     this.data.totalPosts = this.data.entries.length;
     await this.save();
+  }
+
+  /**
+   * Update engagement scores for history entries using GA4 performance data.
+   * Called after GA4 data is loaded to populate the engagementScore field
+   * used by freshness decay calculations.
+   */
+  async updateEngagementScores(performanceData: Array<{ url: string; pageviews: number; bounceRate: number; avgEngagementTime: number }>): Promise<void> {
+    if (performanceData.length === 0) return;
+
+    let updated = 0;
+    for (const perf of performanceData) {
+      // Match by URL slug
+      const slug = '/' + perf.url.replace(/^\/|\/$/g, '') + '/';
+      const entry = this.data.entries.find(e =>
+        e.postUrl.includes(slug) || e.postUrl.includes(perf.url.replace(/^\//, '')),
+      );
+      if (!entry) continue;
+
+      // Engagement score (0-100): weighted combination of pageviews, bounce rate, and engagement time
+      // Higher pageviews + lower bounce + longer engagement = higher score
+      const pvScore = Math.min(40, perf.pageviews * 0.4); // up to 40 points for 100+ views
+      const bounceScore = Math.max(0, 30 * (1 - perf.bounceRate)); // up to 30 points for 0% bounce
+      const engScore = Math.min(30, perf.avgEngagementTime * 0.2); // up to 30 points for 150s+ engagement
+      const score = Math.round(pvScore + bounceScore + engScore);
+
+      if (entry.engagementScore !== score) {
+        entry.engagementScore = score;
+        updated++;
+      }
+    }
+
+    if (updated > 0) {
+      await this.save();
+      logger.info(`Engagement scores updated for ${updated} post(s)`);
+    }
   }
 
   /** Mark A/B title test as resolved for a given post */

@@ -111,7 +111,8 @@ export class SeoService {
 
   /**
    * Ensure hreflang PHP snippet is installed via Code Snippets plugin.
-   * Registers post meta (hreflang_ko, hreflang_en) and outputs <link rel="alternate"> in wp_head.
+   * Outputs <link rel="alternate" hreflang="en"> and x-default for all posts.
+   * When hreflang_ko meta is set, also outputs Korean alternate link.
    */
   async ensureHreflangSnippet(): Promise<void> {
     const snippetsApi = axios.create({
@@ -130,30 +131,22 @@ add_action('init', function() {
         'type' => 'string',
         'sanitize_callback' => 'esc_url_raw',
     ]);
-    register_post_meta('post', 'hreflang_en', [
-        'show_in_rest' => true,
-        'single' => true,
-        'type' => 'string',
-        'sanitize_callback' => 'esc_url_raw',
-    ]);
 });
 
-// Output hreflang link tags in <head>
+// Output hreflang link tags in <head> for ALL posts (self-referencing for English)
 add_action('wp_head', function() {
     if (!is_singular('post')) return;
     $post_id = get_the_ID();
-    $ko_url = get_post_meta($post_id, 'hreflang_ko', true);
-    $en_url = get_post_meta($post_id, 'hreflang_en', true);
     $current_url = get_permalink($post_id);
+    $ko_url = get_post_meta($post_id, 'hreflang_ko', true);
+
+    // Always output English self-reference + x-default
+    echo '<link rel="alternate" hreflang="en" href="' . esc_url($current_url) . '" />' . "\\n";
+    echo '<link rel="alternate" hreflang="x-default" href="' . esc_url($current_url) . '" />' . "\\n";
+
+    // Output Korean alternate only when Korean URL exists
     if ($ko_url) {
-        echo '<link rel="alternate" hreflang="en" href="' . esc_url($current_url) . '" />' . "\\n";
         echo '<link rel="alternate" hreflang="ko" href="' . esc_url($ko_url) . '" />' . "\\n";
-        echo '<link rel="alternate" hreflang="x-default" href="' . esc_url($current_url) . '" />' . "\\n";
-    }
-    if ($en_url) {
-        echo '<link rel="alternate" hreflang="ko" href="' . esc_url($current_url) . '" />' . "\\n";
-        echo '<link rel="alternate" hreflang="en" href="' . esc_url($en_url) . '" />' . "\\n";
-        echo '<link rel="alternate" hreflang="x-default" href="' . esc_url($en_url) . '" />' . "\\n";
     }
 });`.trim();
 

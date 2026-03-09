@@ -1,5 +1,5 @@
 /** 콘텐츠 유형 */
-export type ContentType = 'how-to' | 'best-x-for-y' | 'x-vs-y' | 'analysis' | 'deep-dive' | 'news-explainer' | 'listicle' | 'case-study';
+export type ContentType = 'how-to' | 'best-x-for-y' | 'x-vs-y' | 'analysis' | 'deep-dive' | 'news-explainer' | 'listicle' | 'case-study' | 'product-review';
 
 /** 니치 설정 */
 export interface NicheConfig {
@@ -21,6 +21,9 @@ export const CATEGORY_PUBLISH_TIMING: Record<string, { optimalHour: number; best
   'Korean Food': { optimalHour: 11, bestDays: [5, 6, 0] },        // Fri-Sun late morning
   'Korea Travel': { optimalHour: 10, bestDays: [6, 0, 5] },       // Weekend + Friday
   'Korean Language': { optimalHour: 19, bestDays: [0, 1, 3] },    // Sun-Mon-Wed evening (study time)
+  'K-Beauty': { optimalHour: 10, bestDays: [5, 6, 0] },           // Weekend morning (lifestyle shopping)
+  'Korean Crypto': { optimalHour: 8, bestDays: [1, 2, 3] },       // Mon-Wed morning (market hours)
+  'Korean Automotive': { optimalHour: 9, bestDays: [2, 3, 4] },   // Tue-Thu morning (research time)
 };
 
 /** Google Trends rising query entry */
