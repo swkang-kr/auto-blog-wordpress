@@ -4,6 +4,7 @@ import { KeywordResearchError } from '../types/errors.js';
 import { GoogleTrendsService } from './google-trends.service.js';
 import { getSeasonalSuggestionsForNiche } from '../utils/korean-calendar.js';
 import { costTracker } from '../utils/cost-tracker.js';
+import { RedditTrendsService } from './reddit-trends.service.js';
 import type { NicheConfig, TrendsData, RisingQuery, KeywordAnalysis, ResearchedKeyword, ExistingPost } from '../types/index.js';
 import type { GSCQueryData } from './gsc-analytics.service.js';
 
@@ -17,6 +18,7 @@ interface SerpAnalysis {
 export class KeywordResearchService {
   private client: Anthropic;
   private trendsService: GoogleTrendsService;
+  private redditService: RedditTrendsService;
   private performanceInsights: string;
   private existingPosts: ExistingPost[];
   private existingPostTitles: string[];
@@ -25,6 +27,7 @@ export class KeywordResearchService {
   constructor(apiKey: string, geo: string) {
     this.client = new Anthropic({ apiKey });
     this.trendsService = new GoogleTrendsService(geo);
+    this.redditService = new RedditTrendsService();
     this.performanceInsights = '';
     this.existingPosts = [];
     this.existingPostTitles = [];
@@ -120,18 +123,36 @@ export class KeywordResearchService {
       logger.warn(`Rising trends fetch failed for "${niche.name}": ${error instanceof Error ? error.message : error}`);
     }
 
-    // 2. Fall back to seed keyword scanning if no rising queries found
+    // 2. Fall back to Reddit trends, then seed keywords if no rising queries found
     const trendsData: TrendsData[] = [];
     if (risingQueries.length === 0 && topQueries.length === 0) {
-      logger.warn(`No rising queries for "${niche.name}", falling back to seed keywords`);
-      trendsSource = 'seed';
+      // 2a. Try Reddit trends as secondary source
+      try {
+        const redditTrends = await this.redditService.fetchTrendingTopics(niche.category, niche.broadTerm);
+        if (redditTrends.length > 0) {
+          logger.info(`Reddit trends found ${redditTrends.length} topic(s) for "${niche.name}"`);
+          trendsSource = 'reddit';
+          // Convert Reddit trends to rising query format
+          for (const trend of redditTrends) {
+            topQueries.push({ query: trend.query, value: trend.score });
+          }
+        }
+      } catch (error) {
+        logger.debug(`Reddit trends fetch failed: ${error instanceof Error ? error.message : error}`);
+      }
 
-      for (const seed of niche.seedKeywords) {
-        try {
-          const data = await this.trendsService.fetchTrendsData(seed);
-          trendsData.push(data);
-        } catch (error) {
-          logger.warn(`Trends data failed for seed "${seed}": ${error instanceof Error ? error.message : error}`);
+      // 2b. Fall back to seed keyword scanning if still empty
+      if (topQueries.length === 0) {
+        logger.warn(`No rising queries for "${niche.name}", falling back to seed keywords`);
+        trendsSource = 'seed';
+
+        for (const seed of niche.seedKeywords) {
+          try {
+            const data = await this.trendsService.fetchTrendsData(seed);
+            trendsData.push(data);
+          } catch (error) {
+            logger.warn(`Trends data failed for seed "${seed}": ${error instanceof Error ? error.message : error}`);
+          }
         }
       }
     }
@@ -292,6 +313,7 @@ ${recentContentTypes && recentContentTypes.length > 0 ? `## Content Type Diversi
    - x-vs-y: Comparison analysis
    - listicle: Curated list of 10-20 items with brief descriptions per item
    - case-study: Real-world example analysis (Background → Challenge → Strategy → Results → Lessons)
+   - product-review: In-depth product/service review with pros, cons, rating, and Korean market context
 3. Suggest a unique angle that differentiates from existing content
 4. Generate a suggestedTitle that is search-intent-first. Rules for suggestedTitle:
    - MUST contain the selectedKeyword verbatim or within 1-2 filler words
@@ -320,7 +342,7 @@ CRITICAL keyword selection rules — follow in strict priority order:
 9. TARGET global English-speaking audience interested in Korea (investors, K-culture fans, tech watchers)
 
 Respond with pure JSON only. No markdown code blocks.
-{"selectedKeyword":"...","contentType":"analysis|deep-dive|news-explainer|how-to|best-x-for-y|x-vs-y|listicle|case-study","suggestedTitle":"...","uniqueAngle":"...","searchIntent":"...","estimatedCompetition":"low|medium|high","volumeEstimate":"high|medium|low|minimal","reasoning":"...","relatedKeywordsToInclude":["...","..."]}`;
+{"selectedKeyword":"...","contentType":"analysis|deep-dive|news-explainer|how-to|best-x-for-y|x-vs-y|listicle|case-study|product-review","suggestedTitle":"...","uniqueAngle":"...","searchIntent":"...","estimatedCompetition":"low|medium|high","volumeEstimate":"high|medium|low|minimal","reasoning":"...","relatedKeywordsToInclude":["...","..."]}`;
 
     try {
       const response = await this.client.messages.create({

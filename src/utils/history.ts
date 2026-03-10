@@ -213,6 +213,48 @@ export class PostHistory {
     }
   }
 
+  /**
+   * Get next series part number for a given niche.
+   * Detects existing series in the niche and returns the next part number.
+   * A "series" is defined as 3+ posts in the same niche with high keyword similarity.
+   */
+  getSeriesInfo(nicheId: string, keyword: string): { seriesId: string; seriesPart: number } | null {
+    const nicheEntries = this.data.entries.filter(e => e.niche === nicheId && e.seriesId);
+    if (nicheEntries.length === 0) return null;
+
+    // Check if this keyword fits an existing series
+    const seriesGroups = new Map<string, PostHistoryEntry[]>();
+    for (const entry of nicheEntries) {
+      if (entry.seriesId) {
+        const group = seriesGroups.get(entry.seriesId) || [];
+        group.push(entry);
+        seriesGroups.set(entry.seriesId, group);
+      }
+    }
+
+    // Find matching series by keyword similarity
+    for (const [seriesId, entries] of seriesGroups) {
+      const seriesKeywords = entries.map(e => e.keyword.toLowerCase());
+      const kwLower = keyword.toLowerCase();
+      const kwWords = kwLower.split(/\s+/).filter(w => w.length > 3);
+      const matchCount = kwWords.filter(w =>
+        seriesKeywords.some(sk => sk.includes(w)),
+      ).length;
+      if (matchCount >= 2 || kwWords.length <= 2) {
+        return { seriesId, seriesPart: entries.length + 1 };
+      }
+    }
+
+    return null;
+  }
+
+  /** Get all entries in a specific series, ordered by part number */
+  getSeriesEntries(seriesId: string): PostHistoryEntry[] {
+    return this.data.entries
+      .filter(e => e.seriesId === seriesId)
+      .sort((a, b) => (a.seriesPart || 0) - (b.seriesPart || 0));
+  }
+
   async updateLastRun(): Promise<void> {
     this.data.lastRunAt = new Date().toISOString();
     await this.save();

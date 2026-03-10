@@ -165,6 +165,10 @@ export interface PostHistoryEntry {
   titleCandidates?: string[];
   /** Whether A/B title test has been resolved */
   titleTestResolved?: boolean;
+  /** Series ID for multi-part content (e.g., "korean-stocks-101") */
+  seriesId?: string;
+  /** Part number within a series */
+  seriesPart?: number;
 }
 
 /** 전체 포스팅 이력 파일 구조 */

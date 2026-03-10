@@ -116,43 +116,60 @@ export class ImageGeneratorService {
 
     const fullPrompt = prompt + styleSuffix;
 
-    try {
-      logger.debug(`Generating image ${index + 1}: "${fullPrompt.substring(0, 80)}..."`);
-      const response = await model.generateContent(fullPrompt);
-      const parts = response.response.candidates?.[0]?.content?.parts ?? [];
+    const MAX_RETRIES = 3;
+    for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+      try {
+        logger.debug(`Generating image ${index + 1} (attempt ${attempt}/${MAX_RETRIES}): "${fullPrompt.substring(0, 80)}..."`);
+        const response = await model.generateContent(fullPrompt);
+        const parts = response.response.candidates?.[0]?.content?.parts ?? [];
 
-      let imageBuffer: Buffer | null = null;
-      for (const part of parts) {
-        const inlineData = (part as unknown as Record<string, unknown>).inlineData as
-          | { data: string; mimeType: string }
-          | undefined;
-        if (inlineData?.data) {
-          imageBuffer = Buffer.from(inlineData.data, 'base64');
-          break;
+        let imageBuffer: Buffer | null = null;
+        for (const part of parts) {
+          const inlineData = (part as unknown as Record<string, unknown>).inlineData as
+            | { data: string; mimeType: string }
+            | undefined;
+          if (inlineData?.data) {
+            imageBuffer = Buffer.from(inlineData.data, 'base64');
+            break;
+          }
         }
-      }
 
-      if (imageBuffer) {
-        const isDuplicate = existingResults.some((prev) =>
-          prev.length === imageBuffer!.length && prev.compare(imageBuffer!) === 0
-        );
-        if (isDuplicate) {
-          logger.warn(`Image ${index + 1} is duplicate of a previous image, skipping`);
+        if (imageBuffer) {
+          const isDuplicate = existingResults.some((prev) =>
+            prev.length === imageBuffer!.length && prev.compare(imageBuffer!) === 0
+          );
+          if (isDuplicate) {
+            logger.warn(`Image ${index + 1} is duplicate of a previous image, skipping`);
+            return null;
+          }
+          costTracker.addImageCall(1);
+          const compressedBuffer = await this.convertImage(imageBuffer);
+          logger.info(`Image ${index + 1} generated & compressed to ${this.imageFormat.toUpperCase()} (${(compressedBuffer.length / 1024).toFixed(0)}KB)`);
+          return compressedBuffer;
+        } else {
+          logger.warn(`Image ${index + 1} generation returned no image data`);
+          if (attempt < MAX_RETRIES) {
+            const delay = Math.pow(2, attempt) * 1000; // 2s, 4s
+            logger.debug(`Retrying image ${index + 1} in ${delay / 1000}s...`);
+            await new Promise(r => setTimeout(r, delay));
+            continue;
+          }
           return null;
         }
-        costTracker.addImageCall(1);
-        const compressedBuffer = await this.convertImage(imageBuffer);
-        logger.info(`Image ${index + 1} generated & compressed to ${this.imageFormat.toUpperCase()} (${(compressedBuffer.length / 1024).toFixed(0)}KB)`);
-        return compressedBuffer;
-      } else {
-        logger.warn(`Image ${index + 1} generation returned no image data`);
+      } catch (error) {
+        const detail = error instanceof Error ? error.message : String(error);
+        const isRateLimit = detail.includes('429') || detail.includes('rate') || detail.includes('quota');
+        if (attempt < MAX_RETRIES && isRateLimit) {
+          const delay = Math.pow(2, attempt) * 2000; // 4s, 8s for rate limits
+          logger.warn(`Image ${index + 1} rate limited, retrying in ${delay / 1000}s...`);
+          await new Promise(r => setTimeout(r, delay));
+          continue;
+        }
+        logger.warn(new ImageGenerationError(`Image ${index + 1} generation failed: ${detail}`, error).message);
         return null;
       }
-    } catch (error) {
-      const detail = error instanceof Error ? error.message : String(error);
-      logger.warn(new ImageGenerationError(`Image ${index + 1} generation failed: ${detail}`, error).message);
-      return null;
     }
+    return null;
   }
 
   /**
@@ -227,7 +244,7 @@ export class ImageGeneratorService {
     logger.info(`Generating ${prompts.length} images (batch parallel)...`);
 
     const model = this.client.getGenerativeModel({
-      model: 'imagen-3.0-generate-002',
+      model: 'gemini-2.5-flash-preview-05-20',
       generationConfig: {
         responseModalities: ['image', 'text'] as unknown as undefined,
       } as Record<string, unknown>,

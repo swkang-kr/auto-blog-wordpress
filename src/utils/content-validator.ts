@@ -529,14 +529,31 @@ export function autoFixContent(
     fixes.push(`Added snippet type "${snippetType}" to featured snippet box`);
   }
 
-  // 6. Fix generic internal link anchor texts
+  // 6. Fix generic internal link anchor texts — replace with page title from URL slug
   const genericAnchors = ['click here', 'read more', 'here', 'this article', 'check this out', 'learn more'];
   html = html.replace(
-    /<a\s+([^>]*href="[^"]*"[^>]*)>(.*?)<\/a>/gi,
-    (match, attrs, text) => {
+    /<a\s+([^>]*href="([^"]*)"[^>]*)>(.*?)<\/a>/gi,
+    (match, attrs, href, text) => {
       const plainText = text.replace(/<[^>]+>/g, '').trim().toLowerCase();
       if (genericAnchors.includes(plainText) && !/target="_blank"/.test(attrs)) {
-        fixes.push(`Found generic anchor text "${plainText}" in internal link`);
+        // Extract a meaningful anchor text from the URL slug
+        try {
+          const urlPath = new URL(href).pathname.replace(/^\/|\/$/g, '');
+          if (urlPath) {
+            const betterAnchor = urlPath
+              .split('/').pop()!
+              .replace(/-/g, ' ')
+              .replace(/\b\w/g, c => c.toUpperCase())
+              .replace(/\b(A|An|The|In|On|At|To|For|Of|And|Or|Is|Are)\b/g, w => w.toLowerCase());
+            if (betterAnchor.length > 5) {
+              fixes.push(`Replaced generic anchor "${plainText}" with "${betterAnchor}"`);
+              return `<a ${attrs}>${betterAnchor}</a>`;
+            }
+          }
+        } catch {
+          // URL parse failed, keep original
+        }
+        fixes.push(`Found generic anchor text "${plainText}" in internal link (could not auto-fix)`);
       }
       return match;
     },

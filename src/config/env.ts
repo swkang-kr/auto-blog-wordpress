@@ -60,6 +60,10 @@ const envSchema = z.object({
   NEWSLETTER_FORM_URL: z.string().default(''),
   // Affiliate settings - optional JSON mapping of category to affiliate program URLs
   AFFILIATE_MAP: z.string().default(''),
+  // Niche focus mode: comma-separated niche IDs to concentrate on for topical authority
+  // e.g., "korean-tech-ai,korean-finance-stocks,k-beauty-skincare"
+  // When set, only these niches are used (ignoring others). Clear after cluster is built.
+  NICHE_FOCUS_IDS: z.string().default(''),
 });
 
 export type AppConfig = z.infer<typeof envSchema>;

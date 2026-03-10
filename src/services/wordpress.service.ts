@@ -442,6 +442,8 @@ export class WordPressService {
 .ab-byline{margin:30px 0 0 0;padding:20px 24px;background:#f8f9fa;border-radius:8px;display:flex;align-items:center;gap:16px}
 .ab-share-btn{display:inline-block;padding:8px 16px;margin:0 8px 8px 0;border-radius:6px;text-decoration:none;font-size:14px;font-weight:600;color:#fff}
 .ab-disclaimer{margin:40px 0 0 0;padding-top:20px;border-top:1px solid #eee;font-size:13px;color:#999;line-height:1.6}
+.ab-series-nav{margin:24px 0;padding:16px 20px;background:#f8f9fa;border:1px solid #e5e7eb;border-radius:10px}
+.ab-affiliate-disclosure{margin:0 0 20px 0;padding:12px 16px;background:#fff8e1;border:1px solid #ffe082;border-radius:8px;font-size:12px;color:#666;line-height:1.5}
 .ab-header{margin:0 0 30px 0;padding-bottom:20px;border-bottom:1px solid #eee}
 .ab-header time{font-size:13px;color:#888}
 .ab-faq details{margin:0 0 12px 0;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden}
@@ -751,6 +753,16 @@ export class WordPressService {
 
     if (injectedCount > 0) {
       logger.info(`Injected ${injectedCount} affiliate link(s)`);
+      // Add FTC disclosure at top of content (required when affiliate links are present)
+      const disclosure = `<p class="ab-affiliate-disclosure" style="margin:0 0 20px 0; padding:12px 16px; background:#fff8e1; border:1px solid #ffe082; border-radius:8px; font-size:12px; color:#666; line-height:1.5;"><strong>Disclosure:</strong> This article contains affiliate links. If you make a purchase through these links, we may earn a small commission at no extra cost to you. This helps support our content. <a href="/privacy-policy/" style="color:#0066FF;">Learn more</a>.</p>`;
+      // Insert after the Last Updated banner or at the very start
+      const lastUpdatedEnd = result.indexOf('</div>', result.indexOf('Last Updated:'));
+      if (lastUpdatedEnd !== -1) {
+        const insertPos = lastUpdatedEnd + '</div>'.length;
+        result = result.slice(0, insertPos) + '\n' + disclosure + '\n' + result.slice(insertPos);
+      } else {
+        result = disclosure + '\n' + result;
+      }
     }
     return result;
   }
@@ -1016,6 +1028,59 @@ export class WordPressService {
       }
     }
 
+    // ItemList schema (listicle, best-x-for-y content types)
+    if (options?.contentType === 'listicle' || options?.contentType === 'best-x-for-y') {
+      const listItems = this.extractListItems(htmlEn);
+      if (listItems.length >= 3) {
+        jsonLdSchemas.push({
+          '@context': 'https://schema.org',
+          '@type': 'ItemList',
+          name: content.title,
+          description: validatedExcerpt,
+          numberOfItems: listItems.length,
+          itemListElement: listItems.map((item, idx) => ({
+            '@type': 'ListItem',
+            position: idx + 1,
+            name: item.name,
+            ...(item.url ? { url: item.url } : {}),
+          })),
+        });
+        logger.debug(`ItemList schema: ${listItems.length} items prepared`);
+      }
+    }
+
+    // Review schema (product-review content type)
+    if (options?.contentType === 'product-review') {
+      const reviewData = this.extractReviewData(htmlEn, content.title);
+      if (reviewData) {
+        jsonLdSchemas.push({
+          '@context': 'https://schema.org',
+          '@type': 'Review',
+          name: content.title,
+          description: validatedExcerpt,
+          author: {
+            '@type': 'Person',
+            name: this.siteOwner || 'TrendHunt',
+          },
+          itemReviewed: {
+            '@type': 'Product',
+            name: reviewData.productName,
+            ...(reviewData.brand ? { brand: { '@type': 'Brand', name: reviewData.brand } } : {}),
+          },
+          ...(reviewData.rating ? {
+            reviewRating: {
+              '@type': 'Rating',
+              ratingValue: reviewData.rating,
+              bestRating: 10,
+              worstRating: 1,
+            },
+          } : {}),
+          datePublished: nowIso,
+        });
+        logger.debug(`Review schema prepared for "${reviewData.productName}"`);
+      }
+    }
+
     // ImageObject schema for featured image (improves Google Image Search ranking)
     if (options?.featuredImageUrl) {
       jsonLdSchemas.push({
@@ -1217,6 +1282,58 @@ export class WordPressService {
       if (answer.length > 20) items.push({ question, answer });
     }
     return items;
+  }
+
+  /** Extract list items from HTML for ItemList schema (numbered items in H2/H3 headings) */
+  private extractListItems(html: string): Array<{ name: string; url?: string }> {
+    const items: Array<{ name: string; url?: string }> = [];
+    // Match numbered headings: "1. Item Name", "#1 Item Name", "1) Item Name"
+    const regex = /<h[23][^>]*>(?:\d+[.):\s]+|#\d+[:\s]+)(.*?)<\/h[23]>/gi;
+    let match;
+    while ((match = regex.exec(html)) !== null && items.length < 20) {
+      const name = match[1].replace(/<[^>]+>/g, '').trim();
+      if (name.length > 3) {
+        // Check if there's a link in the heading
+        const linkMatch = /<a\s+[^>]*href="([^"]+)"[^>]*>/i.exec(match[0]);
+        items.push({ name, url: linkMatch?.[1] });
+      }
+    }
+    // Fallback: try H2/H3 headings without numbers (for headings that are list items)
+    if (items.length < 3) {
+      items.length = 0;
+      const h2Regex = /<h2[^>]*>(.*?)<\/h2>/gi;
+      while ((match = h2Regex.exec(html)) !== null && items.length < 20) {
+        const name = match[1].replace(/<[^>]+>/g, '').trim();
+        // Skip structural headings
+        if (/FAQ|Table of Contents|Key Takeaways|Conclusion|Global Context/i.test(name)) continue;
+        if (name.length > 5) items.push({ name });
+      }
+    }
+    return items;
+  }
+
+  /** Extract review data from HTML for Review schema */
+  private extractReviewData(html: string, title: string): { productName: string; brand?: string; rating?: number } | null {
+    // Try to extract product name from title (e.g., "Samsung Galaxy S26 Review" → "Samsung Galaxy S26")
+    const reviewMatch = title.match(/^(.+?)(?:\s+Review|\s+Analysis|\s+vs\.?\s)/i);
+    const productName = reviewMatch ? reviewMatch[1].trim() : title.replace(/\s*(?:Review|Comparison|Analysis).*$/i, '').trim();
+    if (!productName || productName.length < 3) return null;
+
+    // Extract brand from known Korean brands
+    const brands = ['Samsung', 'Hyundai', 'LG', 'SK', 'Kia', 'Naver', 'Kakao', 'Coupang', 'HYBE', 'Amorepacific', 'Innisfree', 'COSRX', 'Sulwhasoo', 'Laneige'];
+    const brand = brands.find(b => productName.toLowerCase().includes(b.toLowerCase()));
+
+    // Extract rating if present (e.g., "8/10", "Rating: 4.5/5")
+    const ratingMatch = html.match(/(?:rating|score)[^<]*?(\d+(?:\.\d+)?)\s*(?:\/\s*(\d+))?/i);
+    let rating: number | undefined;
+    if (ratingMatch) {
+      const value = parseFloat(ratingMatch[1]);
+      const max = ratingMatch[2] ? parseFloat(ratingMatch[2]) : 10;
+      rating = max === 5 ? value * 2 : max === 100 ? value / 10 : value; // Normalize to /10
+      if (rating > 10 || rating < 1) rating = undefined;
+    }
+
+    return { productName, brand, rating };
   }
 
   /** Extract HowTo steps from HTML (h3 headings with "Step N:" prefix) */

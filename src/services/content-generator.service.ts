@@ -95,6 +95,7 @@ const WORD_COUNT_TARGETS: Record<string, { min: number; target: number; continua
   'news-explainer':  { min: 1400, target: 2000, continuation: 1200, rejection: 1000 },
   'listicle':        { min: 1400, target: 2000, continuation: 1200, rejection: 1000 },
   'case-study':      { min: 1800, target: 2500, continuation: 1600, rejection: 1400 },
+  'product-review':  { min: 1600, target: 2200, continuation: 1400, rejection: 1200 },
 };
 
 function getWordCountTargets(contentType: string) {
@@ -576,7 +577,7 @@ Respond with pure JSON only.`;
 
     // Temperature varies by content type: analytical content needs precision, creative needs more variation
     const temperatureMap: Record<string, number> = {
-      'analysis': 0.5, 'news-explainer': 0.5, 'case-study': 0.5,
+      'analysis': 0.5, 'news-explainer': 0.5, 'case-study': 0.5, 'product-review': 0.6,
       'deep-dive': 0.6, 'x-vs-y': 0.6,
       'how-to': 0.7, 'best-x-for-y': 0.7, 'listicle': 0.7,
     };

@@ -68,7 +68,7 @@ export const NICHES: NicheConfig[] = [
       'KakaoTalk features guide for international users',
       'Korean digital banking apps Toss vs KakaoBank comparison',
     ],
-    contentTypes: ['how-to', 'best-x-for-y', 'x-vs-y', 'analysis', 'deep-dive', 'listicle'],
+    contentTypes: ['how-to', 'best-x-for-y', 'x-vs-y', 'analysis', 'deep-dive', 'listicle', 'product-review'],
   },
   {
     id: 'korean-tech-startups',
@@ -158,7 +158,7 @@ export const NICHES: NicheConfig[] = [
       'Korean fermented foods guide health benefits explained',
       'Korean convenience store food must try items',
     ],
-    contentTypes: ['how-to', 'best-x-for-y', 'deep-dive', 'analysis', 'news-explainer', 'listicle'],
+    contentTypes: ['how-to', 'best-x-for-y', 'deep-dive', 'analysis', 'news-explainer', 'listicle', 'product-review'],
   },
   {
     id: 'korean-food-dining',
@@ -248,7 +248,7 @@ export const NICHES: NicheConfig[] = [
       'how to build a Korean skincare routine on a budget',
       'best Korean sheet masks ranked by dermatologists',
     ],
-    contentTypes: ['how-to', 'best-x-for-y', 'x-vs-y', 'analysis', 'deep-dive', 'listicle'],
+    contentTypes: ['how-to', 'best-x-for-y', 'x-vs-y', 'analysis', 'deep-dive', 'listicle', 'product-review'],
   },
   {
     id: 'k-beauty-trends',
@@ -294,6 +294,6 @@ export const NICHES: NicheConfig[] = [
       'best Korean electric cars available outside Korea',
       'Hyundai stock analysis EV strategy for investors',
     ],
-    contentTypes: ['analysis', 'deep-dive', 'x-vs-y', 'news-explainer', 'best-x-for-y', 'case-study'],
+    contentTypes: ['analysis', 'deep-dive', 'x-vs-y', 'news-explainer', 'best-x-for-y', 'case-study', 'product-review'],
   },
 ];

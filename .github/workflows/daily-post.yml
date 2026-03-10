@@ -82,6 +82,9 @@ jobs:
           AFFILIATE_MAP: ${{ secrets.AFFILIATE_MAP }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
+          # Niche focus (optional, comma-separated niche IDs)
+          NICHE_FOCUS_IDS: ${{ secrets.NICHE_FOCUS_IDS }}
+
       - name: Commit post history and cache
         run: |
           git config user.name "github-actions[bot]"

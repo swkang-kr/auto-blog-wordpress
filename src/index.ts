@@ -35,9 +35,24 @@ async function main(): Promise<void> {
 
   const seasonalNiches = getSeasonallyOrderedNiches();
 
+  // Niche Focus Mode: concentrate on specific niches for topical authority building
+  let filteredNiches = seasonalNiches;
+  if (config.NICHE_FOCUS_IDS) {
+    const focusIds = config.NICHE_FOCUS_IDS.split(',').map(id => id.trim()).filter(Boolean);
+    if (focusIds.length > 0) {
+      filteredNiches = seasonalNiches.filter(n => focusIds.includes(n.id));
+      if (filteredNiches.length === 0) {
+        logger.warn(`NICHE_FOCUS_IDS contains no valid IDs: ${config.NICHE_FOCUS_IDS}. Using all niches.`);
+        filteredNiches = seasonalNiches;
+      } else {
+        logger.info(`Niche Focus Mode: concentrating on ${filteredNiches.length} niche(s): ${filteredNiches.map(n => n.name).join(', ')}`);
+      }
+    }
+  }
+
   // Reorder by content calendar staleness (least recently published first)
-  const stalenessOrder = history.getCategoriesByStalenessPriority(seasonalNiches.map(n => n.id));
-  const calendarNiches = [...seasonalNiches].sort((a, b) => {
+  const stalenessOrder = history.getCategoriesByStalenessPriority(filteredNiches.map(n => n.id));
+  const calendarNiches = [...filteredNiches].sort((a, b) => {
     return stalenessOrder.indexOf(a.id) - stalenessOrder.indexOf(b.id);
   });
   const activeNiches = calendarNiches.slice(0, config.POST_COUNT);
@@ -105,7 +120,7 @@ async function main(): Promise<void> {
     indexNowKey: config.INDEXNOW_KEY || undefined,
     indexingSaKey: config.GOOGLE_INDEXING_SA_KEY || undefined,
   });
-  const nicheCategories = NICHES.map((n) => n.category);
+  const nicheCategories = [...new Set(NICHES.map((n) => n.category))];
 
   try {
     await seoService.ensureSiteTitle(config.SITE_NAME, nicheCategories);

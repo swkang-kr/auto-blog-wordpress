@@ -21,7 +21,7 @@ if (!WP_URL || !WP_USERNAME || !WP_APP_PASSWORD) {
 
 async function main() {
   const seoService = new SeoService(WP_URL, WP_USERNAME, WP_APP_PASSWORD);
-  const categories = NICHES.map((n) => n.category);
+  const categories = [...new Set(NICHES.map((n) => n.category))];
 
   console.log(`Site: ${WP_URL}`);
   console.log(`Categories: ${categories.join(', ')}`);
