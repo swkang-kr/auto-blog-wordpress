@@ -237,6 +237,122 @@ Favor top-performing content types when choosing format for each niche.`;
     }
   }
 
+  /**
+   * Analyze CTR performance by title pattern.
+   * Cross-references GA4 data with post history to identify which title formulas drive the most clicks.
+   * Returns patterns ranked by average CTR.
+   */
+  async getTitlePatternPerformance(historyEntries: PostHistoryEntry[]): Promise<Array<{
+    pattern: string;
+    avgCtr: number;
+    avgPageviews: number;
+    count: number;
+    examples: string[];
+  }>> {
+    const posts = await this.getTopPerformingPosts(100);
+    if (posts.length === 0 || historyEntries.length === 0) return [];
+
+    // Build URL-to-title map from history
+    const urlToTitle = new Map<string, string>();
+    for (const entry of historyEntries) {
+      const path = new URL(entry.postUrl).pathname.replace(/\/$/, '');
+      urlToTitle.set(path, entry.keyword);
+    }
+
+    // Classify titles into patterns
+    const patternMap = new Map<string, Array<{ pageviews: number; title: string }>>();
+
+    for (const post of posts) {
+      const path = post.url.replace(/\/$/, '');
+      const keyword = urlToTitle.get(path);
+      if (!keyword) continue;
+
+      const pattern = this.classifyTitlePattern(keyword);
+      if (!patternMap.has(pattern)) patternMap.set(pattern, []);
+      patternMap.get(pattern)!.push({ pageviews: post.pageviews, title: keyword });
+    }
+
+    const results: Array<{ pattern: string; avgCtr: number; avgPageviews: number; count: number; examples: string[] }> = [];
+    for (const [pattern, entries] of patternMap) {
+      if (entries.length < 2) continue; // Need at least 2 data points
+      const avgPageviews = entries.reduce((sum, e) => sum + e.pageviews, 0) / entries.length;
+      // CTR estimated from pageviews rank (higher pageviews ≈ higher CTR)
+      const avgCtr = avgPageviews / (posts[0]?.pageviews || 1);
+      results.push({
+        pattern,
+        avgCtr,
+        avgPageviews,
+        count: entries.length,
+        examples: entries.slice(0, 3).map(e => e.title),
+      });
+    }
+
+    return results.sort((a, b) => b.avgPageviews - a.avgPageviews);
+  }
+
+  /**
+   * Classify a title/keyword into a pattern category for A/B analysis.
+   */
+  private classifyTitlePattern(title: string): string {
+    const lower = title.toLowerCase();
+    if (/^how to\s/i.test(lower)) return 'How-To Question';
+    if (/^what\s|^why\s|^when\s|^where\s/i.test(lower)) return 'W-Question';
+    if (/\bvs\b|\bversus\b/i.test(lower)) return 'X vs Y Comparison';
+    if (/^\d+\s+best\b|^best\s/i.test(lower)) return 'Best-Of List';
+    if (/^\d+\s/i.test(lower)) return 'Numbered List';
+    if (/\(\d{4}\)|\b\d{4}\b/.test(lower)) return 'Year-Tagged';
+    if (/guide|tutorial|explained/i.test(lower)) return 'Guide/Tutorial';
+    if (/analysis|review|breakdown/i.test(lower)) return 'Analysis/Review';
+    return 'Standard';
+  }
+
+  /**
+   * Get topic cluster performance: aggregate metrics grouped by category/niche.
+   */
+  async getClusterPerformance(historyEntries: PostHistoryEntry[]): Promise<Map<string, {
+    totalPageviews: number;
+    postCount: number;
+    avgBounceRate: number;
+    avgEngagement: number;
+    topPost: string;
+  }>> {
+    const posts = await this.getTopPerformingPosts(100);
+    const clusterMap = new Map<string, { totalPageviews: number; postCount: number; bounceSum: number; engagementSum: number; topPost: string; topViews: number }>();
+
+    for (const post of posts) {
+      const entry = historyEntries.find(e => {
+        const entryPath = new URL(e.postUrl).pathname.replace(/\/$/, '');
+        return post.url.replace(/\/$/, '') === entryPath;
+      });
+
+      const niche = entry?.niche || 'uncategorized';
+      const existing = clusterMap.get(niche) || { totalPageviews: 0, postCount: 0, bounceSum: 0, engagementSum: 0, topPost: '', topViews: 0 };
+
+      existing.totalPageviews += post.pageviews;
+      existing.postCount++;
+      existing.bounceSum += post.bounceRate;
+      existing.engagementSum += post.avgEngagementTime;
+      if (post.pageviews > existing.topViews) {
+        existing.topViews = post.pageviews;
+        existing.topPost = post.url;
+      }
+      clusterMap.set(niche, existing);
+    }
+
+    const result = new Map<string, { totalPageviews: number; postCount: number; avgBounceRate: number; avgEngagement: number; topPost: string }>();
+    for (const [niche, data] of clusterMap) {
+      result.set(niche, {
+        totalPageviews: data.totalPageviews,
+        postCount: data.postCount,
+        avgBounceRate: data.postCount > 0 ? data.bounceSum / data.postCount : 0,
+        avgEngagement: data.postCount > 0 ? data.engagementSum / data.postCount : 0,
+        topPost: data.topPost,
+      });
+    }
+
+    return result;
+  }
+
   private async getAccessToken(): Promise<string> {
     return getGoogleAccessToken(this.saKey, 'https://www.googleapis.com/auth/analytics.readonly');
   }

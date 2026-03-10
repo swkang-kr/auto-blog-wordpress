@@ -54,7 +54,7 @@ const CONTENT_TYPE_MIN_WORDS: Record<string, number> = {
   'product-review': 1600,
   'best-x-for-y': 1500,
   'x-vs-y': 1500,
-  'news-explainer': 1200,
+  'news-explainer': 1500,
   'listicle': 1400,
 };
 
@@ -289,6 +289,15 @@ export function validateContent(
   if (totalImages < 3) {
     warnings.push({ category: 'structure', message: `Only ${totalImages} images (recommend 4+)`, severity: 'warning' });
     structureScore -= 2;
+  }
+
+  // 6b. Mobile rendering validation (tables and SVGs)
+  const mobileIssues = validateMobileRendering(html);
+  if (mobileIssues.length > 0) {
+    for (const issue of mobileIssues) {
+      warnings.push({ category: 'structure', message: issue, severity: 'warning' });
+    }
+    structureScore -= Math.min(4, mobileIssues.length * 2);
   }
 
   // 7. Outdated year references (stale content detection)
@@ -1217,6 +1226,68 @@ export function validatePillarPage(
     issues,
     score: Math.max(0, score),
   };
+}
+
+// ── Mobile Rendering Validator ──
+
+/**
+ * Validate HTML content for mobile rendering issues.
+ * Checks tables, SVGs, and fixed-width elements that may break on small screens.
+ */
+function validateMobileRendering(html: string): string[] {
+  const issues: string[] = [];
+
+  // 1. Tables without responsive wrapper or overflow handling
+  const tableMatches = html.match(/<table[\s>]/gi) || [];
+  if (tableMatches.length > 0) {
+    // Check if tables have responsive wrapping
+    const hasResponsiveWrap = /ab-table-wrap|overflow-x|overflow:\s*auto/i.test(html);
+    const hasFixedWidth = /<table[^>]*width="\d{4,}/i.test(html); // Tables with 1000+ px width
+    if (!hasResponsiveWrap && tableMatches.length > 0) {
+      issues.push(`${tableMatches.length} table(s) without responsive wrapper (add overflow-x:auto for mobile)`);
+    }
+    if (hasFixedWidth) {
+      issues.push('Table with fixed pixel width >1000px detected (use width:100% for mobile)');
+    }
+  }
+
+  // 2. SVGs without responsive sizing
+  const svgMatches = html.match(/<svg[^>]*>/gi) || [];
+  for (const svg of svgMatches) {
+    const hasMaxWidth = /max-width/i.test(svg);
+    const hasPercentWidth = /width:\s*100%/i.test(svg) || /width="100%"/i.test(svg);
+    const hasFixedPxWidth = /width[=:]\s*"?\d{4,}(?:px)?/i.test(svg); // 1000+ px SVG
+    if (hasFixedPxWidth && !hasMaxWidth && !hasPercentWidth) {
+      issues.push('SVG with fixed pixel width detected (add max-width and width:100% for mobile)');
+    }
+  }
+
+  // 3. Fixed-width inline styles that break mobile (> 600px)
+  const fixedWidthDivs = html.match(/<div[^>]*style="[^"]*width:\s*\d{4,}px/gi) || [];
+  if (fixedWidthDivs.length > 0) {
+    issues.push(`${fixedWidthDivs.length} div(s) with fixed pixel width >1000px (use max-width for mobile)`);
+  }
+
+  // 4. Float layouts without mobile override
+  const floatElements = html.match(/float:\s*(?:left|right)[^"]*width:\s*\d+%/gi) || [];
+  if (floatElements.length > 0) {
+    // Check if there are media queries or responsive fallbacks
+    const hasMediaQuery = /@media/i.test(html);
+    if (!hasMediaQuery) {
+      issues.push(`${floatElements.length} float layout(s) without mobile media query fallback`);
+    }
+  }
+
+  // 5. Horizontal scroll risk: elements with min-width > viewport
+  const minWidthMatches = html.match(/min-width:\s*(\d+)px/gi) || [];
+  for (const match of minWidthMatches) {
+    const px = parseInt(match.match(/(\d+)/)?.[1] || '0');
+    if (px > 768) {
+      issues.push(`Element with min-width:${px}px will cause horizontal scroll on mobile`);
+    }
+  }
+
+  return issues;
 }
 
 // ── Batch Duplicate Checker ──

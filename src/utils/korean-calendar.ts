@@ -246,11 +246,15 @@ const KOREAN_EVENTS: SeasonalEvent[] = [
 export interface SeasonalContext {
   events: string[];
   suggestions: string[];
+  /** Upcoming events 2-3 months ahead — publish content early for SEO ranking */
+  upcomingEvents: string[];
+  upcomingSuggestions: string[];
 }
 
 /**
  * Get seasonal context for the current date.
  * Returns relevant Korean events and content suggestions.
+ * Also detects upcoming events 2-3 months ahead for pre-seasonal SEO content.
  */
 export function getSeasonalContext(date: Date = new Date()): SeasonalContext {
   const month = date.getMonth() + 1; // 1-indexed
@@ -258,61 +262,117 @@ export function getSeasonalContext(date: Date = new Date()): SeasonalContext {
 
   const activeEvents: string[] = [];
   const activeSuggestions: string[] = [];
+  const upcomingEvents: string[] = [];
+  const upcomingSuggestions: string[] = [];
+
+  // Future date 2-3 months ahead for pre-seasonal detection
+  const futureDate2m = new Date(date);
+  futureDate2m.setMonth(futureDate2m.getMonth() + 2);
+  const futureMonth2 = futureDate2m.getMonth() + 1;
+
+  const futureDate3m = new Date(date);
+  futureDate3m.setMonth(futureDate3m.getMonth() + 3);
+  const futureMonth3 = futureDate3m.getMonth() + 1;
 
   for (const event of KOREAN_EVENTS) {
     const [startMonth, endMonth] = event.months;
-    let inRange = false;
 
+    // Check current active events
+    let inRange = false;
     if (startMonth <= endMonth) {
       inRange = month >= startMonth && month <= endMonth;
     } else {
-      // Wraps around year end (e.g., Dec-Jan)
       inRange = month >= startMonth || month <= endMonth;
     }
 
-    if (!inRange) continue;
-
-    // Check day range if specified (approximate — include 2 weeks before for planning)
-    if (event.days) {
-      const [startDay, endDay] = event.days;
-      if (month === event.months[0] && day < startDay - 14) continue;
-      if (month === event.months[1] && day > endDay + 7) continue;
+    if (inRange) {
+      if (event.days) {
+        const [startDay, endDay] = event.days;
+        if (month === event.months[0] && day < startDay - 14) { /* skip */ }
+        else if (month === event.months[1] && day > endDay + 7) { /* skip */ }
+        else {
+          activeEvents.push(event.name);
+          activeSuggestions.push(...event.suggestions);
+        }
+      } else {
+        activeEvents.push(event.name);
+        activeSuggestions.push(...event.suggestions);
+      }
+      continue; // Already active, no need to check upcoming
     }
 
-    activeEvents.push(event.name);
-    activeSuggestions.push(...event.suggestions);
+    // Check if event is 2-3 months ahead (pre-seasonal SEO window)
+    let isUpcoming = false;
+    if (startMonth <= endMonth) {
+      isUpcoming = futureMonth2 >= startMonth && futureMonth2 <= endMonth ||
+                   futureMonth3 >= startMonth && futureMonth3 <= endMonth;
+    } else {
+      isUpcoming = futureMonth2 >= startMonth || futureMonth2 <= endMonth ||
+                   futureMonth3 >= startMonth || futureMonth3 <= endMonth;
+    }
+
+    if (isUpcoming && !activeEvents.includes(event.name)) {
+      upcomingEvents.push(`[Upcoming] ${event.name}`);
+      upcomingSuggestions.push(...event.suggestions.map(s => `[Pre-seasonal] ${s}`));
+    }
   }
 
-  return { events: activeEvents, suggestions: activeSuggestions };
+  return { events: activeEvents, suggestions: activeSuggestions, upcomingEvents, upcomingSuggestions };
 }
 
 /**
  * Get seasonal suggestions filtered by niche.
+ * Includes both active and upcoming (2-3 months ahead) suggestions.
  */
 export function getSeasonalSuggestionsForNiche(nicheCategory: string, date: Date = new Date()): string[] {
   const month = date.getMonth() + 1;
   const day = date.getDate();
   const suggestions: string[] = [];
 
+  // Future months for pre-seasonal detection
+  const futureDate2m = new Date(date);
+  futureDate2m.setMonth(futureDate2m.getMonth() + 2);
+  const futureMonth2 = futureDate2m.getMonth() + 1;
+  const futureDate3m = new Date(date);
+  futureDate3m.setMonth(futureDate3m.getMonth() + 3);
+  const futureMonth3 = futureDate3m.getMonth() + 1;
+
   for (const event of KOREAN_EVENTS) {
     if (!event.niches.includes(nicheCategory)) continue;
 
     const [startMonth, endMonth] = event.months;
+
+    // Check active range
     let inRange = false;
     if (startMonth <= endMonth) {
       inRange = month >= startMonth && month <= endMonth;
     } else {
       inRange = month >= startMonth || month <= endMonth;
     }
-    if (!inRange) continue;
 
-    if (event.days) {
-      const [startDay, endDay] = event.days;
-      if (month === event.months[0] && day < startDay - 14) continue;
-      if (month === event.months[1] && day > endDay + 7) continue;
+    if (inRange) {
+      if (event.days) {
+        const [startDay, endDay] = event.days;
+        if (month === event.months[0] && day < startDay - 14) continue;
+        if (month === event.months[1] && day > endDay + 7) continue;
+      }
+      suggestions.push(...event.suggestions);
+      continue;
     }
 
-    suggestions.push(...event.suggestions);
+    // Check upcoming (2-3 months ahead) for pre-seasonal SEO
+    let isUpcoming = false;
+    if (startMonth <= endMonth) {
+      isUpcoming = (futureMonth2 >= startMonth && futureMonth2 <= endMonth) ||
+                   (futureMonth3 >= startMonth && futureMonth3 <= endMonth);
+    } else {
+      isUpcoming = futureMonth2 >= startMonth || futureMonth2 <= endMonth ||
+                   futureMonth3 >= startMonth || futureMonth3 <= endMonth;
+    }
+
+    if (isUpcoming) {
+      suggestions.push(...event.suggestions.map(s => `[Publish early for SEO] ${s}`));
+    }
   }
 
   return suggestions;

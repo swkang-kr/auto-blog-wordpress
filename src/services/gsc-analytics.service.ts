@@ -357,9 +357,182 @@ export class GSCAnalyticsService {
       parts.push(`### Declining Pages (may need content refresh):\n${decLines}`);
     }
 
+    // CTR analysis by position bucket
+    const ctrByPosition = [
+      { label: 'Position 1-3', min: 1, max: 3, queries: topQueries.filter(q => q.position >= 1 && q.position <= 3) },
+      { label: 'Position 4-10', min: 4, max: 10, queries: topQueries.filter(q => q.position >= 4 && q.position <= 10) },
+      { label: 'Position 11-20', min: 11, max: 20, queries: topQueries.filter(q => q.position >= 11 && q.position <= 20) },
+    ].filter(b => b.queries.length > 0);
+
+    if (ctrByPosition.length > 0) {
+      const ctrLines = ctrByPosition.map(b => {
+        const avgCtr = b.queries.reduce((sum, q) => sum + q.ctr, 0) / b.queries.length;
+        const expectedCtr = b.min <= 3 ? 0.15 : b.min <= 10 ? 0.05 : 0.02;
+        const verdict = avgCtr < expectedCtr * 0.6 ? '⚠ LOW — title/meta needs optimization' : avgCtr > expectedCtr * 1.2 ? '✓ Above average' : '→ Normal range';
+        return `  - ${b.label}: ${(avgCtr * 100).toFixed(1)}% avg CTR (${b.queries.length} queries) ${verdict}`;
+      }).join('\n');
+      parts.push(`### CTR Analysis by Position (title/meta effectiveness):\n${ctrLines}`);
+    }
+
     parts.push('\nUse striking distance keywords as supporting content opportunities. Avoid creating content that competes with your top queries.');
 
     return parts.join('\n\n');
+  }
+
+  /**
+   * Track keyword rankings for specific posts over time.
+   * Returns position data for each post's target keyword for trend analysis.
+   */
+  async getKeywordRankings(postKeywords: Array<{ url: string; keyword: string }>): Promise<Array<{
+    url: string;
+    keyword: string;
+    position: number;
+    clicks: number;
+    impressions: number;
+    ctr: number;
+  }>> {
+    if (postKeywords.length === 0) return [];
+
+    try {
+      const accessToken = await this.getAccessToken();
+      const { data } = await axios.post(
+        `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(this.siteUrl)}/searchAnalytics/query`,
+        {
+          startDate: this.getDateString(-7),
+          endDate: this.getDateString(-1),
+          dimensions: ['query', 'page'],
+          rowLimit: 500,
+        },
+        { headers: { Authorization: `Bearer ${accessToken}` }, timeout: 15000 },
+      );
+
+      type GSCRow = { keys: string[]; clicks: number; impressions: number; ctr: number; position: number };
+      const rows = (data as { rows?: GSCRow[] }).rows || [];
+
+      // Match rows to our target keywords
+      const results: Array<{ url: string; keyword: string; position: number; clicks: number; impressions: number; ctr: number }> = [];
+
+      for (const { url, keyword } of postKeywords) {
+        const kwLower = keyword.toLowerCase();
+        const kwWords = kwLower.split(/\s+/).filter(w => w.length > 3);
+
+        // Find best matching row for this post+keyword combination
+        const matchingRows = rows.filter(r => {
+          const rowPage = r.keys[1];
+          const rowQuery = r.keys[0].toLowerCase();
+          const pageMatch = url.includes(rowPage.replace(/^https?:\/\/[^/]+/, '').replace(/\/$/, '')) ||
+                           rowPage.includes(url.replace(/\/$/, ''));
+          if (!pageMatch) return false;
+
+          // Keyword match: exact or most words overlap
+          const matchedWords = kwWords.filter(w => rowQuery.includes(w));
+          return matchedWords.length >= Math.min(2, kwWords.length);
+        });
+
+        if (matchingRows.length > 0) {
+          // Use the row with most impressions as the primary ranking
+          const best = matchingRows.sort((a, b) => b.impressions - a.impressions)[0];
+          results.push({
+            url,
+            keyword,
+            position: best.position,
+            clicks: best.clicks,
+            impressions: best.impressions,
+            ctr: best.ctr,
+          });
+        }
+      }
+
+      logger.info(`Keyword rankings: tracked ${results.length}/${postKeywords.length} keywords`);
+      return results;
+    } catch (error) {
+      logger.warn(`Keyword ranking tracking failed: ${error instanceof Error ? error.message : error}`);
+      return [];
+    }
+  }
+
+  /**
+   * Detect keyword cannibalization: queries where 2+ pages from our site
+   * compete for the same search query. Returns pairs that should be
+   * merged, consolidated, or differentiated.
+   */
+  async detectCannibalization(): Promise<Array<{
+    query: string;
+    pages: Array<{ page: string; position: number; clicks: number; impressions: number; ctr: number }>;
+    recommendation: 'merge' | 'redirect' | 'differentiate';
+    severity: 'high' | 'medium' | 'low';
+  }>> {
+    try {
+      const accessToken = await this.getAccessToken();
+      const { data } = await axios.post(
+        `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(this.siteUrl)}/searchAnalytics/query`,
+        {
+          startDate: this.getDateString(-28),
+          endDate: this.getDateString(-1),
+          dimensions: ['query', 'page'],
+          rowLimit: 1000,
+        },
+        { headers: { Authorization: `Bearer ${accessToken}` }, timeout: 20000 },
+      );
+
+      type GSCRow = { keys: string[]; clicks: number; impressions: number; ctr: number; position: number };
+      const rows = (data as { rows?: GSCRow[] }).rows || [];
+
+      // Group by query
+      const queryPages = new Map<string, Array<{ page: string; position: number; clicks: number; impressions: number; ctr: number }>>();
+      for (const row of rows) {
+        const query = row.keys[0];
+        const page = row.keys[1];
+        if (!queryPages.has(query)) queryPages.set(query, []);
+        queryPages.get(query)!.push({
+          page, position: row.position, clicks: row.clicks, impressions: row.impressions, ctr: row.ctr,
+        });
+      }
+
+      // Find queries with 2+ pages (cannibalization)
+      const cannibalized: Array<{
+        query: string;
+        pages: Array<{ page: string; position: number; clicks: number; impressions: number; ctr: number }>;
+        recommendation: 'merge' | 'redirect' | 'differentiate';
+        severity: 'high' | 'medium' | 'low';
+      }> = [];
+
+      for (const [query, pages] of queryPages) {
+        if (pages.length < 2) continue;
+        // Only flag if both pages have meaningful impressions
+        const significantPages = pages.filter(p => p.impressions >= 5);
+        if (significantPages.length < 2) continue;
+
+        significantPages.sort((a, b) => a.position - b.position);
+        const posGap = significantPages[1].position - significantPages[0].position;
+        const totalImpressions = significantPages.reduce((sum, p) => sum + p.impressions, 0);
+
+        // Determine severity and recommendation
+        let severity: 'high' | 'medium' | 'low';
+        let recommendation: 'merge' | 'redirect' | 'differentiate';
+
+        if (posGap < 5 && totalImpressions > 50) {
+          severity = 'high';
+          recommendation = 'merge'; // Pages are close in ranking, splitting authority
+        } else if (posGap < 10) {
+          severity = 'medium';
+          recommendation = 'redirect'; // One page should absorb the other
+        } else {
+          severity = 'low';
+          recommendation = 'differentiate'; // Differentiate content angles
+        }
+
+        cannibalized.push({ query, pages: significantPages, recommendation, severity });
+      }
+
+      return cannibalized.sort((a, b) => {
+        const sevOrder = { high: 0, medium: 1, low: 2 };
+        return sevOrder[a.severity] - sevOrder[b.severity];
+      });
+    } catch (error) {
+      logger.warn(`Cannibalization detection failed: ${error instanceof Error ? error.message : error}`);
+      return [];
+    }
   }
 
   private async getAccessToken(): Promise<string> {

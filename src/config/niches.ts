@@ -6,8 +6,9 @@ import type { NicheConfig } from '../types/index.js';
  * Niches matching current Korean seasonal events are boosted to the front.
  */
 export function getSeasonallyOrderedNiches(): NicheConfig[] {
-  const { events } = getSeasonalContext();
-  if (events.length === 0) return [...NICHES];
+  const { events, upcomingEvents } = getSeasonalContext();
+  const allEvents = [...events, ...upcomingEvents];
+  if (allEvents.length === 0) return [...NICHES];
 
   // Map seasonal events back to niche categories that are relevant right now
   const KOREAN_EVENTS_NICHE_MAP: Record<string, string[]> = {
@@ -36,7 +37,7 @@ export function getSeasonallyOrderedNiches(): NicheConfig[] {
   };
 
   const boostedCategories = new Set<string>();
-  for (const event of events) {
+  for (const event of allEvents) {
     for (const [key, categories] of Object.entries(KOREAN_EVENTS_NICHE_MAP)) {
       if (event.includes(key)) {
         categories.forEach(c => boostedCategories.add(c));

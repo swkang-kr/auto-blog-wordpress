@@ -311,6 +311,129 @@ export class ContentRefreshService {
     return refreshedCount;
   }
 
+  /**
+   * Auto-refresh yearly content (titles containing a year) at the start of a new year.
+   * E.g., "Best Korean ETFs for 2025" → triggers refresh in January 2026.
+   * Returns the number of posts refreshed.
+   */
+  async refreshYearlyContent(
+    freshnessData: Array<PostHistoryEntry & { freshnessScore: number }>,
+    seoService?: SeoService,
+    limit: number = 3,
+  ): Promise<number> {
+    const currentYear = new Date().getFullYear();
+    const currentMonth = new Date().getMonth(); // 0-indexed
+    const previousYear = currentYear - 1;
+
+    // Only trigger in first quarter (Jan-Mar) for previous year's content
+    if (currentMonth > 2) {
+      logger.debug('Yearly refresh: Not in Q1, skipping');
+      return 0;
+    }
+
+    const yearlyPosts = freshnessData.filter(entry => {
+      const titleOrKeyword = entry.keyword.toLowerCase();
+      return titleOrKeyword.includes(previousYear.toString()) && !titleOrKeyword.includes(currentYear.toString());
+    });
+
+    if (yearlyPosts.length === 0) {
+      logger.info(`Yearly refresh: No ${previousYear} posts found needing update to ${currentYear}`);
+      return 0;
+    }
+
+    logger.info(`Yearly refresh: Found ${yearlyPosts.length} post(s) with ${previousYear} references, refreshing up to ${limit}`);
+
+    let refreshedCount = 0;
+    const refreshedUrls: string[] = [];
+
+    for (const entry of yearlyPosts.slice(0, limit)) {
+      const slug = new URL(entry.postUrl).pathname.replace(/^\/|\/$/g, '');
+      if (!slug) continue;
+
+      try {
+        const { data: posts } = await this.api.get('/posts', {
+          params: { slug, status: 'publish', _fields: 'id,title,slug,content,link,date,meta' },
+        });
+        const post = (posts as WPPost[])[0];
+        if (!post) continue;
+
+        logger.info(`Yearly refresh: Updating "${post.title.rendered}" (${previousYear} → ${currentYear})`);
+
+        const rewritten = await this.rewriteContent(post, { pageviews: 0, bounceRate: 0, avgEngagementTime: 0 });
+        if (!rewritten) continue;
+
+        const nowIso = new Date().toISOString();
+        await this.api.post(`/posts/${post.id}`, {
+          title: rewritten.title,
+          content: rewritten.html,
+          excerpt: rewritten.excerpt,
+          meta: {
+            _last_updated: nowIso,
+            _autoblog_modified_time: nowIso,
+            _rewrite_reason: `Yearly refresh: ${previousYear} → ${currentYear}`,
+            rank_math_description: rewritten.excerpt,
+          },
+        });
+
+        refreshedCount++;
+        refreshedUrls.push(post.link);
+        logger.info(`Yearly refresh: Successfully updated "${rewritten.title}"`);
+        await new Promise(r => setTimeout(r, 2000));
+      } catch (error) {
+        logger.warn(`Yearly refresh failed for "${slug}": ${error instanceof Error ? error.message : error}`);
+      }
+    }
+
+    if (seoService && refreshedUrls.length > 0) {
+      try {
+        await seoService.notifyIndexNow(refreshedUrls);
+        for (const url of refreshedUrls) await seoService.requestIndexing(url);
+        logger.info(`Yearly refresh: Submitted ${refreshedUrls.length} URL(s) for re-indexing`);
+      } catch (error) {
+        logger.warn(`Yearly refresh: Re-indexing failed: ${error instanceof Error ? error.message : error}`);
+      }
+    }
+
+    return refreshedCount;
+  }
+
+  /**
+   * Monitor and report evergreen content ratio.
+   * Logs a warning if evergreen ratio drops below 70% of total content.
+   * Returns { evergreenPct, seasonalPct, timeSensitivePct }.
+   */
+  static checkEvergreenRatio(
+    historyEntries: Array<PostHistoryEntry>,
+  ): { evergreenPct: number; seasonalPct: number; timeSensitivePct: number; healthy: boolean } {
+    if (historyEntries.length === 0) return { evergreenPct: 100, seasonalPct: 0, timeSensitivePct: 0, healthy: true };
+
+    const counts = { evergreen: 0, seasonal: 0, 'time-sensitive': 0 };
+    for (const entry of historyEntries) {
+      const freshClass = entry.contentType
+        ? (CONTENT_FRESHNESS_MAP[entry.contentType] || 'seasonal')
+        : 'seasonal';
+      counts[freshClass]++;
+    }
+
+    const total = historyEntries.length;
+    const evergreenPct = Math.round((counts.evergreen / total) * 100);
+    const seasonalPct = Math.round((counts.seasonal / total) * 100);
+    const timeSensitivePct = Math.round((counts['time-sensitive'] / total) * 100);
+    const healthy = evergreenPct >= 50; // Target 50%+, ideal 70%
+
+    if (!healthy) {
+      logger.warn(
+        `Evergreen ratio alert: ${evergreenPct}% evergreen (target: 50%+). ` +
+        `Distribution: ${evergreenPct}% evergreen, ${seasonalPct}% seasonal, ${timeSensitivePct}% time-sensitive. ` +
+        `Consider prioritizing how-to, deep-dive, and case-study content types.`,
+      );
+    } else {
+      logger.info(`Evergreen ratio: ${evergreenPct}% (healthy). Distribution: ${evergreenPct}%/${seasonalPct}%/${timeSensitivePct}%`);
+    }
+
+    return { evergreenPct, seasonalPct, timeSensitivePct, healthy };
+  }
+
   private async rewriteContent(
     post: WPPost,
     perf: { pageviews: number; bounceRate: number; avgEngagementTime: number },
@@ -324,6 +447,10 @@ export class ContentRefreshService {
 
     // Extract primary keyword from Rank Math meta if available
     const focusKeyword = post.meta?.rank_math_focus_keyword || '';
+
+    const currentYear = new Date().getFullYear();
+    const dateFormatted = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    const monthYear = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 
     const prompt = `You are rewriting an underperforming blog post to improve reader engagement and reduce bounce rate. The post exists at ${post.link} and must keep its URL/slug unchanged.
 
@@ -342,16 +469,22 @@ REWRITE RULES:
 6. Add a compelling FAQ section (3-5 questions) if missing
 7. Target 2,500+ words
 8. Use the same inline CSS styling as the original
-9. Include "Last Updated: ${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}" banner at top
+9. Include "Last Updated: ${dateFormatted}" banner at top
 10. Add a "What Changed in This Update" section right after the Last Updated banner using this format:
     <div class="ab-what-changed" style="margin:0 0 24px 0; padding:16px 20px; background:#f0fff4; border:1px solid #c6f6d5; border-radius:8px; font-size:14px; color:#555; line-height:1.6;">
-    <strong>What Changed in This Update (${new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}):</strong>
+    <strong>What Changed in This Update (${monthYear}):</strong>
     <ul style="margin:8px 0 0 0; padding-left:20px;">
-    <li>Updated data and statistics for ${new Date().getFullYear()}</li>
+    <li>Updated data and statistics for ${currentYear}</li>
     <li>Improved analysis with latest market insights</li>
     <li>Enhanced readability and structure</li>
     </ul></div>
 11. Write a CTR-optimized meta description: [Benefit] + [Primary Keyword] + [Call-to-Action], 145-158 chars
+12. TITLE UPDATE RULES (freshness signal for CTR):
+    - If the title does NOT contain a year, append "(${currentYear} Guide)" or "(Updated ${currentYear})" — pick what fits naturally
+    - If the title contains an older year (e.g., 2024, 2025), replace it with ${currentYear}
+    - If the title already contains ${currentYear}, keep it as-is
+    - Keep the title 50-65 characters (SERP sweet spot)
+13. EXCERPT/META DESCRIPTION update: Must reference "${currentYear}" or "latest" for freshness signal
 
 Return JSON: {"title":"improved title","html":"full HTML content","excerpt":"compelling 145-158 char meta description"}
 Return pure JSON only. No markdown.`;

@@ -781,6 +781,25 @@ ${socialHtml}
     return NICHE_DISCLAIMERS[category] || '';
   }
 
+  /**
+   * Build "Cite This Article" box for link building and credibility.
+   * Provides a ready-to-copy citation + embed code for other sites.
+   */
+  private buildCiteThisArticleHtml(postUrl: string, title: string, category: string): string {
+    const escapedTitle = this.escapeHtml(title);
+    const year = new Date().getFullYear();
+    const siteName = this.siteOwner || 'TrendHunt';
+    const citation = `${escapedTitle}. ${siteName}, ${year}. Available at: ${postUrl}`;
+
+    return `<details style="margin:24px 0; border:1px solid #e5e7eb; border-radius:8px; overflow:hidden;">
+<summary style="padding:12px 20px; font-weight:600; font-size:14px; color:#555; cursor:pointer; background:#f8f9fa; list-style:none;">Cite This Article</summary>
+<div style="padding:16px 20px;">
+<p style="margin:0 0 12px 0; font-size:13px; color:#666; line-height:1.6;"><strong>APA:</strong> ${escapedTitle}. (${year}). <em>${siteName}</em>. ${postUrl}</p>
+<p style="margin:0 0 12px 0; font-size:13px; color:#666; line-height:1.6;"><strong>Plain text:</strong> ${citation}</p>
+<p style="margin:0; font-size:12px; color:#999;">Copy and paste the citation above to reference this article in your work.</p>
+</div></details>`;
+  }
+
   private buildShareCtaHtml(postUrl: string, title: string): string {
     const encodedUrl = encodeURIComponent(postUrl);
     const encodedTitle = encodeURIComponent(title);
@@ -796,16 +815,35 @@ ${socialHtml}
   /**
    * Build email newsletter subscription CTA with form.
    */
+  /** Niche-specific lead magnet descriptions for newsletter CTA */
+  private static readonly NICHE_LEAD_MAGNETS: Record<string, { title: string; description: string }> = {
+    'Korean Tech': { title: 'Free: Korean Tech Investment Cheat Sheet', description: 'Get our curated list of top Korean tech companies, key metrics, and analyst picks — updated monthly.' },
+    'Korean Finance': { title: 'Free: KOSPI Investor Starter Kit', description: 'Download our guide to investing in Korean stocks: brokerage comparison, tax tips, and top ETF picks.' },
+    'K-Beauty': { title: 'Free: K-Beauty Routine Builder Guide', description: 'Get our step-by-step skincare routine builder with product recommendations for your skin type.' },
+    'Korea Travel': { title: 'Free: Korea Travel Planning Checklist', description: 'Download our comprehensive Korea trip checklist: visa, budget, itinerary templates, and insider tips.' },
+    'K-Entertainment': { title: 'Free: K-Pop Industry Map', description: 'Get our visual guide to the K-pop business ecosystem: agencies, revenue streams, and market data.' },
+  };
+
   private buildEmailNewsletterCta(category: string, formUrl: string): string {
     const safeCategory = this.escapeHtml(category);
+    const leadMagnet = WordPressService.NICHE_LEAD_MAGNETS[category];
+    const leadMagnetHtml = leadMagnet
+      ? `<p style="margin:0 0 12px 0; padding:10px 16px; background:rgba(255,255,255,0.15); border-radius:6px; font-size:13px; color:rgba(255,255,255,0.95); line-height:1.5;">🎁 <strong>${this.escapeHtml(leadMagnet.title)}</strong> — ${this.escapeHtml(leadMagnet.description)}</p>`
+      : '';
+
+    // GA4 event tracking: gtag conversion event on form submit
+    const ga4TrackingScript = `<script>document.querySelector('.ab-newsletter-form')?.addEventListener('submit',function(){if(typeof gtag==='function'){gtag('event','newsletter_signup',{event_category:'engagement',event_label:'${safeCategory}',value:1})}});</script>`;
+
     return `<div class="ab-newsletter-cta">
 <p style="margin:0 0 8px 0; font-size:20px; font-weight:700;">Get ${safeCategory} Insights Weekly</p>
-<p style="margin:0 0 16px 0; font-size:14px; color:rgba(255,255,255,0.85); line-height:1.5;">Join readers who get our latest Korea analysis delivered to their inbox every week. No spam, unsubscribe anytime.</p>
-<form action="${this.escapeHtml(formUrl)}" method="POST" target="_blank" rel="noopener noreferrer" style="display:flex; flex-wrap:wrap; justify-content:center; gap:8px;">
+${leadMagnetHtml}<p style="margin:0 0 16px 0; font-size:14px; color:rgba(255,255,255,0.85); line-height:1.5;">Join readers who get our latest Korea analysis delivered to their inbox every week. No spam, unsubscribe anytime.</p>
+<form class="ab-newsletter-form" action="${this.escapeHtml(formUrl)}" method="POST" target="_blank" rel="noopener noreferrer" style="display:flex; flex-wrap:wrap; justify-content:center; gap:8px;">
 <input type="email" name="email" placeholder="your@email.com" required style="padding:10px 16px; border:none; border-radius:6px; font-size:15px; width:60%; max-width:300px;">
+<input type="hidden" name="source" value="${safeCategory}">
 <button type="submit" style="padding:10px 24px; background:#fff; color:#0066FF; border:none; border-radius:6px; font-weight:700; font-size:15px; cursor:pointer;">Subscribe Free</button>
 </form>
-<p style="margin:10px 0 0 0; font-size:11px; color:rgba(255,255,255,0.5);">We respect your privacy. Unsubscribe at any time.</p></div>`;
+<p style="margin:10px 0 0 0; font-size:11px; color:rgba(255,255,255,0.5);">We respect your privacy. Unsubscribe at any time.</p></div>
+${ga4TrackingScript}`;
   }
 
   /**
@@ -1176,6 +1214,14 @@ ${socialHtml}
         ...(options?.featuredImageUrl ? { logo: { '@type': 'ImageObject', url: options.featuredImageUrl } } : {}),
       },
       mainEntityOfPage: { '@type': 'WebPage', '@id': content.slug ? `${this.wpUrl}/${content.slug}/` : this.wpUrl },
+      // InteractionCounter for social proof signals (updated by GA4 data in refresh cycles)
+      interactionStatistic: [
+        {
+          '@type': 'InteractionCounter',
+          interactionType: { '@type': 'ReadAction' },
+          userInteractionCount: 0, // Updated post-publish via refresh service
+        },
+      ],
       speakable: {
         '@type': 'SpeakableSpecification',
         cssSelector: ['.post-content > p:first-of-type', '.post-content h2'],
@@ -1367,13 +1413,14 @@ ${socialHtml}
         };
         logger.debug(`Social meta: OG type=${socialMeta.ogType}, title="${socialMeta.ogTitle.slice(0, 40)}...", image=${socialMeta.ogImage ? 'set' : 'missing'}, twitter=${socialMeta.twitterCard}`);
 
-        // Post-publish updates: JSON-LD URLs, share CTA, canonical fix, external link validation
+        // Post-publish updates: JSON-LD URLs, share CTA, cite box, canonical fix
         try {
-          // Inject share CTA (with actual post URL) before tags section
+          // Inject share CTA + Cite This Article (with actual post URL) before tags section
           const shareCta = this.buildShareCtaHtml(post.url, content.title);
+          const citeBox = this.buildCiteThisArticleHtml(post.url, content.title, content.category);
           let updatedHtml = html.replace(
             /(<div style="margin:30px 0 0 0; padding-top:20px; border-top:1px solid #eee;"><p style="[^"]*font-weight:600[^"]*">Tags<\/p>)/,
-            shareCta + '\n$1',
+            shareCta + '\n' + citeBox + '\n$1',
           );
 
           // Fix JSON-LD mainEntityOfPage and breadcrumb with actual post URL
@@ -1910,6 +1957,88 @@ ${socialHtml}
       logger.info(`Auto-linked ${linkedCount} orphan page connections`);
     }
     return linkedCount;
+  }
+
+  /**
+   * Insert reverse internal links: after publishing a new post,
+   * find 2-3 related existing posts in the same cluster/category
+   * and inject a contextual link to the new post within their content.
+   */
+  async insertReverseLinks(
+    newPostUrl: string,
+    newPostTitle: string,
+    newPostKeyword: string,
+    nicheId: string,
+    existingPosts: ExistingPost[],
+    limit: number = 3,
+  ): Promise<number> {
+    // Find same-niche posts to link from
+    const candidates = existingPosts
+      .filter(p => p.postId && p.subNiche === nicheId && !p.url.includes(newPostUrl.replace(/\/$/, '')))
+      .slice(0, 20);
+
+    if (candidates.length === 0) return 0;
+
+    // Score by keyword overlap for relevance
+    const kwWords = new Set(newPostKeyword.toLowerCase().split(/\s+/).filter(w => w.length > 3));
+    const scored = candidates.map(p => {
+      const titleWords = p.title.toLowerCase().split(/\s+/);
+      const overlap = titleWords.filter(w => kwWords.has(w)).length;
+      return { post: p, relevance: overlap };
+    }).filter(s => s.relevance > 0)
+      .sort((a, b) => b.relevance - a.relevance)
+      .slice(0, limit);
+
+    if (scored.length === 0) {
+      // Fallback: use most recent same-niche posts
+      scored.push(...candidates.slice(0, limit).map(p => ({ post: p, relevance: 0 })));
+    }
+
+    let linked = 0;
+    for (const { post } of scored.slice(0, limit)) {
+      if (!post.postId) continue;
+      try {
+        const { data } = await this.api.get(`/posts/${post.postId}`, {
+          params: { _fields: 'id,content' },
+        });
+        const content = (data.content?.rendered || '') as string;
+
+        // Skip if already links to the new post
+        if (content.includes(newPostUrl.replace(/\/$/, ''))) continue;
+
+        // Find a suitable insertion point: before the last H2 or before disclaimer
+        const anchorText = newPostTitle.length > 60 ? newPostTitle.slice(0, 57) + '...' : newPostTitle;
+        const linkHtml = `\n<div class="ab-related-inline" style="margin:20px 0; padding:14px 18px; background:linear-gradient(135deg,#f0f4ff,#f8f9fa); border-left:3px solid #0066FF; border-radius:0 8px 8px 0; font-size:14px;">` +
+          `<strong>Related:</strong> <a href="${newPostUrl}" style="color:#0066FF; text-decoration:underline;">${this.escapeHtml(anchorText)}</a></div>\n`;
+
+        // Insert before the last H2 heading for natural flow
+        const lastH2Idx = content.lastIndexOf('<h2');
+        let updatedContent: string;
+        if (lastH2Idx > content.length * 0.5) {
+          updatedContent = content.slice(0, lastH2Idx) + linkHtml + content.slice(lastH2Idx);
+        } else {
+          // Fallback: append before disclaimer
+          const disclaimerIdx = content.indexOf('ab-disclaimer');
+          if (disclaimerIdx !== -1) {
+            const insertIdx = content.lastIndexOf('<p', disclaimerIdx);
+            updatedContent = content.slice(0, insertIdx) + linkHtml + content.slice(insertIdx);
+          } else {
+            updatedContent = content + linkHtml;
+          }
+        }
+
+        await this.api.post(`/posts/${post.postId}`, { content: updatedContent });
+        linked++;
+        logger.info(`Reverse link: Added "${newPostTitle.slice(0, 40)}..." link to "${post.title.slice(0, 40)}..."`);
+      } catch (error) {
+        logger.warn(`Reverse link failed for post ${post.postId}: ${error instanceof Error ? error.message : error}`);
+      }
+    }
+
+    if (linked > 0) {
+      logger.info(`Reverse links: Inserted ${linked} backlink(s) to new post`);
+    }
+    return linked;
   }
 
   /** Cached post content from detectOrphanPages for reuse */

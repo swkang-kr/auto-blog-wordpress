@@ -263,6 +263,11 @@ export class PostHistory {
     await this.save();
   }
 
+  /** Persist current history data to disk (for external callers like ranking updates) */
+  async persist(): Promise<void> {
+    await this.save();
+  }
+
   private async save(): Promise<void> {
     await fs.mkdir(path.dirname(HISTORY_FILE), { recursive: true });
     await fs.writeFile(HISTORY_FILE, JSON.stringify(this.data, null, 2), 'utf-8');

@@ -247,10 +247,26 @@ export interface PostHistoryEntry {
   titleTestResolved?: boolean;
   /** Winning title variant from A/B test (for learning) */
   titleTestWinner?: string;
+  /** A/B rotation Phase A CTR (recorded at day 3) */
+  titleTestPhaseACtr?: number;
+  /** A/B rotation Phase A title text */
+  titleTestPhaseATitle?: string;
+  /** Whether Phase B (alternative title) rotation has started */
+  titleTestPhaseBStarted?: boolean;
+  /** A/B rotation Phase B title text */
+  titleTestPhaseBTitle?: string;
+  /** A/B rotation Phase B CTR (recorded at day 6) */
+  titleTestPhaseBCtr?: number;
   /** Series ID for multi-part content (e.g., "korean-stocks-101") */
   seriesId?: string;
   /** Part number within a series */
   seriesPart?: number;
+  /** Keyword position tracking history (date → position) */
+  rankingHistory?: Array<{ date: string; position: number; clicks: number; impressions: number }>;
+  /** Last known keyword ranking position */
+  lastPosition?: number;
+  /** Title pattern classification for CTR analysis */
+  titlePattern?: string;
 }
 
 /** 전체 포스팅 이력 파일 구조 */

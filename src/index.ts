@@ -19,6 +19,7 @@ import { costTracker } from './utils/cost-tracker.js';
 import { logger } from './utils/logger.js';
 import { ContentRefreshService } from './services/content-refresh.service.js';
 import { TopicClusterService } from './services/topic-cluster.service.js';
+import { FactCheckService } from './services/fact-check.service.js';
 import type { PostResult, BatchResult, MediaUploadResult } from './types/index.js';
 import { CATEGORY_PUBLISH_TIMING } from './types/index.js';
 
@@ -236,6 +237,12 @@ async function main(): Promise<void> {
 
   // 2.14. Build topic clusters for cluster-aware internal linking
   const topicClusterService = new TopicClusterService();
+
+  // 2.14b. Initialize fact-check service for pre-publish verification
+  const factCheckService = new FactCheckService();
+
+  // 2.14c. Check evergreen ratio health
+  ContentRefreshService.checkEvergreenRatio(history.getAllEntries());
 
   // 2.15. Manual review mode: force draft for initial posts (AdSense safety)
   let effectivePublishStatus = config.PUBLISH_STATUS as 'publish' | 'draft';
@@ -685,6 +692,20 @@ async function main(): Promise<void> {
       // B-3.7. Generate cluster navigation HTML for related articles
       const clusterNavHtml = topicClusterService.generateClusterNavHtml(niche.id, '');
 
+      // B-3.9. Pre-publish fact verification
+      try {
+        const factResult = await factCheckService.verifyContent(content.html, niche.category);
+        if (factResult.flagged.length > 0) {
+          logger.warn(`Fact-check: ${factResult.flagged.length} issue(s) detected for "${content.title}"`);
+          // Apply auto-corrections where possible
+          if (factResult.corrections.length > 0) {
+            content.html = factCheckService.applyCorrections(content.html, factResult.corrections);
+          }
+        }
+      } catch (factError) {
+        logger.debug(`Fact-check skipped: ${factError instanceof Error ? factError.message : factError}`);
+      }
+
       // B-4. Create WordPress post (English only)
       const post = await wpService.createPost(
         content,
@@ -738,6 +759,16 @@ async function main(): Promise<void> {
 
       // B-9. Google Indexing API
       await seoService.requestIndexing(post.url);
+
+      // B-9.5. Reverse internal linking — inject links to new post in related existing posts
+      try {
+        await wpService.insertReverseLinks(
+          post.url, content.title, researched.analysis.selectedKeyword,
+          niche.id, existingPosts, 3,
+        );
+      } catch (revLinkError) {
+        logger.debug(`Reverse linking failed: ${revLinkError instanceof Error ? revLinkError.message : revLinkError}`);
+      }
 
       // B-10. Record history + category publish timestamp
       await history.recordCategoryPublish(niche.id);
@@ -821,13 +852,112 @@ async function main(): Promise<void> {
       if (timeRefreshed > 0) {
         logger.info(`Time-based refresh: Rewrote ${timeRefreshed} stale post(s) exceeding freshness threshold`);
       }
+
+      // 4.22b. Yearly content refresh (Q1 only: update previous year's content)
+      const yearlyRefreshed = await refreshService.refreshYearlyContent(freshnessData, seoService, 2);
+      if (yearlyRefreshed > 0) {
+        logger.info(`Yearly refresh: Updated ${yearlyRefreshed} post(s) with new year data`);
+      }
     }
   } catch (error) {
-    logger.warn(`Time-based refresh failed: ${error instanceof Error ? error.message : error}`);
+    logger.warn(`Time-based/yearly refresh failed: ${error instanceof Error ? error.message : error}`);
   }
 
-  // 4.25. A/B title testing — multi-signal evaluation after 7+ days
-  // Uses GA4 bounce rate + GSC CTR + engagement time to decide title switches
+  // 4.23. Keyword ranking tracking — store position trends in history
+  if (config.GSC_SITE_URL && config.GOOGLE_INDEXING_SA_KEY) {
+    try {
+      const gscRankingService = new GSCAnalyticsService(config.GSC_SITE_URL || config.WP_URL, config.GOOGLE_INDEXING_SA_KEY);
+      const allEntries = history.getAllEntries();
+      const postKeywords = allEntries
+        .filter(e => e.keyword && e.postUrl)
+        .slice(-50) // Track last 50 posts
+        .map(e => ({ url: e.postUrl, keyword: e.keyword }));
+
+      if (postKeywords.length > 0) {
+        const rankings = await gscRankingService.getKeywordRankings(postKeywords);
+        const today = new Date().toISOString().split('T')[0];
+        let tracked = 0;
+
+        for (const ranking of rankings) {
+          const entry = allEntries.find(e => e.postUrl === ranking.url);
+          if (entry) {
+            if (!entry.rankingHistory) entry.rankingHistory = [];
+            entry.rankingHistory.push({
+              date: today,
+              position: ranking.position,
+              clicks: ranking.clicks,
+              impressions: ranking.impressions,
+            });
+            // Keep only last 30 data points
+            if (entry.rankingHistory.length > 30) {
+              entry.rankingHistory = entry.rankingHistory.slice(-30);
+            }
+            entry.lastPosition = ranking.position;
+            tracked++;
+          }
+        }
+
+        if (tracked > 0) {
+          await history.persist();
+          logger.info(`Keyword rankings: Updated ${tracked} post position(s)`);
+        }
+      }
+    } catch (error) {
+      logger.debug(`Keyword ranking tracking failed: ${error instanceof Error ? error.message : error}`);
+    }
+  }
+
+  // 4.23c. Keyword cannibalization detection — find queries where 2+ pages compete
+  if (config.GSC_SITE_URL && config.GOOGLE_INDEXING_SA_KEY) {
+    try {
+      const gscCannibal = new GSCAnalyticsService(config.GSC_SITE_URL || config.WP_URL, config.GOOGLE_INDEXING_SA_KEY);
+      const cannibalized = await gscCannibal.detectCannibalization();
+      const highSeverity = cannibalized.filter(c => c.severity === 'high');
+      const medSeverity = cannibalized.filter(c => c.severity === 'medium');
+
+      if (cannibalized.length > 0) {
+        logger.warn(`\n=== Keyword Cannibalization Alert: ${cannibalized.length} query(ies) with competing pages ===`);
+        for (const c of highSeverity.slice(0, 5)) {
+          const pageList = c.pages.map(p => `${p.page} (pos ${p.position.toFixed(1)})`).join(' vs ');
+          logger.warn(`  HIGH [${c.recommendation}]: "${c.query}" — ${pageList}`);
+        }
+        for (const c of medSeverity.slice(0, 5)) {
+          const pageList = c.pages.map(p => `${p.page} (pos ${p.position.toFixed(1)})`).join(' vs ');
+          logger.warn(`  MEDIUM [${c.recommendation}]: "${c.query}" — ${pageList}`);
+        }
+      }
+    } catch (error) {
+      logger.debug(`Cannibalization detection failed: ${error instanceof Error ? error.message : error}`);
+    }
+  }
+
+  // 4.23b. Title pattern CTR analysis (log insights for keyword research optimization)
+  if (config.GA4_PROPERTY_ID && config.GOOGLE_INDEXING_SA_KEY) {
+    try {
+      const ga4Patterns = new GA4AnalyticsService(config.GA4_PROPERTY_ID, config.GOOGLE_INDEXING_SA_KEY);
+      const titlePatterns = await ga4Patterns.getTitlePatternPerformance(history.getAllEntries());
+      if (titlePatterns.length > 0) {
+        logger.info('Title pattern performance:');
+        for (const p of titlePatterns.slice(0, 5)) {
+          logger.info(`  ${p.pattern}: ${p.avgPageviews.toFixed(0)} avg views (${p.count} posts)`);
+        }
+      }
+
+      // Topic cluster performance
+      const clusterPerf = await ga4Patterns.getClusterPerformance(history.getAllEntries());
+      if (clusterPerf.size > 0) {
+        logger.info('Topic cluster performance:');
+        for (const [niche, data] of clusterPerf) {
+          logger.info(`  ${niche}: ${data.totalPageviews} total views, ${data.postCount} posts, ${(data.avgBounceRate * 100).toFixed(0)}% bounce`);
+        }
+      }
+    } catch (error) {
+      logger.debug(`Title pattern/cluster analysis failed: ${error instanceof Error ? error.message : error}`);
+    }
+  }
+
+  // 4.25. A/B title testing — real rotation: Title A (days 0-3) → Title B (days 3-6) → winner (day 7+)
+  // Uses GSC CTR as primary signal (most reliable for title effectiveness)
   if (config.GA4_PROPERTY_ID && config.GOOGLE_INDEXING_SA_KEY) {
     try {
       const ga4Service = new GA4AnalyticsService(config.GA4_PROPERTY_ID, config.GOOGLE_INDEXING_SA_KEY);
@@ -836,11 +966,7 @@ async function main(): Promise<void> {
         : null;
 
       const entriesWithCandidates = history.getAllEntries()
-        .filter(e => e.titleCandidates?.length && !e.titleTestResolved)
-        .filter(e => {
-          const age = (Date.now() - new Date(e.publishedAt).getTime()) / (1000 * 60 * 60 * 24);
-          return age >= 7;
-        });
+        .filter(e => e.titleCandidates?.length && !e.titleTestResolved);
 
       if (entriesWithCandidates.length > 0) {
         const [ga4Perf, gscPages] = await Promise.all([
@@ -850,62 +976,108 @@ async function main(): Promise<void> {
 
         for (const entry of entriesWithCandidates.slice(0, 5)) {
           try {
-            const postPerf = ga4Perf.find(p => entry.postUrl.includes(p.url.replace(/^\//, '')));
-            if (!postPerf || postPerf.pageviews < 10) continue;
+            const ageDays = (Date.now() - new Date(entry.publishedAt).getTime()) / (1000 * 60 * 60 * 24);
+            const candidates = entry.titleCandidates!;
 
-            // GSC data: check actual search CTR (more reliable than bounce rate alone)
-            const gscPage = gscPages.find(p => entry.postUrl.includes(p.page.replace(/^https?:\/\/[^/]+/, '')));
-            const searchCtr = gscPage?.ctr ?? null;
+            // Phase 1 (day 0-3): Original title (Title A) — already set at publish
+            if (ageDays < 3) {
+              // Record baseline CTR if GSC data available
+              const gscPage = gscPages.find(p => entry.postUrl.includes(p.page.replace(/^https?:\/\/[^/]+/, '')));
+              if (gscPage && !entry.titleTestPhaseACtr) {
+                entry.titleTestPhaseACtr = gscPage.ctr;
+                entry.titleTestPhaseATitle = entry.keyword; // Current title
+                await history.persist();
+                logger.debug(`A/B test: Phase A baseline recorded for post ${entry.postId} (CTR: ${(gscPage.ctr * 100).toFixed(1)}%)`);
+              }
+              continue;
+            }
 
-            // Multi-signal decision: switch title if poor performance across signals
-            const shouldSwitch =
-              (postPerf.bounceRate > 0.65 && postPerf.avgEngagementTime < 60) || // High bounce + low engagement
-              (searchCtr !== null && searchCtr < 0.02 && (gscPage?.impressions ?? 0) > 50) || // Low CTR despite impressions
-              (postPerf.bounceRate > 0.7); // Very high bounce alone
-
-            if (shouldSwitch) {
-              // Score-based title selection: numbers (+2), power words (+1), year (+1), optimal length 50-65 (+3)
-              const candidates = entry.titleCandidates!;
-              const powerWords = ['best', 'top', 'ultimate', 'complete', 'essential', 'proven', 'secret', 'insider', 'free', 'new', 'exclusive', 'critical', 'massive', 'surprising'];
-              const currentYear = new Date().getFullYear().toString();
-
-              const scoredCandidates = candidates.map(title => {
-                let score = 0;
-                // Numbers in title (+2)
-                if (/\d+/.test(title)) score += 2;
-                // Power words (+1)
-                const titleLower = title.toLowerCase();
-                if (powerWords.some(pw => titleLower.includes(pw))) score += 1;
-                // Contains current year (+1)
-                if (title.includes(currentYear)) score += 1;
-                // Optimal length 50-65 chars (+3)
-                if (title.length >= 50 && title.length <= 65) score += 3;
-                else if (title.length >= 45 && title.length <= 70) score += 1;
-                return { title, score };
-              });
-
-              scoredCandidates.sort((a, b) => b.score - a.score);
-              const newTitle = scoredCandidates[0].title;
-
-              const signals = [
-                `bounce: ${(postPerf.bounceRate * 100).toFixed(0)}%`,
-                `engagement: ${postPerf.avgEngagementTime.toFixed(0)}s`,
-                searchCtr !== null ? `search CTR: ${(searchCtr * 100).toFixed(1)}%` : null,
-              ].filter(Boolean).join(', ');
-              const scoreBreakdown = scoredCandidates.slice(0, 3).map(sc => `"${sc.title.slice(0, 40)}..." (${sc.score}pts)`).join(', ');
-
-              logger.info(`A/B test: Switching title for post ${entry.postId} to "${newTitle}" (${signals}) | Scores: ${scoreBreakdown}`);
+            // Phase 2 (day 3-6): Switch to Title B (best alternative candidate)
+            if (ageDays >= 3 && ageDays < 6 && !entry.titleTestPhaseBStarted) {
+              if (candidates.length === 0) continue;
+              const newTitle = candidates[0]; // First candidate as Title B
+              logger.info(`A/B test Phase B: Rotating post ${entry.postId} to "${newTitle}" (was: original title)`);
               await wpService.updatePostMeta(entry.postId, { rank_math_title: newTitle });
               try {
                 const wpApi = (wpService as unknown as { api: { post: (url: string, data: unknown) => Promise<unknown> } }).api;
                 await wpApi.post(`/posts/${entry.postId}`, { title: newTitle });
               } catch {
-                logger.debug(`Could not update post title directly for ${entry.postId}`);
+                logger.debug(`Could not update post title for ${entry.postId}`);
               }
-              await history.markTitleTestResolved(entry.postId, newTitle);
-            } else {
-              logger.debug(`A/B test: Post ${entry.postId} performing adequately, keeping current title`);
-              await history.markTitleTestResolved(entry.postId);
+              entry.titleTestPhaseBStarted = true;
+              entry.titleTestPhaseBTitle = newTitle;
+              await history.persist();
+              continue;
+            }
+
+            // Phase 3 (day 6-7): Record Title B CTR
+            if (ageDays >= 6 && ageDays < 7 && entry.titleTestPhaseBStarted && !entry.titleTestPhaseBCtr) {
+              const gscPage = gscPages.find(p => entry.postUrl.includes(p.page.replace(/^https?:\/\/[^/]+/, '')));
+              if (gscPage) {
+                entry.titleTestPhaseBCtr = gscPage.ctr;
+                await history.persist();
+                logger.debug(`A/B test: Phase B CTR recorded for post ${entry.postId} (CTR: ${(gscPage.ctr * 100).toFixed(1)}%)`);
+              }
+              continue;
+            }
+
+            // Phase 4 (day 7+): Decide winner based on CTR comparison
+            if (ageDays >= 7) {
+              const phaseACtr = entry.titleTestPhaseACtr ?? 0;
+              const phaseBCtr = entry.titleTestPhaseBCtr ?? 0;
+              const postPerf = ga4Perf.find(p => entry.postUrl.includes(p.url.replace(/^\//, '')));
+
+              // Use GSC CTR as primary, fall back to GA4 multi-signal
+              let winnerTitle: string;
+              let reason: string;
+
+              if (phaseACtr > 0 && phaseBCtr > 0) {
+                // Statistical comparison: Title B needs >10% CTR improvement to justify the switch
+                const improvement = (phaseBCtr - phaseACtr) / phaseACtr;
+                if (improvement > 0.10) {
+                  winnerTitle = entry.titleTestPhaseBTitle || candidates[0];
+                  reason = `Title B wins: CTR ${(phaseBCtr * 100).toFixed(1)}% vs ${(phaseACtr * 100).toFixed(1)}% (+${(improvement * 100).toFixed(0)}%)`;
+                } else {
+                  winnerTitle = entry.titleTestPhaseATitle || entry.keyword;
+                  reason = `Title A wins: CTR ${(phaseACtr * 100).toFixed(1)}% vs ${(phaseBCtr * 100).toFixed(1)}% (B not significantly better)`;
+                  // Revert to Title A
+                  await wpService.updatePostMeta(entry.postId, { rank_math_title: winnerTitle });
+                  try {
+                    const wpApi = (wpService as unknown as { api: { post: (url: string, data: unknown) => Promise<unknown> } }).api;
+                    await wpApi.post(`/posts/${entry.postId}`, { title: winnerTitle });
+                  } catch { /* ignore */ }
+                }
+              } else if (postPerf && postPerf.pageviews >= 10) {
+                // Fallback: multi-signal decision (same as before)
+                const gscPage = gscPages.find(p => entry.postUrl.includes(p.page.replace(/^https?:\/\/[^/]+/, '')));
+                const searchCtr = gscPage?.ctr ?? null;
+                const shouldKeepB =
+                  (postPerf.bounceRate < 0.65 || postPerf.avgEngagementTime > 60) &&
+                  (searchCtr === null || searchCtr >= 0.02);
+
+                if (shouldKeepB && entry.titleTestPhaseBStarted) {
+                  winnerTitle = entry.titleTestPhaseBTitle || candidates[0];
+                  reason = `Title B kept: bounce ${(postPerf.bounceRate * 100).toFixed(0)}%, engagement ${postPerf.avgEngagementTime.toFixed(0)}s`;
+                } else {
+                  winnerTitle = entry.titleTestPhaseATitle || entry.keyword;
+                  reason = `Reverted to Title A: bounce ${(postPerf.bounceRate * 100).toFixed(0)}%, engagement ${postPerf.avgEngagementTime.toFixed(0)}s`;
+                  // Revert to Title A
+                  if (entry.titleTestPhaseBStarted) {
+                    await wpService.updatePostMeta(entry.postId, { rank_math_title: winnerTitle });
+                    try {
+                      const wpApi = (wpService as unknown as { api: { post: (url: string, data: unknown) => Promise<unknown> } }).api;
+                      await wpApi.post(`/posts/${entry.postId}`, { title: winnerTitle });
+                    } catch { /* ignore */ }
+                  }
+                }
+              } else {
+                // Not enough data — keep current
+                winnerTitle = entry.titleTestPhaseBStarted ? (entry.titleTestPhaseBTitle || candidates[0]) : entry.keyword;
+                reason = 'Insufficient data, keeping current title';
+              }
+
+              logger.info(`A/B test resolved: Post ${entry.postId} — ${reason}`);
+              await history.markTitleTestResolved(entry.postId, winnerTitle);
             }
           } catch (error) {
             logger.debug(`A/B title test failed for post ${entry.postId}: ${error instanceof Error ? error.message : error}`);

@@ -516,22 +516,28 @@ ${faqItems}
     return `<div style="${S.wrapper}">
 <h2 style="${S.h2}">Disclaimer</h2>
 
-<h3 style="${S.h3}">1. Content Notice</h3>
-<p style="${S.p}">The content published on ${siteName} is based on trending information and publicly available Korean-language sources, produced with the assistance of AI technology. All content is created for informational purposes only and does not constitute professional financial, investment, or legal advice.</p>
+<h3 style="${S.h3}">1. AI-Assisted Content Disclosure</h3>
+<div style="${S.highlightBox}">
+<p style="margin:0 0 12px 0; font-weight:700; color:#222;">Transparency Notice</p>
+<p style="margin:0; line-height:1.8; color:#555; font-size:15px;">Content published on ${siteName} is produced with the assistance of AI technology (large language models) and is editorially reviewed by our team before publication. Our editorial process includes AI-assisted research and drafting, human editorial review and fact-checking, verification against Korean-language primary sources, and regular content audits for accuracy. We believe in full transparency about our content creation process in compliance with FTC guidelines and the EU AI Act.</p>
+</div>
 
-<h3 style="${S.h3}">2. Accuracy of Information</h3>
+<h3 style="${S.h3}">2. Content Notice</h3>
+<p style="${S.p}">The content published on ${siteName} is based on trending information and publicly available Korean-language sources. All content is created for informational purposes only and does not constitute professional financial, investment, or legal advice.</p>
+
+<h3 style="${S.h3}">3. Accuracy of Information</h3>
 <p style="${S.p}">While we strive to provide accurate information sourced from reputable Korean institutions and media, we do not guarantee the completeness, accuracy, or reliability of our content. Any decisions or actions taken based on the information provided are at your own risk.</p>
 
-<h3 style="${S.h3}">3. Not Investment Advice</h3>
+<h3 style="${S.h3}">4. Not Investment Advice</h3>
 <p style="${S.p}">Content discussing Korean stocks, markets, or financial instruments is for informational and educational purposes only. It does not constitute investment advice, and readers should consult a qualified financial advisor before making investment decisions.</p>
 
-<h3 style="${S.h3}">4. External Links</h3>
+<h3 style="${S.h3}">5. External Links</h3>
 <p style="${S.p}">External links on this Site are provided for reference purposes only. ${siteName} is not responsible for the content of external websites.</p>
 
-<h3 style="${S.h3}">5. Advertising</h3>
+<h3 style="${S.h3}">6. Advertising</h3>
 <p style="${S.p}">${siteName} displays advertisements through third-party services such as Google AdSense. Advertisements do not reflect ${siteName}'s opinions or endorsements. Responsibility for advertised products and services lies with the respective advertisers.</p>
 
-<h3 style="${S.h3}">6. Copyright</h3>
+<h3 style="${S.h3}">7. Copyright</h3>
 <p style="${S.p}">All content on this Site is protected by copyright law. Unauthorized reproduction, distribution, or modification is prohibited. Please credit the source when quoting.</p>
 
 <p style="${S.footer}">Effective date: ${effectiveDate}</p>

@@ -159,7 +159,7 @@ const WORD_COUNT_TARGETS: Record<string, { min: number; target: number; continua
   'x-vs-y':         { min: 1500, target: 2200, continuation: 1300, rejection: 1100 },
   'analysis':        { min: 1800, target: 2500, continuation: 1600, rejection: 1400 },
   'deep-dive':       { min: 2200, target: 3000, continuation: 2000, rejection: 1800 },
-  'news-explainer':  { min: 1200, target: 1600, continuation: 900, rejection: 800 },
+  'news-explainer':  { min: 1500, target: 1800, continuation: 1200, rejection: 1000 },
   'listicle':        { min: 1400, target: 2000, continuation: 1200, rejection: 1000 },
   'case-study':      { min: 1800, target: 2500, continuation: 1600, rejection: 1400 },
   'product-review':  { min: 1600, target: 2200, continuation: 1400, rejection: 1200 },
@@ -404,6 +404,13 @@ This targets Google's List Featured Snippet for ranking queries.
 - Distribute internal links throughout the article, not clustered in one section
 - Only link to posts that are genuinely relevant to the current topic
 
+## Inline Related Reading (User Engagement)
+- At approximately the 50% point of the article, insert ONE inline related reading box:
+  <div class="ab-related-inline" style="margin:20px 0; padding:14px 18px; background:linear-gradient(135deg,#f0f4ff,#f8f9fa); border-left:3px solid #0066FF; border-radius:0 8px 8px 0; font-size:14px;">
+  <strong>Related:</strong> <a href="URL" style="color:#0066FF; text-decoration:underline;">Related Post Title</a></div>
+- Choose the most topically relevant post from the provided list
+- This increases page depth and reduces bounce rate
+
 ## External Source Attribution (IMPORTANT for E-E-A-T)
 - Include 2-4 source attributions to authoritative sources using <cite> tags
 - Do NOT write <a href> links for external sources. Instead, use this format:
@@ -573,7 +580,7 @@ Note: For new articles, set Published and Updated to the same date. The system u
 - Distribute image placeholders evenly (one after each major section)
 - NEVER use emoji or unicode special symbols in HTML
 - Use numbers (1. 2. 3.) or hyphens (-) for lists
-- The html MUST end with: <p class="ab-disclaimer">This article is based on trending information and is intended for informational purposes only. Please verify details through official sources.</p>
+- The html MUST end with: <p class="ab-disclaimer">This article is AI-assisted and editorially reviewed. Content is based on trending information, Korean-language primary sources, and publicly available data. It is intended for informational purposes only. Please verify details through official sources.</p>
 - AFTER the disclaimer, add a back-to-top link: <p class="ab-back-top"><a href="#">Back to Top</a></p>
 
 IMPORTANT: Respond with pure JSON only. Do NOT use markdown code blocks (\`\`\`).

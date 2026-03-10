@@ -135,6 +135,64 @@ export class KeywordResearchService {
     return 0.4 * unigramScore + 0.6 * bigramScore;
   }
 
+  /**
+   * TF-IDF weighted similarity search: finds the most similar existing posts.
+   * Uses inverse document frequency weighting so common words (e.g., "korean")
+   * contribute less than distinctive terms (e.g., "hbm", "etf", "skincare").
+   * Returns top-N matches with similarity scores.
+   */
+  private findSimilarPosts(candidateText: string, topN: number = 5): Array<{ post: ExistingPost; similarity: number }> {
+    if (this.existingPosts.length === 0) return [];
+
+    const stopWords = new Set(['the', 'a', 'an', 'in', 'on', 'at', 'to', 'for', 'of', 'and', 'or', 'is', 'are', 'was', 'were', 'be', 'been', 'how', 'what', 'why', 'your', 'you', 'this', 'that', 'with', 'best', 'top', 'guide', 'complete', 'ultimate']);
+    const tokenize = (s: string) => s.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => w.length > 2 && !stopWords.has(w));
+
+    // Build document frequency map (how many posts contain each word)
+    const docFreq = new Map<string, number>();
+    const postTokens = this.existingPosts.map(p => {
+      const tokens = tokenize(p.title + (p.keyword ? ' ' + p.keyword : ''));
+      const uniqueTokens = new Set(tokens);
+      for (const token of uniqueTokens) {
+        docFreq.set(token, (docFreq.get(token) || 0) + 1);
+      }
+      return { post: p, tokens, uniqueTokens };
+    });
+
+    const totalDocs = this.existingPosts.length;
+    const candidateTokens = tokenize(candidateText);
+    const candidateUnique = new Set(candidateTokens);
+    if (candidateUnique.size === 0) return [];
+
+    // Compute TF-IDF weighted similarity for each post
+    const results = postTokens.map(({ post, uniqueTokens }) => {
+      let weightedOverlap = 0;
+      let candidateWeight = 0;
+
+      for (const token of candidateUnique) {
+        // IDF: rarer words get higher weight (log(totalDocs / docFreq))
+        const df = docFreq.get(token) || 0;
+        const idf = df > 0 ? Math.log(totalDocs / df) + 1 : 1;
+        candidateWeight += idf;
+
+        if (uniqueTokens.has(token)) {
+          weightedOverlap += idf;
+        }
+      }
+
+      const similarity = candidateWeight > 0 ? weightedOverlap / candidateWeight : 0;
+      return { post, similarity };
+    });
+
+    // Also factor in bigram similarity for phrase-level matching
+    return results
+      .map(r => ({
+        ...r,
+        similarity: 0.5 * r.similarity + 0.5 * this.textSimilarity(candidateText, r.post.title + (r.post.keyword ? ' ' + r.post.keyword : '')),
+      }))
+      .sort((a, b) => b.similarity - a.similarity)
+      .slice(0, topN);
+  }
+
   async researchKeyword(
     niche: NicheConfig,
     postedKeywords: string[],
@@ -217,15 +275,16 @@ export class KeywordResearchService {
 
       if (!analysis) continue;
 
-      // Similarity-based dedup: skip cannibalized keywords and retry
+      // Enhanced cannibalization detection: TF-IDF weighted similarity against top-5 matches
       if (this.existingPosts.length > 0) {
-        const candidateText = `${analysis.selectedKeyword} ${analysis.suggestedTitle}`;
-        const matchingPost = this.existingPosts.find(
-          p => this.textSimilarity(candidateText, p.title) > 0.6,
-        );
+        const candidateText = `${analysis.selectedKeyword} ${analysis.suggestedTitle} ${analysis.uniqueAngle}`;
+        const similarPosts = this.findSimilarPosts(candidateText, 5);
+        const matchingPost = similarPosts.find(p => p.similarity > 0.55);
         if (matchingPost) {
           logger.warn(
-            `Attempt ${attempt}/${MAX_ATTEMPTS}: "${analysis.selectedKeyword}" too similar to existing "${matchingPost.title}" (ID: ${matchingPost.postId}). Retrying with different keyword.`,
+            `Attempt ${attempt}/${MAX_ATTEMPTS}: "${analysis.selectedKeyword}" too similar to existing "${matchingPost.post.title}" ` +
+            `(similarity: ${(matchingPost.similarity * 100).toFixed(0)}%, ID: ${matchingPost.post.postId}). ` +
+            `Consider updating existing post instead. Retrying with different keyword.`,
           );
           rejectedKeywords.push(analysis.selectedKeyword);
           analysis = undefined;
