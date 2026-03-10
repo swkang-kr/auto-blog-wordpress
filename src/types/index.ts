@@ -38,15 +38,11 @@ export interface NicheConfig {
 
 /** Per-category optimal publish timing (override GA4 when no data available) */
 export const CATEGORY_PUBLISH_TIMING: Record<string, { optimalHour: number; bestDays: number[] }> = {
-  'Korean Tech': { optimalHour: 8, bestDays: [1, 2, 3] },        // Mon-Wed morning
-  'K-Entertainment': { optimalHour: 18, bestDays: [4, 5, 6] },    // Thu-Sat evening
+  'Korean Tech': { optimalHour: 8, bestDays: [1, 2, 3] },        // Mon-Wed morning (tech news cycle)
   'Korean Finance': { optimalHour: 7, bestDays: [1, 2] },         // Mon-Tue early morning (market open)
-  'Korean Food': { optimalHour: 11, bestDays: [5, 6, 0] },        // Fri-Sun late morning
-  'Korea Travel': { optimalHour: 10, bestDays: [6, 0, 5] },       // Weekend + Friday
-  'Korean Language': { optimalHour: 19, bestDays: [0, 1, 3] },    // Sun-Mon-Wed evening (study time)
   'K-Beauty': { optimalHour: 10, bestDays: [5, 6, 0] },           // Weekend morning (lifestyle shopping)
-  'Korean Crypto': { optimalHour: 8, bestDays: [1, 2, 3] },       // Mon-Wed morning (market hours)
-  'Korean Automotive': { optimalHour: 9, bestDays: [2, 3, 4] },   // Tue-Thu morning (research time)
+  'Korea Travel': { optimalHour: 10, bestDays: [6, 0, 5] },       // Weekend + Friday (trip planning)
+  'K-Entertainment': { optimalHour: 18, bestDays: [4, 5, 6] },    // Thu-Sat evening (leisure time)
 };
 
 /** Google Trends rising query entry */
@@ -73,9 +69,14 @@ export interface KeywordAnalysis {
   contentType: ContentType;
   suggestedTitle: string;
   uniqueAngle: string;
-  searchIntent: string;
+  searchIntent: 'informational' | 'commercial' | 'transactional' | 'navigational';
   estimatedCompetition: 'low' | 'medium' | 'high';
+  /** Keyword difficulty score 0-100 (estimated from SERP signals + trend data) */
+  keywordDifficulty?: number;
+  /** Estimated monthly search volume tier */
   volumeEstimate?: 'high' | 'medium' | 'low' | 'minimal';
+  /** Estimated monthly search volume number (rough estimate from Trends data) */
+  estimatedMonthlySearches?: number;
   reasoning: string;
   relatedKeywordsToInclude: string[];
 }

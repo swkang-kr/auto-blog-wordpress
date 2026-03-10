@@ -31,7 +31,7 @@ export class WordPressService {
   }
 
   async getRecentPosts(count: number = 50): Promise<ExistingPost[]> {
-    // Check local cache first (6-hour TTL)
+    // Check local cache first (1-hour TTL)
     try {
       if (existsSync(POSTS_CACHE_FILE)) {
         const cached = JSON.parse(readFileSync(POSTS_CACHE_FILE, 'utf-8')) as { timestamp: number; count: number; posts: ExistingPost[] };
@@ -181,16 +181,12 @@ export class WordPressService {
         const loadingAttr = i === 0 ? 'eager' : 'lazy';
         const fetchPriority = i === 0 ? ' fetchpriority="high"' : '';
         // Include width/height attributes to prevent CLS (Cumulative Layout Shift)
-        // WordPress auto-generates thumbnails at 300w, 768w, 1024w from 1200w uploads
+        // WordPress's wp_filter_content_tags() auto-adds srcset from attachment metadata
         const srcUrl = inlineImages[i].url;
-        const srcsetUrl = srcUrl.replace(/(\.\w+)$/, '');
-        const ext = srcUrl.match(/(\.\w+)$/)?.[1] || '.webp';
-        const srcsetAttr = `srcset="${srcsetUrl}-300x169${ext} 300w, ${srcsetUrl}-768x432${ext} 768w, ${srcsetUrl}-1024x576${ext} 1024w, ${srcUrl} 1200w"`;
-        const sizesAttr = `sizes="(max-width: 768px) 100vw, (max-width: 1200px) 768px, 1200px"`;
         const titleAttr = `title="${altText}"`;
         const figureHtml =
           `<figure style="margin:30px 0; text-align:center;">` +
-          `<img src="${srcUrl}" ${srcsetAttr} ${sizesAttr} alt="${altText}" ${titleAttr} width="1200" height="675" loading="${loadingAttr}"${fetchPriority} decoding="async" style="max-width:100%; width:100%; height:auto; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1); aspect-ratio:16/9; object-fit:cover;" />` +
+          `<img src="${srcUrl}" alt="${altText}" ${titleAttr} width="1200" height="675" loading="${loadingAttr}"${fetchPriority} decoding="async" style="max-width:100%; width:100%; height:auto; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1); aspect-ratio:16/9; object-fit:cover;" />` +
           `<figcaption style="margin-top:10px; font-size:13px; color:#888; line-height:1.5;">${this.escapeHtml(baseCaption)}</figcaption>` +
           `</figure>`;
 
@@ -428,6 +424,11 @@ export class WordPressService {
 .ab-proscons{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px 0}
 .ab-pros{padding:16px;background:#f0fff4;border-radius:10px;border:1px solid #c6f6d5}
 .ab-cons{padding:16px;background:#fff5f5;border-radius:10px;border:1px solid #fed7d7}
+.ab-pros-label{margin:0 0 8px 0;font-weight:700;color:#22543d}
+.ab-cons-label{margin:0 0 8px 0;font-weight:700;color:#742a2a}
+.ab-step h3{margin:0;font-size:18px;color:#222}
+.ab-back-top{text-align:center;margin:20px 0 0 0}
+.ab-back-top a{font-size:14px;color:#0066FF}
 .ab-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:24px 0}
 .ab-cta{margin:30px 0;border-radius:12px;text-align:center}
 .ab-cta-newsletter{padding:28px 24px;background:linear-gradient(135deg,#0052CC 0%,#0066FF 100%);color:#fff}
@@ -444,6 +445,7 @@ export class WordPressService {
 .ab-disclaimer{margin:40px 0 0 0;padding-top:20px;border-top:1px solid #eee;font-size:13px;color:#999;line-height:1.6}
 .ab-series-nav{margin:24px 0;padding:16px 20px;background:#f8f9fa;border:1px solid #e5e7eb;border-radius:10px}
 .ab-affiliate-disclosure{margin:0 0 20px 0;padding:12px 16px;background:#fff8e1;border:1px solid #ffe082;border-radius:8px;font-size:12px;color:#666;line-height:1.5}
+.ab-progress{position:fixed;top:0;left:0;width:0;height:3px;background:linear-gradient(90deg,#0052CC,#0066FF);z-index:99999;transition:width 0.1s linear}
 .ab-header{margin:0 0 30px 0;padding-bottom:20px;border-bottom:1px solid #eee}
 .ab-header time{font-size:13px;color:#888}
 .ab-faq details{margin:0 0 12px 0;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden}
@@ -480,6 +482,10 @@ export class WordPressService {
 .ab-metrics p{color:#e0e0e0!important}
 .ab-pros{background:#1a2e1a!important;border-color:#2e5e2e!important}
 .ab-cons{background:#2e1a1a!important;border-color:#5e2e2e!important}
+.ab-pros-label{color:#68d391!important}
+.ab-cons-label{color:#fc8181!important}
+.ab-step h3{color:#f0f0f0!important}
+.ab-back-top a{color:#4da6ff!important}
 .ab-faq details{border-color:#3a3a5e!important}
 .ab-faq summary{background:#2a2a3e!important;color:#e0e0e0!important}
 .ab-header{border-color:#3a3a5e!important}
@@ -816,11 +822,12 @@ export class WordPressService {
       }
     }
 
-    // Inject "Last Updated" date banner at top of content for freshness signal
+    // Inject "Last Updated" date banner + reading time at top of content
     const publishDate = options?.scheduledDate
       ? new Date(options.scheduledDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
       : new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-    const lastUpdatedBanner = `<div style="background:#f0f8ff; border-left:4px solid #0066FF; padding:12px 20px; margin:0 0 24px 0; border-radius:0 8px 8px 0; font-size:14px; color:#555;"><strong>Last Updated:</strong> ${publishDate}</div>`;
+    const readingTimeMin = Math.max(1, Math.ceil(htmlEn.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length / 200));
+    const lastUpdatedBanner = `<div style="background:#f0f8ff; border-left:4px solid #0066FF; padding:12px 20px; margin:0 0 24px 0; border-radius:0 8px 8px 0; font-size:14px; color:#555; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;"><span><strong>Last Updated:</strong> ${publishDate}</span><span style="color:#0066FF; font-weight:600;">${readingTimeMin} min read</span></div>`;
     // Insert after the first heading or date div
     const firstH2 = htmlEn.indexOf('<h2');
     if (firstH2 > 0) {
@@ -1360,6 +1367,20 @@ export class WordPressService {
    * Only activates when there are 4+ H2 headings to avoid cluttering short posts.
    * Inserts a responsive ad unit div before the H2 heading.
    */
+  /**
+   * Strategic AdSense ad placement for maximum RPM without hurting UX.
+   *
+   * Placement strategy (based on AdSense best practices):
+   * 1. After TOC (above-the-fold for returning visitors)
+   * 2. After every 2nd H2 section (mid-content, high viewability)
+   * 3. Before conclusion/FAQ (engaged readers = higher CTR)
+   *
+   * Rules:
+   * - Minimum 300 words between ad units (avoid ad-stacking penalty)
+   * - Never inside tables, blockquotes, or code blocks
+   * - Maximum 4 in-content ad units per post (AdSense policy)
+   * - Responsive format only (auto-sizing for mobile)
+   */
   private injectAdPlacements(html: string): string {
     const h2Regex = /<h2\s/gi;
     const h2Positions: number[] = [];
@@ -1368,35 +1389,63 @@ export class WordPressService {
       h2Positions.push(match.index);
     }
 
-    if (h2Positions.length < 4) return html;
+    if (h2Positions.length < 3) return html;
 
-    // Insert ad units before every 2nd H2 (positions 2, 4, 6, ...)
-    const adHtml =
-      `<div class="ab-ad" style="margin:30px 0; padding:20px 0; text-align:center; min-height:90px; border-top:1px solid #eee; border-bottom:1px solid #eee;">` +
+    // Ad unit HTML — uses responsive auto format
+    const adUnit = (slot: string) =>
+      `<div class="ab-ad" style="margin:32px 0; padding:16px 0; text-align:center; min-height:90px; clear:both;" data-ad-slot="${slot}">` +
       `<ins class="adsbygoogle" style="display:block" data-ad-format="auto" data-full-width-responsive="true"></ins>` +
       `<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>` +
       `</div>`;
 
-    // Collect insertion points (before the H2), work backwards to preserve indices
-    const insertPositions: number[] = [];
-    for (let i = 1; i < h2Positions.length; i++) {
-      if ((i + 1) % 2 === 0) { // After sections 2, 4, 6... (zero-indexed: 1, 3, 5...)
-        insertPositions.push(h2Positions[i]);
+    // 1. Identify strategic insertion points
+    const insertPoints: Array<{ pos: number; type: string }> = [];
+
+    // After TOC (if exists) — highest viewability position
+    const tocEnd = html.indexOf('</details>');
+    if (tocEnd !== -1) {
+      const afterToc = tocEnd + '</details>'.length;
+      // Skip if a cluster nav or other element is right after
+      const nextContent = html.slice(afterToc, afterToc + 100);
+      if (!nextContent.includes('ab-ad')) {
+        insertPoints.push({ pos: afterToc, type: 'after-toc' });
       }
     }
 
-    // Insert in reverse order
-    let result = html;
-    for (let i = insertPositions.length - 1; i >= 0; i--) {
-      const pos = insertPositions[i];
-      // Find the last </p> before this H2 for cleaner insertion
-      const preceding = result.slice(0, pos);
-      const lastP = preceding.lastIndexOf('</p>');
-      const insertAt = lastP !== -1 && pos - lastP < 200 ? lastP + '</p>'.length : pos;
-      result = result.slice(0, insertAt) + '\n' + adHtml + '\n' + result.slice(insertAt);
+    // Between H2 sections — every 2nd section, max 3 mid-content ads
+    let midContentAds = 0;
+    for (let i = 1; i < h2Positions.length && midContentAds < 3; i++) {
+      if ((i + 1) % 2 === 0) { // After sections 2, 4, 6
+        // Ensure minimum ~300 words gap from previous ad
+        const preceding = html.slice(0, h2Positions[i]);
+        const lastAdPos = insertPoints.length > 0 ? insertPoints[insertPoints.length - 1].pos : 0;
+        const textBetween = html.slice(lastAdPos, h2Positions[i]).replace(/<[^>]+>/g, '');
+        const wordsBetween = textBetween.split(/\s+/).length;
+        if (wordsBetween >= 250) {
+          insertPoints.push({ pos: h2Positions[i], type: `mid-h2-${i}` });
+          midContentAds++;
+        }
+      }
     }
 
-    logger.debug(`Injected ${insertPositions.length} AdSense ad placement(s)`);
+    // Cap total ads at 4 (AdSense best practice for content pages)
+    const maxAds = 4;
+    const finalInserts = insertPoints.slice(0, maxAds);
+
+    // Insert in reverse order to preserve positions
+    let result = html;
+    for (let i = finalInserts.length - 1; i >= 0; i--) {
+      const { pos, type } = finalInserts[i];
+      // Find clean insertion point (after </p> or </details>)
+      const preceding = result.slice(0, pos);
+      const lastP = preceding.lastIndexOf('</p>');
+      const lastDetails = preceding.lastIndexOf('</details>');
+      const bestEnd = Math.max(lastP !== -1 ? lastP + '</p>'.length : 0, lastDetails !== -1 ? lastDetails + '</details>'.length : 0);
+      const insertAt = bestEnd > 0 && pos - bestEnd < 200 ? bestEnd : pos;
+      result = result.slice(0, insertAt) + '\n' + adUnit(type) + '\n' + result.slice(insertAt);
+    }
+
+    logger.debug(`Injected ${finalInserts.length} AdSense ad placement(s): ${finalInserts.map(p => p.type).join(', ')}`);
     return result;
   }
 

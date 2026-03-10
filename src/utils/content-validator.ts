@@ -9,6 +9,7 @@ export interface ContentScore {
     seoScore: number;
     readabilityScore: number;
     eeatScore: number;
+    experienceScore: number;
   };
   issues: ContentIssue[];
   warnings: ContentIssue[];
@@ -30,25 +31,17 @@ const CATEGORY_READABILITY_TARGETS: Record<string, [number, number]> = {
   'Korean Tech': [45, 60],       // Technical audience tolerates denser writing
   'Korean Finance': [45, 60],    // Financial analysis requires precision
   'K-Entertainment': [60, 75],   // Casual audience expects easy reading
-  'Korean Food': [60, 75],       // Lifestyle content should be accessible
   'Korea Travel': [60, 75],      // Travel guides should be easy to scan
-  'Korean Language': [50, 65],   // Educational but not overly academic
   'K-Beauty': [55, 70],          // Consumer-friendly but some science
-  'Korean Crypto': [45, 60],     // Financial/technical audience
-  'Korean Automotive': [55, 70], // General audience with some tech detail
 };
 
 /** Per-category minimum quality scores — raised across the board for HCU compliance */
 const CATEGORY_MIN_QUALITY: Record<string, number> = {
   'Korean Finance': 70,
   'Korean Tech': 65,
-  'Korean Crypto': 70,
   'K-Entertainment': 60,
-  'Korean Food': 60,
   'Korea Travel': 60,
-  'Korean Language': 65,
   'K-Beauty': 60,
-  'Korean Automotive': 65,
 };
 
 /** Content type-specific minimum word counts — lowered for information density over padding */
@@ -67,6 +60,50 @@ const CONTENT_TYPE_MIN_WORDS: Record<string, number> = {
 /** Get minimum quality score for a category (defaults to 45) */
 export function getMinQualityScore(category?: string): number {
   return (category ? CATEGORY_MIN_QUALITY[category] : undefined) ?? 45;
+}
+
+/**
+ * Compute experience score (max 7 bonus points) for E-E-A-T Experience signal.
+ * Rewards first-person analytical patterns, specific observational details,
+ * and personal judgment markers that indicate real expertise.
+ */
+function computeExperienceScore(plainText: string): number {
+  let score = 0;
+  const lower = plainText.toLowerCase();
+
+  // +3: First-person analytical patterns
+  const analyticalPatterns = [
+    'i tested', 'in my analysis', 'after reviewing', 'based on my research',
+    'what i found', 'i observed', 'i noticed', 'in my experience',
+    'i evaluated', 'i compared',
+  ];
+  const analyticalHits = analyticalPatterns.filter(p => lower.includes(p)).length;
+  if (analyticalHits >= 2) score += 3;
+  else if (analyticalHits >= 1) score += 2;
+
+  // +2: Specific observational detail markers
+  const hasSpecificNumbers = /\b\d{1,3}(?:,\d{3})+\b|\b\d+\.\d+%\b|\$\d+/.test(plainText);
+  const koreanLocationPatterns = [
+    'gangnam', 'pangyo', 'yeouido', 'mapo', 'itaewon', 'hongdae',
+    'myeongdong', 'insadong', 'gwanghwamun', 'jamsil', 'songpa',
+  ];
+  const hasKoreanLocation = koreanLocationPatterns.some(p => lower.includes(p));
+  const hasDateRef = /\b(?:january|february|march|april|may|june|july|august|september|october|november|december)\s+\d{4}\b/i.test(plainText);
+  const detailHits = [hasSpecificNumbers, hasKoreanLocation, hasDateRef].filter(Boolean).length;
+  if (detailHits >= 2) score += 2;
+  else if (detailHits >= 1) score += 1;
+
+  // +2: Personal judgment markers
+  const judgmentPatterns = [
+    'frankly', 'the uncomfortable truth', 'what nobody discusses',
+    'my take', 'what most coverage misses', 'the real question',
+    'here\'s what matters', 'the data tells a different story',
+  ];
+  const judgmentHits = judgmentPatterns.filter(p => lower.includes(p)).length;
+  if (judgmentHits >= 2) score += 2;
+  else if (judgmentHits >= 1) score += 1;
+
+  return Math.min(7, score);
 }
 
 export function validateContent(
@@ -421,6 +458,9 @@ export function validateContent(
     eeatScore -= Math.min(3, unhedgedStats);
   }
 
+  // ── Experience signal validation (max 7 bonus points) ──
+  const experienceScore = computeExperienceScore(plainText);
+
   // Clamp scores to 0
   titleScore = Math.max(0, titleScore);
   excerptScore = Math.max(0, excerptScore);
@@ -429,7 +469,7 @@ export function validateContent(
   readabilityScore = Math.max(0, readabilityScore);
   eeatScore = Math.max(0, eeatScore);
 
-  const total = titleScore + excerptScore + structureScore + seoScore + readabilityScore + eeatScore;
+  const total = titleScore + excerptScore + structureScore + seoScore + readabilityScore + eeatScore + experienceScore;
 
   return {
     total,
@@ -440,6 +480,7 @@ export function validateContent(
       seoScore,
       readabilityScore,
       eeatScore,
+      experienceScore,
     },
     issues,
     warnings,
@@ -811,10 +852,11 @@ export function logContentScore(score: ContentScore, title: string): void {
     score.total >= 40 ? 'D' : 'F';
 
   logger.info(
-    `Content Score: ${score.total}/100 (${grade}) for "${title}" — ` +
+    `Content Score: ${score.total}/107 (${grade}) for "${title}" — ` +
     `Title:${score.breakdown.titleScore}/15, Excerpt:${score.breakdown.excerptScore}/10, ` +
     `Structure:${score.breakdown.structureScore}/25, SEO:${score.breakdown.seoScore}/20, ` +
-    `Readability:${score.breakdown.readabilityScore}/15, E-E-A-T:${score.breakdown.eeatScore}/15`,
+    `Readability:${score.breakdown.readabilityScore}/15, E-E-A-T:${score.breakdown.eeatScore}/15, ` +
+    `Experience:${score.breakdown.experienceScore}/7`,
   );
 
   for (const issue of score.issues) {

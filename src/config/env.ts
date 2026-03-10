@@ -35,6 +35,10 @@ const envSchema = z.object({
   MIN_QUALITY_SCORE: z.coerce.number().int().min(0).max(100).default(65),
   PUBLISH_STATUS: z.enum(['publish', 'draft']).default('publish'),
   PUBLISH_INTERVAL_MINUTES: z.coerce.number().int().min(0).default(0),
+  // Manual review mode: auto-draft first N posts for quality review before AdSense approval
+  // Posts publish as "draft" until total published count exceeds this threshold
+  // Set to 0 to disable (default: 30 for AdSense safety)
+  MANUAL_REVIEW_THRESHOLD: z.coerce.number().int().min(0).default(30),
   // Publish time optimization (24h format, e.g. "08:00" for 8 AM ET)
   PUBLISH_OPTIMAL_HOUR: z.coerce.number().int().min(0).max(23).default(8),
   PUBLISH_TIMEZONE: z.string().default('America/New_York'),

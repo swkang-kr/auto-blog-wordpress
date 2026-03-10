@@ -11,17 +11,28 @@ export function getSeasonallyOrderedNiches(): NicheConfig[] {
 
   // Map seasonal events back to niche categories that are relevant right now
   const KOREAN_EVENTS_NICHE_MAP: Record<string, string[]> = {
-    'Seollal': ['Korean Food', 'Korea Travel', 'Korean Language'],
-    'Cherry Blossom': ['Korea Travel', 'Korean Food'],
+    'Seollal': ['Korea Travel', 'K-Entertainment', 'Korean Finance'],
+    'Cherry Blossom': ['Korea Travel', 'K-Beauty'],
     'Children': ['Korea Travel', 'K-Entertainment'],
+    'Summer': ['Korea Travel', 'K-Beauty'],
+    'Chuseok': ['Korea Travel', 'Korean Finance', 'K-Entertainment'],
     'BIFF': ['K-Entertainment', 'Korea Travel'],
-    'Chuseok': ['Korean Food', 'Korea Travel', 'Korean Language', 'Korean Finance'],
+    'Suneung': ['K-Entertainment', 'Korean Tech'],
     'MAMA': ['K-Entertainment'],
-    'Christmas': ['Korea Travel', 'Korean Food'],
-    'New Year': ['Korea Travel', 'Korean Finance', 'Korean Crypto'],
-    'Summer': ['Korea Travel', 'Korean Food', 'K-Beauty'],
-    'Suneung': ['Korean Language', 'K-Entertainment'],
-    'Auto Show': ['Korean Automotive'],
+    'Memorial': ['Korea Travel', 'K-Entertainment'],
+    'Dano': ['Korea Travel', 'K-Entertainment'],
+    'Summer Sales': ['K-Beauty', 'Korean Tech', 'Korean Finance'],
+    'Mid-Year': ['K-Beauty', 'Korean Tech', 'Korean Finance'],
+    'Black Friday': ['K-Beauty', 'Korean Tech', 'Korean Finance'],
+    'Singles Day': ['K-Beauty', 'Korean Tech', 'Korean Finance'],
+    'Christmas': ['Korea Travel', 'K-Beauty'],
+    'New Year': ['Korea Travel', 'Korean Finance', 'Korean Tech'],
+    'CES': ['Korean Tech'],
+    'MWC': ['Korean Tech'],
+    'Auto Show': ['Korean Tech'],
+    'Mobility Show': ['Korean Tech'],
+    'Earnings Season': ['Korean Finance', 'Korean Tech'],
+    'K-Beauty Awards': ['K-Beauty'],
   };
 
   const boostedCategories = new Set<string>();
@@ -40,8 +51,16 @@ export function getSeasonallyOrderedNiches(): NicheConfig[] {
   return [...boosted, ...rest];
 }
 
+/**
+ * CORE NICHES (5 focused niches for topical authority)
+ * Strategy: 3-5 niches × 1-2 posts/day = 10-15 posts/niche/month
+ * This builds Google's topical authority signals vs spreading thin across 15 niches.
+ *
+ * Selected based on: search volume, monetization potential (AdSense RPM),
+ * competition level, and content sustainability.
+ */
 export const NICHES: NicheConfig[] = [
-  // ── Korean Tech (3 sub-niches) ──
+  // ── Korean Tech & AI (highest AdSense RPM, strong search volume) ──
   {
     id: 'korean-tech-ai',
     name: 'Korean AI & Semiconductors',
@@ -53,247 +72,86 @@ export const NICHES: NicheConfig[] = [
       'South Korea AI startup investment opportunities 2026',
       'Korean government AI investment policy explained',
       'how Korea became a global semiconductor powerhouse',
+      'best Korean tech stocks for AI investors',
+      'Korean AI companies to watch for global expansion',
+      'Samsung Galaxy AI features vs Apple Intelligence comparison',
     ],
-    contentTypes: ['analysis', 'deep-dive', 'news-explainer', 'x-vs-y', 'how-to', 'case-study'],
-  },
-  {
-    id: 'korean-tech-apps',
-    name: 'Korean Apps & Digital Life',
-    category: 'Korean Tech',
-    broadTerm: 'Korean apps digital',
-    seedKeywords: [
-      'how to use Naver as a foreigner in Korea',
-      'best Korean apps for foreigners living in Seoul',
-      'Naver vs Google which is better in South Korea',
-      'KakaoTalk features guide for international users',
-      'Korean digital banking apps Toss vs KakaoBank comparison',
-    ],
-    contentTypes: ['how-to', 'best-x-for-y', 'x-vs-y', 'analysis', 'deep-dive', 'listicle', 'product-review'],
-  },
-  {
-    id: 'korean-tech-startups',
-    name: 'Korean Startups & VC',
-    category: 'Korean Tech',
-    broadTerm: 'Korea startup venture',
-    seedKeywords: [
-      'Pangyo Techno Valley startup ecosystem guide',
-      'top Korean unicorn startups to watch 2026',
-      'how to invest in Korean startups from abroad',
-      'Coupang business model analysis for investors',
-      'Korean government startup support programs TIPS explained',
-    ],
-    contentTypes: ['analysis', 'deep-dive', 'news-explainer', 'best-x-for-y', 'how-to', 'case-study'],
+    contentTypes: ['analysis', 'deep-dive', 'news-explainer', 'x-vs-y', 'how-to', 'case-study', 'best-x-for-y', 'listicle'],
   },
 
-  // ── K-Entertainment (2 sub-niches) ──
-  {
-    id: 'k-entertainment-music',
-    name: 'K-Pop Business & Music Industry',
-    category: 'K-Entertainment',
-    broadTerm: 'K-pop business',
-    seedKeywords: [
-      'how does K-pop make money business model explained',
-      'HYBE stock analysis buy or sell 2026',
-      'K-pop idol agency contracts explained for fans',
-      'K-pop global revenue breakdown by market',
-      'how K-pop agencies train and debut new groups',
-    ],
-    contentTypes: ['analysis', 'deep-dive', 'news-explainer', 'how-to', 'x-vs-y', 'case-study'],
-  },
-  {
-    id: 'k-entertainment-drama',
-    name: 'K-Drama & Korean Content',
-    category: 'K-Entertainment',
-    broadTerm: 'K-drama Korean content',
-    seedKeywords: [
-      'best Korean dramas on Netflix 2026',
-      'Korean webtoon apps for English readers',
-      'how Korean dramas conquered global streaming platforms',
-      'Korean film industry Cannes Oscar winning streak explained',
-      'best Korean variety shows for international viewers',
-    ],
-    contentTypes: ['best-x-for-y', 'analysis', 'deep-dive', 'news-explainer', 'how-to', 'listicle'],
-  },
-
-  // ── Korean Finance (2 sub-niches) ──
+  // ── Korean Finance & Investment (high RPM, evergreen content) ──
   {
     id: 'korean-finance-stocks',
-    name: 'Korean Stock Market & ETFs',
+    name: 'Korean Stock Market & Investment',
     category: 'Korean Finance',
-    broadTerm: 'Korean stock market KOSPI',
+    broadTerm: 'Korean stock market KOSPI investment',
     seedKeywords: [
       'how to invest in Korean stocks as a foreigner',
       'best Korean ETF for international investors 2026',
       'KOSPI index explained for beginners',
       'how to open Korean brokerage account from abroad',
       'top Korean blue chip stocks for long term investors',
-    ],
-    contentTypes: ['how-to', 'best-x-for-y', 'analysis', 'deep-dive', 'x-vs-y', 'case-study'],
-  },
-  {
-    id: 'korean-finance-economy',
-    name: 'Korean Economy & Won',
-    category: 'Korean Finance',
-    broadTerm: 'Korean economy won exchange',
-    seedKeywords: [
       'Korean won exchange rate forecast analysis 2026',
       'Bank of Korea interest rate impact on investments',
       'Korea economic outlook GDP growth forecast 2026',
-      'Korean real estate market trends for foreign investors',
-      'South Korea national pension fund investment strategy',
     ],
-    contentTypes: ['analysis', 'deep-dive', 'news-explainer', 'how-to', 'best-x-for-y', 'case-study'],
+    contentTypes: ['how-to', 'best-x-for-y', 'analysis', 'deep-dive', 'x-vs-y', 'case-study', 'news-explainer', 'listicle'],
   },
 
-  // ── Korean Food (2 sub-niches) ──
-  {
-    id: 'korean-food-cooking',
-    name: 'Korean Cooking & Recipes',
-    category: 'Korean Food',
-    broadTerm: 'Korean cooking recipe',
-    seedKeywords: [
-      'how to make authentic Korean kimchi at home step by step',
-      'Korean skincare routine for beginners explained',
-      'easy Korean recipes for beginners at home',
-      'Korean fermented foods guide health benefits explained',
-      'Korean convenience store food must try items',
-    ],
-    contentTypes: ['how-to', 'best-x-for-y', 'deep-dive', 'analysis', 'news-explainer', 'listicle', 'product-review'],
-  },
-  {
-    id: 'korean-food-dining',
-    name: 'Korean Dining & Food Culture',
-    category: 'Korean Food',
-    broadTerm: 'Korean food restaurant culture',
-    seedKeywords: [
-      'best Korean street food guide for tourists in Seoul',
-      'best Korean restaurants in Seoul for foreigners',
-      'Korean BBQ etiquette guide for first timers',
-      'Michelin star Korean restaurants worth visiting',
-      'Korean food delivery apps guide for foreigners',
-    ],
-    contentTypes: ['best-x-for-y', 'how-to', 'deep-dive', 'analysis', 'news-explainer', 'listicle'],
-  },
-
-  // ── Korea Travel (2 sub-niches) ──
-  {
-    id: 'korea-travel-planning',
-    name: 'Korea Travel Planning & Tips',
-    category: 'Korea Travel',
-    broadTerm: 'South Korea travel guide',
-    seedKeywords: [
-      'best time to visit South Korea complete travel guide',
-      'how to get around Seoul public transportation guide',
-      'best neighborhoods to stay in Seoul for tourists',
-      'Korea travel tips first time visitors should know',
-      'Korea visa requirements for tourists by country',
-    ],
-    contentTypes: ['how-to', 'best-x-for-y', 'deep-dive', 'analysis', 'news-explainer', 'listicle'],
-  },
-  {
-    id: 'korea-travel-living',
-    name: 'Living in Korea as a Foreigner',
-    category: 'Korea Travel',
-    broadTerm: 'living in Korea foreigner expat',
-    seedKeywords: [
-      'cost of living in Seoul for foreigners breakdown',
-      'how to rent an apartment in Seoul as a foreigner',
-      'working in Korea as a foreigner visa guide',
-      'best cities to live in Korea besides Seoul',
-      'Korean healthcare system guide for foreigners',
-    ],
-    contentTypes: ['how-to', 'deep-dive', 'best-x-for-y', 'analysis', 'x-vs-y', 'listicle', 'case-study'],
-  },
-
-  // ── Korean Language (2 sub-niches) ──
-  {
-    id: 'korean-language-learning',
-    name: 'Learning Korean for Beginners',
-    category: 'Korean Language',
-    broadTerm: 'learn Korean language beginner',
-    seedKeywords: [
-      'best apps to learn Korean for beginners ranked',
-      'how to learn Hangul Korean alphabet step by step',
-      'Korean language study tips for self learners',
-      'Korean grammar basics explained for English speakers',
-      'best YouTube channels for learning Korean free',
-    ],
-    contentTypes: ['how-to', 'best-x-for-y', 'deep-dive', 'x-vs-y', 'analysis', 'listicle'],
-  },
-  {
-    id: 'korean-language-advanced',
-    name: 'Korean Proficiency & TOPIK',
-    category: 'Korean Language',
-    broadTerm: 'TOPIK Korean proficiency test',
-    seedKeywords: [
-      'TOPIK test preparation guide for foreigners',
-      'best Korean language schools in Seoul for foreigners',
-      'Korean honorifics system explained for advanced learners',
-      'Korean business language etiquette guide',
-      'TOPIK II writing section tips and strategies',
-    ],
-    contentTypes: ['how-to', 'best-x-for-y', 'deep-dive', 'analysis', 'x-vs-y', 'case-study'],
-  },
-
-  // ── K-Beauty (2 sub-niches) ──
+  // ── K-Beauty & Skincare (high commercial intent, strong product review potential) ──
   {
     id: 'k-beauty-skincare',
     name: 'Korean Skincare & Beauty',
     category: 'K-Beauty',
-    broadTerm: 'Korean skincare K-beauty',
+    broadTerm: 'Korean skincare K-beauty routine',
     seedKeywords: [
       'best Korean skincare routine for beginners step by step',
       'Korean sunscreen vs Western sunscreen comparison',
       'top Korean beauty brands at Olive Young for tourists',
       'how to build a Korean skincare routine on a budget',
       'best Korean sheet masks ranked by dermatologists',
-    ],
-    contentTypes: ['how-to', 'best-x-for-y', 'x-vs-y', 'analysis', 'deep-dive', 'listicle', 'product-review'],
-  },
-  {
-    id: 'k-beauty-trends',
-    name: 'K-Beauty Industry & Trends',
-    category: 'K-Beauty',
-    broadTerm: 'K-beauty industry trend',
-    seedKeywords: [
-      'how K-beauty conquered the global skincare market',
       'Korean beauty industry market size and growth analysis',
-      'Amorepacific vs LG Household stock analysis for investors',
       'Korean beauty tech innovations glass skin trend explained',
-      'best Korean beauty startups disrupting the industry',
+      'best Korean moisturizers for dry skin winter 2026',
     ],
-    contentTypes: ['analysis', 'deep-dive', 'news-explainer', 'case-study', 'best-x-for-y', 'x-vs-y'],
+    contentTypes: ['how-to', 'best-x-for-y', 'x-vs-y', 'analysis', 'deep-dive', 'listicle', 'product-review', 'case-study'],
   },
 
-  // ── Korean Crypto & Web3 (1 sub-niche) ──
+  // ── Korea Travel & Living (high search volume, diverse content types) ──
   {
-    id: 'korean-crypto-web3',
-    name: 'Korean Crypto & Web3',
-    category: 'Korean Crypto',
-    broadTerm: 'Korea crypto Upbit blockchain',
+    id: 'korea-travel-guide',
+    name: 'Korea Travel & Expat Life',
+    category: 'Korea Travel',
+    broadTerm: 'South Korea travel guide living',
     seedKeywords: [
-      'how to buy crypto in Korea Upbit vs Bithumb comparison',
-      'Korean crypto regulations travel rule explained for foreigners',
-      'why Korea is called the crypto capital of Asia',
-      'Korean blockchain projects and Web3 startups to watch',
-      'Kimchi premium explained Korean crypto price difference',
+      'best time to visit South Korea complete travel guide',
+      'how to get around Seoul public transportation guide',
+      'best neighborhoods to stay in Seoul for tourists',
+      'Korea travel tips first time visitors should know',
+      'cost of living in Seoul for foreigners breakdown',
+      'how to rent an apartment in Seoul as a foreigner',
+      'best Korean food to try for first time visitors',
+      'Korea visa requirements for tourists by country',
     ],
-    contentTypes: ['how-to', 'analysis', 'deep-dive', 'news-explainer', 'x-vs-y', 'case-study'],
+    contentTypes: ['how-to', 'best-x-for-y', 'deep-dive', 'analysis', 'listicle', 'news-explainer', 'x-vs-y', 'case-study'],
   },
 
-  // ── Korean Automotive / EV (1 sub-niche) ──
+  // ── K-Entertainment Business (high engagement, viral potential) ──
   {
-    id: 'korean-auto-ev',
-    name: 'Korean EV & Automotive Industry',
-    category: 'Korean Automotive',
-    broadTerm: 'Hyundai Kia electric vehicle Korea',
+    id: 'k-entertainment-business',
+    name: 'K-Pop & K-Drama Business',
+    category: 'K-Entertainment',
+    broadTerm: 'K-pop K-drama business industry',
     seedKeywords: [
-      'Hyundai Ioniq 5 vs Kia EV6 which is better comparison',
-      'how Korea became a global electric vehicle leader',
-      'Korean EV battery makers LG Samsung SK comparison',
-      'best Korean electric cars available outside Korea',
-      'Hyundai stock analysis EV strategy for investors',
+      'how does K-pop make money business model explained',
+      'HYBE stock analysis buy or sell 2026',
+      'K-pop global revenue breakdown by market',
+      'best Korean dramas on Netflix 2026',
+      'how Korean dramas conquered global streaming platforms',
+      'Korean webtoon apps for English readers',
+      'K-pop idol agency contracts explained for fans',
+      'Korean content industry export growth analysis',
     ],
-    contentTypes: ['analysis', 'deep-dive', 'x-vs-y', 'news-explainer', 'best-x-for-y', 'case-study', 'product-review'],
+    contentTypes: ['analysis', 'deep-dive', 'news-explainer', 'best-x-for-y', 'how-to', 'case-study', 'listicle', 'x-vs-y'],
   },
 ];

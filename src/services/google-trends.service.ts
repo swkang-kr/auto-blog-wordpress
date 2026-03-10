@@ -81,8 +81,9 @@ export class GoogleTrendsService {
       logger.warn(`relatedTopics failed for "${keyword}": ${error instanceof Error ? error.message : error}`);
     }
 
-    // Fetch related queries
+    // Fetch related queries (single call — reuse for both queries and breakout detection)
     let relatedQueries: string[] = [];
+    let hasBreakout = false;
     try {
       await this.rateLimit();
       const rqRaw = await withRetry(
@@ -102,6 +103,13 @@ export class GoogleTrendsService {
         ...risingQueries.slice(0, 5).map((item: { query: string }) => item.query),
         ...topQueries.slice(0, 5).map((item: { query: string }) => item.query),
       ].filter(Boolean);
+
+      // Breakout detection from the same API response (no duplicate call needed)
+      hasBreakout = risingQueries.some(
+        (item: { formattedValue: string }) =>
+          item.formattedValue === 'Breakout' ||
+          parseInt(item.formattedValue) >= 5000,
+      );
     } catch (error) {
       logger.warn(`relatedQueries failed for "${keyword}": ${error instanceof Error ? error.message : error}`);
     }
@@ -120,30 +128,6 @@ export class GoogleTrendsService {
         if (change > 0.2) trendDirection = 'rising';
         else if (change < -0.2) trendDirection = 'declining';
       }
-    }
-
-    // Breakout detection: check if any rising query has 5000%+ growth
-    let hasBreakout = false;
-    try {
-      const rqRaw = await withRetry(
-        () => googleTrends.relatedQueries({
-          keyword,
-          startTime,
-          endTime,
-          geo: this.geo,
-        }),
-        1,
-        3000,
-      );
-      const rqData = JSON.parse(rqRaw);
-      const rising = rqData.default?.rankedList?.[1]?.rankedKeyword ?? [];
-      hasBreakout = rising.some(
-        (item: { formattedValue: string }) =>
-          item.formattedValue === 'Breakout' ||
-          parseInt(item.formattedValue) >= 5000,
-      );
-    } catch {
-      // Breakout check is optional; skip on failure
     }
 
     const result: TrendsData = {

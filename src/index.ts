@@ -237,6 +237,21 @@ async function main(): Promise<void> {
   // 2.14. Build topic clusters for cluster-aware internal linking
   const topicClusterService = new TopicClusterService();
 
+  // 2.15. Manual review mode: force draft for initial posts (AdSense safety)
+  let effectivePublishStatus = config.PUBLISH_STATUS as 'publish' | 'draft';
+  if (config.MANUAL_REVIEW_THRESHOLD > 0) {
+    const totalPublished = history.getAllEntries().length;
+    if (totalPublished < config.MANUAL_REVIEW_THRESHOLD) {
+      effectivePublishStatus = 'draft';
+      logger.info(
+        `Manual Review Mode: ${totalPublished}/${config.MANUAL_REVIEW_THRESHOLD} posts published. ` +
+        `Forcing draft mode for quality review. Set MANUAL_REVIEW_THRESHOLD=0 to disable.`,
+      );
+    } else {
+      logger.info(`Manual Review Mode: threshold reached (${totalPublished} posts). Auto-publish enabled.`);
+    }
+  }
+
   // 3. History (already loaded in 2.0 for calendar reordering)
 
   // 3.5. GA4 + GSC Performance Feedback Loop
@@ -271,7 +286,7 @@ async function main(): Promise<void> {
     }
   }
 
-  // Google Search Console integration (impressions, clicks, positions)
+  // Google Search Console integration (impressions, clicks, positions, decay, threats)
   if (config.GSC_SITE_URL && config.GOOGLE_INDEXING_SA_KEY) {
     try {
       const gscService = new GSCAnalyticsService(config.GSC_SITE_URL || config.WP_URL, config.GOOGLE_INDEXING_SA_KEY);
@@ -289,21 +304,18 @@ async function main(): Promise<void> {
         researchService.setSerpAnalysis(strikingDistance, topQueries);
         logger.info(`SERP analysis loaded: ${strikingDistance.length} striking distance, ${topQueries.length} top queries`);
       }
-    } catch (error) {
-      logger.warn(`GSC search insights failed: ${error instanceof Error ? error.message : error}`);
-    }
-  }
 
-  if (insightParts.length > 0) {
-    researchService.setPerformanceInsights(insightParts.join('\n'));
-  }
+      // Build competitive context from striking distance (reuse fetched data — no duplicate API call)
+      if (strikingDistance.length > 0) {
+        const competitiveStr = strikingDistance.slice(0, 5).map(sd =>
+          `"${sd.query}" (pos ${sd.position.toFixed(1)}, ${sd.impressions} imp)`,
+        ).join('; ');
+        contentService.setCompetitiveContext(
+          `Striking distance keywords needing supporting content: ${competitiveStr}. Consider weaving these into your article naturally.`,
+        );
+      }
 
-  // 3.55. Content decay detection + competitive threat monitoring
-  if (config.GSC_SITE_URL && config.GOOGLE_INDEXING_SA_KEY) {
-    try {
-      const gscService = new GSCAnalyticsService(config.GSC_SITE_URL || config.WP_URL, config.GOOGLE_INDEXING_SA_KEY);
-
-      // Declining pages detection
+      // Content decay detection
       const declining = await gscService.getDecliningPages();
       if (declining.length > 0) {
         logger.warn(`\n=== Content Decay Alert: ${declining.length} declining page(s) ===`);
@@ -332,21 +344,22 @@ async function main(): Promise<void> {
           }
         }
 
-        // Feed competitive threats into performance insights for keyword research
-        if (threats.length > 0) {
-          const threatInsights = '\n## Competitive Threats (position declining — defend these rankings)\n' +
-            threats.slice(0, 8).map(t =>
-              `  - "${t.query}" on ${t.page}: pos ${t.previousPosition.toFixed(1)} -> ${t.currentPosition.toFixed(1)} [${t.urgency}]`,
-            ).join('\n') +
-            '\nConsider creating supporting content for these keywords to reclaim rankings.';
-          researchService.setPerformanceInsights(
-            (researchService as unknown as { performanceInsights: string }).performanceInsights + threatInsights,
-          );
-        }
+        const threatInsights = '\n## Competitive Threats (position declining — defend these rankings)\n' +
+          threats.slice(0, 8).map(t =>
+            `  - "${t.query}" on ${t.page}: pos ${t.previousPosition.toFixed(1)} -> ${t.currentPosition.toFixed(1)} [${t.urgency}]`,
+          ).join('\n') +
+          '\nConsider creating supporting content for these keywords to reclaim rankings.';
+        researchService.setPerformanceInsights(
+          researchService.getPerformanceInsights() + threatInsights,
+        );
       }
     } catch (error) {
-      logger.debug(`Content decay/competitive check failed: ${error instanceof Error ? error.message : error}`);
+      logger.warn(`GSC integration failed: ${error instanceof Error ? error.message : error}`);
     }
+  }
+
+  if (insightParts.length > 0) {
+    researchService.setPerformanceInsights(insightParts.join('\n'));
   }
 
   // 3.6. Fetch existing posts for internal linking + similarity dedup
@@ -391,6 +404,14 @@ async function main(): Promise<void> {
     const postStart = Date.now();
     logger.info(`\n[Phase A] Niche: "${niche.name}"`);
 
+    // Set per-niche content type distribution for diversity-aware keyword selection
+    const allContentTypes = history.getRecentContentTypes(niche.id, 999);
+    if (allContentTypes.length > 0) {
+      const dist: Record<string, number> = {};
+      for (const ct of allContentTypes) dist[ct] = (dist[ct] || 0) + 1;
+      researchService.setContentTypeDistribution(dist);
+    }
+
     try {
       // A-1. Keyword research (include batch keywords to avoid cross-niche overlap)
       const postedKeywords = [...history.getPostedKeywordsForNiche(niche.id), ...batchKeywords];
@@ -413,7 +434,11 @@ async function main(): Promise<void> {
         .slice(0, 20);
       const filteredPosts = [...nichePosts, ...otherPosts];
 
-      const content = await contentService.generateContent(researched, filteredPosts);
+      // Get cluster links for topic cluster strengthening
+      const clusterLinks = topicClusterService.getClusterLinks(niche.id, researched.analysis.selectedKeyword, 3);
+      const clusterLinksForPrompt = clusterLinks.map(cl => ({ url: cl.url, title: cl.title, keyword: cl.keyword }));
+
+      const content = await contentService.generateContent(researched, filteredPosts, clusterLinksForPrompt);
       generated.push({ niche, postStart, researched, content });
 
       // Track keyword for cross-niche dedup
@@ -453,7 +478,10 @@ async function main(): Promise<void> {
           .slice(0, 20);
         const filteredPosts = [...nichePosts, ...otherPosts];
 
-        const content = await contentService.generateContent(researched, filteredPosts);
+        const retryClusterLinks = topicClusterService.getClusterLinks(niche.id, researched.analysis.selectedKeyword, 3);
+        const retryClusterLinksForPrompt = retryClusterLinks.map(cl => ({ url: cl.url, title: cl.title, keyword: cl.keyword }));
+
+        const content = await contentService.generateContent(researched, filteredPosts, retryClusterLinksForPrompt);
         generated.push({ niche, postStart: retryStart, researched, content });
         batchKeywords.push(researched.analysis.selectedKeyword);
 
@@ -647,7 +675,7 @@ async function main(): Promise<void> {
           keyword: researched.analysis.selectedKeyword,
           featuredImageUrl: featuredMediaResult.sourceUrl,
           ogImageUrl,
-          publishStatus: config.PUBLISH_STATUS as 'publish' | 'draft',
+          publishStatus: effectivePublishStatus,
           existingPosts,
           scheduledDate,
           pillarPageUrl: pillarUrlMap[niche.id],

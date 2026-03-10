@@ -1010,6 +1010,11 @@ add_action('wp_head', function() {
 .ab-proscons{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px 0}
 .ab-pros{padding:16px;background:#f0fff4;border-radius:10px;border:1px solid #c6f6d5}
 .ab-cons{padding:16px;background:#fff5f5;border-radius:10px;border:1px solid #fed7d7}
+.ab-pros-label{margin:0 0 8px 0;font-weight:700;color:#22543d}
+.ab-cons-label{margin:0 0 8px 0;font-weight:700;color:#742a2a}
+.ab-step h3{margin:0;font-size:18px;color:#222}
+.ab-back-top{text-align:center;margin:20px 0 0 0}
+.ab-back-top a{font-size:14px;color:#0066FF}
 .ab-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:24px 0}
 .ab-cta{margin:30px 0;border-radius:12px;text-align:center}
 .ab-cta-newsletter{padding:28px 24px;background:linear-gradient(135deg,#0052CC 0%,#0066FF 100%);color:#fff}
@@ -1065,14 +1070,23 @@ add_action('wp_head', function() {
 .ab-metrics p{color:#e0e0e0!important}
 .ab-pros{background:#1a2e1a!important;border-color:#2e5e2e!important}
 .ab-cons{background:#2e1a1a!important;border-color:#5e2e2e!important}
+.ab-pros-label{color:#68d391!important}
+.ab-cons-label{color:#fc8181!important}
+.ab-step h3{color:#f0f0f0!important}
+.ab-back-top a{color:#4da6ff!important}
 .ab-faq details{border-color:#3a3a5e!important}
 .ab-faq summary{background:#2a2a3e!important;color:#e0e0e0!important}
 .ab-header{border-color:#3a3a5e!important}
 .ab-disclaimer{border-color:#3a3a5e!important;color:#888!important}
 .ab-newsletter-cta{background:linear-gradient(135deg,#1a1a3e 0%,#2a2a4e 100%)!important}
 .ab-series-nav{background:#2a2a3e!important;border-color:#3a3a5e!important}
+.ab-progress{background:transparent!important}
 }
+.ab-progress{position:fixed;top:0;left:0;width:0;height:3px;background:linear-gradient(90deg,#0052CC,#0066FF);z-index:99999;transition:width 0.1s linear}
 </style>';
+echo '<script>
+(function(){if(!document.querySelector(".post-content"))return;var b=document.createElement("div");b.className="ab-progress";document.body.appendChild(b);window.addEventListener("scroll",function(){var h=document.documentElement.scrollHeight-window.innerHeight;b.style.width=h>0?Math.min(100,(window.scrollY/h)*100)+"%":"0%"})})();
+</script>';
 });`.trim();
 
     try {

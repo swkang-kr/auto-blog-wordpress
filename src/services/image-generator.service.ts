@@ -142,6 +142,20 @@ export class ImageGeneratorService {
             logger.warn(`Image ${index + 1} is duplicate of a previous image, skipping`);
             return null;
           }
+
+          // Image quality validation: check minimum resolution and file size
+          const qualityCheck = await this.validateImageQuality(imageBuffer, index);
+          if (!qualityCheck.valid) {
+            logger.warn(`Image ${index + 1} quality check failed: ${qualityCheck.reason}`);
+            if (attempt < MAX_RETRIES) {
+              const delay = Math.pow(2, attempt) * 1000;
+              logger.debug(`Retrying image ${index + 1} in ${delay / 1000}s due to quality issue...`);
+              await new Promise(r => setTimeout(r, delay));
+              continue;
+            }
+            return null;
+          }
+
           costTracker.addImageCall(1);
           const compressedBuffer = await this.convertImage(imageBuffer);
           logger.info(`Image ${index + 1} generated & compressed to ${this.imageFormat.toUpperCase()} (${(compressedBuffer.length / 1024).toFixed(0)}KB)`);
@@ -238,6 +252,62 @@ export class ImageGeneratorService {
       : await pipeline.webp({ quality: 85 }).toBuffer();
     logger.debug(`OG image generated (${this.imageFormat.toUpperCase()}): ${(ogBuffer.length / 1024).toFixed(0)}KB`);
     return ogBuffer;
+  }
+
+  /**
+   * Validate image quality before compression.
+   * Checks: minimum resolution, file size, and basic corruption detection.
+   */
+  private async validateImageQuality(
+    buffer: Buffer,
+    index: number,
+  ): Promise<{ valid: boolean; reason?: string }> {
+    try {
+      const metadata = await sharp(buffer).metadata();
+
+      // Minimum resolution check
+      const minWidth = index === 0 ? 800 : 400;  // Featured vs inline
+      const minHeight = index === 0 ? 400 : 200;
+      if (!metadata.width || !metadata.height) {
+        return { valid: false, reason: 'Cannot read image dimensions' };
+      }
+      if (metadata.width < minWidth || metadata.height < minHeight) {
+        return { valid: false, reason: `Too small: ${metadata.width}x${metadata.height} (min ${minWidth}x${minHeight})` };
+      }
+
+      // Minimum file size (very small images are likely corrupted or blank)
+      const sizeKB = buffer.length / 1024;
+      if (sizeKB < 5) {
+        return { valid: false, reason: `File too small: ${sizeKB.toFixed(1)}KB (likely corrupted)` };
+      }
+
+      // Check for mostly single-color images (blank/error images)
+      // Sample a few pixel rows and check variance
+      const { data, info } = await sharp(buffer)
+        .resize(100, 100, { fit: 'cover' })
+        .raw()
+        .toBuffer({ resolveWithObject: true });
+
+      const channels = info.channels;
+      let totalVariance = 0;
+      const sampleSize = Math.min(data.length, 300 * channels);
+
+      // Calculate pixel value variance across sample
+      let sum = 0;
+      for (let i = 0; i < sampleSize; i++) sum += data[i];
+      const mean = sum / sampleSize;
+      for (let i = 0; i < sampleSize; i++) totalVariance += Math.pow(data[i] - mean, 2);
+      const variance = totalVariance / sampleSize;
+
+      if (variance < 50) {
+        return { valid: false, reason: `Low pixel variance (${variance.toFixed(0)}) — likely blank or solid color image` };
+      }
+
+      logger.debug(`Image ${index + 1} quality OK: ${metadata.width}x${metadata.height}, ${sizeKB.toFixed(0)}KB, variance=${variance.toFixed(0)}`);
+      return { valid: true };
+    } catch (error) {
+      return { valid: false, reason: `Quality check error: ${error instanceof Error ? error.message : String(error)}` };
+    }
   }
 
   async generateImages(prompts: string[]): Promise<ImageResult> {

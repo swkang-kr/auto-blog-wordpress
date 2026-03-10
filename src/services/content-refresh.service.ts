@@ -15,6 +15,7 @@ interface WPPost {
   content: { rendered: string };
   link: string;
   date: string;
+  meta?: Record<string, string>;
 }
 
 export class ContentRefreshService {
@@ -145,7 +146,7 @@ export class ContentRefreshService {
 
       try {
         const { data: posts } = await this.api.get('/posts', {
-          params: { slug, status: 'publish', _fields: 'id,title,slug,content,link,date' },
+          params: { slug, status: 'publish', _fields: 'id,title,slug,content,link,date,meta' },
         });
         const post = (posts as WPPost[])[0];
         if (!post) {
@@ -167,6 +168,24 @@ export class ContentRefreshService {
         if (!rewritten) continue;
 
         const nowIso = new Date().toISOString();
+
+        // Update JSON-LD dateModified if present
+        const existingJsonLd = post.meta?._autoblog_jsonld;
+        let updatedJsonLd: string | undefined;
+        if (existingJsonLd) {
+          try {
+            const jsonLdArr = JSON.parse(existingJsonLd);
+            if (Array.isArray(jsonLdArr)) {
+              for (const item of jsonLdArr) {
+                if (item.dateModified) item.dateModified = nowIso;
+              }
+              updatedJsonLd = JSON.stringify(jsonLdArr);
+            }
+          } catch {
+            // JSON-LD parse failed, skip update
+          }
+        }
+
         await this.api.post(`/posts/${post.id}`, {
           title: rewritten.title,
           content: rewritten.html,
@@ -176,6 +195,7 @@ export class ContentRefreshService {
             _autoblog_modified_time: nowIso,
             _rewrite_reason: `Auto-rewrite: ${perf.pageviews} views, ${(perf.bounceRate * 100).toFixed(0)}% bounce`,
             rank_math_description: rewritten.excerpt,
+            ...(updatedJsonLd ? { _autoblog_jsonld: updatedJsonLd } : {}),
           },
         });
 
@@ -213,14 +233,17 @@ export class ContentRefreshService {
     const existingContent = post.content.rendered.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
     const wordCount = existingContent.split(/\s+/).length;
 
-    // Send up to 8000 chars (~1200 words) for better context awareness
-    const contentPreview = existingContent.slice(0, 8000);
-    const isTruncated = existingContent.length > 8000;
+    // Send up to 30000 chars for full context awareness (Claude handles it fine)
+    const contentPreview = existingContent.slice(0, 30000);
+    const isTruncated = existingContent.length > 30000;
+
+    // Extract primary keyword from Rank Math meta if available
+    const focusKeyword = post.meta?.rank_math_focus_keyword || '';
 
     const prompt = `You are rewriting an underperforming blog post to improve reader engagement and reduce bounce rate. The post exists at ${post.link} and must keep its URL/slug unchanged.
 
 CURRENT TITLE: ${post.title.rendered}
-CURRENT WORD COUNT: ${wordCount}
+${focusKeyword ? `PRIMARY KEYWORD: ${focusKeyword}\n` : ''}CURRENT WORD COUNT: ${wordCount}
 CURRENT CONTENT (plain text): ${contentPreview}${isTruncated ? '...' : ''}
 
 PERFORMANCE DATA: ${perf.pageviews} views, ${(perf.bounceRate * 100).toFixed(0)}% bounce rate, ${perf.avgEngagementTime.toFixed(0)}s avg engagement
@@ -280,8 +303,8 @@ Return pure JSON only. No markdown.`;
         post.title.rendered, 'analysis', this.wpUrl,
       );
       logContentScore(score, result.title);
-      if (score.total < 40) {
-        logger.warn(`Auto-rewrite quality too low (${score.total}/100), skipping`);
+      if (score.total < 55) {
+        logger.warn(`Auto-rewrite quality too low (${score.total}/100, min 55), skipping`);
         return null;
       }
 

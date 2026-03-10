@@ -98,8 +98,33 @@ const WORD_COUNT_TARGETS: Record<string, { min: number; target: number; continua
   'product-review':  { min: 1600, target: 2200, continuation: 1400, rejection: 1200 },
 };
 
-function getWordCountTargets(contentType: string) {
-  return WORD_COUNT_TARGETS[contentType] || WORD_COUNT_TARGETS['analysis'];
+/**
+ * Search intent-based word count adjustments.
+ * Different search intents warrant different content depths:
+ * - Informational: readers want comprehensive answers → full length
+ * - Commercial: readers are comparing/evaluating → moderate detail
+ * - Transactional: readers want to act → concise, action-focused
+ * - Navigational: readers want a specific page → shortest
+ */
+const INTENT_MULTIPLIERS: Record<string, number> = {
+  'informational': 1.0,   // Full length (default)
+  'commercial': 0.9,      // Slightly shorter, more comparison-focused
+  'transactional': 0.75,  // Shorter, action-focused (how-to-buy, sign-up guides)
+  'navigational': 0.6,    // Shortest (direct answer + context)
+};
+
+function getWordCountTargets(contentType: string, searchIntent?: string) {
+  const base = WORD_COUNT_TARGETS[contentType] || WORD_COUNT_TARGETS['analysis'];
+  const multiplier = INTENT_MULTIPLIERS[searchIntent || 'informational'] || 1.0;
+
+  if (multiplier === 1.0) return base;
+
+  return {
+    min: Math.round(base.min * multiplier),
+    target: Math.round(base.target * multiplier),
+    continuation: Math.round(base.continuation * multiplier),
+    rejection: Math.round(base.rejection * multiplier),
+  };
 }
 
 /** Common English stop words to remove from slugs for cleaner URLs */
@@ -158,7 +183,7 @@ You MUST write like an experienced human analyst, NOT like an AI:
   NEVER open with a generic topic introduction.
 - Use subheadings (H3) every 200-300 words to break up content
 - Mix paragraph lengths: alternate between 2-sentence punchy paragraphs and 3-4 sentence detailed ones
-- Use blockquotes for expert quotes or key data citations: <blockquote style="border-left:4px solid #0066FF; margin:24px 0; padding:16px 24px; background:#f8f9fa; font-style:italic; color:#555; line-height:1.7;">quote text</blockquote>
+- Use blockquotes for expert quotes or key data citations: <blockquote>quote text</blockquote>
 
 ## Content Length Requirement (CRITICAL)
 You MUST write AT LEAST WORD_COUNT_TARGET words of body content. This is non-negotiable.
@@ -235,12 +260,11 @@ To reach WORD_COUNT_TARGET+ words WITHOUT padding:
 - End with "What Others Can Learn" section and FAQ (3-5 Q&As)
 
 ## Niche-Specific Tone
-- Korean Tech & Startup: Insider tone — write like a Seoul-based tech journalist with Silicon Valley fluency. Reference Korean tech ecosystem specifics (Pangyo Techno Valley, government R&D programs, chaebol dynamics).
-- K-Entertainment Analysis: Business-savvy cultural analysis — go beyond fandom to explain the industry mechanics, revenue models, and global strategy. Reference HYBE, SM, JYP as business entities, not just talent agencies.
-- Korean Investment & Finance: Authoritative market analyst — cite KOSPI/KOSDAQ data, BOK policy, Korean regulatory environment. Write for investors and analysts, not casual readers.
-- Korean Food & Lifestyle: Warm, experiential tone — write like a food writer who lives in Seoul. Include specific neighborhood recommendations, Korean ingredient names with Hangul, cooking tips from Korean home cooks. Reference Korean food culture context (banchan, jesa, seasonal eating).
-- Korea Travel & Living: Practical insider guide tone — write like an expat who has navigated the system. Include specific costs in KRW/USD, real transit routes, neighborhood-level recommendations. Reference T-money, KTX, Korean apps foreigners need.
-- Korean Language & Education: Encouraging teacher tone — break down complex grammar simply. Include Hangul examples with romanization, common mistakes foreigners make, and cultural context behind language patterns. Reference TOPIK levels, Korean university programs.
+- Korean Tech: Insider tone — write like a Seoul-based tech journalist with Silicon Valley fluency. Reference Korean tech ecosystem specifics (Pangyo Techno Valley, government R&D programs, chaebol dynamics, Samsung/SK Hynix strategy).
+- Korean Finance: Authoritative market analyst — cite KOSPI/KOSDAQ data, BOK policy, Korean regulatory environment. Write for investors and analysts, not casual readers. Include Korean won context and institutional data.
+- K-Beauty: Expert skincare advisor — combine product knowledge with dermatological science. Reference Korean beauty innovations, ingredient analysis, and brand comparisons. Include Korean product names and Olive Young context.
+- Korea Travel: Practical insider guide tone — write like an expat who has navigated the system. Include specific costs in KRW/USD, real transit routes, neighborhood-level recommendations. Reference T-money, KTX, Korean apps foreigners need.
+- K-Entertainment: Business-savvy cultural analysis — go beyond fandom to explain the industry mechanics, revenue models, and global strategy. Reference HYBE, SM, JYP as business entities, not just talent agencies.
 
 ## Signature Section (MANDATORY)
 Every article MUST include one of these signature sections as an H2:
@@ -405,17 +429,17 @@ Display key numbers prominently:
 ### Pro/Con Boxes (Best-X-for-Y, X-vs-Y)
 <div class="ab-proscons">
 <div class="ab-pros">
-<p style="margin:0 0 8px 0; font-weight:700; color:#22543d;">Pros</p>
+<p class="ab-pros-label">Pros</p>
 <ul style="margin:0; padding-left:16px; font-size:14px; line-height:1.8;"><li>...</li></ul></div>
 <div class="ab-cons">
-<p style="margin:0 0 8px 0; font-weight:700; color:#742a2a;">Cons</p>
+<p class="ab-cons-label">Cons</p>
 <ul style="margin:0; padding-left:16px; font-size:14px; line-height:1.8;"><li>...</li></ul></div></div>
 
 ### Step Progress Indicator (How-to content ONLY)
 For each major step in how-to guides, use a numbered progress indicator:
 <div class="ab-step">
 <div class="ab-step-num">1</div>
-<h3 style="margin:0; font-size:18px; color:#222;">Step Title</h3></div>
+<h3>Step Title</h3></div>
 
 ## HTML Structure Rules (USE CSS CLASSES — minimal inline styles)
 All styling is handled by a consolidated <style> block injected at publish time. Use CSS classes instead of inline styles wherever possible. This reduces HTML size by ~40% and improves page speed.
@@ -439,7 +463,7 @@ Note: For new articles, set Published and Updated to the same date. The system u
 ### Key Takeaways Box (MANDATORY — insert right after TOC, before first H2)
 <div class="ab-takeaways">
 <p style="margin:0 0 12px 0; font-weight:700; font-size:17px; color:#0066FF;">Key Takeaways</p>
-<ul style="margin:0; padding-left:20px; line-height:2.0;">
+<ul>
 <li>3-5 bullet points summarizing the most important insights from the article</li>
 <li>Each bullet should be a concrete, actionable takeaway (not generic filler)</li>
 <li>Include at least one data point or specific Korean market reference</li>
@@ -464,7 +488,7 @@ Note: For new articles, set Published and Updated to the same date. The system u
 - NEVER use emoji or unicode special symbols in HTML
 - Use numbers (1. 2. 3.) or hyphens (-) for lists
 - The html MUST end with: <p class="ab-disclaimer">This article is based on trending information and is intended for informational purposes only. Please verify details through official sources.</p>
-- AFTER the disclaimer, add a back-to-top link: <p style="text-align:center; margin:20px 0 0 0;"><a href="#" style="font-size:14px;">Back to Top</a></p>
+- AFTER the disclaimer, add a back-to-top link: <p class="ab-back-top"><a href="#">Back to Top</a></p>
 
 IMPORTANT: Respond with pure JSON only. Do NOT use markdown code blocks (\`\`\`).
 Escape double quotes (") inside field values as \\".
@@ -483,6 +507,8 @@ export class ContentGeneratorService {
   private minQualityScore: number;
   private authorLinkedin: string;
   private authorTwitter: string;
+  private monetizationContext: string;
+  private competitiveContext: string;
   constructor(apiKey: string, siteOwner?: string, siteUrl?: string, minQualityScore?: number, authorLinks?: { linkedin?: string; twitter?: string }) {
     this.client = new Anthropic({ apiKey });
     this.siteOwner = siteOwner || '';
@@ -490,14 +516,51 @@ export class ContentGeneratorService {
     this.minQualityScore = minQualityScore ?? 40;
     this.authorLinkedin = authorLinks?.linkedin || '';
     this.authorTwitter = authorLinks?.twitter || '';
+    this.monetizationContext = '';
+    this.competitiveContext = '';
   }
 
-  async generateContent(researched: ResearchedKeyword, existingPosts?: ExistingPost[]): Promise<BlogContent> {
+  /** Set monetization awareness for content generation (affiliate/newsletter CTA hints) */
+  setMonetizationContext(category: string, hasAffiliate: boolean, hasNewsletter: boolean): void {
+    const parts: string[] = [];
+    if (hasAffiliate) {
+      parts.push('This article may feature product affiliate links. Write natural product mentions and include a recommendation section where appropriate.');
+    }
+    if (hasNewsletter) {
+      parts.push('A newsletter signup CTA will be inserted mid-article. Write a natural transition point around the 40% mark of the content.');
+    }
+    this.monetizationContext = parts.length > 0
+      ? `\n## Monetization Context\n${parts.join('\n')}\n`
+      : '';
+  }
+
+  /** Set competitive context for content generation */
+  setCompetitiveContext(context: string): void {
+    this.competitiveContext = context ? `\n## Competitive Context\n${context}\n` : '';
+  }
+
+  async generateContent(
+    researched: ResearchedKeyword,
+    existingPosts?: ExistingPost[],
+    clusterLinks?: Array<{ url: string; title: string; keyword?: string }>,
+  ): Promise<BlogContent> {
     const { niche, analysis } = researched;
     logger.info(`Generating content for: "${analysis.selectedKeyword}" [${niche.name} / ${analysis.contentType}]`);
 
     const today = new Date().toISOString().split('T')[0];
     const year = new Date().getFullYear();
+
+    // Build cluster links section (mandatory links from topic cluster service)
+    let clusterLinksSection = '';
+    if (clusterLinks && clusterLinks.length > 0) {
+      const clusterLines = clusterLinks.map(cl => {
+        const kwInfo = cl.keyword ? ` (keyword: "${cl.keyword}")` : '';
+        return `- "${cl.title}"${kwInfo}: ${cl.url}`;
+      }).join('\n');
+      clusterLinksSection = `\n\n## Required Cluster Links (MANDATORY — link to ALL of these within the article body)
+${clusterLines}
+These are sibling posts in your topic cluster. You MUST include a natural contextual link to each one.`;
+    }
 
     // Build internal links section — 3-tier priority for topic cluster strengthening
     let internalLinksSection = '';
@@ -556,11 +619,11 @@ Primary Keyword: "${analysis.selectedKeyword}"
 Suggested Title: "${analysis.suggestedTitle}"
 Unique Angle: ${analysis.uniqueAngle}
 Search Intent: ${analysis.searchIntent}
-Related Keywords to Include: ${analysis.relatedKeywordsToInclude.join(', ')}${internalLinksSection}
+Related Keywords to Include: ${analysis.relatedKeywordsToInclude.join(', ')}${clusterLinksSection}${internalLinksSection}
 
-${nicheVoice}
-
-Write an in-depth ${analysis.contentType} blog post about "${analysis.selectedKeyword}" for the ${niche.name} niche. The post MUST be at least ${getWordCountTargets(analysis.contentType).target} words. Write thoroughly — expand each section with detailed explanations, Korean market data, and expert insights. Do NOT stop early.
+${nicheVoice}${this.monetizationContext}${this.competitiveContext}
+Write an in-depth ${analysis.contentType} blog post about "${analysis.selectedKeyword}" for the ${niche.name} niche. The post MUST be at least ${getWordCountTargets(analysis.contentType, analysis.searchIntent).target} words. Write thoroughly — expand each section with detailed explanations, Korean market data, and expert insights. Do NOT stop early.
+Search intent: ${analysis.searchIntent || 'informational'}${analysis.searchIntent === 'transactional' ? ' — Focus on actionable steps and clear instructions. Readers want to DO something, not just learn about it.\nSTRUCTURE: Include pricing/cost section, step-by-step action guide, CTA-ready recommendation, and comparison table if applicable.' : analysis.searchIntent === 'commercial' ? ' — Focus on comparisons, pros/cons, and helping readers make a decision.\nSTRUCTURE: MUST include comparison table, pro/con analysis for top options, and a clear verdict/recommendation section.' : analysis.searchIntent === 'navigational' ? ' — Provide a direct, comprehensive answer quickly. Less padding, more value per word.\nSTRUCTURE: Direct answer in first 100 words. Then supporting context. Keep total length shorter.' : ''}
 IMPORTANT: All information, statistics, recommendations, and references must be current as of ${year}. Do NOT use outdated data from previous years. Mention "${year}" where relevant.
 Use the unique angle: "${analysis.uniqueAngle}"
 LSI Keyword Integration Rules (CRITICAL for semantic SEO):
@@ -584,7 +647,7 @@ Respond with pure JSON only.`;
     const temperature = temperatureMap[analysis.contentType] ?? 0.7;
 
     const variant = getVariantForNiche(researched.niche.id);
-    const targets = getWordCountTargets(analysis.contentType);
+    const targets = getWordCountTargets(analysis.contentType, analysis.searchIntent);
     const systemPrompt = buildSystemPrompt(variant).replace(/WORD_COUNT_TARGET/g, String(targets.target));
     logger.debug(`Using layout variant: ${variant} (niche: ${researched.niche.id}), word target: ${targets.target}`);
 

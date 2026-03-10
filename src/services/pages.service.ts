@@ -257,12 +257,12 @@ ${authorLinks?.twitter ? `<p style="margin:0;"><a href="${authorLinks.twitter}" 
         p => p.category.toLowerCase() === niche.category.toLowerCase(),
       );
 
-      if (nichePosts.length < 3) {
-        logger.debug(`Skipping pillar page for "${niche.name}" — only ${nichePosts.length} posts (need 3+)`);
+      if (nichePosts.length < 2) {
+        logger.debug(`Skipping pillar page for "${niche.name}" — only ${nichePosts.length} posts (need 2+)`);
         continue;
       }
 
-      const title = `Complete Guide to ${niche.category}: Everything You Need to Know`;
+      const title = `The Ultimate ${niche.category} Guide (${new Date().getFullYear()}): Expert Analysis, Tips & Resources`;
       const content = this.buildPillarPageContent(niche, nichePosts, siteName);
 
       try {
@@ -295,28 +295,45 @@ ${authorLinks?.twitter ? `<p style="margin:0;"><a href="${authorLinks.twitter}" 
     posts: ExistingPost[],
     siteName: string,
   ): string {
-    const nicheDescriptions: Record<string, string> = {
-      'Korean Tech': 'the latest developments in Korean technology, from Samsung and Naver to Pangyo startups and AI innovation',
-      'K-Entertainment': 'the business side of K-pop, K-drama, and the global Hallyu wave — including agency strategies, revenue models, and market analysis',
-      'Korean Finance': 'Korean stock markets (KOSPI/KOSDAQ), investment strategies, BOK monetary policy, and financial opportunities for international investors',
-      'Korean Food': 'authentic Korean cuisine, from street food guides to home cooking recipes, with neighborhood recommendations and cultural context',
-      'Korea Travel': 'practical travel and living guides for South Korea, including transportation, costs, apps, and insider tips',
-      'Korean Language': 'learning Korean effectively — from Hangul basics to TOPIK preparation, with recommended apps, schools, and study strategies',
-      'K-Beauty': 'Korean skincare science, product comparisons, beauty industry analysis, and step-by-step routines for every skin type',
-      'Korean Crypto': 'South Korea\'s crypto market dynamics — Upbit, Bithumb, regulatory landscape, Kimchi premium, and Web3 innovation',
-      'Korean Automotive': 'Hyundai, Kia, and Korea\'s EV revolution — vehicle comparisons, battery technology, and investment analysis',
+    const nicheDescriptions: Record<string, { short: string; intro: string; whyMatters: string; keyTopics: string[] }> = {
+      'Korean Tech': {
+        short: 'Korean technology, AI, semiconductors, and digital innovation',
+        intro: 'South Korea is a global technology powerhouse. Home to Samsung, SK Hynix, and a thriving AI startup ecosystem centered in Pangyo Techno Valley, Korea plays an outsized role in shaping the future of semiconductors, artificial intelligence, and digital infrastructure. This guide covers everything from Korean chip dominance to the apps that power daily life in Seoul.',
+        whyMatters: 'Korea produces over 60% of the world\'s memory chips. Samsung and SK Hynix are critical suppliers for everything from iPhones to data centers powering AI models. Understanding Korean tech is essential for investors, industry analysts, and anyone tracking global innovation trends. The Korean government\'s aggressive AI investment policies and semiconductor subsidies make this sector one to watch closely.',
+        keyTopics: ['Samsung AI & semiconductor strategy', 'SK Hynix HBM memory leadership', 'Korean AI startups and government funding', 'Naver and Kakao digital ecosystem', 'Pangyo Techno Valley startup scene', 'Korean 5G and digital infrastructure'],
+      },
+      'K-Entertainment': {
+        short: 'K-Pop, K-Drama, and the Korean content industry business',
+        intro: 'The Korean entertainment industry — known globally as Hallyu (한류, Korean Wave) — is a multi-billion dollar export machine. From BTS and BLACKPINK to Squid Game and Korean webtoons, Korean content dominates global streaming charts. But behind the cultural phenomenon lies a sophisticated business model worth understanding.',
+        whyMatters: 'Korea\'s content industry exported over $13 billion in 2024. HYBE, SM, JYP, and CJ ENM are publicly traded companies with complex revenue models spanning music, drama production, IP licensing, and fan commerce. For investors and business analysts, Korean entertainment represents one of the most compelling growth stories in global media.',
+        keyTopics: ['K-pop agency business models and revenue streams', 'K-drama global licensing and Netflix deals', 'Korean webtoon and IP monetization', 'HYBE, SM, JYP stock analysis', 'Fan economy and concert touring economics', 'Korean content regulation and government support'],
+      },
+      'Korean Finance': {
+        short: 'Korean stock markets, investment strategies, and economic analysis',
+        intro: 'The Korean financial market — anchored by KOSPI and KOSDAQ — offers unique opportunities for international investors. With world-class companies like Samsung, Hyundai, and LG trading at significant discounts to global peers (the famous "Korea Discount"), understanding Korean markets can unlock substantial value.',
+        whyMatters: 'Korea is the world\'s 13th largest economy and home to globally dominant companies in semiconductors, automotive, shipbuilding, and entertainment. The Korean won (KRW) exchange rate, Bank of Korea monetary policy, and Korea\'s national pension fund (NPS) — the world\'s 3rd largest — significantly impact global financial markets.',
+        keyTopics: ['How to invest in Korean stocks from abroad', 'KOSPI and KOSDAQ index explained', 'Korean ETFs for international investors', 'Bank of Korea policy analysis', 'Korean won exchange rate forecasting', 'Korea Discount thesis and valuation'],
+      },
+      'K-Beauty': {
+        short: 'Korean skincare routines, product reviews, and beauty industry analysis',
+        intro: 'Korean beauty (K-beauty) has redefined global skincare. The famous 10-step routine, innovative ingredients like snail mucin and centella asiatica, and brands like COSRX, Laneige, and Sulwhasoo have made Korean skincare the gold standard worldwide. Olive Young stores in Seoul have become pilgrimage destinations for beauty enthusiasts.',
+        whyMatters: 'The Korean beauty industry is valued at over $10 billion and growing. Korean brands consistently lead in product innovation — from sheet masks to glass skin serums. For consumers, understanding K-beauty means better skincare choices. For investors, Amorepacific and LG H&H represent significant opportunities in the global beauty market.',
+        keyTopics: ['Korean skincare routines by skin type', 'Best K-beauty products and brands', 'Korean sunscreen science and comparisons', 'Olive Young must-buy products', 'K-beauty industry market analysis', 'Korean beauty tech innovations'],
+      },
+      'Korea Travel': {
+        short: 'travel planning, expat guides, and living in South Korea',
+        intro: 'South Korea welcomes over 17 million tourists annually, and the number keeps growing. From Seoul\'s neon-lit streets and ancient palaces to Jeju Island\'s natural beauty and Busan\'s coastal charm, Korea offers experiences that blend ultra-modern convenience with rich cultural heritage. This guide covers everything you need — whether you\'re visiting for a week or moving for a year.',
+        whyMatters: 'Korea\'s tourism infrastructure is world-class: an efficient subway system, ultra-fast internet everywhere, and apps like Naver Map and KakaoTalk that make navigation seamless. But navigating housing, visas, healthcare, and daily life as a foreigner requires insider knowledge that most travel guides miss. Our coverage draws from real expat experiences and local expertise.',
+        keyTopics: ['Seoul neighborhood guides and where to stay', 'Korean public transportation mastery', 'Cost of living breakdown for foreigners', 'Visa types and requirements explained', 'Best Korean food for first-time visitors', 'Living in Korea as an expat'],
+      },
     };
 
-    const description = nicheDescriptions[niche.category] || `everything about ${niche.category}`;
-
-    const postCards = posts
-      .slice(0, 20)
-      .map(p => {
-        const shortTitle = p.title.length > 70 ? p.title.slice(0, 67) + '...' : p.title;
-        return `<a href="${p.url}" style="display:block; padding:16px 20px; margin:0 0 10px 0; background:#fff; border:1px solid #e5e7eb; border-radius:8px; text-decoration:none; transition:box-shadow 0.2s;">
-<p style="margin:0; font-size:15px; font-weight:600; color:#222; line-height:1.4;">${this.escapeHtml(shortTitle)}</p></a>`;
-      })
-      .join('\n');
+    const nicheData = nicheDescriptions[niche.category] || {
+      short: `everything about ${niche.category}`,
+      intro: `This is your comprehensive guide to ${niche.category}. We cover the latest developments, expert analysis, and practical guides to help you understand this important topic.`,
+      whyMatters: `${niche.category} is an important and growing field. Our editorial team researches Korean-language primary sources to bring you authoritative English content on this topic.`,
+      keyTopics: niche.seedKeywords.slice(0, 6),
+    };
 
     const year = new Date().getFullYear();
 
@@ -365,33 +382,119 @@ ${authorLinks?.twitter ? `<p style="margin:0;"><a href="${authorLinks.twitter}" 
     }
 
     const maturityLabel = posts.length >= 15 ? 'Comprehensive' : posts.length >= 8 ? 'Growing' : 'Developing';
+    const lastUpdated = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+    // Build key topics section with links to matching posts
+    const keyTopicsHtml = nicheData.keyTopics.map(topic => {
+      const matchingPost = posts.find(p =>
+        p.title.toLowerCase().includes(topic.toLowerCase().split(' ').filter(w => w.length > 4)[0] || ''),
+      );
+      if (matchingPost) {
+        return `<li><a href="${matchingPost.url}" style="color:#0066FF; text-decoration:none; font-weight:600;">${topic}</a></li>`;
+      }
+      return `<li>${topic}</li>`;
+    }).join('\n');
+
+    // Table of Contents
+    const tocHtml = `<details style="background:#f8f9fa; border-radius:12px; padding:20px 24px; margin:24px 0;" open>
+<summary style="cursor:pointer; font-weight:700; font-size:17px; color:#222;">Table of Contents</summary>
+<ol style="margin:12px 0 0 0; padding-left:20px; line-height:2.2; font-size:15px;">
+<li><a href="#introduction" style="color:#0066FF; text-decoration:none;">Introduction to ${niche.category}</a></li>
+<li><a href="#why-it-matters" style="color:#0066FF; text-decoration:none;">Why ${niche.category} Matters in ${year}</a></li>
+<li><a href="#key-topics" style="color:#0066FF; text-decoration:none;">Key Topics We Cover</a></li>
+<li><a href="#getting-started" style="color:#0066FF; text-decoration:none;">Getting Started</a></li>
+<li><a href="#all-articles" style="color:#0066FF; text-decoration:none;">All Articles (${posts.length})</a></li>
+<li><a href="#faq" style="color:#0066FF; text-decoration:none;">Frequently Asked Questions</a></li>
+</ol></details>`;
+
+    // FAQ section (pillar pages should have FAQ for featured snippet)
+    const faqItems = this.buildPillarFaq(niche.category, year);
 
     return `${jsonLdScript}<div style="${S.wrapper}">
-<p style="${S.p}">Welcome to ${siteName}'s comprehensive guide to ${description}. This page serves as your central hub — bookmark it and explore the topics that interest you most.</p>
 
 <div style="${S.infoBox}">
-<p style="margin:0; font-size:15px; color:#555; line-height:1.6;">Collection status: <strong>${maturityLabel}</strong> (${posts.length} articles). Last updated: ${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}.</p>
+<p style="margin:0 0 8px 0; font-size:15px; color:#555; line-height:1.6;">
+<strong>${maturityLabel} Guide</strong> — ${posts.length} articles · Last updated: ${lastUpdated} · ${Math.round(posts.length * 2.5)} min total read time
+</p>
 </div>
 
-<h2 style="${S.h2}">Quick Start: Where to Begin</h2>
-<p style="${S.p}">New to ${niche.category}? Start with these seed keywords that our readers find most useful:</p>
+${tocHtml}
+
+<h2 id="introduction" style="${S.h2}">Introduction to ${niche.category}</h2>
+<p style="${S.p}">${nicheData.intro}</p>
+<p style="${S.p}">This pillar page is your central hub for all ${siteName} coverage of ${nicheData.short}. Whether you're a first-time reader or a returning expert, bookmark this page — we update it regularly as new articles are published.</p>
+
+<h2 id="why-it-matters" style="${S.h2}">Why ${niche.category} Matters in ${year}</h2>
+<p style="${S.p}">${nicheData.whyMatters}</p>
+
+<h2 id="key-topics" style="${S.h2}">Key Topics We Cover</h2>
+<p style="${S.p}">Our editorial coverage of ${niche.category} spans these core areas:</p>
 <ul style="${S.ul}">
-${niche.seedKeywords.slice(0, 3).map(kw => `<li>${kw}</li>`).join('\n')}
+${keyTopicsHtml}
 </ul>
 
-<h2 style="${S.h2}">All ${niche.category} Articles</h2>
+<h2 id="getting-started" style="${S.h2}">Getting Started: Recommended Reading Order</h2>
+<p style="${S.p}">New to ${niche.category}? Here are the best starting points from our collection:</p>
+${posts.slice(0, 5).map((p, i) => {
+      const shortTitle = p.title.length > 70 ? p.title.slice(0, 67) + '...' : p.title;
+      return `<div style="display:flex; gap:16px; align-items:flex-start; margin:0 0 16px 0; padding:16px 20px; background:#fff; border:1px solid #e5e7eb; border-radius:8px;">
+<span style="flex-shrink:0; width:32px; height:32px; border-radius:50%; background:#0066FF; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px;">${i + 1}</span>
+<a href="${p.url}" style="font-size:15px; font-weight:600; color:#222; text-decoration:none; line-height:1.5;">${this.escapeHtml(shortTitle)}</a>
+</div>`;
+    }).join('\n')}
+
+<h2 id="all-articles" style="${S.h2}">All ${niche.category} Articles</h2>
+<p style="${S.p}">Browse our complete collection organized by content type:</p>
 ${organizedCards}
 
-<h2 style="${S.h2}">About This Collection</h2>
-<p style="${S.p}">Each article in this collection is researched using Korean-language primary sources and institutional data. We cover ${niche.category} from a global perspective, making Korean expertise accessible to English-speaking readers worldwide.</p>
-<p style="${S.p}">Our editorial team monitors Google Trends, Korean media, and institutional publications to identify the most relevant topics for our global audience. New articles are published regularly based on trending search demand and reader interest.</p>
+<h2 id="faq" style="${S.h2}">Frequently Asked Questions</h2>
+${faqItems}
 
 <div style="${S.highlightBox}">
-<p style="margin:0; line-height:1.7; color:#555;">Looking for something specific? Use the search bar above or <a href="/contact" style="color:#0066FF; text-decoration:none;">contact us</a> to suggest a topic.</p>
+<p style="margin:0; line-height:1.7; color:#555;">Looking for something specific? Use the search bar above or <a href="/contact" style="color:#0066FF; text-decoration:none;">contact us</a> to suggest a topic. We publish new ${niche.category} content regularly based on reader interest and trending demand.</p>
 </div>
 
-<p style="margin:40px 0 0 0; padding-top:20px; border-top:1px solid #eee; font-size:13px; color:#999; line-height:1.6;">This guide is updated regularly with the latest ${niche.category} content for ${year}.</p>
+<p style="margin:40px 0 0 0; padding-top:20px; border-top:1px solid #eee; font-size:13px; color:#999; line-height:1.6;">This comprehensive guide is updated regularly with the latest ${niche.category} content for ${year}. All content is researched using Korean-language primary sources and institutional data.</p>
 </div>`;
+  }
+
+  private buildPillarFaq(category: string, year: number): string {
+    const faqs: Record<string, Array<{ q: string; a: string }>> = {
+      'Korean Tech': [
+        { q: 'Why is Korean technology important globally?', a: `Korea is the world's largest producer of memory semiconductors and a leader in AI research. Samsung and SK Hynix supply critical components for smartphones, data centers, and AI systems worldwide. In ${year}, Korean tech companies continue to invest heavily in next-generation chips and AI infrastructure.` },
+        { q: 'How can I invest in Korean tech companies from abroad?', a: 'International investors can access Korean tech stocks through Korean ETFs (like EWY), ADRs on US exchanges, or by opening a Korean brokerage account. Several Korean brokerages now offer English-language services for foreign investors.' },
+        { q: 'What is Pangyo Techno Valley?', a: 'Pangyo Techno Valley is Korea\'s answer to Silicon Valley, located just south of Seoul in Seongnam city. It hosts major tech companies including Kakao, Naver, and hundreds of startups. It\'s the epicenter of Korean digital innovation.' },
+      ],
+      'K-Entertainment': [
+        { q: 'How does the K-pop industry make money?', a: 'K-pop agencies generate revenue through multiple streams: album sales, concert tours, merchandise, fan memberships (like Weverse), brand endorsements, IP licensing, and increasingly, NFTs and virtual content. Top agencies like HYBE generate over $1 billion annually.' },
+        { q: 'Are K-entertainment stocks a good investment?', a: `Korean entertainment companies like HYBE, SM, and JYP are publicly traded on KOSPI/KOSDAQ. They offer exposure to the global Hallyu wave but can be volatile based on artist activities and regulatory changes. As of ${year}, analysts focus on IP monetization and global touring revenue.` },
+        { q: 'What makes Korean dramas so popular globally?', a: 'Korean dramas succeed globally due to high production values, compelling storytelling, and cultural uniqueness. Netflix\'s investment in Korean content (over $2.5 billion committed) has accelerated global distribution, making K-dramas accessible to audiences in 190+ countries.' },
+      ],
+      'Korean Finance': [
+        { q: 'Can foreigners invest in Korean stocks?', a: 'Yes. Foreign investors can buy Korean stocks through several methods: Korean ETFs on US/European exchanges, ADRs (American Depositary Receipts), or by opening a direct brokerage account with a Korean securities firm. Some brokerages like Samsung Securities and Mirae Asset offer English services.' },
+        { q: 'What is the "Korea Discount" in stock markets?', a: 'The Korea Discount refers to Korean stocks trading at lower valuations (P/E ratios) compared to global peers, despite strong fundamentals. Contributing factors include chaebol governance concerns, geopolitical risk from North Korea, and complex ownership structures. Recent corporate governance reforms aim to close this gap.' },
+        { q: 'How does Bank of Korea policy affect investments?', a: `The Bank of Korea (BOK) sets the base interest rate, which impacts the Korean won, bond yields, and stock market valuations. In ${year}, BOK policy decisions are closely watched for their impact on inflation, housing markets, and foreign investment flows.` },
+      ],
+      'K-Beauty': [
+        { q: 'What is the Korean skincare routine?', a: 'The traditional Korean skincare routine involves multiple steps: oil cleanser, water cleanser, toner, essence, serum, sheet mask, eye cream, moisturizer, and sunscreen. However, modern K-beauty emphasizes customization — many Korean dermatologists now recommend simplified routines of 3-5 key products tailored to your skin type.' },
+        { q: 'Are Korean skincare products safe?', a: 'Korean skincare products are regulated by the Korean Ministry of Food and Drug Safety (MFDS), which has strict standards comparable to the FDA. Korean brands are known for innovation in gentle, effective formulations. Always check ingredient lists for personal allergens.' },
+        { q: 'Where can I buy authentic Korean beauty products?', a: 'Authentic K-beauty products can be purchased from Olive Young (Korea\'s largest beauty retailer), YesStyle, Stylevana, and Amazon (verified Korean seller stores). When visiting Korea, Olive Young stores in Myeongdong and Gangnam offer the widest selection.' },
+      ],
+      'Korea Travel': [
+        { q: 'What is the best time to visit South Korea?', a: 'Spring (April-May) and autumn (September-November) are the best seasons to visit Korea. Cherry blossoms in April and fall foliage in October-November are spectacular. Summer (June-August) is hot and humid with monsoon rains, while winter (December-February) is cold but great for skiing and festive events.' },
+        { q: 'How much does a trip to Korea cost?', a: 'A mid-range trip to Korea costs approximately $100-150 USD per day including accommodation, food, and transportation. Budget travelers can manage on $50-70/day using guesthouses and street food. Seoul is generally more expensive than other Korean cities.' },
+        { q: 'Do I need a visa to visit South Korea?', a: 'Citizens of 112 countries can enter Korea visa-free for tourism (typically 30-90 days depending on nationality). K-ETA (Korea Electronic Travel Authorization) is required for visa-exempt visitors from most countries. Check the Korean Immigration Service website for your specific country\'s requirements.' },
+      ],
+    };
+
+    const categoryFaqs = faqs[category] || [
+      { q: `What makes ${category} unique?`, a: `${category} represents a distinctive aspect of Korean culture and industry that has gained significant global attention. Our articles explore this topic from multiple angles including business analysis, practical guides, and cultural context.` },
+      { q: `How often is this guide updated?`, a: `We update this pillar page regularly as new articles are published. Our editorial team monitors trending topics and reader interest to ensure comprehensive coverage of ${category}.` },
+    ];
+
+    return categoryFaqs.map(faq =>
+      `<h3 style="${S.h3}">${faq.q}</h3>\n<p style="${S.p}">${faq.a}</p>`,
+    ).join('\n');
   }
 
   private inferContentType(title: string): string {

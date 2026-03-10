@@ -6,6 +6,7 @@ import { getSeasonalSuggestionsForNiche } from '../utils/korean-calendar.js';
 import { costTracker } from '../utils/cost-tracker.js';
 import { RedditTrendsService } from './reddit-trends.service.js';
 import type { NicheConfig, TrendsData, RisingQuery, KeywordAnalysis, ResearchedKeyword, ExistingPost } from '../types/index.js';
+import { CONTENT_FRESHNESS_MAP, type ContentType, type FreshnessClass } from '../types/index.js';
 import type { GSCQueryData } from './gsc-analytics.service.js';
 
 /** SERP competition analysis result */
@@ -23,6 +24,7 @@ export class KeywordResearchService {
   private existingPosts: ExistingPost[];
   private existingPostTitles: string[];
   private serpAnalysis: SerpAnalysis | null;
+  private contentTypeDistribution: string;
 
   constructor(apiKey: string, geo: string) {
     this.client = new Anthropic({ apiKey });
@@ -32,6 +34,7 @@ export class KeywordResearchService {
     this.existingPosts = [];
     this.existingPostTitles = [];
     this.serpAnalysis = null;
+    this.contentTypeDistribution = '';
   }
 
   /** Set GA4 performance insights to include in keyword research prompts */
@@ -39,10 +42,43 @@ export class KeywordResearchService {
     this.performanceInsights = insights;
   }
 
+  /** Get current performance insights (for appending additional context) */
+  getPerformanceInsights(): string {
+    return this.performanceInsights;
+  }
+
   /** Set existing post titles for similarity-based dedup */
   setExistingPosts(posts: ExistingPost[]): void {
     this.existingPosts = posts;
     this.existingPostTitles = posts.map(p => p.title.toLowerCase());
+  }
+
+  /** Set content type distribution for diversity-aware keyword selection */
+  setContentTypeDistribution(distribution: Record<string, number>): void {
+    const total = Object.values(distribution).reduce((a, b) => a + b, 0);
+    if (total === 0) { this.contentTypeDistribution = ''; return; }
+    const lines = Object.entries(distribution)
+      .sort(([, a], [, b]) => b - a)
+      .map(([type, count]) => {
+        const pct = Math.round((count / total) * 100);
+        const overrep = pct > 30 ? ' [OVERREPRESENTED]' : '';
+        return `  - ${type}: ${pct}% (${count}/${total})${overrep}`;
+      });
+
+    // Freshness ratio: evergreen vs seasonal vs time-sensitive
+    const freshnessCounts: Record<FreshnessClass, number> = { 'evergreen': 0, 'seasonal': 0, 'time-sensitive': 0 };
+    for (const [type, count] of Object.entries(distribution)) {
+      const freshClass = CONTENT_FRESHNESS_MAP[type as ContentType] ?? 'seasonal';
+      freshnessCounts[freshClass] += count;
+    }
+    const evergreenPct = Math.round((freshnessCounts['evergreen'] / total) * 100);
+    const freshnessLine = `\n## Content Freshness Balance (Target: 60% evergreen, 30% seasonal, 10% time-sensitive)\n` +
+      `  - Evergreen (how-to, deep-dive, case-study): ${evergreenPct}% (${freshnessCounts['evergreen']}/${total})${evergreenPct < 50 ? ' [NEEDS MORE EVERGREEN]' : ''}\n` +
+      `  - Seasonal (best-x, comparison, analysis, listicle, review): ${Math.round((freshnessCounts['seasonal'] / total) * 100)}% (${freshnessCounts['seasonal']}/${total})\n` +
+      `  - Time-sensitive (news-explainer): ${Math.round((freshnessCounts['time-sensitive'] / total) * 100)}% (${freshnessCounts['time-sensitive']}/${total})\n` +
+      `${evergreenPct < 50 ? 'PREFER evergreen content types (how-to, deep-dive, case-study) to build long-term organic traffic.\n' : ''}`;
+
+    this.contentTypeDistribution = `\n## Content Type Distribution (IMPORTANT — maintain diversity)\n${lines.join('\n')}\nTypes marked [OVERREPRESENTED] (above 30%) should be AVOIDED unless the topic strongly demands it. PREFER underrepresented types.\n${freshnessLine}`;
   }
 
   /** Set SERP analysis data from GSC for competitive intelligence */
@@ -214,9 +250,28 @@ export class KeywordResearchService {
       logger.debug(`Volume auto-estimated from Trends: ${analysis.volumeEstimate}`);
     }
 
+    // Estimate monthly search volume number
+    if (!analysis.estimatedMonthlySearches) {
+      analysis.estimatedMonthlySearches = this.estimateMonthlySearches(
+        averageInterest,
+        risingQueries,
+        analysis.selectedKeyword,
+      );
+    }
+
+    // Estimate keyword difficulty score
+    if (!analysis.keywordDifficulty) {
+      analysis.keywordDifficulty = this.estimateKeywordDifficulty(
+        analysis.selectedKeyword,
+        averageInterest,
+        analysis.estimatedCompetition,
+      );
+    }
+
     logger.info(
       `Research result for "${niche.name}": keyword="${analysis.selectedKeyword}", ` +
-      `type=${analysis.contentType}, competition=${analysis.estimatedCompetition}, volume=${analysis.volumeEstimate}`,
+      `type=${analysis.contentType}, competition=${analysis.estimatedCompetition}, ` +
+      `volume=${analysis.volumeEstimate} (~${analysis.estimatedMonthlySearches}/mo), KD=${analysis.keywordDifficulty}`,
     );
 
     return { niche, trendsData, analysis };
@@ -299,7 +354,7 @@ ${postedKeywords.length > 30 ? `(showing most recent 30 of ${postedKeywords.leng
 IMPORTANT: Do NOT just avoid exact matches — avoid topics that would create content cannibalization.
 For example, if "how to invest in Korean stocks" is posted, do NOT select "investing in Korean stocks for beginners" or "Korean stock investment guide".
 ${this.performanceInsights}
-${this.getSerpAnalysisSection()}
+${this.getSerpAnalysisSection()}${this.contentTypeDistribution}
 ${this.getSeasonalSection(niche.category)}
 ${recentContentTypes && recentContentTypes.length > 0 ? `## Content Type Diversity (IMPORTANT)\nRecent content types for this niche: ${recentContentTypes.join(', ')}\nAvoid overusing the same content type. If "${recentContentTypes[recentContentTypes.length - 1]}" was used recently, PREFER a different type to maintain reader variety.\n` : ''}
 ## Instructions
@@ -341,8 +396,16 @@ CRITICAL keyword selection rules — follow in strict priority order:
 8. AVOID head terms dominated by high-authority sites
 9. TARGET global English-speaking audience interested in Korea (investors, K-culture fans, tech watchers)
 
+7. Estimate keyword difficulty (0-100) based on:
+   - SERP competition (are top results from high-DA sites like Wikipedia, Forbes?)
+   - Content saturation (how many dedicated articles exist for this exact query?)
+   - Commercial intent (higher intent = more competition)
+   Target keywords with difficulty < 40 for best ranking potential.
+8. Estimate monthly search volume as a number (rough estimate based on niche knowledge)
+9. Classify search intent precisely: informational, commercial, transactional, or navigational
+
 Respond with pure JSON only. No markdown code blocks.
-{"selectedKeyword":"...","contentType":"analysis|deep-dive|news-explainer|how-to|best-x-for-y|x-vs-y|listicle|case-study|product-review","suggestedTitle":"...","uniqueAngle":"...","searchIntent":"...","estimatedCompetition":"low|medium|high","volumeEstimate":"high|medium|low|minimal","reasoning":"...","relatedKeywordsToInclude":["...","..."]}`;
+{"selectedKeyword":"...","contentType":"analysis|deep-dive|news-explainer|how-to|best-x-for-y|x-vs-y|listicle|case-study|product-review","suggestedTitle":"...","uniqueAngle":"...","searchIntent":"informational|commercial|transactional|navigational","estimatedCompetition":"low|medium|high","keywordDifficulty":25,"volumeEstimate":"high|medium|low|minimal","estimatedMonthlySearches":1500,"reasoning":"...","relatedKeywordsToInclude":["...","..."]}`;
 
     try {
       const response = await this.client.messages.create({
@@ -429,6 +492,85 @@ STRATEGY: Consider creating content that directly targets one of these content g
     if (growthPct >= 200 || averageInterest >= 40) return 'medium';
     if (averageInterest >= 15 || growthPct >= 50) return 'low';
     return 'minimal';
+  }
+
+  /**
+   * Estimate monthly search volume number from Google Trends relative interest.
+   * Google Trends gives 0-100 relative interest; we estimate actual volume
+   * using category-specific multipliers based on known benchmarks.
+   */
+  private estimateMonthlySearches(
+    averageInterest: number,
+    risingQueries: RisingQuery[],
+    keyword: string,
+  ): number {
+    // Base multiplier: Trends interest 50 ≈ 5,000 monthly searches for Korea-focused topics
+    const baseMultiplier = 100;
+    let estimate = averageInterest * baseMultiplier;
+
+    // Boost for matching rising queries (indicates growing demand)
+    const matchingRising = risingQueries.find(
+      (q) => keyword.toLowerCase().includes(q.query.toLowerCase()) || q.query.toLowerCase().includes(keyword.toLowerCase()),
+    );
+    if (matchingRising) {
+      if (matchingRising.value === 'Breakout') {
+        estimate *= 3; // Breakout queries have 3x expected volume
+      } else if (typeof matchingRising.value === 'number' && matchingRising.value >= 200) {
+        estimate *= 1.5;
+      }
+    }
+
+    // Long-tail penalty: 4+ word keywords typically have 30-50% less volume
+    const wordCount = keyword.split(/\s+/).length;
+    if (wordCount >= 6) estimate *= 0.3;
+    else if (wordCount >= 4) estimate *= 0.5;
+
+    return Math.round(Math.max(10, estimate));
+  }
+
+  /**
+   * Estimate keyword difficulty (0-100) using available SERP signals.
+   * Combines: Trends competition level, GSC data (if available),
+   * keyword length (longer = easier), and topic freshness.
+   */
+  private estimateKeywordDifficulty(
+    keyword: string,
+    averageInterest: number,
+    competition: 'low' | 'medium' | 'high',
+  ): number {
+    let difficulty = 0;
+
+    // 1. Competition level from Claude analysis (0-40 points)
+    if (competition === 'high') difficulty += 40;
+    else if (competition === 'medium') difficulty += 25;
+    else difficulty += 10;
+
+    // 2. Search volume proxy from Trends interest (0-25 points)
+    // Higher interest = more competition
+    difficulty += Math.min(25, Math.round(averageInterest * 0.25));
+
+    // 3. Keyword length bonus (longer = easier, -0 to -15 points)
+    const wordCount = keyword.split(/\s+/).length;
+    if (wordCount >= 6) difficulty -= 15;
+    else if (wordCount >= 5) difficulty -= 10;
+    else if (wordCount >= 4) difficulty -= 5;
+
+    // 4. SERP data bonus: if we have striking distance data, check coverage
+    if (this.serpAnalysis) {
+      const keywordLower = keyword.toLowerCase();
+      const hasExistingRanking = this.serpAnalysis.strikingDistanceKeywords.some(
+        sd => sd.query.toLowerCase().includes(keywordLower) || keywordLower.includes(sd.query.toLowerCase()),
+      );
+      if (hasExistingRanking) difficulty -= 10; // Already ranking = easier to improve
+    }
+
+    // 5. Korea-specific niche discount (Korea topics have less English competition)
+    const koreaTerms = ['korea', 'korean', 'k-pop', 'k-beauty', 'kospi', 'seoul'];
+    if (koreaTerms.some(t => keyword.toLowerCase().includes(t))) {
+      difficulty -= 10;
+    }
+
+    return Math.max(0, Math.min(100, difficulty));
   }
 
   private parseAnalysis(text: string, niche: NicheConfig): KeywordAnalysis {
