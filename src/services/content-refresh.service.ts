@@ -3,7 +3,8 @@ import Anthropic from '@anthropic-ai/sdk';
 import { logger } from '../utils/logger.js';
 import { costTracker } from '../utils/cost-tracker.js';
 import { validateContent, logContentScore } from '../utils/content-validator.js';
-import type { PostHistoryEntry } from '../types/index.js';
+import type { PostHistoryEntry, FreshnessClass } from '../types/index.js';
+import { CONTENT_FRESHNESS_MAP, FRESHNESS_UPDATE_INTERVALS } from '../types/index.js';
 import type { GA4AnalyticsService } from './ga4-analytics.service.js';
 import type { GSCAnalyticsService } from './gsc-analytics.service.js';
 import type { SeoService } from './seo.service.js';
@@ -226,6 +227,90 @@ export class ContentRefreshService {
     return rewrittenCount;
   }
 
+  /**
+   * Time-based refresh fallback: refresh posts that exceed their freshness class update interval.
+   * Works WITHOUT GA4 — uses only history freshness data.
+   * Targets posts where ageDays > FRESHNESS_UPDATE_INTERVALS[freshnessClass] AND freshnessScore < 40.
+   */
+  async refreshByTimeThreshold(
+    freshnessData: Array<PostHistoryEntry & { freshnessScore: number }>,
+    seoService?: SeoService,
+    limit: number = 2,
+  ): Promise<number> {
+    const now = Date.now();
+    const candidates = freshnessData.filter(entry => {
+      if (entry.freshnessScore >= 40) return false;
+      const ageDays = (now - new Date(entry.publishedAt).getTime()) / (1000 * 60 * 60 * 24);
+      const freshnessClass: FreshnessClass = entry.contentType
+        ? (CONTENT_FRESHNESS_MAP[entry.contentType] || 'seasonal')
+        : 'seasonal';
+      const interval = FRESHNESS_UPDATE_INTERVALS[freshnessClass];
+      return ageDays > interval;
+    }).slice(0, limit);
+
+    if (candidates.length === 0) {
+      logger.info('Time-based refresh: No posts exceed freshness threshold');
+      return 0;
+    }
+
+    logger.info(`Time-based refresh: ${candidates.length} post(s) exceed freshness threshold`);
+    let refreshedCount = 0;
+    const refreshedUrls: string[] = [];
+
+    for (const entry of candidates) {
+      const slug = new URL(entry.postUrl).pathname.replace(/^\/|\/$/g, '');
+      if (!slug) continue;
+
+      try {
+        const { data: posts } = await this.api.get('/posts', {
+          params: { slug, status: 'publish', _fields: 'id,title,slug,content,link,date,meta' },
+        });
+        const post = (posts as WPPost[])[0];
+        if (!post) continue;
+
+        logger.info(`Time-based refresh: Rewriting "${post.title.rendered}" (freshness: ${entry.freshnessScore}, type: ${entry.contentType || 'unknown'})`);
+
+        const rewritten = await this.rewriteContent(post, { pageviews: 0, bounceRate: 0, avgEngagementTime: 0 });
+        if (!rewritten) continue;
+
+        const nowIso = new Date().toISOString();
+        await this.api.post(`/posts/${post.id}`, {
+          title: rewritten.title,
+          content: rewritten.html,
+          excerpt: rewritten.excerpt,
+          meta: {
+            _last_updated: nowIso,
+            _autoblog_modified_time: nowIso,
+            _rewrite_reason: `Time-based refresh: freshness ${entry.freshnessScore}, type ${entry.contentType || 'unknown'}`,
+            rank_math_description: rewritten.excerpt,
+          },
+        });
+
+        refreshedCount++;
+        refreshedUrls.push(post.link);
+        logger.info(`Time-based refresh: Successfully rewrote "${rewritten.title}"`);
+
+        await new Promise(r => setTimeout(r, 2000));
+      } catch (error) {
+        logger.warn(`Time-based refresh failed for "${slug}": ${error instanceof Error ? error.message : error}`);
+      }
+    }
+
+    if (seoService && refreshedUrls.length > 0) {
+      try {
+        await seoService.notifyIndexNow(refreshedUrls);
+        for (const url of refreshedUrls) {
+          await seoService.requestIndexing(url);
+        }
+        logger.info(`Time-based refresh: Submitted ${refreshedUrls.length} URL(s) for re-indexing`);
+      } catch (error) {
+        logger.warn(`Time-based refresh: Re-indexing failed: ${error instanceof Error ? error.message : error}`);
+      }
+    }
+
+    return refreshedCount;
+  }
+
   private async rewriteContent(
     post: WPPost,
     perf: { pageviews: number; bounceRate: number; avgEngagementTime: number },
@@ -258,6 +343,15 @@ REWRITE RULES:
 7. Target 2,500+ words
 8. Use the same inline CSS styling as the original
 9. Include "Last Updated: ${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}" banner at top
+10. Add a "What Changed in This Update" section right after the Last Updated banner using this format:
+    <div class="ab-what-changed" style="margin:0 0 24px 0; padding:16px 20px; background:#f0fff4; border:1px solid #c6f6d5; border-radius:8px; font-size:14px; color:#555; line-height:1.6;">
+    <strong>What Changed in This Update (${new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}):</strong>
+    <ul style="margin:8px 0 0 0; padding-left:20px;">
+    <li>Updated data and statistics for ${new Date().getFullYear()}</li>
+    <li>Improved analysis with latest market insights</li>
+    <li>Enhanced readability and structure</li>
+    </ul></div>
+11. Write a CTR-optimized meta description: [Benefit] + [Primary Keyword] + [Call-to-Action], 145-158 chars
 
 Return JSON: {"title":"improved title","html":"full HTML content","excerpt":"compelling 145-158 char meta description"}
 Return pure JSON only. No markdown.`;

@@ -495,6 +495,20 @@ async function main(): Promise<void> {
     }
   }
 
+  // ── Batch Duplicate Check ──────────────────────────────────────────────
+  if (generated.length >= 2) {
+    const { detectBatchDuplicates } = await import('./utils/content-validator.js');
+    const articles = generated.map(g => ({
+      title: g.content.title,
+      keyword: g.researched.analysis.selectedKeyword,
+      html: g.content.html,
+    }));
+    const duplicates = detectBatchDuplicates(articles);
+    if (duplicates.length > 0) {
+      logger.warn(`Batch duplicate check: ${duplicates.length} similar article pair(s) detected — consider diversifying topics`);
+    }
+  }
+
   // ── Phase B: Images + Publish ──────────────────────────────────────────
   logger.info('\n=== Phase B: Images + Publish ===');
   // Ensure minimum 30-minute interval between posts (even if config is 0) to avoid spam
@@ -620,6 +634,12 @@ async function main(): Promise<void> {
             <rect width="1200" height="675" fill="url(#grid)"/>
             <circle cx="100" cy="100" r="200" fill="rgba(255,255,255,0.03)"/>
             <circle cx="1100" cy="575" r="250" fill="rgba(255,255,255,0.03)"/>
+            <!-- Site branding bar -->
+            <rect x="0" y="0" width="1200" height="50" fill="rgba(0,0,0,0.3)"/>
+            <text x="40" y="33" fill="rgba(255,255,255,0.9)" font-family="system-ui,sans-serif" font-size="16" font-weight="bold">${config.SITE_NAME}</text>
+            <!-- Category label pill -->
+            <rect x="900" y="12" width="${Math.max(categoryLabel.length * 10 + 24, 100)}" height="28" rx="14" fill="rgba(255,255,255,0.2)"/>
+            <text x="${900 + Math.max(categoryLabel.length * 10 + 24, 100) / 2}" y="31" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-family="system-ui,sans-serif" font-size="12" font-weight="600">${categoryLabel}</text>
             <rect x="80" y="190" width="1040" height="300" rx="20" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
             <text x="600" y="${kwLine2 ? '280' : '310'}" text-anchor="middle" fill="#fff" font-family="system-ui,sans-serif" font-size="36" font-weight="bold">${kwLine1}</text>
             ${kwLine2 ? `<text x="600" y="330" text-anchor="middle" fill="#fff" font-family="system-ui,sans-serif" font-size="36" font-weight="bold">${kwLine2}</text>` : ''}
@@ -788,6 +808,24 @@ async function main(): Promise<void> {
     }
   }
 
+  // 4.22. Time-based content refresh fallback (works WITHOUT GA4)
+  // Refreshes posts that exceed their freshness class update interval
+  try {
+    const freshnessData = history.getPostsByFreshnessScore(14);
+    if (freshnessData.length > 0) {
+      const refreshService = new ContentRefreshService(
+        config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD,
+        config.ANTHROPIC_API_KEY, config.CLAUDE_MODEL,
+      );
+      const timeRefreshed = await refreshService.refreshByTimeThreshold(freshnessData, seoService, 2);
+      if (timeRefreshed > 0) {
+        logger.info(`Time-based refresh: Rewrote ${timeRefreshed} stale post(s) exceeding freshness threshold`);
+      }
+    }
+  } catch (error) {
+    logger.warn(`Time-based refresh failed: ${error instanceof Error ? error.message : error}`);
+  }
+
   // 4.25. A/B title testing — multi-signal evaluation after 7+ days
   // Uses GA4 bounce rate + GSC CTR + engagement time to decide title switches
   if (config.GA4_PROPERTY_ID && config.GOOGLE_INDEXING_SA_KEY) {
@@ -826,20 +864,37 @@ async function main(): Promise<void> {
               (postPerf.bounceRate > 0.7); // Very high bounce alone
 
             if (shouldSwitch) {
-              // Select the best candidate (prefer shorter, more specific titles)
+              // Score-based title selection: numbers (+2), power words (+1), year (+1), optimal length 50-65 (+3)
               const candidates = entry.titleCandidates!;
-              const newTitle = candidates.reduce((best, c) =>
-                c.length >= 45 && c.length <= 65 && c.length < best.length ? c : best,
-                candidates[0],
-              );
+              const powerWords = ['best', 'top', 'ultimate', 'complete', 'essential', 'proven', 'secret', 'insider', 'free', 'new', 'exclusive', 'critical', 'massive', 'surprising'];
+              const currentYear = new Date().getFullYear().toString();
+
+              const scoredCandidates = candidates.map(title => {
+                let score = 0;
+                // Numbers in title (+2)
+                if (/\d+/.test(title)) score += 2;
+                // Power words (+1)
+                const titleLower = title.toLowerCase();
+                if (powerWords.some(pw => titleLower.includes(pw))) score += 1;
+                // Contains current year (+1)
+                if (title.includes(currentYear)) score += 1;
+                // Optimal length 50-65 chars (+3)
+                if (title.length >= 50 && title.length <= 65) score += 3;
+                else if (title.length >= 45 && title.length <= 70) score += 1;
+                return { title, score };
+              });
+
+              scoredCandidates.sort((a, b) => b.score - a.score);
+              const newTitle = scoredCandidates[0].title;
 
               const signals = [
                 `bounce: ${(postPerf.bounceRate * 100).toFixed(0)}%`,
                 `engagement: ${postPerf.avgEngagementTime.toFixed(0)}s`,
                 searchCtr !== null ? `search CTR: ${(searchCtr * 100).toFixed(1)}%` : null,
               ].filter(Boolean).join(', ');
+              const scoreBreakdown = scoredCandidates.slice(0, 3).map(sc => `"${sc.title.slice(0, 40)}..." (${sc.score}pts)`).join(', ');
 
-              logger.info(`A/B test: Switching title for post ${entry.postId} to "${newTitle}" (${signals})`);
+              logger.info(`A/B test: Switching title for post ${entry.postId} to "${newTitle}" (${signals}) | Scores: ${scoreBreakdown}`);
               await wpService.updatePostMeta(entry.postId, { rank_math_title: newTitle });
               try {
                 const wpApi = (wpService as unknown as { api: { post: (url: string, data: unknown) => Promise<unknown> } }).api;
@@ -847,10 +902,11 @@ async function main(): Promise<void> {
               } catch {
                 logger.debug(`Could not update post title directly for ${entry.postId}`);
               }
+              await history.markTitleTestResolved(entry.postId, newTitle);
             } else {
               logger.debug(`A/B test: Post ${entry.postId} performing adequately, keeping current title`);
+              await history.markTitleTestResolved(entry.postId);
             }
-            await history.markTitleTestResolved(entry.postId);
           } catch (error) {
             logger.debug(`A/B title test failed for post ${entry.postId}: ${error instanceof Error ? error.message : error}`);
           }

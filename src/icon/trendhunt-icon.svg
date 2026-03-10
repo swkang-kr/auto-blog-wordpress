@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <!-- Background gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Flame gradient warm -->
+    <linearGradient id="flameOuter" x1="50%" y1="100%" x2="50%" y2="0%">
+      <stop offset="0%" style="stop-color:#FF3D00;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#FF6D00;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFAB00;stop-opacity:0.9" />
+    </linearGradient>
+
+    <linearGradient id="flameInner" x1="50%" y1="100%" x2="50%" y2="0%">
+      <stop offset="0%" style="stop-color:#FF6D00;stop-opacity:1" />
+      <stop offset="60%" style="stop-color:#FFD740;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFFFFF;stop-opacity:0.95" />
+    </linearGradient>
+
+    <!-- Arrow gradient -->
+    <linearGradient id="arrowGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#FF6D00;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF3D00;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Glow filter -->
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="18" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Soft glow for flame -->
+    <filter id="flameGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="28" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Rounded rect clip -->
+    <clipPath id="roundedClip">
+      <rect width="1024" height="1024" rx="220" ry="220"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1024" height="1024" rx="220" ry="220" fill="url(#bgGrad)"/>
+
+  <!-- Subtle grid lines for depth -->
+  <g clip-path="url(#roundedClip)" opacity="0.04">
+    <line x1="0" y1="256" x2="1024" y2="256" stroke="white" stroke-width="1"/>
+    <line x1="0" y1="512" x2="1024" y2="512" stroke="white" stroke-width="1"/>
+    <line x1="0" y1="768" x2="1024" y2="768" stroke="white" stroke-width="1"/>
+    <line x1="256" y1="0" x2="256" y2="1024" stroke="white" stroke-width="1"/>
+    <line x1="512" y1="0" x2="512" y2="1024" stroke="white" stroke-width="1"/>
+    <line x1="768" y1="0" x2="768" y2="1024" stroke="white" stroke-width="1"/>
+  </g>
+
+  <!-- Ambient glow behind flame -->
+  <ellipse cx="512" cy="580" rx="220" ry="200" fill="#FF4500" opacity="0.18" filter="url(#glow)"/>
+
+  <!-- Outer flame (large) -->
+  <path d="
+    M512 780
+    C420 780 340 720 320 630
+    C300 545 340 480 360 430
+    C375 390 370 350 355 310
+    C380 340 395 375 390 415
+    C430 370 445 310 435 255
+    C470 295 490 345 485 395
+    C510 360 525 315 515 265
+    C550 310 570 370 560 425
+    C585 385 595 340 588 295
+    C625 345 640 415 620 480
+    C650 445 665 395 658 350
+    C695 410 705 490 685 560
+    C670 625 630 680 590 720
+    C565 745 540 760 512 780Z
+  " fill="url(#flameOuter)" filter="url(#flameGlow)" opacity="0.95"/>
+
+  <!-- Inner flame (bright core) -->
+  <path d="
+    M512 740
+    C460 740 415 700 400 650
+    C385 600 405 555 420 515
+    C435 478 432 445 420 415
+    C442 438 452 465 448 495
+    C470 465 480 430 474 395
+    C500 425 512 460 508 495
+    C528 468 535 435 530 400
+    C555 432 563 472 550 510
+    C568 488 575 460 570 432
+    C595 468 600 515 585 555
+    C572 598 545 630 520 655
+    C515 660 512 665 512 740Z
+  " fill="url(#flameInner)" opacity="0.9"/>
+
+  <!-- Trend arrow (bottom right of flame, pointing up-right) -->
+  <g filter="url(#glow)" opacity="0.95">
+    <!-- Arrow line -->
+    <line x1="420" y1="820" x2="650" y2="620"
+          stroke="url(#arrowGrad)"
+          stroke-width="38"
+          stroke-linecap="round"/>
+    <!-- Arrow dots on line (trend chart style) -->
+    <circle cx="440" cy="800" r="18" fill="#FF6D00"/>
+    <circle cx="510" cy="748" r="18" fill="#FF5500"/>
+    <circle cx="580" cy="686" r="18" fill="#FF4000"/>
+    <circle cx="642" cy="630" r="18" fill="#FF3D00"/>
+    <!-- Arrowhead -->
+    <polygon points="680,590 620,610 645,665"
+             fill="#FF3D00"/>
+  </g>
+
+  <!-- Subtle bottom bar accent -->
+  <rect x="180" y="880" width="664" height="8" rx="4"
+        fill="url(#arrowGrad)" opacity="0.35"/>
+
+  <!-- Brand initial "T" - subtle, bottom center -->
+  <text x="512" y="968"
+        font-family="'Arial Black', 'Helvetica Neue', sans-serif"
+        font-size="52"
+        font-weight="900"
+        fill="white"
+        opacity="0.25"
+        text-anchor="middle"
+        letter-spacing="8">TRENDHUNT</text>
+</svg>

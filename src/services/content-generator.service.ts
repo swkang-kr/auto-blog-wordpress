@@ -9,6 +9,73 @@ import type { ResearchedKeyword, BlogContent, ExistingPost } from '../types/inde
 /** Layout variant for content structure diversification (anti-AI detection) */
 type LayoutVariant = 'standard' | 'narrative' | 'compact' | 'journal' | 'opinion' | 'interview';
 
+/**
+ * Niche × content-type specific signature section names.
+ * Diversifies the mandatory signature section to avoid detectable AI patterns
+ * (previously all niches used same 3 names).
+ */
+const NICHE_SIGNATURE_SECTIONS: Record<string, Record<string, string[]>> = {
+  'Korean Tech': {
+    default: ['Technical Deep Dive', 'Innovation Spotlight', 'Global Tech Context', 'Seoul to Silicon Valley'],
+    'how-to': ['Pro Tips', 'Technical Deep Dive'],
+    'listicle': ["Editor's Picks", 'Innovation Spotlight'],
+    'x-vs-y': ['Head-to-Head Verdict', 'Technical Deep Dive'],
+  },
+  'K-Beauty': {
+    default: ['Expert Skincare Insight', 'Product Science', 'Global Beauty Context', 'Behind the Formula'],
+    'how-to': ['Pro Tips', 'Expert Skincare Insight'],
+    'listicle': ["Editor's Picks", 'Product Science'],
+    'x-vs-y': ['Head-to-Head Verdict', 'Product Science'],
+  },
+  'Korea Travel': {
+    default: ['Insider Tips', "Local's Perspective", 'Global Travel Context', 'Off the Beaten Path'],
+    'how-to': ['Pro Tips', 'Insider Tips'],
+    'listicle': ["Editor's Picks", "Local's Perspective"],
+    'x-vs-y': ['Head-to-Head Verdict', 'Insider Tips'],
+  },
+  'K-Entertainment': {
+    default: ['Industry Analysis', "Fan's Take", 'Global Entertainment Context', 'Behind the Scenes'],
+    'how-to': ['Pro Tips', 'Industry Analysis'],
+    'listicle': ["Editor's Picks", "Fan's Take"],
+    'x-vs-y': ['Head-to-Head Verdict', 'Industry Analysis'],
+  },
+  'Korean Finance': {
+    default: ['Investment Outlook', 'Market Context', 'What This Means for Investors', 'Global Market Perspective'],
+    'how-to': ['Pro Tips', 'Investment Outlook'],
+    'listicle': ["Editor's Picks", 'Market Context'],
+    'x-vs-y': ['Head-to-Head Verdict', 'Investment Outlook'],
+  },
+};
+
+/** All possible signature section names (exported for validator sync) */
+export const ALL_SIGNATURE_SECTION_NAMES = [
+  ...new Set(
+    Object.values(NICHE_SIGNATURE_SECTIONS).flatMap(contentTypes =>
+      Object.values(contentTypes).flat(),
+    ),
+  ),
+  // Legacy names for backward compatibility
+  'Global Context', 'What This Means for Investors', 'Why the World Is Watching',
+];
+
+/**
+ * Deterministic signature section name selection based on category, contentType, and keyword.
+ * Uses hash for consistency (same inputs → same output) while varying across posts.
+ */
+function getSignatureSection(category: string, contentType: string, keyword: string): string {
+  const nicheMap = NICHE_SIGNATURE_SECTIONS[category];
+  const options = nicheMap
+    ? (nicheMap[contentType] || nicheMap.default)
+    : ['Global Context', 'What This Means for Investors', 'Why the World Is Watching'];
+
+  let hash = 0;
+  const key = `${category}:${contentType}:${keyword}`;
+  for (let i = 0; i < key.length; i++) {
+    hash = ((hash << 5) - hash + key.charCodeAt(i)) | 0;
+  }
+  return options[Math.abs(hash) % options.length];
+}
+
 const LAYOUT_VARIANTS: LayoutVariant[] = ['standard', 'narrative', 'compact', 'journal', 'opinion', 'interview'];
 
 /**
@@ -92,7 +159,7 @@ const WORD_COUNT_TARGETS: Record<string, { min: number; target: number; continua
   'x-vs-y':         { min: 1500, target: 2200, continuation: 1300, rejection: 1100 },
   'analysis':        { min: 1800, target: 2500, continuation: 1600, rejection: 1400 },
   'deep-dive':       { min: 2200, target: 3000, continuation: 2000, rejection: 1800 },
-  'news-explainer':  { min: 1400, target: 2000, continuation: 1200, rejection: 1000 },
+  'news-explainer':  { min: 1200, target: 1600, continuation: 900, rejection: 800 },
   'listicle':        { min: 1400, target: 2000, continuation: 1200, rejection: 1000 },
   'case-study':      { min: 1800, target: 2500, continuation: 1600, rejection: 1400 },
   'product-review':  { min: 1600, target: 2200, continuation: 1400, rejection: 1200 },
@@ -193,7 +260,7 @@ To reach WORD_COUNT_TARGET+ words WITHOUT padding:
 - NEVER pad content with generic statements, repetitive explanations, or filler transitions
 - Include real data points, Korean-language source references, and expert perspectives
 - Add a FAQ section (3-5 questions, ONLY questions readers would actually ask — NO filler Q&As)
-- Add a "Global Context" or "What This Means for Investors" signature section
+- Add a niche-appropriate signature section (e.g., "Technical Deep Dive", "Investment Outlook", "Insider Tips", "Industry Analysis", "Expert Skincare Insight")
 - If you run out of genuinely useful things to say, STOP — quality beats quantity
 
 ## Content Type Guidelines
@@ -202,14 +269,14 @@ To reach WORD_COUNT_TARGET+ words WITHOUT padding:
 - Structure as a multi-angle analysis with clear thesis statement
 - Include market data, company financials, or industry metrics where relevant
 - Present bull and bear cases or multiple stakeholder perspectives
-- Include a "Global Context" section explaining why this matters beyond Korea
+- Include a signature analysis section explaining why this matters beyond Korea
 - End with forward-looking outlook and FAQ (3-7 Q&As)
 
 ### Deep-dive
 - Comprehensive exploration of a single topic, company, or trend
 - Include historical context (how Korea got here), current state, and future trajectory
 - Incorporate interviews, earnings data, or regulatory filings where relevant
-- Include a "What This Means for Investors" or "Strategic Implications" section
+- Include a signature analysis section (e.g., "Investment Outlook", "Strategic Implications")
 - End with key takeaways and FAQ (3-7 Q&As)
 
 ### News-explainer
@@ -267,10 +334,8 @@ To reach WORD_COUNT_TARGET+ words WITHOUT padding:
 - K-Entertainment: Business-savvy cultural analysis — go beyond fandom to explain the industry mechanics, revenue models, and global strategy. Reference HYBE, SM, JYP as business entities, not just talent agencies.
 
 ## Signature Section (MANDATORY)
-Every article MUST include one of these signature sections as an H2:
-- "Global Context" — explaining Korea's position in the global landscape for this topic
-- "What This Means for Investors" — investment implications and market signals
-- "Why the World Is Watching" — for news-explainer content
+Every article MUST include a signature analysis section as an H2. The exact section name will be specified in the user prompt.
+Use the EXACT section name provided — it is niche-appropriate and varies per article to avoid AI detection patterns.
 This section should be 300-500 words and provide unique analytical value.
 
 ## Korea E-E-A-T Rules (CRITICAL)
@@ -292,6 +357,27 @@ For informational intent keywords (starting with "what is", "how does", "why", "
 - Include a concise 40-60 word definition/answer box right after the opening paragraph
 - HTML template: <div class="ab-snippet"><p>Concise answer here.</p></div>
 - This targets Google's Featured Snippet position zero
+
+### Search Intent Structural Templates
+For **navigational** intent: Include a quick direct answer in a <div class="ab-highlight"> box BEFORE the Table of Contents. Get to the point immediately.
+For **transactional** intent: Include a product/action CTA box using <div class="ab-keypoint"> near the top with clear next steps.
+For **commercial** intent: Include a verdict/recommendation in a <div class="ab-highlight"> box immediately after any comparison table.
+
+### HowTo Featured Snippet (how-to content)
+For how-to content, include numbered steps inside a snippet box:
+<div class="ab-snippet" data-snippet-type="how-to">
+<p style="margin:0 0 12px 0; font-weight:700; font-size:16px;">Quick Steps</p>
+<ol style="margin:0; padding-left:20px; line-height:2.0; font-size:15px;">
+<li><strong>Step Name</strong> — Brief description</li>
+</ol></div>
+
+### Table Featured Snippet (x-vs-y comparison content)
+For comparison content, include a comparison table inside a snippet box:
+<div class="ab-snippet" data-snippet-type="table">
+<table style="width:100%; border-collapse:collapse; font-size:14px;">
+<thead><tr><th style="padding:10px; border:1px solid #e2e8f0; background:#f0f4ff;">Feature</th><th style="padding:10px; border:1px solid #e2e8f0; background:#f0f4ff;">Option A</th><th style="padding:10px; border:1px solid #e2e8f0; background:#f0f4ff;">Option B</th></tr></thead>
+<tbody><tr><td style="padding:10px; border:1px solid #e2e8f0;">Key Feature</td><td style="padding:10px; border:1px solid #e2e8f0;">Value</td><td style="padding:10px; border:1px solid #e2e8f0;">Value</td></tr></tbody>
+</table></div>
 
 ### List Featured Snippet (best-x-for-y and comparison content)
 For "best", "top", or ranked list content, include an ordered summary list right after the opening paragraph:
@@ -623,7 +709,7 @@ Related Keywords to Include: ${analysis.relatedKeywordsToInclude.join(', ')}${cl
 
 ${nicheVoice}${this.monetizationContext}${this.competitiveContext}
 Write an in-depth ${analysis.contentType} blog post about "${analysis.selectedKeyword}" for the ${niche.name} niche. The post MUST be at least ${getWordCountTargets(analysis.contentType, analysis.searchIntent).target} words. Write thoroughly — expand each section with detailed explanations, Korean market data, and expert insights. Do NOT stop early.
-Search intent: ${analysis.searchIntent || 'informational'}${analysis.searchIntent === 'transactional' ? ' — Focus on actionable steps and clear instructions. Readers want to DO something, not just learn about it.\nSTRUCTURE: Include pricing/cost section, step-by-step action guide, CTA-ready recommendation, and comparison table if applicable.' : analysis.searchIntent === 'commercial' ? ' — Focus on comparisons, pros/cons, and helping readers make a decision.\nSTRUCTURE: MUST include comparison table, pro/con analysis for top options, and a clear verdict/recommendation section.' : analysis.searchIntent === 'navigational' ? ' — Provide a direct, comprehensive answer quickly. Less padding, more value per word.\nSTRUCTURE: Direct answer in first 100 words. Then supporting context. Keep total length shorter.' : ''}
+Search intent: ${analysis.searchIntent || 'informational'}${analysis.searchIntent === 'transactional' ? ' — Focus on actionable steps and clear instructions. Readers want to DO something, not just learn about it.\nSTRUCTURE: Include pricing/cost section, step-by-step action guide, and a <div class="ab-keypoint"> CTA box near top with clear next steps. Use data-snippet-type="how-to" for featured snippet if applicable.' : analysis.searchIntent === 'commercial' ? ' — Focus on comparisons, pros/cons, and helping readers make a decision.\nSTRUCTURE: MUST include comparison table, pro/con analysis for top options, and a clear verdict in <div class="ab-highlight"> immediately after the comparison table. Use data-snippet-type="table" for featured snippet.' : analysis.searchIntent === 'navigational' ? ' — Provide a direct, comprehensive answer quickly. Less padding, more value per word.\nSTRUCTURE: Include quick answer in <div class="ab-highlight"> BEFORE the Table of Contents. Then supporting context. Keep total length shorter.' : ''}
 IMPORTANT: All information, statistics, recommendations, and references must be current as of ${year}. Do NOT use outdated data from previous years. Mention "${year}" where relevant.
 Use the unique angle: "${analysis.uniqueAngle}"
 LSI Keyword Integration Rules (CRITICAL for semantic SEO):
@@ -634,7 +720,7 @@ LSI Keyword Integration Rules (CRITICAL for semantic SEO):
 - Do NOT force LSI keywords unnaturally — readability always wins over keyword density
 
 Include 2-4 internal links to relevant existing posts listed above, and 2-4 external source citations using <cite data-source="KEY" data-topic="TOPIC"> tags (Korean institutional sources preferred: bok, krx, dart, kosis).
-MANDATORY: Include a "Global Context" or "What This Means for Investors" signature analysis section.
+MANDATORY: Include a "${getSignatureSection(niche.category, analysis.contentType, analysis.selectedKeyword)}" signature analysis section (as an H2 heading, 300-500 words of unique analytical value).
 
 Respond with pure JSON only.`;
 

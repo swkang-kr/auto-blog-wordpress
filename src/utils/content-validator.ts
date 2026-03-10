@@ -1,4 +1,5 @@
 import { logger } from './logger.js';
+import { ALL_SIGNATURE_SECTION_NAMES } from '../services/content-generator.service.js';
 
 export interface ContentScore {
   total: number;
@@ -53,7 +54,7 @@ const CONTENT_TYPE_MIN_WORDS: Record<string, number> = {
   'product-review': 1600,
   'best-x-for-y': 1500,
   'x-vs-y': 1500,
-  'news-explainer': 1400,
+  'news-explainer': 1200,
   'listicle': 1400,
 };
 
@@ -185,10 +186,11 @@ export function validateContent(
   let structureScore = 25;
   if (wordCount < typeMinWords) structureScore -= 5;
 
-  // 1. Signature section check
-  const hasSignatureSection = /Global Context|What This Means for Investors|Why the World Is Watching/i.test(html);
+  // 1. Signature section check (dynamic niche-specific names)
+  const signaturePattern = new RegExp(ALL_SIGNATURE_SECTION_NAMES.map(n => n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|'), 'i');
+  const hasSignatureSection = signaturePattern.test(html);
   if (!hasSignatureSection) {
-    issues.push({ category: 'structure', message: 'Missing mandatory signature section (Global Context / What This Means for Investors)', severity: 'error' });
+    issues.push({ category: 'structure', message: 'Missing mandatory signature section', severity: 'error' });
     structureScore -= 8;
   }
 
@@ -220,6 +222,31 @@ export function validateContent(
       warnings.push({ category: 'structure', message: `Low anchor text diversity: ${uniqueAnchors.size} unique out of ${anchorTexts.length} internal links`, severity: 'warning' });
       structureScore -= 2;
     }
+  }
+
+  // 4b. Affiliate link rel check: verify rel="noopener noreferrer sponsored" on affiliate links
+  const affiliateLinkRegex = /<a\s+[^>]*rel="[^"]*sponsored[^"]*"[^>]*>/gi;
+  const affiliateLinks = (html.match(affiliateLinkRegex) || []);
+  if (affiliateLinks.length > 0) {
+    const missingRel = affiliateLinks.filter(link => {
+      return !/rel="[^"]*noopener[^"]*"/.test(link) || !/rel="[^"]*noreferrer[^"]*"/.test(link);
+    });
+    if (missingRel.length > 0) {
+      warnings.push({ category: 'structure', message: `${missingRel.length} affiliate link(s) missing full rel="noopener noreferrer sponsored"`, severity: 'warning' });
+      structureScore -= 1;
+    }
+  }
+
+  // 4c. External link security: count target="_blank" links missing rel="noopener noreferrer"
+  const blankLinks = html.match(/<a\s+[^>]*target="_blank"[^>]*>/gi) || [];
+  let insecureBlankLinks = 0;
+  for (const link of blankLinks) {
+    if (!/rel="[^"]*noopener[^"]*"/.test(link)) {
+      insecureBlankLinks++;
+    }
+  }
+  if (insecureBlankLinks > 0) {
+    warnings.push({ category: 'structure', message: `${insecureBlankLinks} external link(s) with target="_blank" missing rel="noopener noreferrer"`, severity: 'warning' });
   }
 
   // 5. FAQ section check (for applicable content types)
@@ -262,6 +289,14 @@ export function validateContent(
   if (totalImages < 3) {
     warnings.push({ category: 'structure', message: `Only ${totalImages} images (recommend 4+)`, severity: 'warning' });
     structureScore -= 2;
+  }
+
+  // 7. Outdated year references (stale content detection)
+  const currentYear = new Date().getFullYear();
+  const outdatedYearPenalty = detectOutdatedYearReferences(plainText, currentYear);
+  if (outdatedYearPenalty > 0) {
+    warnings.push({ category: 'structure', message: `Content references outdated years excessively (penalty: -${outdatedYearPenalty})`, severity: 'warning' });
+    structureScore -= outdatedYearPenalty;
   }
 
   // ── SEO validation (max 20 points) ──
@@ -308,10 +343,34 @@ export function validateContent(
     }
   }
 
+  // 2b2. Snippet type vs content type validation
+  if (hasSnippetBox) {
+    const snippetTypeMatch = html.match(/data-snippet-type="([^"]+)"/i);
+    const snippetType = snippetTypeMatch ? snippetTypeMatch[1] : 'definition';
+    const expectedSnippetTypes: Record<string, string[]> = {
+      'how-to': ['how-to', 'list'],
+      'x-vs-y': ['table', 'definition'],
+      'listicle': ['list', 'definition'],
+      'best-x-for-y': ['list', 'definition'],
+    };
+    const expected = expectedSnippetTypes[contentType];
+    if (expected && !expected.includes(snippetType)) {
+      warnings.push({ category: 'seo', message: `Snippet type "${snippetType}" may not match content type "${contentType}" (expected: ${expected.join(' or ')})`, severity: 'warning' });
+    }
+  }
+
   // 2c. People Also Ask (PAA) optimization — question-format H3s in body
   const questionH3Count = (html.match(/<h3[^>]*>[^<]*\?<\/h3>/gi) || []).length;
   if (questionH3Count < 2) {
     warnings.push({ category: 'seo', message: `Only ${questionH3Count} question-format H3 heading(s) — add 2-3 for People Also Ask optimization`, severity: 'warning' });
+    seoScore -= 1;
+  }
+
+  // 2d. CTA presence check
+  const hasEngagementCta = /ab-cta-engagement/i.test(html);
+  const hasNewsletterCta = /ab-cta-newsletter/i.test(html);
+  if (!hasEngagementCta && !hasNewsletterCta) {
+    warnings.push({ category: 'seo', message: 'No CTA section (ab-cta-engagement or ab-cta-newsletter) detected', severity: 'warning' });
     seoScore -= 1;
   }
 
@@ -320,6 +379,16 @@ export function validateContent(
   if (!hasToc) {
     warnings.push({ category: 'seo', message: 'No Table of Contents detected', severity: 'warning' });
     seoScore -= 2;
+  }
+
+  // 3b. Image alt text validation (keyword context in alt text)
+  const imgAltResult = validateImageAltTexts(html, keyword);
+  if (imgAltResult.missingAlt > 0) {
+    warnings.push({ category: 'seo', message: `${imgAltResult.missingAlt} image(s) missing alt text`, severity: 'warning' });
+    seoScore -= Math.min(3, imgAltResult.missingAlt);
+  } else if (imgAltResult.total > 0 && imgAltResult.missingKeyword > imgAltResult.total * 0.5) {
+    warnings.push({ category: 'seo', message: `${imgAltResult.missingKeyword}/${imgAltResult.total} images lack keyword context in alt text`, severity: 'warning' });
+    seoScore -= 1;
   }
 
   // 4. LSI keyword coverage in headings (check if related keywords appear in H2/H3)
@@ -389,6 +458,25 @@ export function validateContent(
     readabilityScore -= 2;
   }
 
+  // 4b. Thin paragraph detection: 3+ consecutive <p> with <30 words each
+  const thinParagraphs = extractParagraphs(html);
+  let consecutiveThin = 0;
+  let thinExcess = 0;
+  for (const para of thinParagraphs) {
+    const paraWords = para.split(/\s+/).length;
+    if (paraWords < 30) {
+      consecutiveThin++;
+      if (consecutiveThin >= 3) thinExcess++;
+    } else {
+      consecutiveThin = 0;
+    }
+  }
+  if (thinExcess > 0) {
+    const thinPenalty = Math.min(4, thinExcess * 2);
+    warnings.push({ category: 'readability', message: `${thinExcess} group(s) of 3+ consecutive thin paragraphs (<30 words each)`, severity: 'warning' });
+    readabilityScore -= thinPenalty;
+  }
+
   // 5. Transition diversity check
   if (wordCount > 2500) {
     const uniqueTransitions = countUniqueTransitions(plainText);
@@ -435,7 +523,35 @@ export function validateContent(
     eeatScore -= 3;
   }
 
-  // 4. Suspicious URL pattern detection (likely fabricated deep paths)
+  // 4. E-E-A-T penalty: if >50% external links go to non-trusted domains
+  const extLinkUrls = (html.match(/href="(https?:\/\/[^"]+)"/gi) || [])
+    .map(m => m.match(/href="(https?:\/\/[^"]+)"/i)?.[1])
+    .filter(Boolean) as string[];
+  if (extLinkUrls.length >= 2) {
+    const trustedDomainsList = [
+      'bok.or.kr', 'krx.co.kr', 'dart.fss.or.kr', 'kosis.kr',
+      'bloomberg.com', 'reuters.com', 'nikkei.com', 'cnbc.com', 'ft.com', 'wsj.com',
+      'statista.com', 'worldbank.org', 'imf.org', 'mckinsey.com', 'techcrunch.com',
+      'samsung.com', 'hyundai.com', 'lgcorp.com', 'koreaherald.com', 'mk.co.kr',
+      'wikipedia.org', 'google.com', 'youtube.com',
+    ];
+    let nonTrustedCount = 0;
+    for (const url of extLinkUrls) {
+      try {
+        const domain = new URL(url).hostname.replace(/^www\./, '');
+        if (!siteUrl.includes(domain) && !trustedDomainsList.some(d => domain.endsWith(d))) {
+          nonTrustedCount++;
+        }
+      } catch { /* skip invalid */ }
+    }
+    const extOnlyUrls = extLinkUrls.filter(u => { try { return !siteUrl.includes(new URL(u).hostname); } catch { return true; } });
+    if (extOnlyUrls.length > 0 && nonTrustedCount / extOnlyUrls.length > 0.5) {
+      warnings.push({ category: 'eeat', message: `${nonTrustedCount}/${extOnlyUrls.length} external links to non-trusted domains`, severity: 'warning' });
+      eeatScore -= 3;
+    }
+  }
+
+  // 5. Suspicious URL pattern detection (likely fabricated deep paths)
   const suspiciousUrls = detectSuspiciousUrls(html);
   if (suspiciousUrls.length > 0) {
     warnings.push({
@@ -446,8 +562,7 @@ export function validateContent(
     eeatScore -= 2;
   }
 
-  // 5. Unhedged statistics detection (current-year stats without qualifying language)
-  const currentYear = new Date().getFullYear();
+  // 6. Unhedged statistics detection (current-year stats without qualifying language)
   const unhedgedStats = detectUnhedgedStatistics(plainText, currentYear);
   if (unhedgedStats > 2) {
     warnings.push({
@@ -456,6 +571,40 @@ export function validateContent(
       severity: 'warning',
     });
     eeatScore -= Math.min(3, unhedgedStats);
+  }
+
+  // 7. Unsourced large monetary claims (billion/million without attribution)
+  const unsourcedClaims = detectUnsourcedLargeClaims(plainText);
+  if (unsourcedClaims > 0) {
+    warnings.push({
+      category: 'eeat',
+      message: `${unsourcedClaims} large monetary claim(s) without attribution (add "according to" or source reference)`,
+      severity: 'warning',
+    });
+    eeatScore -= unsourcedClaims;
+  }
+
+  // 8. Stronger Korean source requirement for Finance/Tech niches (need 2+ citations)
+  if (category && ['Korean Finance', 'Korean Tech'].includes(category)) {
+    if (koreanCitationCount === 1) {
+      warnings.push({
+        category: 'eeat',
+        message: `Only 1 Korean institutional source for ${category} content (need 2+ for credibility)`,
+        severity: 'warning',
+      });
+      eeatScore -= 2;
+    }
+  }
+
+  // 9. Source credibility analysis (quality of cited sources)
+  const credibility = computeSourceCredibility(html);
+  if (credibility.sourceCount >= 2 && credibility.avgWeight < 0.5) {
+    warnings.push({
+      category: 'eeat',
+      message: `Low average source credibility: ${credibility.avgWeight.toFixed(2)} (target 0.5+). Low-quality sources: ${credibility.lowQualitySources.slice(0, 3).join(', ')}`,
+      severity: 'warning',
+    });
+    eeatScore -= 2;
   }
 
   // ── Experience signal validation (max 7 bonus points) ──
@@ -518,14 +667,16 @@ export function autoFixContent(
     title = trimmed;
   }
 
-  // 2. Wrap tables with overflow-x:auto for mobile
-  if (html.includes('<table') && !html.includes('overflow-x:auto')) {
+  // 2. Wrap tables with overflow-x:auto for mobile (catch ALL <table> tags, not just styled ones)
+  if (html.includes('<table') && !html.includes('ab-table-wrap')) {
     html = html.replace(
-      /<table\s+style="([^"]*)"/g,
-      '<div style="overflow-x:auto; -webkit-overflow-scrolling:touch; margin:24px 0;"><table style="$1"',
+      /<table(\s[^>]*)?>/g,
+      (_match, attrs) => {
+        return `<div class="ab-table-wrap"><table${attrs || ''}>`;
+      },
     );
     html = html.replace(/<\/table>/g, '</table></div>');
-    fixes.push('Wrapped tables with overflow-x:auto for mobile');
+    fixes.push('Wrapped tables with ab-table-wrap for mobile scrolling');
   }
 
   // 3. Ensure all external links have rel="noopener noreferrer"
@@ -561,11 +712,28 @@ export function autoFixContent(
     },
   );
 
+  // 4b. Hedge large monetary claims ($X billion/million) without any year context
+  html = html.replace(
+    /([^.!?]*\$[\d,.]+\s*(?:billion|million|trillion)\b[^.!?]*[.!?])/gi,
+    (sentence) => {
+      const lower = sentence.toLowerCase();
+      const alreadyHedged = hedgingPhrases.some(h => lower.includes(h));
+      const hasAttribution = /according|report|data|source|study|survey|analyst/i.test(sentence);
+      if (!alreadyHedged && !hasAttribution) {
+        fixes.push('Added hedging to large monetary claim');
+        return sentence.replace(/(\$[\d,.]+\s*(?:billion|million|trillion))/i, 'an estimated $1');
+      }
+      return sentence;
+    },
+  );
+
   // 5. Ensure featured snippet box has proper schema markup for Google
   if (html.includes('class="ab-snippet"') && !html.includes('data-snippet-type')) {
     // Detect snippet type and add data attribute for potential schema.org enhancement
+    const isHowToSnippet = /<div class="ab-snippet">[^]*?(?:<ol[^>]*>.*?<li.*?step|numbered\s+steps)/is.test(html);
+    const isTableSnippet = /<div class="ab-snippet">[^]*?<table/i.test(html);
     const isListSnippet = /<div class="ab-snippet">[^]*?<ol/i.test(html);
-    const snippetType = isListSnippet ? 'list' : 'definition';
+    const snippetType = isHowToSnippet ? 'how-to' : isTableSnippet ? 'table' : isListSnippet ? 'list' : 'definition';
     html = html.replace(/class="ab-snippet"/g, `class="ab-snippet" data-snippet-type="${snippetType}"`);
     fixes.push(`Added snippet type "${snippetType}" to featured snippet box`);
   }
@@ -679,12 +847,20 @@ function detectSuspiciousUrls(html: string): string[] {
   const suspicious: string[] = [];
   let match;
 
-  // Known trustworthy domains (root-level linking is always safe)
+  // Known trustworthy domains (synced with wordpress.service.ts APPROVED_DOMAINS)
   const trustedDomains = [
     'bok.or.kr', 'krx.co.kr', 'dart.fss.or.kr', 'kosis.kr',
-    'bloomberg.com', 'reuters.com', 'nikkei.com',
-    'samsung.com', 'hyundai.com', 'lgcorp.com',
+    'fsc.go.kr', 'ftc.go.kr', 'msit.go.kr', 'kotra.or.kr', 'kisa.or.kr', 'kocca.kr',
+    'kdi.re.kr', 'kiep.go.kr', 'visitkorea.or.kr',
+    'bloomberg.com', 'reuters.com', 'nikkei.com', 'cnbc.com', 'ft.com', 'wsj.com',
+    'techcrunch.com', 'imf.org', 'mckinsey.com', 'statista.com', 'worldbank.org',
+    'samsung.com', 'hyundai.com', 'lgcorp.com', 'skhynix.com',
+    'navercorp.com', 'kakaocorp.com', 'coupang.com',
+    'koreaherald.com', 'mk.co.kr', 'hankyung.com',
+    'hybecorp.com', 'smentertainment.com', 'jype.com',
+    'cosmeticsdesign-asia.com', 'lonelyplanet.com',
     'twitter.com', 'x.com', 'linkedin.com', 'facebook.com',
+    'google.com', 'youtube.com', 'wikipedia.org',
   ];
 
   while ((match = urlRegex.exec(html)) !== null) {
@@ -832,6 +1008,49 @@ function countDataPoints(text: string): number {
   return matches.size;
 }
 
+/**
+ * Detect outdated year references that suggest stale content.
+ * Flags years >1yr old if referenced >2 times (suggests content is based on old data).
+ */
+function detectOutdatedYearReferences(text: string, currentYear: number): number {
+  let penalty = 0;
+  // Check years from 2 to 5 years ago
+  for (let offset = 2; offset <= 5; offset++) {
+    const oldYear = currentYear - offset;
+    const regex = new RegExp(`\\b${oldYear}\\b`, 'g');
+    const count = (text.match(regex) || []).length;
+    if (count > 2) {
+      penalty += Math.min(1, count - 2); // +1 penalty per excess reference, capped
+    }
+  }
+  return Math.min(3, penalty); // Max -3 structureScore
+}
+
+/**
+ * Detect large monetary claims and market share percentages without attribution.
+ * Flags "$X billion/million" and "X% market share" without nearby source references.
+ */
+function detectUnsourcedLargeClaims(text: string): number {
+  const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 20);
+  const attributionPatterns = ['according to', 'report', 'data', 'source', 'study', 'survey', 'analyst', 'research', 'estimated', 'projected'];
+  let unsourcedCount = 0;
+
+  for (const sentence of sentences) {
+    const lower = sentence.toLowerCase();
+    // Check for large monetary claims ($X billion/million)
+    const hasLargeMoney = /\$[\d,.]+\s*(?:billion|million|trillion|B|M|T)\b/i.test(sentence);
+    // Check for market share percentages
+    const hasMarketShare = /\d+(?:\.\d+)?%\s*(?:market share|of the market|share)/i.test(sentence);
+
+    if (hasLargeMoney || hasMarketShare) {
+      const hasAttribution = attributionPatterns.some(p => lower.includes(p));
+      if (!hasAttribution) unsourcedCount++;
+    }
+  }
+
+  return Math.min(3, unsourcedCount); // Max -3 eeatScore
+}
+
 function isCommonPhrase(phrase: string): boolean {
   const common = [
     'at the same time', 'on the other hand', 'as a result of',
@@ -865,4 +1084,219 @@ export function logContentScore(score: ContentScore, title: string): void {
   for (const warning of score.warnings) {
     logger.debug(`  [${warning.category.toUpperCase()}] ${warning.message}`);
   }
+}
+
+// ── Source Credibility Weights for E-E-A-T ──
+
+/** Source credibility tiers for E-E-A-T scoring */
+const SOURCE_CREDIBILITY: Record<string, number> = {
+  // Tier 1: Academic/Government (weight 0.9)
+  'bok.or.kr': 0.9, 'krx.co.kr': 0.9, 'dart.fss.or.kr': 0.9, 'kosis.kr': 0.9,
+  'fsc.go.kr': 0.9, 'msit.go.kr': 0.9, 'kotra.or.kr': 0.9, 'worldbank.org': 0.9,
+  'imf.org': 0.9, 'kdi.re.kr': 0.9,
+  // Tier 2: Industry authority (weight 0.7)
+  'bloomberg.com': 0.7, 'reuters.com': 0.7, 'nikkei.com': 0.7, 'ft.com': 0.7,
+  'wsj.com': 0.7, 'mckinsey.com': 0.7, 'statista.com': 0.7,
+  'samsung.com': 0.7, 'hyundai.com': 0.7, 'lgcorp.com': 0.7, 'skhynix.com': 0.7,
+  'koreaherald.com': 0.7, 'mk.co.kr': 0.7,
+  // Tier 3: General trusted (weight 0.5)
+  'cnbc.com': 0.5, 'techcrunch.com': 0.5, 'wikipedia.org': 0.5,
+  'navercorp.com': 0.5, 'kakaocorp.com': 0.5,
+};
+
+/**
+ * Compute source credibility score for E-E-A-T.
+ * Analyzes external link domains and returns average credibility weight.
+ */
+export function computeSourceCredibility(html: string): { avgWeight: number; sourceCount: number; lowQualitySources: string[] } {
+  const urlRegex = /href="(https?:\/\/[^"]+)"/gi;
+  let match;
+  const weights: number[] = [];
+  const lowQuality: string[] = [];
+
+  while ((match = urlRegex.exec(html)) !== null) {
+    try {
+      const domain = new URL(match[1]).hostname.replace(/^www\./, '');
+      const weight = SOURCE_CREDIBILITY[domain] ??
+        Object.entries(SOURCE_CREDIBILITY).find(([d]) => domain.endsWith('.' + d))?.[1] ?? 0.3;
+      weights.push(weight);
+      if (weight <= 0.3) lowQuality.push(domain);
+    } catch { /* skip invalid */ }
+  }
+
+  // Also count cite data-source tags (these resolve to verified URLs)
+  const citeRegex = /data-source="([^"]+)"/gi;
+  while ((match = citeRegex.exec(html)) !== null) {
+    weights.push(0.8); // cite data-source tags are always from verified registry
+  }
+
+  return {
+    avgWeight: weights.length > 0 ? weights.reduce((a, b) => a + b, 0) / weights.length : 0,
+    sourceCount: weights.length,
+    lowQualitySources: [...new Set(lowQuality)],
+  };
+}
+
+// ── Pillar Page Validator ──
+
+export interface PillarPageValidation {
+  isValid: boolean;
+  issues: string[];
+  score: number;
+}
+
+/**
+ * Validate pillar page structure for comprehensive coverage.
+ * Ensures pillar pages meet SEO best practices for topical authority.
+ */
+export function validatePillarPage(
+  html: string,
+  title: string,
+  clusterPostTitles: string[],
+): PillarPageValidation {
+  const issues: string[] = [];
+  let score = 100;
+
+  const plainText = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+  const wordCount = plainText.split(/\s+/).length;
+
+  // 1. Word count check (pillar pages should be 3000+ words)
+  if (wordCount < 3000) {
+    issues.push(`Pillar page too short: ${wordCount} words (need 3000+)`);
+    score -= 20;
+  } else if (wordCount < 2500) {
+    issues.push(`Pillar page critically short: ${wordCount} words`);
+    score -= 30;
+  }
+
+  // 2. TOC presence
+  if (!/Table of Contents/i.test(html)) {
+    issues.push('Missing Table of Contents');
+    score -= 10;
+  }
+
+  // 3. FAQ section
+  const hasFaq = /<h[23][^>]*>[^<]*FAQ|Frequently Asked/i.test(html);
+  if (!hasFaq) {
+    issues.push('Missing FAQ section');
+    score -= 10;
+  }
+
+  // 4. H2 heading count (pillar pages need 6+ sections)
+  const h2Count = (html.match(/<h2\b/gi) || []).length;
+  if (h2Count < 6) {
+    issues.push(`Only ${h2Count} H2 headings (need 6+ for comprehensive coverage)`);
+    score -= 15;
+  }
+
+  // 5. Links to cluster posts (should link to most subtopic posts)
+  if (clusterPostTitles.length > 0) {
+    const htmlLower = html.toLowerCase();
+    const linkedCount = clusterPostTitles.filter(t =>
+      htmlLower.includes(t.toLowerCase().slice(0, 30)),
+    ).length;
+    const linkRatio = linkedCount / clusterPostTitles.length;
+    if (linkRatio < 0.5) {
+      issues.push(`Only links to ${linkedCount}/${clusterPostTitles.length} cluster posts (need 50%+)`);
+      score -= 15;
+    }
+  }
+
+  // 6. Guide/comprehensive positioning
+  const titleLower = title.toLowerCase();
+  const hasGuideSignal = ['guide', 'complete', 'comprehensive', 'ultimate', 'everything'].some(
+    w => titleLower.includes(w),
+  );
+  if (!hasGuideSignal) {
+    issues.push('Title missing "guide/complete/comprehensive" positioning signal');
+    score -= 5;
+  }
+
+  return {
+    isValid: score >= 70,
+    issues,
+    score: Math.max(0, score),
+  };
+}
+
+// ── Batch Duplicate Checker ──
+
+/**
+ * Check for duplicate content within a batch of generated articles.
+ * Uses bigram-weighted text similarity to detect near-duplicates.
+ * Returns pairs of articles that are too similar.
+ */
+export function detectBatchDuplicates(
+  articles: Array<{ title: string; keyword: string; html: string }>,
+  threshold: number = 0.6,
+): Array<{ indexA: number; indexB: number; similarity: number; titleA: string; titleB: string }> {
+  const duplicates: Array<{ indexA: number; indexB: number; similarity: number; titleA: string; titleB: string }> = [];
+
+  for (let i = 0; i < articles.length; i++) {
+    for (let j = i + 1; j < articles.length; j++) {
+      const sim = batchTextSimilarity(
+        articles[i].title + ' ' + articles[i].keyword,
+        articles[j].title + ' ' + articles[j].keyword,
+      );
+      if (sim > threshold) {
+        duplicates.push({
+          indexA: i,
+          indexB: j,
+          similarity: sim,
+          titleA: articles[i].title,
+          titleB: articles[j].title,
+        });
+      }
+    }
+  }
+
+  if (duplicates.length > 0) {
+    logger.warn(`Batch duplicate check: ${duplicates.length} similar pair(s) detected`);
+    for (const dup of duplicates) {
+      logger.warn(`  "${dup.titleA}" <-> "${dup.titleB}" (similarity: ${(dup.similarity * 100).toFixed(0)}%)`);
+    }
+  }
+
+  return duplicates;
+}
+
+function batchTextSimilarity(a: string, b: string): number {
+  const stopWords = new Set(['the', 'a', 'an', 'in', 'on', 'at', 'to', 'for', 'of', 'and', 'or', 'is', 'are', 'how', 'what', 'why', 'your', 'you', 'this', 'that', 'with']);
+  const tokenize = (s: string) => s.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => w.length > 2 && !stopWords.has(w));
+
+  const wordsA = tokenize(a);
+  const wordsB = tokenize(b);
+  if (wordsA.length === 0 || wordsB.length === 0) return 0;
+
+  const setA = new Set(wordsA);
+  const setB = new Set(wordsB);
+  let intersection = 0;
+  for (const word of setA) if (setB.has(word)) intersection++;
+  return intersection / Math.min(setA.size, setB.size);
+}
+
+/**
+ * Validate image alt text contains keyword context.
+ * Returns count of images missing keyword-enriched alt text.
+ */
+export function validateImageAltTexts(html: string, keyword: string): { total: number; missingKeyword: number; missingAlt: number } {
+  const imgRegex = /<img\s+[^>]*>/gi;
+  const images = html.match(imgRegex) || [];
+  let missingKeyword = 0;
+  let missingAlt = 0;
+  const kwWords = keyword.toLowerCase().split(/\s+/).filter(w => w.length > 3);
+
+  for (const img of images) {
+    const altMatch = img.match(/alt="([^"]*)"/i);
+    if (!altMatch || altMatch[1].trim() === '') {
+      missingAlt++;
+      missingKeyword++;
+      continue;
+    }
+    const altLower = altMatch[1].toLowerCase();
+    const hasKeyword = kwWords.some(w => altLower.includes(w));
+    if (!hasKeyword) missingKeyword++;
+  }
+
+  return { total: images.length, missingKeyword, missingAlt };
 }

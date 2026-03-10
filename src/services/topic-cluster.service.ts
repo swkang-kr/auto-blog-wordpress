@@ -1,6 +1,13 @@
 import { logger } from '../utils/logger.js';
 import type { ExistingPost, PostHistoryEntry } from '../types/index.js';
 
+/** Scored content gap with priority and reason */
+export interface ContentGap {
+  topic: string;
+  priority: 'high' | 'medium' | 'low';
+  reason: string;
+}
+
 /** A topic cluster groups related posts under a pillar page */
 export interface TopicCluster {
   nicheId: string;
@@ -8,6 +15,10 @@ export interface TopicCluster {
   posts: ClusterPost[];
   /** Keywords not yet covered by any post in this cluster */
   gaps: string[];
+  /** Scored content gaps with priority */
+  scoredGaps: ContentGap[];
+  /** Posts grouped by semantic sub-topic */
+  subTopics: Map<string, ClusterPost[]>;
 }
 
 interface ClusterPost {
@@ -17,7 +28,51 @@ interface ClusterPost {
   keyword?: string;
   /** Relevance score to the cluster (0-1) */
   relevance: number;
+  /** Assigned sub-topic label */
+  subTopic?: string;
 }
+
+/**
+ * Niche-specific sub-topic definitions for semantic classification.
+ * Each sub-topic has keyword patterns that posts are matched against.
+ */
+const NICHE_SUBTOPICS: Record<string, Record<string, string[]>> = {
+  'korean-tech': {
+    'AI & Machine Learning': ['ai', 'artificial intelligence', 'machine learning', 'deep learning', 'llm', 'chatbot', 'gpt', 'neural'],
+    'Semiconductors': ['semiconductor', 'chip', 'hbm', 'memory', 'nand', 'dram', 'foundry', 'fab', 'hynix', 'samsung semiconductor'],
+    'Startups & Venture': ['startup', 'venture', 'unicorn', 'funding', 'vc', 'accelerator', 'pangyo'],
+    'Smartphones & Consumer': ['smartphone', 'galaxy', 'phone', 'mobile', 'app', 'wearable', 'tablet'],
+    'EVs & Mobility': ['ev', 'electric vehicle', 'autonomous', 'battery', 'hyundai motor', 'kia', 'charging'],
+  },
+  'korean-finance': {
+    'Stocks & ETFs': ['stock', 'etf', 'kospi', 'kosdaq', 'equity', 'share', 'dividend', 'ipo'],
+    'Forex & Currency': ['forex', 'won', 'krw', 'usd', 'exchange rate', 'currency', 'fx'],
+    'Monetary Policy': ['interest rate', 'bok', 'bank of korea', 'monetary', 'inflation', 'cpi'],
+    'Real Estate': ['real estate', 'property', 'housing', 'apartment', 'jeonse', 'rent', 'mortgage'],
+    'Crypto & Digital Assets': ['crypto', 'bitcoin', 'digital asset', 'blockchain', 'defi', 'exchange'],
+  },
+  'k-beauty': {
+    'Skincare Routines': ['routine', 'step', 'regimen', 'morning', 'night', 'double cleanse', 'layering'],
+    'Ingredients & Science': ['ingredient', 'niacinamide', 'retinol', 'hyaluronic', 'centella', 'snail', 'ferment', 'peptide'],
+    'Brands & Products': ['brand', 'cosrx', 'innisfree', 'sulwhasoo', 'laneige', 'product', 'olive young'],
+    'Industry & Market': ['market', 'industry', 'export', 'revenue', 'growth', 'trend', 'k-beauty market'],
+    'Trends & Innovations': ['trend', 'innovation', 'glass skin', 'clean beauty', 'sustainable', 'minimalist'],
+  },
+  'korea-travel': {
+    'Cities & Destinations': ['seoul', 'busan', 'jeju', 'gyeongju', 'incheon', 'daegu', 'city', 'destination'],
+    'Transportation': ['ktx', 'subway', 'bus', 'train', 'airport', 'transport', 't-money', 'taxi'],
+    'Food & Dining': ['food', 'restaurant', 'street food', 'cafe', 'bbq', 'kimchi', 'soju', 'dining'],
+    'Accommodation': ['hotel', 'hostel', 'airbnb', 'hanok', 'stay', 'accommodation', 'guesthouse'],
+    'Culture & Experiences': ['temple', 'palace', 'festival', 'tradition', 'hanbok', 'culture', 'museum'],
+  },
+  'k-entertainment': {
+    'K-Pop': ['kpop', 'k-pop', 'idol', 'comeback', 'album', 'concert', 'bts', 'blackpink', 'aespa', 'music'],
+    'K-Drama': ['kdrama', 'k-drama', 'drama', 'netflix', 'series', 'actor', 'actress', 'ratings'],
+    'Webtoons & Content': ['webtoon', 'manhwa', 'animation', 'naver webtoon', 'kakao', 'content'],
+    'Business & Industry': ['hybe', 'sm', 'jyp', 'yg', 'agency', 'revenue', 'ipo', 'stock', 'business model'],
+    'Awards & Global Impact': ['award', 'grammy', 'billboard', 'global', 'hallyu', 'soft power', 'export'],
+  },
+};
 
 /**
  * Topic Cluster Service — groups posts by semantic similarity within niches,
@@ -65,24 +120,26 @@ export class TopicClusterService {
         }
       }
 
-      // Detect semantic sub-groups within the cluster
-      const subGroups = this.detectSubGroups(clusterPosts);
+      // Classify posts into semantic sub-topics
+      const subTopics = this.classifySubTopics(nicheId, clusterPosts);
 
-      // Identify content gaps from common keyword patterns
+      // Identify scored content gaps from sub-topic coverage
       const coveredKeywords = clusterPosts
         .filter(p => p.keyword)
         .map(p => p.keyword!.toLowerCase());
       const gaps = this.identifyContentGaps(nicheId, coveredKeywords);
+      const scoredGaps = this.identifyScoredGaps(nicheId, subTopics);
 
-      this.clusters.set(nicheId, { nicheId, pillarUrl, posts: clusterPosts, gaps });
+      this.clusters.set(nicheId, { nicheId, pillarUrl, posts: clusterPosts, gaps, scoredGaps, subTopics });
     }
 
-    const totalGaps = Array.from(this.clusters.values()).reduce((sum, c) => sum + c.gaps.length, 0);
+    const totalGaps = Array.from(this.clusters.values()).reduce((sum, c) => sum + c.scoredGaps.length, 0);
     if (this.clusters.size > 0) {
       const completionStats = Array.from(this.clusters.values()).map(c => {
-        const templates = this.getTemplateCount(c.nicheId);
-        const covered = templates - c.gaps.length;
-        return `${c.nicheId}: ${covered}/${templates}`;
+        const nicheCategory = c.nicheId.split('-').slice(0, 2).join('-');
+        const totalSubTopics = Object.keys(NICHE_SUBTOPICS[nicheCategory] || {}).length || 5;
+        const covered = c.subTopics.size;
+        return `${c.nicheId}: ${covered}/${totalSubTopics}`;
       }).join(', ');
       logger.info(`Topic clusters: ${this.clusters.size} clusters, ${totalGaps} gap(s) | Completion: ${completionStats}`);
     }
@@ -153,39 +210,98 @@ export class TopicClusterService {
   }
 
   /**
+   * Get scored content gaps with priority for a niche.
+   */
+  getScoredGaps(nicheId: string): ContentGap[] {
+    return this.clusters.get(nicheId)?.scoredGaps || [];
+  }
+
+  /**
    * Generate cluster navigation HTML for pillar page linking.
-   * Returns a "Related in this series" section.
+   * Groups related posts by sub-topic with sub-headers.
    */
   generateClusterNavHtml(nicheId: string, currentPostUrl: string): string {
     const cluster = this.clusters.get(nicheId);
     if (!cluster || cluster.posts.length < 2) return '';
 
-    const relatedPosts = cluster.posts
-      .filter(p => p.url !== currentPostUrl)
-      .slice(0, 5);
+    // Group posts by sub-topic for structured navigation
+    const sections: string[] = [];
+    for (const [subTopic, posts] of cluster.subTopics) {
+      const filteredPosts = posts.filter(p => p.url !== currentPostUrl);
+      if (filteredPosts.length === 0) continue;
 
-    if (relatedPosts.length === 0) return '';
+      const links = filteredPosts
+        .slice(0, 3) // Max 3 per sub-topic
+        .map(p => `<li><a href="${p.url}" style="color:#0066CC;text-decoration:none;">${p.title}</a></li>`)
+        .join('\n');
 
-    const links = relatedPosts
-      .map(p => `<li><a href="${p.url}" style="color:#0066CC;text-decoration:none;">${p.title}</a></li>`)
-      .join('\n');
+      sections.push(`<p style="margin:12px 0 4px 0;font-size:13px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:0.5px;">${subTopic}</p>\n<ul style="margin:0 0 8px 0;padding-left:20px;line-height:1.8;">\n${links}\n</ul>`);
+    }
+
+    // Fall back to flat list if no sub-topics
+    if (sections.length === 0) {
+      const relatedPosts = cluster.posts
+        .filter(p => p.url !== currentPostUrl)
+        .slice(0, 5);
+      if (relatedPosts.length === 0) return '';
+
+      const links = relatedPosts
+        .map(p => `<li><a href="${p.url}" style="color:#0066CC;text-decoration:none;">${p.title}</a></li>`)
+        .join('\n');
+
+      sections.push(`<ul style="margin:0;padding-left:20px;line-height:1.8;">\n${links}\n</ul>`);
+    }
 
     return `
 <div style="background:#f8f9fa;border-left:4px solid #0066CC;padding:20px;margin:32px 0;border-radius:0 8px 8px 0;">
 <h3 style="margin:0 0 12px 0;font-size:18px;color:#333;">Related Articles in This Series</h3>
-<ul style="margin:0;padding-left:20px;line-height:1.8;">
-${links}
-</ul>
+${sections.join('\n')}
 ${cluster.pillarUrl ? `<p style="margin:12px 0 0 0;"><a href="${cluster.pillarUrl}" style="color:#0066CC;font-weight:600;">View Complete Guide &rarr;</a></p>` : ''}
 </div>`;
   }
 
-  /** Detect semantic sub-groups within cluster posts by keyword overlap */
-  private detectSubGroups(posts: ClusterPost[]): Map<string, ClusterPost[]> {
+  /**
+   * Classify posts into semantic sub-topics using keyword matching.
+   * Replaces simplistic 2-word grouping with explicit niche-specific classification.
+   */
+  private classifySubTopics(nicheId: string, posts: ClusterPost[]): Map<string, ClusterPost[]> {
+    const nicheCategory = nicheId.split('-').slice(0, 2).join('-');
+    const subTopicDefs = NICHE_SUBTOPICS[nicheCategory];
+
+    // Fall back to simple keyword grouping if no sub-topic definitions
+    if (!subTopicDefs) {
+      return this.detectSubGroupsFallback(posts);
+    }
+
+    const groups = new Map<string, ClusterPost[]>();
+
+    for (const post of posts) {
+      const text = `${post.keyword || ''} ${post.title}`.toLowerCase();
+      let bestMatch: string | null = null;
+      let bestScore = 0;
+
+      for (const [subTopic, keywords] of Object.entries(subTopicDefs)) {
+        const matchCount = keywords.filter(kw => text.includes(kw)).length;
+        if (matchCount > bestScore) {
+          bestScore = matchCount;
+          bestMatch = subTopic;
+        }
+      }
+
+      const label = bestMatch || 'General';
+      post.subTopic = label;
+      if (!groups.has(label)) groups.set(label, []);
+      groups.get(label)!.push(post);
+    }
+
+    return groups;
+  }
+
+  /** Fallback: detect sub-groups by keyword overlap (legacy approach) */
+  private detectSubGroupsFallback(posts: ClusterPost[]): Map<string, ClusterPost[]> {
     const groups = new Map<string, ClusterPost[]>();
     for (const post of posts) {
       const kw = (post.keyword || post.title).toLowerCase();
-      // Extract primary topic (first 2-3 significant words)
       const words = kw.split(/\s+/).filter(w => w.length > 3);
       const topicKey = words.slice(0, 2).join(' ');
       if (topicKey) {
@@ -196,15 +312,34 @@ ${cluster.pillarUrl ? `<p style="margin:12px 0 0 0;"><a href="${cluster.pillarUr
     return groups;
   }
 
+  /**
+   * Identify scored content gaps based on sub-topic coverage.
+   * Sub-topics with 0 posts = high priority, 1 post = medium.
+   */
+  private identifyScoredGaps(nicheId: string, subTopics: Map<string, ClusterPost[]>): ContentGap[] {
+    const nicheCategory = nicheId.split('-').slice(0, 2).join('-');
+    const subTopicDefs = NICHE_SUBTOPICS[nicheCategory];
+    if (!subTopicDefs) return [];
+
+    const gaps: ContentGap[] = [];
+    for (const subTopic of Object.keys(subTopicDefs)) {
+      const posts = subTopics.get(subTopic);
+      const count = posts?.length || 0;
+      if (count === 0) {
+        gaps.push({ topic: subTopic, priority: 'high', reason: `No posts covering ${subTopic} in ${nicheId}` });
+      } else if (count === 1) {
+        gaps.push({ topic: subTopic, priority: 'medium', reason: `Only 1 post for ${subTopic} — add depth` });
+      }
+    }
+
+    // Sort by priority (high first)
+    return gaps.sort((a, b) => (a.priority === 'high' ? -1 : 1) - (b.priority === 'high' ? -1 : 1));
+  }
+
   /** Get the number of topic templates for a niche (for completion tracking) */
   private getTemplateCount(nicheId: string): number {
     const nicheCategory = nicheId.split('-').slice(0, 2).join('-');
-    const topicTemplates: Record<string, number> = {
-      'korean-tech': 5, 'k-entertainment': 5, 'korean-finance': 5,
-      'korean-food': 5, 'korea-travel': 5, 'korean-language': 5,
-      'k-beauty': 5, 'korean-crypto': 5, 'korean-auto': 5,
-    };
-    return topicTemplates[nicheCategory] || 5;
+    return Object.keys(NICHE_SUBTOPICS[nicheCategory] || {}).length || 5;
   }
 
   /** Identify content gaps based on common topic patterns per niche */

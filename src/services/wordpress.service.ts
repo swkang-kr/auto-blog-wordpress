@@ -3,7 +3,8 @@ import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { logger } from '../utils/logger.js';
 import { WordPressError } from '../types/errors.js';
-import type { BlogContent, PublishedPost, MediaUploadResult, ExistingPost } from '../types/index.js';
+import type { BlogContent, PublishedPost, MediaUploadResult, ExistingPost, AuthorProfile } from '../types/index.js';
+import { NICHE_AUTHOR_PROFILES, NICHE_DISCLAIMERS } from '../types/index.js';
 
 const POSTS_CACHE_FILE = join(dirname(new URL(import.meta.url).pathname), '../../.cache/posts-cache.json');
 const POSTS_CACHE_TTL_MS = 1 * 60 * 60 * 1000; // 1 hour
@@ -186,7 +187,7 @@ export class WordPressService {
         const titleAttr = `title="${altText}"`;
         const figureHtml =
           `<figure style="margin:30px 0; text-align:center;">` +
-          `<img src="${srcUrl}" alt="${altText}" ${titleAttr} width="1200" height="675" loading="${loadingAttr}"${fetchPriority} decoding="async" style="max-width:100%; width:100%; height:auto; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1); aspect-ratio:16/9; object-fit:cover;" />` +
+          `<img src="${srcUrl}" alt="${altText}" ${titleAttr} width="1200" height="675" sizes="(max-width: 768px) 100vw, 760px" loading="${loadingAttr}"${fetchPriority} decoding="async" style="max-width:100%; width:100%; height:auto; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1); aspect-ratio:16/9; object-fit:cover;" />` +
           `<figcaption style="margin-top:10px; font-size:13px; color:#888; line-height:1.5;">${this.escapeHtml(baseCaption)}</figcaption>` +
           `</figure>`;
 
@@ -266,15 +267,30 @@ export class WordPressService {
 
   /** Approved external link domains (domain root only) */
   private static readonly APPROVED_DOMAINS = new Set([
+    // Korean institutions
     'bok.or.kr', 'krx.co.kr', 'dart.fss.or.kr', 'kosis.kr',
     'fsc.go.kr', 'ftc.go.kr', 'msit.go.kr', 'kotra.or.kr', 'kisa.or.kr', 'kocca.kr',
+    'kdi.re.kr', 'kiep.go.kr', 'visitkorea.or.kr',
+    // Korean companies
     'samsung.com', 'hyundai.com', 'lgcorp.com', 'skhynix.com',
     'navercorp.com', 'kakaocorp.com', 'coupang.com',
+    // Korean media
+    'koreaherald.com', 'koreajoongangdaily.joins.com', 'mk.co.kr', 'hankyung.com',
+    // Global media & news
     'bloomberg.com', 'reuters.com', 'asia.nikkei.com', 'statista.com', 'worldbank.org',
+    'cnbc.com', 'ft.com', 'wsj.com', 'techcrunch.com', 'imf.org', 'mckinsey.com',
+    // Entertainment
     'hybecorp.com', 'smentertainment.com', 'jype.com',
+    // Niche-specific
+    'cosmeticsdesign-asia.com', 'lonelyplanet.com',
+    // Social & general
     'twitter.com', 'x.com', 'linkedin.com', 'facebook.com',
     'google.com', 'youtube.com', 'wikipedia.org',
   ]);
+
+  /** Domain-level URL validation cache (24h TTL) */
+  private static domainValidationCache = new Map<string, { valid: boolean; timestamp: number }>();
+  private static readonly DOMAIN_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 
   /**
    * Validate external links in HTML content:
@@ -337,20 +353,34 @@ export class WordPressService {
 
     const results = await Promise.allSettled(
       remainingLinks.map(async (link) => {
+        // Check domain-level cache first
+        try {
+          const domain = new URL(link.url).hostname.replace(/^www\./, '');
+          const cached = WordPressService.domainValidationCache.get(domain);
+          if (cached && Date.now() - cached.timestamp < WordPressService.DOMAIN_CACHE_TTL_MS) {
+            return { ...link, ok: cached.valid };
+          }
+        } catch { /* continue to HEAD check */ }
+
         try {
           await axios.head(link.url, { timeout: 3000, maxRedirects: 3 });
+          this.cacheDomainValidation(link.url, true);
           return { ...link, ok: true };
         } catch (headErr) {
           if (axios.isAxiosError(headErr) && !headErr.response) {
+            this.cacheDomainValidation(link.url, true);
             return { ...link, ok: true }; // Timeout = likely valid
           }
           try {
             await axios.get(link.url, { timeout: 3000, maxRedirects: 3, headers: { Range: 'bytes=0-0' } });
+            this.cacheDomainValidation(link.url, true);
             return { ...link, ok: true };
           } catch (getErr) {
             if (axios.isAxiosError(getErr) && getErr.response && getErr.response.status >= 400) {
+              this.cacheDomainValidation(link.url, false);
               return { ...link, ok: false };
             }
+            this.cacheDomainValidation(link.url, true);
             return { ...link, ok: true };
           }
         }
@@ -371,6 +401,14 @@ export class WordPressService {
   /**
    * Check if a slug already exists and return a unique one.
    */
+  /** Cache domain validation result for HEAD check deduplication */
+  private cacheDomainValidation(url: string, valid: boolean): void {
+    try {
+      const domain = new URL(url).hostname.replace(/^www\./, '');
+      WordPressService.domainValidationCache.set(domain, { valid, timestamp: Date.now() });
+    } catch { /* ignore invalid URLs */ }
+  }
+
   async ensureUniqueSlug(slug: string): Promise<string> {
     try {
       const { data } = await this.api.get('/posts', {
@@ -396,6 +434,7 @@ export class WordPressService {
    */
   private buildConsolidatedStyleBlock(): string {
     return `<style>
+html{scroll-behavior:smooth;scroll-padding-top:60px}
 .post-content{max-width:760px;margin:0 auto;padding:0 20px;font-family:'Noto Sans KR',sans-serif;color:#333;line-height:1.7;font-size:16px}
 .post-content p{margin:0 0 20px 0;line-height:1.8;color:#333;font-size:16px}
 .post-content h2{border-left:5px solid #0066FF;padding-left:15px;font-size:22px;color:#222;margin:40px 0 20px 0}
@@ -429,7 +468,9 @@ export class WordPressService {
 .ab-step h3{margin:0;font-size:18px;color:#222}
 .ab-back-top{text-align:center;margin:20px 0 0 0}
 .ab-back-top a{font-size:14px;color:#0066FF}
-.ab-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:24px 0}
+.ab-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:24px 0;position:relative}
+.ab-table-wrap::after{content:'';position:absolute;right:0;top:0;bottom:0;width:20px;background:linear-gradient(to left,rgba(255,255,255,0.8),transparent);pointer-events:none}
+@media(min-width:769px){.ab-table-wrap::after{display:none}}
 .ab-cta{margin:30px 0;border-radius:12px;text-align:center}
 .ab-cta-newsletter{padding:28px 24px;background:linear-gradient(135deg,#0052CC 0%,#0066FF 100%);color:#fff}
 .ab-cta-newsletter p{color:#fff}
@@ -443,13 +484,20 @@ export class WordPressService {
 .ab-byline{margin:30px 0 0 0;padding:20px 24px;background:#f8f9fa;border-radius:8px;display:flex;align-items:center;gap:16px}
 .ab-share-btn{display:inline-block;padding:8px 16px;margin:0 8px 8px 0;border-radius:6px;text-decoration:none;font-size:14px;font-weight:600;color:#fff}
 .ab-disclaimer{margin:40px 0 0 0;padding-top:20px;border-top:1px solid #eee;font-size:13px;color:#999;line-height:1.6}
+.ab-author-bio{margin:30px 0;padding:24px;background:#f8f9fa;border-radius:12px;border:1px solid #e5e7eb}
+.ab-disclaimer-finance,.ab-disclaimer-beauty{margin:0 0 24px 0;padding:16px 20px;border-radius:8px;font-size:13px;color:#666;line-height:1.6}
+.ab-what-changed{margin:0 0 24px 0;padding:16px 20px;background:#f0fff4;border:1px solid #c6f6d5;border-radius:8px;font-size:14px;color:#555;line-height:1.6}
 .ab-series-nav{margin:24px 0;padding:16px 20px;background:#f8f9fa;border:1px solid #e5e7eb;border-radius:10px}
 .ab-affiliate-disclosure{margin:0 0 20px 0;padding:12px 16px;background:#fff8e1;border:1px solid #ffe082;border-radius:8px;font-size:12px;color:#666;line-height:1.5}
 .ab-progress{position:fixed;top:0;left:0;width:0;height:3px;background:linear-gradient(90deg,#0052CC,#0066FF);z-index:99999;transition:width 0.1s linear}
+.ab-breadcrumb{margin:0 0 16px 0;font-size:13px;color:#888;line-height:1.5}
+.ab-breadcrumb a{color:#0066FF;text-decoration:none}
+.ab-breadcrumb a:hover{text-decoration:underline}
+.ab-breadcrumb span.ab-bc-sep{margin:0 6px;color:#ccc}
 .ab-header{margin:0 0 30px 0;padding-bottom:20px;border-bottom:1px solid #eee}
 .ab-header time{font-size:13px;color:#888}
 .ab-faq details{margin:0 0 12px 0;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden}
-.ab-faq summary{padding:14px 20px;font-weight:600;font-size:16px;color:#222;cursor:pointer;background:#f8f9fa;list-style:none}
+.ab-faq summary{padding:14px 20px;font-weight:600;font-size:16px;color:#222;cursor:pointer;background:#f8f9fa;list-style:none;min-height:44px}
 .ab-faq .faq-answer{padding:14px 20px}
 @media(max-width:768px){.ab-proscons{grid-template-columns:1fr}}
 @media(prefers-color-scheme:dark){
@@ -488,10 +536,27 @@ export class WordPressService {
 .ab-back-top a{color:#4da6ff!important}
 .ab-faq details{border-color:#3a3a5e!important}
 .ab-faq summary{background:#2a2a3e!important;color:#e0e0e0!important}
+.ab-breadcrumb{color:#999!important}
+.ab-breadcrumb a{color:#4da6ff!important}
+.ab-breadcrumb span.ab-bc-sep{color:#555!important}
 .ab-header{border-color:#3a3a5e!important}
 .ab-disclaimer{border-color:#3a3a5e!important;color:#888!important}
+.ab-author-bio{background:#2a2a3e!important;border-color:#3a3a5e!important}
+.ab-author-bio p{color:#e0e0e0!important}
+.ab-disclaimer-finance,.ab-disclaimer-beauty{background:#2a2a1e!important;border-color:#665500!important;color:#ccc!important}
+.ab-what-changed{background:#1a2e1a!important;border-color:#2e5e2e!important;color:#ccc!important}
 }
 </style>`;
+  }
+
+  /**
+   * Build visible breadcrumb navigation HTML.
+   * Complements the BreadcrumbList JSON-LD with a user-visible nav element.
+   */
+  private buildBreadcrumbNav(category: string, title: string): string {
+    const truncatedTitle = title.length > 50 ? title.slice(0, 47) + '...' : title;
+    const categorySlug = category.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    return `<nav class="ab-breadcrumb" aria-label="Breadcrumb"><a href="${this.wpUrl}/">Home</a><span class="ab-bc-sep" aria-hidden="true">›</span><a href="${this.wpUrl}/category/${categorySlug}/">${this.escapeHtml(category)}</a><span class="ab-bc-sep" aria-hidden="true">›</span><span aria-current="page">${this.escapeHtml(truncatedTitle)}</span></nav>`;
   }
 
   /**
@@ -568,7 +633,42 @@ export class WordPressService {
     const nextP = html.indexOf('</p>', firstH2End);
     if (nextP === -1) return html;
     const insertPos = nextP + '</p>'.length;
-    return html.slice(0, insertPos) + '\n' + block + '\n' + html.slice(insertPos);
+    // Build prev/next navigation for series
+    const allInSeries = existingPosts
+      .filter(p => p.subNiche === subNiche)
+      .sort((a, b) => {
+        const dateA = a.publishedAt ? new Date(a.publishedAt).getTime() : 0;
+        const dateB = b.publishedAt ? new Date(b.publishedAt).getTime() : 0;
+        return dateA - dateB;
+      });
+    const currentIdx = allInSeries.findIndex(p => p.title === currentTitle);
+    const prevPost = currentIdx > 0 ? allInSeries[currentIdx - 1] : null;
+    const nextPost = currentIdx >= 0 && currentIdx < allInSeries.length - 1 ? allInSeries[currentIdx + 1] : null;
+
+    let prevNextHtml = '';
+    if (prevPost || nextPost) {
+      const prevLink = prevPost
+        ? `<a href="${prevPost.url}" style="color:#0066FF; text-decoration:none; font-weight:500;">&larr; ${this.escapeHtml(prevPost.title)}</a>`
+        : '<span></span>';
+      const nextLink = nextPost
+        ? `<a href="${nextPost.url}" style="color:#0066FF; text-decoration:none; font-weight:500;">${this.escapeHtml(nextPost.title)} &rarr;</a>`
+        : '<span></span>';
+      prevNextHtml = `\n<div class="ab-series-nav" style="display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+<div style="flex:1; min-width:0;">${prevLink}</div>
+<div style="flex:1; min-width:0; text-align:right;">${nextLink}</div></div>`;
+    }
+
+    // Insert series list after first H2 paragraph, prev/next before disclaimer
+    let result = html.slice(0, insertPos) + '\n' + block + '\n' + html.slice(insertPos);
+    if (prevNextHtml) {
+      const disclaimerMatch = result.match(/<p\s+(?:class="ab-disclaimer"|style="margin:40px 0 0 0; padding-top:20px; border-top:1px solid #eee; font-size:13px; color:#999;)/);
+      if (disclaimerMatch && disclaimerMatch.index !== undefined) {
+        result = result.slice(0, disclaimerMatch.index) + prevNextHtml + '\n' + result.slice(disclaimerMatch.index);
+      } else {
+        result += prevNextHtml;
+      }
+    }
+    return result;
   }
 
   /**
@@ -639,6 +739,48 @@ export class WordPressService {
   /**
    * Build social share CTA section.
    */
+  /**
+   * Build visible author bio HTML section for E-E-A-T compliance.
+   * Displays author credentials, expertise, and social links prominently.
+   */
+  private buildAuthorBioHtml(category: string): string {
+    const profile = NICHE_AUTHOR_PROFILES[category];
+    if (!profile) return '';
+
+    const authorName = this.siteOwner || profile.name || 'TrendHunt Editorial';
+    const expertiseTags = profile.expertise.slice(0, 4)
+      .map(e => `<span style="display:inline-block; padding:3px 10px; margin:2px 4px 2px 0; background:#f0f4ff; color:#0066FF; border-radius:12px; font-size:12px;">${this.escapeHtml(e)}</span>`)
+      .join('');
+    const credentialsList = profile.credentials
+      .map(c => `<li style="margin:2px 0; font-size:13px; color:#555;">${this.escapeHtml(c)}</li>`)
+      .join('');
+    const socialLinks: string[] = [];
+    if (this.authorLinkedin) socialLinks.push(`<a href="${this.authorLinkedin}" target="_blank" rel="noopener noreferrer" style="color:#0077B5; text-decoration:none; font-size:13px; font-weight:600;">LinkedIn</a>`);
+    if (this.authorTwitter) socialLinks.push(`<a href="${this.authorTwitter}" target="_blank" rel="noopener noreferrer" style="color:#1DA1F2; text-decoration:none; font-size:13px; font-weight:600;">X / Twitter</a>`);
+    const socialHtml = socialLinks.length > 0
+      ? `<p style="margin:8px 0 0 0; font-size:13px; color:#888;">Follow: ${socialLinks.join(' · ')}</p>`
+      : '';
+
+    return `<div class="ab-author-bio" style="margin:30px 0; padding:24px; background:#f8f9fa; border-radius:12px; border:1px solid #e5e7eb;">
+<div style="display:flex; align-items:flex-start; gap:16px; flex-wrap:wrap;">
+<div style="width:64px; height:64px; background:linear-gradient(135deg,#0052CC,#0066FF); border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-size:24px; font-weight:700; flex-shrink:0;">${authorName.charAt(0).toUpperCase()}</div>
+<div style="flex:1; min-width:200px;">
+<p style="margin:0 0 2px 0; font-size:17px; font-weight:700; color:#222;">${this.escapeHtml(authorName)}</p>
+<p style="margin:0 0 8px 0; font-size:14px; font-weight:600; color:#0066FF;">${this.escapeHtml(profile.title)}</p>
+<p style="margin:0 0 10px 0; font-size:14px; color:#555; line-height:1.6;">${this.escapeHtml(profile.bio)}</p>
+<div style="margin:0 0 8px 0;">${expertiseTags}</div>
+<ul style="margin:0; padding:0 0 0 16px; list-style:disc;">${credentialsList}</ul>
+${socialHtml}
+</div></div></div>`;
+  }
+
+  /**
+   * Build niche-specific disclaimer HTML (finance, beauty, etc.).
+   */
+  private buildNicheDisclaimer(category: string): string {
+    return NICHE_DISCLAIMERS[category] || '';
+  }
+
   private buildShareCtaHtml(postUrl: string, title: string): string {
     const encodedUrl = encodeURIComponent(postUrl);
     const encodedTitle = encodeURIComponent(title);
@@ -822,12 +964,23 @@ export class WordPressService {
       }
     }
 
+    // Inject visible breadcrumb navigation before Last Updated banner
+    const breadcrumbNav = this.buildBreadcrumbNav(content.category, content.title);
+    const firstH2Bc = htmlEn.indexOf('<h2');
+    if (firstH2Bc > 0) {
+      htmlEn = htmlEn.slice(0, firstH2Bc) + breadcrumbNav + '\n' + htmlEn.slice(firstH2Bc);
+    } else {
+      htmlEn = breadcrumbNav + '\n' + htmlEn;
+    }
+
     // Inject "Last Updated" date banner + reading time at top of content
     const publishDate = options?.scheduledDate
       ? new Date(options.scheduledDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
       : new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-    const readingTimeMin = Math.max(1, Math.ceil(htmlEn.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length / 200));
-    const lastUpdatedBanner = `<div style="background:#f0f8ff; border-left:4px solid #0066FF; padding:12px 20px; margin:0 0 24px 0; border-radius:0 8px 8px 0; font-size:14px; color:#555; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;"><span><strong>Last Updated:</strong> ${publishDate}</span><span style="color:#0066FF; font-weight:600;">${readingTimeMin} min read</span></div>`;
+    const bannerWordCount = htmlEn.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
+    const bannerImageCount = (htmlEn.match(/<img\s/gi) || []).length;
+    const readingTimeMin = Math.max(1, Math.ceil(bannerWordCount / 238 + bannerImageCount * 0.2));
+    const lastUpdatedBanner = `<div style="background:#f0f8ff; border-left:4px solid #0066FF; padding:12px 20px; margin:0 0 24px 0; border-radius:0 8px 8px 0; font-size:14px; color:#555; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;"><span><span style="display:inline-block; padding:2px 8px; background:#0066FF; color:#fff; border-radius:4px; font-size:11px; font-weight:700; margin-right:8px; vertical-align:middle;">UPDATED</span><strong>Last Updated:</strong> ${publishDate}</span><span style="color:#0066FF; font-weight:600;">${readingTimeMin} min read</span></div>`;
     // Insert after the first heading or date div
     const firstH2 = htmlEn.indexOf('<h2');
     if (firstH2 > 0) {
@@ -906,8 +1059,8 @@ export class WordPressService {
       }
     }
 
-    // Inject AdSense manual ad placements (every 2 H2 sections, only if 4+ H2s)
-    htmlEn = this.injectAdPlacements(htmlEn);
+    // Inject AdSense manual ad placements (niche-aware density: RPM tier drives max ads and word gap)
+    htmlEn = this.injectAdPlacements(htmlEn, content.category);
 
     // Inject Related Posts section
     if (options?.existingPosts && options.existingPosts.length > 0) {
@@ -945,6 +1098,30 @@ export class WordPressService {
       htmlEn += '\n' + options.clusterNavHtml;
     }
 
+    // Inject visible author bio for E-E-A-T (before disclaimer section)
+    const authorBio = this.buildAuthorBioHtml(content.category);
+    if (authorBio) {
+      const disclaimerPos = htmlEn.match(/<p\s+(?:class="ab-disclaimer"|style="margin:40px 0 0 0; padding-top:20px; border-top:1px solid #eee; font-size:13px; color:#999;)/);
+      if (disclaimerPos && disclaimerPos.index !== undefined) {
+        htmlEn = htmlEn.slice(0, disclaimerPos.index) + authorBio + '\n' + htmlEn.slice(disclaimerPos.index);
+      } else {
+        htmlEn += '\n' + authorBio;
+      }
+    }
+
+    // Inject niche-specific disclaimer (finance, beauty, etc.) after Last Updated banner
+    const nicheDisclaimer = this.buildNicheDisclaimer(content.category);
+    if (nicheDisclaimer) {
+      const lastUpdatedEnd = htmlEn.indexOf('</div>', htmlEn.indexOf('Last Updated:'));
+      if (lastUpdatedEnd !== -1) {
+        const insertPos = lastUpdatedEnd + '</div>'.length;
+        htmlEn = htmlEn.slice(0, insertPos) + '\n' + nicheDisclaimer + '\n' + htmlEn.slice(insertPos);
+      } else {
+        // Fallback: insert at top
+        htmlEn = nicheDisclaimer + '\n' + htmlEn;
+      }
+    }
+
     // Skip inline CSS when site-wide snippet is active (saves ~3KB per post)
     const cssBlock = options?.skipInlineCss ? '' : this.buildConsolidatedStyleBlock() + '\n';
     let html = cssBlock + htmlEn + tagSection('Tags', tagsEnHtml);
@@ -976,18 +1153,22 @@ export class WordPressService {
         },
         thumbnailUrl: options.featuredImageUrl,
       } : {}),
-      ...(this.siteOwner ? {
-        author: {
-          '@type': 'Person',
-          name: this.siteOwner,
-          url: `${this.wpUrl}/about/`,
-          description: 'Korea Market & Trends Analyst covering Korean tech, entertainment, and financial markets for a global audience.',
-          knowsAbout: ['Korean technology', 'K-pop industry', 'Korean stock market', 'KOSPI', 'South Korean economy'],
-          ...(this.authorLinkedin || this.authorTwitter ? {
-            sameAs: [this.authorLinkedin, this.authorTwitter].filter(Boolean),
-          } : {}),
-        },
-      } : {}),
+      ...(this.siteOwner ? (() => {
+        const authorProfile = NICHE_AUTHOR_PROFILES[content.category];
+        return {
+          author: {
+            '@type': 'Person',
+            name: this.siteOwner,
+            url: `${this.wpUrl}/about/`,
+            jobTitle: authorProfile?.title || 'Korea Market & Trends Analyst',
+            description: authorProfile?.bio || 'Korea Market & Trends Analyst covering Korean tech, entertainment, and financial markets for a global audience.',
+            knowsAbout: authorProfile?.expertise || ['Korean technology', 'K-pop industry', 'Korean stock market', 'KOSPI', 'South Korean economy'],
+            ...(this.authorLinkedin || this.authorTwitter ? {
+              sameAs: [this.authorLinkedin, this.authorTwitter].filter(Boolean),
+            } : {}),
+          },
+        };
+      })() : {}),
       publisher: {
         '@type': 'Organization',
         name: this.siteOwner || 'TrendHunt',
@@ -1138,7 +1319,7 @@ export class WordPressService {
           tags: tagIds,
           featured_media: featuredImageId ?? 0,
           meta: {
-            rank_math_description: content.metaDescription || validatedExcerpt,
+            rank_math_description: content.ctrMetaDescription || content.metaDescription || validatedExcerpt,
             rank_math_focus_keyword: options?.keyword || '',
             rank_math_title: content.title,
             rank_math_canonical_url: content.slug ? `${this.wpUrl}/${content.slug}/` : '',
@@ -1150,6 +1331,7 @@ export class WordPressService {
             rank_math_twitter_image: options?.ogImageUrl || options?.featuredImageUrl || '',
             rank_math_twitter_use_facebook_data: '1',
             rank_math_twitter_card_type: 'summary_large_image',
+            rank_math_og_type: 'article',
             _autoblog_jsonld: jsonLdString,
             _autoblog_published_time: nowIso,
             _autoblog_modified_time: nowIso,
@@ -1175,6 +1357,15 @@ export class WordPressService {
         };
 
         logger.info(`Post published: ID=${post.postId} URL=${post.url}`);
+
+        // Social meta verification
+        const socialMeta = {
+          ogType: 'article',
+          ogTitle: content.title,
+          ogImage: options?.ogImageUrl || options?.featuredImageUrl || 'none',
+          twitterCard: 'summary_large_image',
+        };
+        logger.debug(`Social meta: OG type=${socialMeta.ogType}, title="${socialMeta.ogTitle.slice(0, 40)}...", image=${socialMeta.ogImage ? 'set' : 'missing'}, twitter=${socialMeta.twitterCard}`);
 
         // Post-publish updates: JSON-LD URLs, share CTA, canonical fix, external link validation
         try {
@@ -1267,7 +1458,7 @@ export class WordPressService {
         const cleanAnswer = answer.trim();
         if (!cleanAnswer) return _;
         return `<details style="margin:0 0 12px 0; border:1px solid #e5e7eb; border-radius:8px; overflow:hidden;">` +
-          `<summary style="padding:14px 20px; font-weight:600; font-size:16px; color:#222; cursor:pointer; background:#f8f9fa; list-style:none;">${question}</summary>` +
+          `<summary style="padding:14px 20px; font-weight:600; font-size:16px; color:#222; cursor:pointer; background:#f8f9fa; list-style:none; min-height:44px;">${question}</summary>` +
           `<div style="padding:14px 20px;">${cleanAnswer}</div></details>`;
       },
     );
@@ -1381,7 +1572,7 @@ export class WordPressService {
    * - Maximum 4 in-content ad units per post (AdSense policy)
    * - Responsive format only (auto-sizing for mobile)
    */
-  private injectAdPlacements(html: string): string {
+  private injectAdPlacements(html: string, category?: string): string {
     const h2Regex = /<h2\s/gi;
     const h2Positions: number[] = [];
     let match;
@@ -1391,15 +1582,35 @@ export class WordPressService {
 
     if (h2Positions.length < 3) return html;
 
+    // Derive RPM tier from category for niche-specific ad density
+    const RPM_CONFIG: Record<string, { maxAds: number; minWordGap: number }> = {
+      'high': { maxAds: 5, minWordGap: 200 },
+      'medium': { maxAds: 4, minWordGap: 250 },
+      'low': { maxAds: 3, minWordGap: 300 },
+    };
+    const categoryToRpm: Record<string, string> = {
+      'Korean Tech': 'high', 'Korean Finance': 'high',
+      'K-Beauty': 'medium', 'K-Entertainment': 'medium',
+      'Korea Travel': 'low',
+    };
+    const rpmTier = (category ? categoryToRpm[category] : undefined) || 'medium';
+    let { maxAds, minWordGap } = RPM_CONFIG[rpmTier];
+
+    // Long posts (>3000 words): reduce gap by 20% for better ad density
+    const totalWords = html.replace(/<[^>]+>/g, '').split(/\s+/).length;
+    if (totalWords > 3000) {
+      minWordGap = Math.round(minWordGap * 0.8);
+    }
+
     // Ad unit HTML — uses responsive auto format
-    const adUnit = (slot: string) =>
+    const adUnit = (slot: string, format: string = 'auto') =>
       `<div class="ab-ad" style="margin:32px 0; padding:16px 0; text-align:center; min-height:90px; clear:both;" data-ad-slot="${slot}">` +
-      `<ins class="adsbygoogle" style="display:block" data-ad-format="auto" data-full-width-responsive="true"></ins>` +
+      `<ins class="adsbygoogle" style="display:block" data-ad-format="${format}" data-full-width-responsive="true"></ins>` +
       `<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>` +
       `</div>`;
 
     // 1. Identify strategic insertion points
-    const insertPoints: Array<{ pos: number; type: string }> = [];
+    const insertPoints: Array<{ pos: number; type: string; format: string }> = [];
 
     // After TOC (if exists) — highest viewability position
     const tocEnd = html.indexOf('</details>');
@@ -1408,44 +1619,44 @@ export class WordPressService {
       // Skip if a cluster nav or other element is right after
       const nextContent = html.slice(afterToc, afterToc + 100);
       if (!nextContent.includes('ab-ad')) {
-        insertPoints.push({ pos: afterToc, type: 'after-toc' });
+        insertPoints.push({ pos: afterToc, type: 'after-toc', format: 'auto' });
       }
     }
 
-    // Between H2 sections — every 2nd section, max 3 mid-content ads
+    // Between H2 sections — every 2nd section
     let midContentAds = 0;
-    for (let i = 1; i < h2Positions.length && midContentAds < 3; i++) {
+    const maxMidAds = maxAds - (insertPoints.length > 0 ? 1 : 0);
+    for (let i = 1; i < h2Positions.length && midContentAds < maxMidAds; i++) {
       if ((i + 1) % 2 === 0) { // After sections 2, 4, 6
-        // Ensure minimum ~300 words gap from previous ad
-        const preceding = html.slice(0, h2Positions[i]);
         const lastAdPos = insertPoints.length > 0 ? insertPoints[insertPoints.length - 1].pos : 0;
         const textBetween = html.slice(lastAdPos, h2Positions[i]).replace(/<[^>]+>/g, '');
         const wordsBetween = textBetween.split(/\s+/).length;
-        if (wordsBetween >= 250) {
-          insertPoints.push({ pos: h2Positions[i], type: `mid-h2-${i}` });
+        if (wordsBetween >= minWordGap) {
+          // Use in-feed format for listicle content in high RPM niches
+          const isListicle = /<ol|<ul/.test(html.slice(h2Positions[i - 1] || 0, h2Positions[i]));
+          const format = (rpmTier === 'high' && isListicle) ? 'fluid' : 'auto';
+          insertPoints.push({ pos: h2Positions[i], type: `mid-h2-${i}`, format });
           midContentAds++;
         }
       }
     }
 
-    // Cap total ads at 4 (AdSense best practice for content pages)
-    const maxAds = 4;
     const finalInserts = insertPoints.slice(0, maxAds);
 
     // Insert in reverse order to preserve positions
     let result = html;
     for (let i = finalInserts.length - 1; i >= 0; i--) {
-      const { pos, type } = finalInserts[i];
+      const { pos, type, format } = finalInserts[i];
       // Find clean insertion point (after </p> or </details>)
       const preceding = result.slice(0, pos);
       const lastP = preceding.lastIndexOf('</p>');
       const lastDetails = preceding.lastIndexOf('</details>');
       const bestEnd = Math.max(lastP !== -1 ? lastP + '</p>'.length : 0, lastDetails !== -1 ? lastDetails + '</details>'.length : 0);
       const insertAt = bestEnd > 0 && pos - bestEnd < 200 ? bestEnd : pos;
-      result = result.slice(0, insertAt) + '\n' + adUnit(type) + '\n' + result.slice(insertAt);
+      result = result.slice(0, insertAt) + '\n' + adUnit(type, format) + '\n' + result.slice(insertAt);
     }
 
-    logger.debug(`Injected ${finalInserts.length} AdSense ad placement(s): ${finalInserts.map(p => p.type).join(', ')}`);
+    logger.debug(`Injected ${finalInserts.length} AdSense ad placement(s) [${rpmTier} RPM, ${minWordGap}w gap]: ${finalInserts.map(p => `${p.type}(${p.format})`).join(', ')}`);
     return result;
   }
 
@@ -1594,6 +1805,57 @@ export class WordPressService {
    * Auto-link orphan pages by inserting "Also read" links into same-category recent posts.
    * Processes up to 3 orphans per batch to avoid excessive API calls.
    */
+  /** Track used anchor texts to avoid repetition across orphan linking */
+  private usedAnchorTexts = new Map<string, Set<string>>();
+
+  /**
+   * Generate diverse anchor text variants for a post.
+   * Rotates selection based on target postId hash to avoid repetition.
+   */
+  private generateAnchorVariants(post: ExistingPost): string[] {
+    const title = post.title;
+    const keyword = post.keyword || '';
+    const category = post.category;
+    const titleWords = title.split(/\s+/);
+
+    const variants: string[] = [
+      title, // Full title
+      keyword || title, // Primary keyword
+      `${category}: ${titleWords.slice(0, 4).join(' ')}`, // Category + partial title
+      titleWords.slice(0, Math.ceil(titleWords.length / 2)).join(' '), // Partial title (first half)
+    ];
+
+    return variants.filter(Boolean);
+  }
+
+  /**
+   * Select an anchor text variant for a target post, avoiding repetition.
+   */
+  private selectAnchorText(orphan: ExistingPost, targetPostId: number): string {
+    const variants = this.generateAnchorVariants(orphan);
+    const usedForTarget = this.usedAnchorTexts.get(String(targetPostId)) || new Set<string>();
+
+    // Rotate selection based on target postId hash
+    let hash = 0;
+    const key = `${orphan.postId || 0}:${targetPostId}`;
+    for (let i = 0; i < key.length; i++) {
+      hash = ((hash << 5) - hash + key.charCodeAt(i)) | 0;
+    }
+
+    // Try to find an unused variant
+    const startIdx = Math.abs(hash) % variants.length;
+    for (let i = 0; i < variants.length; i++) {
+      const idx = (startIdx + i) % variants.length;
+      if (!usedForTarget.has(variants[idx])) {
+        usedForTarget.add(variants[idx]);
+        this.usedAnchorTexts.set(String(targetPostId), usedForTarget);
+        return variants[idx];
+      }
+    }
+
+    return variants[startIdx]; // Fallback to hash-based selection
+  }
+
   async autoLinkOrphans(orphans: ExistingPost[], existingPosts: ExistingPost[]): Promise<number> {
     const MAX_BATCH = 3;
     let linkedCount = 0;
@@ -1624,8 +1886,11 @@ export class WordPressService {
           // Skip if already links to this orphan
           if (currentContent.includes(orphan.url.replace(/\/$/, ''))) continue;
 
+          // Use diversified anchor text
+          const anchorText = this.selectAnchorText(orphan, target.postId);
+
           const alsoReadHtml = `\n<p style="margin:20px 0; padding:12px 16px; background:#f8f9fa; border-radius:8px; font-size:14px;">` +
-            `<strong>Also read:</strong> <a href="${orphan.url}" style="color:#0066FF; text-decoration:none;">${this.escapeHtml(orphan.title)}</a></p>`;
+            `<strong>Also read:</strong> <a href="${orphan.url}" style="color:#0066FF; text-decoration:none;">${this.escapeHtml(anchorText)}</a></p>`;
 
           // Append before the last closing tag or at end
           const updatedContent = currentContent + alsoReadHtml;
@@ -1634,7 +1899,7 @@ export class WordPressService {
             content: updatedContent,
           });
           linkedCount++;
-          logger.info(`Auto-linked orphan "${orphan.title}" from "${target.title}"`);
+          logger.info(`Auto-linked orphan "${orphan.title}" from "${target.title}" (anchor: "${anchorText}")`);
         } catch (error) {
           logger.warn(`Failed to auto-link orphan "${orphan.title}": ${error instanceof Error ? error.message : error}`);
         }

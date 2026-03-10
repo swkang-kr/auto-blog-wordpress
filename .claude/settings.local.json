@@ -54,7 +54,12 @@
       "Bash(wc -l /home/trendhunt/workspace/auto-blog-wordpress/src/services/*.ts /home/trendhunt/workspace/auto-blog-wordpress/src/index.ts | tail -1)",
       "Bash(npm run typecheck 2>&1)",
       "Bash(npm run build 2>&1)",
-      "Bash(gh secret list)"
+      "Bash(gh secret list)",
+      "Bash(wc -l /home/trendhunt/workspace/auto-blog-wordpress/data/post-history.json && python3 -c \"import json; d = json.load\\(open\\('/home/trendhunt/workspace/auto-blog-wordpress/data/post-history.json'\\)\\); print\\(f'Total entries: {len\\(d[\\\\\"entries\\\\\"]\\)}, Last run: {d[\\\\\"lastRunAt\\\\\"]}'\\)\")",
+      "WebFetch(domain:ai.google.dev)",
+      "Bash(git log --oneline --all -5 | xargs -I {} bash -c \"echo '=== {} ===' && git show --stat {} 2>/dev/null | head -20\")",
+      "Bash(du -sh /home/trendhunt/workspace/auto-blog-wordpress/src/* | sort -rh)",
+      "Bash(wc -l /home/trendhunt/workspace/auto-blog-wordpress/src/index.ts /home/trendhunt/workspace/auto-blog-wordpress/src/services/*.ts | head -20)"
     ]
   }
 }

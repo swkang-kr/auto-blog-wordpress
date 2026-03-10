@@ -204,11 +204,14 @@ export class PostHistory {
     }
   }
 
-  /** Mark A/B title test as resolved for a given post */
-  async markTitleTestResolved(postId: number): Promise<void> {
+  /** Mark A/B title test as resolved for a given post, optionally storing the winning title */
+  async markTitleTestResolved(postId: number, winningTitle?: string): Promise<void> {
     const entry = this.data.entries.find(e => e.postId === postId);
     if (entry) {
       entry.titleTestResolved = true;
+      if (winningTitle) {
+        entry.titleTestWinner = winningTitle;
+      }
       await this.save();
     }
   }

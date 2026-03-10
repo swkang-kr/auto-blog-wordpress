@@ -77,6 +77,7 @@ export const NICHES: NicheConfig[] = [
       'Samsung Galaxy AI features vs Apple Intelligence comparison',
     ],
     contentTypes: ['analysis', 'deep-dive', 'news-explainer', 'x-vs-y', 'how-to', 'case-study', 'best-x-for-y', 'listicle'],
+    adSenseRpm: 'high',
   },
 
   // ── Korean Finance & Investment (high RPM, evergreen content) ──
@@ -96,6 +97,7 @@ export const NICHES: NicheConfig[] = [
       'Korea economic outlook GDP growth forecast 2026',
     ],
     contentTypes: ['how-to', 'best-x-for-y', 'analysis', 'deep-dive', 'x-vs-y', 'case-study', 'news-explainer', 'listicle'],
+    adSenseRpm: 'high',
   },
 
   // ── K-Beauty & Skincare (high commercial intent, strong product review potential) ──
@@ -115,6 +117,7 @@ export const NICHES: NicheConfig[] = [
       'best Korean moisturizers for dry skin winter 2026',
     ],
     contentTypes: ['how-to', 'best-x-for-y', 'x-vs-y', 'analysis', 'deep-dive', 'listicle', 'product-review', 'case-study'],
+    adSenseRpm: 'medium',
   },
 
   // ── Korea Travel & Living (high search volume, diverse content types) ──
@@ -134,6 +137,7 @@ export const NICHES: NicheConfig[] = [
       'Korea visa requirements for tourists by country',
     ],
     contentTypes: ['how-to', 'best-x-for-y', 'deep-dive', 'analysis', 'listicle', 'news-explainer', 'x-vs-y', 'case-study'],
+    adSenseRpm: 'low',
   },
 
   // ── K-Entertainment Business (high engagement, viral potential) ──
@@ -153,5 +157,6 @@ export const NICHES: NicheConfig[] = [
       'Korean content industry export growth analysis',
     ],
     contentTypes: ['analysis', 'deep-dive', 'news-explainer', 'best-x-for-y', 'how-to', 'case-study', 'listicle', 'x-vs-y'],
+    adSenseRpm: 'medium',
   },
 ];

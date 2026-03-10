@@ -6,7 +6,7 @@ import { getSeasonalSuggestionsForNiche } from '../utils/korean-calendar.js';
 import { costTracker } from '../utils/cost-tracker.js';
 import { RedditTrendsService } from './reddit-trends.service.js';
 import type { NicheConfig, TrendsData, RisingQuery, KeywordAnalysis, ResearchedKeyword, ExistingPost } from '../types/index.js';
-import { CONTENT_FRESHNESS_MAP, type ContentType, type FreshnessClass } from '../types/index.js';
+import { CONTENT_FRESHNESS_MAP, INTENT_CONTENT_TYPE_MAP, type ContentType, type FreshnessClass } from '../types/index.js';
 import type { GSCQueryData } from './gsc-analytics.service.js';
 
 /** SERP competition analysis result */
@@ -233,6 +233,18 @@ export class KeywordResearchService {
         }
       }
 
+      // Validate search intent matches content type
+      if (analysis.searchIntent && analysis.contentType) {
+        const validTypes = INTENT_CONTENT_TYPE_MAP[analysis.searchIntent];
+        if (validTypes && !validTypes.includes(analysis.contentType)) {
+          logger.warn(
+            `Intent-type mismatch: "${analysis.searchIntent}" intent got "${analysis.contentType}" type. ` +
+            `Valid types: ${validTypes.join(', ')}. Auto-correcting to "${validTypes[0]}".`,
+          );
+          analysis.contentType = validTypes[0] as ContentType;
+        }
+      }
+
       break;
     }
 
@@ -265,6 +277,14 @@ export class KeywordResearchService {
         analysis.selectedKeyword,
         averageInterest,
         analysis.estimatedCompetition,
+      );
+    }
+
+    // Reject keywords with KD > 70 (unlikely to rank) — log warning
+    if (analysis.keywordDifficulty > 70) {
+      logger.warn(
+        `High KD warning: "${analysis.selectedKeyword}" has KD=${analysis.keywordDifficulty}. ` +
+        `Consider targeting lower-difficulty keywords for better ranking potential.`,
       );
     }
 
@@ -403,9 +423,15 @@ CRITICAL keyword selection rules — follow in strict priority order:
    Target keywords with difficulty < 40 for best ranking potential.
 8. Estimate monthly search volume as a number (rough estimate based on niche knowledge)
 9. Classify search intent precisely: informational, commercial, transactional, or navigational
+10. CRITICAL intent-type alignment:
+   - transactional intent → MUST use: product-review, best-x-for-y, or how-to
+   - commercial intent → MUST use: best-x-for-y, x-vs-y, product-review, listicle, or analysis
+   - informational intent → MUST use: how-to, deep-dive, analysis, news-explainer, case-study, or listicle
+   - navigational intent → MUST use: deep-dive, news-explainer, or how-to
+11. Generate 3-5 long-tail keyword variants related to your selected keyword for satellite content strategy
 
 Respond with pure JSON only. No markdown code blocks.
-{"selectedKeyword":"...","contentType":"analysis|deep-dive|news-explainer|how-to|best-x-for-y|x-vs-y|listicle|case-study|product-review","suggestedTitle":"...","uniqueAngle":"...","searchIntent":"informational|commercial|transactional|navigational","estimatedCompetition":"low|medium|high","keywordDifficulty":25,"volumeEstimate":"high|medium|low|minimal","estimatedMonthlySearches":1500,"reasoning":"...","relatedKeywordsToInclude":["...","..."]}`;
+{"selectedKeyword":"...","contentType":"analysis|deep-dive|news-explainer|how-to|best-x-for-y|x-vs-y|listicle|case-study|product-review","suggestedTitle":"...","uniqueAngle":"...","searchIntent":"informational|commercial|transactional|navigational","estimatedCompetition":"low|medium|high","keywordDifficulty":25,"volumeEstimate":"high|medium|low|minimal","estimatedMonthlySearches":1500,"reasoning":"...","relatedKeywordsToInclude":["...","..."],"longTailVariants":["variant 1","variant 2","variant 3"]}`;
 
     try {
       const response = await this.client.messages.create({
@@ -555,13 +581,23 @@ STRATEGY: Consider creating content that directly targets one of these content g
     else if (wordCount >= 5) difficulty -= 10;
     else if (wordCount >= 4) difficulty -= 5;
 
-    // 4. SERP data bonus: if we have striking distance data, check coverage
+    // 4. SERP data bonus: use GSC position data for granular difficulty adjustment
     if (this.serpAnalysis) {
       const keywordLower = keyword.toLowerCase();
-      const hasExistingRanking = this.serpAnalysis.strikingDistanceKeywords.some(
+      const matchingQuery = this.serpAnalysis.strikingDistanceKeywords.find(
         sd => sd.query.toLowerCase().includes(keywordLower) || keywordLower.includes(sd.query.toLowerCase()),
       );
-      if (hasExistingRanking) difficulty -= 10; // Already ranking = easier to improve
+      if (matchingQuery) {
+        // Position-based difficulty reduction (closer to top = easier to improve)
+        if (matchingQuery.position <= 10) difficulty -= 15;
+        else if (matchingQuery.position <= 20) difficulty -= 10;
+        else if (matchingQuery.position <= 30) difficulty -= 5;
+
+        // High impressions + low position = competitive keyword (harder than it looks)
+        if (matchingQuery.impressions > 1000 && matchingQuery.position > 15) {
+          difficulty += 5;
+        }
+      }
     }
 
     // 5. Korea-specific niche discount (Korea topics have less English competition)

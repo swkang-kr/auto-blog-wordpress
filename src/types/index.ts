@@ -24,6 +24,61 @@ export const FRESHNESS_UPDATE_INTERVALS: Record<FreshnessClass, number> = {
   'time-sensitive': 180,  // Archive or update flag after 6 months
 };
 
+/** Author profile for E-E-A-T credibility signals */
+export interface AuthorProfile {
+  name: string;
+  title: string;
+  bio: string;
+  expertise: string[];
+  credentials: string[];
+  /** Years of experience in the domain */
+  yearsExperience: number;
+}
+
+/** Niche-specific author profiles for visible E-E-A-T bio sections */
+export const NICHE_AUTHOR_PROFILES: Record<string, AuthorProfile> = {
+  'Korean Tech': {
+    name: '', // Filled from SITE_OWNER env
+    title: 'Korea Tech & Semiconductor Analyst',
+    bio: 'Covering Korean technology, AI, and semiconductor industries with a focus on Samsung, SK Hynix, and the broader Korean tech ecosystem. Tracking Korea\'s role in global AI infrastructure, chip manufacturing, and digital innovation.',
+    expertise: ['Korean semiconductor industry', 'AI & machine learning in Korea', 'Korean tech startups', 'Samsung Electronics strategy', 'SK Hynix HBM memory'],
+    credentials: ['Korea Technology Market Researcher', 'Published analyst covering KOSDAQ tech sector'],
+    yearsExperience: 5,
+  },
+  'Korean Finance': {
+    name: '',
+    title: 'Korean Markets & Investment Analyst',
+    bio: 'Analyzing Korean financial markets, KOSPI/KOSDAQ indices, and investment opportunities for international investors. Specializing in Korean economic policy, BOK interest rate analysis, and cross-border investment strategies.',
+    expertise: ['KOSPI & KOSDAQ analysis', 'Korean ETF investing', 'BOK monetary policy', 'Korean won forex', 'Chaebol financial analysis'],
+    credentials: ['Certified Financial Analyst', 'Korean Capital Markets Specialist'],
+    yearsExperience: 7,
+  },
+  'K-Beauty': {
+    name: '',
+    title: 'K-Beauty & Skincare Specialist',
+    bio: 'Researching Korean skincare innovations, ingredient science, and beauty industry trends. Providing evidence-based product analysis and routine recommendations backed by dermatological research and Korean cosmetic formulation expertise.',
+    expertise: ['Korean skincare formulations', 'K-beauty ingredient analysis', 'Olive Young product reviews', 'Korean sunscreen technology', 'Glass skin routines'],
+    credentials: ['Cosmetic Science Researcher', 'Korean Beauty Industry Analyst'],
+    yearsExperience: 4,
+  },
+  'Korea Travel': {
+    name: '',
+    title: 'Korea Travel & Expat Life Writer',
+    bio: 'Writing practical guides for travelers and expats navigating South Korea. From Seoul subway tips to countryside adventures, providing first-hand insights on Korean culture, costs, visas, and daily life for international visitors.',
+    expertise: ['Seoul travel logistics', 'Korean visa requirements', 'Cost of living in Korea', 'Korean food culture', 'Expat life in Seoul'],
+    credentials: ['Resident Korea Travel Writer', 'Published in major travel platforms'],
+    yearsExperience: 5,
+  },
+  'K-Entertainment': {
+    name: '',
+    title: 'K-Entertainment Business Analyst',
+    bio: 'Analyzing the business side of K-pop, K-drama, and Korean content industries. Covering agency financials (HYBE, SM, JYP), global streaming strategies, and the economics behind Korea\'s cultural export dominance.',
+    expertise: ['K-pop business models', 'Korean entertainment stocks', 'K-drama streaming economics', 'Webtoon industry', 'Korean content global expansion'],
+    credentials: ['Korean Entertainment Industry Researcher', 'Media & Entertainment Analyst'],
+    yearsExperience: 4,
+  },
+};
+
 /** 니치 설정 */
 export interface NicheConfig {
   id: string;
@@ -34,6 +89,8 @@ export interface NicheConfig {
   /** Fallback seed keywords used when Trends API returns no rising queries */
   seedKeywords: string[];
   contentTypes: ContentType[];
+  /** AdSense RPM tier for niche-specific ad density tuning */
+  adSenseRpm?: 'high' | 'medium' | 'low';
 }
 
 /** Per-category optimal publish timing (override GA4 when no data available) */
@@ -43,6 +100,20 @@ export const CATEGORY_PUBLISH_TIMING: Record<string, { optimalHour: number; best
   'K-Beauty': { optimalHour: 10, bestDays: [5, 6, 0] },           // Weekend morning (lifestyle shopping)
   'Korea Travel': { optimalHour: 10, bestDays: [6, 0, 5] },       // Weekend + Friday (trip planning)
   'K-Entertainment': { optimalHour: 18, bestDays: [4, 5, 6] },    // Thu-Sat evening (leisure time)
+};
+
+/** Niche-specific disclaimer templates for legal compliance */
+export const NICHE_DISCLAIMERS: Record<string, string> = {
+  'Korean Finance': '<div class="ab-disclaimer-finance" style="margin:0 0 24px 0; padding:16px 20px; background:#fff8e1; border:1px solid #ffe082; border-radius:8px; font-size:13px; color:#666; line-height:1.6;"><strong>Financial Disclaimer:</strong> The information in this article is for educational and informational purposes only and should not be construed as financial, investment, or tax advice. Past performance does not guarantee future results. Investing in Korean securities involves risks, including currency exchange risk and potential loss of principal. Always consult a qualified financial advisor before making investment decisions. The author and TrendHunt are not licensed financial advisors.</div>',
+  'K-Beauty': '<div class="ab-disclaimer-beauty" style="margin:0 0 24px 0; padding:16px 20px; background:#f0fff4; border:1px solid #c6f6d5; border-radius:8px; font-size:13px; color:#666; line-height:1.6;"><strong>Skincare Disclaimer:</strong> Product recommendations are based on research and editorial analysis. Individual results may vary. Always patch-test new products and consult a dermatologist for specific skin concerns. This content is not medical advice.</div>',
+};
+
+/** Search intent to valid content type mapping for enforcement */
+export const INTENT_CONTENT_TYPE_MAP: Record<string, string[]> = {
+  'transactional': ['product-review', 'best-x-for-y', 'how-to'],
+  'commercial': ['best-x-for-y', 'x-vs-y', 'product-review', 'listicle', 'analysis'],
+  'informational': ['how-to', 'deep-dive', 'analysis', 'news-explainer', 'case-study', 'listicle'],
+  'navigational': ['deep-dive', 'news-explainer', 'how-to'],
 };
 
 /** Google Trends rising query entry */
@@ -79,6 +150,8 @@ export interface KeywordAnalysis {
   estimatedMonthlySearches?: number;
   reasoning: string;
   relatedKeywordsToInclude: string[];
+  /** Long-tail keyword variants for satellite content strategy */
+  longTailVariants?: string[];
 }
 
 /** 최종 키워드 리서치 결과 */
@@ -104,6 +177,12 @@ export interface BlogContent {
   metaDescription?: string;
   /** Alternative title candidates for A/B testing (2-3 options) */
   titleCandidates?: string[];
+  /** CTR-optimized meta description (benefit + keyword + CTA, 145-158 chars) */
+  ctrMetaDescription?: string;
+  /** Number of affiliate links detected in content */
+  affiliateLinksCount?: number;
+  /** Search intent from keyword research */
+  searchIntent?: 'informational' | 'commercial' | 'transactional' | 'navigational';
 }
 
 /** WordPress 미디어 업로드 결과 */
@@ -166,6 +245,8 @@ export interface PostHistoryEntry {
   titleCandidates?: string[];
   /** Whether A/B title test has been resolved */
   titleTestResolved?: boolean;
+  /** Winning title variant from A/B test (for learning) */
+  titleTestWinner?: string;
   /** Series ID for multi-part content (e.g., "korean-stocks-101") */
   seriesId?: string;
   /** Part number within a series */
