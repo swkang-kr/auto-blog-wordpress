@@ -310,6 +310,68 @@ export class ImageGeneratorService {
     }
   }
 
+  /**
+   * Generate a Pinterest-optimized image (2:3 aspect ratio, 1000x1500).
+   * Pinterest favors tall pins — this variant improves click-through on Pinterest shares.
+   */
+  async generatePinterestImage(
+    prompt: string,
+    keyword: string,
+  ): Promise<{ buffer: Buffer; filename: string } | null> {
+    try {
+      const model = this.client.getGenerativeModel({
+        model: 'gemini-2.5-flash-preview-05-20',
+        generationConfig: {
+          responseModalities: ['image', 'text'] as unknown as undefined,
+        } as Record<string, unknown>,
+      });
+
+      const pinterestPrompt = prompt +
+        ', digital illustration, portrait orientation 2:3 aspect ratio, tall composition optimized for Pinterest, vivid colors, high detail, professional editorial quality, no text or watermark';
+
+      const response = await model.generateContent(pinterestPrompt);
+      const parts = response.response.candidates?.[0]?.content?.parts ?? [];
+
+      let imageBuffer: Buffer | null = null;
+      for (const part of parts) {
+        const inlineData = (part as unknown as Record<string, unknown>).inlineData as
+          | { data: string; mimeType: string }
+          | undefined;
+        if (inlineData?.data) {
+          imageBuffer = Buffer.from(inlineData.data, 'base64');
+          break;
+        }
+      }
+
+      if (!imageBuffer) {
+        logger.warn('Pinterest image generation returned no data');
+        return null;
+      }
+
+      const qualityCheck = await this.validateImageQuality(imageBuffer, 0);
+      if (!qualityCheck.valid) {
+        logger.warn(`Pinterest image quality check failed: ${qualityCheck.reason}`);
+        return null;
+      }
+
+      costTracker.addImageCall(1);
+
+      // Resize to 1000x1500 (2:3 ratio) and compress
+      const resized = await sharp(imageBuffer).resize(1000, 1500, { fit: 'cover' });
+      const compressed = this.imageFormat === 'avif'
+        ? await resized.avif({ quality: 75 }).toBuffer()
+        : await resized.webp({ quality: 80 }).toBuffer();
+
+      const filename = ImageGeneratorService.buildFilename(keyword, 'pinterest-pin', this.imageFormat);
+      logger.info(`Pinterest image generated: ${filename} (${(compressed.length / 1024).toFixed(0)}KB)`);
+
+      return { buffer: compressed, filename };
+    } catch (error) {
+      logger.warn(`Pinterest image generation failed: ${error instanceof Error ? error.message : String(error)}`);
+      return null;
+    }
+  }
+
   async generateImages(prompts: string[]): Promise<ImageResult> {
     logger.info(`Generating ${prompts.length} images (batch parallel)...`);
 

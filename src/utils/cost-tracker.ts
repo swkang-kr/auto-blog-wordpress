@@ -18,6 +18,21 @@ interface CostEntry {
   timestamp: string;
 }
 
+/** Per-post cost attribution for ROI tracking */
+interface PostCostAttribution {
+  postId?: number;
+  keyword: string;
+  niche: string;
+  costs: {
+    keywordResearch: number;
+    contentGeneration: number;
+    imageGeneration: number;
+    total: number;
+  };
+  estimatedMonthlyRevenue: number;
+  estimatedPaybackDays: number;
+}
+
 /**
  * Simple in-memory cost tracker for API calls within a single batch run.
  * Logs a summary at the end of the batch.
@@ -26,6 +41,9 @@ export class CostTracker {
   private entries: CostEntry[] = [];
   private imageCount = 0;
   private static readonly IMAGE_COST_ESTIMATE = 0.04; // ~$0.04 per Gemini image
+  /** Per-post cost tracking for ROI attribution */
+  private postCosts = new Map<string, { keywordResearch: number; contentGeneration: number; imageGeneration: number }>();
+  private currentPostKey: string = '';
 
   /**
    * Record a Claude API call's token usage.
@@ -44,10 +62,37 @@ export class CostTracker {
   }
 
   /**
+   * Start tracking costs for a specific post.
+   */
+  startPostTracking(keyword: string): void {
+    this.currentPostKey = keyword;
+    if (!this.postCosts.has(keyword)) {
+      this.postCosts.set(keyword, { keywordResearch: 0, contentGeneration: 0, imageGeneration: 0 });
+    }
+  }
+
+  /**
+   * Record a Claude API call's token usage for current post phase.
+   */
+  addClaudeCallForPhase(model: string, inputTokens: number, outputTokens: number, phase: 'keywordResearch' | 'contentGeneration'): void {
+    this.addClaudeCall(model, inputTokens, outputTokens);
+    if (this.currentPostKey) {
+      const pricing = PRICING[model] || PRICING['claude-sonnet-4-6'];
+      const cost = (inputTokens / 1_000_000) * pricing.input + (outputTokens / 1_000_000) * pricing.output;
+      const postCost = this.postCosts.get(this.currentPostKey);
+      if (postCost) postCost[phase] += cost;
+    }
+  }
+
+  /**
    * Record a Gemini image generation call.
    */
   addImageCall(count: number = 1): void {
     this.imageCount += count;
+    if (this.currentPostKey) {
+      const postCost = this.postCosts.get(this.currentPostKey);
+      if (postCost) postCost.imageGeneration += count * CostTracker.IMAGE_COST_ESTIMATE;
+    }
   }
 
   /**
@@ -86,6 +131,141 @@ export class CostTracker {
     }
     logger.info(`Total Estimated Cost: $${totalCost.toFixed(4)}`);
     logger.info('========================');
+  }
+
+  /**
+   * Estimate revenue per niche based on industry RPM averages.
+   * RPM = Revenue per 1000 pageviews (AdSense industry averages for English content).
+   */
+  static readonly NICHE_RPM_ESTIMATES: Record<string, number> = {
+    'Korean Tech': 8.50,       // Tech/software RPM
+    'Korean Finance': 12.00,   // Finance RPM (highest)
+    'K-Beauty': 6.00,          // Beauty/lifestyle RPM
+    'Korea Travel': 5.50,      // Travel RPM
+    'K-Entertainment': 4.00,   // Entertainment RPM (lowest)
+  };
+
+  /**
+   * Estimate monthly revenue based on published post count and niche.
+   * Assumes average of 200 pageviews/month per post (conservative for new sites).
+   */
+  static estimateMonthlyRevenue(
+    postsByNiche: Record<string, number>,
+    avgPageviewsPerPost: number = 200,
+  ): { totalEstimate: number; byNiche: Record<string, number> } {
+    const byNiche: Record<string, number> = {};
+    let totalEstimate = 0;
+
+    for (const [niche, count] of Object.entries(postsByNiche)) {
+      const rpm = CostTracker.NICHE_RPM_ESTIMATES[niche] || 5.00;
+      const monthlyPv = count * avgPageviewsPerPost;
+      const revenue = (monthlyPv / 1000) * rpm;
+      byNiche[niche] = revenue;
+      totalEstimate += revenue;
+    }
+
+    return { totalEstimate, byNiche };
+  }
+
+  /**
+   * Log revenue estimate alongside cost summary.
+   */
+  logRevenueEstimate(postsByNiche: Record<string, number>): void {
+    const { totalEstimate, byNiche } = CostTracker.estimateMonthlyRevenue(postsByNiche);
+    const totalCost = this.getTotalCost();
+    const roi = totalCost > 0 ? ((totalEstimate - totalCost) / totalCost * 100).toFixed(0) : 'N/A';
+
+    logger.info('\n=== Revenue Estimate (Monthly) ===');
+    for (const [niche, revenue] of Object.entries(byNiche)) {
+      const rpm = CostTracker.NICHE_RPM_ESTIMATES[niche] || 5.00;
+      logger.info(`  ${niche}: $${revenue.toFixed(2)}/mo (RPM ~$${rpm.toFixed(2)})`);
+    }
+    logger.info(`Total Estimated Revenue: $${totalEstimate.toFixed(2)}/mo`);
+    logger.info(`Batch Cost: $${totalCost.toFixed(4)} | Estimated Monthly ROI: ${roi}%`);
+    logger.info('=================================');
+  }
+
+  /**
+   * Get per-post cost attribution for ROI analysis.
+   */
+  getPostCostAttribution(niche: string, avgPageviewsPerPost: number = 200): PostCostAttribution[] {
+    const results: PostCostAttribution[] = [];
+    const rpm = CostTracker.NICHE_RPM_ESTIMATES[niche] || 5.00;
+
+    for (const [keyword, costs] of this.postCosts) {
+      const totalCost = costs.keywordResearch + costs.contentGeneration + costs.imageGeneration;
+      const monthlyRevenue = (avgPageviewsPerPost / 1000) * rpm;
+      const paybackDays = monthlyRevenue > 0 ? Math.ceil((totalCost / monthlyRevenue) * 30) : 999;
+
+      results.push({
+        keyword,
+        niche,
+        costs: { ...costs, total: totalCost },
+        estimatedMonthlyRevenue: monthlyRevenue,
+        estimatedPaybackDays: paybackDays,
+      });
+    }
+    return results;
+  }
+
+  /**
+   * Log per-post ROI summary.
+   */
+  logPostRoiSummary(): void {
+    if (this.postCosts.size === 0) return;
+
+    logger.info('\n=== Per-Post ROI Attribution ===');
+    for (const [keyword, costs] of this.postCosts) {
+      const total = costs.keywordResearch + costs.contentGeneration + costs.imageGeneration;
+      logger.info(
+        `  "${keyword.slice(0, 50)}": research=$${costs.keywordResearch.toFixed(4)}, ` +
+        `content=$${costs.contentGeneration.toFixed(4)}, images=$${costs.imageGeneration.toFixed(4)} → ` +
+        `total=$${total.toFixed(4)}`,
+      );
+    }
+    logger.info('================================');
+  }
+
+  /**
+   * RPM feedback loop: adjust niche RPM estimates based on actual GA4 revenue data.
+   * Compares estimated RPM vs actual, and logs adjustment recommendations.
+   * Call after each batch with real AdSense/GA4 revenue data when available.
+   */
+  static adjustRpmFromActual(
+    actualRpmByNiche: Record<string, number>,
+  ): Record<string, { estimated: number; actual: number; adjustment: string }> {
+    const adjustments: Record<string, { estimated: number; actual: number; adjustment: string }> = {};
+
+    for (const [niche, actualRpm] of Object.entries(actualRpmByNiche)) {
+      const estimated = CostTracker.NICHE_RPM_ESTIMATES[niche];
+      if (!estimated) continue;
+
+      const diff = ((actualRpm - estimated) / estimated) * 100;
+      let adjustment: string;
+
+      if (Math.abs(diff) < 10) {
+        adjustment = 'accurate';
+      } else if (actualRpm > estimated) {
+        adjustment = `underestimated by ${diff.toFixed(0)}% — consider increasing content volume`;
+        // Update estimate towards actual (weighted moving average: 70% old + 30% new)
+        CostTracker.NICHE_RPM_ESTIMATES[niche] = estimated * 0.7 + actualRpm * 0.3;
+      } else {
+        adjustment = `overestimated by ${Math.abs(diff).toFixed(0)}% — review content quality`;
+        CostTracker.NICHE_RPM_ESTIMATES[niche] = estimated * 0.7 + actualRpm * 0.3;
+      }
+
+      adjustments[niche] = { estimated, actual: actualRpm, adjustment };
+    }
+
+    if (Object.keys(adjustments).length > 0) {
+      logger.info('\n=== RPM Feedback Loop ===');
+      for (const [niche, data] of Object.entries(adjustments)) {
+        logger.info(`  ${niche}: est $${data.estimated.toFixed(2)} vs actual $${data.actual.toFixed(2)} → ${data.adjustment}`);
+      }
+      logger.info('========================');
+    }
+
+    return adjustments;
   }
 }
 

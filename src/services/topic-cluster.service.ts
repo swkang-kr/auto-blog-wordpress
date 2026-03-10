@@ -499,4 +499,81 @@ ${cluster.pillarUrl ? `<p style="margin:12px 0 0 0;"><a href="${cluster.pillarUr
 
     return gaps;
   }
+
+  /**
+   * Competitor gap analysis: identify high-impression queries where we rank poorly.
+   * Uses GSC striking distance + top queries to find content opportunities.
+   * Returns prioritized list of topics to create or strengthen.
+   */
+  analyzeCompetitorGaps(
+    strikingDistance: Array<{ query: string; position: number; impressions: number; clicks: number; ctr: number }>,
+    topQueries: Array<{ query: string; impressions: number; clicks: number; position: number; ctr: number }>,
+    existingPosts: ExistingPost[],
+  ): Array<{ query: string; opportunity: 'create' | 'strengthen'; priority: 'high' | 'medium' | 'low'; reason: string; estimatedTraffic: number }> {
+    const gaps: Array<{ query: string; opportunity: 'create' | 'strengthen'; priority: 'high' | 'medium' | 'low'; reason: string; estimatedTraffic: number }> = [];
+    const existingKeywords = new Set(existingPosts.map(p => p.keyword?.toLowerCase()).filter(Boolean));
+    const existingTitles = existingPosts.map(p => p.title.toLowerCase());
+
+    // 1. High-impression queries where we rank 8-20 (page 1-2 border) — strengthen existing
+    for (const sd of strikingDistance) {
+      if (sd.impressions < 50) continue;
+      const queryLower = sd.query.toLowerCase();
+
+      // Check if we have a dedicated post for this query
+      const hasPost = existingKeywords.has(queryLower) ||
+        existingTitles.some(t => queryLower.split(' ').filter(w => w.length > 3).every(w => t.includes(w)));
+
+      const estimatedTraffic = Math.round(sd.impressions * 0.08); // ~8% CTR if we reach top 3
+
+      if (hasPost) {
+        gaps.push({
+          query: sd.query,
+          opportunity: 'strengthen',
+          priority: sd.position <= 10 ? 'high' : 'medium',
+          reason: `Ranking pos ${sd.position.toFixed(1)} with ${sd.impressions} imp — update content to push to top 3`,
+          estimatedTraffic,
+        });
+      } else {
+        gaps.push({
+          query: sd.query,
+          opportunity: 'create',
+          priority: sd.impressions > 200 ? 'high' : 'medium',
+          reason: `${sd.impressions} impressions but no dedicated post — create targeted content`,
+          estimatedTraffic,
+        });
+      }
+    }
+
+    // 2. Top queries with high impressions but very low CTR — title/content mismatch
+    for (const tq of topQueries) {
+      if (tq.impressions < 100 || tq.ctr > 0.03) continue;
+      const alreadyListed = gaps.some(g => g.query.toLowerCase() === tq.query.toLowerCase());
+      if (alreadyListed) continue;
+
+      gaps.push({
+        query: tq.query,
+        opportunity: 'strengthen',
+        priority: tq.impressions > 500 ? 'high' : 'medium',
+        reason: `${tq.impressions} impressions, ${(tq.ctr * 100).toFixed(1)}% CTR — likely title/meta mismatch with search intent`,
+        estimatedTraffic: Math.round(tq.impressions * 0.05),
+      });
+    }
+
+    // Sort by estimated traffic (highest first)
+    gaps.sort((a, b) => b.estimatedTraffic - a.estimatedTraffic);
+
+    // Log summary
+    if (gaps.length > 0) {
+      const createCount = gaps.filter(g => g.opportunity === 'create').length;
+      const strengthenCount = gaps.filter(g => g.opportunity === 'strengthen').length;
+      const highCount = gaps.filter(g => g.priority === 'high').length;
+      logger.info(`=== Competitor Gap Analysis ===`);
+      logger.info(`Found ${gaps.length} opportunities: ${createCount} create, ${strengthenCount} strengthen (${highCount} high priority)`);
+      for (const gap of gaps.slice(0, 8)) {
+        logger.info(`  [${gap.priority.toUpperCase()}] ${gap.opportunity}: "${gap.query}" — ${gap.reason} (~${gap.estimatedTraffic} monthly clicks)`);
+      }
+    }
+
+    return gaps.slice(0, 20);
+  }
 }

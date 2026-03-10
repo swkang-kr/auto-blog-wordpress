@@ -26,6 +26,73 @@ export async function sendSlackAlert(webhookUrl: string, message: string, severi
 }
 
 /**
+ * Send quality alert when a post has low quality score.
+ * Triggers immediate notification for manual review.
+ */
+export async function sendQualityAlert(
+  webhookUrl: string,
+  postTitle: string,
+  postUrl: string,
+  qualityScore: number,
+  minScore: number,
+  issues: string[],
+): Promise<void> {
+  if (!webhookUrl) return;
+
+  const lines = [
+    `*Quality Alert: Post Below Threshold*`,
+    `Title: "${postTitle}"`,
+    `URL: ${postUrl}`,
+    `Score: ${qualityScore}/${minScore} (minimum required)`,
+    '',
+    '*Issues:*',
+    ...issues.slice(0, 5).map(i => `  - ${i}`),
+    '',
+    '_Action: Review and improve the post, or it may be auto-reverted to draft._',
+  ];
+
+  await sendSlackAlert(webhookUrl, lines.join('\n'), 'warning');
+}
+
+/**
+ * Send content decay alert for declining posts.
+ */
+export async function sendDecayAlert(
+  webhookUrl: string,
+  decliningPages: Array<{ page: string; position: number; clicks: number; impressions: number }>,
+): Promise<void> {
+  if (!webhookUrl || decliningPages.length === 0) return;
+
+  const lines = [
+    `*Content Decay Alert: ${decliningPages.length} declining page(s)*`,
+    '',
+    ...decliningPages.slice(0, 5).map(p =>
+      `  - ${p.page} (pos ${p.position.toFixed(1)}, ${p.clicks} clicks, ${p.impressions} imp)`,
+    ),
+    '',
+    '_Run: npx tsx src/scripts/refresh-stale-posts.ts_',
+  ];
+
+  await sendSlackAlert(webhookUrl, lines.join('\n'), 'warning');
+}
+
+/**
+ * Send health check notification at batch start.
+ */
+export async function sendHealthCheck(
+  webhookUrl: string,
+  stats: { totalPosts: number; activeNiches: number; postCount: number },
+): Promise<void> {
+  if (!webhookUrl) return;
+
+  await sendSlackAlert(
+    webhookUrl,
+    `*Batch Starting* — ${stats.activeNiches} niche(s), ${stats.postCount} post(s) planned, ${stats.totalPosts} total published`,
+    'info',
+  );
+}
+
+/**
  * Send batch completion summary to Slack.
  */
 export async function sendBatchSummary(

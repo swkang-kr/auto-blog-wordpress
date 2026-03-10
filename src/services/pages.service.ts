@@ -99,6 +99,11 @@ export class PagesService {
         title: 'Disclaimer',
         content: this.buildDisclaimerPage(siteName),
       },
+      {
+        slug: 'terms-of-service',
+        title: 'Terms of Service',
+        content: this.buildTermsOfServicePage(siteName, emailDisplay),
+      },
     ];
   }
 
@@ -504,6 +509,44 @@ ${faqItems}
     if (/\bbest\b|\btop \d+\b|\branked\b|\bpicks\b/.test(lower)) return 'list';
     if (/analysis|explained|deep.dive|why |what |breakdown/.test(lower)) return 'analysis';
     return 'other';
+  }
+
+  private buildTermsOfServicePage(siteName: string, email: string): string {
+    const effectiveDate = `${new Date().toLocaleString('en-US', { month: 'long' })} ${new Date().getDate()}, ${new Date().getFullYear()}`;
+
+    return `<div style="${S.wrapper}">
+<h2 style="${S.h2}">Terms of Service</h2>
+<p style="${S.p}">Welcome to ${siteName}. By accessing or using this website, you agree to be bound by these Terms of Service. If you do not agree, please discontinue use of this site.</p>
+
+<h3 style="${S.h3}">1. Content Usage</h3>
+<p style="${S.p}">All content on ${siteName} is protected by copyright law and is owned by ${siteName} unless otherwise stated. You may share, quote, or reference our content with proper attribution including a link back to the original article. Unauthorized reproduction, distribution, or commercial use of our content is prohibited.</p>
+
+<h3 style="${S.h3}">2. AI-Assisted Content</h3>
+<p style="${S.p}">Content on ${siteName} is produced with the assistance of artificial intelligence technology and undergoes editorial review before publication. While we strive for accuracy, AI-assisted content may contain errors. We recommend verifying critical information from primary sources, particularly for financial, medical, or legal decisions.</p>
+
+<h3 style="${S.h3}">3. Affiliate Links & Advertising</h3>
+<p style="${S.p}">Some articles may contain affiliate links. When you purchase through these links, we may earn a commission at no additional cost to you. This helps support our content creation. Affiliate relationships do not influence our editorial recommendations. All affiliate links are clearly disclosed in accordance with FTC guidelines. This site also displays third-party advertisements through Google AdSense.</p>
+
+<h3 style="${S.h3}">4. Disclaimer of Warranties</h3>
+<p style="${S.p}">Content is provided "as is" without warranties of any kind. ${siteName} does not guarantee the accuracy, completeness, or timeliness of information. Content about Korean stocks, investments, or financial products does not constitute financial advice. Always consult qualified professionals before making investment or medical decisions.</p>
+
+<h3 style="${S.h3}">5. User Conduct</h3>
+<p style="${S.p}">You agree not to: (a) use this site for any unlawful purpose; (b) attempt to interfere with site operations; (c) scrape or reproduce content without permission; (d) post spam or misleading comments.</p>
+
+<h3 style="${S.h3}">6. Limitation of Liability</h3>
+<p style="${S.p}">${siteName} and its contributors shall not be liable for any damages arising from the use of or inability to use this site or its content, including but not limited to direct, indirect, incidental, or consequential damages.</p>
+
+<h3 style="${S.h3}">7. External Links</h3>
+<p style="${S.p}">This site may contain links to third-party websites. ${siteName} is not responsible for the content, policies, or practices of external websites.</p>
+
+<h3 style="${S.h3}">8. Changes to Terms</h3>
+<p style="${S.p}">We reserve the right to update these Terms at any time. Continued use of the site after changes constitutes acceptance of the updated terms.</p>
+
+<h3 style="${S.h3}">9. Contact</h3>
+<p style="${S.p}">For questions about these Terms of Service, please contact us at: <a href="mailto:${email}" style="color:#0066FF; text-decoration:none;">${email}</a></p>
+
+<p style="${S.footer}">Effective date: ${effectiveDate}</p>
+</div>`;
   }
 
   private escapeHtml(text: string): string {

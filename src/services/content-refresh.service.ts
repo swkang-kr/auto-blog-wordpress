@@ -739,4 +739,503 @@ Return pure JSON only. No markdown.`;
       return null;
     }
   }
+
+  /**
+   * Partial content refresh: update only data tables, prices, and year references
+   * WITHOUT rewriting the entire article. Much cheaper (smaller Claude call) and
+   * preserves the original writing voice. Ideal for evergreen posts with stale data.
+   * Returns number of posts partially refreshed.
+   */
+  async partialRefreshDataSections(
+    freshnessData: Array<PostHistoryEntry & { freshnessScore: number }>,
+    seoService?: SeoService,
+    limit: number = 3,
+  ): Promise<number> {
+    const currentYear = new Date().getFullYear();
+    const previousYear = currentYear - 1;
+    const monthYear = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+    // Target: posts with freshnessScore 20-60 (stale but not bad enough for full rewrite)
+    const candidates = freshnessData
+      .filter(entry => entry.freshnessScore >= 20 && entry.freshnessScore < 60 && entry.postUrl)
+      .sort((a, b) => a.freshnessScore - b.freshnessScore)
+      .slice(0, limit);
+
+    if (candidates.length === 0) {
+      logger.info('Partial refresh: No candidates in 20-60 freshness range');
+      return 0;
+    }
+
+    logger.info(`Partial refresh: ${candidates.length} candidate(s) for data section update`);
+    let refreshedCount = 0;
+    const refreshedUrls: string[] = [];
+
+    for (const entry of candidates) {
+      const slug = new URL(entry.postUrl).pathname.replace(/^\/|\/$/g, '');
+      if (!slug) continue;
+
+      try {
+        const { data: posts } = await this.api.get('/posts', {
+          params: { slug, status: 'publish', _fields: 'id,title,slug,content,link,date,meta' },
+        });
+        const post = (posts as WPPost[])[0];
+        if (!post) continue;
+
+        const content = post.content.rendered;
+
+        // Detect what needs updating
+        const hasTables = /<table[\s>]/i.test(content);
+        const hasOldYear = content.includes(String(previousYear));
+        const hasPrices = /\$[\d,]+|\₩[\d,]+|KRW\s*[\d,]+|USD\s*[\d,]+/i.test(content);
+
+        if (!hasTables && !hasOldYear && !hasPrices) {
+          logger.debug(`Partial refresh: "${post.title.rendered}" has no updatable sections, skipping`);
+          continue;
+        }
+
+        // Extract only the sections needing update (tables + surrounding context)
+        const sectionsToUpdate: string[] = [];
+        if (hasTables) {
+          const tableMatches = content.match(/<table[\s\S]*?<\/table>/gi) || [];
+          sectionsToUpdate.push(...tableMatches.map(t => t.slice(0, 2000)));
+        }
+        if (hasOldYear) sectionsToUpdate.push(`Contains references to ${previousYear} that need updating to ${currentYear}`);
+        if (hasPrices) sectionsToUpdate.push('Contains price/cost data that may be outdated');
+
+        const focusKeyword = post.meta?.rank_math_focus_keyword || '';
+
+        const prompt = `You are updating SPECIFIC DATA SECTIONS of a blog post — NOT rewriting the entire article.
+The post is about: "${post.title.rendered}"${focusKeyword ? ` (keyword: "${focusKeyword}")` : ''}
+
+SECTIONS NEEDING UPDATE:
+${sectionsToUpdate.join('\n---\n')}
+
+RULES:
+1. Update year references from ${previousYear} to ${currentYear}
+2. Update any price/cost data to reflect ${currentYear} estimates (add 2-5% inflation adjustment if exact data unknown)
+3. If tables exist, regenerate them with current ${currentYear} data and add any missing entries
+4. Keep ALL existing HTML structure and CSS classes identical
+5. Do NOT rewrite prose sections — only update factual data points
+6. If a statistic mentions a specific source, keep the source reference
+
+Return JSON: {
+  "yearReplacements": [{"old": "text with ${previousYear}", "new": "text with ${currentYear}"}],
+  "tableReplacements": [{"old": "old table HTML (first 100 chars for matching)", "new": "updated table HTML"}],
+  "priceReplacements": [{"old": "old price text", "new": "updated price text"}],
+  "whatChanged": ["bullet point 1", "bullet point 2"]
+}
+Return pure JSON only.`;
+
+        const response = await this.claude.messages.create({
+          model: this.model,
+          max_tokens: 4000,
+          temperature: 0.3,
+          messages: [{ role: 'user', content: prompt }],
+        });
+
+        costTracker.addClaudeCall(this.model, response.usage?.input_tokens || 0, response.usage?.output_tokens || 0);
+
+        const text = response.content[0].type === 'text' ? response.content[0].text : '';
+        const jsonMatch = text.match(/\{[\s\S]*\}/);
+        if (!jsonMatch) continue;
+
+        const { jsonrepair } = await import('jsonrepair');
+        const updates = JSON.parse(jsonrepair(jsonMatch[0])) as {
+          yearReplacements?: Array<{ old: string; new: string }>;
+          tableReplacements?: Array<{ old: string; new: string }>;
+          priceReplacements?: Array<{ old: string; new: string }>;
+          whatChanged?: string[];
+        };
+
+        let updatedContent = content;
+        let changeCount = 0;
+
+        // Apply year replacements
+        if (updates.yearReplacements) {
+          for (const r of updates.yearReplacements) {
+            if (updatedContent.includes(r.old)) {
+              updatedContent = updatedContent.replace(r.old, r.new);
+              changeCount++;
+            }
+          }
+        }
+
+        // Apply simple year swap as fallback
+        if (hasOldYear && changeCount === 0) {
+          updatedContent = updatedContent.replace(new RegExp(String(previousYear), 'g'), String(currentYear));
+          changeCount++;
+        }
+
+        // Apply table replacements (match by first 100 chars)
+        if (updates.tableReplacements) {
+          for (const r of updates.tableReplacements) {
+            const matchKey = r.old.slice(0, 100);
+            const tableIdx = updatedContent.indexOf(matchKey);
+            if (tableIdx !== -1) {
+              const tableEnd = updatedContent.indexOf('</table>', tableIdx);
+              if (tableEnd !== -1) {
+                updatedContent = updatedContent.slice(0, tableIdx) + r.new + updatedContent.slice(tableEnd + '</table>'.length);
+                changeCount++;
+              }
+            }
+          }
+        }
+
+        // Apply price replacements
+        if (updates.priceReplacements) {
+          for (const r of updates.priceReplacements) {
+            if (updatedContent.includes(r.old)) {
+              updatedContent = updatedContent.replace(r.old, r.new);
+              changeCount++;
+            }
+          }
+        }
+
+        if (changeCount === 0) {
+          logger.debug(`Partial refresh: No applicable changes for "${post.title.rendered}"`);
+          continue;
+        }
+
+        // Update "What Changed" section if present, or add one
+        const whatChangedBullets = (updates.whatChanged || [`Updated data and statistics for ${currentYear}`])
+          .map(b => `<li>${b}</li>`).join('\n');
+        const whatChangedHtml = `<div class="ab-what-changed" style="margin:0 0 24px 0; padding:16px 20px; background:#f0fff4; border:1px solid #c6f6d5; border-radius:8px; font-size:14px; color:#555; line-height:1.6;">` +
+          `<strong>What Changed in This Update (${monthYear}):</strong>` +
+          `<ul style="margin:8px 0 0 0; padding-left:20px;">${whatChangedBullets}</ul></div>`;
+
+        // Replace existing what-changed or insert after Last Updated banner
+        if (updatedContent.includes('ab-what-changed')) {
+          updatedContent = updatedContent.replace(
+            /<div class="ab-what-changed"[\s\S]*?<\/div>/i,
+            whatChangedHtml,
+          );
+        } else {
+          const lastUpdatedEnd = updatedContent.indexOf('</div>', updatedContent.indexOf('Last Updated:'));
+          if (lastUpdatedEnd !== -1) {
+            const insertPos = lastUpdatedEnd + '</div>'.length;
+            updatedContent = updatedContent.slice(0, insertPos) + '\n' + whatChangedHtml + '\n' + updatedContent.slice(insertPos);
+          }
+        }
+
+        // Update Last Updated date
+        const dateFormatted = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+        updatedContent = updatedContent.replace(
+          /(<strong>Last Updated:<\/strong>\s*)[\w\s,]+/,
+          `$1${dateFormatted}`,
+        );
+
+        const nowIso = new Date().toISOString();
+        await this.api.post(`/posts/${post.id}`, {
+          content: updatedContent,
+          meta: {
+            _last_updated: nowIso,
+            _autoblog_modified_time: nowIso,
+            _rewrite_reason: `Partial refresh: ${changeCount} data section(s) updated for ${currentYear}`,
+          },
+        });
+
+        refreshedCount++;
+        refreshedUrls.push(post.link);
+        logger.info(`Partial refresh: ${changeCount} section(s) updated in "${post.title.rendered}"`);
+        await new Promise(r => setTimeout(r, 1500));
+      } catch (error) {
+        logger.warn(`Partial refresh failed for "${slug}": ${error instanceof Error ? error.message : error}`);
+      }
+    }
+
+    if (seoService && refreshedUrls.length > 0) {
+      try {
+        await seoService.notifyIndexNow(refreshedUrls);
+        logger.info(`Partial refresh: Submitted ${refreshedUrls.length} URL(s) for re-indexing`);
+      } catch (error) {
+        logger.warn(`Partial refresh re-indexing failed: ${error instanceof Error ? error.message : error}`);
+      }
+    }
+
+    return refreshedCount;
+  }
+
+  /**
+   * Content lifecycle: noindex stale time-sensitive content.
+   * Marks old news-explainer posts (>6 months) as noindex to protect crawl budget.
+   * Returns number of posts noindexed.
+   */
+  async noindexStaleContent(
+    historyEntries: Array<PostHistoryEntry>,
+    maxAge: number = 180, // days
+  ): Promise<number> {
+    const now = Date.now();
+    const stalePosts = historyEntries.filter(entry => {
+      if (!entry.contentType || !entry.publishedAt) return false;
+      const freshClass = CONTENT_FRESHNESS_MAP[entry.contentType];
+      if (freshClass !== 'time-sensitive') return false;
+      const ageMs = now - new Date(entry.publishedAt).getTime();
+      const ageDays = ageMs / (24 * 60 * 60 * 1000);
+      return ageDays > maxAge;
+    });
+
+    if (stalePosts.length === 0) return 0;
+
+    let noindexed = 0;
+    for (const post of stalePosts.slice(0, 5)) {
+      if (!post.postId) continue;
+      try {
+        // Set noindex via Rank Math meta or WordPress post meta
+        await this.api.post(`/posts/${post.postId}`, {
+          meta: {
+            rank_math_robots: 'noindex',
+            _autoblog_noindexed: 'true',
+            _autoblog_noindex_reason: `Stale time-sensitive content (published ${post.publishedAt})`,
+          },
+        });
+        noindexed++;
+        logger.info(`Noindexed stale post: "${post.keyword}" (ID ${post.postId}, published ${post.publishedAt})`);
+      } catch (error) {
+        logger.debug(`Failed to noindex post ${post.postId}: ${error instanceof Error ? error.message : error}`);
+      }
+    }
+
+    if (noindexed > 0) {
+      logger.info(`Content lifecycle: Noindexed ${noindexed} stale time-sensitive post(s) (>${maxAge} days old)`);
+    }
+    return noindexed;
+  }
+
+  /**
+   * Content lifecycle: detect posts that should be merged.
+   * Finds pairs of posts with high keyword overlap that compete with each other.
+   * Returns merge candidates for manual review (doesn't auto-merge).
+   */
+  static detectMergeCandidates(
+    historyEntries: Array<PostHistoryEntry>,
+  ): Array<{ postA: PostHistoryEntry; postB: PostHistoryEntry; similarity: number; recommendation: string }> {
+    const candidates: Array<{ postA: PostHistoryEntry; postB: PostHistoryEntry; similarity: number; recommendation: string }> = [];
+
+    for (let i = 0; i < historyEntries.length; i++) {
+      for (let j = i + 1; j < historyEntries.length; j++) {
+        const a = historyEntries[i];
+        const b = historyEntries[j];
+        if (!a.keyword || !b.keyword) continue;
+        if (a.niche !== b.niche) continue;
+
+        // Word-level similarity
+        const wordsA = new Set(a.keyword.toLowerCase().split(/\s+/).filter(w => w.length > 3));
+        const wordsB = new Set(b.keyword.toLowerCase().split(/\s+/).filter(w => w.length > 3));
+        if (wordsA.size === 0 || wordsB.size === 0) continue;
+
+        const intersection = [...wordsA].filter(w => wordsB.has(w)).length;
+        const union = new Set([...wordsA, ...wordsB]).size;
+        const similarity = union > 0 ? intersection / union : 0;
+
+        if (similarity >= 0.6) {
+          // Determine which post is weaker (lower engagement or older)
+          const aScore = a.engagementScore ?? 0;
+          const bScore = b.engagementScore ?? 0;
+          const stronger = aScore >= bScore ? a : b;
+          const weaker = aScore >= bScore ? b : a;
+
+          candidates.push({
+            postA: stronger,
+            postB: weaker,
+            similarity,
+            recommendation: `Merge "${weaker.keyword}" into "${stronger.keyword}" (${(similarity * 100).toFixed(0)}% overlap). ` +
+              `Redirect ${weaker.postUrl} → ${stronger.postUrl}`,
+          });
+        }
+      }
+    }
+
+    candidates.sort((a, b) => b.similarity - a.similarity);
+
+    if (candidates.length > 0) {
+      logger.info(`=== Content Merge Candidates: ${candidates.length} pair(s) ===`);
+      for (const c of candidates.slice(0, 5)) {
+        logger.info(`  [${(c.similarity * 100).toFixed(0)}%] ${c.recommendation}`);
+      }
+    }
+
+    return candidates.slice(0, 10);
+  }
+
+  /**
+   * Content Pruning: auto-archive (draft + noindex) posts with near-zero engagement.
+   * Criteria:
+   *   - Published > 6 months ago
+   *   - Time-sensitive content type (news-explainer) older than 6 months
+   *   - Engagement score < 5 (near-zero pageviews, high bounce, low time-on-page)
+   *   - No GSC impressions (no organic search value)
+   *
+   * Pruning improves crawl budget allocation and prevents thin/stale content
+   * from diluting site quality signals (Google HCU).
+   *
+   * @param maxPrune Maximum posts to prune per batch (safety limit)
+   * @returns Number of pruned posts
+   */
+  async pruneStaleContent(
+    historyEntries: PostHistoryEntry[],
+    ga4Service?: GA4AnalyticsService,
+    gscService?: GSCAnalyticsService,
+    maxPrune: number = 3,
+  ): Promise<number> {
+    const SIX_MONTHS_MS = 180 * 24 * 60 * 60 * 1000;
+    const now = Date.now();
+    let prunedCount = 0;
+
+    // 1. Find old time-sensitive posts with low engagement
+    const candidates = historyEntries.filter(entry => {
+      if (!entry.publishedAt || !entry.postId) return false;
+      const age = now - new Date(entry.publishedAt).getTime();
+      if (age < SIX_MONTHS_MS) return false;
+
+      // Time-sensitive content (news-explainer) is the primary prune target
+      const isTimeSensitive = entry.contentType === 'news-explainer';
+      // Very low engagement score
+      const isLowEngagement = (entry.engagementScore ?? 0) < 5;
+      // No ranking history or last position is very bad
+      const isNoRanking = !entry.lastPosition || entry.lastPosition > 50;
+
+      return (isTimeSensitive && isLowEngagement) || (isLowEngagement && isNoRanking);
+    });
+
+    if (candidates.length === 0) {
+      logger.debug('Content pruning: no stale posts to archive');
+      return 0;
+    }
+
+    // 2. Verify with GSC — skip posts that still get impressions
+    let impressionMap = new Map<string, number>();
+    if (gscService) {
+      try {
+        const pages = await gscService.getPagePerformance(200);
+        for (const p of pages) {
+          impressionMap.set(p.page, p.impressions);
+        }
+      } catch {
+        logger.debug('Content pruning: GSC data unavailable, using history data only');
+      }
+    }
+
+    // 3. Sort by lowest engagement first
+    const sortedCandidates = candidates
+      .filter(entry => {
+        // Skip if post still gets GSC impressions
+        if (entry.postUrl && impressionMap.size > 0) {
+          const impressions = impressionMap.get(entry.postUrl) ?? 0;
+          if (impressions > 10) return false; // Still has search value
+        }
+        return true;
+      })
+      .sort((a, b) => (a.engagementScore ?? 0) - (b.engagementScore ?? 0))
+      .slice(0, maxPrune);
+
+    if (sortedCandidates.length === 0) {
+      logger.debug('Content pruning: all candidates still have search impressions, skipping');
+      return 0;
+    }
+
+    logger.info(`=== Content Pruning: ${sortedCandidates.length} post(s) to archive ===`);
+
+    for (const entry of sortedCandidates) {
+      try {
+        // Set to draft (unpublish)
+        await this.api.post(`/posts/${entry.postId}`, {
+          status: 'draft',
+          meta: {
+            rank_math_robots: 'noindex',
+            _autoblog_pruned: new Date().toISOString(),
+            _autoblog_prune_reason: `Low engagement (score: ${entry.engagementScore ?? 0}), ` +
+              `age: ${Math.round((now - new Date(entry.publishedAt!).getTime()) / (24 * 60 * 60 * 1000))}d, ` +
+              `type: ${entry.contentType || 'unknown'}`,
+          },
+        });
+
+        logger.info(
+          `Pruned: "${entry.keyword}" (ID=${entry.postId}, engagement=${entry.engagementScore ?? 0}, ` +
+          `type=${entry.contentType || 'unknown'}, age=${Math.round((now - new Date(entry.publishedAt!).getTime()) / (24 * 60 * 60 * 1000))}d)`,
+        );
+        prunedCount++;
+      } catch (error) {
+        logger.warn(`Failed to prune post ID=${entry.postId}: ${error instanceof Error ? error.message : error}`);
+      }
+    }
+
+    if (prunedCount > 0) {
+      logger.info(`Content pruning complete: ${prunedCount} post(s) archived (set to draft + noindex)`);
+    }
+
+    return prunedCount;
+  }
+
+  /**
+   * Periodic broken external link checker.
+   * Scans published posts for external links and HEAD-checks them.
+   * Removes broken links (keeps anchor text) and logs results.
+   * Run weekly to prevent 404 link accumulation.
+   */
+  async checkBrokenExternalLinks(limit: number = 30): Promise<{ checked: number; broken: number; fixed: number }> {
+    let checked = 0;
+    let broken = 0;
+    let fixed = 0;
+
+    try {
+      const { data: posts } = await this.api.get('/posts', {
+        params: { per_page: limit, status: 'publish', _fields: 'id,content,title', orderby: 'modified', order: 'asc' },
+      });
+
+      if (!Array.isArray(posts) || posts.length === 0) {
+        logger.info('Broken link check: no posts to scan');
+        return { checked: 0, broken: 0, fixed: 0 };
+      }
+
+      for (const post of posts as Array<{ id: number; content: { rendered: string }; title: { rendered: string } }>) {
+        const content = post.content?.rendered || '';
+        const extLinkRegex = /<a\s+[^>]*href="(https?:\/\/[^"]+)"[^>]*target="_blank"[^>]*>(.*?)<\/a>/gi;
+        const links: Array<{ full: string; url: string; text: string }> = [];
+        let match;
+        while ((match = extLinkRegex.exec(content)) !== null) {
+          links.push({ full: match[0], url: match[1], text: match[2] });
+        }
+
+        if (links.length === 0) continue;
+
+        let updatedContent = content;
+        let postFixed = false;
+
+        for (const link of links) {
+          checked++;
+          try {
+            await axios.head(link.url, { timeout: 5000, maxRedirects: 3 });
+          } catch (err) {
+            if (axios.isAxiosError(err) && err.response && err.response.status >= 400) {
+              // Confirmed broken — remove link, keep text
+              updatedContent = updatedContent.replace(link.full, link.text);
+              broken++;
+              postFixed = true;
+              logger.warn(`Broken link removed from "${post.title.rendered.slice(0, 40)}...": ${link.url} (${err.response.status})`);
+            }
+            // Timeout/network errors = likely valid, skip
+          }
+        }
+
+        if (postFixed) {
+          try {
+            await this.api.post(`/posts/${post.id}`, { content: updatedContent });
+            fixed++;
+          } catch {
+            logger.warn(`Failed to update post ${post.id} after broken link removal`);
+          }
+        }
+      }
+    } catch (error) {
+      logger.warn(`Broken link check failed: ${error instanceof Error ? error.message : error}`);
+    }
+
+    if (broken > 0) {
+      logger.info(`Broken link check: scanned ${checked} links, found ${broken} broken, fixed ${fixed} post(s)`);
+    } else {
+      logger.info(`Broken link check: scanned ${checked} links, all healthy`);
+    }
+
+    return { checked, broken, fixed };
+  }
 }

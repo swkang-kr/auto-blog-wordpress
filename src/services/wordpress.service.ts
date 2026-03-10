@@ -4,7 +4,8 @@ import { join, dirname } from 'path';
 import { logger } from '../utils/logger.js';
 import { WordPressError } from '../types/errors.js';
 import type { BlogContent, PublishedPost, MediaUploadResult, ExistingPost, AuthorProfile } from '../types/index.js';
-import { NICHE_AUTHOR_PROFILES, NICHE_DISCLAIMERS } from '../types/index.js';
+import { NICHE_AUTHOR_PROFILES, NICHE_DISCLAIMERS, CONTENT_FRESHNESS_MAP } from '../types/index.js';
+import type { ContentType } from '../types/index.js';
 
 const POSTS_CACHE_FILE = join(dirname(new URL(import.meta.url).pathname), '../../.cache/posts-cache.json');
 const POSTS_CACHE_TTL_MS = 1 * 60 * 60 * 1000; // 1 hour
@@ -184,7 +185,8 @@ export class WordPressService {
         // Include width/height attributes to prevent CLS (Cumulative Layout Shift)
         // WordPress's wp_filter_content_tags() auto-adds srcset from attachment metadata
         const srcUrl = inlineImages[i].url;
-        const titleAttr = `title="${altText}"`;
+        const tooltipTitle = `Image ${i + 1}: ${this.escapeHtml(baseCaption.slice(0, 60))}`;
+        const titleAttr = `title="${tooltipTitle}"`;
         const figureHtml =
           `<figure style="margin:30px 0; text-align:center;">` +
           `<img src="${srcUrl}" alt="${altText}" ${titleAttr} width="1200" height="675" sizes="(max-width: 768px) 100vw, 760px" loading="${loadingAttr}"${fetchPriority} decoding="async" style="max-width:100%; width:100%; height:auto; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1); aspect-ratio:16/9; object-fit:cover;" />` +
@@ -326,12 +328,12 @@ export class WordPressService {
           continue;
         }
 
-        // Strip fabricated deep paths (5+ segments) but allow up to 4 segment paths for E-E-A-T
-        // e.g., bloomberg.com/markets/asia/ is OK, deep fabricated article paths are trimmed
+        // Strip fabricated deep paths (7+ segments) but allow up to 6 segment paths for E-E-A-T
+        // e.g., reuters.com/markets/asia/technology/article-slug/ is OK, deep fabricated paths are trimmed
         const pathSegments = parsed.pathname.split('/').filter(Boolean);
-        if (pathSegments.length > 4) {
-          // Keep up to 4 segments for specific article/data page links
-          const safePath = '/' + pathSegments.slice(0, 4).join('/') + '/';
+        if (pathSegments.length > 6) {
+          // Keep up to 6 segments for specific article/data page links
+          const safePath = '/' + pathSegments.slice(0, 6).join('/') + '/';
           const safeUrl = parsed.origin + safePath;
           const fixedLink = link.full.replace(link.url, safeUrl);
           logger.warn(`Deep path trimmed: ${link.url} → ${safeUrl}`);
@@ -560,28 +562,54 @@ html{scroll-behavior:smooth;scroll-padding-top:60px}
   }
 
   /**
-   * Build Related Posts HTML section as card grid from existing posts in same category.
+   * Cross-niche relationship map for discovering relevant content across categories.
+   * Key = category, Values = related categories that share audience overlap.
+   */
+  private static readonly CROSS_NICHE_MAP: Record<string, string[]> = {
+    'Korean Tech': ['Korean Finance', 'K-Entertainment'],
+    'Korean Finance': ['Korean Tech', 'Korea Travel'],
+    'K-Beauty': ['Korea Travel', 'K-Entertainment'],
+    'Korea Travel': ['K-Beauty', 'K-Entertainment', 'Korean Finance'],
+    'K-Entertainment': ['K-Beauty', 'Korea Travel', 'Korean Tech'],
+  };
+
+  /**
+   * Build Related Posts HTML section as card grid.
+   * Shows 3 same-category + 1 cross-niche post for internal link diversity.
    */
   private buildRelatedPostsHtml(
     existingPosts: ExistingPost[],
     currentCategory: string,
     currentTitle: string,
   ): string {
-    const related = existingPosts
+    const sameCat = existingPosts
       .filter(p =>
         p.category.toLowerCase() === currentCategory.toLowerCase() &&
         p.title !== currentTitle,
       )
-      .slice(0, 4); // 4 cards for 2x2 grid
+      .slice(0, 3);
 
+    // Cross-niche: pick 1 post from a related category for link diversity
+    const crossNicheCategories = WordPressService.CROSS_NICHE_MAP[currentCategory] || [];
+    const crossNichePost = crossNicheCategories.length > 0
+      ? existingPosts.find(p =>
+          crossNicheCategories.some(c => p.category.toLowerCase() === c.toLowerCase()) &&
+          p.title !== currentTitle &&
+          !sameCat.some(s => s.url === p.url),
+        )
+      : undefined;
+
+    const related = crossNichePost ? [...sameCat, crossNichePost] : sameCat.slice(0, 4);
     if (related.length === 0) return '';
 
     const cards = related
       .map(p => {
         const shortTitle = p.title.length > 60 ? p.title.slice(0, 57) + '...' : p.title;
         const categoryLabel = this.escapeHtml(p.category);
+        const isCrossNiche = p.category.toLowerCase() !== currentCategory.toLowerCase();
+        const badge = isCrossNiche ? '<span style="display:inline-block;padding:1px 6px;background:#e8f5e9;color:#2e7d32;border-radius:4px;font-size:10px;margin-left:4px;">Related</span>' : '';
         return `<a href="${p.url}" class="ab-related-card">
-<p style="margin:0 0 6px 0; font-size:11px; font-weight:600; color:#0066FF; text-transform:uppercase; letter-spacing:0.5px;">${categoryLabel}</p>
+<p style="margin:0 0 6px 0; font-size:11px; font-weight:600; color:#0066FF; text-transform:uppercase; letter-spacing:0.5px;">${categoryLabel}${badge}</p>
 <p style="margin:0; font-size:15px; font-weight:600; color:#222; line-height:1.4;">${this.escapeHtml(shortTitle)}</p></a>`;
       })
       .join('\n');
@@ -674,11 +702,32 @@ html{scroll-behavior:smooth;scroll-padding-top:60px}
   /**
    * Build follow/explore CTA section (honest about what's available).
    */
-  private buildNewsletterCtaHtml(category: string): string {
+  private buildNewsletterCtaHtml(category: string, newsletterFormUrl?: string): string {
+    const safeCategory = this.escapeHtml(category);
+    const categorySlug = category.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
+    // If newsletter form URL is configured, show email capture form
+    if (newsletterFormUrl) {
+      const leadMagnet = WordPressService.NICHE_LEAD_MAGNETS[category];
+      const leadMagnetHtml = leadMagnet
+        ? `<p style="margin:0 0 12px 0; padding:8px 14px; background:rgba(255,255,255,0.15); border-radius:6px; font-size:13px; color:rgba(255,255,255,0.95); line-height:1.5;"><strong>${this.escapeHtml(leadMagnet.title)}</strong> — ${this.escapeHtml(leadMagnet.description)}</p>`
+        : '';
+      return `<div class="ab-cta ab-cta-newsletter">
+<p style="margin:0 0 8px 0; font-size:20px; font-weight:700;">Get ${safeCategory} Insights Weekly</p>
+${leadMagnetHtml}<p style="margin:0 0 14px 0; font-size:14px; color:rgba(255,255,255,0.85); line-height:1.5;">Join readers who get our latest Korea analysis delivered to their inbox. No spam, unsubscribe anytime.</p>
+<form action="${this.escapeHtml(newsletterFormUrl)}" method="POST" target="_blank" rel="noopener noreferrer" style="display:flex; flex-wrap:wrap; justify-content:center; gap:8px;">
+<input type="email" name="email" placeholder="your@email.com" required style="padding:10px 16px; border:none; border-radius:6px; font-size:15px; width:60%; max-width:280px;">
+<input type="hidden" name="source" value="${safeCategory}">
+<button type="submit" style="padding:10px 24px; background:#fff; color:#0066FF; border:none; border-radius:6px; font-weight:700; font-size:15px; cursor:pointer;">Subscribe Free</button>
+</form>
+<p style="margin:8px 0 0 0; font-size:11px; color:rgba(255,255,255,0.5);">We respect your privacy. Unsubscribe at any time.</p></div>`;
+    }
+
+    // Fallback: browse category CTA
     return `<div class="ab-cta ab-cta-newsletter">
-<p style="margin:0 0 8px 0; font-size:20px; font-weight:700;">Explore More ${this.escapeHtml(category)} Insights</p>
+<p style="margin:0 0 8px 0; font-size:20px; font-weight:700;">Explore More ${safeCategory} Insights</p>
 <p style="margin:0 0 16px 0; font-size:14px; color:rgba(255,255,255,0.85); line-height:1.5;">We publish in-depth analysis on Korean trends, markets, and culture every week. Bookmark this site or follow us on social media to stay updated.</p>
-<a href="${this.wpUrl}/category/${category.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}/" style="display:inline-block; padding:12px 32px; background:#fff; color:#0066FF; font-weight:700; font-size:15px; border-radius:8px; text-decoration:none;">Browse All ${this.escapeHtml(category)} Posts</a>
+<a href="${this.wpUrl}/category/${categorySlug}/" style="display:inline-block; padding:12px 32px; background:#fff; color:#0066FF; font-weight:700; font-size:15px; border-radius:8px; text-decoration:none;">Browse All ${safeCategory} Posts</a>
 <p style="margin:10px 0 0 0; font-size:12px; color:rgba(255,255,255,0.6);">New articles published weekly.</p></div>`;
   }
 
@@ -713,6 +762,11 @@ html{scroll-behavior:smooth;scroll-padding-top:60px}
         (kw) => `Have you experienced ${kw} firsthand? What tips would you give first-timers?`,
         (kw) => `What surprised you most about ${kw}? Share your travel stories below!`,
         (kw) => `Planning to explore ${kw}? What questions do you have? Our community can help.`,
+      ],
+      'K-Beauty': [
+        (kw) => `What's your skin type, and has ${kw} worked for you? Drop your mini-review below — it helps other readers!`,
+        (kw) => `How does ${kw} fit into your current skincare routine? Share your experience in the comments.`,
+        (kw) => `Have you compared ${kw} with Western alternatives? We'd love to hear which you prefer and why.`,
       ],
       'Korean Language': [
         (kw) => `How's your progress with ${kw}? What study methods work best for you?`,
@@ -1059,7 +1113,7 @@ ${ga4TrackingScript}`;
       options?.keyword || content.title,
       content.category,
     );
-    const newsletterCta = this.buildNewsletterCtaHtml(content.category);
+    const newsletterCta = this.buildNewsletterCtaHtml(content.category, options?.newsletterFormUrl);
 
     if (h2Positions.length >= 4) {
       // Insert engagement CTA after ~75% of H2 sections, newsletter after ~40%
@@ -1097,6 +1151,15 @@ ${ga4TrackingScript}`;
       }
     }
 
+    // Inject AI content transparency label (FTC/EU AI Act compliance)
+    const aiDisclosure = `<div class="ab-ai-disclosure" style="margin:0 0 16px 0; padding:10px 16px; background:#f8f9fa; border:1px solid #e5e7eb; border-radius:8px; font-size:11px; color:#888; line-height:1.5;"><strong>Transparency:</strong> This article was created with AI assistance and editorially reviewed. Sources include Korean-language primary data. <a href="/disclaimer/" style="color:#0066FF;">Learn more</a>.</div>`;
+    // Insert after the Last Updated banner
+    const aiDisclosureInsertIdx = htmlEn.indexOf('</div>', htmlEn.indexOf('Last Updated:'));
+    if (aiDisclosureInsertIdx !== -1) {
+      const aiInsertPos = aiDisclosureInsertIdx + '</div>'.length;
+      htmlEn = htmlEn.slice(0, aiInsertPos) + '\n' + aiDisclosure + '\n' + htmlEn.slice(aiInsertPos);
+    }
+
     // Inject AdSense manual ad placements (niche-aware density: RPM tier drives max ads and word gap)
     htmlEn = this.injectAdPlacements(htmlEn, content.category);
 
@@ -1120,6 +1183,11 @@ ${ga4TrackingScript}`;
     const mergedAffiliateMap = this.getMergedAffiliateMap(options?.affiliateMap || {}, content.category);
     if (Object.keys(mergedAffiliateMap).length > 0) {
       htmlEn = this.injectAffiliateLinks(htmlEn, mergedAffiliateMap);
+    }
+
+    // Inject inline internal links (anchor text in body paragraphs)
+    if (options?.existingPosts && options.existingPosts.length > 0) {
+      htmlEn = this.injectInlineInternalLinks(htmlEn, options.existingPosts, content.title);
     }
 
     // Deduplicate internal links (same URL should only appear once)
@@ -1315,6 +1383,97 @@ ${ga4TrackingScript}`;
       }
     }
 
+    // NewsArticle schema (news-explainer content type — enables Google News rich results)
+    if (options?.contentType === 'news-explainer') {
+      jsonLdSchemas.push({
+        '@context': 'https://schema.org',
+        '@type': 'NewsArticle',
+        headline: content.title,
+        description: validatedExcerpt,
+        datePublished: nowIso,
+        dateModified: nowIso,
+        articleSection: content.category,
+        inLanguage: 'en',
+        ...(options?.featuredImageUrl ? {
+          image: {
+            '@type': 'ImageObject',
+            url: options.featuredImageUrl,
+            width: 1200,
+            height: 675,
+          },
+        } : {}),
+        ...(this.siteOwner ? {
+          author: { '@type': 'Person', name: this.siteOwner, url: `${this.wpUrl}/about/` },
+        } : {}),
+        publisher: {
+          '@type': 'Organization',
+          name: this.siteOwner || 'TrendHunt',
+          url: this.wpUrl,
+        },
+      });
+      logger.debug('NewsArticle schema prepared for news-explainer content');
+    }
+
+    // VideoObject schema (auto-detected from YouTube embeds in content)
+    const ytEmbeds = [...htmlEn.matchAll(/<iframe[^>]*src="https?:\/\/(?:www\.)?youtube\.com\/embed\/([^"?]+)[^"]*"[^>]*>/gi)];
+    for (const ytMatch of ytEmbeds.slice(0, 3)) {
+      const videoId = ytMatch[1];
+      jsonLdSchemas.push({
+        '@context': 'https://schema.org',
+        '@type': 'VideoObject',
+        name: content.title,
+        description: validatedExcerpt,
+        thumbnailUrl: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+        uploadDate: nowIso,
+        embedUrl: `https://www.youtube.com/embed/${videoId}`,
+        contentUrl: `https://www.youtube.com/watch?v=${videoId}`,
+      });
+    }
+    if (ytEmbeds.length > 0) {
+      logger.debug(`VideoObject schema: ${Math.min(ytEmbeds.length, 3)} YouTube embed(s) detected`);
+    }
+
+    // Product schema for K-Beauty best-x-for-y content (rich results for product searches)
+    if ((options?.contentType === 'best-x-for-y' || options?.contentType === 'product-review') && content.category === 'K-Beauty') {
+      const productItems = this.extractProductItems(htmlEn);
+      if (productItems.length >= 2) {
+        jsonLdSchemas.push({
+          '@context': 'https://schema.org',
+          '@type': 'ItemList',
+          name: content.title,
+          description: validatedExcerpt,
+          numberOfItems: productItems.length,
+          itemListElement: productItems.map((item, idx) => ({
+            '@type': 'ListItem',
+            position: idx + 1,
+            item: {
+              '@type': 'Product',
+              name: item.name,
+              description: item.description,
+              ...(item.brand ? { brand: { '@type': 'Brand', name: item.brand } } : {}),
+              ...(item.rating ? {
+                aggregateRating: {
+                  '@type': 'AggregateRating',
+                  ratingValue: item.rating,
+                  bestRating: 10,
+                  ratingCount: 1,
+                },
+              } : {}),
+              ...(item.price ? {
+                offers: {
+                  '@type': 'AggregateOffer',
+                  priceCurrency: 'USD',
+                  lowPrice: item.price,
+                  availability: 'https://schema.org/InStock',
+                },
+              } : {}),
+            },
+          })),
+        });
+        logger.debug(`Product schema: ${productItems.length} K-Beauty products prepared for rich results`);
+      }
+    }
+
     // ImageObject schema for featured image (improves Google Image Search ranking)
     if (options?.featuredImageUrl) {
       jsonLdSchemas.push({
@@ -1342,6 +1501,12 @@ ${ga4TrackingScript}`;
         { '@type': 'ListItem', position: 3, name: content.title, item: content.slug ? `${this.wpUrl}/${content.slug}/` : this.wpUrl },
       ],
     });
+
+    // Validate JSON-LD before storing
+    const jsonLdValidation = this.validateJsonLdSchemas(jsonLdSchemas);
+    if (!jsonLdValidation.valid) {
+      logger.warn(`JSON-LD has ${jsonLdValidation.errors.length} validation issue(s) — publishing anyway with warnings`);
+    }
 
     // JSON-LD stored in post meta and output via wp_head (not in post body)
     const jsonLdString = JSON.stringify(jsonLdSchemas);
@@ -1381,6 +1546,9 @@ ${ga4TrackingScript}`;
             _autoblog_jsonld: jsonLdString,
             _autoblog_published_time: nowIso,
             _autoblog_modified_time: nowIso,
+            _autoblog_freshness_class: options?.contentType
+              ? (CONTENT_FRESHNESS_MAP[options.contentType as ContentType] || 'seasonal')
+              : 'seasonal',
             ...(options?.titleCandidates?.length ? {
               _autoblog_title_candidates: JSON.stringify(options.titleCandidates),
               _autoblog_title_test_start: nowIso,
@@ -1465,6 +1633,83 @@ ${ga4TrackingScript}`;
         ? `${lastError.response?.status} ${JSON.stringify(lastError.response?.data ?? lastError.message)}`
         : (lastError instanceof Error ? lastError.message : String(lastError));
       throw new WordPressError(`Failed to create post after 3 attempts: "${content.title}" - ${detail}`, lastError);
+    }
+  }
+
+  /**
+   * Update social proof signals (InteractionCounter) in JSON-LD with real GA4 pageview data.
+   * Call periodically (e.g., weekly) to keep reader count signals fresh.
+   */
+  async updateSocialProofSignals(
+    postPerformance: Array<{ postId: number; pageviews: number }>,
+  ): Promise<number> {
+    let updated = 0;
+    for (const { postId, pageviews } of postPerformance.slice(0, 50)) {
+      if (pageviews < 10) continue; // Only show social proof for posts with meaningful traffic
+      try {
+        const { data } = await this.api.get(`/posts/${postId}`, {
+          params: { _fields: 'id,meta' },
+        });
+        const existingJsonLd = (data.meta as Record<string, string>)?._autoblog_jsonld;
+        if (!existingJsonLd) continue;
+
+        const jsonLdArr = JSON.parse(existingJsonLd);
+        if (!Array.isArray(jsonLdArr)) continue;
+
+        let changed = false;
+        for (const schema of jsonLdArr) {
+          if (schema.interactionStatistic && Array.isArray(schema.interactionStatistic)) {
+            for (const stat of schema.interactionStatistic) {
+              if (stat.interactionType?.['@type'] === 'ReadAction') {
+                stat.userInteractionCount = pageviews;
+                changed = true;
+              }
+            }
+          }
+        }
+
+        if (changed) {
+          await this.api.post(`/posts/${postId}`, {
+            meta: { _autoblog_jsonld: JSON.stringify(jsonLdArr) },
+          });
+          updated++;
+        }
+      } catch {
+        // Non-fatal, skip
+      }
+    }
+    if (updated > 0) {
+      logger.info(`Social proof: Updated InteractionCounter for ${updated} post(s) with GA4 pageview data`);
+    }
+    return updated;
+  }
+
+  /**
+   * Revert a published post to draft status (rollback for quality issues).
+   * Used when post-publish quality checks fail.
+   */
+  async revertToDraft(postId: number, reason: string): Promise<boolean> {
+    try {
+      await this.api.post(`/posts/${postId}`, { status: 'draft' });
+      logger.warn(`Post ${postId} reverted to draft: ${reason}`);
+      return true;
+    } catch (error) {
+      logger.error(`Failed to revert post ${postId}: ${error instanceof Error ? error.message : error}`);
+      return false;
+    }
+  }
+
+  /**
+   * Delete a post (permanent removal for critically low quality).
+   */
+  async deletePost(postId: number, reason: string): Promise<boolean> {
+    try {
+      await this.api.delete(`/posts/${postId}`, { params: { force: false } });
+      logger.warn(`Post ${postId} trashed: ${reason}`);
+      return true;
+    } catch (error) {
+      logger.error(`Failed to trash post ${postId}: ${error instanceof Error ? error.message : error}`);
+      return false;
     }
   }
 
@@ -1579,6 +1824,63 @@ ${ga4TrackingScript}`;
     }
 
     return { productName, brand, rating };
+  }
+
+  /**
+   * Extract product items from K-Beauty content for Product schema.
+   * Looks for product mentions in H2/H3 headings with associated details.
+   */
+  private extractProductItems(html: string): Array<{
+    name: string;
+    description: string;
+    brand?: string;
+    rating?: number;
+    price?: string;
+  }> {
+    const products: Array<{ name: string; description: string; brand?: string; rating?: number; price?: string }> = [];
+    // Match numbered headings that likely contain product names
+    const regex = /<h[23][^>]*>(?:\d+[.):\s]+|#\d+[:\s]+)?(.*?)<\/h[23]>([\s\S]*?)(?=<h[23]|$)/gi;
+    const kBeautyBrands = [
+      'COSRX', 'Innisfree', 'Sulwhasoo', 'Laneige', 'Amorepacific', 'Etude', 'Missha',
+      'Klairs', 'Some By Mi', 'Banila Co', 'Tony Moly', 'Heimish', "I'm From", 'Anua',
+      'Beauty of Joseon', 'SKIN1004', 'Purito', 'Benton', 'Pyunkang Yul', 'Needly',
+      'Mediheal', 'Dr. Jart', 'Mamonde', 'Hera', 'The Face Shop', 'Nature Republic',
+    ];
+    let match;
+    while ((match = regex.exec(html)) !== null && products.length < 15) {
+      const name = match[1].replace(/<[^>]+>/g, '').trim();
+      const section = match[2];
+      // Skip structural headings
+      if (/FAQ|Table of Contents|Key Takeaways|Conclusion|How We|Bottom Line/i.test(name)) continue;
+      if (name.length < 4 || name.length > 100) continue;
+
+      // Extract first paragraph as description
+      const paraMatch = /<p[^>]*>([\s\S]*?)<\/p>/i.exec(section);
+      const description = paraMatch
+        ? paraMatch[1].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 200)
+        : '';
+      if (description.length < 10) continue;
+
+      // Detect brand
+      const brand = kBeautyBrands.find(b => name.toLowerCase().includes(b.toLowerCase()));
+
+      // Extract rating (e.g., "8.5/10", "4.5/5", "Overall: 9/10")
+      const ratingMatch = section.match(/(?:rating|score|overall)[^<]*?(\d+(?:\.\d+)?)\s*(?:\/\s*(\d+))?/i);
+      let rating: number | undefined;
+      if (ratingMatch) {
+        const value = parseFloat(ratingMatch[1]);
+        const max = ratingMatch[2] ? parseFloat(ratingMatch[2]) : 10;
+        rating = max === 5 ? value * 2 : value;
+        if (rating > 10 || rating < 1) rating = undefined;
+      }
+
+      // Extract price (e.g., "$15", "₩18,000", "$12-25")
+      const priceMatch = section.match(/\$(\d+(?:\.\d{2})?)/);
+      const price = priceMatch ? priceMatch[1] : undefined;
+
+      products.push({ name, description, brand, rating, price });
+    }
+    return products;
   }
 
   /** Extract HowTo steps from HTML (h3 headings with "Step N:" prefix) */
@@ -1734,6 +2036,74 @@ ${ga4TrackingScript}`;
   }
 
   /**
+   * Inject inline internal links by matching existing post keywords/titles in body text.
+   * Finds keyword mentions in <p> tags and converts first occurrence to anchor links.
+   * Max 5 inline links per post (3 same-category + 2 cross-niche for topical authority).
+   */
+  private injectInlineInternalLinks(html: string, existingPosts: ExistingPost[], currentTitle: string): string {
+    if (existingPosts.length === 0) return html;
+
+    // Build linkable terms: prefer keyword, fall back to short title phrases
+    const linkCandidates: Array<{ term: string; url: string; priority: number }> = [];
+    for (const post of existingPosts) {
+      if (post.title === currentTitle) continue;
+      if (post.keyword && post.keyword.length >= 8 && post.keyword.length <= 60) {
+        linkCandidates.push({ term: post.keyword, url: post.url, priority: 2 });
+      }
+      // Extract meaningful 3-4 word phrases from title as secondary anchor text
+      const titleWords = post.title.replace(/[^\w\s]/g, '').split(/\s+/).filter(w => w.length > 3);
+      if (titleWords.length >= 3) {
+        const phrase = titleWords.slice(0, 4).join(' ');
+        if (phrase.length >= 10) {
+          linkCandidates.push({ term: phrase, url: post.url, priority: 1 });
+        }
+      }
+    }
+
+    // Sort by priority (keyword matches first), then by term length (longer = more specific)
+    linkCandidates.sort((a, b) => b.priority - a.priority || b.term.length - a.term.length);
+
+    let result = html;
+    let injected = 0;
+    const linkedUrls = new Set<string>();
+
+    for (const candidate of linkCandidates) {
+      if (injected >= 5) break;
+      if (linkedUrls.has(candidate.url)) continue;
+
+      // Only match within <p> tag content (not in headings, links, or HTML attributes)
+      const termEscaped = candidate.term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const pattern = new RegExp(
+        `(<p[^>]*>(?:(?!<\/p>).)*?)\\b(${termEscaped})\\b((?:(?!<\/p>).)*?<\/p>)`,
+        'is',
+      );
+
+      const match = pattern.exec(result);
+      if (!match) continue;
+
+      // Skip if the match is already inside an <a> tag
+      const beforeMatch = match[1];
+      const lastOpenA = beforeMatch.lastIndexOf('<a ');
+      const lastCloseA = beforeMatch.lastIndexOf('</a>');
+      if (lastOpenA > lastCloseA) continue; // Inside an unclosed <a> tag
+
+      const link = `<a href="${candidate.url}" style="color:#0066FF; text-decoration:underline;">${match[2]}</a>`;
+      result = result.slice(0, match.index) +
+        match[1] + link + match[3] +
+        result.slice(match.index + match[0].length);
+
+      linkedUrls.add(candidate.url);
+      injected++;
+      logger.debug(`Inline internal link injected: "${candidate.term}" → ${candidate.url}`);
+    }
+
+    if (injected > 0) {
+      logger.info(`Injected ${injected} inline internal link(s) in body text`);
+    }
+    return result;
+  }
+
+  /**
    * Remove duplicate internal links — keep the first occurrence of each URL.
    */
   private deduplicateInternalLinks(html: string): string {
@@ -1751,6 +2121,73 @@ ${ga4TrackingScript}`;
       seenUrls.add(normalized);
       return match;
     });
+  }
+
+  /**
+   * Validate JSON-LD schemas before publishing.
+   * Checks required fields per schema type to prevent rich snippet errors.
+   */
+  private validateJsonLdSchemas(schemas: object[]): { valid: boolean; errors: string[] } {
+    const errors: string[] = [];
+
+    const REQUIRED_FIELDS: Record<string, string[]> = {
+      'BlogPosting': ['headline', 'datePublished', 'author'],
+      'FAQPage': ['mainEntity'],
+      'HowTo': ['name', 'step'],
+      'ItemList': ['name', 'itemListElement'],
+      'Review': ['name', 'itemReviewed', 'author'],
+      'NewsArticle': ['headline', 'datePublished'],
+      'VideoObject': ['name', 'thumbnailUrl', 'uploadDate'],
+      'BreadcrumbList': ['itemListElement'],
+      'ImageObject': ['contentUrl'],
+      'Product': ['name'],
+    };
+
+    for (const schema of schemas) {
+      const s = schema as Record<string, unknown>;
+      const type = (s['@type'] as string) || 'Unknown';
+      const required = REQUIRED_FIELDS[type];
+      if (!required) continue;
+
+      for (const field of required) {
+        if (!s[field] && s[field] !== 0) {
+          errors.push(`${type}: missing required field "${field}"`);
+        }
+      }
+
+      // Type-specific validations
+      if (type === 'BlogPosting' || type === 'NewsArticle') {
+        const headline = s['headline'] as string;
+        if (headline && headline.length > 110) {
+          errors.push(`${type}: headline exceeds 110 chars (${headline.length})`);
+        }
+        if (s['datePublished'] && !/^\d{4}-\d{2}-\d{2}/.test(s['datePublished'] as string)) {
+          errors.push(`${type}: datePublished not in ISO format`);
+        }
+      }
+
+      if (type === 'FAQPage') {
+        const mainEntity = s['mainEntity'] as unknown[];
+        if (Array.isArray(mainEntity) && mainEntity.length < 2) {
+          errors.push(`FAQPage: requires at least 2 questions (found ${mainEntity.length})`);
+        }
+      }
+
+      if (type === 'Review') {
+        const rating = (s['reviewRating'] as Record<string, unknown>)?.['ratingValue'];
+        if (rating !== undefined && (typeof rating !== 'number' || rating < 1 || rating > 10)) {
+          errors.push(`Review: ratingValue must be 1-10 (got ${rating})`);
+        }
+      }
+    }
+
+    if (errors.length > 0) {
+      for (const err of errors) {
+        logger.warn(`JSON-LD validation: ${err}`);
+      }
+    }
+
+    return { valid: errors.length === 0, errors };
   }
 
   private escapeHtml(text: string): string {
@@ -1972,8 +2409,8 @@ ${ga4TrackingScript}`;
 
   /**
    * Insert reverse internal links: after publishing a new post,
-   * find 2-3 related existing posts in the same cluster/category
-   * and inject a contextual link to the new post within their content.
+   * find related existing posts (same cluster + cross-niche) and inject a contextual link.
+   * Uses context-based limit: same-niche (up to 4) + cross-niche (up to 2).
    */
   async insertReverseLinks(
     newPostUrl: string,
@@ -1981,12 +2418,23 @@ ${ga4TrackingScript}`;
     newPostKeyword: string,
     nicheId: string,
     existingPosts: ExistingPost[],
-    limit: number = 3,
+    limit: number = 5,
   ): Promise<number> {
     // Find same-niche posts to link from
-    const candidates = existingPosts
+    const sameNicheCandidates = existingPosts
       .filter(p => p.postId && p.subNiche === nicheId && !p.url.includes(newPostUrl.replace(/\/$/, '')))
       .slice(0, 20);
+
+    // Cross-niche candidates from related categories
+    const postCategory = existingPosts.find(p => p.subNiche === nicheId)?.category;
+    const crossNicheCategories = postCategory ? (WordPressService.CROSS_NICHE_MAP[postCategory] || []) : [];
+    const crossNicheCandidates = crossNicheCategories.length > 0
+      ? existingPosts
+          .filter(p => p.postId && crossNicheCategories.includes(p.category) && !p.url.includes(newPostUrl.replace(/\/$/, '')))
+          .slice(0, 10)
+      : [];
+
+    const candidates = [...sameNicheCandidates, ...crossNicheCandidates];
 
     if (candidates.length === 0) return 0;
 
@@ -2299,5 +2747,93 @@ ${ga4TrackingScript}`;
       .filter((r): r is PromiseFulfilledResult<number | null> => r.status === 'fulfilled')
       .map((r) => r.value)
       .filter((id): id is number => id !== null);
+  }
+
+  /**
+   * Detect redirect chains among internal links.
+   * A redirect chain is A → B → C (or longer), which wastes crawl budget
+   * and dilutes link equity. Logs warnings for chains found.
+   *
+   * @param urls List of internal URLs to check (e.g., from existing posts)
+   * @returns Array of detected redirect chains with recommendations
+   */
+  async detectRedirectChains(urls: string[]): Promise<Array<{
+    originalUrl: string;
+    chain: string[];
+    finalUrl: string;
+    hops: number;
+    recommendation: string;
+  }>> {
+    const chains: Array<{
+      originalUrl: string;
+      chain: string[];
+      finalUrl: string;
+      hops: number;
+      recommendation: string;
+    }> = [];
+
+    // Only check a sample to avoid overwhelming the server
+    const sample = urls.slice(0, 50);
+
+    const results = await Promise.allSettled(
+      sample.map(async (url) => {
+        try {
+          const response = await axios.get(url, {
+            maxRedirects: 0,
+            validateStatus: (status) => status >= 200 && status < 400,
+            timeout: 5000,
+          });
+          // No redirect — URL is clean
+          return { url, status: response.status, redirectUrl: null };
+        } catch (error) {
+          if (axios.isAxiosError(error) && error.response && [301, 302, 307, 308].includes(error.response.status)) {
+            const redirectUrl = error.response.headers.location;
+            return { url, status: error.response.status, redirectUrl: redirectUrl as string };
+          }
+          return { url, status: 0, redirectUrl: null };
+        }
+      }),
+    );
+
+    // Build redirect map
+    const redirectMap = new Map<string, string>();
+    for (const result of results) {
+      if (result.status === 'fulfilled' && result.value.redirectUrl) {
+        redirectMap.set(result.value.url, result.value.redirectUrl);
+      }
+    }
+
+    // Detect chains (follow redirects through the map)
+    for (const [startUrl, firstRedirect] of redirectMap) {
+      const chain = [startUrl, firstRedirect];
+      let current = firstRedirect;
+      const visited = new Set([startUrl]);
+
+      while (redirectMap.has(current) && !visited.has(current)) {
+        visited.add(current);
+        current = redirectMap.get(current)!;
+        chain.push(current);
+      }
+
+      if (chain.length > 2) {
+        // This is a chain (2+ hops)
+        chains.push({
+          originalUrl: startUrl,
+          chain,
+          finalUrl: chain[chain.length - 1],
+          hops: chain.length - 1,
+          recommendation: `Update links pointing to "${startUrl}" to point directly to "${chain[chain.length - 1]}" (saves ${chain.length - 2} redirect hop(s))`,
+        });
+      }
+    }
+
+    if (chains.length > 0) {
+      logger.warn(`=== Redirect Chain Alert: ${chains.length} chain(s) detected ===`);
+      for (const c of chains.slice(0, 10)) {
+        logger.warn(`  [${c.hops} hops] ${c.chain.join(' → ')}`);
+      }
+    }
+
+    return chains;
   }
 }

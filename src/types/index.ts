@@ -112,6 +112,7 @@ export const NICHE_DISCLAIMERS: Record<string, string> = {
 export const INTENT_CONTENT_TYPE_MAP: Record<string, string[]> = {
   'transactional': ['product-review', 'best-x-for-y', 'how-to'],
   'commercial': ['best-x-for-y', 'x-vs-y', 'product-review', 'listicle', 'analysis'],
+  'commercial-investigation': ['x-vs-y', 'best-x-for-y', 'product-review', 'analysis', 'listicle', 'deep-dive'],
   'informational': ['how-to', 'deep-dive', 'analysis', 'news-explainer', 'case-study', 'listicle'],
   'navigational': ['deep-dive', 'news-explainer', 'how-to'],
 };
@@ -140,7 +141,7 @@ export interface KeywordAnalysis {
   contentType: ContentType;
   suggestedTitle: string;
   uniqueAngle: string;
-  searchIntent: 'informational' | 'commercial' | 'transactional' | 'navigational';
+  searchIntent: 'informational' | 'commercial' | 'commercial-investigation' | 'transactional' | 'navigational';
   estimatedCompetition: 'low' | 'medium' | 'high';
   /** Keyword difficulty score 0-100 (estimated from SERP signals + trend data) */
   keywordDifficulty?: number;
@@ -182,7 +183,7 @@ export interface BlogContent {
   /** Number of affiliate links detected in content */
   affiliateLinksCount?: number;
   /** Search intent from keyword research */
-  searchIntent?: 'informational' | 'commercial' | 'transactional' | 'navigational';
+  searchIntent?: 'informational' | 'commercial' | 'commercial-investigation' | 'transactional' | 'navigational';
 }
 
 /** WordPress 미디어 업로드 결과 */
@@ -257,6 +258,8 @@ export interface PostHistoryEntry {
   titleTestPhaseBTitle?: string;
   /** A/B rotation Phase B CTR (recorded at day 6) */
   titleTestPhaseBCtr?: number;
+  /** Original post title (for A/B test revert) */
+  originalTitle?: string;
   /** Series ID for multi-part content (e.g., "korean-stocks-101") */
   seriesId?: string;
   /** Part number within a series */

@@ -25,6 +25,7 @@ export class KeywordResearchService {
   private existingPostTitles: string[];
   private serpAnalysis: SerpAnalysis | null;
   private contentTypeDistribution: string;
+  private researchModel: string;
 
   constructor(apiKey: string, geo: string) {
     this.client = new Anthropic({ apiKey });
@@ -35,6 +36,8 @@ export class KeywordResearchService {
     this.existingPostTitles = [];
     this.serpAnalysis = null;
     this.contentTypeDistribution = '';
+    // Use dedicated research model if set, otherwise fall back to main model
+    this.researchModel = process.env.CLAUDE_RESEARCH_MODEL || process.env.CLAUDE_MODEL || 'claude-sonnet-4-6';
   }
 
   /** Set GA4 performance insights to include in keyword research prompts */
@@ -481,20 +484,24 @@ CRITICAL keyword selection rules — follow in strict priority order:
    - Commercial intent (higher intent = more competition)
    Target keywords with difficulty < 40 for best ranking potential.
 8. Estimate monthly search volume as a number (rough estimate based on niche knowledge)
-9. Classify search intent precisely: informational, commercial, transactional, or navigational
+9. Classify search intent precisely: informational, commercial, commercial-investigation, transactional, or navigational
+   - commercial-investigation: User is comparing options before purchase (e.g., "best Korean ETF vs US ETF", "COSRX vs Innisfree for oily skin")
+   - commercial: User wants to buy/find a product (e.g., "best Korean sunscreen")
+   - transactional: User is ready to act (e.g., "how to buy Korean stocks")
 10. CRITICAL intent-type alignment:
    - transactional intent → MUST use: product-review, best-x-for-y, or how-to
    - commercial intent → MUST use: best-x-for-y, x-vs-y, product-review, listicle, or analysis
+   - commercial-investigation intent → MUST use: x-vs-y, best-x-for-y, product-review, analysis, listicle, or deep-dive
    - informational intent → MUST use: how-to, deep-dive, analysis, news-explainer, case-study, or listicle
    - navigational intent → MUST use: deep-dive, news-explainer, or how-to
 11. Generate 3-5 long-tail keyword variants related to your selected keyword for satellite content strategy
 
 Respond with pure JSON only. No markdown code blocks.
-{"selectedKeyword":"...","contentType":"analysis|deep-dive|news-explainer|how-to|best-x-for-y|x-vs-y|listicle|case-study|product-review","suggestedTitle":"...","uniqueAngle":"...","searchIntent":"informational|commercial|transactional|navigational","estimatedCompetition":"low|medium|high","keywordDifficulty":25,"volumeEstimate":"high|medium|low|minimal","estimatedMonthlySearches":1500,"reasoning":"...","relatedKeywordsToInclude":["...","..."],"longTailVariants":["variant 1","variant 2","variant 3"]}`;
+{"selectedKeyword":"...","contentType":"analysis|deep-dive|news-explainer|how-to|best-x-for-y|x-vs-y|listicle|case-study|product-review","suggestedTitle":"...","uniqueAngle":"...","searchIntent":"informational|commercial|commercial-investigation|transactional|navigational","estimatedCompetition":"low|medium|high","keywordDifficulty":25,"volumeEstimate":"high|medium|low|minimal","estimatedMonthlySearches":1500,"reasoning":"...","relatedKeywordsToInclude":["...","..."],"longTailVariants":["variant 1","variant 2","variant 3"]}`;
 
     try {
       const response = await this.client.messages.create({
-        model: process.env.CLAUDE_MODEL || 'claude-sonnet-4-6',
+        model: this.researchModel,
         max_tokens: 2000,
         temperature: 0.5,
         messages: [{ role: 'user', content: prompt }],

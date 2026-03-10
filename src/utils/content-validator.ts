@@ -1443,3 +1443,65 @@ export function validateImageAltTexts(html: string, keyword: string): { total: n
 
   return { total: images.length, missingKeyword, missingAlt };
 }
+
+/**
+ * Pre-publish plagiarism detection using n-gram fingerprinting.
+ * Compares generated content against existing posts to detect accidental duplication.
+ * Uses 5-gram shingle-based Jaccard similarity (efficient, no external API needed).
+ */
+export function detectPlagiarism(
+  newHtml: string,
+  existingPosts: Array<{ title: string; html?: string; url: string }>,
+  threshold: number = 0.25,
+): Array<{ url: string; title: string; similarity: number }> {
+  const stripHtml = (html: string) => html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
+  const newText = stripHtml(newHtml);
+  if (newText.length < 200) return [];
+
+  // Generate 5-word shingles (n-grams)
+  const shingle = (text: string, n: number = 5): Set<string> => {
+    const words = text.split(/\s+/).filter(w => w.length > 2);
+    const shingles = new Set<string>();
+    for (let i = 0; i <= words.length - n; i++) {
+      shingles.add(words.slice(i, i + n).join(' '));
+    }
+    return shingles;
+  };
+
+  const newShingles = shingle(newText);
+  if (newShingles.size === 0) return [];
+
+  const matches: Array<{ url: string; title: string; similarity: number }> = [];
+
+  for (const post of existingPosts) {
+    if (!post.html && !post.title) continue;
+    const existingText = post.html ? stripHtml(post.html) : post.title.toLowerCase();
+    if (existingText.length < 100) continue;
+
+    const existingShingles = shingle(existingText);
+    if (existingShingles.size === 0) continue;
+
+    // Jaccard similarity
+    let intersection = 0;
+    for (const s of newShingles) {
+      if (existingShingles.has(s)) intersection++;
+    }
+    const union = newShingles.size + existingShingles.size - intersection;
+    const similarity = union > 0 ? intersection / union : 0;
+
+    if (similarity > threshold) {
+      matches.push({ url: post.url, title: post.title, similarity });
+    }
+  }
+
+  matches.sort((a, b) => b.similarity - a.similarity);
+
+  if (matches.length > 0) {
+    logger.warn(`Plagiarism check: ${matches.length} similar existing post(s) detected`);
+    for (const m of matches.slice(0, 3)) {
+      logger.warn(`  "${m.title}" — ${(m.similarity * 100).toFixed(0)}% similar (${m.url})`);
+    }
+  }
+
+  return matches;
+}

@@ -539,6 +539,60 @@ export class GSCAnalyticsService {
     return getGoogleAccessToken(this.saKey, 'https://www.googleapis.com/auth/webmasters.readonly');
   }
 
+  /**
+   * Detect competitor content gaps: queries where we have impressions but no clicks,
+   * indicating content that doesn't satisfy user intent well enough.
+   * These represent opportunities to create better-targeted content.
+   */
+  async detectContentGapOpportunities(minImpressions: number = 50): Promise<Array<{
+    query: string;
+    impressions: number;
+    position: number;
+    opportunity: string;
+  }>> {
+    try {
+      const token = await this.getAccessToken();
+      const { data } = await axios.post(
+        `https://searchconsole.googleapis.com/webmasters/v3/sites/${encodeURIComponent(this.siteUrl)}/searchAnalytics/query`,
+        {
+          startDate: this.getDateString(-28),
+          endDate: this.getDateString(-1),
+          dimensions: ['query'],
+          rowLimit: 500,
+        },
+        { headers: { Authorization: `Bearer ${token}` }, timeout: 15000 },
+      );
+
+      const rows = (data as { rows?: Array<{ keys: string[]; clicks: number; impressions: number; position: number }> }).rows || [];
+      const gaps: Array<{ query: string; impressions: number; position: number; opportunity: string }> = [];
+
+      for (const row of rows) {
+        const query = row.keys[0];
+        if (row.impressions < minImpressions || row.clicks > 2) continue;
+
+        let opportunity: string;
+        if (row.position <= 10) {
+          opportunity = 'optimize-snippet'; // On page 1 but no clicks = bad snippet/title
+        } else if (row.position <= 20) {
+          opportunity = 'create-dedicated'; // Striking distance, needs dedicated content
+        } else {
+          opportunity = 'new-content'; // Too far, needs fresh approach
+        }
+
+        gaps.push({ query, impressions: row.impressions, position: row.position, opportunity });
+      }
+
+      const sorted = gaps.sort((a, b) => b.impressions - a.impressions).slice(0, 20);
+      if (sorted.length > 0) {
+        logger.info(`Content gap opportunities: ${sorted.length} queries with high impressions but no clicks`);
+      }
+      return sorted;
+    } catch (error) {
+      logger.warn(`Content gap detection failed: ${error instanceof Error ? error.message : error}`);
+      return [];
+    }
+  }
+
   private getDateString(daysOffset: number): string {
     const date = new Date();
     date.setDate(date.getDate() + daysOffset);

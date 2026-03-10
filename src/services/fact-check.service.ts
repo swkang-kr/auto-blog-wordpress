@@ -125,6 +125,19 @@ export class FactCheckService {
       for (const match of healthMatches) {
         flagged.push(`Medical claim detected: "${match}" — use softer language (helps reduce/may improve) per FTC guidelines`);
       }
+
+      // Check for ingredient percentage claims without sources
+      const ingredientPctRegex = /(\d+(?:\.\d+)?%)\s+(?:niacinamide|retinol|vitamin c|hyaluronic acid|salicylic acid|aha|bha|pha|centella|snail mucin)/gi;
+      const ingredientMatches = plainText.match(ingredientPctRegex) || [];
+      for (const match of ingredientMatches) {
+        const hasCitation = /(?:according to|per the|per manufacturer|official|clinically|dermatologist)/i.test(
+          plainText.slice(Math.max(0, plainText.indexOf(match) - 100), plainText.indexOf(match) + match.length + 100),
+        );
+        if (!hasCitation) {
+          flagged.push(`Ingredient percentage without source: "${match}" — cite manufacturer data or clinical study`);
+          unverified++;
+        }
+      }
     }
 
     if (category === 'Korean Finance') {
@@ -135,6 +148,75 @@ export class FactCheckService {
         const hasTimeRef = /(?:as of|in (?:january|february|march|april|may|june|july|august|september|october|november|december)|recent|latest)/i.test(match);
         if (!hasTimeRef) {
           flagged.push(`Stock price without date reference: "${match.slice(0, 80)}" — add "as of [month/year]"`);
+          unverified++;
+        }
+      }
+
+      // Check for specific interest rate claims
+      const rateRegex = /(?:BOK|Bank of Korea|base rate|key rate)\s+(?:at|is|was|set|raised|cut)\s+(?:to\s+)?(\d+(?:\.\d+)?)\s*%/gi;
+      const rateMatches = plainText.match(rateRegex) || [];
+      for (const match of rateMatches) {
+        const hasHedge = /(?:approximately|around|recently|as of|current)/i.test(match);
+        if (!hasHedge) {
+          flagged.push(`Interest rate claim without hedging: "${match.slice(0, 80)}" — add temporal qualifier`);
+          unverified++;
+        }
+      }
+    }
+
+    if (category === 'Korean Tech') {
+      // Check for market share/ranking claims without sources
+      const marketShareRegex = /(?:market share|market leader|#\d|number one|world'?s? (?:largest|biggest|first))\s+[^.]{10,80}/gi;
+      const msMatches = plainText.match(marketShareRegex) || [];
+      for (const match of msMatches) {
+        const hasCitation = /(?:according to|per|source|reported|IDC|Gartner|Counterpoint|TrendForce|Omdia|Statista)/i.test(
+          plainText.slice(Math.max(0, plainText.indexOf(match) - 50), plainText.indexOf(match) + match.length + 100),
+        );
+        if (!hasCitation) {
+          flagged.push(`Market claim without source: "${match.slice(0, 80)}" — cite research firm (IDC, Gartner, etc.)`);
+          unverified++;
+        }
+      }
+
+      // Check for chip process node claims
+      const processNodeRegex = /(\d+)\s*(?:nm|nanometer)\s+(?:process|node|technology|chip)/gi;
+      const nodeMatches = plainText.match(processNodeRegex) || [];
+      for (const match of nodeMatches) {
+        const numMatch = match.match(/(\d+)\s*(?:nm|nanometer)/i);
+        if (numMatch) {
+          const nm = parseInt(numMatch[1]);
+          // Current leading-edge is 2-3nm, flag unlikely claims
+          if (nm < 2) {
+            flagged.push(`Unlikely process node: "${match}" — sub-2nm not yet in mass production`);
+            unverified++;
+          }
+        }
+      }
+    }
+
+    if (category === 'K-Entertainment') {
+      // Check for specific revenue/earnings claims
+      const revRegex = /(?:HYBE|SM|JYP|YG|CJ ENM|Kakao Entertainment)\s+(?:revenue|earnings|profit|sales|income)\s+(?:of|at|reached|hit|was)\s+(?:₩|KRW|USD|\$)?\s*([\d.,]+)\s*(?:billion|million|trillion)/gi;
+      const revMatches = plainText.match(revRegex) || [];
+      for (const match of revMatches) {
+        const hasSource = /(?:annual report|quarterly|fiscal|reported|DART|filing|earnings call)/i.test(
+          plainText.slice(Math.max(0, plainText.indexOf(match) - 100), plainText.indexOf(match) + match.length + 100),
+        );
+        if (!hasSource) {
+          flagged.push(`Revenue claim without source: "${match.slice(0, 80)}" — cite DART filings or earnings reports`);
+          unverified++;
+        }
+      }
+
+      // Check for streaming/view count claims
+      const viewRegex = /(\d[\d,.]*)\s*(?:billion|million)\s+(?:views|streams|downloads|subscribers|listeners)/gi;
+      const viewMatches = plainText.match(viewRegex) || [];
+      for (const match of viewMatches) {
+        const hasTimeRef = /(?:as of|in \d{4}|to date|cumulative|total|current)/i.test(
+          plainText.slice(Math.max(0, plainText.indexOf(match) - 60), plainText.indexOf(match) + match.length + 60),
+        );
+        if (!hasTimeRef) {
+          flagged.push(`View/stream count without date context: "${match.slice(0, 60)}" — add "as of [date]" or "to date"`);
           unverified++;
         }
       }

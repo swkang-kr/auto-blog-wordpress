@@ -176,6 +176,7 @@ const WORD_COUNT_TARGETS: Record<string, { min: number; target: number; continua
 const INTENT_MULTIPLIERS: Record<string, number> = {
   'informational': 1.0,   // Full length (default)
   'commercial': 0.9,      // Slightly shorter, more comparison-focused
+  'commercial-investigation': 0.95, // Near-full length, detailed comparison/evaluation
   'transactional': 0.75,  // Shorter, action-focused (how-to-buy, sign-up guides)
   'navigational': 0.6,    // Shortest (direct answer + context)
 };
@@ -358,10 +359,43 @@ For informational intent keywords (starting with "what is", "how does", "why", "
 - HTML template: <div class="ab-snippet"><p>Concise answer here.</p></div>
 - This targets Google's Featured Snippet position zero
 
-### Search Intent Structural Templates
-For **navigational** intent: Include a quick direct answer in a <div class="ab-highlight"> box BEFORE the Table of Contents. Get to the point immediately.
-For **transactional** intent: Include a product/action CTA box using <div class="ab-keypoint"> near the top with clear next steps.
-For **commercial** intent: Include a verdict/recommendation in a <div class="ab-highlight"> box immediately after any comparison table.
+### Search Intent Structural Templates (MANDATORY — match structure to user intent)
+
+For **informational** intent:
+- Full-length content with comprehensive coverage
+- Include definition/answer snippet box after opening paragraph
+- Use detailed step-by-step explanations, diagrams (SVG), and data tables
+- FAQ section with 5-7 questions targeting "People Also Ask"
+- Key Takeaways box prominently placed after TOC
+
+For **transactional** intent:
+- Include a product/action CTA box using <div class="ab-keypoint"> near the top with clear next steps
+- MANDATORY: Include pricing/cost information in a comparison table
+- MANDATORY: Include a "How to Get Started" or "How to Buy" section with numbered steps
+- Keep content concise and action-focused — readers want to ACT, not read essays
+- Include a "Quick Verdict" <div class="ab-highlight"> box within the first 300 words
+- End with clear CTA: "Next Steps" section with specific actions
+
+For **commercial** intent:
+- MANDATORY: Include a comparison table with at least 5 criteria (price, features, pros, cons, verdict)
+- MANDATORY: Include Pro/Con boxes using <div class="ab-proscons"> for each compared option
+- Include a verdict/recommendation in a <div class="ab-highlight"> box immediately after any comparison table
+
+For **commercial-investigation** intent:
+- MANDATORY: Include a detailed comparison matrix table (6+ criteria, side-by-side columns per option)
+- MANDATORY: Include a "Decision Framework" section with criteria weighting guide (who should choose what)
+- MANDATORY: Include Pro/Con boxes using <div class="ab-proscons"> for each option compared
+- Include a "Bottom Line" verdict per audience type (beginner vs experienced, budget vs premium)
+- Include real price/cost data where available with Korean market context (₩ and $ equivalents)
+- End with "What to Consider Before Choosing" checklist-style summary
+- Include a "Who Should Choose What" section with persona-based recommendations
+- Include a scoring/rating system (e.g., "Overall: 8.5/10") for each option
+
+For **navigational** intent:
+- Include a quick direct answer in a <div class="ab-highlight"> box BEFORE the Table of Contents. Get to the point immediately
+- Keep total content shorter (use the navigational intent word count multiplier)
+- Focus on guiding the reader to the right resource/page/action
+- Include a "Quick Links" section at the top with direct resource links
 
 ### HowTo Featured Snippet (how-to content)
 For how-to content, include numbered steps inside a snippet box:
@@ -396,7 +430,7 @@ This targets Google's List Featured Snippet for ranking queries.
 
 ## Internal Links (IMPORTANT for SEO)
 - You will be given a list of existing blog posts on this site
-- Include 2-4 internal links to relevant existing posts within the article body
+- Include 5-8 internal links to relevant existing posts within the article body
 - Use descriptive anchor text containing the target page's primary keyword, NOT generic phrases like "click here", "read more", "this article", "check this out"
 - Good: "our analysis of <a ...>HYBE's revenue model</a>"
 - Bad: "you can <a ...>read more here</a>"
@@ -533,6 +567,21 @@ For each major step in how-to guides, use a numbered progress indicator:
 <div class="ab-step">
 <div class="ab-step-num">1</div>
 <h3>Step Title</h3></div>
+
+### Quick Poll / Reader Choice (engagement booster — use 1x per post max)
+For comparison/review content, add a lightweight poll-style question to boost engagement:
+<div style="margin:24px 0; padding:20px 24px; background:linear-gradient(135deg,#f0f4ff,#f8f9fa); border:1px solid #e2e8f0; border-radius:12px; text-align:center;">
+<p style="margin:0 0 12px 0; font-size:17px; font-weight:700; color:#222;">Quick Poll: Which do you prefer?</p>
+<p style="margin:0; font-size:15px; color:#555; line-height:1.7;">Drop your answer in the comments — Option A or Option B? We'll share the community consensus in our next update.</p></div>
+
+### Infographic-Style Data Box (Finance, Tech — data-heavy content)
+For presenting key statistics in a visually scannable format:
+<div style="margin:24px 0; padding:20px; background:#f8f9fa; border-radius:12px; border:1px solid #e5e7eb;">
+<p style="margin:0 0 16px 0; font-size:16px; font-weight:700; color:#222;">Key Data Points</p>
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:12px;">
+<div style="padding:16px; background:#fff; border-radius:8px; text-align:center;">
+<p style="margin:0; font-size:24px; font-weight:700; color:#0066FF;">Value</p>
+<p style="margin:4px 0 0 0; font-size:12px; color:#888;">Label</p></div></div></div>
 
 ## HTML Structure Rules (USE CSS CLASSES — minimal inline styles)
 All styling is handled by a consolidated <style> block injected at publish time. Use CSS classes instead of inline styles wherever possible. This reduces HTML size by ~40% and improves page speed.
@@ -682,15 +731,15 @@ These are sibling posts in your topic cluster. You MUST include a natural contex
           return `- "${p.title}" [${p.category}]${kwInfo}${clusterTag}: ${p.url}`;
         })
         .join('\n');
-      internalLinksSection = `\n\nExisting Blog Posts (pick 2-4 relevant ones, each URL used ONLY ONCE, use their keyword or title for descriptive anchor text — NEVER use "click here" or "read more"). LINKING PRIORITY:
-1. [TOPIC CLUSTER] posts FIRST — these are sibling posts in the same topic cluster. Link to at least 1-2 of these if available.
+      internalLinksSection = `\n\nExisting Blog Posts (pick 5-8 relevant ones, each URL used ONLY ONCE, use their keyword or title for descriptive anchor text — NEVER use "click here" or "read more"). LINKING PRIORITY:
+1. [TOPIC CLUSTER] posts FIRST — these are sibling posts in the same topic cluster. Link to at least 2 of these if available.
 2. Same-category posts for broader topical authority.
 3. Cross-category posts for site-wide link equity.
 Place links naturally within body text — NOT in a list at the end.\n${postList}`;
       // Also count cluster siblings for "More in this series" prompt
       const clusterCount = sameSubNiche.length;
-      if (clusterCount >= 2) {
-        internalLinksSection += `\n\nIMPORTANT: This post has ${clusterCount} sibling posts in the same topic cluster. Mention at least 2 of them contextually within your article to strengthen the topic cluster.`;
+      if (clusterCount >= 1) {
+        internalLinksSection += `\n\nIMPORTANT: This post has ${clusterCount} sibling post(s) in the same topic cluster. Mention at least ${Math.min(clusterCount, 2)} of them contextually within your article to strengthen the topic cluster.`;
       }
     }
 
@@ -1031,11 +1080,11 @@ ${headingsList}
 Last 500 characters of existing content for tone matching:
 "${plainTail}"
 
-Write additional sections that seamlessly continue this article. Requirements:
+Write additional content that seamlessly continues this article. Requirements:
 1. Match the existing tone, style, and analytical depth exactly
-2. Add NEW H2 sections with id attributes (different from existing ones listed above)
-3. Include Korean market data points, statistics, and source citations
-4. Add 2-3 FAQ questions as H3 headings ending with ?
+2. FIRST: Deepen existing sections with additional data, Korean-specific examples, expert quotes, and concrete statistics
+3. Only if existing sections are already comprehensive, add 1-2 NEW supporting H2 sections with id attributes (different from existing ones listed above)
+4. Include Korean market data points, statistics, and source citations
 5. Use the same inline CSS: H2 with border-left:5px solid #0066FF; padding-left:15px; font-size:22px, paragraphs with margin:0 0 20px 0; line-height:1.8; font-size:16px
 6. Start with a natural transition from the previous content, not a new introduction
 

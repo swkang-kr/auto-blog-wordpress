@@ -14,7 +14,7 @@ import { PinterestService } from './services/pinterest.service.js';
 import { GA4AnalyticsService } from './services/ga4-analytics.service.js';
 import { GSCAnalyticsService } from './services/gsc-analytics.service.js';
 import { PostHistory } from './utils/history.js';
-import { sendBatchSummary } from './utils/alerting.js';
+import { sendBatchSummary, sendQualityAlert, sendDecayAlert, sendHealthCheck } from './utils/alerting.js';
 import { costTracker } from './utils/cost-tracker.js';
 import { logger } from './utils/logger.js';
 import { ContentRefreshService } from './services/content-refresh.service.js';
@@ -189,7 +189,28 @@ async function main(): Promise<void> {
     logger.warn(`Image sitemap setup failed: ${error instanceof Error ? error.message : error}`);
   }
 
-  // 2.8e. Ensure post content CSS snippet is installed site-wide
+  // 2.8e. Ensure sitemap priority by content freshness class
+  try {
+    await seoService.ensureSitemapPrioritySnippet();
+  } catch (error) {
+    logger.warn(`Sitemap priority setup failed: ${error instanceof Error ? error.message : error}`);
+  }
+
+  // 2.8g. Ensure News Sitemap for news-explainer content (Google News eligibility)
+  try {
+    await seoService.ensureNewsSitemapSnippet();
+  } catch (error) {
+    logger.warn(`News sitemap setup failed: ${error instanceof Error ? error.message : error}`);
+  }
+
+  // 2.8h. Ensure Video Sitemap for YouTube embeds (Google Video carousel)
+  try {
+    await seoService.ensureVideoSitemapSnippet();
+  } catch (error) {
+    logger.warn(`Video sitemap setup failed: ${error instanceof Error ? error.message : error}`);
+  }
+
+  // 2.8f. Ensure post content CSS snippet is installed site-wide
   let postCssSnippetActive = false;
   try {
     await seoService.ensurePostCssSnippet();
@@ -247,6 +268,15 @@ async function main(): Promise<void> {
 
   // 2.14b. Initialize fact-check service for pre-publish verification
   const factCheckService = new FactCheckService();
+
+  // 2.14c-pre. Send health check notification at batch start
+  if (config.SLACK_WEBHOOK_URL) {
+    await sendHealthCheck(config.SLACK_WEBHOOK_URL, {
+      totalPosts: history.getAllEntries().length,
+      activeNiches: activeNiches.length,
+      postCount: config.POST_COUNT,
+    });
+  }
 
   // 2.14c. Check evergreen ratio health
   ContentRefreshService.checkEvergreenRatio(history.getAllEntries());
@@ -337,6 +367,10 @@ async function main(): Promise<void> {
           logger.warn(`  ${page.page} (pos ${page.position.toFixed(1)}, ${page.clicks} clicks/7d, ${page.impressions} imp/7d)`);
         }
         logger.warn(`Consider running: npx tsx src/scripts/refresh-stale-posts.ts`);
+        // Send Slack alert for content decay
+        if (config.SLACK_WEBHOOK_URL) {
+          await sendDecayAlert(config.SLACK_WEBHOOK_URL, declining.slice(0, 5));
+        }
       }
 
       // Competitive threat monitoring: detect queries where competitors are outranking us
@@ -396,6 +430,35 @@ async function main(): Promise<void> {
   // Generate topical map coverage report (strategic content planning)
   topicClusterService.generateTopicalMapReport();
 
+  // 3.7b. Competitor gap analysis: find high-value content opportunities from GSC data
+  if (config.GSC_SITE_URL && config.GOOGLE_INDEXING_SA_KEY) {
+    try {
+      const gscGapService = new GSCAnalyticsService(config.GSC_SITE_URL || config.WP_URL, config.GOOGLE_INDEXING_SA_KEY);
+      const [gapStriking, gapTopQueries] = await Promise.all([
+        gscGapService.getStrikingDistanceKeywords(),
+        gscGapService.getTopQueries(50),
+      ]);
+      if (gapStriking.length > 0 || gapTopQueries.length > 0) {
+        const competitorGaps = topicClusterService.analyzeCompetitorGaps(gapStriking, gapTopQueries, existingPosts);
+        if (competitorGaps.length > 0) {
+          // Feed high-priority create opportunities into keyword research as seed suggestions
+          const createOpportunities = competitorGaps
+            .filter(g => g.opportunity === 'create' && g.priority === 'high')
+            .slice(0, 5)
+            .map(g => g.query);
+          if (createOpportunities.length > 0) {
+            const gapInsight = `\n## Content Gap Opportunities (from competitor analysis)\nHigh-value queries with impressions but no dedicated content: ${createOpportunities.map(q => `"${q}"`).join(', ')}. Prioritize creating targeted content for these queries.`;
+            researchService.setPerformanceInsights(
+              researchService.getPerformanceInsights() + gapInsight,
+            );
+          }
+        }
+      }
+    } catch (error) {
+      logger.warn(`Competitor gap analysis failed: ${error instanceof Error ? error.message : error}`);
+    }
+  }
+
   // 4. Two-phase pipeline
   //    Phase A: Research + Content Generation back-to-back (maximises prompt cache HITs)
   //    Phase B: Images + Publish for each generated post
@@ -452,7 +515,7 @@ async function main(): Promise<void> {
       const filteredPosts = [...nichePosts, ...otherPosts];
 
       // Get cluster links for topic cluster strengthening
-      const clusterLinks = topicClusterService.getClusterLinks(niche.id, researched.analysis.selectedKeyword, 3);
+      const clusterLinks = topicClusterService.getClusterLinks(niche.id, researched.analysis.selectedKeyword, 5);
       const clusterLinksForPrompt = clusterLinks.map(cl => ({ url: cl.url, title: cl.title, keyword: cl.keyword }));
 
       const content = await contentService.generateContent(researched, filteredPosts, clusterLinksForPrompt);
@@ -495,7 +558,7 @@ async function main(): Promise<void> {
           .slice(0, 20);
         const filteredPosts = [...nichePosts, ...otherPosts];
 
-        const retryClusterLinks = topicClusterService.getClusterLinks(niche.id, researched.analysis.selectedKeyword, 3);
+        const retryClusterLinks = topicClusterService.getClusterLinks(niche.id, researched.analysis.selectedKeyword, 5);
         const retryClusterLinksForPrompt = retryClusterLinks.map(cl => ({ url: cl.url, title: cl.title, keyword: cl.keyword }));
 
         const content = await contentService.generateContent(researched, filteredPosts, retryClusterLinksForPrompt);
@@ -537,6 +600,9 @@ async function main(): Promise<void> {
   const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   logger.info(`Base publish hour: ${ga4OptimalHour ?? config.PUBLISH_OPTIMAL_HOUR}:00 ${publishTz}${ga4OptimalHour !== null ? ' (GA4-detected)' : ' (config default)'}${ga4OptimalDay !== null ? ` | Best day: ${dayNames[ga4OptimalDay]}` : ''}`);
   logger.info(`Per-niche timing enabled: ${Object.keys(CATEGORY_PUBLISH_TIMING).length} categories configured`);
+
+  // Track which categories are scheduled on which dates to prevent same-day same-category publishing
+  const categoryDateMap = new Map<string, Set<string>>(); // category → Set of date strings (YYYY-MM-DD)
 
   for (let gi = 0; gi < generated.length; gi++) {
     const { niche, postStart, researched, content } = generated[gi];
@@ -583,6 +649,20 @@ async function main(): Promise<void> {
       }
       // Add interval offset per post
       const scheduleTime = new Date(targetDate.getTime() + gi * publishInterval * 60 * 1000);
+
+      // Prevent same-day same-category publishing to avoid keyword cannibalization
+      const category = niche.category;
+      const scheduleDateStr = scheduleTime.toISOString().slice(0, 10); // YYYY-MM-DD
+      const existingDates = categoryDateMap.get(category) ?? new Set<string>();
+      if (existingDates.has(scheduleDateStr)) {
+        // Shift to the next day at the same hour
+        scheduleTime.setDate(scheduleTime.getDate() + 1);
+        logger.info(`Same-day collision for "${category}" on ${scheduleDateStr}, shifted to ${scheduleTime.toISOString().slice(0, 10)}`);
+      }
+      const finalDateStr = scheduleTime.toISOString().slice(0, 10);
+      existingDates.add(finalDateStr);
+      categoryDateMap.set(category, existingDates);
+
       scheduledDate = scheduleTime.toISOString();
       logger.info(`Scheduling "${niche.category}" for: ${scheduleTime.toLocaleString('en-US', { timeZone: publishTz })} (${publishTz}) [${timingSource}]`);
     }
@@ -702,6 +782,23 @@ async function main(): Promise<void> {
       // B-3.7. Generate cluster navigation HTML for related articles
       const clusterNavHtml = topicClusterService.generateClusterNavHtml(niche.id, '');
 
+      // B-3.8. Pre-publish plagiarism check against existing posts
+      try {
+        const { detectPlagiarism } = await import('./utils/content-validator.js');
+        const plagiarismMatches = detectPlagiarism(content.html, existingPosts, 0.25);
+        if (plagiarismMatches.length > 0) {
+          const topMatch = plagiarismMatches[0];
+          if (topMatch.similarity > 0.5) {
+            logger.error(`High plagiarism risk: "${content.title}" is ${(topMatch.similarity * 100).toFixed(0)}% similar to "${topMatch.title}". Skipping publish.`);
+            results.push({ keyword: researched.analysis.selectedKeyword, niche: niche.id, success: false, error: `Plagiarism: ${(topMatch.similarity * 100).toFixed(0)}% match with "${topMatch.title}"`, duration: Date.now() - postStart });
+            continue;
+          }
+          logger.warn(`Moderate content overlap detected: "${content.title}" is ${(topMatch.similarity * 100).toFixed(0)}% similar to "${topMatch.title}". Publishing with caution.`);
+        }
+      } catch (plagError) {
+        logger.debug(`Plagiarism check skipped: ${plagError instanceof Error ? plagError.message : plagError}`);
+      }
+
       // B-3.9. Pre-publish fact verification
       try {
         const factResult = await factCheckService.verifyContent(content.html, niche.category);
@@ -741,6 +838,81 @@ async function main(): Promise<void> {
 
       if (content.qualityScore !== undefined) {
         logger.info(`Quality score: ${content.qualityScore}/100 for "${content.title}"`);
+        // Post-publish quality rollback: revert to draft if score is critically low
+        const minQuality = config.MIN_QUALITY_SCORE;
+        if (content.qualityScore < minQuality - 15 && effectivePublishStatus === 'publish') {
+          logger.warn(`Quality score ${content.qualityScore} is critically below threshold (${minQuality}). Reverting to draft.`);
+          await wpService.revertToDraft(post.postId, `Quality score ${content.qualityScore} < ${minQuality - 15}`);
+          if (config.SLACK_WEBHOOK_URL) {
+            const issues = content.qualityScore < 40 ? ['Critically low quality score', 'Needs complete rewrite'] : ['Below minimum quality threshold'];
+            await sendQualityAlert(config.SLACK_WEBHOOK_URL, content.title, post.url, content.qualityScore, minQuality, issues);
+          }
+        } else if (content.qualityScore < minQuality && config.SLACK_WEBHOOK_URL) {
+          // Alert but don't rollback for marginal scores
+          await sendQualityAlert(config.SLACK_WEBHOOK_URL, content.title, post.url, content.qualityScore, minQuality, ['Marginal quality - review recommended']);
+        }
+      }
+
+      // B-4.5. Generate Korean version (if enabled) for hreflang SEO
+      if (config.ENABLE_KOREAN_CONTENT === 'true') {
+        try {
+          const { KoreanContentService } = await import('./services/korean-content.service.js');
+          const koreanService = new KoreanContentService(config.ANTHROPIC_API_KEY, config.CLAUDE_MODEL);
+
+          // Korean keyword research: find the right Korean search terms
+          const koreanKeywords = await koreanService.researchKoreanKeyword(
+            researched.analysis.selectedKeyword, niche.category,
+          );
+
+          const koreanVersion = await koreanService.generateKoreanVersion(
+            content.title, content.html, content.excerpt,
+            niche.category, koreanKeywords?.koreanKeyword || researched.analysis.selectedKeyword,
+          );
+          if (koreanVersion) {
+            // Merge Naver tags into Korean post tags
+            if (koreanKeywords?.naverTags) {
+              koreanVersion.tags = [...new Set([...koreanVersion.tags, ...koreanKeywords.naverTags])].slice(0, 10);
+            }
+
+            // Create Korean version as a separate post with hreflang linking
+            const koreanPost = await wpService.createPost(
+              {
+                ...content,
+                title: koreanVersion.title,
+                html: koreanVersion.html,
+                excerpt: koreanVersion.excerpt,
+                tags: koreanVersion.tags,
+                slug: content.slug ? `ko-${content.slug}` : undefined,
+              },
+              featuredMediaResult.mediaId,
+              undefined,
+              {
+                contentType: researched.analysis.contentType,
+                keyword: koreanKeywords?.koreanKeyword || researched.analysis.selectedKeyword,
+                featuredImageUrl: featuredMediaResult.sourceUrl,
+                publishStatus: effectivePublishStatus,
+                skipInlineCss: postCssSnippetActive,
+              },
+            );
+            // Set hreflang meta + Naver SEO meta on both posts for mutual linking
+            const naverMeta = koreanKeywords
+              ? KoreanContentService.buildNaverMetaTags(koreanVersion.title, koreanVersion.excerpt, koreanKeywords.naverTags, koreanPost.url)
+              : {};
+            await wpService.updatePostMeta(post.postId, {
+              _autoblog_hreflang_ko: koreanPost.url,
+              _autoblog_hreflang_en: post.url,
+            });
+            await wpService.updatePostMeta(koreanPost.postId, {
+              _autoblog_hreflang_en: post.url,
+              _autoblog_hreflang_ko: koreanPost.url,
+              ...(koreanKeywords?.koreanKeyword ? { rank_math_focus_keyword: koreanKeywords.koreanKeyword } : {}),
+              ...naverMeta,
+            });
+            logger.info(`Korean version published: ${koreanPost.url} (hreflang linked${koreanKeywords ? ', Naver SEO applied' : ''})`);
+          }
+        } catch (koError) {
+          logger.debug(`Korean content generation failed: ${koError instanceof Error ? koError.message : koError}`);
+        }
       }
 
       // B-5. IndexNow + Bing Sitemap Ping
@@ -774,14 +946,35 @@ async function main(): Promise<void> {
       try {
         await wpService.insertReverseLinks(
           post.url, content.title, researched.analysis.selectedKeyword,
-          niche.id, existingPosts, 3,
+          niche.id, existingPosts, 5,
         );
       } catch (revLinkError) {
         logger.debug(`Reverse linking failed: ${revLinkError instanceof Error ? revLinkError.message : revLinkError}`);
       }
 
-      // B-10. Record history + category publish timestamp
+      // B-10. Record history + category publish timestamp (with series detection)
       await history.recordCategoryPublish(niche.id);
+      const seriesInfo = history.getSeriesInfo(niche.id, researched.analysis.selectedKeyword);
+      // Auto-generate seriesId for new potential series (3+ similar posts)
+      let seriesId = seriesInfo?.seriesId;
+      let seriesPart = seriesInfo?.seriesPart;
+      if (!seriesId) {
+        // Check if this keyword could start a new series based on existing posts
+        const nicheKeywords = history.getPostedKeywordsForNiche(niche.id);
+        const kwWords = researched.analysis.selectedKeyword.toLowerCase().split(/\s+/).filter(w => w.length > 3);
+        const similarCount = nicheKeywords.filter(pk => {
+          const pkWords = pk.toLowerCase().split(/\s+/).filter(w => w.length > 3);
+          return kwWords.filter(w => pkWords.some(pw => pw.includes(w) || w.includes(pw))).length >= 2;
+        }).length;
+        if (similarCount >= 2) {
+          // Create a new series for this cluster of similar topics
+          seriesId = `${niche.id}-${researched.analysis.selectedKeyword.toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 30)}`;
+          seriesPart = similarCount + 1;
+          logger.info(`New content series detected: "${seriesId}" (part ${seriesPart})`);
+        }
+      } else {
+        logger.info(`Continuing series: "${seriesId}" (part ${seriesPart})`);
+      }
       await history.addEntry({
         keyword: researched.analysis.selectedKeyword,
         postId: post.postId,
@@ -790,6 +983,8 @@ async function main(): Promise<void> {
         niche: niche.id,
         contentType: researched.analysis.contentType,
         titleCandidates: content.titleCandidates,
+        originalTitle: content.title,
+        ...(seriesId ? { seriesId, seriesPart } : {}),
       });
 
       results.push({
@@ -818,6 +1013,20 @@ async function main(): Promise<void> {
     await wpService.checkAndFixInternalLinks(existingPosts);
   } catch (error) {
     logger.warn(`Orphan/link check failed: ${error instanceof Error ? error.message : error}`);
+  }
+
+  // 4.1b. Periodic broken external link check (weekly maintenance)
+  try {
+    const linkCheckService = new ContentRefreshService(
+      config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD,
+      config.ANTHROPIC_API_KEY, config.CLAUDE_MODEL,
+    );
+    const { broken, fixed } = await linkCheckService.checkBrokenExternalLinks(20);
+    if (broken > 0) {
+      logger.info(`Broken link maintenance: ${broken} broken link(s) found, ${fixed} post(s) updated`);
+    }
+  } catch (error) {
+    logger.warn(`Broken link check failed: ${error instanceof Error ? error.message : error}`);
   }
 
   // 4.2. Auto-rewrite underperforming posts (when enabled)
@@ -891,6 +1100,93 @@ async function main(): Promise<void> {
     logger.warn(`Time-based/yearly refresh failed: ${error instanceof Error ? error.message : error}`);
   }
 
+  // 4.22b2. Partial data-section refresh (lightweight — updates prices, dates, tables only)
+  try {
+    const freshnessForPartial = history.getPostsByFreshnessScore(14);
+    if (freshnessForPartial.length > 0) {
+      const partialRefreshService = new ContentRefreshService(
+        config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD,
+        config.ANTHROPIC_API_KEY, config.CLAUDE_MODEL,
+      );
+      const partialRefreshed = await partialRefreshService.partialRefreshDataSections(freshnessForPartial, seoService, 3);
+      if (partialRefreshed > 0) {
+        logger.info(`Partial data refresh: Updated data sections in ${partialRefreshed} post(s) without full rewrite`);
+      }
+    }
+  } catch (error) {
+    logger.warn(`Partial data refresh failed: ${error instanceof Error ? error.message : error}`);
+  }
+
+  // 4.22c. Content lifecycle: noindex stale time-sensitive content (>6 months)
+  try {
+    const lifecycleService = new ContentRefreshService(
+      config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD,
+      config.ANTHROPIC_API_KEY, config.CLAUDE_MODEL,
+    );
+    const noindexed = await lifecycleService.noindexStaleContent(history.getAllEntries(), 180);
+    if (noindexed > 0) {
+      logger.info(`Content lifecycle: ${noindexed} stale post(s) noindexed`);
+    }
+  } catch (error) {
+    logger.warn(`Content lifecycle noindex failed: ${error instanceof Error ? error.message : error}`);
+  }
+
+  // 4.22d-pre. Content pruning: auto-archive near-zero engagement stale posts
+  try {
+    const pruneService = new ContentRefreshService(
+      config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD,
+      config.ANTHROPIC_API_KEY, config.CLAUDE_MODEL,
+    );
+    const ga4ForPrune = config.GA4_PROPERTY_ID && config.GOOGLE_INDEXING_SA_KEY
+      ? new GA4AnalyticsService(config.GA4_PROPERTY_ID, config.GOOGLE_INDEXING_SA_KEY)
+      : undefined;
+    const gscForPrune = config.GSC_SITE_URL && config.GOOGLE_INDEXING_SA_KEY
+      ? new GSCAnalyticsService(config.GSC_SITE_URL || config.WP_URL, config.GOOGLE_INDEXING_SA_KEY)
+      : undefined;
+    const pruned = await pruneService.pruneStaleContent(history.getAllEntries(), ga4ForPrune, gscForPrune, 3);
+    if (pruned > 0) {
+      logger.info(`Content pruning: ${pruned} stale post(s) archived (draft + noindex)`);
+      if (config.SLACK_WEBHOOK_URL) {
+        await sendQualityAlert(config.SLACK_WEBHOOK_URL, 'Content Pruning', '', 0, 0, [`${pruned} stale post(s) auto-archived`]);
+      }
+    }
+  } catch (error) {
+    logger.warn(`Content pruning failed: ${error instanceof Error ? error.message : error}`);
+  }
+
+  // 4.22d. Content lifecycle: detect merge candidates (cannibalization reduction)
+  try {
+    const mergeCandidates = ContentRefreshService.detectMergeCandidates(history.getAllEntries());
+    if (mergeCandidates.length > 0) {
+      logger.info(`Content lifecycle: ${mergeCandidates.length} merge candidate(s) detected — review recommended`);
+
+      // Auto-redirect: for very high similarity (≥80%) merge candidates, set 301 redirect
+      // from weaker post (lower engagement) to stronger post
+      const autoRedirectCandidates = mergeCandidates
+        .filter(c => c.similarity >= 0.8 && c.postB.postId)
+        .slice(0, 2); // Max 2 auto-redirects per batch
+
+      for (const c of autoRedirectCandidates) {
+        try {
+          await wpService.updatePostMeta(c.postB.postId, {
+            rank_math_redirection_url_to: c.postA.postUrl,
+            rank_math_redirection_header_code: '301',
+          });
+          logger.info(`Merge auto-redirect: "${c.postB.keyword}" → "${c.postA.keyword}" (${(c.similarity * 100).toFixed(0)}% overlap)`);
+        } catch (redirectErr) {
+          logger.debug(`Merge redirect failed: ${redirectErr instanceof Error ? redirectErr.message : redirectErr}`);
+        }
+      }
+
+      if (config.SLACK_WEBHOOK_URL && mergeCandidates.length > 0) {
+        const mergeMsg = mergeCandidates.slice(0, 3).map(c => c.recommendation).join('\n');
+        await sendQualityAlert(config.SLACK_WEBHOOK_URL, 'Content Merge Candidates', '', 0, 0, [mergeMsg]);
+      }
+    }
+  } catch (error) {
+    logger.warn(`Content merge detection failed: ${error instanceof Error ? error.message : error}`);
+  }
+
   // 4.23. Keyword ranking tracking — store position trends in history
   if (config.GSC_SITE_URL && config.GOOGLE_INDEXING_SA_KEY) {
     try {
@@ -953,10 +1249,64 @@ async function main(): Promise<void> {
           const pageList = c.pages.map(p => `${p.page} (pos ${p.position.toFixed(1)})`).join(' vs ');
           logger.warn(`  MEDIUM [${c.recommendation}]: "${c.query}" — ${pageList}`);
         }
+
+        // Auto-redirect: for high-severity 'redirect' recommendations, set 301 redirect
+        // from weaker page to stronger page (higher clicks = stronger)
+        const redirectCandidates = highSeverity
+          .filter(c => c.recommendation === 'redirect' && c.pages.length >= 2)
+          .slice(0, 2); // Max 2 auto-redirects per batch
+
+        for (const c of redirectCandidates) {
+          const sorted = [...c.pages].sort((a, b) => b.clicks - a.clicks);
+          const strongPage = sorted[0];
+          const weakPage = sorted[1];
+          try {
+            // Find weak post by URL and set Rank Math redirect
+            const weakPost = existingPosts.find(p => weakPage.page.includes(new URL(p.url).pathname));
+            if (weakPost?.postId) {
+              await wpService.updatePostMeta(weakPost.postId, {
+                rank_math_redirection_url_to: strongPage.page,
+                rank_math_redirection_header_code: '301',
+              });
+              logger.info(`Cannibalization auto-redirect: ${weakPage.page} → ${strongPage.page} (query: "${c.query}")`);
+            }
+          } catch (redirectErr) {
+            logger.debug(`Cannibalization redirect failed for "${c.query}": ${redirectErr instanceof Error ? redirectErr.message : redirectErr}`);
+          }
+        }
+
+        // Send Slack alert for cannibalization issues
+        if (config.SLACK_WEBHOOK_URL && (highSeverity.length > 0 || medSeverity.length > 0)) {
+          try {
+            const cannibalSummary = [...highSeverity, ...medSeverity].slice(0, 5)
+              .map(c => `[${c.severity.toUpperCase()}] "${c.query}" → ${c.recommendation} (${c.pages.map(p => `pos ${p.position.toFixed(0)}`).join(' vs ')})`)
+              .join('\n');
+            await axios.post(config.SLACK_WEBHOOK_URL, {
+              text: `*Keyword Cannibalization Alert*\n${cannibalized.length} competing query(ies) detected:\n\`\`\`${cannibalSummary}\`\`\``,
+            });
+          } catch { /* Slack alert non-fatal */ }
+        }
       }
     } catch (error) {
       logger.debug(`Cannibalization detection failed: ${error instanceof Error ? error.message : error}`);
     }
+  }
+
+  // 4.23c-pre. Redirect chain detection — find A→B→C redirect chains that waste crawl budget
+  try {
+    const internalUrls = existingPosts.map(p => p.url).filter(Boolean);
+    if (internalUrls.length > 0) {
+      const chains = await wpService.detectRedirectChains(internalUrls);
+      if (chains.length > 0) {
+        logger.warn(`Redirect chains found: ${chains.length} chain(s) — update internal links to point directly to final URLs`);
+        if (config.SLACK_WEBHOOK_URL) {
+          const chainMsg = chains.slice(0, 3).map(c => `[${c.hops} hops] ${c.originalUrl} → ${c.finalUrl}`).join('\n');
+          await sendQualityAlert(config.SLACK_WEBHOOK_URL, 'Redirect Chain Alert', '', 0, 0, [chainMsg]);
+        }
+      }
+    }
+  } catch (error) {
+    logger.debug(`Redirect chain detection failed: ${error instanceof Error ? error.message : error}`);
   }
 
   // 4.23b. Title pattern CTR analysis (log insights for keyword research optimization)
@@ -1013,7 +1363,7 @@ async function main(): Promise<void> {
               const gscPage = gscPages.find(p => entry.postUrl.includes(p.page.replace(/^https?:\/\/[^/]+/, '')));
               if (gscPage && !entry.titleTestPhaseACtr) {
                 entry.titleTestPhaseACtr = gscPage.ctr;
-                entry.titleTestPhaseATitle = entry.keyword; // Current title
+                entry.titleTestPhaseATitle = entry.originalTitle || entry.keyword; // Original post title
                 await history.persist();
                 logger.debug(`A/B test: Phase A baseline recorded for post ${entry.postId} (CTR: ${(gscPage.ctr * 100).toFixed(1)}%)`);
               }
@@ -1117,6 +1467,30 @@ async function main(): Promise<void> {
     }
   }
 
+  // 4.26. Social proof: update InteractionCounter in JSON-LD with real GA4 pageview data
+  if (config.GA4_PROPERTY_ID && config.GOOGLE_INDEXING_SA_KEY) {
+    try {
+      const ga4Social = new GA4AnalyticsService(config.GA4_PROPERTY_ID, config.GOOGLE_INDEXING_SA_KEY);
+      const topPostsForSocial = await ga4Social.getTopPerformingPosts(100);
+      const postPerformance = topPostsForSocial
+        .filter(p => p.pageviews >= 10)
+        .map(p => {
+          const entry = history.getAllEntries().find(e => e.postUrl && p.url.includes(e.postUrl.replace(/^https?:\/\/[^/]+/, '')));
+          return entry?.postId ? { postId: entry.postId, pageviews: p.pageviews } : null;
+        })
+        .filter((p): p is { postId: number; pageviews: number } => p !== null);
+
+      if (postPerformance.length > 0) {
+        const socialUpdated = await wpService.updateSocialProofSignals(postPerformance);
+        if (socialUpdated > 0) {
+          logger.info(`Social proof: Updated InteractionCounter for ${socialUpdated} post(s) with real pageview data`);
+        }
+      }
+    } catch (error) {
+      logger.debug(`Social proof update failed: ${error instanceof Error ? error.message : error}`);
+    }
+  }
+
   // 4.3. Post-publish indexing verification (check posts from last 7 days)
   try {
     const recentEntries = history.getRecentEntries(7);
@@ -1151,8 +1525,16 @@ async function main(): Promise<void> {
     results,
   };
 
-  // API cost summary
+  // API cost summary + revenue estimate
   costTracker.logSummary();
+  // Revenue estimation based on published posts per niche
+  const postsByNiche: Record<string, number> = {};
+  for (const entry of history.getAllEntries()) {
+    const nicheConfig = NICHES.find(n => n.id === entry.niche);
+    const category = nicheConfig?.category || 'Unknown';
+    postsByNiche[category] = (postsByNiche[category] || 0) + 1;
+  }
+  costTracker.logRevenueEstimate(postsByNiche);
 
   logger.info('\n=== Batch Summary ===');
   logger.info(`Total: ${batch.totalKeywords} | Success: ${batch.successCount} | Failed: ${batch.failureCount} | Skipped: ${batch.skippedCount}`);

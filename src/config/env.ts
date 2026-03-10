@@ -18,6 +18,8 @@ const envSchema = z.object({
   NAVER_SITE_VERIFICATION: z.string().default(''),
   INDEXNOW_KEY: z.string().default(''),
   CLAUDE_MODEL: z.string().default('claude-sonnet-4-6'),
+  // Separate model for keyword research (cost optimization: use haiku for research, sonnet for content)
+  CLAUDE_RESEARCH_MODEL: z.string().default(''),
   POST_COUNT: z.coerce.number().int().min(1).default(1),
   // X (Twitter) - optional, all four must be set to enable promotion
   X_API_KEY: z.string().default(''),
@@ -68,6 +70,9 @@ const envSchema = z.object({
   // e.g., "korean-tech-ai,korean-finance-stocks,k-beauty-skincare"
   // When set, only these niches are used (ignoring others). Clear after cluster is built.
   NICHE_FOCUS_IDS: z.string().default(''),
+  // Korean content generation: enable hreflang Korean versions of published posts
+  // Set to 'true' to generate Korean versions after English posts are published
+  ENABLE_KOREAN_CONTENT: z.enum(['true', 'false']).default('false'),
 });
 
 export type AppConfig = z.infer<typeof envSchema>;

@@ -14,6 +14,9 @@ const NOINDEX_THIN_SNIPPET_TITLE = 'Auto Blog Noindex Thin Pages';
 const RSS_OPTIMIZATION_SNIPPET_TITLE = 'Auto Blog RSS Feed Optimization';
 const IMAGE_SITEMAP_SNIPPET_TITLE = 'Auto Blog Image Sitemap Enhancement';
 const POST_CSS_SNIPPET_TITLE = 'Auto Blog Post Styles';
+const SITEMAP_PRIORITY_SNIPPET_TITLE = 'Auto Blog Sitemap Priority';
+const NEWS_SITEMAP_SNIPPET_TITLE = 'Auto Blog News Sitemap';
+const VIDEO_SITEMAP_SNIPPET_TITLE = 'Auto Blog Video Sitemap';
 
 export class SeoService {
   private api: AxiosInstance;
@@ -115,7 +118,14 @@ export class SeoService {
     if (gaMeasurementId) {
       parts.push(`<!-- Google Analytics 4 -->`);
       parts.push(`<script async src="https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}"></script>`);
-      parts.push(`<script>\nwindow.dataLayer = window.dataLayer || [];\nfunction gtag(){dataLayer.push(arguments);}\ngtag('js', new Date());\ngtag('config', '${gaMeasurementId}');\n</script>`);
+      parts.push(`<script>\nwindow.dataLayer = window.dataLayer || [];\nfunction gtag(){dataLayer.push(arguments);}\ngtag('js', new Date());\ngtag('config', '${gaMeasurementId}');\n` +
+        `/* Micro-conversion tracking: scroll depth, share clicks, engaged reader */\n` +
+        `document.addEventListener('DOMContentLoaded',function(){` +
+        `var st=0;window.addEventListener('scroll',function(){var h=document.documentElement.scrollHeight-window.innerHeight;if(h>0){var p=Math.round(window.scrollY/h*100);if(p>=25&&st<25){st=25;gtag('event','scroll_depth',{percent:25})}if(p>=50&&st<50){st=50;gtag('event','scroll_depth',{percent:50})}if(p>=75&&st<75){st=75;gtag('event','scroll_depth',{percent:75})}if(p>=90&&st<90){st=90;gtag('event','scroll_depth',{percent:90})}}});` +
+        `document.querySelectorAll('.ab-share-btn').forEach(function(b){b.addEventListener('click',function(){gtag('event','share',{method:b.textContent.trim()})})});` +
+        `var t=setTimeout(function(){gtag('event','engaged_reader',{engagement_time:30})},30000);` +
+        `document.addEventListener('visibilitychange',function(){if(document.hidden)clearTimeout(t)});` +
+        `});\n</script>`);
     }
 
     const headerHtml = parts.join('\n');
@@ -1000,6 +1010,97 @@ add_filter('wp_sitemaps_posts_entry', function(\$entry, \$post) {
   }
 
   /**
+   * Set XML sitemap priority and changefreq based on content freshness class.
+   * Evergreen content gets higher priority (0.8) with monthly changefreq,
+   * seasonal gets medium (0.6) with weekly, time-sensitive gets lower (0.4) with daily.
+   * Uses _autoblog_freshness_class post meta set during publishing.
+   */
+  async ensureSitemapPrioritySnippet(): Promise<void> {
+    const phpCode = `
+// Register freshness class meta for REST API
+add_action('init', function() {
+    register_post_meta('post', '_autoblog_freshness_class', [
+        'show_in_rest' => true,
+        'single' => true,
+        'type' => 'string',
+        'sanitize_callback' => 'sanitize_text_field',
+    ]);
+});
+
+// Adjust Rank Math sitemap priority based on content freshness class
+add_filter('rank_math/sitemap/entry', function(\$entry, \$type, \$post) {
+    if (\$type !== 'post' || !isset(\$post->ID)) return \$entry;
+
+    \$freshness = get_post_meta(\$post->ID, '_autoblog_freshness_class', true);
+    if (!\$freshness) \$freshness = 'seasonal'; // default
+
+    switch (\$freshness) {
+        case 'evergreen':
+            \$entry['priority'] = 0.8;
+            \$entry['changefreq'] = 'monthly';
+            break;
+        case 'seasonal':
+            \$entry['priority'] = 0.6;
+            \$entry['changefreq'] = 'weekly';
+            break;
+        case 'time-sensitive':
+            \$entry['priority'] = 0.4;
+            \$entry['changefreq'] = 'daily';
+            break;
+    }
+
+    // Boost recently updated posts
+    \$modified = strtotime(\$post->post_modified);
+    if (\$modified && (time() - \$modified) < 7 * DAY_IN_SECONDS) {
+        \$entry['priority'] = min(1.0, \$entry['priority'] + 0.1);
+    }
+
+    return \$entry;
+}, 10, 3);
+
+// Also hook into WordPress native sitemap for non-Rank Math setups
+add_filter('wp_sitemaps_posts_entry', function(\$entry, \$post) {
+    \$freshness = get_post_meta(\$post->ID, '_autoblog_freshness_class', true);
+    if (!\$freshness) return \$entry;
+
+    \$priority_map = ['evergreen' => 0.8, 'seasonal' => 0.6, 'time-sensitive' => 0.4];
+    if (isset(\$priority_map[\$freshness])) {
+        \$entry['priority'] = \$priority_map[\$freshness];
+    }
+    return \$entry;
+}, 10, 2);`.trim();
+
+    try {
+      const { data: snippets } = await axios.get(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      const existing = (snippets as Array<{ id: number; name: string }>)
+        .find((s) => s.name === SITEMAP_PRIORITY_SNIPPET_TITLE);
+
+      if (existing) {
+        await axios.put(
+          `${this.wpUrl}/wp-json/code-snippets/v1/snippets/${existing.id}`,
+          { code: phpCode, active: true },
+          { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+        );
+        logger.info(`Sitemap priority snippet updated (ID=${existing.id})`);
+        return;
+      }
+
+      await axios.post(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { name: SITEMAP_PRIORITY_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 5 },
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      logger.info('Sitemap priority snippet installed via Code Snippets plugin');
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      logger.warn(`Failed to install sitemap priority snippet: ${msg}`);
+    }
+  }
+
+  /**
    * Ensure post content CSS is loaded site-wide via Code Snippets plugin.
    * Eliminates per-post inline <style> duplication (~3KB savings per post).
    */
@@ -1113,6 +1214,14 @@ add_action('wp_head', function() {
 </style>';
 echo '<script>
 (function(){if(!document.querySelector(".post-content"))return;var b=document.createElement("div");b.className="ab-progress";document.body.appendChild(b);window.addEventListener("scroll",function(){var h=document.documentElement.scrollHeight-window.innerHeight;b.style.width=h>0?Math.min(100,(window.scrollY/h)*100)+"%":"0%"})})();
+// GA4 conversion tracking for CTAs, share buttons, and affiliate links
+(function(){if(typeof gtag!=="function")return;
+document.addEventListener("click",function(e){var t=e.target.closest("a");if(!t)return;var h=t.getAttribute("href")||"";
+if(t.closest(".ab-cta-share")){gtag("event","social_share",{event_category:"engagement",event_label:h.includes("twitter")?"twitter":h.includes("linkedin")?"linkedin":"facebook",content_type:"blog_post"})}
+else if(t.closest(".ab-cta-newsletter,.ab-cta")){gtag("event","cta_click",{event_category:"engagement",event_label:t.textContent.trim().substring(0,50)})}
+else if(t.getAttribute("rel")&&t.getAttribute("rel").includes("sponsored")){gtag("event","affiliate_click",{event_category:"monetization",event_label:t.textContent.trim().substring(0,50),link_url:h})}
+else if(t.closest(".ab-related-card")){gtag("event","related_post_click",{event_category:"engagement",event_label:t.textContent.trim().substring(0,80)})}
+})})();
 </script>';
 });`.trim();
 
@@ -1299,5 +1408,180 @@ echo '<script>
     logger.warn('Paste the following into the "Header" section:');
     logger.warn(headerHtml);
     logger.warn('============================');
+  }
+
+  /**
+   * Add Google News Sitemap for news-explainer content type.
+   * Generates a separate /news-sitemap.xml with posts published in the last 48 hours
+   * that have _autoblog_content_type = 'news-explainer'.
+   * Required for Google News inclusion and Discover news carousel.
+   */
+  async ensureNewsSitemapSnippet(): Promise<void> {
+    const phpCode = `
+// Google News Sitemap for news-explainer content
+add_action('init', function() {
+    add_rewrite_rule('^news-sitemap\\.xml$', 'index.php?autoblog_news_sitemap=1', 'top');
+});
+
+add_filter('query_vars', function(\$vars) {
+    \$vars[] = 'autoblog_news_sitemap';
+    return \$vars;
+});
+
+add_action('template_redirect', function() {
+    if (!get_query_var('autoblog_news_sitemap')) return;
+
+    header('Content-Type: application/xml; charset=UTF-8');
+    header('X-Robots-Tag: noindex');
+
+    echo '<?xml version="1.0" encoding="UTF-8"?>';
+    echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">';
+
+    // Fetch posts from last 48 hours (Google News requirement)
+    \$args = [
+        'post_type' => 'post',
+        'post_status' => 'publish',
+        'posts_per_page' => 50,
+        'date_query' => [['after' => '48 hours ago']],
+        'meta_query' => [
+            'relation' => 'OR',
+            ['key' => '_autoblog_content_type', 'value' => 'news-explainer', 'compare' => '='],
+            ['key' => '_autoblog_content_type', 'value' => 'analysis', 'compare' => '='],
+        ],
+    ];
+
+    \$query = new WP_Query(\$args);
+    \$site_name = get_bloginfo('name');
+
+    while (\$query->have_posts()) {
+        \$query->the_post();
+        \$post_date = get_the_date('Y-m-d\\TH:i:sP');
+        \$title = htmlspecialchars(get_the_title(), ENT_XML1, 'UTF-8');
+        \$lang = get_post_meta(get_the_ID(), '_autoblog_language', true) ?: 'en';
+        \$keywords = get_post_meta(get_the_ID(), 'rank_math_focus_keyword', true);
+        \$kw_tag = \$keywords ? '<news:keywords>' . htmlspecialchars(\$keywords, ENT_XML1, 'UTF-8') . '</news:keywords>' : '';
+
+        echo '<url>';
+        echo '<loc>' . get_permalink() . '</loc>';
+        echo '<news:news>';
+        echo '<news:publication>';
+        echo '<news:name>' . htmlspecialchars(\$site_name, ENT_XML1, 'UTF-8') . '</news:name>';
+        echo '<news:language>' . \$lang . '</news:language>';
+        echo '</news:publication>';
+        echo '<news:publication_date>' . \$post_date . '</news:publication_date>';
+        echo '<news:title>' . \$title . '</news:title>';
+        echo \$kw_tag;
+        echo '</news:news>';
+        echo '</url>';
+    }
+    wp_reset_postdata();
+
+    echo '</urlset>';
+    exit;
+});
+
+// Flush rewrite rules on activation
+if (get_option('autoblog_news_sitemap_flush') !== '1') {
+    flush_rewrite_rules();
+    update_option('autoblog_news_sitemap_flush', '1');
+}`.trim();
+
+    try {
+      const { data: snippets } = await axios.get(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      const existing = (snippets as Array<{ id: number; name: string }>)
+        .find((s) => s.name === NEWS_SITEMAP_SNIPPET_TITLE);
+
+      if (existing) {
+        await axios.put(
+          `${this.wpUrl}/wp-json/code-snippets/v1/snippets/${existing.id}`,
+          { code: phpCode, active: true },
+          { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+        );
+        logger.info(`News sitemap snippet updated (ID=${existing.id})`);
+        return;
+      }
+
+      await axios.post(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { name: NEWS_SITEMAP_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 10 },
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      logger.info('News sitemap snippet installed via Code Snippets plugin');
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      logger.warn(`Failed to install news sitemap snippet: ${msg}`);
+    }
+  }
+
+  /**
+   * Add Video Sitemap enhancement for posts with YouTube embeds.
+   * Extends wp-sitemap.xml with video:video entries for embedded YouTube content.
+   * Improves video search visibility and Google Video carousel eligibility.
+   */
+  async ensureVideoSitemapSnippet(): Promise<void> {
+    const phpCode = `
+// Add video entries to WordPress native wp-sitemap.xml for posts with YouTube embeds
+add_filter('wp_sitemaps_posts_entry', function(\$entry, \$post) {
+    \$content = \$post->post_content;
+
+    // Detect YouTube embeds (iframe and oembed formats)
+    \$youtube_pattern = '/(?:<iframe[^>]*src=["\\']*https?:\\/\\/(?:www\\.)?youtube\\.com\\/embed\\/([a-zA-Z0-9_-]+)|https?:\\/\\/(?:www\\.)?youtube\\.com\\/watch\\?v=([a-zA-Z0-9_-]+))/i';
+    if (!preg_match_all(\$youtube_pattern, \$content, \$matches)) return \$entry;
+
+    \$video_ids = array_filter(array_merge(\$matches[1] ?? [], \$matches[2] ?? []));
+    if (empty(\$video_ids)) return \$entry;
+
+    \$videos = [];
+    \$title = get_the_title(\$post->ID);
+    \$excerpt = get_the_excerpt(\$post->ID) ?: wp_trim_words(wp_strip_all_tags(\$content), 30);
+
+    foreach (array_unique(array_slice(\$video_ids, 0, 3)) as \$vid) {
+        \$videos[] = [
+            'video:thumbnail_loc' => 'https://img.youtube.com/vi/' . \$vid . '/maxresdefault.jpg',
+            'video:title' => htmlspecialchars(\$title, ENT_XML1, 'UTF-8'),
+            'video:description' => htmlspecialchars(\$excerpt, ENT_XML1, 'UTF-8'),
+            'video:content_loc' => 'https://www.youtube.com/watch?v=' . \$vid,
+            'video:player_loc' => 'https://www.youtube.com/embed/' . \$vid,
+        ];
+    }
+
+    if (!empty(\$videos)) {
+        \$entry['video:video'] = \$videos;
+    }
+
+    return \$entry;
+}, 10, 2);`.trim();
+
+    try {
+      const { data: snippets } = await axios.get(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      const existing = (snippets as Array<{ id: number; name: string }>)
+        .find((s) => s.name === VIDEO_SITEMAP_SNIPPET_TITLE);
+
+      if (existing) {
+        await axios.put(
+          `${this.wpUrl}/wp-json/code-snippets/v1/snippets/${existing.id}`,
+          { code: phpCode, active: true },
+          { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+        );
+        logger.info(`Video sitemap snippet updated (ID=${existing.id})`);
+        return;
+      }
+
+      await axios.post(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { name: VIDEO_SITEMAP_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 10 },
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      logger.info('Video sitemap enhancement snippet installed via Code Snippets plugin');
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      logger.warn(`Failed to install video sitemap snippet: ${msg}`);
+    }
   }
 }
