@@ -1,25 +1,14 @@
 {
   "version": "1.0",
-  "enabled": true,
+  "enabled": false,
   "teamName": "",
   "feature": "auto-blog-wordpress",
   "pdcaPhase": "do",
   "orchestrationPattern": "leader",
   "ctoAgent": "opus",
-  "startedAt": "2026-03-10T02:02:54.692Z",
-  "lastUpdated": "2026-03-10T02:04:20.795Z",
-  "teammates": [
-    {
-      "name": "ada77e03c98b6f3e9",
-      "role": "Explore",
-      "model": "sonnet",
-      "status": "completed",
-      "currentTask": null,
-      "taskId": null,
-      "startedAt": "2026-03-10T02:02:54.693Z",
-      "lastActivityAt": "2026-03-10T02:04:20.793Z"
-    }
-  ],
+  "startedAt": "2026-03-10T08:01:55.231Z",
+  "lastUpdated": "2026-03-10T08:14:36.492Z",
+  "teammates": [],
   "progress": {
     "totalTasks": 0,
     "completedTasks": 0,
@@ -28,5 +17,5 @@
     "pendingTasks": 0
   },
   "recentMessages": [],
-  "sessionId": "21c903b5-93b8-440c-8d5b-6f0eb37e81e2"
+  "sessionId": "3b36c088-b14b-4174-b116-0f0cf1e091fd"
 }

@@ -59,7 +59,15 @@
       "WebFetch(domain:ai.google.dev)",
       "Bash(git log --oneline --all -5 | xargs -I {} bash -c \"echo '=== {} ===' && git show --stat {} 2>/dev/null | head -20\")",
       "Bash(du -sh /home/trendhunt/workspace/auto-blog-wordpress/src/* | sort -rh)",
-      "Bash(wc -l /home/trendhunt/workspace/auto-blog-wordpress/src/index.ts /home/trendhunt/workspace/auto-blog-wordpress/src/services/*.ts | head -20)"
+      "Bash(wc -l /home/trendhunt/workspace/auto-blog-wordpress/src/index.ts /home/trendhunt/workspace/auto-blog-wordpress/src/services/*.ts | head -20)",
+      "Bash(wc -l /home/trendhunt/workspace/auto-blog-wordpress/src/services/*.ts /home/trendhunt/workspace/auto-blog-wordpress/src/utils/*.ts | tail -1)",
+      "Bash(pip install exchange_calendars)",
+      "Bash(find /home/trendhunt/workspace/auto-blog-wordpress/.github -type f | sort 2>/dev/null; find /home/trendhunt/workspace/auto-blog-wordpress -maxdepth 2 -name \"*.json\" | grep -v node_modules | sort)",
+      "Bash(ls -la /home/trendhunt/workspace/auto-blog-wordpress/src/services/*.service.ts | wc -l)",
+      "Bash(gh secret set AUTHOR_WEBSITE --body \"https://trendhunt.net\")",
+      "Bash(gh secret set TELEGRAM_BOT_TOKEN --body \"8670344162:AAHM5qD5IY1k720t69srhpKTTeMQ9ruieFw\")",
+      "Bash(gh secret set TELEGRAM_CHAT_ID --body \"8747376563\")",
+      "Bash(gh secret set YOUTUBE_API_KEY --body \"AIzaSyBK5qeWMfibg9SNKOHEF0G6how_lcfYCzw\")"
     ]
   }
 }
