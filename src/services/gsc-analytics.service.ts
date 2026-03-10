@@ -119,18 +119,18 @@ export class GSCAnalyticsService {
   }
 
   /**
-   * Find declining pages: compare last 7 days vs previous 21 days.
-   * Pages with significantly lower clicks/impressions recently may need updating.
+   * Find declining pages: compare last 14 days vs previous 42 days.
+   * Uses wider windows to reduce noise from weekly fluctuations.
    */
   async getDecliningPages(): Promise<Array<GSCPageData & { trend: 'declining' | 'stable' }>> {
     try {
       const accessToken = await this.getAccessToken();
 
-      // Recent period (last 7 days)
+      // Recent period (last 14 days)
       const { data: recentData } = await axios.post(
         `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(this.siteUrl)}/searchAnalytics/query`,
         {
-          startDate: this.getDateString(-7),
+          startDate: this.getDateString(-14),
           endDate: this.getDateString(-1),
           dimensions: ['page'],
           rowLimit: 100,
@@ -138,12 +138,12 @@ export class GSCAnalyticsService {
         { headers: { Authorization: `Bearer ${accessToken}` }, timeout: 15000 },
       );
 
-      // Previous period (8-28 days ago)
+      // Previous period (15-56 days ago, 42-day window)
       const { data: previousData } = await axios.post(
         `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(this.siteUrl)}/searchAnalytics/query`,
         {
-          startDate: this.getDateString(-28),
-          endDate: this.getDateString(-8),
+          startDate: this.getDateString(-56),
+          endDate: this.getDateString(-15),
           dimensions: ['page'],
           rowLimit: 100,
         },
@@ -159,9 +159,9 @@ export class GSCAnalyticsService {
       for (const recent of recentRows) {
         const prev = previousMap.get(recent.keys[0]);
         if (prev) {
-          // Normalize: previous period is 21 days, recent is 7 days
-          const prevDailyClicks = prev.clicks / 21;
-          const recentDailyClicks = recent.clicks / 7;
+          // Normalize: previous period is 42 days, recent is 14 days
+          const prevDailyClicks = prev.clicks / 42;
+          const recentDailyClicks = recent.clicks / 14;
           if (prevDailyClicks > 0 && recentDailyClicks / prevDailyClicks < 0.5) {
             declining.push({
               page: recent.keys[0],
@@ -200,11 +200,11 @@ export class GSCAnalyticsService {
     try {
       const accessToken = await this.getAccessToken();
 
-      // Recent period (last 7 days) — query+page dimension for specific page tracking
+      // Recent period (last 14 days) — query+page dimension for specific page tracking
       const { data: recentData } = await axios.post(
         `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(this.siteUrl)}/searchAnalytics/query`,
         {
-          startDate: this.getDateString(-7),
+          startDate: this.getDateString(-14),
           endDate: this.getDateString(-1),
           dimensions: ['query', 'page'],
           rowLimit: 200,
@@ -212,12 +212,12 @@ export class GSCAnalyticsService {
         { headers: { Authorization: `Bearer ${accessToken}` }, timeout: 15000 },
       );
 
-      // Previous period (8-28 days ago)
+      // Previous period (15-56 days ago, 42-day window)
       const { data: previousData } = await axios.post(
         `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(this.siteUrl)}/searchAnalytics/query`,
         {
-          startDate: this.getDateString(-28),
-          endDate: this.getDateString(-8),
+          startDate: this.getDateString(-56),
+          endDate: this.getDateString(-15),
           dimensions: ['query', 'page'],
           rowLimit: 200,
         },
@@ -241,7 +241,7 @@ export class GSCAnalyticsService {
         if (!prev) continue;
 
         const positionDelta = recent.position - prev.position; // positive = worse
-        const impressionsStable = recent.impressions >= prev.impressions * 0.3; // adjusted for 7d vs 21d
+        const impressionsStable = recent.impressions >= prev.impressions * 0.25; // adjusted for 14d vs 42d
 
         // Threat: position dropped 3+ places while impressions remain stable
         if (positionDelta >= 3 && impressionsStable && recent.impressions >= 5) {
@@ -591,6 +591,100 @@ export class GSCAnalyticsService {
       logger.warn(`Content gap detection failed: ${error instanceof Error ? error.message : error}`);
       return [];
     }
+  }
+
+  /**
+   * Detect featured snippet opportunities: high-impression queries at positions 2-10
+   * where we could target position zero with optimized content structure.
+   */
+  async getFeaturedSnippetOpportunities(): Promise<Array<{
+    query: string;
+    position: number;
+    impressions: number;
+    ctr: number;
+    snippetType: 'paragraph' | 'list' | 'table';
+  }>> {
+    try {
+      const queries = await this.getTopQueries(300);
+      const opportunities = queries
+        .filter(q => q.position >= 2 && q.position <= 10 && q.impressions >= 20)
+        .map(q => {
+          // Infer snippet type from query pattern
+          const qLower = q.query.toLowerCase();
+          let snippetType: 'paragraph' | 'list' | 'table' = 'paragraph';
+          if (/^(?:what is|what are|who is|why|how does|what does)/i.test(qLower)) {
+            snippetType = 'paragraph'; // Definition-style snippet
+          } else if (/^(?:best|top|how to|steps|ways to|tips)/i.test(qLower)) {
+            snippetType = 'list'; // List snippet
+          } else if (/(?:vs|versus|comparison|compared|difference)/i.test(qLower)) {
+            snippetType = 'table'; // Table snippet
+          }
+          return { query: q.query, position: q.position, impressions: q.impressions, ctr: q.ctr, snippetType };
+        })
+        .sort((a, b) => b.impressions - a.impressions)
+        .slice(0, 15);
+
+      if (opportunities.length > 0) {
+        logger.info(`Featured snippet opportunities: ${opportunities.length} queries at positions 2-10 with high impressions`);
+      }
+      return opportunities;
+    } catch (error) {
+      logger.warn(`Featured snippet detection failed: ${error instanceof Error ? error.message : error}`);
+      return [];
+    }
+  }
+
+  /**
+   * Detect ranking milestones by comparing current positions with history.
+   * Returns events like "hit #1", "entered top 3", "dropped from top 10".
+   */
+  static detectRankingMilestones(
+    entries: Array<{
+      keyword: string;
+      postUrl: string;
+      lastPosition?: number;
+      rankingHistory?: Array<{ date: string; position: number }>;
+    }>,
+    currentRankings: Array<{ url: string; keyword: string; position: number }>,
+  ): Array<{
+    keyword: string;
+    postUrl: string;
+    event: 'hit-top1' | 'hit-top3' | 'hit-top10' | 'dropped-from-top10';
+    previousPosition: number;
+    currentPosition: number;
+  }> {
+    const milestones: Array<{
+      keyword: string; postUrl: string;
+      event: 'hit-top1' | 'hit-top3' | 'hit-top10' | 'dropped-from-top10';
+      previousPosition: number; currentPosition: number;
+    }> = [];
+
+    for (const ranking of currentRankings) {
+      const entry = entries.find(e => e.postUrl === ranking.url);
+      if (!entry || !entry.lastPosition) continue;
+
+      const prev = entry.lastPosition;
+      const curr = ranking.position;
+
+      // Hit #1
+      if (curr <= 1.5 && prev > 1.5) {
+        milestones.push({ keyword: ranking.keyword, postUrl: ranking.url, event: 'hit-top1', previousPosition: prev, currentPosition: curr });
+      }
+      // Hit top 3
+      else if (curr <= 3 && prev > 3) {
+        milestones.push({ keyword: ranking.keyword, postUrl: ranking.url, event: 'hit-top3', previousPosition: prev, currentPosition: curr });
+      }
+      // Hit top 10
+      else if (curr <= 10 && prev > 10) {
+        milestones.push({ keyword: ranking.keyword, postUrl: ranking.url, event: 'hit-top10', previousPosition: prev, currentPosition: curr });
+      }
+      // Dropped from top 10
+      else if (curr > 10 && prev <= 10) {
+        milestones.push({ keyword: ranking.keyword, postUrl: ranking.url, event: 'dropped-from-top10', previousPosition: prev, currentPosition: curr });
+      }
+    }
+
+    return milestones;
   }
 
   private getDateString(daysOffset: number): string {

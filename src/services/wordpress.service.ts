@@ -290,9 +290,9 @@ export class WordPressService {
     'google.com', 'youtube.com', 'wikipedia.org',
   ]);
 
-  /** Domain-level URL validation cache (24h TTL) */
+  /** Domain-level URL validation cache (72h TTL — domains rarely go offline) */
   private static domainValidationCache = new Map<string, { valid: boolean; timestamp: number }>();
-  private static readonly DOMAIN_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
+  private static readonly DOMAIN_CACHE_TTL_MS = 72 * 60 * 60 * 1000;
 
   /**
    * Validate external links in HTML content:
@@ -353,45 +353,54 @@ export class WordPressService {
       remainingLinks.push({ full: match[0], url: match[1], text: match[2] });
     }
 
-    const results = await Promise.allSettled(
-      remainingLinks.map(async (link) => {
-        // Check domain-level cache first
-        try {
-          const domain = new URL(link.url).hostname.replace(/^www\./, '');
-          const cached = WordPressService.domainValidationCache.get(domain);
-          if (cached && Date.now() - cached.timestamp < WordPressService.DOMAIN_CACHE_TTL_MS) {
-            return { ...link, ok: cached.valid };
-          }
-        } catch { /* continue to HEAD check */ }
-
-        try {
-          await axios.head(link.url, { timeout: 3000, maxRedirects: 3 });
-          this.cacheDomainValidation(link.url, true);
-          return { ...link, ok: true };
-        } catch (headErr) {
-          if (axios.isAxiosError(headErr) && !headErr.response) {
-            this.cacheDomainValidation(link.url, true);
-            return { ...link, ok: true }; // Timeout = likely valid
-          }
+    // Check links with concurrency limit of 5 to avoid overwhelming servers
+    const CONCURRENCY = 5;
+    const allResults: Array<{ full: string; url: string; text: string; ok: boolean }> = [];
+    for (let i = 0; i < remainingLinks.length; i += CONCURRENCY) {
+      const batch = remainingLinks.slice(i, i + CONCURRENCY);
+      const results = await Promise.allSettled(
+        batch.map(async (link) => {
+          // Check domain-level cache first
           try {
-            await axios.get(link.url, { timeout: 3000, maxRedirects: 3, headers: { Range: 'bytes=0-0' } });
-            this.cacheDomainValidation(link.url, true);
-            return { ...link, ok: true };
-          } catch (getErr) {
-            if (axios.isAxiosError(getErr) && getErr.response && getErr.response.status >= 400) {
-              this.cacheDomainValidation(link.url, false);
-              return { ...link, ok: false };
+            const domain = new URL(link.url).hostname.replace(/^www\./, '');
+            const cached = WordPressService.domainValidationCache.get(domain);
+            if (cached && Date.now() - cached.timestamp < WordPressService.DOMAIN_CACHE_TTL_MS) {
+              return { ...link, ok: cached.valid };
             }
+          } catch { /* continue to HEAD check */ }
+
+          try {
+            await axios.head(link.url, { timeout: 3000, maxRedirects: 3 });
             this.cacheDomainValidation(link.url, true);
             return { ...link, ok: true };
+          } catch (headErr) {
+            if (axios.isAxiosError(headErr) && !headErr.response) {
+              this.cacheDomainValidation(link.url, true);
+              return { ...link, ok: true }; // Timeout = likely valid
+            }
+            try {
+              await axios.get(link.url, { timeout: 3000, maxRedirects: 3, headers: { Range: 'bytes=0-0' } });
+              this.cacheDomainValidation(link.url, true);
+              return { ...link, ok: true };
+            } catch (getErr) {
+              if (axios.isAxiosError(getErr) && getErr.response && getErr.response.status >= 400) {
+                this.cacheDomainValidation(link.url, false);
+                return { ...link, ok: false };
+              }
+              this.cacheDomainValidation(link.url, true);
+              return { ...link, ok: true };
+            }
           }
-        }
-      }),
-    );
+        }),
+      );
+      for (const result of results) {
+        if (result.status === 'fulfilled') allResults.push(result.value);
+      }
+    }
 
-    for (const result of results) {
-      if (result.status === 'fulfilled' && !result.value.ok) {
-        const { full, text, url } = result.value;
+    for (const result of allResults) {
+      if (!result.ok) {
+        const { full, text, url } = result;
         logger.warn(`Broken external link removed: ${url}`);
         updatedHtml = updatedHtml.replace(full, text);
       }
@@ -492,6 +501,9 @@ html{scroll-behavior:smooth;scroll-padding-top:60px}
 .ab-series-nav{margin:24px 0;padding:16px 20px;background:#f8f9fa;border:1px solid #e5e7eb;border-radius:10px}
 .ab-affiliate-disclosure{margin:0 0 20px 0;padding:12px 16px;background:#fff8e1;border:1px solid #ffe082;border-radius:8px;font-size:12px;color:#666;line-height:1.5}
 .ab-progress{position:fixed;top:0;left:0;width:0;height:3px;background:linear-gradient(90deg,#0052CC,#0066FF);z-index:99999;transition:width 0.1s linear}
+.ab-data-chart{margin:24px 0;text-align:center}
+.ab-data-chart svg{max-width:100%;height:auto;border-radius:8px}
+.ab-lead-magnet{margin:24px 0;padding:20px 24px;background:linear-gradient(135deg,#f0f4ff,#e8f0fe);border:2px solid #0066FF;border-radius:12px;text-align:center}
 .ab-breadcrumb{margin:0 0 16px 0;font-size:13px;color:#888;line-height:1.5}
 .ab-breadcrumb a{color:#0066FF;text-decoration:none}
 .ab-breadcrumb a:hover{text-decoration:underline}
@@ -587,6 +599,12 @@ html{scroll-behavior:smooth;scroll-padding-top:60px}
         p.category.toLowerCase() === currentCategory.toLowerCase() &&
         p.title !== currentTitle,
       )
+      // Sort by recency (most recent first) for freshness
+      .sort((a, b) => {
+        const dateA = a.publishedAt ? new Date(a.publishedAt).getTime() : 0;
+        const dateB = b.publishedAt ? new Date(b.publishedAt).getTime() : 0;
+        return dateB - dateA;
+      })
       .slice(0, 3);
 
     // Cross-niche: pick 1 post from a related category for link diversity
@@ -608,9 +626,13 @@ html{scroll-behavior:smooth;scroll-padding-top:60px}
         const categoryLabel = this.escapeHtml(p.category);
         const isCrossNiche = p.category.toLowerCase() !== currentCategory.toLowerCase();
         const badge = isCrossNiche ? '<span style="display:inline-block;padding:1px 6px;background:#e8f5e9;color:#2e7d32;border-radius:4px;font-size:10px;margin-left:4px;">Related</span>' : '';
+        const dateStr = p.publishedAt
+          ? new Date(p.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+          : '';
+        const dateLine = dateStr ? `<p style="margin:6px 0 0 0; font-size:11px; color:#999;">${dateStr}</p>` : '';
         return `<a href="${p.url}" class="ab-related-card">
 <p style="margin:0 0 6px 0; font-size:11px; font-weight:600; color:#0066FF; text-transform:uppercase; letter-spacing:0.5px;">${categoryLabel}${badge}</p>
-<p style="margin:0; font-size:15px; font-weight:600; color:#222; line-height:1.4;">${this.escapeHtml(shortTitle)}</p></a>`;
+<p style="margin:0; font-size:15px; font-weight:600; color:#222; line-height:1.4;">${this.escapeHtml(shortTitle)}</p>${dateLine}</a>`;
       })
       .join('\n');
 
@@ -787,7 +809,8 @@ ${leadMagnetHtml}<p style="margin:0 0 14px 0; font-size:14px; color:rgba(255,255
 
     return `<div class="ab-cta ab-cta-engagement">
 <p style="margin:0 0 8px 0; font-size:18px; font-weight:700; color:#222;">Join the Discussion</p>
-<p style="margin:0; font-size:15px; color:#555; line-height:1.6;">${this.escapeHtml(question)}</p></div>`;
+<p style="margin:0; font-size:15px; color:#555; line-height:1.6;">${this.escapeHtml(question)}</p>
+<p style="margin:8px 0 0 0;"><a href="#respond" style="color:#0066FF; font-weight:600; text-decoration:none;">Leave a comment below &darr;</a></p></div>`;
   }
 
   /**
@@ -836,6 +859,42 @@ ${socialHtml}
   }
 
   /**
+   * Inject lead magnet callout at approximately 60% of the content.
+   * Uses the niche-specific lead magnets from NICHE_LEAD_MAGNETS.
+   */
+  injectLeadMagnetMention(html: string, category: string): string {
+    const leadMagnet = WordPressService.NICHE_LEAD_MAGNETS[category];
+    if (!leadMagnet) return html;
+
+    const calloutHtml = `<div class="ab-lead-magnet" style="margin:24px 0; padding:20px 24px; background:linear-gradient(135deg,#f0f4ff,#e8f0fe); border:2px solid #0066FF; border-radius:12px; text-align:center;">
+<p style="margin:0 0 8px 0; font-size:18px; font-weight:700; color:#0052CC;">📥 ${this.escapeHtml(leadMagnet.title)}</p>
+<p style="margin:0; font-size:14px; color:#555; line-height:1.6;">${this.escapeHtml(leadMagnet.description)}</p></div>`;
+
+    // Insert at approximately 60% of the content (find nearest H2 boundary)
+    const h2Positions = this.findH2SectionEnds(html);
+    if (h2Positions.length >= 3) {
+      const targetIdx = Math.floor(h2Positions.length * 0.6);
+      const insertPos = h2Positions[Math.min(targetIdx, h2Positions.length - 1)];
+      return html.slice(0, insertPos) + '\n' + calloutHtml + '\n' + html.slice(insertPos);
+    }
+    return html;
+  }
+
+  /**
+   * Inject SVG data chart into Finance category posts before the first H2.
+   */
+  injectDataChart(html: string, chartSvg: string, category: string): string {
+    if (!chartSvg || !['Korean Finance', 'Korean Tech'].includes(category)) return html;
+
+    const chartHtml = `<div class="ab-data-chart" style="margin:24px 0; text-align:center;">${chartSvg}</div>`;
+    const firstH2 = html.indexOf('<h2');
+    if (firstH2 > 0) {
+      return html.slice(0, firstH2) + chartHtml + '\n' + html.slice(firstH2);
+    }
+    return chartHtml + '\n' + html;
+  }
+
+  /**
    * Build "Cite This Article" box for link building and credibility.
    * Provides a ready-to-copy citation + embed code for other sites.
    */
@@ -863,7 +922,13 @@ ${socialHtml}
 <a href="https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}" target="_blank" rel="noopener noreferrer" class="ab-share-btn" style="background:#1DA1F2;">X / Twitter</a>
 <a href="https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}" target="_blank" rel="noopener noreferrer" class="ab-share-btn" style="background:#0077B5;">LinkedIn</a>
 <a href="https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}" target="_blank" rel="noopener noreferrer" class="ab-share-btn" style="background:#4267B2;">Facebook</a>
-</div></div>`;
+</div>
+<div style="margin:16px 0 0 0; padding:12px 16px; background:#f8f9fa; border-radius:8px; text-align:center;">
+<p style="margin:0 0 8px 0; font-size:14px; color:#555;">Was this helpful?</p>
+<span class="ab-feedback-btn" onclick="if(typeof gtag==='function'){gtag('event','feedback',{event_category:'engagement',event_label:'helpful',value:1})};this.parentElement.innerHTML='<p style=\\'margin:0;color:#22543d;font-weight:600;\\'>Thanks for your feedback!</p>'" style="display:inline-block;padding:6px 16px;margin:0 4px;border-radius:6px;border:1px solid #c6f6d5;background:#f0fff4;color:#22543d;cursor:pointer;font-size:13px;">👍 Yes</span>
+<span class="ab-feedback-btn" onclick="if(typeof gtag==='function'){gtag('event','feedback',{event_category:'engagement',event_label:'not_helpful',value:0})};this.parentElement.innerHTML='<p style=\\'margin:0;color:#555;\\'>Thanks! We\\'ll improve this article.</p>'" style="display:inline-block;padding:6px 16px;margin:0 4px;border-radius:6px;border:1px solid #fed7d7;background:#fff5f5;color:#742a2a;cursor:pointer;font-size:13px;">👎 No</span>
+</div>
+</div>`;
   }
 
   /**
@@ -2835,5 +2900,191 @@ ${ga4TrackingScript}`;
     }
 
     return chains;
+  }
+
+  /**
+   * Build FAQ JSON-LD schema from extracted FAQ items in content.
+   * Targets Google's FAQ rich result for SERP area expansion.
+   */
+  static buildFaqJsonLd(faqItems: Array<{ question: string; answer: string }>): string {
+    if (!faqItems || faqItems.length === 0) return '';
+
+    const schema = {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faqItems.slice(0, 10).map(item => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.answer,
+        },
+      })),
+    };
+
+    return `<script type="application/ld+json">${JSON.stringify(schema)}</script>`;
+  }
+
+  /**
+   * Build HowTo JSON-LD schema from extracted steps in how-to content.
+   * Targets Google's HowTo rich result with step-by-step display.
+   */
+  static buildHowToJsonLd(
+    title: string,
+    steps: Array<{ name: string; text: string }>,
+    description?: string,
+  ): string {
+    if (!steps || steps.length === 0) return '';
+
+    const schema = {
+      '@context': 'https://schema.org',
+      '@type': 'HowTo',
+      name: title,
+      ...(description ? { description } : {}),
+      step: steps.map((step, i) => ({
+        '@type': 'HowToStep',
+        position: i + 1,
+        name: step.name,
+        text: step.text,
+      })),
+    };
+
+    return `<script type="application/ld+json">${JSON.stringify(schema)}</script>`;
+  }
+
+  /**
+   * Extract FAQ items from generated HTML content.
+   * Looks for FAQ section H3 question headings and their answer paragraphs.
+   */
+  static extractFaqItems(html: string): Array<{ question: string; answer: string }> {
+    const faqItems: Array<{ question: string; answer: string }> = [];
+
+    // Find FAQ section
+    const faqSectionMatch = html.match(/<h2[^>]*>(?:.*?FAQ|.*?Frequently Asked|.*?Questions).*?<\/h2>([\s\S]*?)(?=<h2|<div class="ab-|$)/i);
+    if (!faqSectionMatch) return faqItems;
+
+    const faqSection = faqSectionMatch[1];
+    // Extract H3 questions and their answer paragraphs
+    const questionRegex = /<h3[^>]*>(.*?)<\/h3>([\s\S]*?)(?=<h3|$)/gi;
+    let match;
+
+    while ((match = questionRegex.exec(faqSection)) !== null) {
+      const question = match[1].replace(/<[^>]+>/g, '').trim();
+      // Get answer text from paragraphs after the H3
+      const answerHtml = match[2];
+      const answer = answerHtml
+        .replace(/<[^>]+>/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .slice(0, 500);
+
+      if (question && answer && question.length > 10) {
+        faqItems.push({ question, answer });
+      }
+    }
+
+    return faqItems.slice(0, 10);
+  }
+
+  /**
+   * Extract HowTo steps from how-to content HTML.
+   * Looks for numbered steps in ordered lists or step-by-step H3 headings.
+   */
+  static extractHowToSteps(html: string): Array<{ name: string; text: string }> {
+    const steps: Array<{ name: string; text: string }> = [];
+
+    // Try ordered list extraction first (most common how-to format)
+    const olMatch = html.match(/<ol[^>]*>([\s\S]*?)<\/ol>/i);
+    if (olMatch) {
+      const listItems = olMatch[1].match(/<li[^>]*>([\s\S]*?)<\/li>/gi) || [];
+      for (const li of listItems.slice(0, 15)) {
+        const text = li.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+        // Try to split on "—" or ":" to get step name vs description
+        const dashSplit = text.match(/^(.+?)(?:\s*[—–:]\s*)(.+)$/);
+        if (dashSplit) {
+          steps.push({ name: dashSplit[1].trim(), text: dashSplit[2].trim() });
+        } else if (text.length > 20) {
+          const name = text.slice(0, 60).replace(/\s\S*$/, '').trim();
+          steps.push({ name, text });
+        }
+      }
+      if (steps.length >= 3) return steps;
+    }
+
+    // Fallback: extract from H3 step headings
+    const stepRegex = /<h3[^>]*>(?:Step\s+\d+[.:]\s*)?(.+?)<\/h3>([\s\S]*?)(?=<h3|<h2|$)/gi;
+    let match;
+    while ((match = stepRegex.exec(html)) !== null) {
+      const name = match[1].replace(/<[^>]+>/g, '').trim();
+      const text = match[2].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 300);
+      if (name && text) {
+        steps.push({ name, text });
+      }
+    }
+
+    return steps.slice(0, 15);
+  }
+
+  /**
+   * Inject YouTube video embed into content at optimal position.
+   * Places video after the first H2 section for engagement.
+   */
+  static injectYouTubeEmbed(html: string, videoUrl: string, videoTitle: string): string {
+    if (!videoUrl) return html;
+
+    // Extract video ID from URL
+    const videoIdMatch = videoUrl.match(/(?:v=|youtu\.be\/|embed\/)([a-zA-Z0-9_-]{11})/);
+    if (!videoIdMatch) return html;
+
+    const videoId = videoIdMatch[1];
+    const embedHtml = `<div class="ab-video-embed" style="margin:24px 0; position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+<iframe src="https://www.youtube.com/embed/${videoId}" title="${videoTitle.replace(/"/g, '&quot;')}" style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+<p style="margin:8px 0 24px 0; font-size:13px; color:#888; text-align:center;">Video: ${videoTitle}</p>`;
+
+    // Insert after first H2 section's first paragraph
+    const firstH2End = html.indexOf('</h2>');
+    if (firstH2End > 0) {
+      const afterH2 = html.indexOf('</p>', firstH2End);
+      if (afterH2 > 0) {
+        const insertPos = afterH2 + 4;
+        return html.slice(0, insertPos) + '\n' + embedHtml + '\n' + html.slice(insertPos);
+      }
+    }
+
+    // Fallback: insert at beginning
+    return embedHtml + '\n' + html;
+  }
+
+  /**
+   * Build enhanced lead magnet CTA with download link and category-specific offer.
+   */
+  injectEnhancedLeadMagnet(
+    html: string,
+    category: string,
+    leadMagnetUrl: string,
+    leadMagnetTitle: string,
+  ): string {
+    if (!leadMagnetUrl) return html;
+
+    const magnet = WordPressService.NICHE_LEAD_MAGNETS[category];
+    const title = leadMagnetTitle || magnet?.title || 'Free Download';
+    const description = magnet?.description || 'Get our exclusive guide — free for our readers.';
+
+    const ctaHtml = `<div class="ab-lead-magnet-enhanced" style="margin:32px 0; padding:24px; background:linear-gradient(135deg,#0052CC,#0066FF); border-radius:12px; text-align:center; color:#fff;">
+<p style="margin:0 0 8px 0; font-size:20px; font-weight:700; color:#fff;">${this.escapeHtml(title)}</p>
+<p style="margin:0 0 16px 0; font-size:14px; color:rgba(255,255,255,0.85); line-height:1.6;">${this.escapeHtml(description)}</p>
+<a href="${this.escapeHtml(leadMagnetUrl)}" target="_blank" rel="noopener noreferrer" style="display:inline-block; padding:12px 32px; background:#fff; color:#0066FF; border-radius:8px; font-weight:700; font-size:15px; text-decoration:none;">Download Free Guide</a>
+<p style="margin:12px 0 0 0; font-size:11px; color:rgba(255,255,255,0.5);">No signup required. Instant download.</p>
+</div>`;
+
+    // Insert at approximately 40% of content
+    const h2Positions = this.findH2SectionEnds(html);
+    if (h2Positions.length >= 3) {
+      const targetIdx = Math.floor(h2Positions.length * 0.4);
+      const insertPos = h2Positions[Math.min(targetIdx, h2Positions.length - 1)];
+      return html.slice(0, insertPos) + '\n' + ctaHtml + '\n' + html.slice(insertPos);
+    }
+    return html;
   }
 }

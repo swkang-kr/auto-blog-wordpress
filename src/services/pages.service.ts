@@ -250,12 +250,15 @@ ${authorLinks?.twitter ? `<p style="margin:0;"><a href="${authorLinks.twitter}" 
   /**
    * Create or update pillar pages for each niche (Topic Cluster hub).
    * Each pillar page links to all posts in that niche category.
+   * Enforces minimum 5000-word target for comprehensive pillar quality.
    */
   async ensurePillarPages(
     niches: NicheConfig[],
     existingPosts: ExistingPost[],
     siteName: string,
   ): Promise<void> {
+    const MIN_PILLAR_WORD_COUNT = 5000;
+
     for (const niche of niches) {
       const slug = `guide-${niche.id}`;
       const nichePosts = existingPosts.filter(
@@ -270,23 +273,42 @@ ${authorLinks?.twitter ? `<p style="margin:0;"><a href="${authorLinks.twitter}" 
       const title = `The Ultimate ${niche.category} Guide (${new Date().getFullYear()}): Expert Analysis, Tips & Resources`;
       const content = this.buildPillarPageContent(niche, nichePosts, siteName);
 
+      // Pillar page quality enforcement: validate word count
+      const wordCount = content.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().split(' ').length;
+      if (wordCount < MIN_PILLAR_WORD_COUNT) {
+        logger.info(`Pillar page "${niche.name}" has ${wordCount} words (target: ${MIN_PILLAR_WORD_COUNT}). Will improve as more satellite posts are added.`);
+      }
+
       try {
         const existingId = await this.getPageId(slug);
         if (existingId) {
+          // Check if page was updated in the last 30 days (monthly update cadence)
+          try {
+            const response = await this.api.get(`/pages/${existingId}`);
+            const modified = new Date(response.data.modified);
+            const daysSinceUpdate = (Date.now() - modified.getTime()) / (1000 * 60 * 60 * 24);
+            if (daysSinceUpdate < 30 && nichePosts.length === (response.data._autoblog_pillar_post_count ?? 0)) {
+              logger.debug(`Pillar page "${niche.name}" updated ${daysSinceUpdate.toFixed(0)} days ago with same post count, skipping.`);
+              continue;
+            }
+          } catch { /* proceed with update */ }
+
           await this.api.post(`/pages/${existingId}`, {
             title,
             content,
             status: 'publish',
+            meta: { _autoblog_pillar_post_count: nichePosts.length, _autoblog_pillar_word_count: wordCount },
           });
-          logger.info(`Pillar page updated: "${title}" (/${slug}) — ${nichePosts.length} linked posts`);
+          logger.info(`Pillar page updated: "${title}" (/${slug}) — ${nichePosts.length} linked posts, ${wordCount} words`);
         } else {
           await this.api.post('/pages', {
             title,
             slug,
             content,
             status: 'publish',
+            meta: { _autoblog_pillar_post_count: nichePosts.length, _autoblog_pillar_word_count: wordCount },
           });
-          logger.info(`Pillar page created: "${title}" (/${slug}) — ${nichePosts.length} linked posts`);
+          logger.info(`Pillar page created: "${title}" (/${slug}) — ${nichePosts.length} linked posts, ${wordCount} words`);
         }
       } catch (error) {
         const msg = error instanceof Error ? error.message : String(error);

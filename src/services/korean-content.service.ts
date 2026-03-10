@@ -30,10 +30,11 @@ export class KoreanContentService {
   ): Promise<{ title: string; html: string; excerpt: string; tags: string[] } | null> {
     try {
       // Strip inline CSS and extract text-heavy content for translation
-      const contentForTranslation = englishHtml
+      const strippedHtml = englishHtml
         .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
-        .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
-        .slice(0, 15000); // Limit to avoid excessive token usage
+        .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '');
+      // Safe HTML truncation: cut at a closing tag boundary to avoid malformed HTML
+      const contentForTranslation = KoreanContentService.safeHtmlTruncate(strippedHtml, 15000);
 
       const response = await this.client.messages.create({
         model: this.model,
@@ -164,6 +165,33 @@ Respond in JSON:
    * Build Naver-specific meta tags for Korean content.
    * Naver respects standard meta tags + Open Graph, but also uses specific conventions.
    */
+  /**
+   * Safely truncate HTML at a tag boundary to prevent malformed input.
+   * Finds the last closing tag before the limit and cuts there.
+   */
+  private static safeHtmlTruncate(html: string, maxLength: number): string {
+    if (html.length <= maxLength) return html;
+
+    // Find the last complete closing tag before the limit
+    const truncated = html.slice(0, maxLength);
+    const lastClosingTag = truncated.lastIndexOf('</');
+    if (lastClosingTag > maxLength * 0.7) {
+      // Find the end of this closing tag
+      const tagEnd = truncated.indexOf('>', lastClosingTag);
+      if (tagEnd !== -1) {
+        return truncated.slice(0, tagEnd + 1);
+      }
+    }
+
+    // Fallback: cut at last '>' to avoid splitting a tag
+    const lastGt = truncated.lastIndexOf('>');
+    if (lastGt > maxLength * 0.7) {
+      return truncated.slice(0, lastGt + 1);
+    }
+
+    return truncated;
+  }
+
   static buildNaverMetaTags(
     koreanTitle: string,
     koreanExcerpt: string,

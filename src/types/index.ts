@@ -19,8 +19,8 @@ export const CONTENT_FRESHNESS_MAP: Record<ContentType, FreshnessClass> = {
 
 /** Recommended update intervals in days per freshness class */
 export const FRESHNESS_UPDATE_INTERVALS: Record<FreshnessClass, number> = {
-  'evergreen': 365,       // Annual review
-  'seasonal': 90,         // Quarterly update
+  'evergreen': 180,       // Semi-annual review (more aggressive freshness)
+  'seasonal': 60,         // Bi-monthly update
   'time-sensitive': 180,  // Archive or update flag after 6 months
 };
 
@@ -91,6 +91,8 @@ export interface NicheConfig {
   contentTypes: ContentType[];
   /** AdSense RPM tier for niche-specific ad density tuning */
   adSenseRpm?: 'high' | 'medium' | 'low';
+  /** Dynamic RPM value learned from GA4 (overrides static tier) */
+  dynamicRpmValue?: number;
 }
 
 /** Per-category optimal publish timing (override GA4 when no data available) */
@@ -184,6 +186,18 @@ export interface BlogContent {
   affiliateLinksCount?: number;
   /** Search intent from keyword research */
   searchIntent?: 'informational' | 'commercial' | 'commercial-investigation' | 'transactional' | 'navigational';
+  /** FAQ items extracted from content for FAQ JSON-LD schema */
+  faqItems?: Array<{ question: string; answer: string }>;
+  /** HowTo steps extracted from content for HowTo JSON-LD schema */
+  howToSteps?: Array<{ name: string; text: string }>;
+  /** YouTube video URL to embed in the post */
+  youtubeVideoUrl?: string;
+  /** YouTube video title for Video schema */
+  youtubeVideoTitle?: string;
+  /** Whether this is an original research/survey-based post */
+  isOriginalResearch?: boolean;
+  /** Lead magnet CTA text injected in content */
+  leadMagnetCta?: string;
 }
 
 /** WordPress 미디어 업로드 결과 */
@@ -272,12 +286,42 @@ export interface PostHistoryEntry {
   titlePattern?: string;
 }
 
+/** Ranking milestone event for Telegram alerts */
+export interface RankingMilestone {
+  keyword: string;
+  postUrl: string;
+  event: 'hit-top1' | 'hit-top3' | 'hit-top10' | 'dropped-from-top10';
+  previousPosition: number;
+  currentPosition: number;
+}
+
+/** Featured snippet opportunity from GSC */
+export interface FeaturedSnippetOpportunity {
+  query: string;
+  position: number;
+  impressions: number;
+  ctr: number;
+  /** Type of snippet to target */
+  snippetType: 'paragraph' | 'list' | 'table';
+}
+
+/** Dynamic RPM data learned from GA4 */
+export interface DynamicRpmData {
+  category: string;
+  contentType?: string;
+  rpm: number;
+  sampleSize: number;
+  lastUpdated: string;
+}
+
 /** 전체 포스팅 이력 파일 구조 */
 export interface PostHistoryData {
   entries: PostHistoryEntry[];
   lastRunAt: string;
   totalPosts: number;
   categoryLastPublished?: Record<string, string>;
+  /** Learned RPM data from GA4 (updated monthly) */
+  dynamicRpm?: DynamicRpmData[];
 }
 
 /** 개별 포스트 처리 결과 */

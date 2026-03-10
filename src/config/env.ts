@@ -47,14 +47,16 @@ const envSchema = z.object({
   // Author identity for E-E-A-T
   AUTHOR_LINKEDIN: z.string().default(''),
   AUTHOR_TWITTER: z.string().default(''),
+  AUTHOR_WEBSITE: z.string().default(''),
   AUTHOR_BIO: z.string().default(''),
   AUTHOR_CREDENTIALS: z.string().default(''),
   // GA4 Data API for performance feedback
   GA4_PROPERTY_ID: z.string().default(''),
   // Google Search Console for search performance feedback
   GSC_SITE_URL: z.string().default(''),
-  // Slack webhook for batch failure alerting
-  SLACK_WEBHOOK_URL: z.string().default(''),
+  // Telegram bot for batch alerting (replaces Slack)
+  TELEGRAM_BOT_TOKEN: z.string().default(''),
+  TELEGRAM_CHAT_ID: z.string().default(''),
   // Image format: webp (default) or avif (better compression, newer format)
   IMAGE_FORMAT: z.enum(['webp', 'avif']).default('webp'),
   // Auto-rewrite underperforming posts (0 = disabled)
@@ -73,6 +75,12 @@ const envSchema = z.object({
   // Korean content generation: enable hreflang Korean versions of published posts
   // Set to 'true' to generate Korean versions after English posts are published
   ENABLE_KOREAN_CONTENT: z.enum(['true', 'false']).default('false'),
+  // YouTube Data API key for finding relevant videos to embed in posts (optional)
+  YOUTUBE_API_KEY: z.string().default(''),
+  // Lead magnet download URL (e.g., free ebook, checklist) — category-specific CTAs
+  LEAD_MAGNET_URL: z.string().default(''),
+  // Lead magnet title (e.g., "Free Korea Investment Guide 2026")
+  LEAD_MAGNET_TITLE: z.string().default(''),
 });
 
 export type AppConfig = z.infer<typeof envSchema>;

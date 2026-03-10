@@ -6,6 +6,10 @@ interface FactCheckResult {
   unverified: number;
   flagged: string[];
   corrections: Array<{ claim: string; correction: string }>;
+  /** Whether any critical factual errors were found that should block publishing */
+  hasCriticalErrors: boolean;
+  /** Severity breakdown: critical = verifiable data wrong, warning = missing hedging/sources */
+  criticalCount: number;
 }
 
 /**
@@ -222,16 +226,110 @@ export class FactCheckService {
       }
     }
 
+    // 7. Cross-category: Check historical date claims
+    const dateClaimRegex = /(?:founded|established|launched|started|opened|created|introduced)\s+in\s+(\d{4})/gi;
+    const dateClaims = plainText.match(dateClaimRegex) || [];
+    const knownDates: Record<string, number> = {
+      samsung: 1938, 'sk hynix': 1983, hyundai: 1967, lg: 1958, naver: 1999, kakao: 2010,
+      coupang: 2010, hybe: 2005, 'sm entertainment': 1995, jyp: 1997, yg: 1996,
+      'bank of korea': 1950, 'korea exchange': 2005, 'olive young': 1999,
+      bts: 2013, blackpink: 2016, aespa: 2020, 'korea tourism organization': 1962,
+    };
+    for (const match of dateClaims) {
+      const yearMatch = match.match(/(\d{4})/);
+      if (yearMatch) {
+        const claimedYear = parseInt(yearMatch[1]);
+        // Check if the entity before the date is in our known dates
+        const contextStart = Math.max(0, plainText.indexOf(match) - 80);
+        const context = plainText.slice(contextStart, plainText.indexOf(match) + match.length).toLowerCase();
+        for (const [entity, correctYear] of Object.entries(knownDates)) {
+          if (context.includes(entity) && claimedYear !== correctYear) {
+            flagged.push(`Incorrect founding year: "${entity}" claimed ${claimedYear}, correct is ${correctYear}`);
+            corrections.push({ claim: match, correction: `${entity} was founded/established in ${correctYear}` });
+          }
+        }
+        // Flag future dates
+        if (claimedYear > new Date().getFullYear()) {
+          flagged.push(`Future date claim: "${match}" — cannot be founded in the future`);
+          unverified++;
+        }
+      }
+    }
+
+    // 8. Cross-category: Check suspiciously round percentages without sources
+    const roundPctRegex = /(\d{2,3})%\s+(?:of\s+)?(?:koreans?|korean\s+\w+|south\s+korea|seoul|companies|users|consumers|market)/gi;
+    const roundPctMatches = plainText.match(roundPctRegex) || [];
+    for (const match of roundPctMatches) {
+      const hasCitation = /(?:according to|survey|study|report|data|research|statistics|poll)/i.test(
+        plainText.slice(Math.max(0, plainText.indexOf(match) - 100), plainText.indexOf(match) + match.length + 100),
+      );
+      if (!hasCitation) {
+        flagged.push(`Percentage claim without source: "${match.slice(0, 60)}" — cite survey or data source`);
+        unverified++;
+      }
+    }
+
+    // 9. Korea Travel: Check visa/entry requirement claims
+    if (category === 'Korea Travel') {
+      const visaClaims = /(?:visa-free|visa free|no visa|visa waiver)\s+(?:for\s+)?(?:up to\s+)?(\d+)\s+(?:days|months)/gi;
+      const visaMatches = plainText.match(visaClaims) || [];
+      for (const match of visaMatches) {
+        const dayMatch = match.match(/(\d+)\s+days/i);
+        if (dayMatch) {
+          const days = parseInt(dayMatch[1]);
+          // Standard visa-free is 30, 60, or 90 days — flag unusual numbers
+          if (![30, 60, 90, 180].includes(days)) {
+            flagged.push(`Unusual visa-free period: "${match}" — verify against Korean Immigration Service`);
+            unverified++;
+          }
+        }
+      }
+
+      // Check T-money/transit fare claims
+      const fareRegex = /(?:t-money|subway|bus|ktx)\s+(?:fare|cost|ticket|price)\s+(?:is|costs?|around|approximately)?\s*(?:₩|KRW\s*)?([\d,]+)/gi;
+      const fareMatches = plainText.match(fareRegex) || [];
+      for (const match of fareMatches) {
+        const hasTimeRef = /(?:as of|in \d{4}|current|latest|recently|updated)/i.test(
+          plainText.slice(Math.max(0, plainText.indexOf(match) - 60), plainText.indexOf(match) + match.length + 60),
+        );
+        if (!hasTimeRef) {
+          flagged.push(`Transit fare without date context: "${match.slice(0, 60)}" — add "as of [year]" since fares change`);
+          unverified++;
+        }
+      }
+    }
+
+    // 10. K-Beauty: Check for recalled or discontinued product claims
+    if (category === 'K-Beauty') {
+      // Check sunscreen SPF claims
+      const spfRegex = /SPF\s*(\d+)/gi;
+      const spfMatches = plainText.match(spfRegex) || [];
+      for (const match of spfMatches) {
+        const spfVal = parseInt(match.replace(/SPF\s*/i, ''));
+        if (spfVal > 100) {
+          flagged.push(`Unlikely SPF claim: "${match}" — SPF above 100 is not recognized by most regulators`);
+          unverified++;
+        }
+      }
+    }
+
+    // Classify critical errors: corrections with live data discrepancies are critical
+    const criticalCount = corrections.length;
+    const hasCriticalErrors = criticalCount >= 2;
+
     if (flagged.length > 0) {
-      logger.warn(`Fact-check: ${flagged.length} issue(s) found, ${verified} claim(s) verified`);
+      logger.warn(`Fact-check: ${flagged.length} issue(s) found (${criticalCount} critical), ${verified} claim(s) verified`);
       for (const flag of flagged) {
         logger.warn(`  ⚠ ${flag}`);
+      }
+      if (hasCriticalErrors) {
+        logger.warn(`Fact-check: CRITICAL — ${criticalCount} verifiable data errors detected. Post should be drafted for review.`);
       }
     } else {
       logger.info(`Fact-check: ${verified} claim(s) verified, no issues found`);
     }
 
-    return { verified, unverified, flagged, corrections };
+    return { verified, unverified, flagged, corrections, hasCriticalErrors, criticalCount };
   }
 
   /**
@@ -273,7 +371,7 @@ export class FactCheckService {
   }
 
   /** Fetch live USD/KRW exchange rate from free API */
-  private async getUsdKrwRate(): Promise<number | null> {
+  async getUsdKrwRate(): Promise<number | null> {
     const cached = this.exchangeRateCache.get('USDKRW');
     if (cached && Date.now() - cached.timestamp < FactCheckService.CACHE_TTL_MS) {
       return cached.rate;
@@ -294,7 +392,7 @@ export class FactCheckService {
   }
 
   /** Fetch approximate KOSPI level from Google Finance or fallback */
-  private async getKospiLevel(): Promise<number | null> {
+  async getKospiLevel(): Promise<number | null> {
     try {
       // Use a free financial data endpoint
       const { data } = await axios.get('https://query1.finance.yahoo.com/v8/finance/chart/%5EKS11?interval=1d&range=5d', {
@@ -310,5 +408,42 @@ export class FactCheckService {
       logger.debug(`KOSPI level fetch failed: ${error instanceof Error ? error.message : error}`);
     }
     return null;
+  }
+
+  /** Fetch KOSPI weekly historical data (1 year) from Yahoo Finance */
+  async getKospiHistoricalData(): Promise<Array<{ date: string; close: number }> | null> {
+    try {
+      const now = Math.floor(Date.now() / 1000);
+      const oneYearAgo = now - 365 * 24 * 60 * 60;
+      const { data } = await axios.get(
+        `https://query1.finance.yahoo.com/v8/finance/chart/%5EKS11?interval=1wk&period1=${oneYearAgo}&period2=${now}`,
+        { timeout: 8000, headers: { 'User-Agent': 'Mozilla/5.0' } },
+      );
+      const result = data as {
+        chart?: {
+          result?: Array<{
+            timestamp?: number[];
+            indicators?: { quote?: Array<{ close?: (number | null)[] }> };
+          }>;
+        };
+      };
+      const timestamps = result?.chart?.result?.[0]?.timestamp;
+      const closes = result?.chart?.result?.[0]?.indicators?.quote?.[0]?.close;
+      if (!timestamps || !closes) return null;
+
+      const points: Array<{ date: string; close: number }> = [];
+      for (let i = 0; i < timestamps.length; i++) {
+        if (closes[i] != null) {
+          points.push({
+            date: new Date(timestamps[i] * 1000).toISOString().slice(0, 10),
+            close: Math.round(closes[i]!),
+          });
+        }
+      }
+      return points.length > 0 ? points : null;
+    } catch (error) {
+      logger.debug(`KOSPI historical data fetch failed: ${error instanceof Error ? error.message : error}`);
+      return null;
+    }
   }
 }

@@ -467,6 +467,54 @@ ${cluster.pillarUrl ? `<p style="margin:12px 0 0 0;"><a href="${cluster.pillarUr
     return { niches: nicheReports, overallCoverage, totalPosts, recommendations };
   }
 
+  /**
+   * Get series opportunities for a niche: clusters of 3+ related keywords
+   * that could form a multi-part content series.
+   */
+  getSeriesOpportunities(nicheId: string): Array<{ seriesName: string; keywords: string[]; priority: 'high' | 'medium' }> {
+    const cluster = this.clusters.get(nicheId);
+    if (!cluster) return [];
+
+    const opportunities: Array<{ seriesName: string; keywords: string[]; priority: 'high' | 'medium' }> = [];
+
+    for (const [subTopic, posts] of cluster.subTopics) {
+      const keywords = posts
+        .filter(p => p.keyword)
+        .map(p => p.keyword!);
+
+      if (keywords.length >= 3) {
+        opportunities.push({
+          seriesName: `${subTopic} Series`,
+          keywords,
+          priority: keywords.length >= 5 ? 'high' : 'medium',
+        });
+      }
+    }
+
+    // Also check scored gaps for uncovered sub-topics that could seed a new series
+    const nicheCategory = nicheId.split('-').slice(0, 2).join('-');
+    const subTopicDefs = NICHE_SUBTOPICS[nicheCategory];
+    if (subTopicDefs) {
+      for (const [subTopic, seedKeywords] of Object.entries(subTopicDefs)) {
+        const existing = cluster.subTopics.get(subTopic);
+        if (!existing || existing.length < 2) {
+          // Suggest a new series from seed keywords
+          opportunities.push({
+            seriesName: `${subTopic} Starter Series`,
+            keywords: seedKeywords.slice(0, 5),
+            priority: 'medium',
+          });
+        }
+      }
+    }
+
+    if (opportunities.length > 0) {
+      logger.info(`Series opportunities for ${nicheId}: ${opportunities.length} potential series`);
+    }
+
+    return opportunities.sort((a, b) => (a.priority === 'high' ? -1 : 1) - (b.priority === 'high' ? -1 : 1));
+  }
+
   /** Identify content gaps based on common topic patterns per niche */
   private identifyContentGaps(nicheId: string, coveredKeywords: string[]): string[] {
     // Common topic patterns that should exist per niche category
@@ -575,5 +623,67 @@ ${cluster.pillarUrl ? `<p style="margin:12px 0 0 0;"><a href="${cluster.pillarUr
     }
 
     return gaps.slice(0, 20);
+  }
+
+  /**
+   * Pillar→satellite content sequencing strategy.
+   * Determines whether a niche should create a pillar page first (if none exists),
+   * or continue with satellite content linking back to the pillar.
+   * Returns publishing priority guidance for each niche.
+   */
+  getPillarSequencingAdvice(
+    nicheId: string,
+    existingPosts: ExistingPost[],
+    pillarUrlMap: Record<string, string>,
+  ): { shouldCreatePillar: boolean; pillarExists: boolean; satelliteCount: number; advice: string } {
+    const cluster = this.clusters.get(nicheId);
+    const nichePosts = cluster?.posts || [];
+    const pillarUrl = pillarUrlMap[nicheId];
+
+    // Check if pillar page exists
+    const pillarExists = existingPosts.some(p =>
+      p.url === pillarUrl || p.slug?.startsWith(`guide-${nicheId}`),
+    );
+
+    const satelliteCount = nichePosts.length;
+
+    // Strategy: Pillar first, then satellites
+    if (!pillarExists && satelliteCount >= 3) {
+      return {
+        shouldCreatePillar: true,
+        pillarExists: false,
+        satelliteCount,
+        advice: `Create pillar page for ${nicheId} — ${satelliteCount} satellite posts exist without a hub page`,
+      };
+    }
+
+    if (pillarExists && satelliteCount < 5) {
+      return {
+        shouldCreatePillar: false,
+        pillarExists: true,
+        satelliteCount,
+        advice: `Prioritize satellite content for ${nicheId} — pillar exists but only ${satelliteCount} supporting posts`,
+      };
+    }
+
+    // Check sub-topic coverage for gap-aware sequencing
+    if (cluster) {
+      const highPriorityGaps = cluster.scoredGaps.filter(g => g.priority === 'high');
+      if (highPriorityGaps.length > 0) {
+        return {
+          shouldCreatePillar: false,
+          pillarExists,
+          satelliteCount,
+          advice: `Fill content gaps for ${nicheId}: ${highPriorityGaps.map(g => g.topic).join(', ')}`,
+        };
+      }
+    }
+
+    return {
+      shouldCreatePillar: false,
+      pillarExists,
+      satelliteCount,
+      advice: `${nicheId} cluster is healthy (${satelliteCount} posts, pillar ${pillarExists ? 'exists' : 'missing'})`,
+    };
   }
 }

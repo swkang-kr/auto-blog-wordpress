@@ -47,7 +47,7 @@ const CATEGORY_MIN_QUALITY: Record<string, number> = {
 
 /** Content type-specific minimum word counts — lowered for information density over padding */
 const CONTENT_TYPE_MIN_WORDS: Record<string, number> = {
-  'deep-dive': 2200,
+  'deep-dive': 3000,
   'analysis': 1800,
   'case-study': 1800,
   'how-to': 1600,

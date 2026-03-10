@@ -216,16 +216,56 @@ export class PostHistory {
     }
   }
 
+  /** Predefined series patterns: niche → series ID → keyword patterns */
+  private static readonly MANUAL_SERIES: Record<string, Record<string, string[]>> = {
+    'korean-tech-ai': {
+      'samsung-semiconductor': ['samsung', 'semiconductor', 'chip', 'hbm', 'foundry', 'memory'],
+      'korean-ai-ecosystem': ['ai', 'artificial intelligence', 'machine learning', 'llm', 'naver ai'],
+    },
+    'korean-finance-stocks': {
+      'kospi-investing-101': ['kospi', 'kosdaq', 'korean stocks', 'etf', 'index fund'],
+      'bok-monetary-policy': ['bok', 'bank of korea', 'interest rate', 'monetary policy', 'korean won'],
+    },
+    'k-beauty-skincare': {
+      'skincare-routine-guide': ['routine', 'skincare', 'glass skin', 'step', 'regimen'],
+      'ingredient-deep-dive': ['ingredient', 'niacinamide', 'retinol', 'vitamin c', 'hyaluronic', 'centella'],
+    },
+    'korea-travel-guide': {
+      'seoul-travel-essentials': ['seoul', 'subway', 'transport', 'accommodation', 'hotel'],
+      'korea-food-guide': ['food', 'restaurant', 'street food', 'korean bbq', 'kimchi'],
+    },
+    'k-entertainment-business': {
+      'kpop-business-analysis': ['kpop', 'k-pop', 'hybe', 'sm entertainment', 'jyp', 'yg'],
+      'kdrama-streaming': ['kdrama', 'k-drama', 'netflix', 'streaming', 'webtoon'],
+    },
+  };
+
   /**
    * Get next series part number for a given niche.
-   * Detects existing series in the niche and returns the next part number.
-   * A "series" is defined as 3+ posts in the same niche with high keyword similarity.
+   * Uses both manual series definitions and automatic detection.
+   * Manual series: keyword pattern matching against predefined series.
+   * Auto series: 3+ posts in the same niche with high keyword overlap (bigram similarity).
    */
   getSeriesInfo(nicheId: string, keyword: string): { seriesId: string; seriesPart: number } | null {
+    const kwLower = keyword.toLowerCase();
+    const kwWords = kwLower.split(/\s+/).filter(w => w.length > 2);
+
+    // 1. Check manual series definitions first
+    const manualSeries = PostHistory.MANUAL_SERIES[nicheId];
+    if (manualSeries) {
+      for (const [seriesId, patterns] of Object.entries(manualSeries)) {
+        const matchCount = patterns.filter(p => kwLower.includes(p)).length;
+        if (matchCount >= 2 || (matchCount >= 1 && kwWords.length <= 3)) {
+          const existingInSeries = this.data.entries.filter(e => e.seriesId === seriesId);
+          return { seriesId, seriesPart: existingInSeries.length + 1 };
+        }
+      }
+    }
+
+    // 2. Check existing auto-detected series
     const nicheEntries = this.data.entries.filter(e => e.niche === nicheId && e.seriesId);
     if (nicheEntries.length === 0) return null;
 
-    // Check if this keyword fits an existing series
     const seriesGroups = new Map<string, PostHistoryEntry[]>();
     for (const entry of nicheEntries) {
       if (entry.seriesId) {
@@ -235,20 +275,42 @@ export class PostHistory {
       }
     }
 
-    // Find matching series by keyword similarity
+    // Enhanced matching: use bigram overlap for better semantic similarity
     for (const [seriesId, entries] of seriesGroups) {
       const seriesKeywords = entries.map(e => e.keyword.toLowerCase());
-      const kwLower = keyword.toLowerCase();
-      const kwWords = kwLower.split(/\s+/).filter(w => w.length > 3);
-      const matchCount = kwWords.filter(w =>
+      const kwBigrams = this.getBigrams(kwLower);
+
+      // Check bigram overlap with each series keyword
+      let bestOverlap = 0;
+      for (const sk of seriesKeywords) {
+        const skBigrams = this.getBigrams(sk);
+        const intersection = kwBigrams.filter(b => skBigrams.includes(b)).length;
+        const union = new Set([...kwBigrams, ...skBigrams]).size;
+        const overlap = union > 0 ? intersection / union : 0;
+        bestOverlap = Math.max(bestOverlap, overlap);
+      }
+
+      // Word-level overlap as secondary signal
+      const wordMatchCount = kwWords.filter(w =>
         seriesKeywords.some(sk => sk.includes(w)),
       ).length;
-      if (matchCount >= 2 || kwWords.length <= 2) {
+
+      if (bestOverlap >= 0.3 || wordMatchCount >= 2) {
         return { seriesId, seriesPart: entries.length + 1 };
       }
     }
 
     return null;
+  }
+
+  /** Extract character bigrams from text for fuzzy matching */
+  private getBigrams(text: string): string[] {
+    const words = text.split(/\s+/).filter(w => w.length > 2);
+    const bigrams: string[] = [];
+    for (let i = 0; i < words.length - 1; i++) {
+      bigrams.push(`${words[i]} ${words[i + 1]}`);
+    }
+    return bigrams;
   }
 
   /** Get all entries in a specific series, ordered by part number */

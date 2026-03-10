@@ -158,7 +158,7 @@ const WORD_COUNT_TARGETS: Record<string, { min: number; target: number; continua
   'best-x-for-y':   { min: 1500, target: 2200, continuation: 1300, rejection: 1100 },
   'x-vs-y':         { min: 1500, target: 2200, continuation: 1300, rejection: 1100 },
   'analysis':        { min: 1800, target: 2500, continuation: 1600, rejection: 1400 },
-  'deep-dive':       { min: 2200, target: 3000, continuation: 2000, rejection: 1800 },
+  'deep-dive':       { min: 3000, target: 3500, continuation: 2500, rejection: 2200 },
   'news-explainer':  { min: 1500, target: 1800, continuation: 1200, rejection: 1000 },
   'listicle':        { min: 1400, target: 2000, continuation: 1200, rejection: 1000 },
   'case-study':      { min: 1800, target: 2500, continuation: 1600, rejection: 1400 },
@@ -439,10 +439,13 @@ This targets Google's List Featured Snippet for ranking queries.
 - Only link to posts that are genuinely relevant to the current topic
 
 ## Inline Related Reading (User Engagement)
-- At approximately the 50% point of the article, insert ONE inline related reading box:
+- At approximately the 50% point of the article, insert an inline related reading box:
   <div class="ab-related-inline" style="margin:20px 0; padding:14px 18px; background:linear-gradient(135deg,#f0f4ff,#f8f9fa); border-left:3px solid #0066FF; border-radius:0 8px 8px 0; font-size:14px;">
   <strong>Related:</strong> <a href="URL" style="color:#0066FF; text-decoration:underline;">Related Post Title</a></div>
-- Choose the most topically relevant post from the provided list
+- At approximately the 75% point, insert a SECOND related reading box with different styling:
+  <div class="ab-related-inline" style="margin:20px 0; padding:14px 18px; background:linear-gradient(135deg,#f8f9fa,#f0f4ff); border-left:3px solid #00AA55; border-radius:0 8px 8px 0; font-size:14px;">
+  <strong>Continue Reading:</strong> <a href="URL" style="color:#00AA55; text-decoration:underline;">Related Post Title</a></div>
+- Choose the most topically relevant posts from the provided list (different post for each box)
 - This increases page depth and reduces bounce rate
 
 ## External Source Attribution (IMPORTANT for E-E-A-T)
@@ -489,6 +492,13 @@ This targets Google's List Featured Snippet for ranking queries.
 
 7. tags: 5-10 related English keywords (include Korea-specific terms)
 8. category: One best-fit English category name
+
+## Data Tables (Finance & Tech Categories)
+- For Korean Finance and Korean Tech content types (especially deep-dive and analysis):
+  MUST include at least ONE HTML data table with real or representative data
+- Use responsive table markup: <div class="ab-table-wrap"><table style="width:100%; border-collapse:collapse;">...</table></div>
+- Tables should have clear headers, aligned numbers, and source attribution in a caption
+- Examples: KOSPI sector breakdown, Samsung vs SK Hynix comparison, ETF fee comparison, chip process node timeline
 
 Accuracy Rules (CRITICAL — violating these damages site credibility):
 - NEVER cite specific version numbers for software products that change frequently

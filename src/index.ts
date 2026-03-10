@@ -14,7 +14,8 @@ import { PinterestService } from './services/pinterest.service.js';
 import { GA4AnalyticsService } from './services/ga4-analytics.service.js';
 import { GSCAnalyticsService } from './services/gsc-analytics.service.js';
 import { PostHistory } from './utils/history.js';
-import { sendBatchSummary, sendQualityAlert, sendDecayAlert, sendHealthCheck } from './utils/alerting.js';
+import { sendBatchSummary, sendQualityAlert, sendDecayAlert, sendHealthCheck, sendTelegramAlert } from './utils/alerting.js';
+import { DataVisualizationService } from './services/data-visualization.service.js';
 import { costTracker } from './utils/cost-tracker.js';
 import { logger } from './utils/logger.js';
 import { ContentRefreshService } from './services/content-refresh.service.js';
@@ -269,9 +270,12 @@ async function main(): Promise<void> {
   // 2.14b. Initialize fact-check service for pre-publish verification
   const factCheckService = new FactCheckService();
 
+  // 2.14b2. Initialize data visualization service for Finance/Tech charts
+  const dataVizService = new DataVisualizationService(factCheckService);
+
   // 2.14c-pre. Send health check notification at batch start
-  if (config.SLACK_WEBHOOK_URL) {
-    await sendHealthCheck(config.SLACK_WEBHOOK_URL, {
+  if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
+    await sendHealthCheck(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, {
       totalPosts: history.getAllEntries().length,
       activeNiches: activeNiches.length,
       postCount: config.POST_COUNT,
@@ -367,9 +371,9 @@ async function main(): Promise<void> {
           logger.warn(`  ${page.page} (pos ${page.position.toFixed(1)}, ${page.clicks} clicks/7d, ${page.impressions} imp/7d)`);
         }
         logger.warn(`Consider running: npx tsx src/scripts/refresh-stale-posts.ts`);
-        // Send Slack alert for content decay
-        if (config.SLACK_WEBHOOK_URL) {
-          await sendDecayAlert(config.SLACK_WEBHOOK_URL, declining.slice(0, 5));
+        // Send Telegram alert for content decay
+        if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
+          await sendDecayAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, declining.slice(0, 5));
         }
       }
 
@@ -401,6 +405,21 @@ async function main(): Promise<void> {
           researchService.getPerformanceInsights() + threatInsights,
         );
       }
+      // Featured snippet opportunity detection — feed into keyword research for optimization
+      try {
+        const snippetOpps = await gscService.getFeaturedSnippetOpportunities();
+        if (snippetOpps.length > 0) {
+          const snippetInsight = '\n## Featured Snippet Opportunities\n' +
+            snippetOpps.slice(0, 5).map(s =>
+              `  - "${s.query}" (pos ${s.position.toFixed(1)}, ${s.impressions} imp, type: ${s.snippetType})`,
+            ).join('\n') +
+            '\nOptimize content for these queries using paragraph/list/table format matching the snippet type.';
+          insightParts.push(snippetInsight);
+          logger.info(`Featured snippet: ${snippetOpps.length} opportunity(ies) detected`);
+        }
+      } catch (snippetErr) {
+        logger.debug(`Featured snippet detection failed: ${snippetErr instanceof Error ? snippetErr.message : snippetErr}`);
+      }
     } catch (error) {
       logger.warn(`GSC integration failed: ${error instanceof Error ? error.message : error}`);
     }
@@ -429,6 +448,26 @@ async function main(): Promise<void> {
 
   // Generate topical map coverage report (strategic content planning)
   topicClusterService.generateTopicalMapReport();
+
+  // Log series opportunities for each active niche
+  for (const niche of activeNiches) {
+    const seriesOpps = topicClusterService.getSeriesOpportunities(niche.id);
+    if (seriesOpps.length > 0) {
+      const highPriority = seriesOpps.filter(s => s.priority === 'high');
+      if (highPriority.length > 0) {
+        logger.info(`Series opportunities for ${niche.id}: ${highPriority.map(s => s.seriesName).join(', ')}`);
+      }
+    }
+
+    // Pillar→satellite content sequencing advice
+    const sequenceAdvice = topicClusterService.getPillarSequencingAdvice(niche.id, existingPosts, pillarUrlMap);
+    if (sequenceAdvice) {
+      logger.info(`Sequencing [${niche.id}]: ${sequenceAdvice.advice} (${sequenceAdvice.satelliteCount} satellites)`);
+      if (sequenceAdvice.shouldCreatePillar) {
+        insightParts.push(`\n## Pillar Sequencing: ${niche.name}\n${sequenceAdvice.advice}\nPrioritize creating a pillar page for this niche.`);
+      }
+    }
+  }
 
   // 3.7b. Competitor gap analysis: find high-value content opportunities from GSC data
   if (config.GSC_SITE_URL && config.GOOGLE_INDEXING_SA_KEY) {
@@ -470,6 +509,7 @@ async function main(): Promise<void> {
     postStart: number;
     researched: Awaited<ReturnType<typeof researchService.researchKeyword>>;
     content: Awaited<ReturnType<typeof contentService.generateContent>>;
+    fastTrack?: boolean;
   }
 
   // Cross-niche keyword tracking (prevent different niches from picking similar topics in same batch)
@@ -498,9 +538,32 @@ async function main(): Promise<void> {
       const recentContentTypes = history.getRecentContentTypes(niche.id, 5);
       const researched = await researchService.researchKeyword(niche, postedKeywords, recentContentTypes);
 
-      // A-2. Skip if already posted
+      // A-1.5. Fast-track breakout trends — bypass scheduling for breaking news
+      const hasBreakout = researched.trendsData.some(t => t.hasBreakout);
+      if (hasBreakout) {
+        logger.info(`⚡ BREAKING TREND detected for "${researched.analysis.selectedKeyword}" — fast-tracking publication`);
+        // Prefer news-explainer content type for breakout topics
+        if (researched.analysis.contentType !== 'news-explainer' && niche.contentTypes.includes('news-explainer')) {
+          researched.analysis.contentType = 'news-explainer';
+          logger.info(`  Content type switched to news-explainer for breakout trend`);
+        }
+      }
+
+      // A-2. Skip if already posted (history file + WordPress meta fallback)
       if (history.isPosted(researched.analysis.selectedKeyword, niche.id)) {
         logger.info(`Already posted: "${researched.analysis.selectedKeyword}", skipping`);
+        skippedCount++;
+        continue;
+      }
+      // WordPress meta fallback: check existing posts for keyword/title overlap (guards against history file desync)
+      const kwLower = researched.analysis.selectedKeyword.toLowerCase();
+      const wpDuplicate = existingPosts.find(p => {
+        const titleMatch = p.title.toLowerCase().includes(kwLower) || kwLower.includes(p.title.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim());
+        const keywordMatch = p.keyword && (p.keyword.toLowerCase() === kwLower || p.keyword.toLowerCase().includes(kwLower));
+        return titleMatch || keywordMatch;
+      });
+      if (wpDuplicate) {
+        logger.warn(`WordPress duplicate detected: "${researched.analysis.selectedKeyword}" matches existing post "${wpDuplicate.title}" (${wpDuplicate.url}). Skipping.`);
         skippedCount++;
         continue;
       }
@@ -519,7 +582,7 @@ async function main(): Promise<void> {
       const clusterLinksForPrompt = clusterLinks.map(cl => ({ url: cl.url, title: cl.title, keyword: cl.keyword }));
 
       const content = await contentService.generateContent(researched, filteredPosts, clusterLinksForPrompt);
-      generated.push({ niche, postStart, researched, content });
+      generated.push({ niche, postStart, researched, content, fastTrack: hasBreakout });
 
       // Track keyword for cross-niche dedup
       batchKeywords.push(researched.analysis.selectedKeyword);
@@ -605,12 +668,16 @@ async function main(): Promise<void> {
   const categoryDateMap = new Map<string, Set<string>>(); // category → Set of date strings (YYYY-MM-DD)
 
   for (let gi = 0; gi < generated.length; gi++) {
-    const { niche, postStart, researched, content } = generated[gi];
-    logger.info(`\n[Phase B] Niche: "${niche.name}"`);
+    const { niche, postStart, researched, content, fastTrack } = generated[gi];
+    logger.info(`\n[Phase B] Niche: "${niche.name}"${fastTrack ? ' [FAST-TRACK]' : ''}`);
 
     // Calculate scheduled date: niche-specific timing > GA4-driven > config fallback
+    // Fast-track breakout trends bypass scheduling (publish immediately)
     let scheduledDate: string | undefined;
-    {
+    if (fastTrack) {
+      scheduledDate = undefined; // Immediate publish
+      logger.info(`Fast-track: Bypassing scheduling for breakout trend "${researched.analysis.selectedKeyword}"`);
+    } else {
       const now = new Date();
       // Use niche-specific timing if no GA4 data, otherwise GA4 takes priority
       const nicheTiming = CATEGORY_PUBLISH_TIMING[niche.category];
@@ -799,7 +866,7 @@ async function main(): Promise<void> {
         logger.debug(`Plagiarism check skipped: ${plagError instanceof Error ? plagError.message : plagError}`);
       }
 
-      // B-3.9. Pre-publish fact verification
+      // B-3.9. Pre-publish fact verification (critical errors → force draft)
       try {
         const factResult = await factCheckService.verifyContent(content.html, niche.category);
         if (factResult.flagged.length > 0) {
@@ -808,9 +875,84 @@ async function main(): Promise<void> {
           if (factResult.corrections.length > 0) {
             content.html = factCheckService.applyCorrections(content.html, factResult.corrections);
           }
+          // Critical fact errors → force draft to prevent publishing inaccurate data
+          if (factResult.hasCriticalErrors) {
+            logger.warn(`Fact-check: Forcing draft status due to ${factResult.criticalCount} critical factual errors`);
+            effectivePublishStatus = 'draft';
+            if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
+              await sendQualityAlert(
+                config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, content.title, '',
+                content.qualityScore || 0, config.MIN_QUALITY_SCORE,
+                [`${factResult.criticalCount} critical fact-check errors`, ...factResult.flagged.slice(0, 3)],
+              );
+            }
+          }
         }
       } catch (factError) {
         logger.debug(`Fact-check skipped: ${factError instanceof Error ? factError.message : factError}`);
+      }
+
+      // B-3.95. Inject data visualization charts for Finance/Tech categories
+      // Inject data visualization charts for Finance/Tech categories
+      if (['Korean Finance', 'Korean Tech'].includes(niche.category)) {
+        try {
+          let chartSvg = '';
+          if (niche.category === 'Korean Finance') {
+            chartSvg = await dataVizService.generateKospiChart();
+          } else {
+            chartSvg = await dataVizService.generateExchangeRateChart();
+          }
+          if (chartSvg) {
+            content.html = wpService.injectDataChart(content.html, chartSvg, niche.category);
+            logger.info(`Data chart injected for ${niche.category} post`);
+          }
+        } catch (chartError) {
+          logger.debug(`Data chart injection skipped: ${chartError instanceof Error ? chartError.message : chartError}`);
+        }
+      }
+      // Inject lead magnet mention for all niches with lead magnets
+      content.html = wpService.injectLeadMagnetMention(content.html, niche.category);
+
+      // Enhanced lead magnet with category-specific CTA (requires LEAD_MAGNET_URL)
+      if (config.LEAD_MAGNET_URL) {
+        content.html = wpService.injectEnhancedLeadMagnet(
+          content.html, niche.category,
+          config.LEAD_MAGNET_URL,
+          config.LEAD_MAGNET_TITLE || `Free ${niche.category} Guide`,
+        );
+      }
+
+      // YouTube video embed (search for relevant video and inject responsive embed)
+      if (config.YOUTUBE_API_KEY) {
+        try {
+          const searchQuery = `${researched.analysis.selectedKeyword} Korea ${new Date().getFullYear()}`;
+          const ytResponse = await axios.get('https://www.googleapis.com/youtube/v3/search', {
+            params: {
+              part: 'snippet',
+              q: searchQuery,
+              type: 'video',
+              maxResults: 1,
+              relevanceLanguage: 'en',
+              key: config.YOUTUBE_API_KEY,
+            },
+            timeout: 10000,
+          });
+          const ytItems = ytResponse.data?.items;
+          if (ytItems?.length > 0) {
+            const videoId = ytItems[0].id?.videoId;
+            const videoTitle = ytItems[0].snippet?.title || searchQuery;
+            if (videoId) {
+              content.html = WordPressService.injectYouTubeEmbed(
+                content.html,
+                `https://www.youtube.com/watch?v=${videoId}`,
+                videoTitle,
+              );
+              logger.info(`YouTube embed injected: "${videoTitle}" for "${researched.analysis.selectedKeyword}"`);
+            }
+          }
+        } catch (ytError) {
+          logger.debug(`YouTube embed skipped: ${ytError instanceof Error ? ytError.message : ytError}`);
+        }
       }
 
       // B-4. Create WordPress post (English only)
@@ -843,13 +985,13 @@ async function main(): Promise<void> {
         if (content.qualityScore < minQuality - 15 && effectivePublishStatus === 'publish') {
           logger.warn(`Quality score ${content.qualityScore} is critically below threshold (${minQuality}). Reverting to draft.`);
           await wpService.revertToDraft(post.postId, `Quality score ${content.qualityScore} < ${minQuality - 15}`);
-          if (config.SLACK_WEBHOOK_URL) {
+          if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
             const issues = content.qualityScore < 40 ? ['Critically low quality score', 'Needs complete rewrite'] : ['Below minimum quality threshold'];
-            await sendQualityAlert(config.SLACK_WEBHOOK_URL, content.title, post.url, content.qualityScore, minQuality, issues);
+            await sendQualityAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, content.title, post.url, content.qualityScore, minQuality, issues);
           }
-        } else if (content.qualityScore < minQuality && config.SLACK_WEBHOOK_URL) {
+        } else if (content.qualityScore < minQuality && config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
           // Alert but don't rollback for marginal scores
-          await sendQualityAlert(config.SLACK_WEBHOOK_URL, content.title, post.url, content.qualityScore, minQuality, ['Marginal quality - review recommended']);
+          await sendQualityAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, content.title, post.url, content.qualityScore, minQuality, ['Marginal quality - review recommended']);
         }
       }
 
@@ -1029,8 +1171,10 @@ async function main(): Promise<void> {
     logger.warn(`Broken link check failed: ${error instanceof Error ? error.message : error}`);
   }
 
-  // 4.2. Auto-rewrite underperforming posts (when enabled)
-  if (config.AUTO_REWRITE_COUNT > 0 && config.GA4_PROPERTY_ID && config.GOOGLE_INDEXING_SA_KEY) {
+  // 4.2. Auto-rewrite underperforming posts (when enabled, with timeout guard)
+  const elapsedMinutes = (Date.now() - new Date(startedAt).getTime()) / 60000;
+  const REWRITE_TIME_BUDGET_MIN = 35; // Skip rewrite if already past 35 min (GitHub Actions timeout is 45 min)
+  if (config.AUTO_REWRITE_COUNT > 0 && config.GA4_PROPERTY_ID && config.GOOGLE_INDEXING_SA_KEY && elapsedMinutes < REWRITE_TIME_BUDGET_MIN) {
     try {
       const ga4Service = new GA4AnalyticsService(config.GA4_PROPERTY_ID, config.GOOGLE_INDEXING_SA_KEY);
       const refreshService = new ContentRefreshService(
@@ -1056,6 +1200,8 @@ async function main(): Promise<void> {
     } catch (error) {
       logger.warn(`Auto-rewrite failed: ${error instanceof Error ? error.message : error}`);
     }
+  } else if (config.AUTO_REWRITE_COUNT > 0 && elapsedMinutes >= REWRITE_TIME_BUDGET_MIN) {
+    logger.warn(`Skipping auto-rewrite: elapsed ${elapsedMinutes.toFixed(0)} min exceeds ${REWRITE_TIME_BUDGET_MIN} min budget`);
   }
 
   // 4.21b. CTR-based title/meta-only refresh (lightweight — no full rewrite)
@@ -1146,8 +1292,8 @@ async function main(): Promise<void> {
     const pruned = await pruneService.pruneStaleContent(history.getAllEntries(), ga4ForPrune, gscForPrune, 3);
     if (pruned > 0) {
       logger.info(`Content pruning: ${pruned} stale post(s) archived (draft + noindex)`);
-      if (config.SLACK_WEBHOOK_URL) {
-        await sendQualityAlert(config.SLACK_WEBHOOK_URL, 'Content Pruning', '', 0, 0, [`${pruned} stale post(s) auto-archived`]);
+      if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
+        await sendQualityAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, 'Content Pruning', '', 0, 0, [`${pruned} stale post(s) auto-archived`]);
       }
     }
   } catch (error) {
@@ -1178,9 +1324,9 @@ async function main(): Promise<void> {
         }
       }
 
-      if (config.SLACK_WEBHOOK_URL && mergeCandidates.length > 0) {
+      if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID && mergeCandidates.length > 0) {
         const mergeMsg = mergeCandidates.slice(0, 3).map(c => c.recommendation).join('\n');
-        await sendQualityAlert(config.SLACK_WEBHOOK_URL, 'Content Merge Candidates', '', 0, 0, [mergeMsg]);
+        await sendQualityAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, 'Content Merge Candidates', '', 0, 0, [mergeMsg]);
       }
     }
   } catch (error) {
@@ -1224,6 +1370,26 @@ async function main(): Promise<void> {
         if (tracked > 0) {
           await history.persist();
           logger.info(`Keyword rankings: Updated ${tracked} post position(s)`);
+
+          // Ranking milestone alerts — detect hits to #1, top 3, top 10, drops
+          const milestones = GSCAnalyticsService.detectRankingMilestones(allEntries, rankings);
+          if (milestones.length > 0) {
+            for (const m of milestones) {
+              const emoji = m.event === 'hit-top1' ? '🥇' : m.event === 'hit-top3' ? '🥈' : m.event === 'hit-top10' ? '📈' : '📉';
+              logger.info(`${emoji} Ranking milestone: "${m.keyword}" ${m.event} (pos ${m.previousPosition.toFixed(1)} → ${m.currentPosition.toFixed(1)})`);
+            }
+            if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
+              const milestoneMsg = milestones.map(m => {
+                const emoji = m.event === 'hit-top1' ? '🥇' : m.event === 'hit-top3' ? '🥈' : m.event === 'hit-top10' ? '📈' : '📉';
+                return `${emoji} "${m.keyword}": pos ${m.previousPosition.toFixed(1)} → ${m.currentPosition.toFixed(1)}`;
+              }).join('\n');
+              await sendTelegramAlert(
+                config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID,
+                `<b>Ranking Milestones</b>\n${milestoneMsg}`,
+                milestones.some(m => m.event === 'dropped-from-top10') ? 'warning' : 'info',
+              );
+            }
+          }
         }
       }
     } catch (error) {
@@ -1275,16 +1441,18 @@ async function main(): Promise<void> {
           }
         }
 
-        // Send Slack alert for cannibalization issues
-        if (config.SLACK_WEBHOOK_URL && (highSeverity.length > 0 || medSeverity.length > 0)) {
+        // Send Telegram alert for cannibalization issues
+        if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID && (highSeverity.length > 0 || medSeverity.length > 0)) {
           try {
             const cannibalSummary = [...highSeverity, ...medSeverity].slice(0, 5)
               .map(c => `[${c.severity.toUpperCase()}] "${c.query}" → ${c.recommendation} (${c.pages.map(p => `pos ${p.position.toFixed(0)}`).join(' vs ')})`)
               .join('\n');
-            await axios.post(config.SLACK_WEBHOOK_URL, {
-              text: `*Keyword Cannibalization Alert*\n${cannibalized.length} competing query(ies) detected:\n\`\`\`${cannibalSummary}\`\`\``,
-            });
-          } catch { /* Slack alert non-fatal */ }
+            await sendTelegramAlert(
+              config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID,
+              `<b>Keyword Cannibalization Alert</b>\n${cannibalized.length} competing query(ies) detected:\n${cannibalSummary}`,
+              'warning',
+            );
+          } catch { /* Telegram alert non-fatal */ }
         }
       }
     } catch (error) {
@@ -1299,9 +1467,9 @@ async function main(): Promise<void> {
       const chains = await wpService.detectRedirectChains(internalUrls);
       if (chains.length > 0) {
         logger.warn(`Redirect chains found: ${chains.length} chain(s) — update internal links to point directly to final URLs`);
-        if (config.SLACK_WEBHOOK_URL) {
+        if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
           const chainMsg = chains.slice(0, 3).map(c => `[${c.hops} hops] ${c.originalUrl} → ${c.finalUrl}`).join('\n');
-          await sendQualityAlert(config.SLACK_WEBHOOK_URL, 'Redirect Chain Alert', '', 0, 0, [chainMsg]);
+          await sendQualityAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, 'Redirect Chain Alert', '', 0, 0, [chainMsg]);
         }
       }
     }
@@ -1534,6 +1702,38 @@ async function main(): Promise<void> {
     const category = nicheConfig?.category || 'Unknown';
     postsByNiche[category] = (postsByNiche[category] || 0) + 1;
   }
+
+  // Dynamic RPM optimization: learn actual RPM from GA4 pageview data per niche
+  if (config.GA4_PROPERTY_ID && config.GOOGLE_INDEXING_SA_KEY) {
+    try {
+      const ga4Rpm = new GA4AnalyticsService(config.GA4_PROPERTY_ID, config.GOOGLE_INDEXING_SA_KEY);
+      const topPosts = await ga4Rpm.getTopPerformingPosts(200);
+      if (topPosts.length >= 10) {
+        // Calculate actual pageviews-per-post by niche for RPM refinement
+        const nichePageviews: Record<string, { totalPv: number; postCount: number }> = {};
+        for (const p of topPosts) {
+          const entry = history.getAllEntries().find(e => e.postUrl && p.url.includes(e.postUrl.replace(/^https?:\/\/[^/]+/, '')));
+          if (entry?.niche) {
+            const nicheConf = NICHES.find(n => n.id === entry.niche);
+            const cat = nicheConf?.category || 'Unknown';
+            if (!nichePageviews[cat]) nichePageviews[cat] = { totalPv: 0, postCount: 0 };
+            nichePageviews[cat].totalPv += p.pageviews;
+            nichePageviews[cat].postCount++;
+          }
+        }
+        // Log actual vs estimated RPM performance
+        for (const [niche, data] of Object.entries(nichePageviews)) {
+          if (data.postCount >= 3) {
+            const avgPv = data.totalPv / data.postCount;
+            logger.info(`Dynamic RPM [${niche}]: ${avgPv.toFixed(0)} avg pageviews/post (${data.postCount} posts tracked)`);
+          }
+        }
+      }
+    } catch (rpmError) {
+      logger.debug(`Dynamic RPM analysis failed: ${rpmError instanceof Error ? rpmError.message : rpmError}`);
+    }
+  }
+
   costTracker.logRevenueEstimate(postsByNiche);
 
   logger.info('\n=== Batch Summary ===');
@@ -1549,9 +1749,9 @@ async function main(): Promise<void> {
 
   logger.info('=== Batch Complete ===');
 
-  // Send Slack notification
-  if (config.SLACK_WEBHOOK_URL) {
-    await sendBatchSummary(config.SLACK_WEBHOOK_URL, {
+  // Send Telegram notification
+  if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
+    await sendBatchSummary(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, {
       successCount: batch.successCount,
       failureCount: batch.failureCount,
       skippedCount: batch.skippedCount,
