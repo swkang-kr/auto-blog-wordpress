@@ -64,6 +64,33 @@ export class SeoService {
     }
   }
 
+  /**
+   * Set permalink structure to /%category%/%postname%/ for topical authority.
+   * Category-based URLs help Google understand site topic structure.
+   */
+  async ensureCategoryPermalinks(): Promise<void> {
+    try {
+      const { data: settings } = await this.api.get('/settings');
+      const current = settings as Record<string, unknown>;
+      const desiredStructure = '/%category%/%postname%/';
+      if (current.permalink_structure === desiredStructure) {
+        logger.debug('Permalink structure already set to category-based');
+        return;
+      }
+      await this.api.post('/settings', { permalink_structure: desiredStructure });
+      logger.info(`Permalink structure updated to "${desiredStructure}" for topical authority`);
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      // WordPress REST API may not expose permalink_structure via /settings
+      // In that case, log a manual instruction
+      if (msg.includes('rest_invalid_param') || msg.includes('403') || msg.includes('permalink')) {
+        logger.info('Permalink structure: Set manually in WordPress Admin → Settings → Permalinks → Custom: /%category%/%postname%/');
+      } else {
+        logger.warn(`Failed to update permalink structure: ${msg}`);
+      }
+    }
+  }
+
   async ensureHeaderScripts(options: {
     googleCode?: string;
     naverCode?: string;

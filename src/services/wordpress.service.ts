@@ -1688,6 +1688,17 @@ ${ga4TrackingScript}`;
       }
     }
 
+    // Pre-FAQ ad slot — high viewability position (readers scrolling through content)
+    const faqHeadingMatch = /<h[23][^>]*>[^<]*(?:FAQ|Frequently Asked)[^<]*<\/h[23]>/i.exec(html);
+    if (faqHeadingMatch && insertPoints.length < maxAds) {
+      const lastAdPos = insertPoints.length > 0 ? insertPoints[insertPoints.length - 1].pos : 0;
+      const textBetween = html.slice(lastAdPos, faqHeadingMatch.index).replace(/<[^>]+>/g, '');
+      const wordsBetween = textBetween.split(/\s+/).length;
+      if (wordsBetween >= minWordGap) {
+        insertPoints.push({ pos: faqHeadingMatch.index, type: 'pre-faq', format: 'auto' });
+      }
+    }
+
     const finalInserts = insertPoints.slice(0, maxAds);
 
     // Insert in reverse order to preserve positions

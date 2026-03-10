@@ -300,6 +300,15 @@ export function validateContent(
     structureScore -= Math.min(4, mobileIssues.length * 2);
   }
 
+  // 6c. Alt text quality validation
+  const altTextIssues = validateAltTexts(html, keyword);
+  if (altTextIssues.length > 0) {
+    for (const issue of altTextIssues) {
+      warnings.push({ category: 'structure', message: issue, severity: 'warning' });
+    }
+    structureScore -= Math.min(3, altTextIssues.length);
+  }
+
   // 7. Outdated year references (stale content detection)
   const currentYear = new Date().getFullYear();
   const outdatedYearPenalty = detectOutdatedYearReferences(plainText, currentYear);
@@ -1350,6 +1359,69 @@ function batchTextSimilarity(a: string, b: string): number {
  * Validate image alt text contains keyword context.
  * Returns count of images missing keyword-enriched alt text.
  */
+/**
+ * Validate alt text quality for images: keyword presence (1x), descriptive text, no stuffing.
+ * Returns issue strings for the content validator scoring.
+ */
+function validateAltTexts(html: string, keyword: string): string[] {
+  const imgRegex = /<img\s+[^>]*>/gi;
+  const images = html.match(imgRegex) || [];
+  if (images.length === 0) return [];
+
+  const issues: string[] = [];
+  const kwWords = keyword.toLowerCase().split(/\s+/).filter(w => w.length > 3);
+  let missingAlt = 0;
+  let genericAlt = 0;
+  let stuffedAlt = 0;
+  let noKeywordAlt = 0;
+
+  for (const img of images) {
+    const altMatch = img.match(/alt="([^"]*)"/i);
+    if (!altMatch || altMatch[1].trim() === '') {
+      missingAlt++;
+      continue;
+    }
+    const alt = altMatch[1].trim();
+    const altLower = alt.toLowerCase();
+
+    // Check for generic/useless alt text
+    if (/^(image|photo|picture|img|article image|featured image)\s*\d*$/i.test(alt)) {
+      genericAlt++;
+      continue;
+    }
+
+    // Check for keyword stuffing (keyword appears 3+ times in alt)
+    const kwOccurrences = kwWords.filter(w => altLower.includes(w)).length;
+    const kwRepeats = kwWords.reduce((count, w) => {
+      const regex = new RegExp(w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+      return count + (altLower.match(regex) || []).length;
+    }, 0);
+    if (kwRepeats >= 4) {
+      stuffedAlt++;
+    }
+
+    // Check if at least one keyword fragment is present
+    if (kwOccurrences === 0) {
+      noKeywordAlt++;
+    }
+  }
+
+  if (missingAlt > 0) {
+    issues.push(`${missingAlt} image(s) missing alt text (accessibility + SEO issue)`);
+  }
+  if (genericAlt > 0) {
+    issues.push(`${genericAlt} image(s) with generic alt text (e.g., "image 1") — use descriptive text`);
+  }
+  if (stuffedAlt > 0) {
+    issues.push(`${stuffedAlt} image(s) with keyword-stuffed alt text — use keyword naturally (1x)`);
+  }
+  if (noKeywordAlt > Math.ceil(images.length * 0.7)) {
+    issues.push(`Most images missing keyword context in alt text — include keyword naturally in at least 1-2 images`);
+  }
+
+  return issues;
+}
+
 export function validateImageAltTexts(html: string, keyword: string): { total: number; missingKeyword: number; missingAlt: number } {
   const imgRegex = /<img\s+[^>]*>/gi;
   const images = html.match(imgRegex) || [];

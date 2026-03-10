@@ -606,7 +606,7 @@ export class ContentGeneratorService {
     this.client = new Anthropic({ apiKey });
     this.siteOwner = siteOwner || '';
     this.siteUrl = siteUrl || '';
-    this.minQualityScore = minQualityScore ?? 40;
+    this.minQualityScore = minQualityScore ?? 55;
     this.authorLinkedin = authorLinks?.linkedin || '';
     this.authorTwitter = authorLinks?.twitter || '';
     this.monetizationContext = '';

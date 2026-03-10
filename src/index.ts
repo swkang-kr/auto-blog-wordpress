@@ -129,6 +129,13 @@ async function main(): Promise<void> {
     logger.warn(`Site title setup failed: ${error instanceof Error ? error.message : error}`);
   }
 
+  // 2.6b. Ensure category-based permalink structure for topical authority
+  try {
+    await seoService.ensureCategoryPermalinks();
+  } catch (error) {
+    logger.warn(`Permalink setup failed: ${error instanceof Error ? error.message : error}`);
+  }
+
   // 2.7. Ensure search engine verification meta tags + GA4
   try {
     await seoService.ensureHeaderScripts({
@@ -385,6 +392,9 @@ async function main(): Promise<void> {
 
   // Build topic clusters for cluster-aware linking and content gap detection
   topicClusterService.buildClusters(existingPosts, history.getAllEntries(), pillarUrlMap);
+
+  // Generate topical map coverage report (strategic content planning)
+  topicClusterService.generateTopicalMapReport();
 
   // 4. Two-phase pipeline
   //    Phase A: Research + Content Generation back-to-back (maximises prompt cache HITs)
@@ -836,6 +846,24 @@ async function main(): Promise<void> {
       }
     } catch (error) {
       logger.warn(`Auto-rewrite failed: ${error instanceof Error ? error.message : error}`);
+    }
+  }
+
+  // 4.21b. CTR-based title/meta-only refresh (lightweight — no full rewrite)
+  // Targets posts where position is stable but CTR is declining → title/meta problem
+  if (config.GSC_SITE_URL && config.GOOGLE_INDEXING_SA_KEY) {
+    try {
+      const gscCtrService = new GSCAnalyticsService(config.GSC_SITE_URL || config.WP_URL, config.GOOGLE_INDEXING_SA_KEY);
+      const ctrRefreshService = new ContentRefreshService(
+        config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD,
+        config.ANTHROPIC_API_KEY, config.CLAUDE_MODEL,
+      );
+      const ctrRefreshed = await ctrRefreshService.refreshDecliningCtrPosts(gscCtrService, seoService, 2);
+      if (ctrRefreshed > 0) {
+        logger.info(`CTR refresh: Updated title/meta for ${ctrRefreshed} post(s) with stable position but declining CTR`);
+      }
+    } catch (error) {
+      logger.warn(`CTR refresh failed: ${error instanceof Error ? error.message : error}`);
     }
   }
 

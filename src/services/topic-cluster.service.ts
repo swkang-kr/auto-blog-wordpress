@@ -342,6 +342,131 @@ ${cluster.pillarUrl ? `<p style="margin:12px 0 0 0;"><a href="${cluster.pillarUr
     return Object.keys(NICHE_SUBTOPICS[nicheCategory] || {}).length || 5;
   }
 
+  /**
+   * Generate a topical map coverage report showing covered vs uncovered sub-topics per niche.
+   * Returns a structured report for logging and strategic content planning.
+   */
+  generateTopicalMapReport(): {
+    niches: Array<{
+      nicheId: string;
+      totalSubTopics: number;
+      coveredSubTopics: number;
+      coveragePct: number;
+      postCount: number;
+      covered: Array<{ subTopic: string; postCount: number }>;
+      uncovered: string[];
+      underserved: Array<{ subTopic: string; postCount: number }>;
+    }>;
+    overallCoverage: number;
+    totalPosts: number;
+    recommendations: string[];
+  } {
+    const nicheReports: Array<{
+      nicheId: string;
+      totalSubTopics: number;
+      coveredSubTopics: number;
+      coveragePct: number;
+      postCount: number;
+      covered: Array<{ subTopic: string; postCount: number }>;
+      uncovered: string[];
+      underserved: Array<{ subTopic: string; postCount: number }>;
+    }> = [];
+
+    let totalPosts = 0;
+    let totalSubTopics = 0;
+    let totalCovered = 0;
+
+    for (const [nicheId, cluster] of this.clusters) {
+      const nicheCategory = nicheId.split('-').slice(0, 2).join('-');
+      const subTopicDefs = NICHE_SUBTOPICS[nicheCategory];
+      if (!subTopicDefs) continue;
+
+      const allSubTopics = Object.keys(subTopicDefs);
+      const covered: Array<{ subTopic: string; postCount: number }> = [];
+      const uncovered: string[] = [];
+      const underserved: Array<{ subTopic: string; postCount: number }> = [];
+
+      for (const subTopic of allSubTopics) {
+        const posts = cluster.subTopics.get(subTopic);
+        const count = posts?.length || 0;
+        if (count === 0) {
+          uncovered.push(subTopic);
+        } else if (count <= 2) {
+          underserved.push({ subTopic, postCount: count });
+          covered.push({ subTopic, postCount: count });
+        } else {
+          covered.push({ subTopic, postCount: count });
+        }
+      }
+
+      const coveragePct = allSubTopics.length > 0
+        ? Math.round((covered.length / allSubTopics.length) * 100)
+        : 100;
+
+      nicheReports.push({
+        nicheId,
+        totalSubTopics: allSubTopics.length,
+        coveredSubTopics: covered.length,
+        coveragePct,
+        postCount: cluster.posts.length,
+        covered: covered.sort((a, b) => b.postCount - a.postCount),
+        uncovered,
+        underserved,
+      });
+
+      totalPosts += cluster.posts.length;
+      totalSubTopics += allSubTopics.length;
+      totalCovered += covered.length;
+    }
+
+    const overallCoverage = totalSubTopics > 0
+      ? Math.round((totalCovered / totalSubTopics) * 100)
+      : 0;
+
+    // Generate strategic recommendations
+    const recommendations: string[] = [];
+    for (const niche of nicheReports) {
+      if (niche.uncovered.length > 0) {
+        recommendations.push(
+          `${niche.nicheId}: Create content for uncovered topics: ${niche.uncovered.join(', ')}`,
+        );
+      }
+      if (niche.underserved.length > 0) {
+        const underservedList = niche.underserved
+          .map(u => `${u.subTopic} (${u.postCount} post${u.postCount > 1 ? 's' : ''})`)
+          .join(', ');
+        recommendations.push(
+          `${niche.nicheId}: Deepen coverage on: ${underservedList}`,
+        );
+      }
+      if (niche.coveragePct < 60) {
+        recommendations.push(
+          `${niche.nicheId}: Low coverage (${niche.coveragePct}%) — prioritize this niche for topical authority`,
+        );
+      }
+    }
+
+    // Log the report
+    logger.info('=== Topical Map Coverage Report ===');
+    logger.info(`Overall: ${overallCoverage}% coverage (${totalCovered}/${totalSubTopics} sub-topics across ${totalPosts} posts)`);
+    for (const niche of nicheReports) {
+      const status = niche.coveragePct >= 80 ? 'STRONG' : niche.coveragePct >= 60 ? 'MODERATE' : 'WEAK';
+      logger.info(
+        `  ${niche.nicheId}: ${niche.coveragePct}% [${status}] — ` +
+        `${niche.coveredSubTopics}/${niche.totalSubTopics} sub-topics, ${niche.postCount} posts` +
+        (niche.uncovered.length > 0 ? ` | Gaps: ${niche.uncovered.join(', ')}` : ''),
+      );
+    }
+    if (recommendations.length > 0) {
+      logger.info('Recommendations:');
+      for (const rec of recommendations.slice(0, 10)) {
+        logger.info(`  → ${rec}`);
+      }
+    }
+
+    return { niches: nicheReports, overallCoverage, totalPosts, recommendations };
+  }
+
   /** Identify content gaps based on common topic patterns per niche */
   private identifyContentGaps(nicheId: string, coveredKeywords: string[]): string[] {
     // Common topic patterns that should exist per niche category

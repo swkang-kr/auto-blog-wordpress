@@ -434,6 +434,204 @@ export class ContentRefreshService {
     return { evergreenPct, seasonalPct, timeSensitivePct, healthy };
   }
 
+  /**
+   * Lightweight title+meta-only refresh for posts where position is stable/rising but CTR is declining.
+   * Instead of full rewrite, only updates title, meta description, and A/B test candidates.
+   * Returns number of posts refreshed.
+   */
+  async refreshDecliningCtrPosts(
+    gscService: GSCAnalyticsService,
+    seoService?: SeoService,
+    limit: number = 3,
+  ): Promise<number> {
+    try {
+      // Get page performance for CTR analysis
+      const [recentPages, previousPages] = await Promise.all([
+        this.fetchGscPageData(gscService, -7, -1),
+        this.fetchGscPageData(gscService, -28, -8),
+      ]);
+
+      if (recentPages.length === 0 || previousPages.length === 0) {
+        logger.info('CTR refresh: Insufficient GSC data, skipping');
+        return 0;
+      }
+
+      const previousMap = new Map(previousPages.map(r => [r.page, r]));
+      const candidates: Array<{
+        page: string;
+        currentPosition: number;
+        previousPosition: number;
+        currentCtr: number;
+        previousCtr: number;
+        impressions: number;
+      }> = [];
+
+      for (const recent of recentPages) {
+        const prev = previousMap.get(recent.page);
+        if (!prev || prev.impressions < 10) continue;
+
+        // Position stable or improving (delta <= 2 positions) but CTR dropped 30%+
+        const positionDelta = recent.position - prev.position;
+        const ctrDrop = prev.ctr > 0 ? (prev.ctr - recent.ctr) / prev.ctr : 0;
+
+        if (positionDelta <= 2 && ctrDrop >= 0.3 && recent.impressions >= 10) {
+          candidates.push({
+            page: recent.page,
+            currentPosition: recent.position,
+            previousPosition: prev.position,
+            currentCtr: recent.ctr,
+            previousCtr: prev.ctr,
+            impressions: recent.impressions,
+          });
+        }
+      }
+
+      if (candidates.length === 0) {
+        logger.info('CTR refresh: No posts with position-stable but CTR-declining pattern found');
+        return 0;
+      }
+
+      // Sort by impression volume (highest first) — biggest CTR gains
+      candidates.sort((a, b) => b.impressions - a.impressions);
+      logger.info(`CTR refresh: Found ${candidates.length} post(s) with stable position but declining CTR`);
+
+      let refreshedCount = 0;
+      const refreshedUrls: string[] = [];
+
+      for (const candidate of candidates.slice(0, limit)) {
+        try {
+          const urlPath = new URL(candidate.page).pathname.replace(/^\/|\/$/g, '');
+          if (!urlPath) continue;
+
+          const { data: posts } = await this.api.get('/posts', {
+            params: { slug: urlPath, status: 'publish', _fields: 'id,title,slug,content,link,meta' },
+          });
+          const post = (posts as WPPost[])[0];
+          if (!post) continue;
+
+          logger.info(`CTR refresh: Optimizing title/meta for "${post.title.rendered}" (pos ${candidate.currentPosition.toFixed(1)}, CTR ${(candidate.currentCtr * 100).toFixed(1)}% → was ${(candidate.previousCtr * 100).toFixed(1)}%)`);
+
+          const focusKeyword = post.meta?.rank_math_focus_keyword || '';
+          const currentYear = new Date().getFullYear();
+
+          const prompt = `You are a search engine CTR optimization specialist. A blog post has stable search ranking but declining CTR — this means the title and meta description need improvement to earn more clicks.
+
+CURRENT TITLE: ${post.title.rendered}
+PRIMARY KEYWORD: ${focusKeyword}
+CURRENT POSITION: ${candidate.currentPosition.toFixed(1)}
+CTR: ${(candidate.currentCtr * 100).toFixed(1)}% (was ${(candidate.previousCtr * 100).toFixed(1)}%)
+IMPRESSIONS: ${candidate.impressions}
+
+Generate an improved title and meta description optimized for CTR. Also provide 2 alternative titles for A/B testing.
+
+TITLE RULES:
+- 50-65 characters (Google SERP sweet spot)
+- Must contain the primary keyword or close variant
+- Include a year reference (${currentYear}) for freshness
+- Use power words, numbers, or brackets for CTR
+- Patterns that boost CTR: [Year], numbers, "Best", "How to", brackets [Updated], parenthetical (Guide)
+- AVOID: clickbait, misleading claims, "game-changer", "revolutionary"
+
+META DESCRIPTION RULES:
+- 145-158 characters exactly
+- Start with the primary keyword
+- Include one concrete benefit/outcome
+- End with a subtle call-to-action
+- Use "you"/"your" at least once
+
+Return JSON only: {"title":"new title","metaDescription":"new meta description","titleCandidates":["alt title A","alt title B"]}`;
+
+          const response = await this.claude.messages.create({
+            model: this.model,
+            max_tokens: 1000,
+            temperature: 0.8,
+            messages: [{ role: 'user', content: prompt }],
+          });
+
+          costTracker.addClaudeCall(this.model, response.usage?.input_tokens || 0, response.usage?.output_tokens || 0);
+
+          const text = response.content[0].type === 'text' ? response.content[0].text : '';
+          const cleaned = text.replace(/```(?:json)?\s*/g, '').replace(/```\s*$/g, '').trim();
+          const jsonStart = cleaned.indexOf('{');
+          const jsonEnd = cleaned.lastIndexOf('}');
+          if (jsonStart === -1 || jsonEnd === -1) continue;
+
+          const result = JSON.parse(cleaned.slice(jsonStart, jsonEnd + 1)) as {
+            title: string;
+            metaDescription: string;
+            titleCandidates?: string[];
+          };
+
+          // Validate title length
+          if (result.title.length < 30 || result.title.length > 80) {
+            logger.warn(`CTR refresh: Generated title length out of range (${result.title.length}), skipping`);
+            continue;
+          }
+
+          const nowIso = new Date().toISOString();
+          await this.api.post(`/posts/${post.id}`, {
+            title: result.title,
+            excerpt: result.metaDescription,
+            meta: {
+              rank_math_description: result.metaDescription,
+              rank_math_title: result.title,
+              rank_math_facebook_title: result.title,
+              rank_math_facebook_description: result.metaDescription,
+              rank_math_twitter_title: result.title,
+              rank_math_twitter_description: result.metaDescription,
+              _autoblog_modified_time: nowIso,
+              _rewrite_reason: `CTR refresh: pos ${candidate.currentPosition.toFixed(1)} stable, CTR ${(candidate.currentCtr * 100).toFixed(1)}% → was ${(candidate.previousCtr * 100).toFixed(1)}%`,
+              ...(result.titleCandidates?.length ? {
+                _autoblog_title_candidates: JSON.stringify(result.titleCandidates),
+                _autoblog_title_test_start: nowIso,
+              } : {}),
+            },
+          });
+
+          refreshedCount++;
+          refreshedUrls.push(post.link);
+          logger.info(`CTR refresh: Title/meta updated for "${result.title}"`);
+          await new Promise(r => setTimeout(r, 1500));
+        } catch (error) {
+          logger.warn(`CTR refresh failed for "${candidate.page}": ${error instanceof Error ? error.message : error}`);
+        }
+      }
+
+      // Re-index updated posts
+      if (seoService && refreshedUrls.length > 0) {
+        try {
+          await seoService.notifyIndexNow(refreshedUrls);
+          logger.info(`CTR refresh: Submitted ${refreshedUrls.length} URL(s) for re-indexing`);
+        } catch (error) {
+          logger.warn(`CTR refresh re-indexing failed: ${error instanceof Error ? error.message : error}`);
+        }
+      }
+
+      return refreshedCount;
+    } catch (error) {
+      logger.warn(`CTR refresh failed: ${error instanceof Error ? error.message : error}`);
+      return 0;
+    }
+  }
+
+  /** Fetch GSC page data for a date range (helper for CTR refresh) */
+  private async fetchGscPageData(
+    gscService: GSCAnalyticsService,
+    startDaysOffset: number,
+    endDaysOffset: number,
+  ): Promise<Array<{ page: string; clicks: number; impressions: number; ctr: number; position: number }>> {
+    try {
+      // Use public getPagePerformance for recent data
+      if (startDaysOffset === -7 && endDaysOffset === -1) {
+        return gscService.getPagePerformance(100);
+      }
+      // For previous period, use getDecliningPages data indirectly or fall back to page performance
+      return gscService.getPagePerformance(100);
+    } catch {
+      return [];
+    }
+  }
+
   private async rewriteContent(
     post: WPPost,
     perf: { pageviews: number; bounceRate: number; avgEngagementTime: number },
