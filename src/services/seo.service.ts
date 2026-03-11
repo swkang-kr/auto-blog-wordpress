@@ -1024,7 +1024,17 @@ add_action('init', function() {
         'single' => true,
         'type' => 'string',
         'sanitize_callback' => 'sanitize_text_field',
+        'auth_callback' => function() { return current_user_can('edit_posts'); },
     ]);
+    // Pillar page meta (for pages post type)
+    foreach (['_autoblog_pillar_post_count', '_autoblog_pillar_word_count'] as $pmeta) {
+        register_post_meta('page', $pmeta, [
+            'show_in_rest' => true,
+            'single' => true,
+            'type' => 'integer',
+            'auth_callback' => function() { return current_user_can('edit_pages'); },
+        ]);
+    }
 });
 
 // Adjust Rank Math sitemap priority based on content freshness class
