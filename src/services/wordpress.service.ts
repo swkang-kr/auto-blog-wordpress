@@ -19,6 +19,7 @@ export class WordPressService {
   private authorWebsite: string;
   private authorCredentials: string;
   private adsensePubId: string;
+  private cachedUserId: number | null = null;
 
   constructor(wpUrl: string, username: string, appPassword: string, siteOwner?: string, authorLinks?: { linkedin?: string; twitter?: string; website?: string; credentials?: string }, adsensePubId?: string) {
     this.wpUrl = wpUrl.replace(/\/+$/, '');
@@ -36,6 +37,19 @@ export class WordPressService {
       },
       timeout: 30000,
     });
+  }
+
+  /** Fetch the authenticated user's ID (cached after first call). */
+  async getCurrentUserId(): Promise<number> {
+    if (this.cachedUserId !== null) return this.cachedUserId;
+    try {
+      const { data } = await this.api.get('/users/me', { params: { _fields: 'id' } });
+      this.cachedUserId = data.id as number;
+      return this.cachedUserId;
+    } catch (err) {
+      logger.warn('Failed to fetch current user ID, author field will be omitted');
+      return 0;
+    }
   }
 
   async getRecentPosts(count: number = 50): Promise<ExistingPost[]> {
@@ -1501,11 +1515,17 @@ ${ga4TrackingScript}`;
 
     // Inject AI content transparency label (FTC/EU AI Act compliance)
     const aiDisclosure = `<div class="ab-ai-disclosure" style="margin:0 0 16px 0; padding:10px 16px; background:#f8f9fa; border:1px solid #e5e7eb; border-radius:8px; font-size:11px; color:#888; line-height:1.5;"><strong>Transparency:</strong> This article was created with AI assistance and editorially reviewed. Sources include Korean-language primary data. <a href="/disclaimer/" style="color:#0066FF;">Learn more</a>.</div>`;
-    // Insert after the Last Updated banner
-    const aiDisclosureInsertIdx = htmlEn.indexOf('</div>', htmlEn.indexOf('Last Updated:'));
-    if (aiDisclosureInsertIdx !== -1) {
-      const aiInsertPos = aiDisclosureInsertIdx + '</div>'.length;
-      htmlEn = htmlEn.slice(0, aiInsertPos) + '\n' + aiDisclosure + '\n' + htmlEn.slice(aiInsertPos);
+    // Insert after the Last Updated banner, or at the beginning of the post as fallback
+    const lastUpdatedIdx = htmlEn.indexOf('Last Updated:');
+    if (lastUpdatedIdx !== -1) {
+      const aiDisclosureInsertIdx = htmlEn.indexOf('</div>', lastUpdatedIdx);
+      if (aiDisclosureInsertIdx !== -1) {
+        const aiInsertPos = aiDisclosureInsertIdx + '</div>'.length;
+        htmlEn = htmlEn.slice(0, aiInsertPos) + '\n' + aiDisclosure + '\n' + htmlEn.slice(aiInsertPos);
+      }
+    } else {
+      // Fallback: insert at the very beginning of the post content
+      htmlEn = aiDisclosure + '\n' + htmlEn;
     }
 
     // Inject AdSense manual ad placements (niche-aware density: RPM tier drives max ads and word gap)
@@ -1945,6 +1965,9 @@ ${ga4TrackingScript}`;
 
     logger.info(`Creating post: "${content.title}"`);
 
+    // Fetch authenticated user ID for correct author attribution
+    const authorId = await this.getCurrentUserId();
+
     // Retry post creation up to 3 times with exponential backoff
     let lastError: unknown;
     for (let attempt = 1; attempt <= 3; attempt++) {
@@ -1958,6 +1981,7 @@ ${ga4TrackingScript}`;
           categories: [categoryId],
           tags: tagIds,
           comment_status: 'open',
+          ...(authorId ? { author: authorId } : {}),
           featured_media: featuredImageId ?? 0,
           meta: {
             rank_math_description: content.ctrMetaDescription || content.metaDescription || validatedExcerpt,
