@@ -107,6 +107,41 @@ export async function sendDecayAlert(
 }
 
 /**
+ * Send early decay alert with slope-based analysis.
+ * More actionable than simple declining pages — includes projected positions.
+ */
+export async function sendEarlyDecayAlert(
+  botToken: string,
+  chatId: string,
+  decayingPages: Array<{
+    page: string;
+    query: string;
+    currentPosition: number;
+    slope: number;
+    projectedPosition7d: number;
+    urgency: 'critical' | 'warning' | 'watch';
+  }>,
+): Promise<void> {
+  if (!botToken || !chatId || decayingPages.length === 0) return;
+
+  const urgencyEmoji = { critical: '🔴', warning: '⚠️', watch: '👀' };
+  const lines = [
+    `<b>Early Decay Alert: ${decayingPages.length} query(ies) with sustained decline</b>`,
+    '',
+    ...decayingPages.slice(0, 8).map(p =>
+      `${urgencyEmoji[p.urgency]} "${p.query}"\n` +
+      `   Page: ${p.page}\n` +
+      `   Position: ${p.currentPosition.toFixed(1)} → projected ${p.projectedPosition7d.toFixed(1)} in 7d\n` +
+      `   Decline rate: ${p.slope.toFixed(2)} pos/day`,
+    ),
+    '',
+    '<i>Action: Prioritize content refresh for critical items.</i>',
+  ];
+
+  await sendTelegramAlert(botToken, chatId, lines.join('\n'), 'warning');
+}
+
+/**
  * Send health check notification at batch start.
  */
 export async function sendHealthCheck(

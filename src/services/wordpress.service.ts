@@ -134,6 +134,12 @@ export class WordPressService {
         }
       }
 
+      // Validate Discover eligibility
+      const discoverCheck = this.validateDiscoverImage(imageBuffer);
+      if (!discoverCheck.valid) {
+        logger.warn(`Discover image check: ${discoverCheck.reason}`);
+      }
+
       logger.info(`Media uploaded: ID=${mediaId}, URL=${sourceUrl}`);
       return { mediaId, sourceUrl };
     } catch (error) {
@@ -214,6 +220,32 @@ export class WordPressService {
     html = html.replace(/[\u{1F300}-\u{1FFFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{25A0}-\u{25FF}\u{2B50}-\u{2B55}\u{FE00}-\u{FE0F}\u{200D}]/gu, '');
 
     return html;
+  }
+
+  /**
+   * Validate image meets Google Discover requirements.
+   * Discover requires images >= 1200px wide for max-image-preview:large eligibility.
+   */
+  private validateDiscoverImage(imageBuffer: Buffer): { valid: boolean; reason?: string } {
+    // Check file size (minimum 50KB for quality, max 5MB)
+    const sizeKB = imageBuffer.length / 1024;
+    if (sizeKB < 50) return { valid: false, reason: `Image too small: ${sizeKB.toFixed(0)}KB (min 50KB for Discover)` };
+    if (sizeKB > 5120) return { valid: false, reason: `Image too large: ${(sizeKB/1024).toFixed(1)}MB (max 5MB)` };
+
+    // WebP/AVIF header check for minimum dimensions
+    // WebP: bytes 24-27 = width (little-endian), 28-31 = height
+    if (imageBuffer.length > 30) {
+      const isWebP = imageBuffer.toString('ascii', 0, 4) === 'RIFF' && imageBuffer.toString('ascii', 8, 12) === 'WEBP';
+      if (isWebP && imageBuffer.toString('ascii', 12, 16) === 'VP8 ') {
+        // VP8 lossy format
+        const width = imageBuffer.readUInt16LE(26) & 0x3FFF;
+        if (width > 0 && width < 1200) {
+          return { valid: false, reason: `Image width ${width}px < 1200px minimum for Google Discover` };
+        }
+      }
+    }
+
+    return { valid: true };
   }
 
   /** Source registry: maps cite data-source keys to verified URLs */
@@ -2543,6 +2575,43 @@ ${ga4TrackingScript}`;
 
     logger.debug(`Injected ${finalInserts.length} AdSense ad placement(s) [${rpmTier} RPM, ${minWordGap}w gap]: ${finalInserts.map(p => `${p.type}(${p.format})`).join(', ')}`);
     return result;
+  }
+
+  /**
+   * Calculate optimal ad positions based on content structure.
+   * Uses heading distribution and word count per section for balanced placement.
+   */
+  private calculateAdPositions(html: string, maxAds: number = 4): number[] {
+    const h2Matches = [...html.matchAll(/<h2[^>]*>/gi)];
+    if (h2Matches.length < 2) return []; // Not enough sections for ads
+
+    const positions: number[] = [];
+    const totalLength = html.length;
+
+    // First ad: after TOC (approximately 15-20% of content)
+    const tocEndNav = html.indexOf('</nav>');
+    const tocEndDiv = html.indexOf('ab-toc') !== -1 ? html.indexOf('</div>', html.indexOf('ab-toc')) : -1;
+    const tocEnd = tocEndNav > 0 ? tocEndNav : tocEndDiv;
+    if (tocEnd > 0) {
+      positions.push(tocEnd + 6);
+    }
+
+    // Distribute remaining ads evenly between H2 sections (min 250 words between ads)
+    const sectionStarts = h2Matches.map(m => m.index!);
+    const targetGap = Math.max(2, Math.floor(sectionStarts.length / (maxAds - 1)));
+
+    for (let i = targetGap; i < sectionStarts.length && positions.length < maxAds; i += targetGap) {
+      const pos = sectionStarts[i];
+      // Verify minimum word distance from last ad
+      const lastAdPos = positions[positions.length - 1] || 0;
+      const textBetween = html.slice(lastAdPos, pos).replace(/<[^>]+>/g, ' ');
+      const wordCount = textBetween.split(/\s+/).filter(Boolean).length;
+      if (wordCount >= 250) {
+        positions.push(pos);
+      }
+    }
+
+    return positions;
   }
 
   private findH2SectionEnds(html: string): number[] {

@@ -587,6 +587,15 @@ For comparison/review content, add a lightweight poll-style question to boost en
 <p style="margin:0 0 12px 0; font-size:17px; font-weight:700; color:#222;">Quick Poll: Which do you prefer?</p>
 <p style="margin:0; font-size:15px; color:#555; line-height:1.7;">Drop your answer in the comments — Option A or Option B? We'll share the community consensus in our next update.</p></div>
 
+## Contextual Content Upgrade
+If the content type is how-to, deep-dive, or analysis, include ONE contextual content upgrade box using this format:
+<div class="ab-content-upgrade" style="background:linear-gradient(135deg,#f0f7ff 0%,#e8f4f8 100%);border:2px solid #3498db;border-radius:12px;padding:24px;margin:30px 0;text-align:center;">
+<p style="font-size:18px;font-weight:700;margin:0 0 8px;">📥 Free Download: [Relevant Resource Title]</p>
+<p style="font-size:14px;color:#555;margin:0 0 16px;">[1-sentence description of what they'll get — checklist, template, cheatsheet, etc.]</p>
+<a href="LEAD_MAGNET_URL" class="ab-cta-btn" style="display:inline-block;background:#3498db;color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:600;">Download Free [Resource Type]</a>
+</div>
+The content upgrade MUST be contextually relevant to the article topic (not generic). Place it at approximately 60-70% through the article.
+
 ### Infographic-Style Data Box (Finance, Tech — data-heavy content)
 For presenting key statistics in a visually scannable format:
 <div style="margin:24px 0; padding:20px; background:#f8f9fa; border-radius:12px; border:1px solid #e5e7eb;">
@@ -607,6 +616,16 @@ All styling is handled by a consolidated <style> block injected at publish time.
 <p><time datetime="YYYY-MM-DD">Published: Month DD, YYYY</time> · <span class="ab-updated">Updated: Month DD, YYYY</span> · READING_TIME_PLACEHOLDER min read</p>
 </div>
 Note: For new articles, set Published and Updated to the same date. The system updates the "Updated" date automatically when content is refreshed.
+
+## Content Freshness Signal
+When updating existing content, include a "What's New" changelog section before the first H2:
+<div class="ab-changelog" style="background:#f8f9fa;border-left:4px solid #4CAF50;padding:16px 20px;margin:20px 0;border-radius:0 8px 8px 0;">
+<p style="font-weight:700;margin:0 0 8px;">📝 Last Updated: [CURRENT_DATE]</p>
+<ul style="margin:0;padding-left:20px;font-size:14px;">
+<li>[Key change 1 — e.g., "Updated KOSPI data for Q1 2026"]</li>
+<li>[Key change 2 — e.g., "Added new Samsung Galaxy S26 comparison"]</li>
+</ul>
+</div>
 
 ### Clickable Table of Contents (MANDATORY — collapsed by default on mobile)
 <details class="ab-toc">
@@ -631,6 +650,13 @@ Note: For new articles, set Published and Updated to the same date. The system u
 - IDs: lowercase, hyphens, derived from heading text (e.g., "Global Context" → id="global-context")
 - Do NOT add inline style attributes to H2/H3 — styles are handled by CSS classes
 - PASSAGE RANKING: The FIRST sentence after each H2/H3 MUST directly answer or define the section topic in a self-contained way. Google extracts individual passages for ranking — each section should be independently useful as a search result.
+
+## Passage Ranking Optimization
+Each H2 section MUST begin with a 2-3 sentence self-contained answer paragraph that directly answers the section's implied question. This paragraph should:
+- Be understandable without reading the rest of the section
+- Contain the section's key insight or answer upfront
+- Use the section heading's keywords naturally
+This enables Google's Passage Ranking to surface individual sections as search results.
 
 ### Other Elements (use CSS classes)
 - Paragraphs: <p> (no inline style needed — .post-content p handles it)

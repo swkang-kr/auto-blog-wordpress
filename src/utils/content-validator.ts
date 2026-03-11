@@ -222,6 +222,12 @@ export function validateContent(
   // Enhanced information density ratio (used in structure scoring below)
   const densityRatio = densityPer500;
 
+  // Google Discover: check for high-quality featured image signal
+  const hasLargeImage = /<img[^>]+width=["']?\d{4,}|<img[^>]+sizes=/.test(html);
+  if (!hasLargeImage) {
+    warnings.push({ category: 'seo', message: 'No large (1200px+) image detected — reduces Google Discover eligibility', severity: 'warning' });
+  }
+
   // ── Structure validation (max 25 points) ──
   let structureScore = 25;
   if (wordCount < typeMinWords) structureScore -= 5;
@@ -315,6 +321,29 @@ export function validateContent(
   if (h2Count < 3) {
     warnings.push({ category: 'structure', message: `Only ${h2Count} H2 headings (recommend 4+)`, severity: 'warning' });
     structureScore -= 2;
+  }
+
+  // Passage ranking: check that H2 sections start with substantive paragraphs
+  const h2Sections = html.split(/<h2[^>]*>/i).slice(1); // Skip content before first H2
+  let passageReadySections = 0;
+  for (const section of h2Sections) {
+    // Extract first paragraph after the H2
+    const firstPMatch = section.match(/<\/h2>\s*<p[^>]*>([\s\S]*?)<\/p>/i);
+    if (firstPMatch) {
+      const firstParagraph = firstPMatch[1].replace(/<[^>]+>/g, '').trim();
+      // A good passage-ranking paragraph has 40-200 words and contains substantive content
+      const pWords = firstParagraph.split(/\s+/).length;
+      if (pWords >= 30 && pWords <= 200) {
+        passageReadySections++;
+      }
+    }
+  }
+  const totalH2s = (html.match(/<h2[^>]*>/gi) || []).length;
+  if (totalH2s >= 3 && passageReadySections >= Math.floor(totalH2s * 0.6)) {
+    // Bonus: 60%+ sections are passage-ranking ready
+    structureScore = Math.min(20, structureScore + 2);
+  } else if (totalH2s >= 3 && passageReadySections < Math.floor(totalH2s * 0.3)) {
+    warnings.push({ category: 'structure', message: `Only ${passageReadySections}/${totalH2s} sections have strong opening paragraphs (passage ranking)`, severity: 'warning' });
   }
 
   // 5a. H2/H3 id attribute check (required for passage ranking + TOC anchors)

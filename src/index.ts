@@ -14,7 +14,7 @@ import { PinterestService } from './services/pinterest.service.js';
 import { GA4AnalyticsService } from './services/ga4-analytics.service.js';
 import { GSCAnalyticsService } from './services/gsc-analytics.service.js';
 import { PostHistory } from './utils/history.js';
-import { sendBatchSummary, sendQualityAlert, sendDecayAlert, sendHealthCheck, sendTelegramAlert } from './utils/alerting.js';
+import { sendBatchSummary, sendQualityAlert, sendDecayAlert, sendHealthCheck, sendTelegramAlert, sendEarlyDecayAlert } from './utils/alerting.js';
 import { DataVisualizationService } from './services/data-visualization.service.js';
 import { costTracker, CostTracker } from './utils/cost-tracker.js';
 import { logger } from './utils/logger.js';
@@ -307,6 +307,20 @@ async function main(): Promise<void> {
     logger.warn(`Comment settings/cleanup failed: ${error instanceof Error ? error.message : error}`);
   }
 
+  // 2.10c. Ensure CWV auto-fix snippet (LCP preload, CLS dimension forcing, prefetch)
+  try {
+    await seoService.ensureCwvAutoFixSnippet();
+  } catch (error) {
+    logger.warn(`CWV auto-fix snippet setup failed: ${error instanceof Error ? error.message : error}`);
+  }
+
+  // 2.10d. Ensure critical CSS inlining snippet (FCP/LCP optimization)
+  try {
+    await seoService.ensureCriticalCssSnippet();
+  } catch (error) {
+    logger.warn(`Critical CSS snippet setup failed: ${error instanceof Error ? error.message : error}`);
+  }
+
   // 2.11. Check robots.txt + WordPress indexing settings + sitemap
   await seoService.checkRobotsTxt();
   await seoService.checkAndFixIndexingSettings();
@@ -582,6 +596,42 @@ async function main(): Promise<void> {
     }
   }
 
+  // 3.5d. Topical authority score per niche (position + CTR + breadth + indexed pages)
+  if (gscService) {
+    try {
+      const nicheUrlPatterns: Record<string, string> = {};
+      for (const niche of NICHES) {
+        nicheUrlPatterns[niche.category] = niche.id;
+      }
+      const authorityScores = await gscService.getTopicalAuthorityScore(nicheUrlPatterns);
+      if (Object.keys(authorityScores).length > 0) {
+        logger.info('Topical authority scores:');
+        for (const [niche, data] of Object.entries(authorityScores)) {
+          logger.info(`  ${niche}: ${data.score.toFixed(0)}/100 (${data.rating}, pos=${data.avgPosition.toFixed(1)}, ${data.queryCount} queries)`);
+        }
+      }
+    } catch (authError) {
+      logger.debug(`Topical authority scoring failed: ${authError instanceof Error ? authError.message : authError}`);
+    }
+  }
+
+  // 3.5e. Content funnel distribution (TOFU/MOFU/BOFU balance)
+  try {
+    const funnelDist = history.getFunnelDistribution();
+    if (funnelDist.total > 0) {
+      const tofuPct = (funnelDist.tofu / funnelDist.total) * 100;
+      const mofuPct = (funnelDist.mofu / funnelDist.total) * 100;
+      const bofuPct = (funnelDist.bofu / funnelDist.total) * 100;
+      logger.info(`Content funnel: TOFU=${funnelDist.tofu} (${tofuPct.toFixed(0)}%) | MOFU=${funnelDist.mofu} (${mofuPct.toFixed(0)}%) | BOFU=${funnelDist.bofu} (${bofuPct.toFixed(0)}%) | Total=${funnelDist.total}`);
+      if (bofuPct < 10) {
+        logger.warn('Funnel imbalance: BOFU content is below 10%. Consider more transactional/comparison content.');
+        insightParts.push('## Funnel Imbalance Alert\nBOFU (bottom-of-funnel) content is critically low. Prioritize comparison, review, and buying-guide content types.');
+      }
+    }
+  } catch (funnelError) {
+    logger.debug(`Funnel distribution failed: ${funnelError instanceof Error ? funnelError.message : funnelError}`);
+  }
+
   if (insightParts.length > 0) {
     researchService.setPerformanceInsights(insightParts.join('\n'));
   }
@@ -752,6 +802,14 @@ async function main(): Promise<void> {
     }
   }
 
+  // ── Batch Checkpoint: Resume from crash if checkpoint exists ──────────
+  const checkpoint = await history.loadCheckpoint();
+  let checkpointResumeIdx = 0;
+  if (checkpoint) {
+    checkpointResumeIdx = checkpoint.currentNicheIdx + 1;
+    logger.info(`Batch checkpoint found: resuming from niche index ${checkpointResumeIdx} (${checkpoint.completedNiches.join(', ')} already done)`);
+  }
+
   // ── Phase A: Research + Content Generation ──────────────────────────────
   logger.info('\n=== Phase A: Research + Content Generation (prompt-cache optimised) ===');
   const generated: GeneratedPost[] = [];
@@ -760,6 +818,13 @@ async function main(): Promise<void> {
   for (let nicheIdx = 0; nicheIdx < activeNiches.length; nicheIdx++) {
     const niche = activeNiches[nicheIdx];
     const postStart = Date.now();
+
+    // Skip niches already processed in checkpoint
+    if (nicheIdx < checkpointResumeIdx) {
+      logger.info(`[Phase A] Skipping "${niche.name}" (checkpoint: already processed)`);
+      continue;
+    }
+
     logger.info(`\n[Phase A] Niche: "${niche.name}"`);
 
     // Rate limit: 5s delay between niches to avoid Claude API throttling (except first)
@@ -833,6 +898,16 @@ async function main(): Promise<void> {
 
       // Track keyword for cross-niche dedup
       batchKeywords.push(researched.analysis.selectedKeyword);
+
+      // Save checkpoint after each successful niche (crash recovery)
+      await history.saveCheckpoint({
+        batchId: startedAt,
+        completedNiches: activeNiches.slice(0, nicheIdx + 1).map(n => n.id),
+        currentNicheIdx: nicheIdx,
+        generatedPosts: generated.length,
+        publishedPosts: results.filter(r => r.success).length,
+        startedAt,
+      });
     } catch (error) {
       const message = axios.isAxiosError(error)
         ? `${error.response?.status} ${JSON.stringify(error.response?.data ?? error.message)}`
@@ -1435,11 +1510,17 @@ async function main(): Promise<void> {
         logger.info(`Medium syndication: deferred 24h for canonical indexing (scheduled: ${syndicationScheduledAt})`);
       }
 
-      // B-8.7. Email automation webhook (optional)
+      // B-8.7. Email automation webhook (segmented by niche)
       if (config.EMAIL_WEBHOOK_URL) {
         try {
           const emailService = new EmailAutomationService(config.EMAIL_WEBHOOK_URL);
-          await emailService.notifyNewPost(content, post);
+          await emailService.sendSegmentedNotification({
+            title: content.title,
+            url: post.url,
+            excerpt: content.excerpt,
+            category: niche.category,
+            contentType: researched.analysis.contentType,
+          }, niche.category);
         } catch (emailError) {
           logger.debug(`Email webhook failed: ${emailError instanceof Error ? emailError.message : emailError}`);
         }
@@ -1495,6 +1576,7 @@ async function main(): Promise<void> {
         contentType: researched.analysis.contentType,
         titleCandidates: content.titleCandidates,
         originalTitle: content.title,
+        searchIntent: researched.analysis.searchIntent || undefined,
         ...(seriesId ? { seriesId, seriesPart } : {}),
         ...(koreanPostUrl ? { koreanPostUrl } : {}),
       });
@@ -2211,7 +2293,7 @@ async function main(): Promise<void> {
     }
   }
 
-  // 4.9. [#2] Early content decay detection — 3-day consecutive position decline alert
+  // 4.9. [#2] Early content decay detection — 3-day consecutive + slope-based detection
   if (gscService) {
     try {
       const decayItems = await gscService.detectEarlyDecay();
@@ -2231,6 +2313,23 @@ async function main(): Promise<void> {
       }
     } catch (error) {
       logger.debug(`Early decay detection failed: ${error instanceof Error ? error.message : error}`);
+    }
+
+    // Enhanced: slope-based early decay (linear regression on 14-day rolling averages)
+    try {
+      const slopeDecay = await gscService.detectEarlyDecayWithSlope();
+      if (slopeDecay.length > 0) {
+        logger.warn(`Slope-based decay: ${slopeDecay.length} page(s) with statistically significant decline`);
+        for (const item of slopeDecay.slice(0, 5)) {
+          logger.warn(`  ${item.urgency}: "${item.query}" slope=${item.slope.toFixed(2)} R²=${item.r2.toFixed(2)} (projected pos: ${item.projectedPosition7d.toFixed(1)} in 7d)`);
+        }
+        // Send enhanced early decay alert with slope data
+        if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
+          await sendEarlyDecayAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, slopeDecay);
+        }
+      }
+    } catch (slopeError) {
+      logger.debug(`Slope-based decay detection failed: ${slopeError instanceof Error ? slopeError.message : slopeError}`);
     }
   }
 
@@ -2272,6 +2371,42 @@ async function main(): Promise<void> {
       }
     } catch (error) {
       logger.debug(`Rich Results validation failed: ${error instanceof Error ? error.message : error}`);
+    }
+  }
+
+  // 4.99a. Clear batch checkpoint on successful completion
+  history.clearCheckpoint();
+
+  // 4.99b. Rate limit dashboard — log API usage summary
+  try {
+    const apiUsage = costTracker.getApiUsageSummary();
+    if (apiUsage.length > 0) {
+      logger.info('API rate limit dashboard:');
+      for (const usage of apiUsage) {
+        const warningStr = usage.warning ? ' ⚠️ APPROACHING LIMIT' : '';
+        logger.info(`  ${usage.api}: ${usage.calls}/${usage.limit} (${usage.usagePct}%)${warningStr}`);
+      }
+    }
+  } catch (rlError) {
+    logger.debug(`Rate limit dashboard failed: ${rlError instanceof Error ? rlError.message : rlError}`);
+  }
+
+  // 4.99c. Post-level revenue tracking (RPM-based estimation per published post)
+  if (config.GA4_PROPERTY_ID && config.GOOGLE_INDEXING_SA_KEY) {
+    try {
+      const ga4Revenue = new GA4AnalyticsService(config.GA4_PROPERTY_ID, config.GOOGLE_INDEXING_SA_KEY);
+      const topPostsRevenue = await ga4Revenue.getTopPerformingPosts(100);
+      for (const p of topPostsRevenue) {
+        const entry = history.getAllEntries().find(e => e.postUrl && p.url.includes(e.postUrl.replace(/^https?:\/\/[^/]+/, '')));
+        if (entry?.niche) {
+          const nicheConf = NICHES.find(n => n.id === entry.niche);
+          const rpmTierMap: Record<string, number> = { high: 8, medium: 4, low: 2 };
+          const rpm = nicheConf?.dynamicRpmValue ?? (nicheConf?.adSenseRpm ? rpmTierMap[nicheConf.adSenseRpm] : 3);
+          costTracker.trackPostRevenue(entry.postUrl, p.pageviews, rpm);
+        }
+      }
+    } catch (revError) {
+      logger.debug(`Post-level revenue tracking failed: ${revError instanceof Error ? revError.message : revError}`);
     }
   }
 

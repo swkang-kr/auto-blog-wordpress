@@ -415,9 +415,82 @@ export class PostHistory {
     return { covered, uncovered, coveragePct };
   }
 
+  /**
+   * Map posts to content funnel stages (TOFU/MOFU/BOFU).
+   * Uses content type and search intent to classify.
+   */
+  static classifyFunnelStage(contentType?: string, searchIntent?: string): 'tofu' | 'mofu' | 'bofu' {
+    // BOFU: transactional intent, product reviews, how-to purchase
+    if (searchIntent === 'transactional' || contentType === 'product-review') return 'bofu';
+    // MOFU: commercial investigation, comparisons, best-x-for-y
+    if (searchIntent === 'commercial' || searchIntent === 'commercial-investigation' ||
+        contentType === 'x-vs-y' || contentType === 'best-x-for-y') return 'mofu';
+    // TOFU: informational, news, deep-dive, analysis
+    return 'tofu';
+  }
+
+  /** Get funnel distribution statistics */
+  getFunnelDistribution(): { tofu: number; mofu: number; bofu: number; total: number } {
+    const dist = { tofu: 0, mofu: 0, bofu: 0, total: this.data.entries.length };
+    for (const entry of this.data.entries) {
+      const stage = PostHistory.classifyFunnelStage(entry.contentType, entry.searchIntent);
+      dist[stage]++;
+    }
+    return dist;
+  }
+
   /** Persist current history data to disk (for external callers like ranking updates) */
   async persist(): Promise<void> {
     await this.save();
+  }
+
+  /** Save batch checkpoint for crash recovery (#21) */
+  async saveCheckpoint(checkpoint: {
+    batchId: string;
+    completedNiches: string[];
+    currentNicheIdx: number;
+    generatedPosts: number;
+    publishedPosts: number;
+    startedAt: string;
+  }): Promise<void> {
+    const checkpointFile = path.resolve('data', 'batch-checkpoint.json');
+    await fs.mkdir(path.dirname(checkpointFile), { recursive: true });
+    await fs.writeFile(checkpointFile, JSON.stringify(checkpoint, null, 2), 'utf-8');
+    logger.debug(`Checkpoint saved: ${checkpoint.completedNiches.length} niches completed`);
+  }
+
+  /** Load batch checkpoint for resume after crash (#21) */
+  async loadCheckpoint(): Promise<{
+    batchId: string;
+    completedNiches: string[];
+    currentNicheIdx: number;
+    generatedPosts: number;
+    publishedPosts: number;
+    startedAt: string;
+  } | null> {
+    const checkpointFile = path.resolve('data', 'batch-checkpoint.json');
+    try {
+      const raw = await fs.readFile(checkpointFile, 'utf-8');
+      const checkpoint = JSON.parse(raw);
+      // Only resume if checkpoint is less than 2 hours old
+      const age = Date.now() - new Date(checkpoint.startedAt).getTime();
+      if (age > 2 * 60 * 60 * 1000) {
+        logger.info('Stale checkpoint found (>2h old), starting fresh batch');
+        return null;
+      }
+      logger.info(`Resuming from checkpoint: ${checkpoint.completedNiches.length} niches already done`);
+      return checkpoint;
+    } catch {
+      return null;
+    }
+  }
+
+  /** Clear checkpoint after successful batch completion */
+  async clearCheckpoint(): Promise<void> {
+    const checkpointFile = path.resolve('data', 'batch-checkpoint.json');
+    try {
+      await fs.unlink(checkpointFile);
+    } catch { /* file doesn't exist, OK */ }
   }
 
   private async save(): Promise<void> {

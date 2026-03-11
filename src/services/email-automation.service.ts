@@ -46,6 +46,44 @@ export class EmailAutomationService {
     }
   }
 
+  /** Send email notification with niche segment for targeted campaigns */
+  async sendSegmentedNotification(postData: {
+    title: string;
+    url: string;
+    excerpt: string;
+    category: string;
+    contentType?: string;
+  }, segment?: string): Promise<void> {
+    // Include segment/tag in webhook payload for email provider filtering
+    const payload = {
+      ...postData,
+      segment: segment || postData.category,
+      tags: [postData.category, postData.contentType].filter(Boolean),
+      timestamp: new Date().toISOString(),
+    };
+
+    // Send to main webhook with segment data
+    await this.triggerWebhook(payload);
+  }
+
+  /** Trigger webhook with arbitrary payload */
+  private async triggerWebhook(payload: Record<string, unknown>): Promise<void> {
+    try {
+      await axios.post(
+        this.webhookUrl,
+        payload,
+        {
+          headers: { 'Content-Type': 'application/json' },
+          timeout: 10000,
+        },
+      );
+      logger.info(`Email webhook: Segmented notification sent`);
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      logger.warn(`Email webhook (segmented) failed: ${msg}`);
+    }
+  }
+
   /**
    * Send a weekly digest webhook with top-performing posts.
    */

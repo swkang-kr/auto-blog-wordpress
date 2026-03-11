@@ -42,8 +42,9 @@ export class CostTracker {
   private imageCount = 0;
   private static readonly IMAGE_COST_ESTIMATE = 0.04; // ~$0.04 per Gemini image
   /** Per-post cost tracking for ROI attribution */
-  private postCosts = new Map<string, { keywordResearch: number; contentGeneration: number; imageGeneration: number }>();
+  private postCosts = new Map<string, { keywordResearch: number; contentGeneration: number; imageGeneration: number; totalCost?: number; estimatedRevenue?: number; pageviews?: number; rpm?: number; roiDays?: number }>();
   private currentPostKey: string = '';
+  private apiUsage: Map<string, { calls: number; limit: number; resetAt: number }> = new Map();
 
   /**
    * Record a Claude API call's token usage.
@@ -224,6 +225,46 @@ export class CostTracker {
       );
     }
     logger.info('================================');
+  }
+
+  /** Track estimated revenue per post using AdSense URL channel data */
+  trackPostRevenue(postUrl: string, pageviews: number, rpm: number): void {
+    const estimatedRevenue = (pageviews / 1000) * rpm;
+    const existingPost = this.postCosts.get(postUrl);
+    if (existingPost) {
+      existingPost.estimatedRevenue = estimatedRevenue;
+      existingPost.pageviews = pageviews;
+      existingPost.rpm = rpm;
+      existingPost.totalCost = existingPost.keywordResearch + existingPost.contentGeneration + existingPost.imageGeneration;
+      existingPost.roiDays = existingPost.totalCost > 0
+        ? Math.ceil(existingPost.totalCost / (estimatedRevenue / 30))
+        : 0;
+    }
+  }
+
+  /** Track API call for rate limit monitoring */
+  trackApiCall(apiName: string, dailyLimit: number = 1000): void {
+    const today = new Date().toISOString().slice(0, 10);
+    const key = `${apiName}:${today}`;
+    const existing = this.apiUsage.get(key);
+    if (existing) {
+      existing.calls++;
+    } else {
+      this.apiUsage.set(key, { calls: 1, limit: dailyLimit, resetAt: Date.now() + 24 * 60 * 60 * 1000 });
+    }
+  }
+
+  /** Get API usage summary for rate limit dashboard */
+  getApiUsageSummary(): Array<{ api: string; calls: number; limit: number; usagePct: number; warning: boolean }> {
+    const today = new Date().toISOString().slice(0, 10);
+    const summary: Array<{ api: string; calls: number; limit: number; usagePct: number; warning: boolean }> = [];
+    for (const [key, usage] of this.apiUsage) {
+      if (!key.endsWith(today)) continue;
+      const api = key.split(':')[0];
+      const usagePct = Math.round((usage.calls / usage.limit) * 100);
+      summary.push({ api, calls: usage.calls, limit: usage.limit, usagePct, warning: usagePct > 80 });
+    }
+    return summary;
   }
 
   /**

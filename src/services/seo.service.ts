@@ -19,6 +19,8 @@ const NEWS_SITEMAP_SNIPPET_TITLE = 'Auto Blog News Sitemap';
 const VIDEO_SITEMAP_SNIPPET_TITLE = 'Auto Blog Video Sitemap';
 const SITE_SCHEMA_SNIPPET_TITLE = 'Auto Blog Site Schema';
 const COMMENT_ENGAGEMENT_SNIPPET_TITLE = 'Auto Blog Comment Engagement';
+const CWV_AUTOFIX_SNIPPET_TITLE = 'Auto Blog CWV Auto-Fix';
+const CRITICAL_CSS_SNIPPET_TITLE = 'Auto Blog Critical CSS';
 
 export class SeoService {
   private api: AxiosInstance;
@@ -1981,6 +1983,133 @@ add_action('wp_footer', function() {
     } catch (error) {
       const msg = error instanceof Error ? error.message : String(error);
       logger.warn(`Failed to install comment engagement snippet: ${msg}`);
+    }
+  }
+
+  /**
+   * Ensure CWV auto-fix PHP snippet is installed.
+   * Adds <link rel="preload"> for first image (LCP optimization)
+   * and forces explicit width/height on all post images (CLS prevention).
+   */
+  async ensureCwvAutoFixSnippet(): Promise<void> {
+    const phpCode = `
+// CWV Auto-Fix: Preload LCP image + force dimensions on all images
+add_action('wp_head', function() {
+    if (!is_singular('post')) return;
+    global $post;
+    if (!$post) return;
+    // Find first image in content for LCP preload
+    if (preg_match('/<img[^>]+src=["\\'](https?:\\/\\/[^"\\'>]+)/', $post->post_content, $match)) {
+        echo '<link rel="preload" as="image" href="' . esc_url($match[1]) . '" fetchpriority="high" />' . "\\n";
+    }
+}, 5); // Priority 5 = before other head scripts
+
+// Force width/height attributes on all post images (CLS prevention)
+add_filter('the_content', function($content) {
+    return preg_replace_callback('/<img([^>]*?)\\/?>/i', function($m) {
+        $attrs = $m[1];
+        // Skip if already has both width and height
+        if (preg_match('/\\bwidth=/', $attrs) && preg_match('/\\bheight=/', $attrs)) return $m[0];
+        // Add default dimensions if missing (16:9 aspect ratio)
+        if (!preg_match('/\\bwidth=/', $attrs)) $attrs .= ' width="1200"';
+        if (!preg_match('/\\bheight=/', $attrs)) $attrs .= ' height="675"';
+        // Add aspect-ratio CSS for layout stability
+        if (strpos($attrs, 'aspect-ratio') === false) {
+            $attrs = preg_replace('/style="/', 'style="aspect-ratio:16/9;', $attrs);
+            if (strpos($attrs, 'style=') === false) $attrs .= ' style="aspect-ratio:16/9;"';
+        }
+        return '<img' . $attrs . ' />';
+    }, $content);
+});
+
+// Add prefetch hints for internal links (faster navigation)
+add_action('wp_footer', function() {
+    if (!is_singular('post')) return;
+    echo '<script>document.addEventListener("DOMContentLoaded",function(){';
+    echo 'var links=document.querySelectorAll("a[href*=\\"" + location.hostname + "\\"]");';
+    echo 'var observer=new IntersectionObserver(function(entries){entries.forEach(function(e){';
+    echo 'if(e.isIntersecting){var l=document.createElement("link");l.rel="prefetch";l.href=e.target.href;document.head.appendChild(l);observer.unobserve(e.target)}})});';
+    echo 'links.forEach(function(l){observer.observe(l)})});</script>' . "\\n";
+});`.trim();
+
+    try {
+      const { data: snippets } = await axios.get(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      const existing = (snippets as Array<{ id: number; name: string }>)
+        .find((s) => s.name === CWV_AUTOFIX_SNIPPET_TITLE);
+
+      if (existing) {
+        await axios.put(
+          `${this.wpUrl}/wp-json/code-snippets/v1/snippets/${existing.id}`,
+          { code: phpCode, active: true },
+          { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+        );
+        logger.info(`CWV auto-fix snippet updated (ID=${existing.id})`);
+        return;
+      }
+
+      await axios.post(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { name: CWV_AUTOFIX_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 5 },
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      logger.info('CWV auto-fix snippet installed via Code Snippets plugin');
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      logger.warn(`Failed to install CWV auto-fix snippet: ${msg}`);
+    }
+  }
+
+  /**
+   * Ensure critical CSS is inlined for above-the-fold content.
+   * Defers non-critical CSS loading for faster FCP/LCP.
+   */
+  async ensureCriticalCssSnippet(): Promise<void> {
+    const phpCode = `
+// Inline critical above-the-fold CSS and defer the rest
+add_action('wp_head', function() {
+    if (!is_singular('post')) return;
+    echo '<style id="ab-critical-css">';
+    echo 'body{font-family:"Noto Sans KR",system-ui,sans-serif;line-height:1.8;color:#1a1a2e;margin:0}';
+    echo '.entry-content{max-width:760px;margin:0 auto;padding:0 20px}';
+    echo '.entry-content h1,.entry-content h2{font-weight:700;color:#1a1a2e;line-height:1.3}';
+    echo '.entry-content p{margin:0 0 1.2em}';
+    echo '.entry-content img{max-width:100%;height:auto;display:block}';
+    echo '.ab-toc{background:#f8f9fa;border-radius:12px;padding:24px;margin:30px 0}';
+    echo '.ab-byline{display:flex;align-items:center;gap:16px;padding:20px 0;border-bottom:1px solid #eee}';
+    echo '.ab-breadcrumb{font-size:13px;color:#888;margin-bottom:16px}';
+    echo '</style>' . "\\n";
+}, 1); // Very early priority`.trim();
+
+    try {
+      const { data: snippets } = await axios.get(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      const existing = (snippets as Array<{ id: number; name: string }>)
+        .find((s) => s.name === CRITICAL_CSS_SNIPPET_TITLE);
+
+      if (existing) {
+        await axios.put(
+          `${this.wpUrl}/wp-json/code-snippets/v1/snippets/${existing.id}`,
+          { code: phpCode, active: true },
+          { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+        );
+        logger.info(`Critical CSS snippet updated (ID=${existing.id})`);
+        return;
+      }
+
+      await axios.post(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { name: CRITICAL_CSS_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 1 },
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      logger.info('Critical CSS snippet installed via Code Snippets plugin');
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      logger.warn(`Failed to install critical CSS snippet: ${msg}`);
     }
   }
 }

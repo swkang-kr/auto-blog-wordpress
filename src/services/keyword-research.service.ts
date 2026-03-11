@@ -27,6 +27,7 @@ export class KeywordResearchService {
   private contentTypeDistribution: string;
   private researchModel: string;
   private serpFormatHint: string = '';
+  private paaQuestions: string[] = [];
 
   constructor(apiKey: string, geo: string, redditCredentials?: { clientId: string; clientSecret: string }, serpApiKey?: string) {
     this.client = new Anthropic({ apiKey });
@@ -60,6 +61,16 @@ export class KeywordResearchService {
   /** Set SERP format hint for content type alignment */
   setSerpFormatHint(hint: string): void {
     this.serpFormatHint = hint;
+  }
+
+  /** Set People Also Ask questions for FAQ enrichment */
+  setPaaQuestions(questions: string[]): void {
+    this.paaQuestions = questions;
+  }
+
+  /** Get PAA questions for content generation */
+  getPaaQuestions(): string[] {
+    return this.paaQuestions;
   }
 
   /** Set content type distribution for diversity-aware keyword selection */
@@ -362,6 +373,22 @@ export class KeywordResearchService {
       }
     }
 
+    // Fetch People Also Ask questions for FAQ enrichment
+    if (this.trendsService.hasSerpApi()) {
+      try {
+        const serpData = await this.trendsService.searchSerpApi(analysis.selectedKeyword);
+        if (serpData) {
+          const paaResults = (serpData as any).related_questions || [];
+          this.paaQuestions = paaResults.map((r: any) => r.question as string).filter(Boolean).slice(0, 8);
+          if (this.paaQuestions.length > 0) {
+            logger.info(`PAA: ${this.paaQuestions.length} "People Also Ask" questions for "${analysis.selectedKeyword}"`);
+          }
+        }
+      } catch (paaErr) {
+        logger.debug(`PAA fetch failed: ${paaErr instanceof Error ? paaErr.message : paaErr}`);
+      }
+    }
+
     logger.info(
       `Research result for "${niche.name}": keyword="${analysis.selectedKeyword}", ` +
       `type=${analysis.contentType}, competition=${analysis.estimatedCompetition}, ` +
@@ -448,10 +475,11 @@ ${postedKeywords.length > 30 ? `(showing most recent 30 of ${postedKeywords.leng
 IMPORTANT: Do NOT just avoid exact matches — avoid topics that would create content cannibalization.
 For example, if "how to invest in Korean stocks" is posted, do NOT select "investing in Korean stocks for beginners" or "Korean stock investment guide".
 ${this.performanceInsights}
-${this.getSerpAnalysisSection()}${this.contentTypeDistribution}
+${this.getSerpAnalysisSection()}${this.getCompetitorGapSection()}${this.contentTypeDistribution}
 ${this.getSeasonalSection(niche.category)}
 ${recentContentTypes && recentContentTypes.length > 0 ? `## Content Type Diversity (IMPORTANT)\nRecent content types for this niche: ${recentContentTypes.join(', ')}\nAvoid overusing the same content type. If "${recentContentTypes[recentContentTypes.length - 1]}" was used recently, PREFER a different type to maintain reader variety.\n` : ''}
 ${this.serpFormatHint ? `\n## SERP Format Intelligence\n${this.serpFormatHint}\nThe content type MUST match the dominant SERP format unless there's a compelling reason to differentiate.` : ''}
+${this.paaQuestions.length > 0 ? `\n## People Also Ask (PAA) Questions\nThese questions appear in Google's PAA box for related queries — HIGH VALUE for FAQ sections:\n${this.paaQuestions.map(q => `- ${q}`).join('\n')}\nInclude answers to at least 3 of these in your FAQ section for featured snippet targeting.` : ''}
 ## Instructions
 1. Select the best keyword to target — MUST be a long-tail keyword (4+ words).
 2. Choose the best content type from: ${niche.contentTypes.join(', ')}
@@ -551,6 +579,21 @@ STRATEGY: Consider creating content that directly targets one of these content g
     const suggestions = getSeasonalSuggestionsForNiche(category);
     if (suggestions.length === 0) return '';
     return `\n## Korean Seasonal Context (consider these angles)\n${suggestions.map(s => `- ${s}`).join('\n')}\n`;
+  }
+
+  private getCompetitorGapSection(): string {
+    if (!this.serpAnalysis) return '';
+    // Identify queries with high impressions but position > 10 (page 2+) — competitor territory
+    const competitorGaps = this.serpAnalysis.strikingDistanceKeywords
+      .filter(sd => sd.position > 10 && sd.impressions > 30)
+      .slice(0, 5);
+    if (competitorGaps.length === 0) return '';
+
+    const gapLines = competitorGaps.map(g =>
+      `  - "${g.query}" (pos ${g.position.toFixed(1)}, ${g.impressions} impressions) — competitors rank higher`
+    ).join('\n');
+
+    return `\n## Competitor Content Gaps (Page 2 opportunities)\nThese queries have high impressions but we rank on page 2+. Creating dedicated, superior content can capture this traffic:\n${gapLines}\n`;
   }
 
   private validateKoreaRelevance(analysis: KeywordAnalysis): KeywordAnalysis {

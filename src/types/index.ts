@@ -402,6 +402,8 @@ export interface PostHistoryEntry {
   excerptCandidates?: string[];
   /** A/B test: active excerpt variant index */
   activeExcerptVariant?: number;
+  /** Search intent classification for funnel stage mapping */
+  searchIntent?: string;
 }
 
 /** Ranking milestone event for Telegram alerts */
