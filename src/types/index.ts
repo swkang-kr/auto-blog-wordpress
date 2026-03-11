@@ -398,6 +398,10 @@ export interface PostHistoryEntry {
   lastRefreshedAt?: string;
   /** Last modified date for content freshness signal (visible to users + JSON-LD dateModified) */
   lastModifiedDate?: string;
+  /** A/B test excerpt variants */
+  excerptCandidates?: string[];
+  /** A/B test: active excerpt variant index */
+  activeExcerptVariant?: number;
 }
 
 /** Ranking milestone event for Telegram alerts */

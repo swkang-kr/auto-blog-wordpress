@@ -18,6 +18,7 @@ const SITEMAP_PRIORITY_SNIPPET_TITLE = 'Auto Blog Sitemap Priority';
 const NEWS_SITEMAP_SNIPPET_TITLE = 'Auto Blog News Sitemap';
 const VIDEO_SITEMAP_SNIPPET_TITLE = 'Auto Blog Video Sitemap';
 const SITE_SCHEMA_SNIPPET_TITLE = 'Auto Blog Site Schema';
+const COMMENT_ENGAGEMENT_SNIPPET_TITLE = 'Auto Blog Comment Engagement';
 
 export class SeoService {
   private api: AxiosInstance;
@@ -1893,6 +1894,93 @@ add_action('wp_head', function() {
     } catch (error) {
       logger.debug(`CrUX API failed: ${error instanceof Error ? error.message : error}`);
       return { overall: 'unknown' };
+    }
+  }
+
+  /**
+   * Ensure WordPress comment section is optimized for UGC generation.
+   * Adds comment form enhancements and featured comments capability.
+   */
+  async ensureCommentEngagementSnippet(): Promise<void> {
+    const phpCode = `
+// Enhanced comment form with topic-specific prompts
+add_filter('comment_form_defaults', function(\$defaults) {
+    \$post_id = get_the_ID();
+    \$category = '';
+    \$categories = get_the_category(\$post_id);
+    if (!empty(\$categories)) {
+        \$category = \$categories[0]->name;
+    }
+
+    // Category-specific comment prompts
+    \$prompts = array(
+        'Korean Tech' => 'Share your experience with Korean tech products or your thoughts on this analysis...',
+        'Korean Finance' => 'What\\'s your investment perspective? Share your strategy or questions...',
+        'K-Beauty' => 'What\\'s your skin type and which K-beauty products work for you?',
+        'Korea Travel' => 'Have you visited Korea? Share your tips or ask questions about planning your trip...',
+        'K-Entertainment' => 'Who\\'s your bias? Share your K-pop or K-drama opinions...',
+    );
+
+    \$placeholder = isset(\$prompts[\$category]) ? \$prompts[\$category] : 'Share your thoughts, experience, or questions about this topic...';
+
+    \$defaults['comment_field'] = '<p class="comment-form-comment"><label for="comment">Your Comment</label><textarea id="comment" name="comment" cols="45" rows="6" placeholder="' . esc_attr(\$placeholder) . '" required></textarea></p>';
+    \$defaults['title_reply'] = 'Join the Discussion';
+    \$defaults['label_submit'] = 'Post Comment';
+
+    return \$defaults;
+});
+
+// Add structured data for comments (UserInteraction signals)
+add_action('wp_footer', function() {
+    if (!is_single()) return;
+    \$comments = get_comments(array('post_id' => get_the_ID(), 'status' => 'approve', 'number' => 5));
+    if (empty(\$comments)) return;
+
+    \$comment_data = array();
+    foreach (\$comments as \$comment) {
+        \$comment_data[] = array(
+            '@type' => 'Comment',
+            'text' => wp_strip_all_tags(\$comment->comment_content),
+            'dateCreated' => \$comment->comment_date,
+            'author' => array('@type' => 'Person', 'name' => \$comment->comment_author),
+        );
+    }
+
+    echo '<script type="application/ld+json">' . json_encode(array(
+        '@context' => 'https://schema.org',
+        '@type' => 'DiscussionForumPosting',
+        'headline' => get_the_title(),
+        'comment' => \$comment_data,
+    )) . '</script>';
+});`.trim();
+
+    try {
+      const { data: snippets } = await axios.get(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      const existing = (snippets as Array<{ id: number; name: string }>)
+        .find((s) => s.name === COMMENT_ENGAGEMENT_SNIPPET_TITLE);
+
+      if (existing) {
+        await axios.put(
+          `${this.wpUrl}/wp-json/code-snippets/v1/snippets/${existing.id}`,
+          { code: phpCode, active: true },
+          { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+        );
+        logger.info(`Comment engagement snippet updated (ID=${existing.id})`);
+        return;
+      }
+
+      await axios.post(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { name: COMMENT_ENGAGEMENT_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 10 },
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      logger.info('Comment engagement snippet installed via Code Snippets plugin');
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      logger.warn(`Failed to install comment engagement snippet: ${msg}`);
     }
   }
 }

@@ -604,6 +604,12 @@ ${faqItems}
         knowsAbout: profile.expertise,
         knowsLanguage: ['English', 'Korean'],
         ...(sameAs.length > 0 ? { sameAs } : {}),
+        // Enhanced Person entity for E-E-A-T (Google Knowledge Panel eligibility)
+        hasOccupation: {
+          '@type': 'Occupation',
+          name: 'Korea Market & Trends Analyst',
+          occupationLocation: { '@type': 'Country', name: 'South Korea' },
+        },
         ...(profile.credentials.length > 0 ? {
           hasCredential: profile.credentials.map(c => ({
             '@type': 'EducationalOccupationalCredential',

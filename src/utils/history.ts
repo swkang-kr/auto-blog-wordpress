@@ -330,6 +330,18 @@ export class PostHistory {
   }
 
   /**
+   * Get posts ready for excerpt A/B testing.
+   * Returns entries with multiple excerpt candidates that haven't been tested yet.
+   */
+  getExcerptTestCandidates(): PostHistoryEntry[] {
+    return this.data.entries.filter(e =>
+      e.excerptCandidates &&
+      e.excerptCandidates.length > 1 &&
+      e.activeExcerptVariant === undefined,
+    );
+  }
+
+  /**
    * Get aggregated title pattern win rates from resolved A/B tests.
    * Returns pattern → { wins, total, winRate } for learning which title styles perform best.
    */

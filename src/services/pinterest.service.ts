@@ -76,7 +76,7 @@ export class PinterestService {
             source_type: 'image_url',
             url: featuredImageUrl,
           },
-          alt_text: `${content.title} - ${content.category}`,
+          alt_text: `${content.tags[0] || content.title} — ${content.category} guide with expert tips and analysis`.slice(0, 500),
         },
         {
           headers: {
@@ -99,12 +99,22 @@ export class PinterestService {
   }
 
   /**
-   * Build a Pinterest-optimized pin description with hashtags.
+   * Build a Pinterest-optimized pin description with keywords and hashtags.
+   * Pinterest SEO: first 50 chars are most important, include primary keyword.
    */
   private buildPinDescription(content: BlogContent): string {
-    const excerpt = content.excerpt.slice(0, 300);
+    // Extract primary keyword from tags or title
+    const primaryKeyword = content.tags[0] || content.title.split(':')[0].trim();
+
+    // Pinterest-optimized structure: keyword-rich opening + value proposition + hashtags
+    const keywordOpening = `${primaryKeyword} — `;
+    const valueExcerpt = content.excerpt.slice(0, 250 - keywordOpening.length);
     const hashtags = this.getCategoryHashtags(content.category);
-    const desc = `${excerpt}\n\n${hashtags.join(' ')}`;
+
+    // Add action-oriented CTA for Pinterest engagement
+    const cta = '\n\nSave this pin for later! Click through for the full guide.';
+
+    const desc = `${keywordOpening}${valueExcerpt}${cta}\n\n${hashtags.join(' ')}`;
     return desc.slice(0, 500);
   }
 

@@ -1717,6 +1717,35 @@ ${ga4TrackingScript}`;
       }
     }
 
+    // Pros/Cons structured data for x-vs-y content (enhances comparison rich snippets)
+    if (options?.contentType === 'x-vs-y' || options?.contentType === 'product-review') {
+      const prosConsData = this.extractProsConsData(htmlEn);
+      if (prosConsData && (prosConsData.pros.length > 0 || prosConsData.cons.length > 0)) {
+        // Add positiveNotes/negativeNotes to existing Review schema or create standalone
+        const existingReviewIdx = jsonLdSchemas.findIndex((s: any) => s['@type'] === 'Review');
+        if (existingReviewIdx >= 0) {
+          const reviewSchema = jsonLdSchemas[existingReviewIdx] as Record<string, unknown>;
+          if (prosConsData.pros.length > 0) {
+            reviewSchema.positiveNotes = {
+              '@type': 'ItemList',
+              itemListElement: prosConsData.pros.map((p, i) => ({
+                '@type': 'ListItem', position: i + 1, name: p,
+              })),
+            };
+          }
+          if (prosConsData.cons.length > 0) {
+            reviewSchema.negativeNotes = {
+              '@type': 'ItemList',
+              itemListElement: prosConsData.cons.map((c, i) => ({
+                '@type': 'ListItem', position: i + 1, name: c,
+              })),
+            };
+          }
+        }
+        logger.debug(`Pros/Cons schema: ${prosConsData.pros.length} pros, ${prosConsData.cons.length} cons`);
+      }
+    }
+
     // NewsArticle schema (news-explainer content type — enables Google News rich results)
     if (options?.contentType === 'news-explainer') {
       jsonLdSchemas.push({
@@ -2233,6 +2262,46 @@ ${ga4TrackingScript}`;
     }
 
     return { productName, brand, rating };
+  }
+
+  /**
+   * Extract pros/cons from HTML content for x-vs-y and product-review types.
+   * Returns structured pros and cons for enhanced rich snippets.
+   */
+  private extractProsConsData(html: string): { pros: string[]; cons: string[] } | null {
+    const pros: string[] = [];
+    const cons: string[] = [];
+
+    // Match ab-pros and ab-cons sections
+    const prosMatch = html.match(/<div[^>]*class="ab-pros"[^>]*>([\s\S]*?)<\/div>/i);
+    const consMatch = html.match(/<div[^>]*class="ab-cons"[^>]*>([\s\S]*?)<\/div>/i);
+
+    if (prosMatch) {
+      const liMatches = prosMatch[1].matchAll(/<li[^>]*>(.*?)<\/li>/gi);
+      for (const m of liMatches) pros.push(m[1].replace(/<[^>]+>/g, '').trim());
+    }
+    if (consMatch) {
+      const liMatches = consMatch[1].matchAll(/<li[^>]*>(.*?)<\/li>/gi);
+      for (const m of liMatches) cons.push(m[1].replace(/<[^>]+>/g, '').trim());
+    }
+
+    // Fallback: look for heading-based pros/cons
+    if (pros.length === 0) {
+      const prosHeading = html.match(/(?:Pros|Advantages|Benefits|Strengths)[^<]*<\/h[23]>([\s\S]*?)(?=<h[23]|$)/i);
+      if (prosHeading) {
+        const items = prosHeading[1].matchAll(/<li[^>]*>(.*?)<\/li>/gi);
+        for (const m of items) pros.push(m[1].replace(/<[^>]+>/g, '').trim());
+      }
+    }
+    if (cons.length === 0) {
+      const consHeading = html.match(/(?:Cons|Disadvantages|Drawbacks|Weaknesses)[^<]*<\/h[23]>([\s\S]*?)(?=<h[23]|$)/i);
+      if (consHeading) {
+        const items = consHeading[1].matchAll(/<li[^>]*>(.*?)<\/li>/gi);
+        for (const m of items) cons.push(m[1].replace(/<[^>]+>/g, '').trim());
+      }
+    }
+
+    return (pros.length > 0 || cons.length > 0) ? { pros, cons } : null;
   }
 
   /**
@@ -3604,6 +3673,30 @@ ${ga4TrackingScript}`;
 
     // Fallback: insert at beginning
     return embedHtml + '\n' + html;
+  }
+
+  /**
+   * Build content-specific upgrade CTA (higher conversion than generic lead magnets).
+   * Creates a download offer directly related to the article topic.
+   */
+  buildContentUpgradeCta(keyword: string, category: string, contentType: string): string {
+    // Generate content-specific upgrade based on content type
+    const upgrades: Record<string, { title: string; description: string }> = {
+      'how-to': { title: `${keyword} — Quick Reference Checklist`, description: 'Get a printable step-by-step checklist for this guide' },
+      'best-x-for-y': { title: `${keyword} — Comparison Spreadsheet`, description: 'Download our detailed comparison spreadsheet with ratings and prices' },
+      'analysis': { title: `${keyword} — Full Data Report`, description: 'Get the complete data analysis with charts and projections' },
+      'product-review': { title: `${keyword} — Buyer\'s Decision Matrix`, description: 'Download our scoring matrix to make your purchase decision' },
+      'deep-dive': { title: `${keyword} — Executive Summary PDF`, description: 'Get a concise 2-page executive summary of this deep dive' },
+      'x-vs-y': { title: `${keyword} — Side-by-Side Comparison PDF`, description: 'Download the full comparison table with all features and specs' },
+    };
+    const upgrade = upgrades[contentType] || { title: `${keyword} — Resource Guide`, description: 'Get additional resources and references for this topic' };
+
+    return `<div class="ab-content-upgrade" style="margin:24px 0; padding:24px; background:linear-gradient(135deg,#f0f4ff,#e8f0fe); border:2px dashed #0066FF; border-radius:12px; text-align:center;">
+<p style="margin:0 0 4px 0; font-size:11px; font-weight:700; color:#0066FF; text-transform:uppercase; letter-spacing:1px;">FREE RESOURCE</p>
+<p style="margin:0 0 8px 0; font-size:18px; font-weight:700; color:#222;">${this.escapeHtml(upgrade.title)}</p>
+<p style="margin:0 0 16px 0; font-size:14px; color:#555; line-height:1.6;">${this.escapeHtml(upgrade.description)}</p>
+<a href="#respond" onclick="if(typeof gtag==='function'){gtag('event','content_upgrade_click',{event_category:'conversion',event_label:'${this.escapeHtml(contentType)}',value:1})}" style="display:inline-block; padding:12px 32px; background:#0066FF; color:#fff; text-decoration:none; border-radius:8px; font-weight:700; font-size:15px;">Get Free Download</a>
+<p style="margin:10px 0 0 0; font-size:11px; color:#999;">No signup required — instant access</p></div>`;
   }
 
   /**

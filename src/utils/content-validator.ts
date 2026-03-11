@@ -19,7 +19,7 @@ export interface ContentScore {
 export interface ContentIssue {
   category: string;
   message: string;
-  severity: 'error' | 'warning';
+  severity: 'error' | 'warning' | 'info';
   autoFixed?: boolean;
 }
 
@@ -219,9 +219,24 @@ export function validateContent(
     warnings.push({ category: 'density', message: `Low information density: ${densityPer500.toFixed(1)} data points per 500 words (target 3+)`, severity: 'warning' });
   }
 
+  // Enhanced information density ratio (used in structure scoring below)
+  const densityRatio = densityPer500;
+
   // ── Structure validation (max 25 points) ──
   let structureScore = 25;
   if (wordCount < typeMinWords) structureScore -= 5;
+
+  // Enhanced information density scoring: unique data points per 500 words
+  if (densityRatio < 1.5) {
+    issues.push({ category: 'structure', message: `Very low information density: ${densityRatio.toFixed(1)} data points per 500 words (target: 3+)`, severity: 'warning' });
+    structureScore -= 3;
+  } else if (densityRatio < 3) {
+    issues.push({ category: 'structure', message: `Below-target information density: ${densityRatio.toFixed(1)} data points per 500 words (target: 3+)`, severity: 'info' });
+    structureScore -= 1;
+  } else if (densityRatio >= 5) {
+    // Bonus for high information density
+    structureScore += 2;
+  }
 
   // 1. Signature section check (dynamic niche-specific names)
   const signaturePattern = new RegExp(ALL_SIGNATURE_SECTION_NAMES.map(n => n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|'), 'i');
@@ -1376,6 +1391,18 @@ function validateMobileRendering(html: string): string[] {
     if (px > 768) {
       issues.push(`Element with min-width:${px}px will cause horizontal scroll on mobile`);
     }
+  }
+
+  // 6. Mobile paragraph length check (>150 words = wall of text on mobile)
+  const paragraphs = html.match(/<p[^>]*>([\s\S]*?)<\/p>/gi) || [];
+  let longMobileParagraphs = 0;
+  for (const p of paragraphs) {
+    const text = p.replace(/<[^>]+>/g, '').trim();
+    const words = text.split(/\s+/).filter(Boolean).length;
+    if (words > 150) longMobileParagraphs++;
+  }
+  if (longMobileParagraphs >= 3) {
+    issues.push(`${longMobileParagraphs} paragraphs exceed 150 words — poor mobile readability`);
   }
 
   return issues;

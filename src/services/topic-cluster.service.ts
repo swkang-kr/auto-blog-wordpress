@@ -634,6 +634,76 @@ ${cluster.pillarUrl ? `<p style="margin:12px 0 0 0;"><a href="${cluster.pillarUr
     };
   }
 
+  /**
+   * Get prioritized content recommendations based on topical map coverage.
+   * Returns topics sorted by strategic value (gap severity x potential traffic).
+   */
+  getContentPriority(nicheId: string, existingPosts: ExistingPost[]): Array<{
+    topic: string;
+    priority: 'critical' | 'high' | 'medium' | 'low';
+    reason: string;
+    suggestedContentType: string;
+  }> {
+    const nicheKey = nicheId.replace(/-[^-]+$/, '');
+    const topicalMap = NICHE_TOPICAL_MAP[nicheKey];
+    if (!topicalMap) return [];
+
+    const coveredTopics = new Set<string>();
+    for (const post of existingPosts) {
+      const titleLower = post.title.toLowerCase();
+      for (const topic of topicalMap) {
+        const topicWords = topic.toLowerCase().split(/\s+/).filter(w => w.length > 3);
+        if (topicWords.filter(w => titleLower.includes(w)).length >= 2) {
+          coveredTopics.add(topic);
+        }
+      }
+    }
+
+    const recommendations: Array<{
+      topic: string;
+      priority: 'critical' | 'high' | 'medium' | 'low';
+      reason: string;
+      suggestedContentType: string;
+    }> = [];
+
+    for (const topic of topicalMap) {
+      if (coveredTopics.has(topic)) continue;
+
+      // Determine priority based on topic characteristics
+      const isFoundational = /guide|basics|introduction|explained|overview/.test(topic.toLowerCase());
+      const isHighValue = /analysis|strategy|comparison|investment|market/.test(topic.toLowerCase());
+      const isTimely = /2026|outlook|forecast|trend/.test(topic.toLowerCase());
+
+      let priority: 'critical' | 'high' | 'medium' | 'low';
+      let reason: string;
+      let suggestedContentType: string;
+
+      if (isFoundational) {
+        priority = 'critical';
+        reason = 'Foundational topic missing — blocks topical authority';
+        suggestedContentType = 'deep-dive';
+      } else if (isHighValue) {
+        priority = 'high';
+        reason = 'High-value commercial topic not covered';
+        suggestedContentType = 'analysis';
+      } else if (isTimely) {
+        priority = 'high';
+        reason = 'Time-sensitive topic — publish before relevance window closes';
+        suggestedContentType = 'news-explainer';
+      } else {
+        priority = 'medium';
+        reason = 'Gap in topical coverage';
+        suggestedContentType = 'how-to';
+      }
+
+      recommendations.push({ topic, priority, reason, suggestedContentType });
+    }
+
+    // Sort: critical > high > medium > low
+    const priorityOrder = { critical: 0, high: 1, medium: 2, low: 3 };
+    return recommendations.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
+  }
+
   getSeriesOpportunities(nicheId: string): Array<{ seriesName: string; keywords: string[]; priority: 'high' | 'medium' }> {
     const cluster = this.clusters.get(nicheId);
     if (!cluster) return [];

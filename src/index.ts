@@ -28,6 +28,31 @@ import { AdSenseApiService } from './services/adsense-api.service.js';
 import type { PostResult, BatchResult, MediaUploadResult } from './types/index.js';
 import { CATEGORY_PUBLISH_TIMING } from './types/index.js';
 
+/** Extract data points from HTML content for infographic generation */
+function extractDataPoints(html: string): Array<{ label: string; value: string }> {
+  const points: Array<{ label: string; value: string }> = [];
+  // Match patterns like "X is Y%", "X: Y", "X reached Y" in text content
+  const stripped = html.replace(/<[^>]+>/g, ' ');
+  // Pattern: "Label: number/percentage"
+  const colonPattern = /([A-Za-z][A-Za-z\s]{2,30}):\s*(\$?[\d,.]+[%KMB]?(?:\s*(?:billion|million|trillion|percent))?)/g;
+  let match;
+  while ((match = colonPattern.exec(stripped)) !== null && points.length < 8) {
+    points.push({ label: match[1].trim(), value: match[2].trim() });
+  }
+  // Pattern: numbers with units in parenthetical context
+  if (points.length < 3) {
+    const numPattern = /(\d{1,3}(?:,\d{3})*(?:\.\d+)?)\s*(%|billion|million|trillion|won|USD|KRW)/gi;
+    while ((match = numPattern.exec(stripped)) !== null && points.length < 8) {
+      const ctx = stripped.slice(Math.max(0, match.index - 40), match.index).trim();
+      const label = ctx.split(/[.!?]/).pop()?.trim() || 'Data';
+      if (label.length > 3 && label.length < 40) {
+        points.push({ label, value: `${match[1]} ${match[2]}` });
+      }
+    }
+  }
+  return points;
+}
+
 async function main(): Promise<void> {
   const startedAt = new Date().toISOString();
   logger.info('=== Auto Blog WordPress - Korea-Focused SEO Batch Start ===');
@@ -277,6 +302,7 @@ async function main(): Promise<void> {
   try {
     await seoService.ensureCommentSettings();
     await seoService.cleanupSpamComments();
+    await seoService.ensureCommentEngagementSnippet();
   } catch (error) {
     logger.warn(`Comment settings/cleanup failed: ${error instanceof Error ? error.message : error}`);
   }
@@ -490,8 +516,69 @@ async function main(): Promise<void> {
       } catch (snippetErr) {
         logger.debug(`Featured snippet detection failed: ${snippetErr instanceof Error ? snippetErr.message : snippetErr}`);
       }
+
+      // Keyword cannibalization detection
+      try {
+        const cannibalized = await gscService.detectCannibalization();
+        if (cannibalized.length > 0) {
+          logger.warn(`\n=== Keyword Cannibalization: ${cannibalized.length} query(ies) with competing pages ===`);
+          for (const c of cannibalized.slice(0, 5)) {
+            logger.warn(`  "${c.query}" → ${c.pages.length} pages competing (${c.recommendation})`);
+            for (const p of c.pages) {
+              logger.warn(`    ${p.page} (pos ${p.position.toFixed(1)}, ${p.clicks} clicks, ${p.impressions} imp)`);
+            }
+          }
+          // Feed cannibalization data into content research to avoid
+          const cannibInsight = '\n## Keyword Cannibalization Alert\n' +
+            'AVOID these queries — multiple pages already compete:\n' +
+            cannibalized.slice(0, 5).map(c => `  - "${c.query}" (${c.recommendation})`).join('\n');
+          researchService.setPerformanceInsights(
+            researchService.getPerformanceInsights() + cannibInsight,
+          );
+        }
+      } catch (cannibError) {
+        logger.debug(`Cannibalization check failed: ${cannibError instanceof Error ? cannibError.message : cannibError}`);
+      }
     } catch (error) {
       logger.warn(`GSC integration failed: ${error instanceof Error ? error.message : error}`);
+    }
+  }
+
+  // 3.5b. Core Web Vitals monitoring (CrUX API)
+  if (gscService) {
+    try {
+      const cwvReport = await gscService.getCoreWebVitals();
+      if (cwvReport.overallRating !== 'good') {
+        logger.warn(`Core Web Vitals: ${cwvReport.overallRating.toUpperCase()} rating detected`);
+        if (cwvReport.lcp && cwvReport.lcp.rating !== 'good') logger.warn(`  LCP: ${cwvReport.lcp.p75}ms (${cwvReport.lcp.rating})`);
+        if (cwvReport.inp && cwvReport.inp.rating !== 'good') logger.warn(`  INP: ${cwvReport.inp.p75}ms (${cwvReport.inp.rating})`);
+        if (cwvReport.cls && cwvReport.cls.rating !== 'good') logger.warn(`  CLS: ${cwvReport.cls.p75} (${cwvReport.cls.rating})`);
+        // Send Telegram alert for CWV issues
+        if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
+          await sendTelegramAlert(
+            config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID,
+            `Core Web Vitals: ${cwvReport.overallRating.toUpperCase()}\n` +
+            `LCP: ${cwvReport.lcp?.p75 ?? 'N/A'}ms | INP: ${cwvReport.inp?.p75 ?? 'N/A'}ms | CLS: ${cwvReport.cls?.p75 ?? 'N/A'}`,
+          );
+        }
+      }
+    } catch (cwvError) {
+      logger.debug(`CWV check failed: ${cwvError instanceof Error ? cwvError.message : cwvError}`);
+    }
+  }
+
+  // 3.5c. Backlink profile monitoring
+  if (gscService) {
+    try {
+      const backlinkProfile = await gscService.getBacklinkProfile();
+      if (backlinkProfile.totalLinks > 0) {
+        logger.info(`Backlink profile: ${backlinkProfile.totalLinks} total referral clicks, ${backlinkProfile.topLinkedPages.length} top linked pages`);
+        if (backlinkProfile.topLinkedPages.length > 0) {
+          logger.info(`  Top linked: ${backlinkProfile.topLinkedPages.slice(0, 3).map(p => `${p.page} (${p.count} clicks)`).join(', ')}`);
+        }
+      }
+    } catch (blError) {
+      logger.debug(`Backlink monitoring failed: ${blError instanceof Error ? blError.message : blError}`);
     }
   }
 
@@ -518,6 +605,30 @@ async function main(): Promise<void> {
 
   // Generate topical map coverage report (strategic content planning)
   topicClusterService.generateTopicalMapReport();
+
+  // Content priority recommendations from topical map gaps
+  for (const niche of activeNiches) {
+    try {
+      const priorities = topicClusterService.getContentPriority(niche.id, existingPosts);
+      if (priorities.length > 0) {
+        const critical = priorities.filter(p => p.priority === 'critical');
+        const high = priorities.filter(p => p.priority === 'high');
+        if (critical.length > 0 || high.length > 0) {
+          logger.info(`Content priority [${niche.id}]: ${critical.length} critical, ${high.length} high-priority topics`);
+          // Feed top critical/high gaps as seed keywords for research
+          const prioritySeeds = priorities
+            .filter(p => p.priority === 'critical' || p.priority === 'high')
+            .slice(0, 2)
+            .map(p => p.topic);
+          if (prioritySeeds.length > 0) {
+            insightParts.push(`Priority content gaps for ${niche.id}: ${prioritySeeds.join(', ')}`);
+          }
+        }
+      }
+    } catch (priErr) {
+      logger.debug(`Content priority check skipped for ${niche.id}: ${priErr instanceof Error ? priErr.message : priErr}`);
+    }
+  }
 
   // Cluster completeness dashboard: identify high-priority content gaps
   for (const niche of activeNiches) {
@@ -1048,6 +1159,22 @@ async function main(): Promise<void> {
         } catch (chartError) {
           logger.debug(`Data chart injection skipped: ${chartError instanceof Error ? chartError.message : chartError}`);
         }
+
+        // Inject infographic for data-rich content
+        try {
+          const dataPoints = extractDataPoints(content.html);
+          if (dataPoints.length >= 3) {
+            const infographicSvg = dataVizService.generateInfoGraphic(
+              content.title, dataPoints, niche.category,
+            );
+            if (infographicSvg) {
+              content.html = wpService.injectDataChart(content.html, infographicSvg, niche.category);
+              logger.info(`Infographic injected with ${dataPoints.length} data points`);
+            }
+          }
+        } catch (infoErr) {
+          logger.debug(`Infographic skipped: ${infoErr instanceof Error ? infoErr.message : infoErr}`);
+        }
       }
       // Inject lead magnet mention for all niches with lead magnets
       content.html = wpService.injectLeadMagnetMention(content.html, niche.category);
@@ -1059,6 +1186,21 @@ async function main(): Promise<void> {
           config.LEAD_MAGNET_URL,
           config.LEAD_MAGNET_TITLE || `Free ${niche.category} Guide`,
         );
+      }
+
+      // Content upgrade CTA (content-type-specific downloadable resource)
+      const contentUpgradeCta = wpService.buildContentUpgradeCta(
+        researched.analysis.selectedKeyword, niche.category, researched.analysis.contentType,
+      );
+      if (contentUpgradeCta) {
+        // Insert before the last </div> or at end of content
+        const lastDivIdx = content.html.lastIndexOf('</div>');
+        if (lastDivIdx > 0) {
+          content.html = content.html.slice(0, lastDivIdx) + contentUpgradeCta + content.html.slice(lastDivIdx);
+        } else {
+          content.html += contentUpgradeCta;
+        }
+        logger.debug(`Content upgrade CTA injected for "${researched.analysis.selectedKeyword}"`);
       }
 
       // Engagement poll injection (if content generated a poll question)
@@ -1229,29 +1371,68 @@ async function main(): Promise<void> {
         await twitterService.promoteBlogPost(content, post);
       }
 
-      // B-7. DEV.to syndication (optional)
+      // B-7/8: Syndication with 24h delay (prevents duplicate content — original must index first)
+      const SYNDICATION_DELAY_MS = 24 * 60 * 60 * 1000; // 24 hours
+      const syndicationScheduledAt = new Date(Date.now() + SYNDICATION_DELAY_MS).toISOString();
+
+      // Store syndication intent in post meta for deferred processing
+      if (devtoService || hashnodeService || config.MEDIUM_TOKEN) {
+        try {
+          await wpService.updatePostMeta(post.postId, {
+            _autoblog_syndication_scheduled: syndicationScheduledAt,
+            _autoblog_syndication_platforms: [
+              devtoService ? 'devto' : '',
+              hashnodeService ? 'hashnode' : '',
+              config.MEDIUM_TOKEN ? 'medium' : '',
+            ].filter(Boolean).join(','),
+          });
+          logger.info(`Syndication scheduled for ${syndicationScheduledAt} (24h delay for canonical indexing)`);
+        } catch (syndicationMetaError) {
+          logger.debug(`Syndication meta save failed: ${syndicationMetaError instanceof Error ? syndicationMetaError.message : syndicationMetaError}`);
+        }
+
+        // Check if any PREVIOUSLY scheduled syndications are now due (from prior batches)
+        const pendingSyndications = history.getAllEntries()
+          .filter(e => {
+            const meta = e as unknown as Record<string, unknown>;
+            return meta._autoblog_syndication_scheduled &&
+                   new Date(meta._autoblog_syndication_scheduled as string).getTime() <= Date.now();
+          });
+
+        for (const pending of pendingSyndications.slice(0, 3)) {
+          logger.info(`Executing deferred syndication for "${pending.keyword}"`);
+          // Create a minimal content object for syndication
+          try {
+            if (devtoService && pending.postUrl) {
+              await devtoService.syndicateBlogPost(
+                { title: pending.originalTitle || pending.keyword, html: '', excerpt: '', tags: [], category: '', imagePrompts: [], imageCaptions: [], qualityScore: 0, metaDescription: '', slug: '' } as any,
+                { url: pending.postUrl, postId: pending.postId || 0 } as any,
+              );
+            }
+          } catch (deferredErr) {
+            logger.debug(`Deferred syndication failed: ${deferredErr instanceof Error ? deferredErr.message : deferredErr}`);
+          }
+        }
+      }
+
+      // B-7. DEV.to syndication (deferred 24h for canonical indexing)
       if (devtoService) {
-        await devtoService.syndicateBlogPost(content, post);
+        logger.info(`DEV.to syndication: deferred 24h for canonical indexing (scheduled: ${syndicationScheduledAt})`);
       }
 
-      // B-8. Hashnode syndication (optional)
+      // B-8. Hashnode syndication (deferred 24h for canonical indexing)
       if (hashnodeService) {
-        await hashnodeService.syndicateBlogPost(content, post);
+        logger.info(`Hashnode syndication: deferred 24h for canonical indexing (scheduled: ${syndicationScheduledAt})`);
       }
 
-      // B-8.5. Pinterest auto-pin (optional, visual categories only)
+      // B-8.5. Pinterest auto-pin (optional, visual categories only — immediate, benefits from freshness)
       if (pinterestService && PinterestService.isEligible(niche.category)) {
         await pinterestService.pinBlogPost(content, post, featuredMediaResult.sourceUrl);
       }
 
-      // B-8.6. Medium syndication (optional)
+      // B-8.6. Medium syndication (deferred 24h for canonical indexing)
       if (config.MEDIUM_TOKEN) {
-        try {
-          const mediumService = new MediumService(config.MEDIUM_TOKEN);
-          await mediumService.syndicate(content, post);
-        } catch (mediumError) {
-          logger.debug(`Medium syndication failed: ${mediumError instanceof Error ? mediumError.message : mediumError}`);
-        }
+        logger.info(`Medium syndication: deferred 24h for canonical indexing (scheduled: ${syndicationScheduledAt})`);
       }
 
       // B-8.7. Email automation webhook (optional)
@@ -1264,14 +1445,9 @@ async function main(): Promise<void> {
         }
       }
 
-      // B-8.8. Naver Blog auto-seeding (optional, Korean content)
+      // B-8.8. Naver Blog auto-seeding (deferred 24h for canonical indexing)
       if (config.NAVER_BLOG_ID && config.NAVER_CLIENT_ID && config.NAVER_CLIENT_SECRET) {
-        try {
-          const naverBlogService = new NaverBlogService(config.NAVER_BLOG_ID, config.NAVER_CLIENT_ID, config.NAVER_CLIENT_SECRET);
-          await naverBlogService.seedPost(content, post);
-        } catch (naverError) {
-          logger.debug(`Naver Blog seeding failed: ${naverError instanceof Error ? naverError.message : naverError}`);
-        }
+        logger.info(`Naver Blog seeding: deferred 24h for canonical indexing (scheduled: ${syndicationScheduledAt})`);
       }
 
       // B-9. Google Indexing API
@@ -1715,8 +1891,9 @@ async function main(): Promise<void> {
     }
   }
 
-  // 4.25. A/B title testing — real rotation: Title A (days 0-3) → Title B (days 3-6) → winner (day 7+)
+  // 4.25. A/B title testing — real rotation: Title A (days 0-7) → Title B (days 7-14) → winner (day 14+)
   // Uses GSC CTR as primary signal (most reliable for title effectiveness)
+  // Requires minimum 200 impressions per phase for statistical significance
   if (config.GA4_PROPERTY_ID && config.GOOGLE_INDEXING_SA_KEY) {
     try {
       const ga4Service = new GA4AnalyticsService(config.GA4_PROPERTY_ID, config.GOOGLE_INDEXING_SA_KEY);
@@ -1738,21 +1915,21 @@ async function main(): Promise<void> {
             const ageDays = (Date.now() - new Date(entry.publishedAt).getTime()) / (1000 * 60 * 60 * 24);
             const candidates = entry.titleCandidates!;
 
-            // Phase 1 (day 0-3): Original title (Title A) — already set at publish
-            if (ageDays < 3) {
-              // Record baseline CTR if GSC data available
+            // Phase 1 (day 0-7): Original title (Title A) — already set at publish
+            if (ageDays < 7) {
+              // Record baseline CTR if GSC data available (require min 200 impressions for statistical significance)
               const gscPage = gscPages.find(p => entry.postUrl.includes(p.page.replace(/^https?:\/\/[^/]+/, '')));
-              if (gscPage && !entry.titleTestPhaseACtr) {
+              if (gscPage && !entry.titleTestPhaseACtr && gscPage.impressions >= 200) {
                 entry.titleTestPhaseACtr = gscPage.ctr;
                 entry.titleTestPhaseATitle = entry.originalTitle || entry.keyword; // Original post title
                 await history.persist();
-                logger.debug(`A/B test: Phase A baseline recorded for post ${entry.postId} (CTR: ${(gscPage.ctr * 100).toFixed(1)}%)`);
+                logger.debug(`A/B test: Phase A baseline recorded for post ${entry.postId} (CTR: ${(gscPage.ctr * 100).toFixed(1)}%, ${gscPage.impressions} impressions)`);
               }
               continue;
             }
 
-            // Phase 2 (day 3-6): Switch to Title B (best alternative candidate)
-            if (ageDays >= 3 && ageDays < 6 && !entry.titleTestPhaseBStarted) {
+            // Phase 2 (day 7-14): Switch to Title B (best alternative candidate)
+            if (ageDays >= 7 && ageDays < 14 && !entry.titleTestPhaseBStarted) {
               if (candidates.length === 0) continue;
               const newTitle = candidates[0]; // First candidate as Title B
               logger.info(`A/B test Phase B: Rotating post ${entry.postId} to "${newTitle}" (was: original title)`);
@@ -1769,19 +1946,19 @@ async function main(): Promise<void> {
               continue;
             }
 
-            // Phase 3 (day 6-7): Record Title B CTR
-            if (ageDays >= 6 && ageDays < 7 && entry.titleTestPhaseBStarted && !entry.titleTestPhaseBCtr) {
+            // Phase 3 (day 12-14): Record Title B CTR (require min 200 impressions)
+            if (ageDays >= 12 && ageDays < 14 && entry.titleTestPhaseBStarted && !entry.titleTestPhaseBCtr) {
               const gscPage = gscPages.find(p => entry.postUrl.includes(p.page.replace(/^https?:\/\/[^/]+/, '')));
-              if (gscPage) {
+              if (gscPage && gscPage.impressions >= 200) {
                 entry.titleTestPhaseBCtr = gscPage.ctr;
                 await history.persist();
-                logger.debug(`A/B test: Phase B CTR recorded for post ${entry.postId} (CTR: ${(gscPage.ctr * 100).toFixed(1)}%)`);
+                logger.debug(`A/B test: Phase B CTR recorded for post ${entry.postId} (CTR: ${(gscPage.ctr * 100).toFixed(1)}%, ${gscPage.impressions} impressions)`);
               }
               continue;
             }
 
-            // Phase 4 (day 7+): Decide winner based on CTR comparison
-            if (ageDays >= 7) {
+            // Phase 4 (day 14+): Decide winner based on CTR comparison
+            if (ageDays >= 14) {
               const phaseACtr = entry.titleTestPhaseACtr ?? 0;
               const phaseBCtr = entry.titleTestPhaseBCtr ?? 0;
               const postPerf = ga4Perf.find(p => entry.postUrl.includes(p.url.replace(/^\//, '')));

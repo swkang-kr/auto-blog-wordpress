@@ -190,6 +190,46 @@ ${labels.join('\n')}
     }
   }
 
+  /**
+   * Generate an infographic SVG summarizing key data points from content.
+   * Creates a visual summary suitable for Pinterest and in-article use.
+   */
+  generateInfoGraphic(
+    title: string,
+    dataPoints: Array<{ label: string; value: string; icon?: string }>,
+    category: string,
+  ): string {
+    const gradients: Record<string, [string, string]> = {
+      'Korean Tech': ['#1a1a2e', '#16213e'],
+      'Korean Finance': ['#0c4a6e', '#0369a1'],
+      'K-Beauty': ['#831843', '#be185d'],
+      'Korea Travel': ['#14532d', '#15803d'],
+      'K-Entertainment': ['#2d1b69', '#6b21a8'],
+    };
+    const [c1, c2] = gradients[category] || ['#0052CC', '#0066FF'];
+
+    const itemHeight = 60;
+    const headerHeight = 80;
+    const footerHeight = 40;
+    const totalHeight = headerHeight + dataPoints.length * itemHeight + footerHeight;
+
+    const items = dataPoints.map((dp, i) => {
+      const y = headerHeight + i * itemHeight;
+      return `<rect x="20" y="${y}" width="360" height="${itemHeight - 8}" rx="8" fill="rgba(255,255,255,0.1)"/>
+<text x="40" y="${y + 22}" fill="rgba(255,255,255,0.7)" font-family="system-ui,sans-serif" font-size="13">${this.escapeXml(dp.label)}</text>
+<text x="40" y="${y + 44}" fill="#fff" font-family="system-ui,sans-serif" font-size="18" font-weight="bold">${this.escapeXml(dp.value)}</text>`;
+    }).join('\n');
+
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="${totalHeight}" viewBox="0 0 400 ${totalHeight}">
+<defs><linearGradient id="infobg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:${c1}"/><stop offset="100%" style="stop-color:${c2}"/></linearGradient></defs>
+<rect width="400" height="${totalHeight}" rx="12" fill="url(#infobg)"/>
+<text x="200" y="35" text-anchor="middle" fill="#fff" font-family="system-ui,sans-serif" font-size="16" font-weight="bold">${this.escapeXml(title.slice(0, 40))}</text>
+<line x1="80" y1="50" x2="320" y2="50" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+${items}
+<text x="200" y="${totalHeight - 12}" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-family="system-ui,sans-serif" font-size="10">TrendHunt ${new Date().getFullYear()}</text>
+</svg>`;
+  }
+
   private formatNumber(n: number): string {
     if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
     if (n >= 10_000) return `${(n / 1_000).toFixed(0)}K`;

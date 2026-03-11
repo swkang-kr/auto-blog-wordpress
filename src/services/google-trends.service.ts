@@ -251,6 +251,41 @@ export class GoogleTrendsService {
     return { rising, top, averageInterest, trendDirection };
   }
 
+  /** Check if SerpAPI is configured */
+  hasSerpApi(): boolean {
+    return !!this.serpApiKey;
+  }
+
+  /**
+   * Search SerpAPI for organic SERP results for a keyword.
+   * Returns raw SERP data including organic results, answer boxes, etc.
+   */
+  async searchSerpApi(keyword: string): Promise<Record<string, unknown> | null> {
+    if (!this.serpApiKey) return null;
+
+    try {
+      const params = new URLSearchParams({
+        engine: 'google',
+        q: keyword,
+        gl: this.geo.toLowerCase(),
+        hl: 'en',
+        num: '10',
+        api_key: this.serpApiKey,
+      });
+
+      const response = await fetch(`https://serpapi.com/search.json?${params}`, { signal: AbortSignal.timeout(15000) });
+      if (!response.ok) {
+        logger.warn(`SerpAPI search error: ${response.status} ${response.statusText}`);
+        return null;
+      }
+
+      return await response.json() as Record<string, unknown>;
+    } catch (error) {
+      logger.warn(`SerpAPI search failed: ${error instanceof Error ? error.message : error}`);
+      return null;
+    }
+  }
+
   /**
    * Fallback: Fetch Google Trends data via SerpAPI when unofficial API fails.
    * SerpAPI provides a reliable paid alternative to the unofficial google-trends-api package.

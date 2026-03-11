@@ -26,6 +26,7 @@ export class KeywordResearchService {
   private serpAnalysis: SerpAnalysis | null;
   private contentTypeDistribution: string;
   private researchModel: string;
+  private serpFormatHint: string = '';
 
   constructor(apiKey: string, geo: string, redditCredentials?: { clientId: string; clientSecret: string }, serpApiKey?: string) {
     this.client = new Anthropic({ apiKey });
@@ -54,6 +55,11 @@ export class KeywordResearchService {
   setExistingPosts(posts: ExistingPost[]): void {
     this.existingPosts = posts;
     this.existingPostTitles = posts.map(p => p.title.toLowerCase());
+  }
+
+  /** Set SERP format hint for content type alignment */
+  setSerpFormatHint(hint: string): void {
+    this.serpFormatHint = hint;
   }
 
   /** Set content type distribution for diversity-aware keyword selection */
@@ -343,6 +349,19 @@ export class KeywordResearchService {
       throw new KeywordResearchError(`Failed to find unique Korea-relevant keyword for niche "${niche.name}" after ${MAX_ATTEMPTS} attempts`);
     }
 
+    // SERP format analysis: validate content type against actual SERP
+    const serpFormat = await this.analyzeSerpFormat(analysis.selectedKeyword);
+    if (serpFormat) {
+      const suggestedType = analysis.contentType;
+      if (serpFormat.dominantFormat !== suggestedType && serpFormat.dominantFormat !== 'analysis') {
+        logger.info(`SERP format mismatch: AI selected "${suggestedType}" but SERP shows "${serpFormat.dominantFormat}" dominates. Aligning.`);
+        analysis.contentType = serpFormat.dominantFormat as any;
+      }
+      if (serpFormat.serpFeatures.length > 0) {
+        this.serpFormatHint = `SERP features for "${analysis.selectedKeyword}": ${serpFormat.serpFeatures.join(', ')}. Dominant format: ${serpFormat.dominantFormat}.`;
+      }
+    }
+
     logger.info(
       `Research result for "${niche.name}": keyword="${analysis.selectedKeyword}", ` +
       `type=${analysis.contentType}, competition=${analysis.estimatedCompetition}, ` +
@@ -432,6 +451,7 @@ ${this.performanceInsights}
 ${this.getSerpAnalysisSection()}${this.contentTypeDistribution}
 ${this.getSeasonalSection(niche.category)}
 ${recentContentTypes && recentContentTypes.length > 0 ? `## Content Type Diversity (IMPORTANT)\nRecent content types for this niche: ${recentContentTypes.join(', ')}\nAvoid overusing the same content type. If "${recentContentTypes[recentContentTypes.length - 1]}" was used recently, PREFER a different type to maintain reader variety.\n` : ''}
+${this.serpFormatHint ? `\n## SERP Format Intelligence\n${this.serpFormatHint}\nThe content type MUST match the dominant SERP format unless there's a compelling reason to differentiate.` : ''}
 ## Instructions
 1. Select the best keyword to target — MUST be a long-tail keyword (4+ words).
 2. Choose the best content type from: ${niche.contentTypes.join(', ')}
@@ -666,6 +686,66 @@ STRATEGY: Consider creating content that directly targets one of these content g
     }
 
     return Math.max(0, Math.min(100, difficulty));
+  }
+
+  /**
+   * Analyze actual SERP results to determine optimal content format.
+   * Uses SerpAPI to check what format ranks for this keyword.
+   */
+  private async analyzeSerpFormat(keyword: string): Promise<{
+    dominantFormat: string;
+    hasListicle: boolean;
+    hasVideo: boolean;
+    hasFeaturedSnippet: boolean;
+    avgWordCount: 'short' | 'medium' | 'long';
+    serpFeatures: string[];
+  } | null> {
+    if (!this.trendsService.hasSerpApi()) return null;
+
+    try {
+      const serpData = await this.trendsService.searchSerpApi(keyword);
+      if (!serpData) return null;
+
+      const organicResults = (serpData as any).organic_results || [];
+      const serpFeatures: string[] = [];
+
+      // Detect SERP features
+      if ((serpData as any).answer_box) serpFeatures.push('featured_snippet');
+      if ((serpData as any).knowledge_graph) serpFeatures.push('knowledge_panel');
+      if ((serpData as any).related_questions) serpFeatures.push('people_also_ask');
+      if ((serpData as any).shopping_results) serpFeatures.push('shopping');
+      if ((serpData as any).video_results?.length > 0) serpFeatures.push('video_carousel');
+
+      // Analyze top 5 organic results for format patterns
+      const top5 = organicResults.slice(0, 5);
+      let listicleCount = 0;
+      let howToCount = 0;
+      let reviewCount = 0;
+
+      for (const result of top5) {
+        const title = (result.title || '').toLowerCase();
+        const snippet = (result.snippet || '').toLowerCase();
+        if (/\d+\s+(best|top|ways|tips|things|reasons)/.test(title)) listicleCount++;
+        if (/how to|step.by.step|guide|tutorial/.test(title)) howToCount++;
+        if (/review|comparison|vs|versus/.test(title)) reviewCount++;
+      }
+
+      const dominantFormat = listicleCount >= 2 ? 'listicle' :
+        howToCount >= 2 ? 'how-to' :
+        reviewCount >= 2 ? 'product-review' : 'analysis';
+
+      return {
+        dominantFormat,
+        hasListicle: listicleCount >= 2,
+        hasVideo: serpFeatures.includes('video_carousel'),
+        hasFeaturedSnippet: serpFeatures.includes('featured_snippet'),
+        avgWordCount: 'medium',
+        serpFeatures,
+      };
+    } catch (error) {
+      logger.debug(`SERP format analysis failed: ${error instanceof Error ? error.message : error}`);
+      return null;
+    }
   }
 
   private parseAnalysis(text: string, niche: NicheConfig): KeywordAnalysis {
