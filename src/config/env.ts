@@ -91,6 +91,20 @@ const envSchema = z.object({
   CLOUDFLARE_ZONE_ID: z.string().default(''),
   // Google API Key for CrUX API (Core Web Vitals) + Rich Results Test (optional)
   GOOGLE_API_KEY: z.string().default(''),
+  // Medium Integration Token — enables auto-syndication to Medium
+  MEDIUM_TOKEN: z.string().default(''),
+  // Email automation webhook URL (Mailchimp/ConvertKit/Zapier) — triggered on new post publish
+  EMAIL_WEBHOOK_URL: z.string().default(''),
+  // AdSense Management API — service account JSON key for automated RPM collection
+  ADSENSE_SA_KEY: z.string().default(''),
+  // AdSense account ID (e.g., "pub-1234567890")
+  ADSENSE_ACCOUNT_ID: z.string().default(''),
+  // SerpAPI key — fallback for Google Trends when unofficial API fails
+  SERPAPI_KEY: z.string().default(''),
+  // Naver Blog auto-seeding — cross-post excerpts to Naver Blog for Korean traffic
+  NAVER_BLOG_ID: z.string().default(''),
+  NAVER_CLIENT_ID: z.string().default(''),
+  NAVER_CLIENT_SECRET: z.string().default(''),
 });
 
 export type AppConfig = z.infer<typeof envSchema>;

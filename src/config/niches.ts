@@ -78,7 +78,7 @@ export const NICHES: NicheConfig[] = [
       'Korean AI companies to watch for global expansion',
       'Samsung Galaxy AI features vs Apple Intelligence comparison',
     ],
-    contentTypes: ['analysis', 'deep-dive', 'news-explainer', 'x-vs-y', 'how-to', 'case-study', 'best-x-for-y', 'listicle'],
+    contentTypes: ['analysis', 'deep-dive', 'news-explainer', 'x-vs-y', 'how-to', 'case-study', 'best-x-for-y', 'listicle', 'product-review'],
     adSenseRpm: 'high',
   },
 
@@ -98,7 +98,7 @@ export const NICHES: NicheConfig[] = [
       'Bank of Korea interest rate impact on investments',
       'Korea economic outlook GDP growth forecast 2026',
     ],
-    contentTypes: ['how-to', 'best-x-for-y', 'analysis', 'deep-dive', 'x-vs-y', 'case-study', 'news-explainer', 'listicle'],
+    contentTypes: ['how-to', 'best-x-for-y', 'analysis', 'deep-dive', 'x-vs-y', 'case-study', 'news-explainer', 'listicle', 'product-review'],
     adSenseRpm: 'high',
   },
 

@@ -8,13 +8,47 @@ import type { ImageResult } from '../types/index.js';
 const TARGET_MAX_KB = 200;
 const TARGET_MIN_KB = 100;
 
+/** Fallback image models in priority order */
+const GEMINI_MODELS = [
+  'gemini-2.5-flash-image',
+  'gemini-2.0-flash-exp',
+  'imagen-3.0-generate-002',
+] as const;
+
 export class ImageGeneratorService {
   private client: GoogleGenerativeAI;
   private imageFormat: 'webp' | 'avif';
+  /** Track which model index to use (auto-advances on failure) */
+  private activeModelIndex = 0;
 
   constructor(apiKey: string, imageFormat: 'webp' | 'avif' = 'webp') {
     this.client = new GoogleGenerativeAI(apiKey);
     this.imageFormat = imageFormat;
+  }
+
+  /**
+   * Get the current Gemini model, with automatic fallback to next model on deprecation/failure.
+   */
+  private getImageModel() {
+    const modelName = GEMINI_MODELS[this.activeModelIndex] || GEMINI_MODELS[0];
+    return this.client.getGenerativeModel({
+      model: modelName,
+      generationConfig: {
+        responseModalities: ['IMAGE', 'TEXT'] as unknown as undefined,
+      } as Record<string, unknown>,
+    });
+  }
+
+  /**
+   * Advance to the next fallback model after a model-level failure (deprecation, 404, etc.)
+   */
+  private advanceModel(): boolean {
+    if (this.activeModelIndex < GEMINI_MODELS.length - 1) {
+      this.activeModelIndex++;
+      logger.warn(`Image model fallback: switching to ${GEMINI_MODELS[this.activeModelIndex]}`);
+      return true;
+    }
+    return false;
   }
 
   /** Common stop words to remove from SEO filenames */
@@ -373,19 +407,23 @@ export class ImageGeneratorService {
   }
 
   async generateImages(prompts: string[]): Promise<ImageResult> {
-    logger.info(`Generating ${prompts.length} images (batch parallel)...`);
+    logger.info(`Generating ${prompts.length} images (batch parallel, model: ${GEMINI_MODELS[this.activeModelIndex]})...`);
 
-    const model = this.client.getGenerativeModel({
-      model: 'gemini-2.5-flash-image',
-      generationConfig: {
-        responseModalities: ['IMAGE', 'TEXT'] as unknown as undefined,
-      } as Record<string, unknown>,
-    });
+    let model = this.getImageModel();
 
     const results: (Buffer | null)[] = new Array(prompts.length).fill(null);
 
     // Generate featured image first (must succeed or fallback)
     results[0] = await this.generateSingleImage(model, prompts[0], 0, []);
+
+    // If featured image failed, try fallback models before giving up
+    if (!results[0]) {
+      while (this.advanceModel()) {
+        model = this.getImageModel();
+        results[0] = await this.generateSingleImage(model, prompts[0], 0, []);
+        if (results[0]) break;
+      }
+    }
 
     // Generate inline images in parallel batches of 2
     const inlinePrompts = prompts.slice(1);

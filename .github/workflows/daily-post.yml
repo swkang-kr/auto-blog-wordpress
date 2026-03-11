@@ -99,6 +99,47 @@ jobs:
           # Niche focus (optional, comma-separated niche IDs)
           NICHE_FOCUS_IDS: ${{ secrets.NICHE_FOCUS_IDS }}
 
+          # Korean content generation (hreflang Korean versions)
+          ENABLE_KOREAN_CONTENT: ${{ secrets.ENABLE_KOREAN_CONTENT }}
+
+          # Auto-rewrite settings
+          AUTO_REWRITE_COUNT: ${{ secrets.AUTO_REWRITE_COUNT }}
+
+          # AdSense RPM overrides (JSON: {"Korean Finance":14.5})
+          ADSENSE_RPM_OVERRIDES: ${{ secrets.ADSENSE_RPM_OVERRIDES }}
+
+          # Cloudflare CDN/Edge Caching
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+
+          # Google API Key (CrUX + Rich Results)
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+
+          # Reddit OAuth API
+          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
+          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
+
+          # Research model (cost optimization)
+          CLAUDE_RESEARCH_MODEL: ${{ secrets.CLAUDE_RESEARCH_MODEL }}
+
+          # Medium syndication
+          MEDIUM_TOKEN: ${{ secrets.MEDIUM_TOKEN }}
+
+          # Email automation webhook
+          EMAIL_WEBHOOK_URL: ${{ secrets.EMAIL_WEBHOOK_URL }}
+
+          # AdSense Management API
+          ADSENSE_SA_KEY: ${{ secrets.ADSENSE_SA_KEY }}
+          ADSENSE_ACCOUNT_ID: ${{ secrets.ADSENSE_ACCOUNT_ID }}
+
+          # SerpAPI (Google Trends fallback)
+          SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
+
+          # Naver Blog auto-seeding
+          NAVER_BLOG_ID: ${{ secrets.NAVER_BLOG_ID }}
+          NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
+          NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
+
       - name: Commit post history and cache
         run: |
           git config user.name "github-actions[bot]"

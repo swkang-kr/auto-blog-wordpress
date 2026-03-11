@@ -1,6 +1,7 @@
 import axios, { type AxiosInstance } from 'axios';
 import { logger } from '../utils/logger.js';
-import type { ExistingPost, NicheConfig } from '../types/index.js';
+import type { ExistingPost, NicheConfig, AuthorProfile } from '../types/index.js';
+import { NICHE_AUTHOR_PROFILES } from '../types/index.js';
 
 interface PageConfig {
   slug: string;
@@ -569,6 +570,183 @@ ${faqItems}
 
 <p style="${S.footer}">Effective date: ${effectiveDate}</p>
 </div>`;
+  }
+
+  /**
+   * Create dedicated author profile pages for each niche author (E-E-A-T entity building).
+   * Each author gets a /author/{slug}/ page with Person schema, expertise list, and linked posts.
+   */
+  async ensureAuthorPages(
+    niches: NicheConfig[],
+    existingPosts: ExistingPost[],
+    siteOwner: string,
+    authorLinks?: { linkedin?: string; twitter?: string; website?: string },
+  ): Promise<void> {
+    const uniqueCategories = new Set(niches.map(n => n.category));
+
+    for (const category of uniqueCategories) {
+      const profile = NICHE_AUTHOR_PROFILES[category];
+      if (!profile) continue;
+
+      const slug = `author-${category.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+      const authorName = siteOwner || profile.name || 'TrendHunt';
+      const categoryPosts = existingPosts.filter(
+        p => p.category.toLowerCase() === category.toLowerCase(),
+      );
+
+      const sameAs = [authorLinks?.linkedin, authorLinks?.twitter, authorLinks?.website].filter(Boolean);
+      const personSchema = JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Person',
+        name: authorName,
+        jobTitle: profile.title,
+        description: profile.bio,
+        knowsAbout: profile.expertise,
+        knowsLanguage: ['English', 'Korean'],
+        ...(sameAs.length > 0 ? { sameAs } : {}),
+        ...(profile.credentials.length > 0 ? {
+          hasCredential: profile.credentials.map(c => ({
+            '@type': 'EducationalOccupationalCredential',
+            credentialCategory: c,
+          })),
+        } : {}),
+      });
+
+      const recentPostsHtml = categoryPosts.slice(0, 15).map(p => {
+        const shortTitle = p.title.length > 70 ? p.title.slice(0, 67) + '...' : p.title;
+        return `<a href="${p.url}" style="display:block; padding:12px 16px; margin:0 0 8px 0; background:#fff; border:1px solid #e5e7eb; border-radius:8px; text-decoration:none;">
+<p style="margin:0; font-size:14px; font-weight:600; color:#222;">${this.escapeHtml(shortTitle)}</p></a>`;
+      }).join('\n');
+
+      const content = `<script type="application/ld+json">${personSchema}</script>
+<div style="${S.wrapper}" itemscope itemtype="https://schema.org/Person">
+<h2 style="${S.h2}">About <span itemprop="name">${this.escapeHtml(authorName)}</span></h2>
+<div style="${S.infoBox}">
+<p style="${S.p}"><strong itemprop="jobTitle">${this.escapeHtml(profile.title)}</strong></p>
+<p style="${S.p}" itemprop="description">${this.escapeHtml(profile.bio)}</p>
+<p style="${S.p}"><strong>Years of Experience:</strong> ${profile.yearsExperience}+</p>
+</div>
+
+<h3 style="${S.h3}">Areas of Expertise</h3>
+<ul style="${S.ul}">
+${profile.expertise.map(e => `<li itemprop="knowsAbout">${this.escapeHtml(e)}</li>`).join('\n')}
+</ul>
+
+<h3 style="${S.h3}">Credentials</h3>
+<ul style="${S.ul}">
+${profile.credentials.map(c => `<li>${this.escapeHtml(c)}</li>`).join('\n')}
+</ul>
+
+${sameAs.length > 0 ? `<h3 style="${S.h3}">Connect</h3>
+<ul style="${S.ul}">
+${authorLinks?.linkedin ? `<li><a href="${authorLinks.linkedin}" target="_blank" rel="noopener" itemprop="sameAs" style="color:#0066FF;">LinkedIn</a></li>` : ''}
+${authorLinks?.twitter ? `<li><a href="${authorLinks.twitter}" target="_blank" rel="noopener" itemprop="sameAs" style="color:#0066FF;">X (Twitter)</a></li>` : ''}
+${authorLinks?.website ? `<li><a href="${authorLinks.website}" target="_blank" rel="noopener" itemprop="sameAs" style="color:#0066FF;">Website</a></li>` : ''}
+</ul>` : ''}
+
+<h3 style="${S.h3}">Recent ${this.escapeHtml(category)} Articles (${categoryPosts.length})</h3>
+${recentPostsHtml || '<p style="' + S.p + '">Articles coming soon.</p>'}
+</div>`;
+
+      try {
+        const existingId = await this.getPageId(slug);
+        if (existingId) {
+          await this.api.post(`/pages/${existingId}`, { title: `${authorName} — ${profile.title}`, content, status: 'publish' });
+          logger.info(`Author page updated: /${slug}`);
+        } else {
+          await this.api.post('/pages', { title: `${authorName} — ${profile.title}`, slug, content, status: 'publish' });
+          logger.info(`Author page created: /${slug}`);
+        }
+      } catch (error) {
+        logger.warn(`Author page failed for "${category}": ${error instanceof Error ? error.message : error}`);
+      }
+    }
+  }
+
+  /**
+   * Create/update a site-wide FAQ page aggregating top questions from all posts.
+   * Uses FAQPage schema for rich result eligibility.
+   */
+  async ensureFaqPage(
+    existingPosts: ExistingPost[],
+    siteName: string,
+    wpUrl: string,
+  ): Promise<void> {
+    const slug = 'faq';
+
+    // Aggregate FAQs from pillar page FAQs + common questions per niche
+    const allFaqs: Array<{ q: string; a: string; category: string }> = [];
+
+    const nicheFaqs: Record<string, Array<{ q: string; a: string }>> = {
+      'Korean Tech': [
+        { q: 'Why is Korean technology important globally?', a: 'Korea produces over 60% of the world\'s memory chips. Samsung and SK Hynix supply critical components for AI, smartphones, and data centers worldwide.' },
+        { q: 'How can I invest in Korean tech companies?', a: 'Through Korean ETFs (EWY), ADRs on US exchanges, or direct Korean brokerage accounts that offer English services.' },
+      ],
+      'Korean Finance': [
+        { q: 'Can foreigners invest in Korean stocks?', a: 'Yes. Via Korean ETFs, ADRs, or direct brokerage accounts. Samsung Securities and Mirae Asset offer English services.' },
+        { q: 'What is the Korea Discount?', a: 'Korean stocks trade at lower valuations vs global peers due to governance concerns, geopolitical risk, and complex ownership structures.' },
+      ],
+      'K-Beauty': [
+        { q: 'What is the Korean skincare routine?', a: 'A multi-step approach including cleansing, toning, essence, serum, moisturizer, and sunscreen. Modern K-beauty emphasizes 3-5 key products customized to your skin type.' },
+        { q: 'Where can I buy authentic K-beauty products?', a: 'Olive Young (Korea\'s largest beauty retailer), YesStyle, Stylevana, and verified Amazon sellers.' },
+      ],
+      'Korea Travel': [
+        { q: 'What is the best time to visit South Korea?', a: 'Spring (April-May) and autumn (September-November) offer the best weather. Cherry blossoms in April and fall foliage in October are highlights.' },
+        { q: 'Do I need a visa to visit Korea?', a: 'Citizens of 112 countries can enter visa-free (30-90 days). K-ETA is required for most visa-exempt visitors.' },
+      ],
+      'K-Entertainment': [
+        { q: 'How does the K-pop industry make money?', a: 'Through album sales, concerts, merchandise, fan memberships, brand endorsements, IP licensing, and increasingly virtual content.' },
+        { q: 'Are K-entertainment stocks a good investment?', a: 'HYBE, SM, and JYP are publicly traded. They offer Hallyu exposure but can be volatile based on artist activities.' },
+      ],
+    };
+
+    for (const [category, faqs] of Object.entries(nicheFaqs)) {
+      for (const faq of faqs) {
+        allFaqs.push({ ...faq, category });
+      }
+    }
+
+    const faqSchema = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: allFaqs.map(faq => ({
+        '@type': 'Question',
+        name: faq.q,
+        acceptedAnswer: { '@type': 'Answer', text: faq.a },
+      })),
+    });
+
+    const faqHtml = Object.entries(nicheFaqs).map(([category, faqs]) => {
+      const items = faqs.map(faq =>
+        `<h3 style="${S.h3}">${this.escapeHtml(faq.q)}</h3>\n<p style="${S.p}">${faq.a}</p>`
+      ).join('\n');
+      return `<h2 style="${S.h2}">${this.escapeHtml(category)}</h2>\n${items}`;
+    }).join('\n\n');
+
+    const content = `<script type="application/ld+json">${faqSchema}</script>
+<div style="${S.wrapper}">
+<h2 style="${S.h2}">Frequently Asked Questions</h2>
+<p style="${S.p}">Find answers to the most common questions about Korean technology, finance, beauty, travel, and entertainment.</p>
+
+${faqHtml}
+
+<div style="${S.highlightBox}">
+<p style="margin:0; line-height:1.7; color:#555;">Can't find what you're looking for? <a href="/contact" style="color:#0066FF; text-decoration:none;">Contact us</a> and we'll answer your question in a future article.</p>
+</div>
+</div>`;
+
+    try {
+      const existingId = await this.getPageId(slug);
+      if (existingId) {
+        await this.api.post(`/pages/${existingId}`, { title: `FAQ — ${siteName}`, content, status: 'publish' });
+        logger.info('FAQ page updated');
+      } else {
+        await this.api.post('/pages', { title: `FAQ — ${siteName}`, slug, content, status: 'publish' });
+        logger.info('FAQ page created');
+      }
+    } catch (error) {
+      logger.warn(`FAQ page failed: ${error instanceof Error ? error.message : error}`);
+    }
   }
 
   private escapeHtml(text: string): string {

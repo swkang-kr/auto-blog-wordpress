@@ -325,15 +325,23 @@ export class ContentRefreshService {
     const currentMonth = new Date().getMonth(); // 0-indexed
     const previousYear = currentYear - 1;
 
-    // Only trigger in first quarter (Jan-Mar) for previous year's content
-    if (currentMonth > 2) {
-      logger.debug('Yearly refresh: Not in Q1, skipping');
+    // Run quarterly (first month of each quarter: Jan, Apr, Jul, Oct)
+    // Refreshes posts containing stale year references (previous year or older)
+    const quarterStartMonths = [0, 3, 6, 9]; // Jan=0, Apr=3, Jul=6, Oct=9
+    if (!quarterStartMonths.includes(currentMonth)) {
+      logger.debug(`Yearly refresh: Not a quarter-start month (month=${currentMonth}), skipping`);
       return 0;
     }
 
     const yearlyPosts = freshnessData.filter(entry => {
       const titleOrKeyword = entry.keyword.toLowerCase();
-      return titleOrKeyword.includes(previousYear.toString()) && !titleOrKeyword.includes(currentYear.toString());
+      // Check for previous year or any older year (2020-previousYear)
+      for (let yr = previousYear; yr >= previousYear - 2; yr--) {
+        if (titleOrKeyword.includes(yr.toString()) && !titleOrKeyword.includes(currentYear.toString())) {
+          return true;
+        }
+      }
+      return false;
     });
 
     if (yearlyPosts.length === 0) {

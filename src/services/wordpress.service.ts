@@ -573,10 +573,23 @@ html{scroll-behavior:smooth;scroll-padding-top:60px}
    * Build visible breadcrumb navigation HTML.
    * Complements the BreadcrumbList JSON-LD with a user-visible nav element.
    */
-  private buildBreadcrumbNav(category: string, title: string): string {
+  private buildBreadcrumbNav(category: string, title: string, subNiche?: string): string {
     const truncatedTitle = title.length > 50 ? title.slice(0, 47) + '...' : title;
     const categorySlug = category.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-    return `<nav class="ab-breadcrumb" aria-label="Breadcrumb"><a href="${this.wpUrl}/">Home</a><span class="ab-bc-sep" aria-hidden="true">›</span><a href="${this.wpUrl}/category/${categorySlug}/">${this.escapeHtml(category)}</a><span class="ab-bc-sep" aria-hidden="true">›</span><span aria-current="page">${this.escapeHtml(truncatedTitle)}</span></nav>`;
+
+    // Enhanced breadcrumb: Home > Category > SubTopic > Post (reflects topic cluster hierarchy)
+    let breadcrumb = `<nav class="ab-breadcrumb" aria-label="Breadcrumb"><a href="${this.wpUrl}/">Home</a><span class="ab-bc-sep" aria-hidden="true">›</span><a href="${this.wpUrl}/category/${categorySlug}/">${this.escapeHtml(category)}</a>`;
+
+    if (subNiche) {
+      const subNicheLabel = subNiche
+        .replace(/-/g, ' ')
+        .replace(/\b\w/g, c => c.toUpperCase());
+      const subNicheSlug = subNiche.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      breadcrumb += `<span class="ab-bc-sep" aria-hidden="true">›</span><a href="${this.wpUrl}/category/${categorySlug}/?topic=${subNicheSlug}">${this.escapeHtml(subNicheLabel)}</a>`;
+    }
+
+    breadcrumb += `<span class="ab-bc-sep" aria-hidden="true">›</span><span aria-current="page">${this.escapeHtml(truncatedTitle)}</span></nav>`;
+    return breadcrumb;
   }
 
   /**
@@ -1022,25 +1035,78 @@ ${rows}
    * Auto-detect product mentions in HTML and wrap with affiliate links.
    * Scans for known product names and inserts affiliate URLs contextually.
    */
+  /** Built-in product keyword → affiliate URL mappings for auto-matching */
+  private static readonly PRODUCT_AFFILIATE_DB: Record<string, { keywords: string[]; defaultUrl: string }> = {
+    'Korean Tech': {
+      keywords: ['Samsung', 'Galaxy', 'SK Hynix', 'LG', 'Naver', 'Kakao', 'NVIDIA', 'MacBook', 'iPad', 'iPhone'],
+      defaultUrl: 'https://www.amazon.com/s?k=korean+tech&tag=trendhunt-20',
+    },
+    'Korean Finance': {
+      keywords: ['ETF', 'brokerage', 'trading platform', 'investing app', 'financial advisor'],
+      defaultUrl: 'https://www.amazon.com/s?k=investing+korean+market&tag=trendhunt-20',
+    },
+    'K-Beauty': {
+      keywords: ['COSRX', 'Laneige', 'Innisfree', 'Sulwhasoo', 'Beauty of Joseon', 'Missha', 'Etude', 'SKIN1004', 'Anua', 'Torriden', 'sunscreen', 'serum', 'moisturizer', 'toner', 'cleanser', 'sheet mask'],
+      defaultUrl: 'https://www.amazon.com/s?k=korean+skincare&tag=trendhunt-20',
+    },
+    'Korea Travel': {
+      keywords: ['T-money', 'SIM card', 'WiFi egg', 'travel adapter', 'luggage', 'backpack', 'guidebook'],
+      defaultUrl: 'https://www.amazon.com/s?k=korea+travel+essentials&tag=trendhunt-20',
+    },
+    'K-Entertainment': {
+      keywords: ['album', 'lightstick', 'photocard', 'BTS', 'BLACKPINK', 'Stray Kids', 'SEVENTEEN', 'aespa', 'NewJeans'],
+      defaultUrl: 'https://www.amazon.com/s?k=kpop+merchandise&tag=trendhunt-20',
+    },
+  };
+
   injectContextualAffiliateLinks(
     html: string,
     category: string,
     affiliateMap: Record<string, string>,
   ): string {
+    // Merge manual affiliate map with auto-product database
     const categoryAffiliateUrl = affiliateMap[category];
-    if (!categoryAffiliateUrl) return html;
+    const productDb = WordPressService.PRODUCT_AFFILIATE_DB[category];
+    if (!categoryAffiliateUrl && !productDb) return html;
 
-    // Only inject on first mention of product-like patterns (capitalized multi-word names)
-    // that aren't already inside an <a> tag
-    const productPattern = /(?<![<a][^>]*>)(?<!\w)((?:[A-Z][a-z]+\s){1,3}(?:Pro|Plus|Max|Ultra|Edition|Series|X|SE|Air)?)(?!\w)(?![^<]*<\/a>)/g;
     let injectedCount = 0;
-    const maxInjections = 3;
+    const maxInjections = 4;
+    let result = html;
 
-    return html.replace(productPattern, (match) => {
-      if (injectedCount >= maxInjections) return match;
-      injectedCount++;
-      return `<a href="${this.escapeHtml(categoryAffiliateUrl)}" target="_blank" rel="noopener noreferrer sponsored" style="color:#0066FF; text-decoration:underline;">${match}</a>`;
-    });
+    // Phase 1: Auto-match known product names from built-in database
+    if (productDb) {
+      for (const keyword of productDb.keywords) {
+        if (injectedCount >= maxInjections) break;
+        // Match keyword not already inside an <a> tag, case-insensitive
+        const escapedKw = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const pattern = new RegExp(
+          `(?<!</?a[^>]*>)\\b(${escapedKw})\\b(?![^<]*</a>)`,
+          'i',
+        );
+        const match = pattern.exec(result);
+        if (match) {
+          const url = affiliateMap[keyword.toLowerCase()] || categoryAffiliateUrl || productDb.defaultUrl;
+          const replacement = `<a href="${this.escapeHtml(url)}" target="_blank" rel="noopener noreferrer sponsored" style="color:#0066FF; text-decoration:underline;">${match[1]}</a>`;
+          result = result.slice(0, match.index) + replacement + result.slice(match.index + match[0].length);
+          injectedCount++;
+        }
+      }
+    }
+
+    // Phase 2: Generic product-like pattern matching (capitalized names with product suffixes)
+    if (injectedCount < maxInjections && categoryAffiliateUrl) {
+      const productPattern = /(?<![<a][^>]*>)(?<!\w)((?:[A-Z][a-z]+\s){1,3}(?:Pro|Plus|Max|Ultra|Edition|Series|X|SE|Air)?)(?!\w)(?![^<]*<\/a>)/g;
+      result = result.replace(productPattern, (match) => {
+        if (injectedCount >= maxInjections) return match;
+        injectedCount++;
+        return `<a href="${this.escapeHtml(categoryAffiliateUrl)}" target="_blank" rel="noopener noreferrer sponsored" style="color:#0066FF; text-decoration:underline;">${match}</a>`;
+      });
+    }
+
+    if (injectedCount > 0) {
+      logger.debug(`Affiliate links: ${injectedCount} product match(es) injected for ${category}`);
+    }
+    return result;
   }
 
   /**
@@ -1060,6 +1126,29 @@ ${rows}
 <p style="margin:0 0 12px 0; font-size:13px; color:#666; line-height:1.6;"><strong>Plain text:</strong> ${citation}</p>
 <p style="margin:0; font-size:12px; color:#999;">Copy and paste the citation above to reference this article in your work.</p>
 </div></details>`;
+  }
+
+  /**
+   * Build comment engagement CTA to encourage UGC for E-E-A-T "Experience" signals.
+   * Includes topic-specific question prompts to drive meaningful discussions.
+   */
+  private buildCommentEngagementCta(category: string, keyword?: string): string {
+    const prompts: Record<string, string[]> = {
+      'Korean Tech': ['What Korean tech company do you think will lead AI innovation?', 'Have you used any Korean tech products? Share your experience!', 'What Samsung or SK Hynix news surprised you most recently?'],
+      'Korean Finance': ['Are you investing in Korean stocks? What\'s your strategy?', 'What do you think about the Korea Discount — will it close?', 'Share your experience with Korean brokerage accounts!'],
+      'K-Beauty': ['What\'s your favorite K-beauty product? Drop your recommendation below!', 'Have you tried a Korean skincare routine? What results did you see?', 'What K-beauty brand should we review next?'],
+      'Korea Travel': ['What\'s your favorite spot in Korea? Share your tips!', 'Planning a trip to Korea? Ask your questions below!', 'What surprised you most about visiting Seoul?'],
+      'K-Entertainment': ['Who\'s your bias? Drop your K-pop opinions below!', 'What K-drama are you watching right now?', 'Which K-entertainment company do you think has the best strategy?'],
+    };
+    const categoryPrompts = prompts[category] || ['What are your thoughts on this topic? Share in the comments below!'];
+    const prompt = categoryPrompts[Math.floor(Math.random() * categoryPrompts.length)];
+
+    return `<div style="margin:24px 0; padding:20px 24px; background:linear-gradient(135deg,#f0f4ff,#e8f4f8); border:2px solid #bee3f8; border-radius:12px; text-align:center;">
+<p style="margin:0 0 8px 0; font-size:18px; font-weight:700; color:#222;">Join the Discussion</p>
+<p style="margin:0 0 14px 0; font-size:15px; color:#555; line-height:1.6;">${this.escapeHtml(prompt)}</p>
+<a href="#respond" style="display:inline-block; padding:10px 28px; background:#0066FF; color:#fff; text-decoration:none; border-radius:8px; font-weight:600; font-size:14px;">Leave a Comment</a>
+<p style="margin:12px 0 0 0; font-size:12px; color:#999;">Your insights help other readers and improve our coverage.</p>
+</div>`;
   }
 
   private buildShareCtaHtml(postUrl: string, title: string): string {
@@ -1274,8 +1363,8 @@ ${ga4TrackingScript}`;
       }
     }
 
-    // Inject visible breadcrumb navigation before Last Updated banner
-    const breadcrumbNav = this.buildBreadcrumbNav(content.category, content.title);
+    // Inject visible breadcrumb navigation with topic cluster hierarchy
+    const breadcrumbNav = this.buildBreadcrumbNav(content.category, content.title, options?.subNiche);
     const firstH2Bc = htmlEn.indexOf('<h2');
     if (firstH2Bc > 0) {
       htmlEn = htmlEn.slice(0, firstH2Bc) + breadcrumbNav + '\n' + htmlEn.slice(firstH2Bc);
@@ -1751,15 +1840,31 @@ ${ga4TrackingScript}`;
       }
     }
 
-    // BreadcrumbList schema for navigation
+    // BreadcrumbList schema with topic cluster hierarchy
+    const breadcrumbItems = [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: this.wpUrl },
+      { '@type': 'ListItem', position: 2, name: content.category, item: `${this.wpUrl}/category/${content.category.toLowerCase().replace(/\s+/g, '-')}/` },
+    ];
+    if (options?.subNiche) {
+      const subLabel = options.subNiche.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+      breadcrumbItems.push({
+        '@type': 'ListItem', position: 3, name: subLabel,
+        item: `${this.wpUrl}/category/${content.category.toLowerCase().replace(/\s+/g, '-')}/?topic=${options.subNiche}`,
+      });
+      breadcrumbItems.push({
+        '@type': 'ListItem', position: 4, name: content.title,
+        item: content.slug ? `${this.wpUrl}/${content.slug}/` : this.wpUrl,
+      });
+    } else {
+      breadcrumbItems.push({
+        '@type': 'ListItem', position: 3, name: content.title,
+        item: content.slug ? `${this.wpUrl}/${content.slug}/` : this.wpUrl,
+      });
+    }
     jsonLdSchemas.push({
       '@context': 'https://schema.org',
       '@type': 'BreadcrumbList',
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Home', item: this.wpUrl },
-        { '@type': 'ListItem', position: 2, name: content.category, item: `${this.wpUrl}/category/${content.category.toLowerCase().replace(/\s+/g, '-')}/` },
-        { '@type': 'ListItem', position: 3, name: content.title, item: content.slug ? `${this.wpUrl}/${content.slug}/` : this.wpUrl },
-      ],
+      itemListElement: breadcrumbItems,
     });
 
     // Validate JSON-LD before storing
@@ -1804,6 +1909,12 @@ ${ga4TrackingScript}`;
             rank_math_twitter_use_facebook_data: '1',
             rank_math_twitter_card_type: 'summary_large_image',
             rank_math_og_type: 'article',
+            // Google Discover optimization: max-image-preview + max-snippet for rich cards
+            rank_math_advanced_robots: JSON.stringify({
+              'max-snippet': '-1',
+              'max-image-preview': 'large',
+              'max-video-preview': '-1',
+            }),
             _autoblog_jsonld: jsonLdString,
             _autoblog_published_time: nowIso,
             _autoblog_modified_time: nowIso,
@@ -1848,9 +1959,10 @@ ${ga4TrackingScript}`;
           // Inject share CTA + Cite This Article (with actual post URL) before tags section
           const shareCta = this.buildShareCtaHtml(post.url, content.title);
           const citeBox = this.buildCiteThisArticleHtml(post.url, content.title, content.category);
+          const commentCta = this.buildCommentEngagementCta(content.category, options?.keyword);
           let updatedHtml = html.replace(
             /(<div style="margin:30px 0 0 0; padding-top:20px; border-top:1px solid #eee;"><p style="[^"]*font-weight:600[^"]*">Tags<\/p>)/,
-            shareCta + '\n' + citeBox + '\n$1',
+            commentCta + '\n' + shareCta + '\n' + citeBox + '\n$1',
           );
 
           // Fix JSON-LD mainEntityOfPage and breadcrumb with actual post URL
@@ -2296,6 +2408,20 @@ ${ga4TrackingScript}`;
       }
     }
 
+    // Before first H2 — high viewability above-the-fold for returning visitors
+    if (h2Positions.length > 0 && insertPoints.length < maxAds) {
+      const firstH2Pos = h2Positions[0];
+      const textBefore = html.slice(0, firstH2Pos).replace(/<[^>]+>/g, '');
+      const wordsBefore = textBefore.split(/\s+/).length;
+      // Only if there's enough intro text (at least 100 words before first H2)
+      if (wordsBefore >= 100) {
+        const lastAdPos = insertPoints.length > 0 ? insertPoints[insertPoints.length - 1].pos : 0;
+        if (firstH2Pos - lastAdPos > 200) {
+          insertPoints.push({ pos: firstH2Pos, type: 'before-first-h2', format: 'auto' });
+        }
+      }
+    }
+
     // Pre-FAQ ad slot — high viewability position (readers scrolling through content)
     const faqHeadingMatch = /<h[23][^>]*>[^<]*(?:FAQ|Frequently Asked)[^<]*<\/h[23]>/i.exec(html);
     if (faqHeadingMatch && insertPoints.length < maxAds) {
@@ -2304,6 +2430,30 @@ ${ga4TrackingScript}`;
       const wordsBetween = textBetween.split(/\s+/).length;
       if (wordsBetween >= minWordGap) {
         insertPoints.push({ pos: faqHeadingMatch.index, type: 'pre-faq', format: 'auto' });
+      }
+    }
+
+    // After conclusion — catches engaged readers who read the full article
+    const conclusionMatch = /<h2[^>]*>[^<]*(?:Conclusion|Final Thoughts|Takeaway|Summary|Bottom Line|Key Takeaways)[^<]*<\/h2>/i.exec(html);
+    if (conclusionMatch && insertPoints.length < maxAds) {
+      // Find end of conclusion section (next H2 or end of content)
+      const conclusionStart = conclusionMatch.index + conclusionMatch[0].length;
+      const nextH2After = html.indexOf('<h2', conclusionStart);
+      const conclusionEnd = nextH2After !== -1 ? nextH2After : html.length;
+      const lastAdPos = insertPoints.length > 0 ? insertPoints[insertPoints.length - 1].pos : 0;
+      const textBetween = html.slice(lastAdPos, conclusionEnd).replace(/<[^>]+>/g, '');
+      if (textBetween.split(/\s+/).length >= minWordGap) {
+        insertPoints.push({ pos: conclusionEnd, type: 'after-conclusion', format: 'auto' });
+      }
+    }
+
+    // Sidebar sticky ad placeholder (rendered via CSS sticky positioning)
+    // Only for long-form content (>2500 words) in high-RPM niches
+    if (totalWords > 2500 && rpmTier === 'high' && insertPoints.length < maxAds + 1) {
+      // Insert sidebar ad anchor near the middle of content
+      const midPos = h2Positions[Math.floor(h2Positions.length / 2)] || 0;
+      if (midPos > 0) {
+        insertPoints.push({ pos: midPos, type: 'sidebar-sticky', format: 'vertical' });
       }
     }
 

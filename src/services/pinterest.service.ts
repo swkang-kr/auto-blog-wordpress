@@ -10,6 +10,8 @@ const PINTEREST_CATEGORIES = new Set([
   'K-Entertainment',
   'Korean Language',
   'Korean Automotive',
+  'Korean Tech',
+  'Korean Finance',
 ]);
 
 /** Map blog categories to Pinterest board names */
@@ -20,6 +22,8 @@ const CATEGORY_BOARD_MAP: Record<string, string> = {
   'K-Entertainment': 'K-Pop & K-Drama',
   'Korean Language': 'Learn Korean',
   'Korean Automotive': 'Korean Cars & EVs',
+  'Korean Tech': 'Korean Tech & AI',
+  'Korean Finance': 'Korean Investment & Finance',
 };
 
 export class PinterestService {
@@ -116,6 +120,8 @@ export class PinterestService {
       'K-Entertainment': ['#KPop', '#KDrama', '#Hallyu', '#KoreanDrama', '#KPopBusiness'],
       'Korean Language': ['#LearnKorean', '#Korean', '#Hangul', '#TOPIK', '#KoreanLanguage'],
       'Korean Automotive': ['#KoreanCars', '#Hyundai', '#Kia', '#ElectricVehicle', '#KoreanEV'],
+      'Korean Tech': ['#KoreanTech', '#Samsung', '#SKHynix', '#AI', '#Semiconductor', '#KoreaTech'],
+      'Korean Finance': ['#KOSPI', '#KoreanStocks', '#Investing', '#KoreanFinance', '#ETF', '#KoreaInvestment'],
     };
     return [...base, ...(categoryTags[category] || [])];
   }

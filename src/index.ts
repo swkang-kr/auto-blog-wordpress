@@ -21,6 +21,10 @@ import { logger } from './utils/logger.js';
 import { ContentRefreshService } from './services/content-refresh.service.js';
 import { TopicClusterService } from './services/topic-cluster.service.js';
 import { FactCheckService } from './services/fact-check.service.js';
+import { MediumService } from './services/medium.service.js';
+import { EmailAutomationService } from './services/email-automation.service.js';
+import { NaverBlogService } from './services/naver-blog.service.js';
+import { AdSenseApiService } from './services/adsense-api.service.js';
 import type { PostResult, BatchResult, MediaUploadResult } from './types/index.js';
 import { CATEGORY_PUBLISH_TIMING } from './types/index.js';
 
@@ -69,6 +73,7 @@ async function main(): Promise<void> {
     config.REDDIT_CLIENT_ID && config.REDDIT_CLIENT_SECRET
       ? { clientId: config.REDDIT_CLIENT_ID, clientSecret: config.REDDIT_CLIENT_SECRET }
       : undefined,
+    config.SERPAPI_KEY || undefined,
   );
   const authorLinks = { linkedin: config.AUTHOR_LINKEDIN, twitter: config.AUTHOR_TWITTER, website: config.AUTHOR_WEBSITE, credentials: config.AUTHOR_CREDENTIALS };
   const contentService = new ContentGeneratorService(config.ANTHROPIC_API_KEY, config.SITE_OWNER, config.WP_URL, config.MIN_QUALITY_SCORE, authorLinks);
@@ -285,8 +290,40 @@ async function main(): Promise<void> {
   try {
     const earlyPosts = await wpService.getRecentPosts(500);
     await pagesService.ensurePillarPages(NICHES, earlyPosts, config.SITE_NAME);
+
+    // 2.12b. Author profile pages (E-E-A-T entity building)
+    await pagesService.ensureAuthorPages(NICHES, earlyPosts, config.SITE_OWNER, authorLinks);
+
+    // 2.12c. Site-wide FAQ page (aggregated FAQPage schema)
+    await pagesService.ensureFaqPage(earlyPosts, config.SITE_NAME, config.WP_URL);
   } catch (error) {
-    logger.warn(`Pillar pages update failed: ${error instanceof Error ? error.message : error}`);
+    logger.warn(`Pillar/Author/FAQ pages update failed: ${error instanceof Error ? error.message : error}`);
+  }
+
+  // 2.12d. AdSense API: auto-collect RPM data per niche (replaces manual ADSENSE_RPM_OVERRIDES)
+  if (config.ADSENSE_SA_KEY && config.ADSENSE_ACCOUNT_ID) {
+    try {
+      const adsenseApi = new AdSenseApiService(config.ADSENSE_ACCOUNT_ID, config.ADSENSE_SA_KEY);
+      const categoryPatterns: Record<string, string> = {
+        'Korean Tech': 'korean-tech',
+        'Korean Finance': 'korean-finance',
+        'K-Beauty': 'k-beauty',
+        'Korea Travel': 'korea-travel',
+        'K-Entertainment': 'k-entertainment',
+      };
+      const rpmData = await adsenseApi.getRpmByCategory(categoryPatterns);
+      if (Object.keys(rpmData).length > 0) {
+        // Update niche configs with actual RPM data
+        for (const niche of NICHES) {
+          if (rpmData[niche.category]) {
+            niche.dynamicRpmValue = rpmData[niche.category];
+            logger.info(`AdSense RPM [${niche.category}]: $${rpmData[niche.category].toFixed(2)}`);
+          }
+        }
+      }
+    } catch (adsError) {
+      logger.debug(`AdSense API RPM collection failed: ${adsError instanceof Error ? adsError.message : adsError}`);
+    }
   }
 
   // 2.13. Build pillar URL map for cluster navigation
@@ -490,6 +527,24 @@ async function main(): Promise<void> {
         logger.info(`Cluster completeness [${niche.id}]: ${completeness.coveragePct.toFixed(0)}% coverage, ${completeness.highPriorityGaps.length} high-priority gap(s)`);
         if (completeness.insightString) {
           insightParts.push(completeness.insightString);
+        }
+
+        // Auto-fill topical map gaps: inject gap topics as priority seed keywords for next batch
+        // This ensures keyword research strongly considers uncovered sub-topics
+        const gapSeedKeywords = completeness.highPriorityGaps
+          .slice(0, 3) // Top 3 gaps per niche
+          .map(gap => `${gap} ${niche.category} guide ${new Date().getFullYear()}`);
+
+        if (gapSeedKeywords.length > 0) {
+          // Prepend gap keywords to niche seed keywords so they get priority treatment
+          niche.seedKeywords = [...gapSeedKeywords, ...niche.seedKeywords];
+          insightParts.push(
+            `\n## PRIORITY GAP FILL for ${niche.name}\n` +
+            `The following sub-topics have ZERO or very few articles and MUST be prioritized:\n` +
+            completeness.highPriorityGaps.slice(0, 3).map(g => `- **${g}**: Needs dedicated content (0-2 existing posts)`).join('\n') +
+            `\nSTRONGLY prefer selecting keywords that address these gaps over general topics.`,
+          );
+          logger.info(`Topical gap auto-fill [${niche.id}]: Injected ${gapSeedKeywords.length} priority seed keywords: ${gapSeedKeywords.join(', ')}`);
         }
       }
     } catch (error) {
@@ -1189,6 +1244,36 @@ async function main(): Promise<void> {
         await pinterestService.pinBlogPost(content, post, featuredMediaResult.sourceUrl);
       }
 
+      // B-8.6. Medium syndication (optional)
+      if (config.MEDIUM_TOKEN) {
+        try {
+          const mediumService = new MediumService(config.MEDIUM_TOKEN);
+          await mediumService.syndicate(content, post);
+        } catch (mediumError) {
+          logger.debug(`Medium syndication failed: ${mediumError instanceof Error ? mediumError.message : mediumError}`);
+        }
+      }
+
+      // B-8.7. Email automation webhook (optional)
+      if (config.EMAIL_WEBHOOK_URL) {
+        try {
+          const emailService = new EmailAutomationService(config.EMAIL_WEBHOOK_URL);
+          await emailService.notifyNewPost(content, post);
+        } catch (emailError) {
+          logger.debug(`Email webhook failed: ${emailError instanceof Error ? emailError.message : emailError}`);
+        }
+      }
+
+      // B-8.8. Naver Blog auto-seeding (optional, Korean content)
+      if (config.NAVER_BLOG_ID && config.NAVER_CLIENT_ID && config.NAVER_CLIENT_SECRET) {
+        try {
+          const naverBlogService = new NaverBlogService(config.NAVER_BLOG_ID, config.NAVER_CLIENT_ID, config.NAVER_CLIENT_SECRET);
+          await naverBlogService.seedPost(content, post);
+        } catch (naverError) {
+          logger.debug(`Naver Blog seeding failed: ${naverError instanceof Error ? naverError.message : naverError}`);
+        }
+      }
+
       // B-9. Google Indexing API
       await seoService.requestIndexing(post.url);
 
@@ -1744,8 +1829,26 @@ async function main(): Promise<void> {
                     } catch { /* ignore */ }
                   }
                 }
+              } else if (postPerf) {
+                // Minimal GA4 data — use pageviews trend as proxy for title effectiveness
+                // If post exists in GA4 at all, decide based on engagement quality
+                const engagementOk = postPerf.avgEngagementTime > 30 || postPerf.bounceRate < 0.75;
+                if (entry.titleTestPhaseBStarted && engagementOk) {
+                  winnerTitle = entry.titleTestPhaseBTitle || candidates[0];
+                  reason = `Title B kept (GA4 fallback): engagement ${postPerf.avgEngagementTime.toFixed(0)}s, bounce ${(postPerf.bounceRate * 100).toFixed(0)}%`;
+                } else {
+                  winnerTitle = entry.titleTestPhaseATitle || entry.keyword;
+                  reason = `Title A kept (GA4 fallback): low engagement or Phase B not started`;
+                  if (entry.titleTestPhaseBStarted) {
+                    await wpService.updatePostMeta(entry.postId, { rank_math_title: winnerTitle });
+                    try {
+                      const wpApi = (wpService as unknown as { api: { post: (url: string, data: unknown) => Promise<unknown> } }).api;
+                      await wpApi.post(`/posts/${entry.postId}`, { title: winnerTitle });
+                    } catch { /* ignore */ }
+                  }
+                }
               } else {
-                // Not enough data — keep current
+                // No data at all — keep current
                 winnerTitle = entry.titleTestPhaseBStarted ? (entry.titleTestPhaseBTitle || candidates[0]) : entry.keyword;
                 reason = 'Insufficient data, keeping current title';
               }

@@ -27,9 +27,9 @@ export class KeywordResearchService {
   private contentTypeDistribution: string;
   private researchModel: string;
 
-  constructor(apiKey: string, geo: string, redditCredentials?: { clientId: string; clientSecret: string }) {
+  constructor(apiKey: string, geo: string, redditCredentials?: { clientId: string; clientSecret: string }, serpApiKey?: string) {
     this.client = new Anthropic({ apiKey });
-    this.trendsService = new GoogleTrendsService(geo);
+    this.trendsService = new GoogleTrendsService(geo, serpApiKey);
     this.redditService = new RedditTrendsService(redditCredentials?.clientId, redditCredentials?.clientSecret);
     this.performanceInsights = '';
     this.existingPosts = [];

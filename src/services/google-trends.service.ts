@@ -13,9 +13,11 @@ function sleep(ms: number): Promise<void> {
 export class GoogleTrendsService {
   private geo: string;
   private lastCallTime = 0;
+  private serpApiKey: string;
 
-  constructor(geo = 'US') {
+  constructor(geo = 'US', serpApiKey = '') {
     this.geo = geo;
+    this.serpApiKey = serpApiKey;
   }
 
   private async rateLimit(): Promise<void> {
@@ -230,11 +232,73 @@ export class GoogleTrendsService {
       ? Math.round(interestOverTime.reduce((a, b) => a + b, 0) / interestOverTime.length)
       : 0;
 
+    // Fallback to SerpAPI if unofficial google-trends-api returned no data
+    if (rising.length === 0 && top.length === 0 && this.serpApiKey) {
+      logger.info(`Falling back to SerpAPI for "${broadTerm}"`);
+      const serpResult = await this.fetchViaSerpApi(broadTerm);
+      if (serpResult) {
+        rising = serpResult.rising;
+        top = serpResult.top;
+        logger.info(`SerpAPI fallback: ${rising.length} rising, ${top.length} top queries for "${broadTerm}"`);
+      }
+    }
+
     logger.info(
       `Rising queries for "${broadTerm}": ${rising.length} rising, ${top.length} top, ` +
       `avg=${averageInterest}, direction=${trendDirection}`,
     );
 
     return { rising, top, averageInterest, trendDirection };
+  }
+
+  /**
+   * Fallback: Fetch Google Trends data via SerpAPI when unofficial API fails.
+   * SerpAPI provides a reliable paid alternative to the unofficial google-trends-api package.
+   */
+  private async fetchViaSerpApi(keyword: string): Promise<{ rising: RisingQuery[]; top: RisingQuery[] } | null> {
+    if (!this.serpApiKey) return null;
+
+    try {
+      const params = new URLSearchParams({
+        engine: 'google_trends',
+        q: keyword,
+        data_type: 'RELATED_QUERIES',
+        geo: this.geo,
+        date: 'today 3-m',
+        api_key: this.serpApiKey,
+      });
+
+      const response = await fetch(`https://serpapi.com/search.json?${params}`, { signal: AbortSignal.timeout(15000) });
+      if (!response.ok) {
+        logger.warn(`SerpAPI error: ${response.status} ${response.statusText}`);
+        return null;
+      }
+
+      const data = await response.json() as {
+        related_queries?: {
+          rising?: Array<{ query: string; value?: number; extracted_value?: number; link: string }>;
+          top?: Array<{ query: string; value?: number; extracted_value?: number }>;
+        };
+      };
+
+      const rising: RisingQuery[] = (data.related_queries?.rising || [])
+        .slice(0, 20)
+        .map(item => ({
+          query: item.query,
+          value: (item.extracted_value && item.extracted_value >= 5000) ? 'Breakout' as const : (item.extracted_value || item.value || 0),
+        }));
+
+      const top: RisingQuery[] = (data.related_queries?.top || [])
+        .slice(0, 15)
+        .map(item => ({
+          query: item.query,
+          value: item.extracted_value || item.value || 0,
+        }));
+
+      return { rising, top };
+    } catch (error) {
+      logger.warn(`SerpAPI fallback failed: ${error instanceof Error ? error.message : error}`);
+      return null;
+    }
   }
 }
