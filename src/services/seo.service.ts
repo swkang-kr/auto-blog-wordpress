@@ -110,6 +110,8 @@ export class SeoService {
     // Preconnect hints for Google Fonts + WordPress uploads (LCP optimization)
     parts.push(`<link rel="preconnect" href="https://fonts.googleapis.com" />`);
     parts.push(`<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />`);
+    // Google Fonts with font-display:swap for CWV (prevents invisible text during font load)
+    parts.push(`<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap" />`);
     // Preconnect to WordPress uploads domain for faster image loading (#5)
     try {
       const uploadsHost = new URL(this.wpUrl).host;
