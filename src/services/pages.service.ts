@@ -237,6 +237,37 @@ ${authorLinks?.twitter ? `<p style="margin:0;"><a href="${authorLinks.twitter}" 
 <p style="margin:0; line-height:1.8; color:#888; font-size:14px;">We will respond within 1-3 business days.</p>
 </div>
 
+<h3 style="${S.h3}">Send Us a Message</h3>
+<div style="background:#f8f9fa; border-radius:12px; padding:24px; margin:20px 0;">
+<form action="mailto:${email}" method="POST" enctype="text/plain" style="display:flex; flex-direction:column; gap:16px;">
+<div>
+<label style="display:block; font-weight:600; color:#333; margin-bottom:6px; font-size:14px;">Your Name</label>
+<input type="text" name="name" required placeholder="Enter your name" style="width:100%; padding:10px 14px; border:1px solid #ddd; border-radius:8px; font-size:15px; box-sizing:border-box;" />
+</div>
+<div>
+<label style="display:block; font-weight:600; color:#333; margin-bottom:6px; font-size:14px;">Your Email</label>
+<input type="email" name="email" required placeholder="your@email.com" style="width:100%; padding:10px 14px; border:1px solid #ddd; border-radius:8px; font-size:15px; box-sizing:border-box;" />
+</div>
+<div>
+<label style="display:block; font-weight:600; color:#333; margin-bottom:6px; font-size:14px;">Subject</label>
+<select name="subject" style="width:100%; padding:10px 14px; border:1px solid #ddd; border-radius:8px; font-size:15px; background:#fff; box-sizing:border-box;">
+<option value="Content Feedback">Content Feedback</option>
+<option value="Business Partnership">Advertising &amp; Business Partnership</option>
+<option value="Copyright">Copyright Inquiry</option>
+<option value="Privacy">Privacy Request</option>
+<option value="Tip">Korean Market Tip</option>
+<option value="Other">Other</option>
+</select>
+</div>
+<div>
+<label style="display:block; font-weight:600; color:#333; margin-bottom:6px; font-size:14px;">Message</label>
+<textarea name="message" required rows="5" placeholder="How can we help you?" style="width:100%; padding:10px 14px; border:1px solid #ddd; border-radius:8px; font-size:15px; resize:vertical; box-sizing:border-box;"></textarea>
+</div>
+<button type="submit" style="background:#0066FF; color:#fff; border:none; padding:12px 24px; border-radius:8px; font-size:16px; font-weight:600; cursor:pointer; align-self:flex-start;">Send Message</button>
+</form>
+<p style="margin:12px 0 0; color:#888; font-size:13px;">Alternatively, email us directly at <a href="mailto:${email}" style="color:#0066FF;">${email}</a>. We respond within 1-3 business days.</p>
+</div>
+
 <h3 style="${S.h3}">What You Can Contact Us About</h3>
 <ul style="${S.ul}">
 <li>Content inquiries and feedback</li>

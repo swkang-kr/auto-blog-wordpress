@@ -18,14 +18,16 @@ export class WordPressService {
   private authorTwitter: string;
   private authorWebsite: string;
   private authorCredentials: string;
+  private adsensePubId: string;
 
-  constructor(wpUrl: string, username: string, appPassword: string, siteOwner?: string, authorLinks?: { linkedin?: string; twitter?: string; website?: string; credentials?: string }) {
+  constructor(wpUrl: string, username: string, appPassword: string, siteOwner?: string, authorLinks?: { linkedin?: string; twitter?: string; website?: string; credentials?: string }, adsensePubId?: string) {
     this.wpUrl = wpUrl.replace(/\/+$/, '');
     this.siteOwner = siteOwner || '';
     this.authorLinkedin = authorLinks?.linkedin || '';
     this.authorTwitter = authorLinks?.twitter || '';
     this.authorWebsite = authorLinks?.website || '';
     this.authorCredentials = authorLinks?.credentials || '';
+    this.adsensePubId = adsensePubId || '';
     const token = Buffer.from(`${username}:${appPassword}`).toString('base64');
     this.api = axios.create({
       baseURL: `${this.wpUrl}/wp-json/wp/v2`,
@@ -1365,6 +1367,7 @@ ${ga4TrackingScript}`;
       clusterNavHtml?: string;
       affiliateMap?: Record<string, string>;
       selectedPersona?: AuthorProfile;
+      isNewPublisher?: boolean;
     },
   ): Promise<PublishedPost> {
     // Ensure unique slug before publishing
@@ -1506,7 +1509,7 @@ ${ga4TrackingScript}`;
     }
 
     // Inject AdSense manual ad placements (niche-aware density: RPM tier drives max ads and word gap)
-    htmlEn = this.injectAdPlacements(htmlEn, content.category);
+    htmlEn = this.injectAdPlacements(htmlEn, content.category, options?.isNewPublisher);
 
     // Inject end-of-article comment engagement prompt
     const commentPromptHtml = `<div class="ab-comment-prompt" style="margin:32px 0; padding:20px 24px; background:#f8f9fa; border-left:4px solid #0066FF; border-radius:0 8px 8px 0;">
@@ -2438,9 +2441,10 @@ ${ga4TrackingScript}`;
    * - Minimum 300 words between ad units (avoid ad-stacking penalty)
    * - Never inside tables, blockquotes, or code blocks
    * - Maximum 4 in-content ad units per post (AdSense policy)
+   * - New publishers (< threshold): max 3 ads for conservative density
    * - Responsive format only (auto-sizing for mobile)
    */
-  private injectAdPlacements(html: string, category?: string): string {
+  private injectAdPlacements(html: string, category?: string, isNewPublisher?: boolean): string {
     const h2Regex = /<h2\s/gi;
     const h2Positions: number[] = [];
     let match;
@@ -2464,16 +2468,23 @@ ${ga4TrackingScript}`;
     const rpmTier = (category ? categoryToRpm[category] : undefined) || 'medium';
     let { maxAds, minWordGap } = RPM_CONFIG[rpmTier];
 
+    // New publishers: cap at 3 ads for conservative density (AdSense approval safety)
+    if (isNewPublisher && maxAds > 3) {
+      maxAds = 3;
+    }
+
     // Long posts (>3000 words): reduce gap by 20% for better ad density
     const totalWords = html.replace(/<[^>]+>/g, '').split(/\s+/).length;
     if (totalWords > 3000) {
       minWordGap = Math.round(minWordGap * 0.8);
     }
 
-    // Ad unit HTML — uses responsive auto format
+    // Ad unit HTML — uses responsive auto format with publisher ID
+    // If ADSENSE_PUB_ID is not set, ads render as placeholders (Auto Ads will still work via header script)
+    const pubAttr = this.adsensePubId ? ` data-ad-client="${this.adsensePubId}"` : '';
     const adUnit = (slot: string, format: string = 'auto') =>
-      `<div class="ab-ad" style="margin:32px 0; padding:16px 0; text-align:center; min-height:90px; clear:both;" data-ad-slot="${slot}">` +
-      `<ins class="adsbygoogle" style="display:block" data-ad-format="${format}" data-full-width-responsive="true"></ins>` +
+      `<div class="ab-ad" style="margin:32px 0; padding:16px 0; text-align:center; min-height:90px; clear:both;">` +
+      `<ins class="adsbygoogle" style="display:block"${pubAttr} data-ad-slot="${slot}" data-ad-format="${format}" data-full-width-responsive="true"></ins>` +
       `<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>` +
       `</div>`;
 

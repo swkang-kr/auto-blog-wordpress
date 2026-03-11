@@ -60,6 +60,16 @@ async function main(): Promise<void> {
   // 1. Config
   const config = loadConfig();
 
+  // 1.1. E-E-A-T warning: generic SITE_OWNER weakens AdSense approval for YMYL niches
+  if (config.SITE_OWNER === 'TrendHunt' || !config.SITE_OWNER) {
+    logger.warn('⚠️ SITE_OWNER is set to default "TrendHunt". For AdSense approval (especially Finance YMYL), set a real author name with AUTHOR_LINKEDIN and AUTHOR_CREDENTIALS.');
+  }
+
+  // 1.2. AdSense publisher ID check
+  if (!config.ADSENSE_PUB_ID) {
+    logger.warn('ADSENSE_PUB_ID not set — ad placements will use Auto Ads only. Set ADSENSE_PUB_ID (e.g., "ca-pub-1234567890") for manual ad units.');
+  }
+
   // 1.5. Load history early (needed for calendar-based niche reordering)
   const history = new PostHistory();
   await history.load();
@@ -103,7 +113,7 @@ async function main(): Promise<void> {
   const authorLinks = { linkedin: config.AUTHOR_LINKEDIN, twitter: config.AUTHOR_TWITTER, website: config.AUTHOR_WEBSITE, credentials: config.AUTHOR_CREDENTIALS };
   const contentService = new ContentGeneratorService(config.ANTHROPIC_API_KEY, config.SITE_OWNER, config.WP_URL, config.MIN_QUALITY_SCORE, authorLinks);
   const imageService = new ImageGeneratorService(config.GEMINI_API_KEY, config.IMAGE_FORMAT);
-  const wpService = new WordPressService(config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD, config.SITE_OWNER, authorLinks);
+  const wpService = new WordPressService(config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD, config.SITE_OWNER, authorLinks, config.ADSENSE_PUB_ID || undefined);
 
   const twitterService =
     config.X_API_KEY && config.X_API_SECRET && config.X_ACCESS_TOKEN && config.X_ACCESS_TOKEN_SECRET
@@ -177,6 +187,7 @@ async function main(): Promise<void> {
       googleCode: config.GOOGLE_SITE_VERIFICATION,
       naverCode: config.NAVER_SITE_VERIFICATION,
       gaMeasurementId: config.GA_MEASUREMENT_ID,
+      adsensePubId: config.ADSENSE_PUB_ID || undefined,
     });
   } catch (error) {
     logger.warn(`SEO/GA setup failed: ${error instanceof Error ? error.message : error}`);
@@ -395,6 +406,7 @@ async function main(): Promise<void> {
   ContentRefreshService.checkEvergreenRatio(history.getAllEntries());
 
   // 2.15. Manual review mode: force draft for initial posts (AdSense safety)
+  const isNewPublisher = config.MANUAL_REVIEW_THRESHOLD > 0 && history.getAllEntries().length < config.MANUAL_REVIEW_THRESHOLD * 2;
   let effectivePublishStatus = config.PUBLISH_STATUS as 'publish' | 'draft';
   if (config.MANUAL_REVIEW_THRESHOLD > 0) {
     const totalPublished = history.getAllEntries().length;
@@ -1353,6 +1365,7 @@ async function main(): Promise<void> {
           clusterNavHtml,
           affiliateMap: config.AFFILIATE_MAP ? (() => { try { return JSON.parse(config.AFFILIATE_MAP); } catch { return {}; } })() : undefined,
           selectedPersona,
+          isNewPublisher,
         },
       );
 

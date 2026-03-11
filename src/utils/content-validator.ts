@@ -58,9 +58,9 @@ const CONTENT_TYPE_MIN_WORDS: Record<string, number> = {
   'listicle': 1400,
 };
 
-/** Get minimum quality score for a category (defaults to 45) */
-export function getMinQualityScore(category?: string): number {
-  return (category ? CATEGORY_MIN_QUALITY[category] : undefined) ?? 45;
+/** Get minimum quality score for a category (defaults to global MIN_QUALITY_SCORE or 65) */
+export function getMinQualityScore(category?: string, globalMinScore?: number): number {
+  return (category ? CATEGORY_MIN_QUALITY[category] : undefined) ?? globalMinScore ?? 65;
 }
 
 /**

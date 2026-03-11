@@ -99,6 +99,8 @@ const envSchema = z.object({
   ADSENSE_SA_KEY: z.string().default(''),
   // AdSense account ID (e.g., "pub-1234567890")
   ADSENSE_ACCOUNT_ID: z.string().default(''),
+  // AdSense publisher ID (e.g., "ca-pub-1234567890") — required for manual ad unit placement
+  ADSENSE_PUB_ID: z.string().default(''),
   // SerpAPI key — fallback for Google Trends when unofficial API fails
   SERPAPI_KEY: z.string().default(''),
   // Naver Blog auto-seeding — cross-post excerpts to Naver Blog for Korean traffic

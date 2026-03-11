@@ -102,8 +102,9 @@ export class SeoService {
     googleCode?: string;
     naverCode?: string;
     gaMeasurementId?: string;
+    adsensePubId?: string;
   }): Promise<void> {
-    const { googleCode, naverCode, gaMeasurementId } = options;
+    const { googleCode, naverCode, gaMeasurementId, adsensePubId } = options;
 
     const parts: string[] = [];
 
@@ -123,6 +124,12 @@ export class SeoService {
     // DNS prefetch for common external resources
     parts.push(`<link rel="dns-prefetch" href="https://www.googletagmanager.com" />`);
     parts.push(`<link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />`);
+
+    // AdSense Auto Ads script (requires publisher ID)
+    if (adsensePubId) {
+      parts.push(`<!-- Google AdSense -->`);
+      parts.push(`<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsensePubId}" crossorigin="anonymous"></script>`);
+    }
 
     // Verification meta tags
     if (googleCode) parts.push(`<meta name="google-site-verification" content="${googleCode}" />`);
