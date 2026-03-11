@@ -1,5 +1,6 @@
 import { getSeasonalContext } from '../utils/korean-calendar.js';
 import type { NicheConfig } from '../types/index.js';
+import { KOREAN_SEASONAL_EVENTS } from '../types/index.js';
 
 /**
  * Get niches sorted by seasonal relevance.
@@ -161,3 +162,47 @@ export const NICHES: NicheConfig[] = [
     adSenseRpm: 'medium',
   },
 ];
+
+/**
+ * Get seasonal content suggestions based on upcoming Korean events.
+ * Returns content angles that should be produced 2 weeks ahead of each event.
+ * Used in Phase A to inject seasonal hints into keyword research.
+ */
+export function getSeasonalContentSuggestions(): Array<{
+  eventName: string;
+  daysUntilEvent: number;
+  relevantNiches: string[];
+  contentAngles: string[];
+}> {
+  const now = new Date();
+  const currentMonth = now.getMonth() + 1; // 1-based
+  const currentDay = now.getDate();
+  const suggestions: Array<{
+    eventName: string;
+    daysUntilEvent: number;
+    relevantNiches: string[];
+    contentAngles: string[];
+  }> = [];
+
+  for (const event of KOREAN_SEASONAL_EVENTS) {
+    // Calculate days until event start
+    let eventDate = new Date(now.getFullYear(), event.startMonth - 1, event.startDay);
+    // If the event already passed this year, check next year
+    if (eventDate < now) {
+      eventDate = new Date(now.getFullYear() + 1, event.startMonth - 1, event.startDay);
+    }
+    const daysUntil = Math.floor((eventDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+
+    // Only suggest if within lead time window (pre-production phase)
+    if (daysUntil <= event.leadTimeDays && daysUntil >= 0) {
+      suggestions.push({
+        eventName: event.name,
+        daysUntilEvent: daysUntil,
+        relevantNiches: event.relevantNiches,
+        contentAngles: event.contentAngles,
+      });
+    }
+  }
+
+  return suggestions.sort((a, b) => a.daysUntilEvent - b.daysUntilEvent);
+}

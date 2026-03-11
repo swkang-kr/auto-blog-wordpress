@@ -535,6 +535,151 @@ export class GSCAnalyticsService {
     }
   }
 
+  /**
+   * Detect early content decay: 3+ consecutive days of ranking decline.
+   * Returns pages with sustained position drops that need immediate attention
+   * before they fall off page 1. Triggers auto-refresh + Telegram alert.
+   */
+  async detectEarlyDecay(): Promise<Array<{
+    page: string;
+    query: string;
+    currentPosition: number;
+    positionTrend: number[];
+    avgDailyDecline: number;
+    urgency: 'critical' | 'warning';
+  }>> {
+    try {
+      const accessToken = await this.getAccessToken();
+
+      // Fetch daily position data for last 7 days (query+page+date dimensions)
+      const { data } = await axios.post(
+        `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(this.siteUrl)}/searchAnalytics/query`,
+        {
+          startDate: this.getDateString(-7),
+          endDate: this.getDateString(-1),
+          dimensions: ['query', 'page', 'date'],
+          rowLimit: 500,
+          dataState: 'final',
+        },
+        { headers: { Authorization: `Bearer ${accessToken}` }, timeout: 20000 },
+      );
+
+      type GSCRow = { keys: string[]; clicks: number; impressions: number; ctr: number; position: number };
+      const rows = (data as { rows?: GSCRow[] }).rows || [];
+
+      // Group by query+page, track daily positions
+      const dailyPositions = new Map<string, Array<{ date: string; position: number }>>();
+      for (const row of rows) {
+        const key = `${row.keys[0]}|${row.keys[1]}`;
+        if (!dailyPositions.has(key)) dailyPositions.set(key, []);
+        dailyPositions.get(key)!.push({ date: row.keys[2], position: row.position });
+      }
+
+      const decaying: Array<{
+        page: string; query: string; currentPosition: number;
+        positionTrend: number[]; avgDailyDecline: number; urgency: 'critical' | 'warning';
+      }> = [];
+
+      for (const [key, positions] of dailyPositions) {
+        if (positions.length < 3) continue;
+
+        // Sort by date ascending
+        positions.sort((a, b) => a.date.localeCompare(b.date));
+        const posValues = positions.map(p => p.position);
+
+        // Check for 3+ consecutive days of decline
+        let consecutiveDeclines = 0;
+        for (let i = 1; i < posValues.length; i++) {
+          if (posValues[i] > posValues[i - 1]) {
+            consecutiveDeclines++;
+          } else {
+            consecutiveDeclines = 0;
+          }
+        }
+
+        if (consecutiveDeclines >= 3) {
+          const [query, page] = key.split('|');
+          const currentPos = posValues[posValues.length - 1];
+          const startPos = posValues[0];
+          const avgDecline = (currentPos - startPos) / posValues.length;
+
+          decaying.push({
+            page,
+            query,
+            currentPosition: currentPos,
+            positionTrend: posValues,
+            avgDailyDecline: avgDecline,
+            urgency: avgDecline > 2 || currentPos > 15 ? 'critical' : 'warning',
+          });
+        }
+      }
+
+      if (decaying.length > 0) {
+        logger.warn(`Early decay detected: ${decaying.length} query(ies) with 3+ day consecutive decline`);
+        for (const d of decaying.slice(0, 5)) {
+          logger.warn(`  [${d.urgency.toUpperCase()}] "${d.query}" on ${d.page}: pos ${d.positionTrend[0].toFixed(1)} → ${d.currentPosition.toFixed(1)} (avg -${d.avgDailyDecline.toFixed(1)}/day)`);
+        }
+      }
+
+      return decaying.sort((a, b) => b.avgDailyDecline - a.avgDailyDecline);
+    } catch (error) {
+      logger.warn(`Early decay detection failed: ${error instanceof Error ? error.message : error}`);
+      return [];
+    }
+  }
+
+  /**
+   * Get top ranking keywords for each page (for internal link anchor text optimization).
+   * Returns a map of page URL → best ranking keyword from GSC.
+   */
+  async getRankingKeywordsForPages(limit: number = 100): Promise<Map<string, { keyword: string; position: number; impressions: number }>> {
+    const result = new Map<string, { keyword: string; position: number; impressions: number }>();
+
+    try {
+      const accessToken = await this.getAccessToken();
+      const { data } = await axios.post(
+        `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(this.siteUrl)}/searchAnalytics/query`,
+        {
+          startDate: this.getDateString(-28),
+          endDate: this.getDateString(-1),
+          dimensions: ['query', 'page'],
+          rowLimit: 1000,
+          dataState: 'final',
+        },
+        { headers: { Authorization: `Bearer ${accessToken}` }, timeout: 20000 },
+      );
+
+      type GSCRow = { keys: string[]; clicks: number; impressions: number; ctr: number; position: number };
+      const rows = (data as { rows?: GSCRow[] }).rows || [];
+
+      // For each page, pick the query with most impressions (best ranking keyword)
+      const pageKeywords = new Map<string, Array<{ query: string; position: number; impressions: number }>>();
+      for (const row of rows) {
+        const page = row.keys[1];
+        if (!pageKeywords.has(page)) pageKeywords.set(page, []);
+        pageKeywords.get(page)!.push({
+          query: row.keys[0],
+          position: row.position,
+          impressions: row.impressions,
+        });
+      }
+
+      for (const [page, queries] of pageKeywords) {
+        // Best keyword = highest impressions with reasonable position
+        const best = queries.sort((a, b) => b.impressions - a.impressions)[0];
+        if (best) {
+          result.set(page, { keyword: best.query, position: best.position, impressions: best.impressions });
+        }
+      }
+
+      logger.info(`GSC ranking keywords: ${result.size} page(s) with top ranking keywords`);
+    } catch (error) {
+      logger.warn(`GSC ranking keywords fetch failed: ${error instanceof Error ? error.message : error}`);
+    }
+
+    return result;
+  }
+
   private async getAccessToken(): Promise<string> {
     return getGoogleAccessToken(this.saKey, 'https://www.googleapis.com/auth/webmasters.readonly');
   }

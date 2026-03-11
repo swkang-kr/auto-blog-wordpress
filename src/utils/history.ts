@@ -320,9 +320,87 @@ export class PostHistory {
       .sort((a, b) => (a.seriesPart || 0) - (b.seriesPart || 0));
   }
 
+  /**
+   * Get posts with pending A/B title tests (have titleCandidates but not resolved).
+   */
+  getPendingTitleTests(): PostHistoryEntry[] {
+    return this.data.entries.filter(e =>
+      e.titleCandidates && e.titleCandidates.length > 0 && !e.titleTestResolved,
+    );
+  }
+
+  /**
+   * Get aggregated title pattern win rates from resolved A/B tests.
+   * Returns pattern → { wins, total, winRate } for learning which title styles perform best.
+   */
+  getTitlePatternWinRates(): Record<string, { wins: number; total: number; winRate: number }> {
+    const resolved = this.data.entries.filter(e => e.titleTestResolved && e.titlePattern);
+    const patternStats: Record<string, { wins: number; total: number }> = {};
+
+    for (const entry of resolved) {
+      const pattern = entry.titlePattern || 'unknown';
+      if (!patternStats[pattern]) patternStats[pattern] = { wins: 0, total: 0 };
+      patternStats[pattern].total++;
+
+      // A win means the original title won (or the A/B test resulted in a winner)
+      if (entry.titleTestWinner) {
+        patternStats[pattern].wins++;
+      }
+    }
+
+    const result: Record<string, { wins: number; total: number; winRate: number }> = {};
+    for (const [pattern, stats] of Object.entries(patternStats)) {
+      result[pattern] = {
+        ...stats,
+        winRate: stats.total > 0 ? Math.round((stats.wins / stats.total) * 100) : 0,
+      };
+    }
+
+    return result;
+  }
+
   async updateLastRun(): Promise<void> {
     this.data.lastRunAt = new Date().toISOString();
     await this.save();
+  }
+
+  /**
+   * [#13] Update lastModifiedDate for a post entry (content freshness signal).
+   * Called when content is refreshed/rewritten.
+   */
+  async updateLastModified(postId: number, modifiedDate?: string): Promise<void> {
+    const entry = this.data.entries.find(e => e.postId === postId);
+    if (entry) {
+      entry.lastModifiedDate = modifiedDate || new Date().toISOString();
+      await this.save();
+    }
+  }
+
+  /**
+   * [#1] Get topic coverage for a niche against a topical map.
+   * Returns covered and uncovered topics based on keyword overlap.
+   */
+  getTopicCoverage(nicheId: string, topicalMap: string[]): { covered: string[]; uncovered: string[]; coveragePct: number } {
+    const nicheEntries = this.data.entries.filter(e => e.niche === nicheId);
+    const coveredKeywords = nicheEntries.map(e => e.keyword.toLowerCase());
+
+    const covered: string[] = [];
+    const uncovered: string[] = [];
+
+    for (const topic of topicalMap) {
+      const topicLower = topic.toLowerCase();
+      const topicWords = topicLower.split(/\s+/).filter(w => w.length > 2);
+      const isCovered = coveredKeywords.some(kw => {
+        const kwWords = kw.split(/\s+/).filter(w => w.length > 2);
+        const overlap = topicWords.filter(tw => kwWords.some(kw2 => kw2.includes(tw) || tw.includes(kw2))).length;
+        return overlap >= Math.min(2, topicWords.length);
+      });
+      if (isCovered) covered.push(topic);
+      else uncovered.push(topic);
+    }
+
+    const coveragePct = topicalMap.length > 0 ? Math.round((covered.length / topicalMap.length) * 100) : 0;
+    return { covered, uncovered, coveragePct };
   }
 
   /** Persist current history data to disk (for external callers like ranking updates) */

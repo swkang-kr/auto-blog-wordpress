@@ -68,6 +68,43 @@ export function getMinQualityScore(category?: string): number {
  * Rewards first-person analytical patterns, specific observational details,
  * and personal judgment markers that indicate real expertise.
  */
+/**
+ * Compute original research bonus (max 5 points) for E-E-A-T scoring.
+ * Rewards methodology sections, Korean data source citations, and analysis phrasing.
+ */
+function computeOriginalResearchBonus(plainText: string, html: string): number {
+  let bonus = 0;
+  const lower = plainText.toLowerCase();
+
+  // +2: Methodology section present
+  const methodologyPatterns = [
+    'methodology', 'our analysis approach', 'how we analyzed',
+    'research methodology', 'data collection', 'our research',
+  ];
+  const hasMethodology = methodologyPatterns.some(p => lower.includes(p));
+  if (hasMethodology) bonus += 2;
+
+  // +2: Korean data source citations (BOK, KOSIS, DART, KOTRA)
+  const koreanDataSources = ['bok', 'kosis', 'dart', 'kotra', 'kisa', 'bank of korea', 'korean statistical'];
+  const citedSources = koreanDataSources.filter(s => lower.includes(s)).length;
+  if (citedSources >= 2) bonus += 2;
+  else if (citedSources >= 1) bonus += 1;
+
+  // +1: Analysis phrasing patterns
+  const analysisPhrasing = [
+    'based on our analysis', 'according to industry data',
+    'our research found', 'data points suggest', 'cross-referencing',
+  ];
+  const hasAnalysisPhrasing = analysisPhrasing.some(p => lower.includes(p));
+  if (hasAnalysisPhrasing) bonus += 1;
+
+  // Check HTML for methodology heading
+  const hasMethodologyHeading = /<h[23][^>]*>[^<]*(?:methodology|our analysis|research approach)/i.test(html);
+  if (hasMethodologyHeading && bonus < 3) bonus = Math.max(bonus, 3);
+
+  return Math.min(5, bonus);
+}
+
 function computeExperienceScore(plainText: string): number {
   let score = 0;
   const lower = plainText.toLowerCase();
@@ -263,6 +300,15 @@ export function validateContent(
   if (h2Count < 3) {
     warnings.push({ category: 'structure', message: `Only ${h2Count} H2 headings (recommend 4+)`, severity: 'warning' });
     structureScore -= 2;
+  }
+
+  // 5a. H2/H3 id attribute check (required for passage ranking + TOC anchors)
+  const h2WithoutId = (html.match(/<h2(?!\s[^>]*\bid=)[^>]*>/gi) || []).length;
+  const h3WithoutId = (html.match(/<h3(?!\s[^>]*\bid=)[^>]*>/gi) || []).length;
+  const headingsWithoutId = h2WithoutId + h3WithoutId;
+  if (headingsWithoutId > 0) {
+    warnings.push({ category: 'structure', message: `${headingsWithoutId} heading(s) missing id attribute (needed for passage ranking + TOC)`, severity: 'warning' });
+    structureScore -= Math.min(3, headingsWithoutId);
   }
 
   // 5b. Duplicate heading detection (common AI pattern)
@@ -476,6 +522,16 @@ export function validateContent(
     readabilityScore -= 2;
   }
 
+  // 4a. Gunning Fog Index check (target 10-12 for college-educated general audience)
+  const fogIndex = computeGunningFogIndex(plainText);
+  if (fogIndex > 15) {
+    warnings.push({ category: 'readability', message: `Gunning Fog Index too high: ${fogIndex.toFixed(1)} (target 10-12) — content may be too complex`, severity: 'warning' });
+    readabilityScore -= 3;
+  } else if (fogIndex > 13) {
+    warnings.push({ category: 'readability', message: `Gunning Fog Index elevated: ${fogIndex.toFixed(1)} (target 10-12)`, severity: 'warning' });
+    readabilityScore -= 1;
+  }
+
   // 4b. Thin paragraph detection: 3+ consecutive <p> with <30 words each
   const thinParagraphs = extractParagraphs(html);
   let consecutiveThin = 0;
@@ -623,6 +679,12 @@ export function validateContent(
       severity: 'warning',
     });
     eeatScore -= 2;
+  }
+
+  // ── Original Research bonus (max 5 bonus points) ──
+  const originalResearchBonus = computeOriginalResearchBonus(plainText, html);
+  if (originalResearchBonus > 0) {
+    eeatScore += originalResearchBonus;
   }
 
   // ── Experience signal validation (max 7 bonus points) ──
@@ -930,6 +992,26 @@ function computeFleschKincaid(text: string): number {
   if (sentences.length === 0 || words.length === 0) return 60; // default middle score
   const totalSyllables = words.reduce((sum, w) => sum + estimateSyllables(w), 0);
   return 206.835 - 1.015 * (words.length / sentences.length) - 84.6 * (totalSyllables / words.length);
+}
+
+/**
+ * Compute Gunning Fog Index: 0.4 * (avgSentenceLength + percentComplexWords)
+ * Complex words = 3+ syllables, excluding common suffixes (-es, -ed, -ing)
+ * Target: 10-12 for college-educated general audience.
+ */
+function computeGunningFogIndex(text: string): number {
+  const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 5);
+  const words = text.split(/\s+/).filter(w => w.length > 0);
+  if (sentences.length === 0 || words.length === 0) return 10;
+  const avgSentenceLength = words.length / sentences.length;
+  // Complex words: 3+ syllables, excluding proper nouns and common suffixes
+  const complexWords = words.filter(w => {
+    if (w.charAt(0) === w.charAt(0).toUpperCase() && w.length > 1) return false; // Skip proper nouns
+    const syllables = estimateSyllables(w.replace(/(es|ed|ing)$/i, ''));
+    return syllables >= 3;
+  }).length;
+  const percentComplex = (complexWords / words.length) * 100;
+  return 0.4 * (avgSentenceLength + percentComplex);
 }
 
 function countUniqueTransitions(text: string): number {

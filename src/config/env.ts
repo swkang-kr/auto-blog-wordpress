@@ -86,6 +86,11 @@ const envSchema = z.object({
   // Reddit OAuth API credentials (optional — falls back to public JSON API if not set)
   REDDIT_CLIENT_ID: z.string().default(''),
   REDDIT_CLIENT_SECRET: z.string().default(''),
+  // Cloudflare CDN/Edge Caching (optional — enables cache header management)
+  CLOUDFLARE_API_TOKEN: z.string().default(''),
+  CLOUDFLARE_ZONE_ID: z.string().default(''),
+  // Google API Key for CrUX API (Core Web Vitals) + Rich Results Test (optional)
+  GOOGLE_API_KEY: z.string().default(''),
 });
 
 export type AppConfig = z.infer<typeof envSchema>;

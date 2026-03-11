@@ -78,6 +78,77 @@ const NICHE_SUBTOPICS: Record<string, Record<string, string[]>> = {
  * Topic Cluster Service — groups posts by semantic similarity within niches,
  * detects content gaps, and provides cluster-aware internal linking recommendations.
  */
+/**
+ * Niche-specific topical map: 50-80 target topics per niche for comprehensive coverage tracking.
+ * These represent the ideal topic universe that the blog should cover for topical authority.
+ */
+const NICHE_TOPICAL_MAP: Record<string, string[]> = {
+  'korean-tech': [
+    'Samsung semiconductor strategy', 'SK Hynix HBM memory', 'Korean AI startups', 'NAVER AI platform',
+    'Kakao AI services', 'Korean 5G deployment', 'Samsung Galaxy AI', 'Korean chip export policy',
+    'Korean EV battery technology', 'LG Energy Solution', 'Korean autonomous driving', 'Hyundai robotics',
+    'Korean quantum computing', 'Samsung foundry vs TSMC', 'Korean tech IPOs', 'Pangyo tech valley',
+    'Korean gaming industry', 'Korean cloud computing', 'Samsung display OLED', 'Korean cybersecurity',
+    'Korean space technology', 'Korean biotech AI', 'Korean fintech innovation', 'Korean smart city projects',
+    'Samsung vs Apple comparison', 'Korean semiconductor equipment', 'Korean AI regulation policy',
+    'Korean tech stock analysis', 'Samsung Research institutes', 'Korean open source LLM',
+    'DRAM market outlook Korea', 'NAND flash Korea market', 'Korean 6G research', 'Korean robot industry',
+    'Korean drone technology', 'Samsung AI chip development', 'Korean tech talent market',
+    'Korean government tech subsidies', 'Korean metaverse platforms', 'Korean edge computing',
+  ],
+  'korean-finance': [
+    'KOSPI index analysis', 'KOSDAQ growth stocks', 'Korean ETF guide', 'BOK interest rate policy',
+    'Korean won exchange rate', 'Korean blue chip stocks', 'Korean dividend stocks', 'Korean IPO market',
+    'Korean brokerage accounts foreigners', 'Korean real estate investment', 'Korean REIT market',
+    'Korean government bond yields', 'Korean pension system NPS', 'Korean tax for investors',
+    'Korean chaebol financial analysis', 'Samsung stock analysis', 'Hyundai Motor stock', 'SK Group financials',
+    'Korean cryptocurrency regulation', 'Korean economic outlook', 'Korean inflation analysis',
+    'Korean trade balance', 'Korean FDI trends', 'Korean corporate governance reform',
+    'Korean ESG investing', 'Korean value investing strategy', 'Korean small cap stocks',
+    'Korean financial technology', 'Korean insurance market', 'Korean banking sector analysis',
+    'Korean won hedging strategies', 'Korean fiscal policy', 'Korean economic indicators guide',
+    'Korean startup investment', 'Korean angel investing', 'Korean venture capital landscape',
+  ],
+  'k-beauty': [
+    'Korean skincare routine beginner', 'Korean sunscreen comparison', 'Korean moisturizer guide',
+    'Korean serum guide', 'Korean cleansing oil', 'Korean sheet mask ranking', 'Korean toner guide',
+    'Korean eye cream', 'Korean lip care', 'Korean body care', 'Korean mens skincare',
+    'Olive Young best sellers', 'Korean skincare ingredients niacinamide', 'Korean retinol products',
+    'Korean centella products', 'Korean snail mucin', 'Korean fermented skincare', 'Korean peptide serum',
+    'Korean glass skin routine', 'Korean anti-aging skincare', 'Korean acne treatment',
+    'Korean sensitive skin products', 'Korean skincare for dry skin', 'Korean oily skin routine',
+    'K-beauty industry market analysis', 'K-beauty global expansion', 'K-beauty vs J-beauty',
+    'Korean beauty tech innovation', 'Korean clean beauty brands', 'Korean vegan skincare',
+    'Korean skincare dupes', 'Korean drugstore skincare', 'Korean luxury skincare brands',
+    'Korean beauty subscription boxes', 'Korean hair care products', 'Korean makeup trends',
+  ],
+  'korea-travel': [
+    'Seoul travel guide complete', 'Busan travel guide', 'Jeju Island guide', 'Korean visa requirements',
+    'Seoul subway guide', 'Korean food guide tourists', 'Seoul neighborhoods guide', 'Korean temple stay',
+    'Korean DMZ tour', 'Seoul budget travel', 'Korean countryside travel', 'Korean festival calendar',
+    'Korean accommodation types', 'Korean travel apps', 'Korean SIM card tourist', 'Korean T-money guide',
+    'Seoul day trips', 'Korean street food guide', 'Korean BBQ restaurant guide', 'Korean cafe culture',
+    'Korean nightlife guide', 'Korean shopping guide Myeongdong', 'Korean duty free shopping',
+    'Korean medical tourism', 'Korean ski resorts', 'Korean beach destinations', 'Korean autumn foliage',
+    'Korean cherry blossom spots', 'Korean hiking trails', 'Seoul museum guide', 'Korean palace guide',
+    'Korean language basics travelers', 'Korean etiquette guide', 'Korean transportation KTX',
+    'Korean airport guide Incheon', 'Korean travel insurance', 'Seoul itinerary planning',
+  ],
+  'k-entertainment': [
+    'K-pop business model analysis', 'HYBE stock analysis', 'SM Entertainment financials',
+    'JYP Entertainment strategy', 'YG Entertainment business', 'K-pop trainee system explained',
+    'K-pop idol contracts', 'K-pop global revenue', 'K-pop concert economics', 'K-pop fan culture economics',
+    'K-drama streaming platforms', 'Korean Netflix originals', 'K-drama production costs',
+    'Korean webtoon industry', 'Korean webtoon to drama adaptations', 'Korean animation industry',
+    'Korean film industry analysis', 'Hallyu economic impact', 'Korean content export statistics',
+    'K-pop agencies comparison', 'K-pop marketing strategies', 'K-pop social media strategy',
+    'Korean variety show industry', 'Korean music streaming platforms', 'Korean OST industry',
+    'K-pop merchandise market', 'Korean entertainment stocks', 'Korean content IP licensing',
+    'K-pop world tour analysis', 'Korean entertainment technology', 'K-pop AI and virtual idols',
+    'Korean cultural content fund', 'K-drama international ratings', 'Korean OTT platforms',
+  ],
+};
+
 export class TopicClusterService {
   private clusters: Map<string, TopicCluster> = new Map();
 
@@ -498,6 +569,71 @@ ${cluster.pillarUrl ? `<p style="margin:12px 0 0 0;"><a href="${cluster.pillarUr
     return { covered: coveredSubTopics, total: totalSubTopics, gaps };
   }
 
+  /**
+   * Get cluster completeness metrics per niche with gap prioritization.
+   * Returns per-subtopic post count, % coverage, and high-priority gaps
+   * (subtopics with <3 satellite posts).
+   */
+  getClusterCompleteness(nicheId: string): {
+    nicheId: string;
+    totalSubTopics: number;
+    coveredCount: number;
+    coveragePct: number;
+    subTopicDetails: Array<{ subTopic: string; postCount: number; priority: 'high' | 'medium' | 'covered' }>;
+    highPriorityGaps: string[];
+    insightString: string;
+  } | null {
+    const cluster = this.clusters.get(nicheId);
+    if (!cluster) return null;
+
+    const nicheCategory = nicheId.split('-').slice(0, 2).join('-');
+    const subTopicDefs = NICHE_SUBTOPICS[nicheCategory];
+    if (!subTopicDefs) return null;
+
+    const allSubTopics = Object.keys(subTopicDefs);
+    const details: Array<{ subTopic: string; postCount: number; priority: 'high' | 'medium' | 'covered' }> = [];
+    const highPriorityGaps: string[] = [];
+
+    for (const subTopic of allSubTopics) {
+      const posts = cluster.subTopics.get(subTopic);
+      const count = posts?.length || 0;
+
+      let priority: 'high' | 'medium' | 'covered';
+      if (count === 0) {
+        priority = 'high';
+        highPriorityGaps.push(subTopic);
+      } else if (count < 3) {
+        priority = 'medium';
+        highPriorityGaps.push(subTopic);
+      } else {
+        priority = 'covered';
+      }
+
+      details.push({ subTopic, postCount: count, priority });
+    }
+
+    const coveredCount = details.filter(d => d.priority === 'covered').length;
+    const coveragePct = allSubTopics.length > 0 ? Math.round((coveredCount / allSubTopics.length) * 100) : 100;
+
+    // Build insight string for keyword research
+    const gapParts: string[] = [];
+    if (highPriorityGaps.length > 0) {
+      gapParts.push(`Topic cluster gaps for ${nicheId}: ${highPriorityGaps.join(', ')} need more content (<3 posts each).`);
+      gapParts.push(`Prioritize creating content for: ${highPriorityGaps.slice(0, 3).join(', ')}.`);
+    }
+    const insightString = gapParts.join(' ');
+
+    return {
+      nicheId,
+      totalSubTopics: allSubTopics.length,
+      coveredCount,
+      coveragePct,
+      subTopicDetails: details,
+      highPriorityGaps,
+      insightString,
+    };
+  }
+
   getSeriesOpportunities(nicheId: string): Array<{ seriesName: string; keywords: string[]; priority: 'high' | 'medium' }> {
     const cluster = this.clusters.get(nicheId);
     if (!cluster) return [];
@@ -540,6 +676,57 @@ ${cluster.pillarUrl ? `<p style="margin:12px 0 0 0;"><a href="${cluster.pillarUr
     }
 
     return opportunities.sort((a, b) => (a.priority === 'high' ? -1 : 1) - (b.priority === 'high' ? -1 : 1));
+  }
+
+  /**
+   * Get topical map coverage: how many topics from the ideal topic universe are covered.
+   * Returns covered/uncovered topics from NICHE_TOPICAL_MAP for strategic planning.
+   */
+  getTopicalMapCoverage(nicheId: string): {
+    nicheId: string;
+    totalTopics: number;
+    coveredTopics: string[];
+    uncoveredTopics: string[];
+    coveragePct: number;
+  } | null {
+    const nicheCategory = nicheId.split('-').slice(0, 2).join('-');
+    const topicalMap = NICHE_TOPICAL_MAP[nicheCategory];
+    if (!topicalMap) return null;
+
+    const cluster = this.clusters.get(nicheId);
+    const coveredKeywords = cluster?.posts
+      .filter(p => p.keyword)
+      .map(p => p.keyword!.toLowerCase()) || [];
+    const coveredTitles = cluster?.posts.map(p => p.title.toLowerCase()) || [];
+
+    const covered: string[] = [];
+    const uncovered: string[] = [];
+
+    for (const topic of topicalMap) {
+      const topicLower = topic.toLowerCase();
+      const topicWords = topicLower.split(/\s+/).filter(w => w.length > 3);
+      const isCovered = coveredKeywords.some(kw => {
+        const matchedWords = topicWords.filter(tw => kw.includes(tw));
+        return matchedWords.length >= Math.min(2, topicWords.length);
+      }) || coveredTitles.some(t => {
+        const matchedWords = topicWords.filter(tw => t.includes(tw));
+        return matchedWords.length >= Math.min(2, topicWords.length);
+      });
+
+      if (isCovered) {
+        covered.push(topic);
+      } else {
+        uncovered.push(topic);
+      }
+    }
+
+    return {
+      nicheId,
+      totalTopics: topicalMap.length,
+      coveredTopics: covered,
+      uncoveredTopics: uncovered,
+      coveragePct: topicalMap.length > 0 ? Math.round((covered.length / topicalMap.length) * 100) : 0,
+    };
   }
 
   /** Identify content gaps based on common topic patterns per niche */

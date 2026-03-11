@@ -353,6 +353,68 @@ Favor top-performing content types when choosing format for each niche.`;
     return result;
   }
 
+  /**
+   * [#16] Get actual RPM data from GA4 AdSense revenue events.
+   * Returns per-category RPM based on real revenue and pageview data.
+   */
+  async getActualRpmData(): Promise<Map<string, { rpm: number; pageviews: number; revenue: number }>> {
+    const result = new Map<string, { rpm: number; pageviews: number; revenue: number }>();
+    try {
+      const accessToken = await this.getAccessToken();
+      const { data } = await axios.post(
+        `https://analyticsdata.googleapis.com/v1beta/properties/${this.propertyId}:runReport`,
+        {
+          dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
+          dimensions: [{ name: 'pagePathPlusQueryString' }],
+          metrics: [
+            { name: 'screenPageViews' },
+            { name: 'publisherAdImpressionRevenue' },
+          ],
+          orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }],
+          limit: 200,
+        },
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+          timeout: 15000,
+        },
+      );
+
+      const rows = (data as { rows?: Array<{ dimensionValues: Array<{ value: string }>; metricValues: Array<{ value: string }> }> }).rows || [];
+
+      // Category detection from URL path pattern (e.g., /category/korean-tech/*)
+      const categoryMap = new Map<string, { pageviews: number; revenue: number }>();
+      for (const row of rows) {
+        const path = row.dimensionValues[0].value;
+        const pv = parseInt(row.metricValues[0].value) || 0;
+        const rev = parseFloat(row.metricValues[1].value) || 0;
+        if (pv < 1) continue;
+
+        // Determine category from path segments
+        const segments = path.split('/').filter(Boolean);
+        const category = segments.length > 0 ? segments[0] : 'uncategorized';
+
+        const existing = categoryMap.get(category) || { pageviews: 0, revenue: 0 };
+        existing.pageviews += pv;
+        existing.revenue += rev;
+        categoryMap.set(category, existing);
+      }
+
+      for (const [cat, { pageviews, revenue }] of categoryMap) {
+        if (pageviews >= 100) { // Only include categories with meaningful traffic
+          const rpm = (revenue / pageviews) * 1000;
+          result.set(cat, { rpm, pageviews, revenue });
+        }
+      }
+
+      if (result.size > 0) {
+        logger.info(`RPM feedback: Got actual RPM for ${result.size} categories from GA4`);
+      }
+    } catch (error) {
+      logger.debug(`GA4 RPM data fetch failed: ${error instanceof Error ? error.message : error}`);
+    }
+    return result;
+  }
+
   private async getAccessToken(): Promise<string> {
     return getGoogleAccessToken(this.saKey, 'https://www.googleapis.com/auth/analytics.readonly');
   }

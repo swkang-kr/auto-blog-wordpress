@@ -398,6 +398,213 @@ export class ContentRefreshService {
   }
 
   /**
+   * Run A/B title tests for posts with titleCandidates.
+   * Phase A (Day 0-3): Original title, record CTR from GSC
+   * Phase B (Day 3-6): Switch to alternative title
+   * Day 6+: Compare CTR, lock winner, update history
+   */
+  async runTitleABTests(
+    pendingTests: PostHistoryEntry[],
+    gscService?: GSCAnalyticsService,
+    wpService?: { updatePostTitle: (postId: number, title: string) => Promise<void> },
+  ): Promise<{ tested: number; resolved: number }> {
+    if (pendingTests.length === 0 || !gscService) {
+      return { tested: 0, resolved: 0 };
+    }
+
+    let tested = 0;
+    let resolved = 0;
+    const now = Date.now();
+
+    for (const entry of pendingTests.slice(0, 5)) {
+      const daysSincePublish = (now - new Date(entry.publishedAt).getTime()) / (1000 * 60 * 60 * 24);
+
+      if (daysSincePublish < 3) {
+        // Phase A: Too early, skip
+        continue;
+      }
+
+      if (daysSincePublish >= 3 && !entry.titleTestPhaseBStarted) {
+        // Phase A complete: record Phase A CTR and switch to Phase B title
+        try {
+          const queries = await gscService.getTopQueries(10);
+          const postSlug = new URL(entry.postUrl).pathname.replace(/^\/|\/$/g, '');
+          const matchingQuery = queries.find(q =>
+            q.query.toLowerCase().includes(entry.keyword.toLowerCase().split(/\s+/)[0]),
+          );
+
+          if (matchingQuery) {
+            entry.titleTestPhaseACtr = matchingQuery.ctr;
+            entry.titleTestPhaseATitle = entry.keyword; // Original title as keyword proxy
+          }
+
+          // Switch to alternative title (Phase B)
+          if (entry.titleCandidates && entry.titleCandidates.length > 0 && wpService) {
+            const altTitle = entry.titleCandidates[0];
+            entry.titleTestPhaseBStarted = true;
+            entry.titleTestPhaseBTitle = altTitle;
+            entry.originalTitle = entry.keyword;
+            await wpService.updatePostTitle(entry.postId, altTitle);
+            logger.info(`Title A/B: Phase B started for "${entry.keyword}" → "${altTitle}"`);
+            tested++;
+          }
+        } catch (error) {
+          logger.debug(`Title A/B Phase A failed for "${entry.keyword}": ${error instanceof Error ? error.message : error}`);
+        }
+        continue;
+      }
+
+      if (daysSincePublish >= 6 && entry.titleTestPhaseBStarted && !entry.titleTestResolved) {
+        // Day 6+: Compare Phase A vs Phase B CTR, lock winner
+        try {
+          const queries = await gscService.getTopQueries(10);
+          const matchingQuery = queries.find(q =>
+            q.query.toLowerCase().includes(entry.keyword.toLowerCase().split(/\s+/)[0]),
+          );
+
+          if (matchingQuery) {
+            entry.titleTestPhaseBCtr = matchingQuery.ctr;
+          }
+
+          const phaseACtr = entry.titleTestPhaseACtr || 0;
+          const phaseBCtr = entry.titleTestPhaseBCtr || 0;
+
+          if (phaseBCtr > phaseACtr * 1.1) {
+            // Phase B wins (10%+ improvement)
+            entry.titleTestWinner = entry.titleTestPhaseBTitle || '';
+            logger.info(`Title A/B resolved: Phase B WINS for "${entry.keyword}" (CTR: ${(phaseACtr * 100).toFixed(1)}% → ${(phaseBCtr * 100).toFixed(1)}%)`);
+          } else {
+            // Phase A wins or no significant difference — revert
+            entry.titleTestWinner = entry.originalTitle || entry.keyword;
+            if (wpService && entry.originalTitle) {
+              await wpService.updatePostTitle(entry.postId, entry.originalTitle);
+            }
+            logger.info(`Title A/B resolved: Phase A WINS for "${entry.keyword}" (CTR: ${(phaseACtr * 100).toFixed(1)}% vs ${(phaseBCtr * 100).toFixed(1)}%)`);
+          }
+
+          entry.titleTestResolved = true;
+          resolved++;
+        } catch (error) {
+          logger.debug(`Title A/B resolution failed for "${entry.keyword}": ${error instanceof Error ? error.message : error}`);
+        }
+      }
+    }
+
+    if (tested > 0 || resolved > 0) {
+      logger.info(`Title A/B testing: ${tested} started, ${resolved} resolved`);
+    }
+
+    return { tested, resolved };
+  }
+
+  /**
+   * Get posts scheduled for proactive refresh based on their freshness class.
+   * Seasonal: due every 60 days, evergreen: every 180 days.
+   * Returns posts due for refresh with their freshness context.
+   */
+  static getScheduledRefreshes(
+    historyEntries: PostHistoryEntry[],
+    limit: number = 5,
+  ): Array<PostHistoryEntry & { refreshReason: string; daysSinceRefresh: number; freshnessClass: FreshnessClass }> {
+    const now = Date.now();
+    const candidates: Array<PostHistoryEntry & { refreshReason: string; daysSinceRefresh: number; freshnessClass: FreshnessClass }> = [];
+
+    for (const entry of historyEntries) {
+      const lastRefresh = entry.lastRefreshedAt
+        ? new Date(entry.lastRefreshedAt).getTime()
+        : new Date(entry.publishedAt).getTime();
+      const daysSinceRefresh = (now - lastRefresh) / (1000 * 60 * 60 * 24);
+
+      const freshnessClass: FreshnessClass = entry.contentType
+        ? (CONTENT_FRESHNESS_MAP[entry.contentType] || 'seasonal')
+        : 'seasonal';
+      const interval = FRESHNESS_UPDATE_INTERVALS[freshnessClass];
+
+      if (daysSinceRefresh >= interval) {
+        const overdueDays = Math.round(daysSinceRefresh - interval);
+        candidates.push({
+          ...entry,
+          refreshReason: `${freshnessClass} content overdue by ${overdueDays} days (interval: ${interval}d)`,
+          daysSinceRefresh: Math.round(daysSinceRefresh),
+          freshnessClass,
+        });
+      }
+    }
+
+    // Sort by most overdue first
+    candidates.sort((a, b) => b.daysSinceRefresh - a.daysSinceRefresh);
+
+    if (candidates.length > 0) {
+      logger.info(`Proactive refresh calendar: ${candidates.length} post(s) due for refresh`);
+      for (const c of candidates.slice(0, 5)) {
+        logger.info(`  - "${c.keyword}" (${c.freshnessClass}, ${c.daysSinceRefresh}d since refresh): ${c.refreshReason}`);
+      }
+    }
+
+    return candidates.slice(0, limit);
+  }
+
+  /**
+   * Perform a partial refresh: update specific sections of a post (stats, dates, links)
+   * instead of a full rewrite. Lighter-weight than full rewrite.
+   */
+  async partialRefresh(
+    postId: number,
+    sections: ('stats' | 'dates' | 'links')[],
+  ): Promise<boolean> {
+    try {
+      const { data: posts } = await this.api.get('/posts', {
+        params: { include: postId, _fields: 'id,title,content,meta' },
+      });
+      const post = (posts as WPPost[])[0];
+      if (!post) return false;
+
+      let html = post.content.rendered;
+      const currentYear = new Date().getFullYear();
+      const previousYear = currentYear - 1;
+
+      if (sections.includes('dates')) {
+        // Update year references
+        html = html.replace(new RegExp(String(previousYear), 'g'), String(currentYear));
+        // Update "Updated:" date
+        const dateFormatted = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+        html = html.replace(
+          /(<span class="ab-updated">Updated:\s*)[^<]+/,
+          `$1${dateFormatted}`,
+        );
+      }
+
+      if (sections.includes('stats')) {
+        // Add "Last Updated" banner if not present
+        if (!html.includes('ab-what-changed')) {
+          const dateFormatted = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+          const banner = `<div class="ab-what-changed"><strong>Last Updated:</strong> ${dateFormatted} — Statistics and data points refreshed.</div>`;
+          const firstH2 = html.indexOf('<h2');
+          if (firstH2 > 0) {
+            html = html.slice(0, firstH2) + banner + '\n' + html.slice(firstH2);
+          }
+        }
+      }
+
+      const nowIso = new Date().toISOString();
+      await this.api.post(`/posts/${postId}`, {
+        content: html,
+        meta: {
+          _last_updated: nowIso,
+          _autoblog_modified_time: nowIso,
+          _rewrite_reason: `Partial refresh: ${sections.join(', ')}`,
+        },
+      });
+
+      logger.info(`Partial refresh completed for post ${postId}: ${sections.join(', ')}`);
+      return true;
+    } catch (error) {
+      logger.warn(`Partial refresh failed for post ${postId}: ${error instanceof Error ? error.message : error}`);
+      return false;
+    }
+  }
+
+  /**
    * Monitor and report evergreen content ratio.
    * Logs a warning if evergreen ratio drops below 70% of total content.
    * Returns { evergreenPct, seasonalPct, timeSensitivePct }.
@@ -720,6 +927,12 @@ Return pure JSON only. No markdown.`;
       if (newWordCount < 2000) {
         logger.warn(`Auto-rewrite too short (${newWordCount} words, min 2000), skipping`);
         return null;
+      }
+
+      // Ensure "Last Updated" visible banner is present for content freshness signal
+      if (!result.html.includes('Last Updated:') && !result.html.includes('ab-last-updated')) {
+        const updatedBanner = `<div class="ab-last-updated" style="margin:0 0 20px 0; padding:10px 16px; background:#f8f9fa; border-left:3px solid #0066CC; border-radius:0 6px 6px 0; font-size:13px; color:#666;"><strong>Last Updated:</strong> ${dateFormatted}</div>`;
+        result.html = updatedBanner + result.html;
       }
 
       // Quality gate: validate rewritten content before accepting
@@ -1093,8 +1306,14 @@ Return pure JSON only.`;
       const isLowEngagement = (entry.engagementScore ?? 0) < 5;
       // No ranking history or last position is very bad
       const isNoRanking = !entry.lastPosition || entry.lastPosition > 50;
+      // CTR < 1% AND ranking position > 30 (deep pages with no click potential)
+      const lastRanking = entry.rankingHistory?.slice(-1)[0];
+      const isLowCtrDeepRank = lastRanking &&
+        lastRanking.impressions > 0 &&
+        (lastRanking.clicks / lastRanking.impressions) < 0.01 &&
+        entry.lastPosition && entry.lastPosition > 30;
 
-      return (isTimeSensitive && isLowEngagement) || (isLowEngagement && isNoRanking);
+      return (isTimeSensitive && isLowEngagement) || (isLowEngagement && isNoRanking) || isLowCtrDeepRank;
     });
 
     if (candidates.length === 0) {
@@ -1137,17 +1356,32 @@ Return pure JSON only.`;
 
     for (const entry of sortedCandidates) {
       try {
-        // Set to draft (unpublish)
-        await this.api.post(`/posts/${entry.postId}`, {
-          status: 'draft',
-          meta: {
-            rank_math_robots: 'noindex',
-            _autoblog_pruned: new Date().toISOString(),
-            _autoblog_prune_reason: `Low engagement (score: ${entry.engagementScore ?? 0}), ` +
-              `age: ${Math.round((now - new Date(entry.publishedAt!).getTime()) / (24 * 60 * 60 * 1000))}d, ` +
-              `type: ${entry.contentType || 'unknown'}`,
-          },
-        });
+        // Find best redirect target: related post in same niche with highest engagement
+        let redirectUrl: string | undefined;
+        const sameNichePosts = historyEntries.filter(e =>
+          e.niche === entry.niche && e.postId !== entry.postId &&
+          (e.engagementScore ?? 0) > 10 && e.postUrl,
+        );
+        if (sameNichePosts.length > 0) {
+          const bestTarget = sameNichePosts.sort((a, b) =>
+            (b.engagementScore ?? 0) - (a.engagementScore ?? 0),
+          )[0];
+          redirectUrl = bestTarget.postUrl;
+        }
+
+        // Set to draft (unpublish) + optional 301 redirect to better content
+        const metaUpdate: Record<string, string> = {
+          rank_math_robots: 'noindex',
+          _autoblog_pruned: new Date().toISOString(),
+          _autoblog_prune_reason: `Low engagement (score: ${entry.engagementScore ?? 0}), ` +
+            `age: ${Math.round((now - new Date(entry.publishedAt!).getTime()) / (24 * 60 * 60 * 1000))}d, ` +
+            `type: ${entry.contentType || 'unknown'}`,
+        };
+        if (redirectUrl) {
+          metaUpdate.rank_math_redirection_url_to = redirectUrl;
+          metaUpdate.rank_math_redirection_header_code = '301';
+        }
+        await this.api.post(`/posts/${entry.postId}`, { status: 'draft', meta: metaUpdate });
 
         logger.info(
           `Pruned: "${entry.keyword}" (ID=${entry.postId}, engagement=${entry.engagementScore ?? 0}, ` +

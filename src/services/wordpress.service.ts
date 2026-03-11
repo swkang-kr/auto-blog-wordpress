@@ -16,12 +16,16 @@ export class WordPressService {
   private siteOwner: string;
   private authorLinkedin: string;
   private authorTwitter: string;
+  private authorWebsite: string;
+  private authorCredentials: string;
 
-  constructor(wpUrl: string, username: string, appPassword: string, siteOwner?: string, authorLinks?: { linkedin?: string; twitter?: string }) {
+  constructor(wpUrl: string, username: string, appPassword: string, siteOwner?: string, authorLinks?: { linkedin?: string; twitter?: string; website?: string; credentials?: string }) {
     this.wpUrl = wpUrl.replace(/\/+$/, '');
     this.siteOwner = siteOwner || '';
     this.authorLinkedin = authorLinks?.linkedin || '';
     this.authorTwitter = authorLinks?.twitter || '';
+    this.authorWebsite = authorLinks?.website || '';
+    this.authorCredentials = authorLinks?.credentials || '';
     const token = Buffer.from(`${username}:${appPassword}`).toString('base64');
     this.api = axios.create({
       baseURL: `${this.wpUrl}/wp-json/wp/v2`,
@@ -215,34 +219,34 @@ export class WordPressService {
   /** Source registry: maps cite data-source keys to verified URLs */
   private static readonly SOURCE_REGISTRY: Record<string, { domain: string; paths: Record<string, string>; label: string }> = {
     // Korean institutions
-    bok:    { domain: 'https://www.bok.or.kr', paths: { default: '/', 'monetary-policy': '/eng/monetary/', research: '/eng/research/' }, label: 'Bank of Korea' },
-    krx:    { domain: 'https://www.krx.co.kr', paths: { default: '/', market: '/eng/main/', statistics: '/eng/statistics/' }, label: 'Korea Exchange' },
-    dart:   { domain: 'https://dart.fss.or.kr', paths: { default: '/' }, label: 'DART' },
-    kosis:  { domain: 'https://kosis.kr', paths: { default: '/', statistics: '/eng/' }, label: 'KOSIS' },
-    fsc:    { domain: 'https://www.fsc.go.kr', paths: { default: '/eng/', policy: '/eng/po/' }, label: 'Financial Services Commission' },
-    ftc:    { domain: 'https://www.ftc.go.kr', paths: { default: '/eng/' }, label: 'Fair Trade Commission' },
-    msit:   { domain: 'https://www.msit.go.kr', paths: { default: '/eng/' }, label: 'Ministry of Science and ICT' },
-    kotra:  { domain: 'https://www.kotra.or.kr', paths: { default: '/eng/' }, label: 'KOTRA' },
-    kisa:   { domain: 'https://www.kisa.or.kr', paths: { default: '/eng/' }, label: 'KISA' },
-    kocca:  { domain: 'https://www.kocca.kr', paths: { default: '/en/' }, label: 'KOCCA' },
+    bok:    { domain: 'https://www.bok.or.kr', paths: { default: '/eng/', 'monetary-policy': '/eng/monetary/policyDecisions.do', research: '/eng/research/economicReport.do', rates: '/eng/monetary/baseRate.do', statistics: '/eng/statistics/publicationList.do' }, label: 'Bank of Korea' },
+    krx:    { domain: 'https://www.krx.co.kr', paths: { default: '/eng/main/', market: '/eng/main/marketdata/', statistics: '/eng/statistics/', listing: '/eng/main/listing/' }, label: 'Korea Exchange' },
+    dart:   { domain: 'https://dart.fss.or.kr', paths: { default: '/', filings: '/dsaf001/main.do', reports: '/dsab007/main.do' }, label: 'DART' },
+    kosis:  { domain: 'https://kosis.kr', paths: { default: '/eng/', statistics: '/eng/statisticsList/', gdp: '/eng/statisticsList/statisticsList_01.do', trade: '/eng/statisticsList/statisticsList_02.do' }, label: 'KOSIS' },
+    fsc:    { domain: 'https://www.fsc.go.kr', paths: { default: '/eng/', policy: '/eng/po/scpolicies/', press: '/eng/pr/pressReleases/', regulations: '/eng/po/regulations/' }, label: 'Financial Services Commission' },
+    ftc:    { domain: 'https://www.ftc.go.kr', paths: { default: '/eng/', decisions: '/eng/policyDecisions/', reports: '/eng/annualReports/' }, label: 'Fair Trade Commission' },
+    msit:   { domain: 'https://www.msit.go.kr', paths: { default: '/eng/', policy: '/eng/bbs/list.do?sCode=eng&mId=4&mPid=2', press: '/eng/bbs/list.do?sCode=eng&mId=6&mPid=5' }, label: 'Ministry of Science and ICT' },
+    kotra:  { domain: 'https://www.kotra.or.kr', paths: { default: '/eng/', invest: '/eng/invest/', reports: '/eng/reports/' }, label: 'KOTRA' },
+    kisa:   { domain: 'https://www.kisa.or.kr', paths: { default: '/eng/', reports: '/eng/usefulreport/', cybersecurity: '/eng/cybersecurity/' }, label: 'KISA' },
+    kocca:  { domain: 'https://www.kocca.kr', paths: { default: '/en/', reports: '/en/contents/report/', industry: '/en/contents/industry/' }, label: 'KOCCA' },
     // Korean companies
-    samsung:  { domain: 'https://www.samsung.com', paths: { default: '/', ir: '/global/ir/' }, label: 'Samsung' },
-    hyundai:  { domain: 'https://www.hyundai.com', paths: { default: '/' }, label: 'Hyundai' },
-    lg:       { domain: 'https://www.lgcorp.com', paths: { default: '/' }, label: 'LG Corporation' },
-    skhynix:  { domain: 'https://www.skhynix.com', paths: { default: '/' }, label: 'SK Hynix' },
-    naver:    { domain: 'https://www.navercorp.com', paths: { default: '/' }, label: 'Naver' },
-    kakao:    { domain: 'https://www.kakaocorp.com', paths: { default: '/' }, label: 'Kakao' },
-    coupang:  { domain: 'https://www.coupang.com', paths: { default: '/' }, label: 'Coupang' },
+    samsung:  { domain: 'https://www.samsung.com', paths: { default: '/', ir: '/global/ir/', semiconductors: '/semiconductor/', mobile: '/galaxy/', earnings: '/global/ir/financial-information/' }, label: 'Samsung' },
+    hyundai:  { domain: 'https://www.hyundai.com', paths: { default: '/', ir: '/worldwide/en/company/ir/', ev: '/worldwide/en/eco/electric/' }, label: 'Hyundai' },
+    lg:       { domain: 'https://www.lgcorp.com', paths: { default: '/', ir: '/en/ir/', sustainability: '/en/sustainability/' }, label: 'LG Corporation' },
+    skhynix:  { domain: 'https://www.skhynix.com', paths: { default: '/', products: '/products/', ir: '/ir/', hbm: '/products/hbm/' }, label: 'SK Hynix' },
+    naver:    { domain: 'https://www.navercorp.com', paths: { default: '/', ir: '/en/ir/', press: '/en/pr/' }, label: 'Naver' },
+    kakao:    { domain: 'https://www.kakaocorp.com', paths: { default: '/', ir: '/en/ir/', service: '/en/service/' }, label: 'Kakao' },
+    coupang:  { domain: 'https://www.coupang.com', paths: { default: '/', ir: '/ir/' }, label: 'Coupang' },
     // News/Data
-    bloomberg: { domain: 'https://www.bloomberg.com', paths: { default: '/', markets: '/markets/', technology: '/technology/', asia: '/asia/' }, label: 'Bloomberg' },
-    reuters:   { domain: 'https://www.reuters.com', paths: { default: '/', markets: '/markets/', technology: '/technology/', asia: '/world/asia-pacific/' }, label: 'Reuters' },
-    nikkei:    { domain: 'https://asia.nikkei.com', paths: { default: '/', business: '/Business/', economy: '/Economy/' }, label: 'Nikkei Asia' },
-    statista:  { domain: 'https://www.statista.com', paths: { default: '/' }, label: 'Statista' },
-    worldbank: { domain: 'https://www.worldbank.org', paths: { default: '/', data: '/en/country/korea/' }, label: 'World Bank' },
+    bloomberg: { domain: 'https://www.bloomberg.com', paths: { default: '/', markets: '/markets/', technology: '/technology/', asia: '/asia/', crypto: '/crypto/', economics: '/economics/' }, label: 'Bloomberg' },
+    reuters:   { domain: 'https://www.reuters.com', paths: { default: '/', markets: '/markets/', technology: '/technology/', asia: '/world/asia-pacific/', business: '/business/' }, label: 'Reuters' },
+    nikkei:    { domain: 'https://asia.nikkei.com', paths: { default: '/', business: '/Business/', economy: '/Economy/', tech: '/Business/Tech/', markets: '/Business/Markets/' }, label: 'Nikkei Asia' },
+    statista:  { domain: 'https://www.statista.com', paths: { default: '/', korea: '/topics/5730/south-korea/', ai: '/topics/3104/artificial-intelligence-ai/', semiconductors: '/topics/3617/semiconductor-industry/' }, label: 'Statista' },
+    worldbank: { domain: 'https://www.worldbank.org', paths: { default: '/', data: '/en/country/korea/', indicators: '/en/data/', research: '/en/research/' }, label: 'World Bank' },
     // Entertainment
-    hybe:              { domain: 'https://www.hybecorp.com', paths: { default: '/', ir: '/eng/ir/' }, label: 'HYBE' },
-    'sm-entertainment': { domain: 'https://www.smentertainment.com', paths: { default: '/' }, label: 'SM Entertainment' },
-    jyp:               { domain: 'https://www.jype.com', paths: { default: '/' }, label: 'JYP Entertainment' },
+    hybe:              { domain: 'https://www.hybecorp.com', paths: { default: '/', ir: '/eng/ir/', artists: '/eng/artists/', earnings: '/eng/ir/financial/' }, label: 'HYBE' },
+    'sm-entertainment': { domain: 'https://www.smentertainment.com', paths: { default: '/', artists: '/artists/', ir: '/ir/' }, label: 'SM Entertainment' },
+    jyp:               { domain: 'https://www.jype.com', paths: { default: '/', artists: '/artists/', ir: '/ir/' }, label: 'JYP Entertainment' },
     // General
     wikipedia: { domain: 'https://en.wikipedia.org', paths: { default: '/' }, label: 'Wikipedia' },
   };
@@ -839,6 +843,7 @@ ${leadMagnetHtml}<p style="margin:0 0 14px 0; font-size:14px; color:rgba(255,255
     const socialLinks: string[] = [];
     if (this.authorLinkedin) socialLinks.push(`<a href="${this.authorLinkedin}" target="_blank" rel="noopener noreferrer" style="color:#0077B5; text-decoration:none; font-size:13px; font-weight:600;">LinkedIn</a>`);
     if (this.authorTwitter) socialLinks.push(`<a href="${this.authorTwitter}" target="_blank" rel="noopener noreferrer" style="color:#1DA1F2; text-decoration:none; font-size:13px; font-weight:600;">X / Twitter</a>`);
+    if (this.authorWebsite) socialLinks.push(`<a href="${this.authorWebsite}" target="_blank" rel="noopener noreferrer" style="color:#0066FF; text-decoration:none; font-size:13px; font-weight:600;">Website</a>`);
     const socialHtml = socialLinks.length > 0
       ? `<p style="margin:8px 0 0 0; font-size:13px; color:#888;">Follow: ${socialLinks.join(' · ')}</p>`
       : '';
@@ -1497,6 +1502,7 @@ ${ga4TrackingScript}`;
       } : {}),
       ...(this.siteOwner ? (() => {
         const authorProfile = NICHE_AUTHOR_PROFILES[content.category];
+        const sameAsLinks = [this.authorLinkedin, this.authorTwitter, this.authorWebsite].filter(Boolean);
         return {
           author: {
             '@type': 'Person',
@@ -1505,10 +1511,13 @@ ${ga4TrackingScript}`;
             jobTitle: authorProfile?.title || 'Korea Market & Trends Analyst',
             description: authorProfile?.bio || 'Korea Market & Trends Analyst covering Korean tech, entertainment, and financial markets for a global audience.',
             knowsAbout: authorProfile?.expertise || ['Korean technology', 'K-pop industry', 'Korean stock market', 'KOSPI', 'South Korean economy'],
-            ...(this.authorLinkedin || this.authorTwitter ? {
-              sameAs: [this.authorLinkedin, this.authorTwitter].filter(Boolean),
-            } : {}),
+            ...(sameAsLinks.length > 0 ? { sameAs: sameAsLinks } : {}),
+            ...(this.authorCredentials ? { hasCredential: { '@type': 'EducationalOccupationalCredential', credentialCategory: this.authorCredentials } } : {}),
           },
+          about: content.tags.slice(0, 3).map(tag => ({
+            '@type': 'Thing',
+            name: tag,
+          })),
         };
       })() : {}),
       publisher: {
@@ -1726,6 +1735,21 @@ ${ga4TrackingScript}`;
         copyrightNotice: `© ${new Date().getFullYear()} TrendHunt`,
       });
     }
+    // ImageObject schemas for inline images (Google Image Search ranking for all images)
+    if (inlineImages && inlineImages.length > 0) {
+      for (const img of inlineImages) {
+        jsonLdSchemas.push({
+          '@context': 'https://schema.org',
+          '@type': 'ImageObject',
+          contentUrl: img.url,
+          url: img.url,
+          name: img.caption,
+          width: 1200,
+          height: 675,
+          encodingFormat: img.url.endsWith('.avif') ? 'image/avif' : 'image/webp',
+        });
+      }
+    }
 
     // BreadcrumbList schema for navigation
     jsonLdSchemas.push({
@@ -1842,9 +1866,10 @@ ${ga4TrackingScript}`;
           const postMeta: Record<string, string> = {
             _autoblog_jsonld: fixedJsonLd,
           };
-          // Fix canonical URL with actual URL (in case WP changed the slug)
-          if (post.url !== `${this.wpUrl}/${content.slug}/`) {
-            postMeta.rank_math_canonical_url = post.url;
+          // Fix canonical URL with actual URL — strip UTM/ref params for clean canonical
+          const cleanCanonical = post.url.split('?')[0].split('#')[0];
+          if (cleanCanonical !== `${this.wpUrl}/${content.slug}/`) {
+            postMeta.rank_math_canonical_url = cleanCanonical;
           }
 
           const updates: Record<string, unknown> = { meta: postMeta };
@@ -1879,15 +1904,17 @@ ${ga4TrackingScript}`;
    * Call periodically (e.g., weekly) to keep reader count signals fresh.
    */
   async updateSocialProofSignals(
-    postPerformance: Array<{ postId: number; pageviews: number }>,
+    postPerformance: Array<{ postId: number; pageviews: number; shares?: number }>,
   ): Promise<number> {
     let updated = 0;
-    for (const { postId, pageviews } of postPerformance.slice(0, 50)) {
+    for (const { postId, pageviews, shares } of postPerformance.slice(0, 50)) {
       if (pageviews < 10) continue; // Only show social proof for posts with meaningful traffic
       try {
         const { data } = await this.api.get(`/posts/${postId}`, {
-          params: { _fields: 'id,meta' },
+          params: { _fields: 'id,meta,comment_count' },
         });
+        const commentCount = typeof (data as Record<string, unknown>).comment_count === 'number'
+          ? (data as Record<string, unknown>).comment_count as number : 0;
         const existingJsonLd = (data.meta as Record<string, string>)?._autoblog_jsonld;
         if (!existingJsonLd) continue;
 
@@ -1903,6 +1930,38 @@ ${ga4TrackingScript}`;
                 changed = true;
               }
             }
+            // Add/update CommentAction counter from WP comment count
+            if (commentCount > 0) {
+              const commentStat = schema.interactionStatistic.find(
+                (s: Record<string, unknown>) => (s.interactionType as Record<string, string>)?.['@type'] === 'CommentAction',
+              );
+              if (commentStat) {
+                commentStat.userInteractionCount = commentCount;
+              } else {
+                schema.interactionStatistic.push({
+                  '@type': 'InteractionCounter',
+                  interactionType: { '@type': 'CommentAction' },
+                  userInteractionCount: commentCount,
+                });
+              }
+              changed = true;
+            }
+            // Add/update ShareAction counter if share data available
+            if (shares && shares > 0) {
+              const shareStat = schema.interactionStatistic.find(
+                (s: Record<string, unknown>) => (s.interactionType as Record<string, string>)?.['@type'] === 'ShareAction',
+              );
+              if (shareStat) {
+                shareStat.userInteractionCount = shares;
+              } else {
+                schema.interactionStatistic.push({
+                  '@type': 'InteractionCounter',
+                  interactionType: { '@type': 'ShareAction' },
+                  userInteractionCount: shares,
+                });
+              }
+              changed = true;
+            }
           }
         }
 
@@ -1917,7 +1976,7 @@ ${ga4TrackingScript}`;
       }
     }
     if (updated > 0) {
-      logger.info(`Social proof: Updated InteractionCounter for ${updated} post(s) with GA4 pageview data`);
+      logger.info(`Social proof: Updated InteractionCounter for ${updated} post(s) with GA4 pageview + comment/share data`);
     }
     return updated;
   }

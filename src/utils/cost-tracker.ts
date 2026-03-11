@@ -267,6 +267,22 @@ export class CostTracker {
 
     return adjustments;
   }
+
+  /**
+   * [#16] Update actual RPM from GA4 revenue data with weighted moving average.
+   * Automatically adjusts NICHE_RPM_ESTIMATES toward actual performance.
+   */
+  updateActualRpm(categoryRpmData: Map<string, { rpm: number; pageviews: number; revenue: number }>): void {
+    for (const [category, data] of categoryRpmData) {
+      const currentEstimate = CostTracker.NICHE_RPM_ESTIMATES[category];
+      if (currentEstimate === undefined || data.pageviews < 100) continue;
+      // Weighted moving average: 60% historical + 40% new (higher weight for actual data)
+      const newEstimate = currentEstimate * 0.6 + data.rpm * 0.4;
+      const diff = ((data.rpm - currentEstimate) / currentEstimate) * 100;
+      CostTracker.NICHE_RPM_ESTIMATES[category] = Math.round(newEstimate * 100) / 100;
+      logger.info(`RPM auto-adjust: ${category} $${currentEstimate.toFixed(2)} → $${newEstimate.toFixed(2)} (actual: $${data.rpm.toFixed(2)}, delta: ${diff > 0 ? '+' : ''}${diff.toFixed(0)}%)`);
+    }
+  }
 }
 
 /** Global singleton for the current batch run */

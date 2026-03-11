@@ -4,7 +4,8 @@ import { logger } from '../utils/logger.js';
 import { ContentGenerationError } from '../types/errors.js';
 import { validateContent, autoFixContent, logContentScore } from '../utils/content-validator.js';
 import { costTracker } from '../utils/cost-tracker.js';
-import type { ResearchedKeyword, BlogContent, ExistingPost } from '../types/index.js';
+import type { ResearchedKeyword, BlogContent, ExistingPost, AuthorProfile } from '../types/index.js';
+import { NICHE_AUTHOR_PERSONAS, CONTENT_TYPE_PERSONA_MAP } from '../types/index.js';
 
 /** Layout variant for content structure diversification (anti-AI detection) */
 type LayoutVariant = 'standard' | 'narrative' | 'compact' | 'journal' | 'opinion' | 'interview';
@@ -240,6 +241,7 @@ You MUST write like an experienced human analyst, NOT like an AI:
 - Include at least one personal analytical judgment that starts with "Frankly," or "The uncomfortable truth is" or "What nobody is talking about:"
 
 ## Readability Rules (CRITICAL)
+- Aim for a Gunning Fog Index of 10-12: prefer short sentences (15-20 words avg), limit complex words (3+ syllables) to technical terms only. This targets a college-educated general audience without oversimplifying.
 - EVERY paragraph must be 3-4 sentences MAX. Break long paragraphs ruthlessly.
 - First paragraph MUST open with a compelling hook. Choose from these patterns:
   * Surprising statistic: "Korea's AI market grew 47% in..."
@@ -432,6 +434,7 @@ This targets Google's List Featured Snippet for ranking queries.
 - You will be given a list of existing blog posts on this site
 - Include 5-8 internal links to relevant existing posts within the article body
 - Use descriptive anchor text containing the target page's primary keyword, NOT generic phrases like "click here", "read more", "this article", "check this out"
+- ANCHOR TEXT FROM GSC: When a post has a "rankingKeyword" provided, use that EXACT keyword as anchor text — this is the keyword Google already associates with that page, reinforcing its ranking signal
 - Good: "our analysis of <a ...>HYBE's revenue model</a>"
 - Bad: "you can <a ...>read more here</a>"
 - Link style: <a href="URL" style="color:#0066FF; text-decoration:underline;">anchor text</a>
@@ -622,11 +625,12 @@ Note: For new articles, set Published and Updated to the same date. The system u
 </ul>
 </div>
 
-### Heading IDs for TOC anchors
+### Heading IDs for TOC anchors (Passage Ranking Optimization)
 - Every H2 MUST have an id attribute: <h2 id="section-slug">
 - Every H3: <h3 id="subsection-slug">
 - IDs: lowercase, hyphens, derived from heading text (e.g., "Global Context" → id="global-context")
 - Do NOT add inline style attributes to H2/H3 — styles are handled by CSS classes
+- PASSAGE RANKING: The FIRST sentence after each H2/H3 MUST directly answer or define the section topic in a self-contained way. Google extracts individual passages for ranking — each section should be independently useful as a search result.
 
 ### Other Elements (use CSS classes)
 - Paragraphs: <p> (no inline style needed — .post-content p handles it)
@@ -686,6 +690,24 @@ export class ContentGeneratorService {
       : '';
   }
 
+  /**
+   * Select author persona based on content type and post count modulo.
+   * Academic voice for deep-dive/analysis, casual for listicle/how-to.
+   */
+  selectAuthorPersona(category: string, contentType: string, postCount: number): AuthorProfile {
+    const personas = NICHE_AUTHOR_PERSONAS[category];
+    if (!personas || personas.length <= 1) {
+      return personas?.[0] || { name: '', title: 'Korea Analyst', bio: '', expertise: [], credentials: [], yearsExperience: 3 };
+    }
+
+    const preferredVoice = CONTENT_TYPE_PERSONA_MAP[contentType] || 'primary';
+    if (preferredVoice === 'secondary' && postCount % 3 !== 0) {
+      // Use secondary persona for casual content types, but rotate every 3rd post back to primary
+      return personas[1];
+    }
+    return personas[0];
+  }
+
   /** Set competitive context for content generation */
   setCompetitiveContext(context: string): void {
     this.competitiveContext = context ? `\n## Competitive Context\n${context}\n` : '';
@@ -695,6 +717,7 @@ export class ContentGeneratorService {
     researched: ResearchedKeyword,
     existingPosts?: ExistingPost[],
     clusterLinks?: Array<{ url: string; title: string; keyword?: string }>,
+    options?: { postCount?: number; rankingKeywords?: Map<string, { keyword: string; position: number; impressions: number }> },
   ): Promise<BlogContent> {
     const { niche, analysis } = researched;
     logger.info(`Generating content for: "${analysis.selectedKeyword}" [${niche.name} / ${analysis.contentType}]`);
@@ -734,9 +757,14 @@ These are sibling posts in your topic cluster. You MUST include a natural contex
         .slice(0, 4);
       const filteredPosts = [...sameSubNiche, ...sameCategory, ...crossCategory];
 
+      const rankingKeywords = options?.rankingKeywords;
       const postList = filteredPosts
         .map((p) => {
-          const kwInfo = p.keyword ? ` (keyword: "${p.keyword}")` : '';
+          // Prefer GSC ranking keyword over stored keyword for anchor text
+          const gscData = rankingKeywords?.get(p.url);
+          const kwInfo = gscData
+            ? ` (rankingKeyword: "${gscData.keyword}")`
+            : p.keyword ? ` (keyword: "${p.keyword}")` : '';
           const clusterTag = p.subNiche === niche.id ? ' [TOPIC CLUSTER]' : '';
           return `- "${p.title}" [${p.category}]${kwInfo}${clusterTag}: ${p.url}`;
         })
@@ -787,7 +815,19 @@ LSI Keyword Integration Rules (CRITICAL for semantic SEO):
 
 Include 2-4 internal links to relevant existing posts listed above, and 2-4 external source citations using <cite data-source="KEY" data-topic="TOPIC"> tags (Korean institutional sources preferred: bok, krx, dart, kosis).
 MANDATORY: Include a "${getSignatureSection(niche.category, analysis.contentType, analysis.selectedKeyword)}" signature analysis section (as an H2 heading, 300-500 words of unique analytical value).
-
+${['analysis', 'deep-dive', 'case-study'].includes(analysis.contentType) ? `
+ORIGINAL RESEARCH SIGNALS (for ${analysis.contentType} content):
+- Include a "Methodology" or "Our Analysis Approach" section explaining how data was gathered/analyzed
+- Cite specific Korean data sources: BOK (Bank of Korea), KOSIS (Korean Statistical Information Service), DART (disclosure system), or industry reports
+- Use phrasing like "Based on our analysis of [X data points]..." or "According to industry data from [source]..."
+- Include at least one data-driven insight that requires cross-referencing multiple sources
+- This qualifies the post as original research for E-E-A-T scoring` : ''}
+Also generate a relevant poll question for reader engagement. Include it in the JSON output as:
+"pollQuestion": { "question": "Your poll question here?", "options": ["Option A", "Option B", "Option C"] }
+${['product-review', 'best-x-for-y'].includes(analysis.contentType) ? `
+For product mentions, include structured product data in the JSON output as:
+"productMentions": [{ "name": "Product Name", "category": "product-category" }]
+Include up to 5 products mentioned in the article.` : ''}
 Respond with pure JSON only.`;
 
     // Temperature varies by content type: analytical content needs precision, creative needs more variation

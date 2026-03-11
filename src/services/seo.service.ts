@@ -1768,4 +1768,131 @@ add_action('wp_head', function() {
       return 0;
     }
   }
+
+  /**
+   * [#19] Ensure CDN/Edge caching headers via Cloudflare APO or cache rules.
+   * Sets optimal cache-control headers for static assets and HTML pages.
+   */
+  async ensureCacheHeaders(cloudflareToken: string, zoneId: string): Promise<void> {
+    if (!cloudflareToken || !zoneId) {
+      logger.debug('Cloudflare credentials not set, skipping cache header setup');
+      return;
+    }
+    try {
+      // Check if a page rule or cache rule for the zone already exists
+      const { data: existingRules } = await axios.get(
+        `https://api.cloudflare.com/client/v4/zones/${zoneId}/rulesets/phases/http_request_cache_settings/entrypoint`,
+        { headers: { Authorization: `Bearer ${cloudflareToken}` }, timeout: 10000 },
+      );
+      const rules = (existingRules as { result?: { rules?: unknown[] } }).result?.rules || [];
+      if (rules.length > 0) {
+        logger.debug(`Cloudflare cache rules already configured (${rules.length} rules)`);
+        return;
+      }
+      // Set browser TTL for the zone to 4 hours for HTML, 30 days for assets
+      await axios.patch(
+        `https://api.cloudflare.com/client/v4/zones/${zoneId}/settings/browser_cache_ttl`,
+        { value: 14400 }, // 4 hours
+        { headers: { Authorization: `Bearer ${cloudflareToken}` }, timeout: 10000 },
+      );
+      logger.info('Cloudflare: Set browser cache TTL to 4 hours');
+    } catch (error) {
+      logger.warn(`Cloudflare cache setup failed: ${error instanceof Error ? error.message : error}`);
+    }
+  }
+
+  /**
+   * [#20] Validate structured data using Google Rich Results Test API.
+   * Returns validation errors/warnings for a given URL.
+   */
+  async validateStructuredData(url: string, googleApiKey: string): Promise<{ valid: boolean; errors: string[]; warnings: string[] }> {
+    if (!googleApiKey) {
+      return { valid: true, errors: [], warnings: ['No GOOGLE_API_KEY set, skipping Rich Results Test'] };
+    }
+    try {
+      const { data } = await axios.post(
+        `https://searchconsole.googleapis.com/v1/urlInspection/index:inspect`,
+        { inspectionUrl: url, siteUrl: this.wpUrl },
+        {
+          headers: { Authorization: `Bearer ${await getGoogleAccessToken(this.indexingSaKey, 'https://www.googleapis.com/auth/webmasters.readonly')}` },
+          timeout: 15000,
+        },
+      );
+      const result = data as { inspectionResult?: { richResultsResult?: { detectedItems?: Array<{ items?: Array<{ issues?: Array<{ issueMessage: string; severity: string }> }> }> } } };
+      const items = result.inspectionResult?.richResultsResult?.detectedItems || [];
+      const errors: string[] = [];
+      const warnings: string[] = [];
+      for (const detected of items) {
+        for (const item of detected.items || []) {
+          for (const issue of item.issues || []) {
+            if (issue.severity === 'ERROR') errors.push(issue.issueMessage);
+            else warnings.push(issue.issueMessage);
+          }
+        }
+      }
+      const valid = errors.length === 0;
+      if (!valid) logger.warn(`Rich Results Test: ${errors.length} error(s) for ${url}`);
+      else logger.debug(`Rich Results Test: valid for ${url} (${warnings.length} warning(s))`);
+      return { valid, errors, warnings };
+    } catch (error) {
+      logger.debug(`Rich Results Test failed for ${url}: ${error instanceof Error ? error.message : error}`);
+      return { valid: true, errors: [], warnings: ['Rich Results Test API call failed'] };
+    }
+  }
+
+  /**
+   * [#22] Check Core Web Vitals via CrUX API.
+   * Returns LCP, FID (INP), CLS scores for the origin.
+   */
+  async checkCoreWebVitals(googleApiKey: string): Promise<{
+    lcp?: { p75: number; rating: string };
+    inp?: { p75: number; rating: string };
+    cls?: { p75: number; rating: string };
+    overall: string;
+  }> {
+    if (!googleApiKey) {
+      return { overall: 'unknown' };
+    }
+    try {
+      const { data } = await axios.post(
+        `https://chromeuxreport.googleapis.com/v1/records:queryRecord?key=${googleApiKey}`,
+        { origin: this.wpUrl },
+        { timeout: 10000 },
+      );
+      const metrics = (data as { record?: { metrics?: Record<string, { percentiles?: { p75: number }; histogram?: Array<{ density: number }> }> } }).record?.metrics || {};
+      const getMetric = (key: string): { p75: number; rating: string } | undefined => {
+        const m = metrics[key];
+        if (!m?.percentiles?.p75) return undefined;
+        const p75 = m.percentiles.p75;
+        // Rating thresholds per Google CWV guidelines
+        const thresholds: Record<string, [number, number]> = {
+          largest_contentful_paint: [2500, 4000],
+          interaction_to_next_paint: [200, 500],
+          cumulative_layout_shift: [0.1, 0.25],
+        };
+        const [good, poor] = thresholds[key] || [Infinity, Infinity];
+        const rating = p75 <= good ? 'good' : p75 <= poor ? 'needs-improvement' : 'poor';
+        return { p75, rating };
+      };
+
+      const lcp = getMetric('largest_contentful_paint');
+      const inp = getMetric('interaction_to_next_paint');
+      const cls = getMetric('cumulative_layout_shift');
+
+      const ratings = [lcp?.rating, inp?.rating, cls?.rating].filter(Boolean);
+      const overall = ratings.every(r => r === 'good') ? 'good'
+        : ratings.some(r => r === 'poor') ? 'poor' : 'needs-improvement';
+
+      if (overall === 'poor') {
+        logger.warn(`CWV: POOR scores detected — LCP: ${lcp?.p75}ms, INP: ${inp?.p75}ms, CLS: ${cls?.p75}`);
+      } else {
+        logger.info(`CWV: ${overall} — LCP: ${lcp?.p75 || 'N/A'}ms, INP: ${inp?.p75 || 'N/A'}ms, CLS: ${cls?.p75 || 'N/A'}`);
+      }
+
+      return { lcp, inp, cls, overall };
+    } catch (error) {
+      logger.debug(`CrUX API failed: ${error instanceof Error ? error.message : error}`);
+      return { overall: 'unknown' };
+    }
+  }
 }

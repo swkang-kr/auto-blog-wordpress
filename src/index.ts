@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { loadConfig } from './config/env.js';
-import { NICHES, getSeasonallyOrderedNiches } from './config/niches.js';
+import { NICHES, getSeasonallyOrderedNiches, getSeasonalContentSuggestions } from './config/niches.js';
 import { KeywordResearchService } from './services/keyword-research.service.js';
 import { ContentGeneratorService } from './services/content-generator.service.js';
 import { ImageGeneratorService } from './services/image-generator.service.js';
@@ -70,7 +70,7 @@ async function main(): Promise<void> {
       ? { clientId: config.REDDIT_CLIENT_ID, clientSecret: config.REDDIT_CLIENT_SECRET }
       : undefined,
   );
-  const authorLinks = { linkedin: config.AUTHOR_LINKEDIN, twitter: config.AUTHOR_TWITTER };
+  const authorLinks = { linkedin: config.AUTHOR_LINKEDIN, twitter: config.AUTHOR_TWITTER, website: config.AUTHOR_WEBSITE, credentials: config.AUTHOR_CREDENTIALS };
   const contentService = new ContentGeneratorService(config.ANTHROPIC_API_KEY, config.SITE_OWNER, config.WP_URL, config.MIN_QUALITY_SCORE, authorLinks);
   const imageService = new ImageGeneratorService(config.GEMINI_API_KEY, config.IMAGE_FORMAT);
   const wpService = new WordPressService(config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD, config.SITE_OWNER, authorLinks);
@@ -259,6 +259,15 @@ async function main(): Promise<void> {
     logger.warn(`Navigation menu setup failed: ${error instanceof Error ? error.message : error}`);
   }
 
+  // 2.10a2. Ensure CDN/Edge caching headers (Cloudflare)
+  if (config.CLOUDFLARE_API_TOKEN && config.CLOUDFLARE_ZONE_ID) {
+    try {
+      await seoService.ensureCacheHeaders(config.CLOUDFLARE_API_TOKEN, config.CLOUDFLARE_ZONE_ID);
+    } catch (error) {
+      logger.warn(`CDN cache setup failed: ${error instanceof Error ? error.message : error}`);
+    }
+  }
+
   // 2.10b. Ensure comment settings + spam cleanup
   try {
     await seoService.ensureCommentSettings();
@@ -358,9 +367,10 @@ async function main(): Promise<void> {
   }
 
   // Google Search Console integration (impressions, clicks, positions, decay, threats)
+  let gscService: GSCAnalyticsService | null = null;
   if (config.GSC_SITE_URL && config.GOOGLE_INDEXING_SA_KEY) {
     try {
-      const gscService = new GSCAnalyticsService(config.GSC_SITE_URL || config.WP_URL, config.GOOGLE_INDEXING_SA_KEY);
+      gscService = new GSCAnalyticsService(config.GSC_SITE_URL || config.WP_URL, config.GOOGLE_INDEXING_SA_KEY);
       const searchInsights = await gscService.getSearchInsights();
       if (searchInsights) {
         insightParts.push(searchInsights);
@@ -472,6 +482,21 @@ async function main(): Promise<void> {
   // Generate topical map coverage report (strategic content planning)
   topicClusterService.generateTopicalMapReport();
 
+  // Cluster completeness dashboard: identify high-priority content gaps
+  for (const niche of activeNiches) {
+    try {
+      const completeness = topicClusterService.getClusterCompleteness(niche.id);
+      if (completeness && completeness.highPriorityGaps.length > 0) {
+        logger.info(`Cluster completeness [${niche.id}]: ${completeness.coveragePct.toFixed(0)}% coverage, ${completeness.highPriorityGaps.length} high-priority gap(s)`);
+        if (completeness.insightString) {
+          insightParts.push(completeness.insightString);
+        }
+      }
+    } catch (error) {
+      logger.debug(`Cluster completeness check failed for ${niche.id}: ${error instanceof Error ? error.message : error}`);
+    }
+  }
+
   // Log series opportunities for each active niche
   for (const niche of activeNiches) {
     const seriesOpps = topicClusterService.getSeriesOpportunities(niche.id);
@@ -533,10 +558,33 @@ async function main(): Promise<void> {
     researched: Awaited<ReturnType<typeof researchService.researchKeyword>>;
     content: Awaited<ReturnType<typeof contentService.generateContent>>;
     fastTrack?: boolean;
+    selectedPersona?: import('./types/index.js').AuthorProfile;
   }
 
   // Cross-niche keyword tracking (prevent different niches from picking similar topics in same batch)
   const batchKeywords: string[] = [];
+
+  // [#3] Seasonal content calendar: inject seasonal hints into keyword research
+  const seasonalSuggestions = getSeasonalContentSuggestions();
+  if (seasonalSuggestions.length > 0) {
+    logger.info(`Seasonal calendar: ${seasonalSuggestions.length} upcoming event(s)`);
+    for (const s of seasonalSuggestions) {
+      logger.info(`  ${s.eventName} in ${s.daysUntilEvent}d → niches: ${s.relevantNiches.join(', ')}`);
+    }
+  }
+
+  // [#10] GSC ranking keywords for anchor text optimization
+  let gscRankingKeywords = new Map<string, { keyword: string; position: number; impressions: number }>();
+  if (gscService) {
+    try {
+      gscRankingKeywords = await gscService.getRankingKeywordsForPages(200);
+      if (gscRankingKeywords.size > 0) {
+        logger.info(`GSC: Loaded ${gscRankingKeywords.size} ranking keywords for anchor text optimization`);
+      }
+    } catch (error) {
+      logger.debug(`GSC ranking keywords fetch failed: ${error instanceof Error ? error.message : error}`);
+    }
+  }
 
   // ── Phase A: Research + Content Generation ──────────────────────────────
   logger.info('\n=== Phase A: Research + Content Generation (prompt-cache optimised) ===');
@@ -610,8 +658,12 @@ async function main(): Promise<void> {
       const clusterLinks = topicClusterService.getClusterLinks(niche.id, researched.analysis.selectedKeyword, 5);
       const clusterLinksForPrompt = clusterLinks.map(cl => ({ url: cl.url, title: cl.title, keyword: cl.keyword }));
 
-      const content = await contentService.generateContent(researched, filteredPosts, clusterLinksForPrompt);
-      generated.push({ niche, postStart, researched, content, fastTrack: hasBreakout });
+      // Select author persona based on content type
+      const postCount = history.getPostedKeywordsForNiche(niche.id).length;
+      const selectedPersona = contentService.selectAuthorPersona(niche.category, researched.analysis.contentType, postCount);
+
+      const content = await contentService.generateContent(researched, filteredPosts, clusterLinksForPrompt, { postCount, rankingKeywords: gscRankingKeywords });
+      generated.push({ niche, postStart, researched, content, fastTrack: hasBreakout, selectedPersona });
 
       // Track keyword for cross-niche dedup
       batchKeywords.push(researched.analysis.selectedKeyword);
@@ -653,8 +705,11 @@ async function main(): Promise<void> {
         const retryClusterLinks = topicClusterService.getClusterLinks(niche.id, researched.analysis.selectedKeyword, 5);
         const retryClusterLinksForPrompt = retryClusterLinks.map(cl => ({ url: cl.url, title: cl.title, keyword: cl.keyword }));
 
-        const content = await contentService.generateContent(researched, filteredPosts, retryClusterLinksForPrompt);
-        generated.push({ niche, postStart: retryStart, researched, content });
+        const retryPostCount = history.getPostedKeywordsForNiche(niche.id).length;
+        const retryPersona = contentService.selectAuthorPersona(niche.category, researched.analysis.contentType, retryPostCount);
+
+        const content = await contentService.generateContent(researched, filteredPosts, retryClusterLinksForPrompt, { postCount: retryPostCount, rankingKeywords: gscRankingKeywords });
+        generated.push({ niche, postStart: retryStart, researched, content, selectedPersona: retryPersona });
         batchKeywords.push(researched.analysis.selectedKeyword);
 
         // Replace failure result with pending success
@@ -697,7 +752,7 @@ async function main(): Promise<void> {
   const categoryDateMap = new Map<string, Set<string>>(); // category → Set of date strings (YYYY-MM-DD)
 
   for (let gi = 0; gi < generated.length; gi++) {
-    const { niche, postStart, researched, content, fastTrack } = generated[gi];
+    const { niche, postStart, researched, content, fastTrack, selectedPersona } = generated[gi];
     logger.info(`\n[Phase B] Niche: "${niche.name}"${fastTrack ? ' [FAST-TRACK]' : ''}`);
 
     // Calculate scheduled date: niche-specific timing > GA4-driven > config fallback
@@ -951,6 +1006,27 @@ async function main(): Promise<void> {
         );
       }
 
+      // Engagement poll injection (if content generated a poll question)
+      if (content.pollQuestion) {
+        content.html = wpService.injectEngagementPoll(content.html, content.pollQuestion, researched.analysis.selectedKeyword, niche.category);
+        logger.debug(`Engagement poll injected for "${researched.analysis.selectedKeyword}"`);
+      }
+
+      // Interactive calculator injection (Finance/K-Beauty)
+      if (['Korean Finance', 'K-Beauty'].includes(niche.category)) {
+        content.html = wpService.injectInteractiveCalculator(content.html, niche.category);
+        logger.debug(`Interactive calculator injected for ${niche.category}`);
+      }
+
+      // Contextual affiliate link injection
+      if (content.productMentions && content.productMentions.length > 0) {
+        const affiliateMap = config.AFFILIATE_MAP ? (() => { try { return JSON.parse(config.AFFILIATE_MAP); } catch { return {}; } })() : {};
+        if (Object.keys(affiliateMap).length > 0) {
+          content.html = wpService.injectContextualAffiliateLinks(content.html, niche.category, affiliateMap);
+          logger.debug(`Contextual affiliate links injected for "${researched.analysis.selectedKeyword}"`);
+        }
+      }
+
       // YouTube video embed (search for relevant video and inject responsive embed)
       if (config.YOUTUBE_API_KEY) {
         try {
@@ -1004,6 +1080,7 @@ async function main(): Promise<void> {
           titleCandidates: content.titleCandidates,
           clusterNavHtml,
           affiliateMap: config.AFFILIATE_MAP ? (() => { try { return JSON.parse(config.AFFILIATE_MAP); } catch { return {}; } })() : undefined,
+          selectedPersona,
         },
       );
 
@@ -1711,6 +1788,63 @@ async function main(): Promise<void> {
     }
   }
 
+  // 4.25b. New title A/B testing via ContentRefreshService (complementary to inline A/B above)
+  if (config.GSC_SITE_URL && config.GOOGLE_INDEXING_SA_KEY) {
+    try {
+      const abRefreshService = new ContentRefreshService(
+        config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD,
+        config.ANTHROPIC_API_KEY, config.CLAUDE_MODEL,
+      );
+      const gscForAB = new GSCAnalyticsService(config.GSC_SITE_URL || config.WP_URL, config.GOOGLE_INDEXING_SA_KEY);
+      const pendingTests = history.getPendingTitleTests();
+      const abResults = await abRefreshService.runTitleABTests(pendingTests, gscForAB);
+      if (abResults.tested > 0) {
+        logger.info(`Title A/B testing (refresh service): ${abResults.tested} test(s) processed, ${abResults.resolved} resolved`);
+      }
+    } catch (error) {
+      logger.debug(`Title A/B testing (refresh service) failed: ${error instanceof Error ? error.message : error}`);
+    }
+  }
+
+  // 4.25c. Proactive content refresh calendar: log upcoming scheduled refreshes
+  try {
+    const scheduledRefreshes = ContentRefreshService.getScheduledRefreshes(history.getAllEntries(), 10);
+    if (scheduledRefreshes.length > 0) {
+      // getScheduledRefreshes already logs — auto-execute partial refreshes for most overdue items
+      const topOverdue = scheduledRefreshes.slice(0, 2);
+      if (topOverdue.length > 0 && elapsedMinutes < REWRITE_TIME_BUDGET_MIN) {
+        const proactiveService = new ContentRefreshService(
+          config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD,
+          config.ANTHROPIC_API_KEY, config.CLAUDE_MODEL,
+        );
+        for (const sr of topOverdue) {
+          try {
+            await proactiveService.partialRefresh(sr.postId, ['stats', 'dates', 'links']);
+            logger.info(`Proactive partial refresh completed for post ${sr.postId} ("${sr.keyword}")`);
+          } catch (prError) {
+            logger.debug(`Proactive partial refresh failed for post ${sr.postId}: ${prError instanceof Error ? prError.message : prError}`);
+          }
+        }
+      }
+    }
+  } catch (error) {
+    logger.debug(`Proactive refresh calendar failed: ${error instanceof Error ? error.message : error}`);
+  }
+
+  // 4.25d. Title pattern learning: log win rates from resolved A/B tests
+  try {
+    const patternWinRates = history.getTitlePatternWinRates();
+    const patterns = Object.entries(patternWinRates).filter(([, s]) => s.total >= 3);
+    if (patterns.length > 0) {
+      logger.info('Title pattern win rates (3+ tests):');
+      for (const [pattern, stats] of patterns) {
+        logger.info(`  ${pattern}: ${stats.winRate}% win rate (${stats.wins}/${stats.total})`);
+      }
+    }
+  } catch (error) {
+    logger.debug(`Title pattern analysis failed: ${error instanceof Error ? error.message : error}`);
+  }
+
   // 4.26. Social proof: update InteractionCounter in JSON-LD with real GA4 pageview data
   if (config.GA4_PROPERTY_ID && config.GOOGLE_INDEXING_SA_KEY) {
     try {
@@ -1794,6 +1928,70 @@ async function main(): Promise<void> {
       }
     } catch (error) {
       logger.warn(`Featured snippet optimization failed: ${error instanceof Error ? error.message : error}`);
+    }
+  }
+
+  // 4.9. [#2] Early content decay detection — 3-day consecutive position decline alert
+  if (gscService) {
+    try {
+      const decayItems = await gscService.detectEarlyDecay();
+      if (decayItems.length > 0) {
+        logger.warn(`Early decay: ${decayItems.length} page(s) with 3+ day consecutive decline`);
+        for (const item of decayItems.slice(0, 5)) {
+          logger.warn(`  ${item.urgency}: "${item.query}" ${item.page} (avg decline: ${item.avgDailyDecline.toFixed(1)} pos/day)`);
+        }
+        // Send Telegram alert for critical decays
+        if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
+          const criticalDecays = decayItems.filter(d => d.urgency === 'critical');
+          if (criticalDecays.length > 0) {
+            const decayMsg = criticalDecays.slice(0, 3).map(d => `"${d.query}" on ${d.page} (-${d.avgDailyDecline.toFixed(1)} pos/day)`).join('\n');
+            await sendTelegramAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, `Early Decay Alert: ${criticalDecays.length} critical decline(s)\n${decayMsg}`);
+          }
+        }
+      }
+    } catch (error) {
+      logger.debug(`Early decay detection failed: ${error instanceof Error ? error.message : error}`);
+    }
+  }
+
+  // 4.10. [#16] RPM feedback loop — auto-adjust RPM from GA4 AdSense revenue data
+  if (config.GA4_PROPERTY_ID && config.GOOGLE_INDEXING_SA_KEY) {
+    try {
+      const ga4RpmService = new GA4AnalyticsService(config.GA4_PROPERTY_ID, config.GOOGLE_INDEXING_SA_KEY);
+      const rpmData = await ga4RpmService.getActualRpmData();
+      if (rpmData.size > 0) {
+        costTracker.updateActualRpm(rpmData);
+      }
+    } catch (error) {
+      logger.debug(`RPM feedback loop failed: ${error instanceof Error ? error.message : error}`);
+    }
+  }
+
+  // 4.11. [#22] Core Web Vitals monitoring — CrUX API check + Telegram alert on degradation
+  if (config.GOOGLE_API_KEY) {
+    try {
+      const cwv = await seoService.checkCoreWebVitals(config.GOOGLE_API_KEY);
+      if (cwv.overall === 'poor' && config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
+        const cwvMsg = `CWV Alert: POOR scores — LCP: ${cwv.lcp?.p75 || 'N/A'}ms, INP: ${cwv.inp?.p75 || 'N/A'}ms, CLS: ${cwv.cls?.p75 || 'N/A'}`;
+        await sendTelegramAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, cwvMsg);
+      }
+    } catch (error) {
+      logger.debug(`CWV monitoring failed: ${error instanceof Error ? error.message : error}`);
+    }
+  }
+
+  // 4.12. [#20] Rich Results Test — validate structured data for recently published posts
+  if (config.GOOGLE_API_KEY && config.GOOGLE_INDEXING_SA_KEY) {
+    try {
+      const recentPosts = results.filter(r => r.success && r.postUrl).slice(0, 3);
+      for (const post of recentPosts) {
+        const validation = await seoService.validateStructuredData(post.postUrl!, config.GOOGLE_API_KEY);
+        if (!validation.valid) {
+          logger.warn(`Rich Results: ${validation.errors.length} error(s) for ${post.postUrl}: ${validation.errors.join(', ')}`);
+        }
+      }
+    } catch (error) {
+      logger.debug(`Rich Results validation failed: ${error instanceof Error ? error.message : error}`);
     }
   }
 
