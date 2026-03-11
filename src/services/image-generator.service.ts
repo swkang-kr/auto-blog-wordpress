@@ -320,9 +320,9 @@ export class ImageGeneratorService {
   ): Promise<{ buffer: Buffer; filename: string } | null> {
     try {
       const model = this.client.getGenerativeModel({
-        model: 'gemini-2.5-flash-preview-05-20',
+        model: 'gemini-2.5-flash-image',
         generationConfig: {
-          responseModalities: ['image', 'text'] as unknown as undefined,
+          responseModalities: ['IMAGE', 'TEXT'] as unknown as undefined,
         } as Record<string, unknown>,
       });
 
@@ -376,9 +376,9 @@ export class ImageGeneratorService {
     logger.info(`Generating ${prompts.length} images (batch parallel)...`);
 
     const model = this.client.getGenerativeModel({
-      model: 'gemini-2.5-flash-preview-05-20',
+      model: 'gemini-2.5-flash-image',
       generationConfig: {
-        responseModalities: ['image', 'text'] as unknown as undefined,
+        responseModalities: ['IMAGE', 'TEXT'] as unknown as undefined,
       } as Record<string, unknown>,
     });
 

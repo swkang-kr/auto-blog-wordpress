@@ -32,12 +32,44 @@ const KOREA_SUBREDDITS: Record<string, string[]> = {
 /**
  * Reddit trends service — fetches trending posts from Korea-related subreddits
  * as a fallback trend source when Google Trends is unavailable or returns no data.
+ * Supports OAuth API (preferred) with fallback to public JSON API.
  */
 export class RedditTrendsService {
   private userAgent: string;
+  private clientId: string;
+  private clientSecret: string;
+  private accessToken: string | null = null;
+  private tokenExpiry = 0;
 
-  constructor() {
+  constructor(clientId?: string, clientSecret?: string) {
     this.userAgent = 'auto-blog-wordpress/1.0 (Korea-focused blog content research)';
+    this.clientId = clientId || '';
+    this.clientSecret = clientSecret || '';
+  }
+
+  /** Obtain OAuth2 access token from Reddit (client_credentials flow) */
+  private async getOAuthToken(): Promise<string | null> {
+    if (!this.clientId || !this.clientSecret) return null;
+    if (this.accessToken && Date.now() < this.tokenExpiry) return this.accessToken;
+
+    try {
+      const { data } = await axios.post(
+        'https://www.reddit.com/api/v1/access_token',
+        'grant_type=client_credentials',
+        {
+          auth: { username: this.clientId, password: this.clientSecret },
+          headers: { 'User-Agent': this.userAgent, 'Content-Type': 'application/x-www-form-urlencoded' },
+          timeout: 5000,
+        },
+      );
+      this.accessToken = data.access_token;
+      this.tokenExpiry = Date.now() + (data.expires_in - 60) * 1000;
+      logger.debug('Reddit OAuth token obtained');
+      return this.accessToken;
+    } catch (error) {
+      logger.debug(`Reddit OAuth failed, falling back to public API: ${error instanceof Error ? error.message : error}`);
+      return null;
+    }
   }
 
   /**
@@ -93,11 +125,17 @@ export class RedditTrendsService {
   }
 
   private async fetchSubredditHot(subreddit: string): Promise<RedditPost[]> {
+    // Prefer OAuth API (higher rate limits, more reliable)
+    const token = await this.getOAuthToken();
+    const baseUrl = token ? 'https://oauth.reddit.com' : 'https://www.reddit.com';
+    const headers: Record<string, string> = { 'User-Agent': this.userAgent };
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
     const response = await axios.get(
-      `https://www.reddit.com/r/${subreddit}/hot.json`,
+      `${baseUrl}/r/${subreddit}/hot.json`,
       {
         params: { limit: 25, t: 'week' },
-        headers: { 'User-Agent': this.userAgent },
+        headers,
         timeout: 5000,
       },
     );

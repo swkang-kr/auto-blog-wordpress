@@ -16,7 +16,7 @@ import { GSCAnalyticsService } from './services/gsc-analytics.service.js';
 import { PostHistory } from './utils/history.js';
 import { sendBatchSummary, sendQualityAlert, sendDecayAlert, sendHealthCheck, sendTelegramAlert } from './utils/alerting.js';
 import { DataVisualizationService } from './services/data-visualization.service.js';
-import { costTracker } from './utils/cost-tracker.js';
+import { costTracker, CostTracker } from './utils/cost-tracker.js';
 import { logger } from './utils/logger.js';
 import { ContentRefreshService } from './services/content-refresh.service.js';
 import { TopicClusterService } from './services/topic-cluster.service.js';
@@ -65,7 +65,11 @@ async function main(): Promise<void> {
   logger.info(`Geo: ${config.TRENDS_GEO}, Niches: ${activeNiches.length}/${NICHES.length} (POST_COUNT=${config.POST_COUNT})${boostedNames.length > 0 ? ` | Seasonal boost: ${boostedNames.join(', ')}` : ''}`);
 
   // 2. Services
-  const researchService = new KeywordResearchService(config.ANTHROPIC_API_KEY, config.TRENDS_GEO);
+  const researchService = new KeywordResearchService(config.ANTHROPIC_API_KEY, config.TRENDS_GEO,
+    config.REDDIT_CLIENT_ID && config.REDDIT_CLIENT_SECRET
+      ? { clientId: config.REDDIT_CLIENT_ID, clientSecret: config.REDDIT_CLIENT_SECRET }
+      : undefined,
+  );
   const authorLinks = { linkedin: config.AUTHOR_LINKEDIN, twitter: config.AUTHOR_TWITTER };
   const contentService = new ContentGeneratorService(config.ANTHROPIC_API_KEY, config.SITE_OWNER, config.WP_URL, config.MIN_QUALITY_SCORE, authorLinks);
   const imageService = new ImageGeneratorService(config.GEMINI_API_KEY, config.IMAGE_FORMAT);
@@ -235,6 +239,17 @@ async function main(): Promise<void> {
     await seoService.ensureHreflangSnippet();
   } catch (error) {
     logger.warn(`Hreflang snippet setup failed: ${error instanceof Error ? error.message : error}`);
+  }
+
+  // 2.9d. Ensure WebSite + Organization JSON-LD schemas (Sitelinks Searchbox + Knowledge Panel)
+  try {
+    await seoService.ensureSiteSchemaSnippet(config.SITE_NAME, config.SITE_OWNER, {
+      linkedin: config.AUTHOR_LINKEDIN,
+      twitter: config.AUTHOR_TWITTER,
+      website: config.AUTHOR_WEBSITE,
+    });
+  } catch (error) {
+    logger.warn(`Site schema snippet setup failed: ${error instanceof Error ? error.message : error}`);
   }
 
   // 2.10. Ensure navigation menu matches niche categories
@@ -528,9 +543,15 @@ async function main(): Promise<void> {
   const generated: GeneratedPost[] = [];
   const failedNiches: Array<{ niche: typeof NICHES[number]; resultIndex: number }> = [];
 
-  for (const niche of activeNiches) {
+  for (let nicheIdx = 0; nicheIdx < activeNiches.length; nicheIdx++) {
+    const niche = activeNiches[nicheIdx];
     const postStart = Date.now();
     logger.info(`\n[Phase A] Niche: "${niche.name}"`);
+
+    // Rate limit: 5s delay between niches to avoid Claude API throttling (except first)
+    if (nicheIdx > 0) {
+      await new Promise(r => setTimeout(r, 5000));
+    }
 
     // Set per-niche content type distribution for diversity-aware keyword selection
     const allContentTypes = history.getRecentContentTypes(niche.id, 999);
@@ -1004,6 +1025,7 @@ async function main(): Promise<void> {
       }
 
       // B-4.5. Generate Korean version (if enabled) for hreflang SEO
+      let koreanPostUrl: string | undefined;
       if (config.ENABLE_KOREAN_CONTENT === 'true') {
         try {
           const { KoreanContentService } = await import('./services/korean-content.service.js');
@@ -1058,6 +1080,7 @@ async function main(): Promise<void> {
               ...(koreanKeywords?.koreanKeyword ? { rank_math_focus_keyword: koreanKeywords.koreanKeyword } : {}),
               ...naverMeta,
             });
+            koreanPostUrl = koreanPost.url;
             logger.info(`Korean version published: ${koreanPost.url} (hreflang linked${koreanKeywords ? ', Naver SEO applied' : ''})`);
           }
         } catch (koError) {
@@ -1135,6 +1158,7 @@ async function main(): Promise<void> {
         titleCandidates: content.titleCandidates,
         originalTitle: content.title,
         ...(seriesId ? { seriesId, seriesPart } : {}),
+        ...(koreanPostUrl ? { koreanPostUrl } : {}),
       });
 
       results.push({
@@ -1204,6 +1228,25 @@ async function main(): Promise<void> {
       );
       if (rewritten > 0) {
         logger.info(`Auto-rewrote ${rewritten} underperforming post(s)`);
+        // Flag Korean versions of rewritten posts for refresh
+        if (config.ENABLE_KOREAN_CONTENT === 'true') {
+          const rewrittenEntries = history.getAllEntries()
+            .filter(e => e.koreanPostUrl && e.lastRefreshedAt)
+            .filter(e => {
+              const refreshedAt = new Date(e.lastRefreshedAt!).getTime();
+              return Date.now() - refreshedAt < 2 * 60 * 60 * 1000; // refreshed in this batch
+            });
+          if (rewrittenEntries.length > 0) {
+            logger.info(`Korean content sync needed: ${rewrittenEntries.length} rewritten post(s) have Korean versions. Run Korean refresh manually or wait for next batch.`);
+            // Send Telegram alert for Korean sync needed
+            if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
+              await sendTelegramAlert(
+                config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID,
+                `🇰🇷 Korean Content Sync Needed\n${rewrittenEntries.length} English post(s) were rewritten but their Korean versions are now outdated:\n${rewrittenEntries.map(e => `• "${e.keyword}"`).join('\n')}`,
+              );
+            }
+          }
+        }
       }
     } catch (error) {
       logger.warn(`Auto-rewrite failed: ${error instanceof Error ? error.message : error}`);
@@ -1810,6 +1853,18 @@ async function main(): Promise<void> {
   }
 
   costTracker.logRevenueEstimate(postsByNiche);
+
+  // RPM feedback loop: adjust estimates from actual AdSense data when available
+  if (config.ADSENSE_RPM_OVERRIDES) {
+    try {
+      const actualRpm = JSON.parse(config.ADSENSE_RPM_OVERRIDES) as Record<string, number>;
+      if (Object.keys(actualRpm).length > 0) {
+        CostTracker.adjustRpmFromActual(actualRpm);
+      }
+    } catch (error) {
+      logger.warn(`ADSENSE_RPM_OVERRIDES parse failed (expected JSON object): ${error instanceof Error ? error.message : error}`);
+    }
+  }
 
   logger.info('\n=== Batch Summary ===');
   logger.info(`Total: ${batch.totalKeywords} | Success: ${batch.successCount} | Failed: ${batch.failureCount} | Skipped: ${batch.skippedCount}`);

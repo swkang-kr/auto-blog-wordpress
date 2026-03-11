@@ -423,7 +423,7 @@ export class WordPressService {
   async ensureUniqueSlug(slug: string): Promise<string> {
     try {
       const { data } = await this.api.get('/posts', {
-        params: { slug, status: 'publish,draft,pending', _fields: 'id,slug' },
+        params: { slug, status: 'publish,draft,pending,future', _fields: 'id,slug' },
       });
       if (Array.isArray(data) && data.length > 0) {
         // Avoid double-year: check if slug already ends with a year (e.g., -2026)
@@ -1234,6 +1234,23 @@ ${ga4TrackingScript}`;
 
     // Inject AdSense manual ad placements (niche-aware density: RPM tier drives max ads and word gap)
     htmlEn = this.injectAdPlacements(htmlEn, content.category);
+
+    // Inject end-of-article comment engagement prompt
+    const commentPromptHtml = `<div class="ab-comment-prompt" style="margin:32px 0; padding:20px 24px; background:#f8f9fa; border-left:4px solid #0066FF; border-radius:0 8px 8px 0;">
+<p style="margin:0 0 8px 0; font-size:17px; font-weight:700; color:#222;">💬 Your Turn</p>
+<p style="margin:0; font-size:14px; color:#555; line-height:1.6;">What's your take on this? Share your experience or questions in the comments — we read and respond to every one.</p>
+<p style="margin:8px 0 0 0;"><a href="#respond" style="color:#0066FF; font-weight:600; text-decoration:none; font-size:14px;">Jump to comments &darr;</a></p></div>`;
+    // Insert before Related Posts or Disclaimer
+    const commentInsertIdx = htmlEn.indexOf('class="ab-related-posts"') !== -1
+      ? htmlEn.lastIndexOf('<', htmlEn.indexOf('class="ab-related-posts"'))
+      : htmlEn.lastIndexOf('class="ab-disclaimer"') !== -1
+        ? htmlEn.lastIndexOf('<', htmlEn.indexOf('class="ab-disclaimer"'))
+        : -1;
+    if (commentInsertIdx > 0) {
+      htmlEn = htmlEn.slice(0, commentInsertIdx) + commentPromptHtml + '\n' + htmlEn.slice(commentInsertIdx);
+    } else {
+      htmlEn += '\n' + commentPromptHtml;
+    }
 
     // Inject Related Posts section
     if (options?.existingPosts && options.existingPosts.length > 0) {

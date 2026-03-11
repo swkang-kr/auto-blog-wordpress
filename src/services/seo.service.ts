@@ -17,6 +17,7 @@ const POST_CSS_SNIPPET_TITLE = 'Auto Blog Post Styles';
 const SITEMAP_PRIORITY_SNIPPET_TITLE = 'Auto Blog Sitemap Priority';
 const NEWS_SITEMAP_SNIPPET_TITLE = 'Auto Blog News Sitemap';
 const VIDEO_SITEMAP_SNIPPET_TITLE = 'Auto Blog Video Sitemap';
+const SITE_SCHEMA_SNIPPET_TITLE = 'Auto Blog Site Schema';
 
 export class SeoService {
   private api: AxiosInstance;
@@ -1228,6 +1229,9 @@ add_action('wp_head', function() {
 .ab-newsletter-cta{background:linear-gradient(135deg,#1a1a3e 0%,#2a2a4e 100%)!important}
 .ab-series-nav{background:#2a2a3e!important;border-color:#3a3a5e!important}
 .ab-progress{background:transparent!important}
+.ab-comment-prompt{background:#2a2a3e!important;border-color:#4a4aff!important}
+.ab-comment-prompt p{color:#e0e0e0!important}
+.ab-comment-prompt a{color:#4da6ff!important}
 }
 .ab-progress{position:fixed;top:0;left:0;width:0;height:3px;background:linear-gradient(90deg,#0052CC,#0066FF);z-index:99999;transition:width 0.1s linear}
 </style>';
@@ -1601,6 +1605,87 @@ add_filter('wp_sitemaps_posts_entry', function(\$entry, \$post) {
     } catch (error) {
       const msg = error instanceof Error ? error.message : String(error);
       logger.warn(`Failed to install video sitemap snippet: ${msg}`);
+    }
+  }
+
+  /**
+   * Ensure WebSite + Organization JSON-LD schemas are output on all pages.
+   * WebSite schema enables Sitelinks Searchbox in Google.
+   * Organization schema enables Knowledge Panel eligibility.
+   */
+  async ensureSiteSchemaSnippet(siteName: string, siteOwner: string, socialLinks?: { linkedin?: string; twitter?: string; website?: string }): Promise<void> {
+    const sameAsLinks = [socialLinks?.linkedin, socialLinks?.twitter, socialLinks?.website].filter(Boolean);
+    const sameAsPhp = sameAsLinks.length > 0
+      ? `'sameAs' => [${sameAsLinks.map(l => `'${l}'`).join(', ')}],`
+      : '';
+
+    const phpCode = `
+// Output WebSite + Organization JSON-LD on all pages (site-level schemas)
+add_action('wp_head', function() {
+    // Only output once on the front page or singular pages
+    $site_url = home_url('/');
+    $site_name = '${siteName.replace(/'/g, "\\'")}';
+    $site_owner = '${siteOwner.replace(/'/g, "\\'")}';
+
+    // WebSite schema — enables Sitelinks Searchbox in Google
+    $website_schema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'WebSite',
+        'name' => $site_name,
+        'url' => $site_url,
+        'inLanguage' => 'en',
+        'potentialAction' => [
+            '@type' => 'SearchAction',
+            'target' => [
+                '@type' => 'EntryPoint',
+                'urlTemplate' => $site_url . '?s={search_term_string}',
+            ],
+            'query-input' => 'required name=search_term_string',
+        ],
+    ];
+
+    // Organization schema — enables Knowledge Panel
+    $org_schema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'Organization',
+        'name' => $site_name,
+        'url' => $site_url,
+        'founder' => [
+            '@type' => 'Person',
+            'name' => $site_owner,
+        ],
+        ${sameAsPhp}
+    ];
+
+    echo '<script type="application/ld+json">' . wp_json_encode($website_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . '</script>' . "\\n";
+    echo '<script type="application/ld+json">' . wp_json_encode($org_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . '</script>' . "\\n";
+}, 5);`.trim();
+
+    try {
+      // Check if snippet already exists
+      const { data: snippets } = await axios.get(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 15000 },
+      );
+      const existing = (snippets as Array<{ id: number; name: string }>).find(s => s.name === SITE_SCHEMA_SNIPPET_TITLE);
+      if (existing) {
+        await axios.put(
+          `${this.wpUrl}/wp-json/code-snippets/v1/snippets/${existing.id}`,
+          { code: phpCode, active: true },
+          { headers: this.api.defaults.headers as Record<string, string>, timeout: 15000 },
+        );
+        logger.info('Site schema snippet (WebSite + Organization) updated');
+        return;
+      }
+      await axios.post(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { name: SITE_SCHEMA_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 10 },
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      logger.info('Site schema snippet (WebSite + Organization) installed via Code Snippets plugin');
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      logger.warn(`Failed to install site schema snippet: ${msg}`);
     }
   }
 

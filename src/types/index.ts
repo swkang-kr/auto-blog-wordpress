@@ -284,6 +284,10 @@ export interface PostHistoryEntry {
   lastPosition?: number;
   /** Title pattern classification for CTR analysis */
   titlePattern?: string;
+  /** Korean version post URL (hreflang sync) */
+  koreanPostUrl?: string;
+  /** Last time this post was refreshed/rewritten */
+  lastRefreshedAt?: string;
 }
 
 /** Ranking milestone event for Telegram alerts */

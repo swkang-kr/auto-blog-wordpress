@@ -81,6 +81,11 @@ const envSchema = z.object({
   LEAD_MAGNET_URL: z.string().default(''),
   // Lead magnet title (e.g., "Free Korea Investment Guide 2026")
   LEAD_MAGNET_TITLE: z.string().default(''),
+  // RPM overrides: JSON object of niche → actual RPM from AdSense (e.g., '{"Korean Finance":14.5}')
+  ADSENSE_RPM_OVERRIDES: z.string().default(''),
+  // Reddit OAuth API credentials (optional — falls back to public JSON API if not set)
+  REDDIT_CLIENT_ID: z.string().default(''),
+  REDDIT_CLIENT_SECRET: z.string().default(''),
 });
 
 export type AppConfig = z.infer<typeof envSchema>;

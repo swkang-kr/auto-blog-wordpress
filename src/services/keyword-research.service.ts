@@ -27,10 +27,10 @@ export class KeywordResearchService {
   private contentTypeDistribution: string;
   private researchModel: string;
 
-  constructor(apiKey: string, geo: string) {
+  constructor(apiKey: string, geo: string, redditCredentials?: { clientId: string; clientSecret: string }) {
     this.client = new Anthropic({ apiKey });
     this.trendsService = new GoogleTrendsService(geo);
-    this.redditService = new RedditTrendsService();
+    this.redditService = new RedditTrendsService(redditCredentials?.clientId, redditCredentials?.clientSecret);
     this.performanceInsights = '';
     this.existingPosts = [];
     this.existingPostTitles = [];
@@ -307,47 +307,40 @@ export class KeywordResearchService {
         }
       }
 
+      // Estimate volume/difficulty inside loop so KD check can trigger retry
+      if (!analysis.volumeEstimate) {
+        analysis.volumeEstimate = this.estimateVolumeFromTrends(averageInterest, risingQueries, analysis.selectedKeyword);
+        logger.debug(`Volume auto-estimated from Trends: ${analysis.volumeEstimate}`);
+      }
+      if (!analysis.estimatedMonthlySearches) {
+        analysis.estimatedMonthlySearches = this.estimateMonthlySearches(averageInterest, risingQueries, analysis.selectedKeyword);
+      }
+      if (!analysis.keywordDifficulty) {
+        analysis.keywordDifficulty = this.estimateKeywordDifficulty(analysis.selectedKeyword, averageInterest, analysis.estimatedCompetition);
+      }
+
+      // Reject keywords with KD > 70 (unlikely to rank for new sites) — force retry
+      if (analysis.keywordDifficulty > 70 && attempt < MAX_ATTEMPTS) {
+        logger.warn(
+          `Attempt ${attempt}/${MAX_ATTEMPTS}: "${analysis.selectedKeyword}" has KD=${analysis.keywordDifficulty} (>70). ` +
+          `Too competitive for ranking. Retrying with lower-difficulty keyword.`,
+        );
+        rejectedKeywords.push(analysis.selectedKeyword);
+        analysis = undefined;
+        continue;
+      }
+      if (analysis.keywordDifficulty > 70) {
+        logger.warn(
+          `Final attempt: accepting "${analysis.selectedKeyword}" with high KD=${analysis.keywordDifficulty}. ` +
+          `No lower-difficulty keywords found after ${MAX_ATTEMPTS} attempts.`,
+        );
+      }
+
       break;
     }
 
     if (!analysis) {
       throw new KeywordResearchError(`Failed to find unique Korea-relevant keyword for niche "${niche.name}" after ${MAX_ATTEMPTS} attempts`);
-    }
-
-    // Fallback volume estimation from Trends data if Claude didn't provide it
-    if (!analysis.volumeEstimate) {
-      analysis.volumeEstimate = this.estimateVolumeFromTrends(
-        averageInterest,
-        risingQueries,
-        analysis.selectedKeyword,
-      );
-      logger.debug(`Volume auto-estimated from Trends: ${analysis.volumeEstimate}`);
-    }
-
-    // Estimate monthly search volume number
-    if (!analysis.estimatedMonthlySearches) {
-      analysis.estimatedMonthlySearches = this.estimateMonthlySearches(
-        averageInterest,
-        risingQueries,
-        analysis.selectedKeyword,
-      );
-    }
-
-    // Estimate keyword difficulty score
-    if (!analysis.keywordDifficulty) {
-      analysis.keywordDifficulty = this.estimateKeywordDifficulty(
-        analysis.selectedKeyword,
-        averageInterest,
-        analysis.estimatedCompetition,
-      );
-    }
-
-    // Reject keywords with KD > 70 (unlikely to rank) — log warning
-    if (analysis.keywordDifficulty > 70) {
-      logger.warn(
-        `High KD warning: "${analysis.selectedKeyword}" has KD=${analysis.keywordDifficulty}. ` +
-        `Consider targeting lower-difficulty keywords for better ranking potential.`,
-      );
     }
 
     logger.info(
