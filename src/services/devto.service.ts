@@ -5,9 +5,10 @@ import type { BlogContent, PublishedPost } from '../types/index.js';
 
 const DEVTO_API = 'https://dev.to/api';
 
-/** DEV.to is a developer platform — only syndicate tech-relevant content */
+/** DEV.to syndicates tech-relevant content + lifestyle niches with tech-curious audiences */
 const DEVTO_ALLOWED_CATEGORIES = new Set([
   'Korean Tech', 'Korean Finance', 'Korean Crypto',
+  'K-Beauty', 'Korea Travel',
 ]);
 
 export class DevToService {

@@ -471,6 +471,33 @@ ${cluster.pillarUrl ? `<p style="margin:12px 0 0 0;"><a href="${cluster.pillarUr
    * Get series opportunities for a niche: clusters of 3+ related keywords
    * that could form a multi-part content series.
    */
+  /**
+   * Get a cluster by niche ID.
+   */
+  getCluster(nicheId: string): TopicCluster | undefined {
+    return this.clusters.get(nicheId);
+  }
+
+  /**
+   * Analyze cluster coverage — which sub-topics are covered and which have gaps.
+   */
+  getClusterCoverage(nicheId: string): { covered: number; total: number; gaps: string[] } | null {
+    const cluster = this.clusters.get(nicheId);
+    if (!cluster) return null;
+
+    const nicheCategory = nicheId.split('-').slice(0, 2).join('-');
+    const subTopicDefs = NICHE_SUBTOPICS[nicheCategory];
+    if (!subTopicDefs) return null;
+
+    const totalSubTopics = Object.keys(subTopicDefs).length;
+    const coveredSubTopics = cluster.subTopics.size;
+    const allSubTopicNames = Object.keys(subTopicDefs);
+    const coveredNames = new Set(cluster.subTopics.keys());
+    const gaps = allSubTopicNames.filter(name => !coveredNames.has(name));
+
+    return { covered: coveredSubTopics, total: totalSubTopics, gaps };
+  }
+
   getSeriesOpportunities(nicheId: string): Array<{ seriesName: string; keywords: string[]; priority: 'high' | 'medium' }> {
     const cluster = this.clusters.get(nicheId);
     if (!cluster) return [];

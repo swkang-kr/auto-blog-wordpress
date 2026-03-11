@@ -1238,4 +1238,206 @@ Return pure JSON only.`;
 
     return { checked, broken, fixed };
   }
+
+  /**
+   * Optimize existing posts for Featured Snippet capture.
+   * Targets queries at positions 2-10 with 20+ impressions from GSC data.
+   * Inserts optimized content structures based on snippet type:
+   * - paragraph: 40-60 word concise answer in <div class="ab-snippet">
+   * - list: restructures content into <ol>/<ul> format
+   * - table: reformats comparison data into <table>
+   * Max 2 posts per batch.
+   */
+  async optimizeForFeaturedSnippets(
+    gscService: GSCAnalyticsService,
+    seoService?: SeoService,
+    limit: number = 2,
+  ): Promise<number> {
+    try {
+      const opportunities = await gscService.getFeaturedSnippetOpportunities();
+      if (opportunities.length === 0) {
+        logger.info('Featured snippet optimization: No opportunities found');
+        return 0;
+      }
+
+      // Filter: position 2-10, 20+ impressions
+      const targets = opportunities
+        .filter(o => o.position >= 2 && o.position <= 10 && o.impressions >= 20)
+        .slice(0, limit);
+
+      if (targets.length === 0) {
+        logger.info('Featured snippet optimization: No qualifying opportunities (need pos 2-10, 20+ imp)');
+        return 0;
+      }
+
+      let optimized = 0;
+      const optimizedUrls: string[] = [];
+
+      for (const target of targets) {
+        try {
+          // Find the page ranking for this query
+          const pages = await gscService.getPagePerformance(50);
+          const page = pages.find(p => {
+            const pPath = new URL(p.page).pathname.replace(/^\/|\/$/g, '');
+            return pPath.length > 0;
+          });
+          if (!page) continue;
+
+          const slug = new URL(page.page).pathname.replace(/^\/|\/$/g, '');
+          if (!slug) continue;
+
+          const { data: posts } = await this.api.get('/posts', {
+            params: { slug, status: 'publish', _fields: 'id,title,content,link,meta' },
+          });
+          const post = (posts as WPPost[])[0];
+          if (!post) continue;
+
+          let content = post.content.rendered;
+          const focusKeyword = post.meta?.rank_math_focus_keyword || target.query;
+
+          logger.info(`Featured snippet: Optimizing "${post.title.rendered}" for "${target.query}" (pos ${target.position.toFixed(1)}, type: ${target.snippetType})`);
+
+          let snippetInserted = false;
+
+          if (target.snippetType === 'paragraph') {
+            // Check if ab-snippet already exists
+            if (content.includes('class="ab-snippet"')) {
+              logger.debug('Featured snippet: Paragraph snippet already exists, skipping');
+              continue;
+            }
+
+            // Generate a 40-60 word concise answer using Claude
+            const prompt = `Write a concise, direct answer to the question: "${target.query}"
+Rules:
+- Exactly 40-60 words
+- Start with the key answer immediately (no "The answer is..." preamble)
+- Include the main keyword naturally
+- Factual, authoritative tone
+- No markdown, return plain text only`;
+
+            const response = await this.claude.messages.create({
+              model: this.model,
+              max_tokens: 200,
+              temperature: 0.3,
+              messages: [{ role: 'user', content: prompt }],
+            });
+            costTracker.addClaudeCall(this.model, response.usage?.input_tokens || 0, response.usage?.output_tokens || 0);
+
+            const snippetText = response.content[0].type === 'text' ? response.content[0].text.trim() : '';
+            if (snippetText.length < 100 || snippetText.length > 500) continue;
+
+            const snippetHtml = `<div class="ab-snippet" data-snippet-type="definition"><p>${snippetText}</p></div>`;
+
+            // Insert after first H2
+            const firstH2End = content.indexOf('</h2>');
+            if (firstH2End !== -1) {
+              const nextP = content.indexOf('</p>', firstH2End);
+              if (nextP !== -1) {
+                const insertPos = nextP + '</p>'.length;
+                content = content.slice(0, insertPos) + '\n' + snippetHtml + '\n' + content.slice(insertPos);
+                snippetInserted = true;
+              }
+            }
+          } else if (target.snippetType === 'list') {
+            // Find existing bullet/numbered lists near H2 sections and ensure they're in proper ol/ul format
+            // Add a structured list summary if none exists near the top
+            if (!content.includes('class="ab-snippet"')) {
+              const prompt = `Create a numbered list (5-8 items) answering: "${target.query}"
+Rules:
+- Each item: 8-15 words, starts with action verb or key term
+- Return as HTML <ol> with <li> items only
+- No preamble, no explanation, just the <ol> HTML`;
+
+              const response = await this.claude.messages.create({
+                model: this.model,
+                max_tokens: 500,
+                temperature: 0.3,
+                messages: [{ role: 'user', content: prompt }],
+              });
+              costTracker.addClaudeCall(this.model, response.usage?.input_tokens || 0, response.usage?.output_tokens || 0);
+
+              const listHtml = response.content[0].type === 'text' ? response.content[0].text.trim() : '';
+              if (listHtml.includes('<ol') || listHtml.includes('<ul')) {
+                const snippetHtml = `<div class="ab-snippet" data-snippet-type="list">${listHtml}</div>`;
+                const firstH2End = content.indexOf('</h2>');
+                if (firstH2End !== -1) {
+                  const nextP = content.indexOf('</p>', firstH2End);
+                  if (nextP !== -1) {
+                    const insertPos = nextP + '</p>'.length;
+                    content = content.slice(0, insertPos) + '\n' + snippetHtml + '\n' + content.slice(insertPos);
+                    snippetInserted = true;
+                  }
+                }
+              }
+            }
+          } else if (target.snippetType === 'table') {
+            // Add a comparison table if none exists
+            if (!content.includes('class="ab-snippet"') || !/<table/.test(content.slice(0, content.length / 3))) {
+              const prompt = `Create a comparison table answering: "${target.query}"
+Rules:
+- 4-6 rows, 3-4 columns
+- Return as HTML <table> with <thead> and <tbody>
+- Include relevant data points for ${focusKeyword}
+- No preamble, just the <table> HTML`;
+
+              const response = await this.claude.messages.create({
+                model: this.model,
+                max_tokens: 800,
+                temperature: 0.3,
+                messages: [{ role: 'user', content: prompt }],
+              });
+              costTracker.addClaudeCall(this.model, response.usage?.input_tokens || 0, response.usage?.output_tokens || 0);
+
+              const tableHtml = response.content[0].type === 'text' ? response.content[0].text.trim() : '';
+              if (tableHtml.includes('<table')) {
+                const snippetHtml = `<div class="ab-snippet" data-snippet-type="table"><div class="ab-table-wrap">${tableHtml}</div></div>`;
+                const firstH2End = content.indexOf('</h2>');
+                if (firstH2End !== -1) {
+                  const nextP = content.indexOf('</p>', firstH2End);
+                  if (nextP !== -1) {
+                    const insertPos = nextP + '</p>'.length;
+                    content = content.slice(0, insertPos) + '\n' + snippetHtml + '\n' + content.slice(insertPos);
+                    snippetInserted = true;
+                  }
+                }
+              }
+            }
+          }
+
+          if (!snippetInserted) continue;
+
+          const nowIso = new Date().toISOString();
+          await this.api.post(`/posts/${post.id}`, {
+            content,
+            meta: {
+              _autoblog_modified_time: nowIso,
+              _rewrite_reason: `Featured snippet optimization: "${target.query}" (${target.snippetType}, pos ${target.position.toFixed(1)})`,
+            },
+          });
+
+          optimized++;
+          optimizedUrls.push(post.link);
+          logger.info(`Featured snippet: Optimized "${post.title.rendered}" for ${target.snippetType} snippet`);
+          await new Promise(r => setTimeout(r, 2000));
+        } catch (error) {
+          logger.warn(`Featured snippet optimization failed for "${target.query}": ${error instanceof Error ? error.message : error}`);
+        }
+      }
+
+      // Re-index optimized posts
+      if (seoService && optimizedUrls.length > 0) {
+        try {
+          await seoService.notifyIndexNow(optimizedUrls);
+          logger.info(`Featured snippet: Submitted ${optimizedUrls.length} URL(s) for re-indexing`);
+        } catch (error) {
+          logger.warn(`Featured snippet re-indexing failed: ${error instanceof Error ? error.message : error}`);
+        }
+      }
+
+      return optimized;
+    } catch (error) {
+      logger.warn(`Featured snippet optimization failed: ${error instanceof Error ? error.message : error}`);
+      return 0;
+    }
+  }
 }

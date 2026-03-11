@@ -335,6 +335,22 @@ export interface PostResult {
   duration: number;
 }
 
+/** Topic cluster mapping for explicit pillar-supporting relationship tracking */
+export interface TopicCluster {
+  /** Unique cluster identifier (e.g., niche id or topic slug) */
+  clusterId: string;
+  /** WordPress post ID of the pillar page */
+  pillarPostId?: number;
+  /** WordPress post IDs of supporting (satellite) posts */
+  supportingPostIds: number[];
+  /** Niche category this cluster belongs to */
+  category: string;
+  /** Sub-topics covered by supporting posts */
+  coveredSubTopics: string[];
+  /** Last time cluster was analyzed */
+  lastAnalyzed?: string;
+}
+
 /** 배치 실행 전체 결과 */
 export interface BatchResult {
   startedAt: string;

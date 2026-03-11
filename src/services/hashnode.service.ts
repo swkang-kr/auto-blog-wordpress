@@ -5,9 +5,10 @@ import type { BlogContent, PublishedPost } from '../types/index.js';
 
 const HASHNODE_GQL = 'https://gql.hashnode.com';
 
-/** Hashnode is a tech/dev blog platform — syndicate tech, finance, and crypto content */
+/** Hashnode syndicates all content categories for maximum reach */
 const HASHNODE_ALLOWED_CATEGORIES = new Set([
   'Korean Tech', 'Korean Finance', 'Korean Crypto', 'Korean Automotive',
+  'K-Beauty', 'Korea Travel', 'K-Entertainment',
 ]);
 
 export class HashnodeService {

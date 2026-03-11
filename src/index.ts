@@ -244,6 +244,14 @@ async function main(): Promise<void> {
     logger.warn(`Navigation menu setup failed: ${error instanceof Error ? error.message : error}`);
   }
 
+  // 2.10b. Ensure comment settings + spam cleanup
+  try {
+    await seoService.ensureCommentSettings();
+    await seoService.cleanupSpamComments();
+  } catch (error) {
+    logger.warn(`Comment settings/cleanup failed: ${error instanceof Error ? error.message : error}`);
+  }
+
   // 2.11. Check robots.txt + WordPress indexing settings + sitemap
   await seoService.checkRobotsTxt();
   await seoService.checkAndFixIndexingSettings();
@@ -1623,6 +1631,31 @@ async function main(): Promise<void> {
               }
 
               logger.info(`A/B test resolved: Post ${entry.postId} — ${reason}`);
+              logger.info(`  Winner: "${winnerTitle}" | Phase A CTR: ${(phaseACtr * 100).toFixed(1)}% | Phase B CTR: ${(phaseBCtr * 100).toFixed(1)}%`);
+
+              // Update slug to match winning title for URL consistency
+              try {
+                const newSlug = winnerTitle
+                  .toLowerCase()
+                  .replace(/[^a-z0-9\s-]/g, '')
+                  .replace(/\s+/g, '-')
+                  .replace(/-+/g, '-')
+                  .replace(/^-|-$/g, '')
+                  .slice(0, 80);
+                const wpApi = (wpService as unknown as { api: { post: (url: string, data: unknown) => Promise<unknown> } }).api;
+                await wpApi.post(`/posts/${entry.postId}`, {
+                  title: winnerTitle,
+                  slug: newSlug,
+                  meta: {
+                    rank_math_title: winnerTitle,
+                    rank_math_focus_keyword: entry.keyword,
+                  },
+                });
+                logger.debug(`A/B winner applied: title + slug + Rank Math meta updated for post ${entry.postId}`);
+              } catch {
+                logger.debug(`A/B winner: could not update slug/meta for post ${entry.postId}`);
+              }
+
               await history.markTitleTestResolved(entry.postId, winnerTitle);
             }
           } catch (error) {
@@ -1677,6 +1710,48 @@ async function main(): Promise<void> {
     }
   } catch (error) {
     logger.warn(`Evergreen refresh failed: ${error instanceof Error ? error.message : error}`);
+  }
+
+  // 4.6. Internal link rescan — discover new linking opportunities across existing posts (weekly)
+  try {
+    const newLinks = await wpService.rescanInternalLinks(existingPosts);
+    if (newLinks > 0) {
+      logger.info(`Internal link rescan: ${newLinks} new link(s) added to existing posts`);
+    }
+  } catch (error) {
+    logger.warn(`Internal link rescan failed: ${error instanceof Error ? error.message : error}`);
+  }
+
+  // 4.7. Topic cluster coverage analysis — log which sub-topics need more content
+  try {
+    for (const niche of activeNiches) {
+      const cluster = topicClusterService.getCluster(niche.id);
+      if (cluster) {
+        const coverage = topicClusterService.getClusterCoverage(niche.id);
+        if (coverage && coverage.gaps.length > 0) {
+          logger.info(`Cluster [${niche.id}]: ${coverage.covered}/${coverage.total} sub-topics covered. Gaps: ${coverage.gaps.slice(0, 3).join(', ')}`);
+        }
+      }
+    }
+  } catch (error) {
+    logger.debug(`Cluster coverage analysis failed: ${error instanceof Error ? error.message : error}`);
+  }
+
+  // 4.8. Featured snippet auto-optimization — optimize top-ranking posts for Position 0
+  if (config.GSC_SITE_URL && config.GOOGLE_INDEXING_SA_KEY) {
+    try {
+      const refreshService = new ContentRefreshService(
+        config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD,
+        config.ANTHROPIC_API_KEY, config.CLAUDE_MODEL,
+      );
+      const gscSnippet = new GSCAnalyticsService(config.GSC_SITE_URL || config.WP_URL, config.GOOGLE_INDEXING_SA_KEY);
+      const snippetOptimized = await refreshService.optimizeForFeaturedSnippets(gscSnippet, seoService, 2);
+      if (snippetOptimized > 0) {
+        logger.info(`Featured snippet: Optimized ${snippetOptimized} post(s) for Position 0 capture`);
+      }
+    } catch (error) {
+      logger.warn(`Featured snippet optimization failed: ${error instanceof Error ? error.message : error}`);
+    }
   }
 
   // 5. Update last run

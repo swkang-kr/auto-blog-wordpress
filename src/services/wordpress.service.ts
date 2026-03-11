@@ -508,6 +508,7 @@ html{scroll-behavior:smooth;scroll-padding-top:60px}
 .ab-breadcrumb a{color:#0066FF;text-decoration:none}
 .ab-breadcrumb a:hover{text-decoration:underline}
 .ab-breadcrumb span.ab-bc-sep{margin:0 6px;color:#ccc}
+.ab-related,.ab-author-bio,.ab-faq,.ab-cta-share{content-visibility:auto;contain-intrinsic-size:auto 300px}
 .ab-header{margin:0 0 30px 0;padding-bottom:20px;border-bottom:1px solid #eee}
 .ab-header time{font-size:13px;color:#888}
 .ab-faq details{margin:0 0 12px 0;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden}
@@ -740,6 +741,9 @@ ${leadMagnetHtml}<p style="margin:0 0 14px 0; font-size:14px; color:rgba(255,255
 <form action="${this.escapeHtml(newsletterFormUrl)}" method="POST" target="_blank" rel="noopener noreferrer" style="display:flex; flex-wrap:wrap; justify-content:center; gap:8px;">
 <input type="email" name="email" placeholder="your@email.com" required style="padding:10px 16px; border:none; border-radius:6px; font-size:15px; width:60%; max-width:280px;">
 <input type="hidden" name="source" value="${safeCategory}">
+<input type="hidden" name="category" value="${safeCategory}">
+<input type="hidden" name="content_type" value="inline_cta">
+<input type="hidden" name="source_post" value="">
 <button type="submit" style="padding:10px 24px; background:#fff; color:#0066FF; border:none; border-radius:6px; font-weight:700; font-size:15px; cursor:pointer;">Subscribe Free</button>
 </form>
 <p style="margin:8px 0 0 0; font-size:11px; color:rgba(255,255,255,0.5);">We respect your privacy. Unsubscribe at any time.</p></div>`;
@@ -959,6 +963,9 @@ ${leadMagnetHtml}<p style="margin:0 0 16px 0; font-size:14px; color:rgba(255,255
 <form class="ab-newsletter-form" action="${this.escapeHtml(formUrl)}" method="POST" target="_blank" rel="noopener noreferrer" style="display:flex; flex-wrap:wrap; justify-content:center; gap:8px;">
 <input type="email" name="email" placeholder="your@email.com" required style="padding:10px 16px; border:none; border-radius:6px; font-size:15px; width:60%; max-width:300px;">
 <input type="hidden" name="source" value="${safeCategory}">
+<input type="hidden" name="category" value="${safeCategory}">
+<input type="hidden" name="content_type" value="newsletter_cta">
+<input type="hidden" name="source_post" value="">
 <button type="submit" style="padding:10px 24px; background:#fff; color:#0066FF; border:none; border-radius:6px; font-weight:700; font-size:15px; cursor:pointer;">Subscribe Free</button>
 </form>
 <p style="margin:10px 0 0 0; font-size:11px; color:rgba(255,255,255,0.5);">We respect your privacy. Unsubscribe at any time.</p></div>
@@ -973,37 +980,37 @@ ${ga4TrackingScript}`;
    */
   private static readonly CATEGORY_AFFILIATE_KEYWORDS: Record<string, Record<string, string>> = {
     'K-Beauty': {
-      'Olive Young': '',
-      'YesStyle': '',
-      'StyleKorean': '',
-      'COSRX': '',
-      'Innisfree': '',
+      'Olive Young': 'https://global.oliveyoung.com/',
+      'YesStyle': 'https://www.yesstyle.com/',
+      'StyleKorean': 'https://www.stylekorean.com/',
+      'COSRX': 'https://www.cosrx.com/',
+      'Innisfree': 'https://www.innisfree.com/',
     },
     'Korea Travel': {
-      'Klook': '',
-      'KKday': '',
-      'Agoda': '',
-      'T-money': '',
-      'Airalo': '',
+      'Klook': 'https://www.klook.com/',
+      'KKday': 'https://www.kkday.com/',
+      'Agoda': 'https://www.agoda.com/',
+      'T-money': 'https://www.t-money.co.kr/eng/',
+      'Airalo': 'https://www.airalo.com/',
     },
     'Korean Food': {
-      'Maangchi': '',
+      'Maangchi': 'https://www.maangchi.com/',
       'Korean grocery': '',
       'gochugaru': '',
     },
     'Korean Finance': {
-      'Interactive Brokers': '',
-      'Webull': '',
-      'Tiger Brokers': '',
+      'Interactive Brokers': 'https://www.interactivebrokers.com/',
+      'Webull': 'https://www.webull.com/',
+      'Tiger Brokers': 'https://www.tigerbrokers.com/',
     },
     'Korean Tech': {
-      'Samsung Galaxy': '',
-      'LG OLED': '',
+      'Samsung Galaxy': 'https://www.samsung.com/global/galaxy/',
+      'LG OLED': 'https://www.lg.com/us/tvs/oled-tvs/',
     },
     'Korean Language': {
-      'Talk To Me In Korean': '',
-      'LingoDeer': '',
-      'italki': '',
+      'Talk To Me In Korean': 'https://talktomeinkorean.com/',
+      'LingoDeer': 'https://www.lingodeer.com/',
+      'italki': 'https://www.italki.com/',
     },
   };
 
@@ -1049,7 +1056,7 @@ ${ga4TrackingScript}`;
       );
       const match = pattern.exec(result);
       if (match && injectedCount < 3) { // Max 3 affiliate links per post
-        const replacement = `<a href="${affiliateUrl}" target="_blank" rel="noopener noreferrer sponsored" style="color:#0066FF; text-decoration:underline;">${match[1]}</a>`;
+        const replacement = `<a href="${affiliateUrl}" target="_blank" rel="noopener noreferrer sponsored" data-affiliate="true" style="color:#0066FF; text-decoration:underline;">${match[1]}</a>`;
         result = result.slice(0, match.index) + replacement + result.slice(match.index + match[0].length);
         injectedCount++;
         logger.debug(`Affiliate link injected for "${keyword}"`);
@@ -1498,8 +1505,8 @@ ${ga4TrackingScript}`;
       logger.debug(`VideoObject schema: ${Math.min(ytEmbeds.length, 3)} YouTube embed(s) detected`);
     }
 
-    // Product schema for K-Beauty best-x-for-y content (rich results for product searches)
-    if ((options?.contentType === 'best-x-for-y' || options?.contentType === 'product-review') && content.category === 'K-Beauty') {
+    // Product schema for best-x-for-y and product-review content (rich results for product searches)
+    if (options?.contentType === 'best-x-for-y' || options?.contentType === 'product-review') {
       const productItems = this.extractProductItems(htmlEn);
       if (productItems.length >= 2) {
         jsonLdSchemas.push({
@@ -1535,7 +1542,7 @@ ${ga4TrackingScript}`;
             },
           })),
         });
-        logger.debug(`Product schema: ${productItems.length} K-Beauty products prepared for rich results`);
+        logger.debug(`Product schema: ${productItems.length} products prepared for rich results (${content.category})`);
       }
     }
 
@@ -1593,6 +1600,7 @@ ${ga4TrackingScript}`;
           status: publishStatus === 'draft' ? 'draft' : (options?.scheduledDate ? 'future' : 'publish'),
           categories: [categoryId],
           tags: tagIds,
+          comment_status: 'open',
           featured_media: featuredImageId ?? 0,
           meta: {
             rank_math_description: content.ctrMetaDescription || content.metaDescription || validatedExcerpt,
@@ -1618,6 +1626,7 @@ ${ga4TrackingScript}`;
               _autoblog_title_candidates: JSON.stringify(options.titleCandidates),
               _autoblog_title_test_start: nowIso,
             } : {}),
+            ...(options?.subNiche ? { _autoblog_cluster_id: options.subNiche } : {}),
           },
         };
         if (content.slug) {
@@ -1905,11 +1914,20 @@ ${ga4TrackingScript}`;
     const products: Array<{ name: string; description: string; brand?: string; rating?: number; price?: string }> = [];
     // Match numbered headings that likely contain product names
     const regex = /<h[23][^>]*>(?:\d+[.):\s]+|#\d+[:\s]+)?(.*?)<\/h[23]>([\s\S]*?)(?=<h[23]|$)/gi;
-    const kBeautyBrands = [
+    const knownBrands = [
+      // K-Beauty
       'COSRX', 'Innisfree', 'Sulwhasoo', 'Laneige', 'Amorepacific', 'Etude', 'Missha',
       'Klairs', 'Some By Mi', 'Banila Co', 'Tony Moly', 'Heimish', "I'm From", 'Anua',
       'Beauty of Joseon', 'SKIN1004', 'Purito', 'Benton', 'Pyunkang Yul', 'Needly',
       'Mediheal', 'Dr. Jart', 'Mamonde', 'Hera', 'The Face Shop', 'Nature Republic',
+      // Korean Tech
+      'Samsung', 'LG', 'SK Hynix', 'Naver', 'Kakao', 'Hyundai', 'Coupang',
+      // Korean Finance
+      'Interactive Brokers', 'Webull', 'Tiger Brokers', 'Kiwoom', 'Mirae Asset',
+      // Korea Travel
+      'Klook', 'KKday', 'Agoda', 'Korean Air', 'Asiana',
+      // K-Entertainment
+      'HYBE', 'SM Entertainment', 'JYP', 'YG Entertainment',
     ];
     let match;
     while ((match = regex.exec(html)) !== null && products.length < 15) {
@@ -1927,7 +1945,7 @@ ${ga4TrackingScript}`;
       if (description.length < 10) continue;
 
       // Detect brand
-      const brand = kBeautyBrands.find(b => name.toLowerCase().includes(b.toLowerCase()));
+      const brand = knownBrands.find(b => name.toLowerCase().includes(b.toLowerCase()));
 
       // Extract rating (e.g., "8.5/10", "4.5/5", "Overall: 9/10")
       const ratingMatch = section.match(/(?:rating|score|overall)[^<]*?(\d+(?:\.\d+)?)\s*(?:\/\s*(\d+))?/i);
@@ -2746,6 +2764,115 @@ ${ga4TrackingScript}`;
     }
 
     return refreshed;
+  }
+
+  /**
+   * Re-scan existing posts for new internal linking opportunities.
+   * Finds keyword matches between posts and injects links where missing.
+   * Max 7 internal links per post. Runs weekly (checks last run timestamp).
+   */
+  async rescanInternalLinks(existingPosts: ExistingPost[], maxLinksPerPost: number = 7): Promise<number> {
+    const RESCAN_CACHE_FILE = join(dirname(new URL(import.meta.url).pathname), '../../.cache/rescan-links-last.json');
+    const ONE_WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+
+    // Check if we ran within the last week
+    try {
+      if (existsSync(RESCAN_CACHE_FILE)) {
+        const cached = JSON.parse(readFileSync(RESCAN_CACHE_FILE, 'utf-8')) as { lastRun: number };
+        if (Date.now() - cached.lastRun < ONE_WEEK_MS) {
+          logger.debug(`Internal link rescan: skipped (last run ${((Date.now() - cached.lastRun) / 3600000).toFixed(0)}h ago)`);
+          return 0;
+        }
+      }
+    } catch { /* proceed */ }
+
+    if (existingPosts.length < 5) return 0;
+
+    let totalLinksAdded = 0;
+    const postsToUpdate: Array<{ postId: number; content: string }> = [];
+
+    // Build keyword-to-URL map from existing posts
+    const linkMap: Array<{ term: string; url: string; postId: number }> = [];
+    for (const post of existingPosts) {
+      if (!post.postId || !post.url) continue;
+      if (post.keyword && post.keyword.length >= 8) {
+        linkMap.push({ term: post.keyword, url: post.url, postId: post.postId });
+      }
+    }
+
+    if (linkMap.length < 3) return 0;
+
+    // Fetch content for each post and check for missing links
+    for (const post of existingPosts.slice(0, 50)) {
+      if (!post.postId) continue;
+
+      try {
+        const { data } = await this.api.get(`/posts/${post.postId}`, {
+          params: { _fields: 'id,content' },
+        });
+        let content = (data.content?.rendered || '') as string;
+        if (!content || content.length < 200) continue;
+
+        // Count existing internal links
+        const existingLinkCount = (content.match(new RegExp(`href="${this.wpUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`, 'gi')) || []).length;
+        if (existingLinkCount >= maxLinksPerPost) continue;
+
+        let linksAdded = 0;
+        const maxNew = maxLinksPerPost - existingLinkCount;
+
+        for (const candidate of linkMap) {
+          if (linksAdded >= maxNew) break;
+          if (candidate.postId === post.postId) continue;
+          // Skip if already linked to this URL
+          if (content.includes(candidate.url)) continue;
+
+          const termEscaped = candidate.term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          const pattern = new RegExp(
+            `(<p[^>]*>(?:(?!<\\/p>).)*?)\\b(${termEscaped})\\b((?:(?!<\\/p>).)*?<\\/p>)`,
+            'is',
+          );
+          const match = pattern.exec(content);
+          if (!match) continue;
+
+          // Skip if inside an <a> tag
+          const before = match[1];
+          if (before.lastIndexOf('<a ') > before.lastIndexOf('</a>')) continue;
+
+          const link = `<a href="${candidate.url}" style="color:#0066FF; text-decoration:underline;">${match[2]}</a>`;
+          content = content.slice(0, match.index) + match[1] + link + match[3] + content.slice(match.index + match[0].length);
+          linksAdded++;
+        }
+
+        if (linksAdded > 0) {
+          postsToUpdate.push({ postId: post.postId, content });
+          totalLinksAdded += linksAdded;
+        }
+      } catch {
+        // Skip individual post failures
+      }
+    }
+
+    // Batch update posts
+    for (const update of postsToUpdate.slice(0, 10)) {
+      try {
+        await this.api.post(`/posts/${update.postId}`, { content: update.content });
+        logger.debug(`Rescan: added links to post ${update.postId}`);
+      } catch {
+        logger.debug(`Rescan: failed to update post ${update.postId}`);
+      }
+    }
+
+    // Update last run timestamp
+    try {
+      const cacheDir = dirname(RESCAN_CACHE_FILE);
+      if (!existsSync(cacheDir)) mkdirSync(cacheDir, { recursive: true });
+      writeFileSync(RESCAN_CACHE_FILE, JSON.stringify({ lastRun: Date.now() }));
+    } catch { /* non-fatal */ }
+
+    if (totalLinksAdded > 0) {
+      logger.info(`Internal link rescan: added ${totalLinksAdded} new link(s) across ${postsToUpdate.length} post(s)`);
+    }
+    return totalLinksAdded;
   }
 
   async getOrCreateCategory(name: string): Promise<number> {

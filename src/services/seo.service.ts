@@ -106,9 +106,17 @@ export class SeoService {
     // Google Discover eligibility + image preview optimization
     parts.push(`<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />`);
 
-    // Preconnect hints for Google Fonts (LCP optimization)
+    // Preconnect hints for Google Fonts + WordPress uploads (LCP optimization)
     parts.push(`<link rel="preconnect" href="https://fonts.googleapis.com" />`);
     parts.push(`<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />`);
+    // Preconnect to WordPress uploads domain for faster image loading (#5)
+    try {
+      const uploadsHost = new URL(this.wpUrl).host;
+      parts.push(`<link rel="preconnect" href="https://${uploadsHost}" />`);
+    } catch { /* skip if URL parse fails */ }
+    // DNS prefetch for common external resources
+    parts.push(`<link rel="dns-prefetch" href="https://www.googletagmanager.com" />`);
+    parts.push(`<link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />`);
 
     // Verification meta tags
     if (googleCode) parts.push(`<meta name="google-site-verification" content="${googleCode}" />`);
@@ -123,6 +131,7 @@ export class SeoService {
         `document.addEventListener('DOMContentLoaded',function(){` +
         `var st=0;window.addEventListener('scroll',function(){var h=document.documentElement.scrollHeight-window.innerHeight;if(h>0){var p=Math.round(window.scrollY/h*100);if(p>=25&&st<25){st=25;gtag('event','scroll_depth',{percent:25})}if(p>=50&&st<50){st=50;gtag('event','scroll_depth',{percent:50})}if(p>=75&&st<75){st=75;gtag('event','scroll_depth',{percent:75})}if(p>=90&&st<90){st=90;gtag('event','scroll_depth',{percent:90})}}});` +
         `document.querySelectorAll('.ab-share-btn').forEach(function(b){b.addEventListener('click',function(){gtag('event','share',{method:b.textContent.trim()})})});` +
+        `document.querySelectorAll('a[rel*="sponsored"],a[data-affiliate="true"]').forEach(function(a){a.addEventListener('click',function(){gtag('event','affiliate_click',{link_url:a.href,link_text:a.textContent.trim().slice(0,50)})})});` +
         `var t=setTimeout(function(){gtag('event','engaged_reader',{engagement_time:30})},30000);` +
         `document.addEventListener('visibilitychange',function(){if(document.hidden)clearTimeout(t)});` +
         `});\n</script>`);
@@ -1592,6 +1601,84 @@ add_filter('wp_sitemaps_posts_entry', function(\$entry, \$post) {
     } catch (error) {
       const msg = error instanceof Error ? error.message : String(error);
       logger.warn(`Failed to install video sitemap snippet: ${msg}`);
+    }
+  }
+
+  /**
+   * Ensure comment settings are optimized: Akismet active, moderation rules set.
+   * Checks WP discussion settings and enforces anti-spam configuration.
+   */
+  async ensureCommentSettings(): Promise<void> {
+    try {
+      // Check if Akismet plugin is active
+      const { data: plugins } = await this.api.get('/plugins', {
+        params: { search: 'akismet', _fields: 'plugin,status' },
+      }).catch(() => ({ data: [] }));
+
+      const akismet = (plugins as Array<{ plugin: string; status: string }>)
+        .find(p => p.plugin.includes('akismet'));
+
+      if (akismet && akismet.status !== 'active') {
+        try {
+          await this.api.post(`/plugins`, { plugin: akismet.plugin, status: 'active' });
+          logger.info('Akismet plugin activated for spam protection');
+        } catch {
+          logger.info('Akismet: activate manually in WordPress Admin → Plugins');
+        }
+      } else if (!akismet) {
+        logger.info('Akismet: not installed. Install via WordPress Admin → Plugins → Add New → "Akismet"');
+      } else {
+        logger.debug('Akismet is active');
+      }
+
+      // Optimize discussion settings
+      try {
+        await this.api.post('/settings', {
+          default_comment_status: 'open',
+          comment_moderation: true,
+          comment_previously_approved: true,
+          moderation_keys: 'casino\npoker\nloan\nmortgage\ncrypto wallet\nfree money\nbuy followers\nSEO service',
+        });
+        logger.debug('Comment settings optimized: moderation enabled, spam keywords set');
+      } catch {
+        logger.debug('Could not update discussion settings via REST API');
+      }
+    } catch (error) {
+      logger.debug(`Comment settings check failed: ${error instanceof Error ? error.message : error}`);
+    }
+  }
+
+  /**
+   * Batch delete spam comments (older than 7 days).
+   */
+  async cleanupSpamComments(): Promise<number> {
+    try {
+      const { data: spamComments } = await this.api.get('/comments', {
+        params: { status: 'spam', per_page: 100, _fields: 'id,date' },
+      });
+
+      const comments = spamComments as Array<{ id: number; date: string }>;
+      if (comments.length === 0) return 0;
+
+      // Only delete spam older than 7 days
+      const cutoff = Date.now() - 7 * 24 * 60 * 60 * 1000;
+      const toDelete = comments.filter(c => new Date(c.date).getTime() < cutoff);
+
+      let deleted = 0;
+      for (const comment of toDelete.slice(0, 50)) {
+        try {
+          await this.api.delete(`/comments/${comment.id}`, { params: { force: true } });
+          deleted++;
+        } catch { /* skip individual failures */ }
+      }
+
+      if (deleted > 0) {
+        logger.info(`Spam cleanup: deleted ${deleted} spam comment(s)`);
+      }
+      return deleted;
+    } catch (error) {
+      logger.debug(`Spam cleanup failed: ${error instanceof Error ? error.message : error}`);
+      return 0;
     }
   }
 }
