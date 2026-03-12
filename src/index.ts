@@ -853,37 +853,54 @@ async function main(): Promise<void> {
     }
 
     try {
-      // A-1. Keyword research (include batch keywords to avoid cross-niche overlap)
-      const postedKeywords = [...history.getPostedKeywordsForNiche(niche.id), ...batchKeywords];
-      const recentContentTypes = history.getRecentContentTypes(niche.id, 5);
-      const researched = await researchService.researchKeyword(niche, postedKeywords, recentContentTypes);
+      // A-1. Keyword research with duplicate retry loop (up to 3 attempts)
+      const MAX_KEYWORD_ATTEMPTS = 3;
+      let researched: Awaited<ReturnType<typeof researchService.researchKeyword>> | null = null;
+      let hasBreakout = false;
+      const rejectedDupKeywords: string[] = [];
 
-      // A-1.5. Fast-track breakout trends — bypass scheduling for breaking news
-      const hasBreakout = researched.trendsData.some(t => t.hasBreakout);
-      if (hasBreakout) {
-        logger.info(`⚡ BREAKING TREND detected for "${researched.analysis.selectedKeyword}" — fast-tracking publication`);
-        // Prefer news-explainer content type for breakout topics
-        if (researched.analysis.contentType !== 'news-explainer' && niche.contentTypes.includes('news-explainer')) {
-          researched.analysis.contentType = 'news-explainer';
-          logger.info(`  Content type switched to news-explainer for breakout trend`);
+      for (let kwAttempt = 1; kwAttempt <= MAX_KEYWORD_ATTEMPTS; kwAttempt++) {
+        const postedKeywords = [...history.getPostedKeywordsForNiche(niche.id), ...batchKeywords, ...rejectedDupKeywords];
+        const recentContentTypes = history.getRecentContentTypes(niche.id, 5);
+        const candidate = await researchService.researchKeyword(niche, postedKeywords, recentContentTypes);
+
+        // A-1.5. Fast-track breakout trends — bypass scheduling for breaking news
+        hasBreakout = candidate.trendsData.some(t => t.hasBreakout);
+        if (hasBreakout) {
+          logger.info(`⚡ BREAKING TREND detected for "${candidate.analysis.selectedKeyword}" — fast-tracking publication`);
+          if (candidate.analysis.contentType !== 'news-explainer' && niche.contentTypes.includes('news-explainer')) {
+            candidate.analysis.contentType = 'news-explainer';
+            logger.info(`  Content type switched to news-explainer for breakout trend`);
+          }
         }
+
+        // A-2. Check if already posted (history file)
+        if (history.isPosted(candidate.analysis.selectedKeyword, niche.id)) {
+          logger.warn(`Attempt ${kwAttempt}/${MAX_KEYWORD_ATTEMPTS}: Already posted "${candidate.analysis.selectedKeyword}", retrying with different keyword...`);
+          rejectedDupKeywords.push(candidate.analysis.selectedKeyword);
+          continue;
+        }
+
+        // WordPress meta fallback: check existing posts for keyword/title overlap
+        const kwLower = candidate.analysis.selectedKeyword.toLowerCase();
+        const wpDuplicate = existingPosts.find(p => {
+          const titleMatch = p.title.toLowerCase().includes(kwLower) || kwLower.includes(p.title.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim());
+          const keywordMatch = p.keyword && (p.keyword.toLowerCase() === kwLower || p.keyword.toLowerCase().includes(kwLower));
+          return titleMatch || keywordMatch;
+        });
+        if (wpDuplicate) {
+          logger.warn(`Attempt ${kwAttempt}/${MAX_KEYWORD_ATTEMPTS}: WordPress duplicate "${candidate.analysis.selectedKeyword}" matches "${wpDuplicate.title}". Retrying...`);
+          rejectedDupKeywords.push(candidate.analysis.selectedKeyword);
+          continue;
+        }
+
+        // Passed all checks — use this keyword
+        researched = candidate;
+        break;
       }
 
-      // A-2. Skip if already posted (history file + WordPress meta fallback)
-      if (history.isPosted(researched.analysis.selectedKeyword, niche.id)) {
-        logger.info(`Already posted: "${researched.analysis.selectedKeyword}", skipping`);
-        skippedCount++;
-        continue;
-      }
-      // WordPress meta fallback: check existing posts for keyword/title overlap (guards against history file desync)
-      const kwLower = researched.analysis.selectedKeyword.toLowerCase();
-      const wpDuplicate = existingPosts.find(p => {
-        const titleMatch = p.title.toLowerCase().includes(kwLower) || kwLower.includes(p.title.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim());
-        const keywordMatch = p.keyword && (p.keyword.toLowerCase() === kwLower || p.keyword.toLowerCase().includes(kwLower));
-        return titleMatch || keywordMatch;
-      });
-      if (wpDuplicate) {
-        logger.warn(`WordPress duplicate detected: "${researched.analysis.selectedKeyword}" matches existing post "${wpDuplicate.title}" (${wpDuplicate.url}). Skipping.`);
+      if (!researched) {
+        logger.warn(`All ${MAX_KEYWORD_ATTEMPTS} keyword attempts duplicated for "${niche.name}", skipping niche`);
         skippedCount++;
         continue;
       }
