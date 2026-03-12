@@ -21,6 +21,8 @@ const SITE_SCHEMA_SNIPPET_TITLE = 'Auto Blog Site Schema';
 const COMMENT_ENGAGEMENT_SNIPPET_TITLE = 'Auto Blog Comment Engagement';
 const CWV_AUTOFIX_SNIPPET_TITLE = 'Auto Blog CWV Auto-Fix';
 const CRITICAL_CSS_SNIPPET_TITLE = 'Auto Blog Critical CSS';
+const HOMEPAGE_META_SNIPPET_TITLE = 'Auto Blog Homepage Meta Tags';
+const POST_CANONICAL_FALLBACK_SNIPPET_TITLE = 'Auto Blog Canonical Fallback';
 
 export class SeoService {
   private api: AxiosInstance;
@@ -103,8 +105,9 @@ export class SeoService {
     naverCode?: string;
     gaMeasurementId?: string;
     adsensePubId?: string;
+    clarityProjectId?: string;
   }): Promise<void> {
-    const { googleCode, naverCode, gaMeasurementId, adsensePubId } = options;
+    const { googleCode, naverCode, gaMeasurementId, adsensePubId, clarityProjectId } = options;
 
     const parts: string[] = [];
 
@@ -148,6 +151,12 @@ export class SeoService {
         `var t=setTimeout(function(){gtag('event','engaged_reader',{engagement_time:30})},30000);` +
         `document.addEventListener('visibilitychange',function(){if(document.hidden)clearTimeout(t)});` +
         `});\n</script>`);
+    }
+
+    // Microsoft Clarity (behavioral analytics: heatmaps, session recordings)
+    if (clarityProjectId) {
+      parts.push(`<!-- Microsoft Clarity -->`);
+      parts.push(`<script type="text/javascript">\n(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y)})(window,document,"clarity","script","${clarityProjectId}");\n</script>`);
     }
 
     const headerHtml = parts.join('\n');
@@ -503,6 +512,54 @@ add_action('init', function() {
   }
 
   /**
+   * Submit sitemaps to Google Search Console via the Webmasters API.
+   * Uses PUT to register sitemap_index.xml and news-sitemap.xml.
+   * Gracefully handles 403 (service account lacks GSC owner permission).
+   */
+  async submitSitemapToGSC(gscSiteUrl?: string): Promise<void> {
+    if (!gscSiteUrl || !this.indexingSaKey) {
+      logger.debug('GSC sitemap submission skipped: GSC_SITE_URL or SA key not configured');
+      return;
+    }
+
+    const sitemaps = [
+      `${this.wpUrl}/sitemap_index.xml`,
+      `${this.wpUrl}/news-sitemap.xml`,
+    ];
+
+    let accessToken: string;
+    try {
+      accessToken = await getGoogleAccessToken(this.indexingSaKey, 'https://www.googleapis.com/auth/webmasters');
+    } catch (error) {
+      logger.warn(`GSC sitemap auth failed: ${error instanceof Error ? error.message : error}`);
+      return;
+    }
+
+    const encodedSite = encodeURIComponent(gscSiteUrl);
+
+    for (const sitemapUrl of sitemaps) {
+      try {
+        await axios.put(
+          `https://www.googleapis.com/webmasters/v3/sites/${encodedSite}/sitemaps/${encodeURIComponent(sitemapUrl)}`,
+          undefined,
+          {
+            headers: { Authorization: `Bearer ${accessToken}` },
+            timeout: 15000,
+          },
+        );
+        logger.info(`GSC sitemap submitted: ${sitemapUrl}`);
+      } catch (error) {
+        const status = axios.isAxiosError(error) ? error.response?.status : undefined;
+        if (status === 403) {
+          logger.warn(`GSC sitemap 403: service account lacks owner permission for ${gscSiteUrl}`);
+        } else {
+          logger.warn(`GSC sitemap submission failed for ${sitemapUrl}: ${error instanceof Error ? error.message : error}`);
+        }
+      }
+    }
+  }
+
+  /**
    * Fetch robots.txt and warn if User-agent: * has Disallow: / (blocks all crawlers).
    * Sets indexingBlocked=true if crawlers are blocked — requestIndexing() will be skipped.
    */
@@ -611,6 +668,18 @@ add_action('init', function() {
         'rank_math_facebook_image',
         'rank_math_twitter_image',
         'rank_math_twitter_use_facebook_data',
+        'rank_math_canonical_url',
+        'rank_math_primary_category',
+        'rank_math_advanced_robots',
+        'rank_math_facebook_title',
+        'rank_math_facebook_description',
+        'rank_math_twitter_title',
+        'rank_math_twitter_description',
+        'rank_math_schema_Article',
+        'rank_math_pillar_content',
+        'rank_math_news_sitemap_robots',
+        'rank_math_news_sitemap_stock_tickers',
+        'rank_math_news_sitemap_genres',
     ];
     foreach (\$meta_fields as \$field) {
         register_post_meta('post', \$field, [
@@ -651,6 +720,52 @@ add_action('init', function() {
       const msg = error instanceof Error ? error.message : String(error);
       logger.warn(`Failed to install Rank Math REST snippet: ${msg}`);
       logger.warn('Manually add via Code Snippets plugin with title: ' + RANKMATH_REST_SNIPPET_TITLE);
+    }
+  }
+
+  /**
+   * Ensure canonical URL fallback when Rank Math is not active.
+   * Outputs <link rel="canonical"> in wp_head only if Rank Math's canonical is absent.
+   */
+  async ensurePostCanonicalFallbackSnippet(): Promise<void> {
+    const phpCode = `
+// Canonical URL fallback when Rank Math is not active
+add_action('wp_head', function() {
+    if (class_exists('RankMath')) return; // Rank Math handles canonical
+    if (!is_singular()) return;
+    $canonical = get_permalink();
+    $custom = get_post_meta(get_the_ID(), 'rank_math_canonical_url', true);
+    if ($custom) $canonical = $custom;
+    echo '<link rel="canonical" href="' . esc_url($canonical) . '" />' . "\\n";
+}, 1);`.trim();
+
+    try {
+      const { data: snippets } = await axios.get(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      const existing = (snippets as Array<{ id: number; name: string }>)
+        .find((s) => s.name === POST_CANONICAL_FALLBACK_SNIPPET_TITLE);
+
+      if (existing) {
+        await axios.put(
+          `${this.wpUrl}/wp-json/code-snippets/v1/snippets/${existing.id}`,
+          { code: phpCode, active: true },
+          { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+        );
+        logger.info(`Canonical fallback snippet updated (ID=${existing.id})`);
+        return;
+      }
+
+      await axios.post(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { name: POST_CANONICAL_FALLBACK_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 3 },
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      logger.info('Canonical fallback snippet installed via Code Snippets plugin');
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      logger.warn(`Failed to install canonical fallback snippet: ${msg}`);
     }
   }
 
@@ -1745,6 +1860,58 @@ add_action('wp_head', function() {
   }
 
   /**
+   * Install a Code Snippet that adds OG tags, canonical, and meta robots to the homepage.
+   * Rank Math may handle individual posts but can miss the homepage/front page.
+   */
+  async ensureHomepageMetaSnippet(siteName: string, siteDescription: string): Promise<void> {
+    const phpCode = `
+// Add OG tags, canonical, and meta robots to the homepage
+add_action('wp_head', function() {
+    if (!is_front_page() && !is_home()) return;
+    $url = home_url('/');
+    $title = get_bloginfo('name') . ' - ' . get_bloginfo('description');
+    $desc = '${siteDescription.replace(/'/g, "\\'")}';
+    $logo = get_site_icon_url(1200) ?: '';
+    echo '<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />' . "\\n";
+    echo '<link rel="canonical" href="' . esc_url($url) . '" />' . "\\n";
+    echo '<meta property="og:type" content="website" />' . "\\n";
+    echo '<meta property="og:title" content="' . esc_attr($title) . '" />' . "\\n";
+    echo '<meta property="og:description" content="' . esc_attr($desc) . '" />' . "\\n";
+    echo '<meta property="og:url" content="' . esc_url($url) . '" />' . "\\n";
+    echo '<meta property="og:site_name" content="' . esc_attr(get_bloginfo('name')) . '" />' . "\\n";
+    if ($logo) echo '<meta property="og:image" content="' . esc_url($logo) . '" />' . "\\n";
+    echo '<meta name="twitter:card" content="summary_large_image" />' . "\\n";
+    echo '<meta name="twitter:title" content="' . esc_attr($title) . '" />' . "\\n";
+    echo '<meta name="twitter:description" content="' . esc_attr($desc) . '" />' . "\\n";
+}, 1);`.trim();
+
+    try {
+      const { data: snippets } = await axios.get(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      const existing = (snippets as Array<{ id: number; name: string }>).find(s => s.name === HOMEPAGE_META_SNIPPET_TITLE);
+      if (existing) {
+        await axios.put(
+          `${this.wpUrl}/wp-json/code-snippets/v1/snippets/${existing.id}`,
+          { code: phpCode, active: true },
+          { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+        );
+      } else {
+        await axios.post(
+          `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+          { name: HOMEPAGE_META_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 1 },
+          { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+        );
+      }
+      logger.info('Homepage meta tags snippet installed via Code Snippets plugin');
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      logger.warn(`Failed to install homepage meta snippet: ${msg}`);
+    }
+  }
+
+  /**
    * Ensure comment settings are optimized: Akismet active, moderation rules set.
    * Checks WP discussion settings and enforces anti-spam configuration.
    */
@@ -2161,5 +2328,66 @@ add_action('wp_head', function() {
       const msg = error instanceof Error ? error.message : String(error);
       logger.warn(`Failed to install critical CSS snippet: ${msg}`);
     }
+  }
+
+  /**
+   * Check PageSpeed Insights for a URL (PSI API v5 — no API key required).
+   * Returns LCP, CLS, and performance score.
+   */
+  async checkPageSpeedInsights(url: string): Promise<{
+    url: string;
+    performanceScore: number;
+    lcp: number;
+    cls: number;
+    fcp: number;
+    pass: boolean;
+  } | null> {
+    try {
+      const apiUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&category=performance&strategy=mobile`;
+      const { data } = await axios.get(apiUrl, { timeout: 60000 });
+
+      const result = data as {
+        lighthouseResult?: {
+          categories?: { performance?: { score?: number } };
+          audits?: Record<string, { numericValue?: number }>;
+        };
+      };
+
+      const perfScore = (result.lighthouseResult?.categories?.performance?.score ?? 0) * 100;
+      const lcp = result.lighthouseResult?.audits?.['largest-contentful-paint']?.numericValue ?? 0;
+      const cls = result.lighthouseResult?.audits?.['cumulative-layout-shift']?.numericValue ?? 0;
+      const fcp = result.lighthouseResult?.audits?.['first-contentful-paint']?.numericValue ?? 0;
+
+      // Pass if score >= 50 (mobile thresholds are strict)
+      const pass = perfScore >= 50;
+
+      return { url, performanceScore: Math.round(perfScore), lcp: Math.round(lcp), cls: parseFloat(cls.toFixed(3)), fcp: Math.round(fcp), pass };
+    } catch (error) {
+      logger.debug(`PSI check failed for ${url}: ${error instanceof Error ? error.message : error}`);
+      return null;
+    }
+  }
+
+  /**
+   * Check multiple URLs and return failing ones (score < 50 or LCP > 4000ms).
+   */
+  async checkPageSpeedBatch(urls: string[]): Promise<Array<{
+    url: string;
+    performanceScore: number;
+    lcp: number;
+    cls: number;
+    fcp: number;
+    pass: boolean;
+  }>> {
+    const results: Array<{ url: string; performanceScore: number; lcp: number; cls: number; fcp: number; pass: boolean }> = [];
+    // PSI is rate-limited; run sequentially
+    for (const url of urls.slice(0, 5)) {
+      const result = await this.checkPageSpeedInsights(url);
+      if (result) {
+        results.push(result);
+        logger.info(`PSI [${result.performanceScore}] ${url} — LCP: ${result.lcp}ms, CLS: ${result.cls}, FCP: ${result.fcp}ms`);
+      }
+    }
+    return results;
   }
 }

@@ -1682,4 +1682,128 @@ Rules:
       return 0;
     }
   }
+
+  /**
+   * Strengthen striking distance posts (position 5-20) for target queries.
+   * Fetches query-page pairs from GSC, de-duplicates by page, and uses Claude
+   * to add targeted content sections for the highest-impression query per page.
+   */
+  async strengthenStrikingDistancePosts(
+    gscService: GSCAnalyticsService,
+    seoService: SeoService,
+    limit: number = 2,
+  ): Promise<number> {
+    try {
+      const pairs = await gscService.getStrikingDistanceWithPages();
+      if (pairs.length === 0) {
+        logger.debug('No striking distance query-page pairs found');
+        return 0;
+      }
+
+      // De-duplicate by page: pick highest-impression query per page
+      const bestPerPage = new Map<string, typeof pairs[0]>();
+      for (const pair of pairs) {
+        const existing = bestPerPage.get(pair.page);
+        if (!existing || pair.impressions > existing.impressions) {
+          bestPerPage.set(pair.page, pair);
+        }
+      }
+
+      const candidates = Array.from(bestPerPage.values()).slice(0, limit);
+      let strengthened = 0;
+
+      for (const candidate of candidates) {
+        try {
+          // Extract slug from page URL
+          const url = new URL(candidate.page);
+          const slug = url.pathname.replace(/^\/|\/$/g, '');
+          if (!slug) continue;
+
+          // Fetch WP post by slug
+          const { data: posts } = await this.api.get('/posts', {
+            params: { slug, _fields: 'id,title,content,link' },
+          });
+          if (!Array.isArray(posts) || posts.length === 0) continue;
+
+          const post = posts[0] as { id: number; title: { rendered: string }; content: { rendered: string }; link: string };
+          const currentContent = post.content.rendered;
+
+          // Use Claude to strengthen content for target query
+          const strengthenedHtml = await this.strengthenForKeyword(
+            currentContent,
+            candidate.query,
+            post.title.rendered,
+            candidate.position,
+          );
+          if (!strengthenedHtml) continue;
+
+          // Update post
+          await this.api.put(`/posts/${post.id}`, {
+            content: strengthenedHtml,
+          });
+          logger.info(`Strengthened post "${post.title.rendered}" for query "${candidate.query}" (pos ${candidate.position.toFixed(1)})`);
+
+          // Re-index via seoService
+          try {
+            await seoService.requestIndexing(post.link);
+          } catch {
+            // Non-critical
+          }
+
+          strengthened++;
+        } catch (error) {
+          logger.warn(`Failed to strengthen page ${candidate.page}: ${error instanceof Error ? error.message : error}`);
+        }
+      }
+
+      return strengthened;
+    } catch (error) {
+      logger.warn(`Striking distance strengthening failed: ${error instanceof Error ? error.message : error}`);
+      return 0;
+    }
+  }
+
+  /**
+   * Use Claude to strengthen existing content for a target keyword.
+   * Adds a targeted section, FAQ, and improves keyword density without rewriting.
+   */
+  private async strengthenForKeyword(
+    currentHtml: string,
+    targetQuery: string,
+    title: string,
+    currentPosition: number,
+  ): Promise<string | null> {
+    try {
+      const response = await this.claude.messages.create({
+        model: this.model,
+        max_tokens: 4096,
+        messages: [{
+          role: 'user',
+          content: `You are an SEO content editor. A blog post currently ranks at position ${currentPosition.toFixed(1)} for the query "${targetQuery}".
+
+Your task: Strengthen this post to improve its ranking for "${targetQuery}" WITHOUT rewriting the entire article. Make surgical, targeted improvements:
+
+1. Add a new H2 or H3 section (200-300 words) directly addressing "${targetQuery}" — place it where it fits naturally
+2. Add 2-3 FAQ items about "${targetQuery}" in an FAQ section (if none exists, create one before the disclaimer)
+3. Ensure "${targetQuery}" or close variants appear 3-5 more times naturally in existing content
+4. Strengthen the introduction to mention "${targetQuery}" within the first 100 words if not already present
+
+Current post title: ${title}
+Current HTML content:
+${currentHtml.slice(0, 8000)}
+
+Return ONLY the complete updated HTML. Do not add markdown code blocks. Preserve all existing styling, structure, and image placeholders.`,
+        }],
+      });
+
+      const text = response.content[0];
+      if (text.type !== 'text' || text.text.length < 500) return null;
+
+      costTracker.trackApiCall('content-strengthen');
+      return text.text;
+    } catch (error) {
+      logger.warn(`Claude strengthen failed for "${targetQuery}": ${error instanceof Error ? error.message : error}`);
+      return null;
+    }
+  }
 }

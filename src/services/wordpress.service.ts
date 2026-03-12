@@ -2010,7 +2010,7 @@ ${ga4TrackingScript}`;
             rank_math_focus_keyword: options?.keyword || '',
             rank_math_title: content.title,
             rank_math_canonical_url: content.slug ? `${this.wpUrl}/${content.slug}/` : '',
-            rank_math_facebook_title: content.title,
+            rank_math_facebook_title: content.ogTitle || content.title,
             rank_math_facebook_description: content.metaDescription || validatedExcerpt,
             rank_math_facebook_image: options?.ogImageUrl || options?.featuredImageUrl || '',
             rank_math_twitter_title: content.title,

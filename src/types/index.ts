@@ -197,6 +197,8 @@ export interface NicheConfig {
   adSenseRpm?: 'high' | 'medium' | 'low';
   /** Dynamic RPM value learned from GA4 (overrides static tier) */
   dynamicRpmValue?: number;
+  /** Whether this niche is enabled (default true) */
+  enabled?: boolean;
 }
 
 /** Per-category optimal publish timing (override GA4 when no data available) */
@@ -306,6 +308,8 @@ export interface BlogContent {
   pollQuestion?: { question: string; options: string[] };
   /** Product mentions for affiliate link injection */
   productMentions?: Array<{ name: string; category: string }>;
+  /** Shorter social-optimized title for OG/Facebook (max 50 chars) */
+  ogTitle?: string;
 }
 
 /** WordPress 미디어 업로드 결과 */

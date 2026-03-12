@@ -119,6 +119,46 @@ export class GSCAnalyticsService {
   }
 
   /**
+   * Find striking distance keywords with their page URLs.
+   * Queries with dimensions ['query', 'page'] for content strengthening.
+   */
+  async getStrikingDistanceWithPages(): Promise<Array<GSCQueryData & { page: string }>> {
+    try {
+      const accessToken = await this.getAccessToken();
+      const { data } = await axios.post(
+        `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(this.siteUrl)}/searchAnalytics/query`,
+        {
+          startDate: this.getDateString(-28),
+          endDate: this.getDateString(-1),
+          dimensions: ['query', 'page'],
+          rowLimit: 500,
+          dataState: 'final',
+        },
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+          timeout: 15000,
+        },
+      );
+
+      const rows = (data as { rows?: Array<{ keys: string[]; clicks: number; impressions: number; ctr: number; position: number }> }).rows || [];
+      return rows
+        .filter(row => row.impressions >= 10 && row.position >= 5 && row.position <= 20 && row.ctr < 0.05)
+        .map(row => ({
+          query: row.keys[0],
+          page: row.keys[1],
+          clicks: row.clicks,
+          impressions: row.impressions,
+          ctr: row.ctr,
+          position: row.position,
+        }))
+        .sort((a, b) => b.impressions - a.impressions);
+    } catch (error) {
+      logger.warn(`GSC striking distance with pages fetch failed: ${error instanceof Error ? error.message : error}`);
+      return [];
+    }
+  }
+
+  /**
    * Find declining pages: compare last 14 days vs previous 42 days.
    * Uses wider windows to reduce noise from weekly fluctuations.
    */
@@ -1098,6 +1138,119 @@ export class GSCAnalyticsService {
     } catch (error) {
       logger.debug(`PAA fetch failed for "${keyword}": ${error instanceof Error ? error.message : error}`);
       return [];
+    }
+  }
+
+  /**
+   * Generate weekly ranking digest: compare last 7 days vs previous 7 days.
+   * Returns formatted Telegram message with top gainers, losers, new keywords, CTR changes.
+   */
+  async generateWeeklyRankingDigest(): Promise<string | null> {
+    try {
+      const accessToken = await this.getAccessToken();
+
+      // Current week (last 7 days)
+      const { data: currentData } = await axios.post(
+        `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(this.siteUrl)}/searchAnalytics/query`,
+        {
+          startDate: this.getDateString(-7),
+          endDate: this.getDateString(-1),
+          dimensions: ['query'],
+          rowLimit: 200,
+          dataState: 'final',
+        },
+        { headers: { Authorization: `Bearer ${accessToken}` }, timeout: 15000 },
+      );
+
+      // Previous week (8-14 days ago)
+      const { data: previousData } = await axios.post(
+        `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(this.siteUrl)}/searchAnalytics/query`,
+        {
+          startDate: this.getDateString(-14),
+          endDate: this.getDateString(-8),
+          dimensions: ['query'],
+          rowLimit: 200,
+          dataState: 'final',
+        },
+        { headers: { Authorization: `Bearer ${accessToken}` }, timeout: 15000 },
+      );
+
+      type GSCRow = { keys: string[]; clicks: number; impressions: number; ctr: number; position: number };
+      const currentRows = (currentData as { rows?: GSCRow[] }).rows || [];
+      const previousRows = (previousData as { rows?: GSCRow[] }).rows || [];
+
+      if (currentRows.length === 0) return null;
+
+      const prevMap = new Map(previousRows.map(r => [r.keys[0], r]));
+      const currMap = new Map(currentRows.map(r => [r.keys[0], r]));
+
+      // Gainers & losers (by position delta)
+      const changes: Array<{ query: string; prevPos: number; currPos: number; delta: number; impressions: number }> = [];
+      for (const curr of currentRows) {
+        const prev = prevMap.get(curr.keys[0]);
+        if (prev && prev.impressions >= 5 && curr.impressions >= 5) {
+          changes.push({
+            query: curr.keys[0],
+            prevPos: prev.position,
+            currPos: curr.position,
+            delta: prev.position - curr.position, // positive = improved
+            impressions: curr.impressions,
+          });
+        }
+      }
+
+      const gainers = changes.filter(c => c.delta >= 2).sort((a, b) => b.delta - a.delta).slice(0, 5);
+      const losers = changes.filter(c => c.delta <= -2).sort((a, b) => a.delta - b.delta).slice(0, 5);
+
+      // New keywords (in current but not previous)
+      const newKeywords = currentRows
+        .filter(r => !prevMap.has(r.keys[0]) && r.impressions >= 3)
+        .sort((a, b) => b.impressions - a.impressions)
+        .slice(0, 5);
+
+      // CTR changes
+      const totalClicksCurr = currentRows.reduce((s, r) => s + r.clicks, 0);
+      const totalClicksPrev = previousRows.reduce((s, r) => s + r.clicks, 0);
+      const totalImpCurr = currentRows.reduce((s, r) => s + r.impressions, 0);
+      const totalImpPrev = previousRows.reduce((s, r) => s + r.impressions, 0);
+      const avgCtrCurr = totalImpCurr > 0 ? (totalClicksCurr / totalImpCurr) * 100 : 0;
+      const avgCtrPrev = totalImpPrev > 0 ? (totalClicksPrev / totalImpPrev) * 100 : 0;
+
+      // Build message
+      const lines: string[] = [
+        '📊 Weekly Ranking Digest',
+        `📅 ${this.getDateString(-7)} → ${this.getDateString(-1)}`,
+        '',
+        `📈 Clicks: ${totalClicksCurr} (${totalClicksCurr >= totalClicksPrev ? '+' : ''}${totalClicksCurr - totalClicksPrev})`,
+        `👁️ Impressions: ${totalImpCurr} (${totalImpCurr >= totalImpPrev ? '+' : ''}${totalImpCurr - totalImpPrev})`,
+        `🎯 Avg CTR: ${avgCtrCurr.toFixed(1)}% (${avgCtrCurr >= avgCtrPrev ? '+' : ''}${(avgCtrCurr - avgCtrPrev).toFixed(1)}%)`,
+      ];
+
+      if (gainers.length > 0) {
+        lines.push('', '🚀 Top Gainers:');
+        for (const g of gainers) {
+          lines.push(`  "${g.query}" pos ${g.prevPos.toFixed(0)}→${g.currPos.toFixed(0)} (+${g.delta.toFixed(1)})`);
+        }
+      }
+
+      if (losers.length > 0) {
+        lines.push('', '📉 Top Losers:');
+        for (const l of losers) {
+          lines.push(`  "${l.query}" pos ${l.prevPos.toFixed(0)}→${l.currPos.toFixed(0)} (${l.delta.toFixed(1)})`);
+        }
+      }
+
+      if (newKeywords.length > 0) {
+        lines.push('', '🆕 New Keywords:');
+        for (const n of newKeywords) {
+          lines.push(`  "${n.keys[0]}" (${n.impressions} imp, pos ${n.position.toFixed(1)})`);
+        }
+      }
+
+      return lines.join('\n');
+    } catch (error) {
+      logger.warn(`Weekly ranking digest failed: ${error instanceof Error ? error.message : error}`);
+      return null;
     }
   }
 

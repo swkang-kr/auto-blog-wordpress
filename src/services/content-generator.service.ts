@@ -479,6 +479,11 @@ This targets Google's List Featured Snippet for ranking queries.
    - MUST include "Korea", "Korean", or a specific Korean brand/entity
    - Target exactly 50-65 characters
    - For guides/lists: always append (YYYY) for freshness signal
+   - Include at least one POWER WORD or number. Power words include:
+     * Numbers/data: specific figures, percentages, years
+     * Brackets/parentheses: [2026], (Updated), [Free Guide]
+     * Action triggers: "How to", "Why", "Best", "Top", "Ultimate"
+     * Emotional triggers: "Surprising", "Essential", "Proven", "Secret"
    - FORBIDDEN: "changing everything", "game-changer", "things you need to know", "comprehensive guide to"
 
 2. slug: Short, clean evergreen URL slug (3-5 words max, lowercase, hyphens, NO year for evergreen content).
@@ -486,12 +491,15 @@ This targets Google's List Featured Snippet for ranking queries.
 4. Include a CLICKABLE table of contents with anchor links (see HTML rules below)
 5. Use a natural, authoritative English tone with Korea expertise
 6. excerpt: Compelling English meta description, 145-158 characters. MUST:
-   - Open with the PRIMARY KEYWORD verbatim or within 2 words
+   - Front-load the PRIMARY KEYWORD in the first 5 words
+   - Open with an action verb (Discover, Learn, Compare, Explore, Find, Get, See, Master)
    - State ONE concrete outcome the reader gets
    - Include a curiosity gap OR urgency signal
    - Use "you"/"your" at least once
    - End with a complete sentence
    - Count characters carefully: target 145-158
+   - BAD: "This article discusses Korean skincare routines and provides tips for beginners."
+   - GOOD: "Korean skincare routine secrets: discover the 7-step method dermatologists recommend for glass skin. Your complete 2026 guide starts here."
 
 7. tags: 5-10 related English keywords (include Korea-specific terms)
 8. category: One best-fit English category name
@@ -673,7 +681,7 @@ IMPORTANT: Respond with pure JSON only. Do NOT use markdown code blocks (\`\`\`)
 Escape double quotes (") inside field values as \\".
 
 JSON format:
-{"title":"English Title","slug":"topic-keyword","html":"<div style=\\"max-width:760px;...\\">...English content...</div>","excerpt":"English meta description","metaDescription":"SEO-optimized meta description for search results (145-158 chars, include primary keyword, action-oriented)","titleCandidates":["Alternative Title A (different angle)","Alternative Title B (different hook)"],"tags":["tag1","tag2"],"category":"CategoryName","imagePrompts":["A detailed scene of... (50+ words)","...","...","...","..."],"imageCaptions":["Short English caption 1","caption 2","caption 3","caption 4","caption 5"]}
+{"title":"English Title","slug":"topic-keyword","ogTitle":"Short Social Title (max 50 chars)","html":"<div style=\\"max-width:760px;...\\">...English content...</div>","excerpt":"English meta description","metaDescription":"SEO-optimized meta description for search results (145-158 chars, include primary keyword, action-oriented)","titleCandidates":["Alternative Title A (different angle)","Alternative Title B (different hook)"],"tags":["tag1","tag2"],"category":"CategoryName","imagePrompts":["A detailed scene of... (50+ words)","...","...","...","..."],"imageCaptions":["Short English caption 1","caption 2","caption 3","caption 4","caption 5"]}
 
 IMPORTANT for metaDescription: This is separate from excerpt. Write it specifically for Google search results CTR optimization. Include the primary keyword, a benefit/value proposition, and end with a subtle call to action. Target 145-158 characters.
 IMPORTANT for titleCandidates: Provide 2 alternative titles with different angles/hooks than the main title. These will be used for A/B testing.`;

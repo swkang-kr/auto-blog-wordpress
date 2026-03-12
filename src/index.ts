@@ -24,6 +24,7 @@ import { FactCheckService } from './services/fact-check.service.js';
 import { MediumService } from './services/medium.service.js';
 import { EmailAutomationService } from './services/email-automation.service.js';
 import { NaverBlogService } from './services/naver-blog.service.js';
+import { LinkedInService } from './services/linkedin.service.js';
 import { AdSenseApiService } from './services/adsense-api.service.js';
 import type { PostResult, BatchResult, MediaUploadResult } from './types/index.js';
 import { CATEGORY_PUBLISH_TIMING } from './types/index.js';
@@ -125,6 +126,16 @@ async function main(): Promise<void> {
     logger.info('X_API_KEY not set, skipping X promotion');
   }
 
+  const linkedinService =
+    config.LINKEDIN_ACCESS_TOKEN && config.LINKEDIN_PERSON_ID
+      ? new LinkedInService(config.LINKEDIN_ACCESS_TOKEN, config.LINKEDIN_PERSON_ID)
+      : null;
+  if (linkedinService) {
+    logger.info('LinkedIn promotion service enabled');
+  } else {
+    logger.info('LINKEDIN_ACCESS_TOKEN not set, skipping LinkedIn promotion');
+  }
+
   const devtoService = config.DEVTO_API_KEY
     ? new DevToService(config.DEVTO_API_KEY)
     : null;
@@ -188,6 +199,7 @@ async function main(): Promise<void> {
       naverCode: config.NAVER_SITE_VERIFICATION,
       gaMeasurementId: config.GA_MEASUREMENT_ID,
       adsensePubId: config.ADSENSE_PUB_ID || undefined,
+      clarityProjectId: config.CLARITY_PROJECT_ID || undefined,
     });
   } catch (error) {
     logger.warn(`SEO/GA setup failed: ${error instanceof Error ? error.message : error}`);
@@ -282,6 +294,13 @@ async function main(): Promise<void> {
     logger.warn(`Hreflang snippet setup failed: ${error instanceof Error ? error.message : error}`);
   }
 
+  // 2.9c2. Ensure canonical URL fallback when Rank Math is inactive
+  try {
+    await seoService.ensurePostCanonicalFallbackSnippet();
+  } catch (error) {
+    logger.warn(`Canonical fallback snippet setup failed: ${error instanceof Error ? error.message : error}`);
+  }
+
   // 2.9d. Ensure WebSite + Organization JSON-LD schemas (Sitelinks Searchbox + Knowledge Panel)
   try {
     await seoService.ensureSiteSchemaSnippet(config.SITE_NAME, config.SITE_OWNER, {
@@ -336,6 +355,13 @@ async function main(): Promise<void> {
   await seoService.checkRobotsTxt();
   await seoService.checkAndFixIndexingSettings();
   await seoService.verifySitemap();
+
+  // 2.11b. Submit sitemaps to Google Search Console
+  try {
+    await seoService.submitSitemapToGSC(config.GSC_SITE_URL);
+  } catch (error) {
+    logger.warn(`GSC sitemap submission failed: ${error instanceof Error ? error.message : error}`);
+  }
 
   // 2.12. Ensure pillar pages for topic clusters
   try {
@@ -570,6 +596,19 @@ async function main(): Promise<void> {
     }
   }
 
+  // 3.5a2. Weekly ranking digest (Mondays only)
+  if (gscService && new Date().getDay() === 1 && config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
+    try {
+      const digest = await gscService.generateWeeklyRankingDigest();
+      if (digest) {
+        await sendTelegramAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, digest);
+        logger.info('Weekly ranking digest sent to Telegram');
+      }
+    } catch (digestError) {
+      logger.debug(`Weekly ranking digest failed: ${digestError instanceof Error ? digestError.message : digestError}`);
+    }
+  }
+
   // 3.5b. Core Web Vitals monitoring (CrUX API)
   if (gscService) {
     try {
@@ -590,6 +629,25 @@ async function main(): Promise<void> {
       }
     } catch (cwvError) {
       logger.debug(`CWV check failed: ${cwvError instanceof Error ? cwvError.message : cwvError}`);
+    }
+  }
+
+  // 3.5b2. Weekly PageSpeed Insights per-URL check (Mondays only)
+  if (new Date().getDay() === 1) {
+    try {
+      const recentForPsi = await wpService.getRecentPosts(5);
+      const psiUrls = recentForPsi.map(p => p.url).filter(Boolean).slice(0, 5);
+      if (psiUrls.length > 0) {
+        const psiResults = await seoService.checkPageSpeedBatch(psiUrls);
+        const failing = psiResults.filter(r => !r.pass);
+        if (failing.length > 0 && config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
+          const psiMsg = `⚠️ PageSpeed Insights Alert\n${failing.length} URL(s) below threshold:\n` +
+            failing.map(f => `${f.url}\n  Score: ${f.performanceScore} | LCP: ${f.lcp}ms | CLS: ${f.cls}`).join('\n');
+          await sendTelegramAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, psiMsg);
+        }
+      }
+    } catch (psiError) {
+      logger.debug(`PageSpeed Insights check failed: ${psiError instanceof Error ? psiError.message : psiError}`);
     }
   }
 
@@ -1506,6 +1564,11 @@ async function main(): Promise<void> {
         await twitterService.promoteBlogPost(content, post);
       }
 
+      // B-6b. LinkedIn promotion (optional)
+      if (linkedinService) {
+        await linkedinService.promoteBlogPost(content.title, content.excerpt, post.url, featuredMediaResult?.sourceUrl || undefined);
+      }
+
       // B-7/8: Syndication with 24h delay (prevents duplicate content — original must index first)
       const SYNDICATION_DELAY_MS = 24 * 60 * 60 * 1000; // 24 hours
       const syndicationScheduledAt = new Date(Date.now() + SYNDICATION_DELAY_MS).toISOString();
@@ -1792,6 +1855,23 @@ async function main(): Promise<void> {
     }
   } catch (error) {
     logger.warn(`Partial data refresh failed: ${error instanceof Error ? error.message : error}`);
+  }
+
+  // 4.22d. Striking distance post strengthening (position 5-20 → strengthen for target query)
+  if (config.GSC_SITE_URL && config.GOOGLE_INDEXING_SA_KEY && elapsedMinutes < REWRITE_TIME_BUDGET_MIN) {
+    try {
+      const gscForStrength = new GSCAnalyticsService(config.GSC_SITE_URL, config.GOOGLE_INDEXING_SA_KEY);
+      const strengthService = new ContentRefreshService(
+        config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD,
+        config.ANTHROPIC_API_KEY, config.CLAUDE_MODEL,
+      );
+      const strengthened = await strengthService.strengthenStrikingDistancePosts(gscForStrength, seoService, 2);
+      if (strengthened > 0) {
+        logger.info(`Striking distance: Strengthened ${strengthened} post(s) for better ranking`);
+      }
+    } catch (error) {
+      logger.warn(`Striking distance strengthening failed: ${error instanceof Error ? error.message : error}`);
+    }
   }
 
   // 4.22c. Content lifecycle: noindex stale time-sensitive content (>6 months)

@@ -252,15 +252,19 @@ export function validateContent(
     structureScore -= 8;
   }
 
-  // 2. Internal links count
+  // 2. Internal links count (scaled by word count: ~1 link per 500 words, minimum 3)
   const internalLinkRegex = new RegExp(`<a\\s+[^>]*href="${escapeRegex(siteUrl)}[^"]*"[^>]*>`, 'gi');
   const internalLinkCount = (html.match(internalLinkRegex) || []).length;
+  const internalLinkTarget = Math.max(3, Math.floor(wordCount / 500));
   if (internalLinkCount === 0) {
-    issues.push({ category: 'structure', message: 'No internal links found (need 2-4)', severity: 'error' });
+    issues.push({ category: 'structure', message: `No internal links found (need ${internalLinkTarget})`, severity: 'error' });
     structureScore -= 5;
-  } else if (internalLinkCount < 2) {
-    warnings.push({ category: 'structure', message: `Only ${internalLinkCount} internal link(s) (target 2-4)`, severity: 'warning' });
-    structureScore -= 2;
+  } else if (internalLinkCount < Math.ceil(internalLinkTarget * 0.5)) {
+    warnings.push({ category: 'structure', message: `Only ${internalLinkCount} internal link(s) (target ${internalLinkTarget}, <50%)`, severity: 'warning' });
+    structureScore -= 3;
+  } else if (internalLinkCount < internalLinkTarget) {
+    warnings.push({ category: 'structure', message: `${internalLinkCount} internal link(s) below target ${internalLinkTarget}`, severity: 'info' });
+    structureScore -= 1;
   }
 
   // 3. External links count (includes both <a target="_blank"> and <cite data-source> tags)

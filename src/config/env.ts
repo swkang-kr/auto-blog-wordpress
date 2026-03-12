@@ -107,6 +107,11 @@ const envSchema = z.object({
   NAVER_BLOG_ID: z.string().default(''),
   NAVER_CLIENT_ID: z.string().default(''),
   NAVER_CLIENT_SECRET: z.string().default(''),
+  // Microsoft Clarity — behavioral analytics (heatmaps, session recordings)
+  CLARITY_PROJECT_ID: z.string().default(''),
+  // LinkedIn — auto-share published posts (requires Marketing API access token)
+  LINKEDIN_ACCESS_TOKEN: z.string().default(''),
+  LINKEDIN_PERSON_ID: z.string().default(''),
 });
 
 export type AppConfig = z.infer<typeof envSchema>;
