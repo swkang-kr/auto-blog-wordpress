@@ -81,6 +81,8 @@ const envSchema = z.object({
   LEAD_MAGNET_URL: z.string().default(''),
   // Lead magnet title (e.g., "Free Korea Investment Guide 2026")
   LEAD_MAGNET_TITLE: z.string().default(''),
+  // Per-niche lead magnet URLs (JSON: {"Korean Tech":"https://...","K-Beauty":"https://..."})
+  LEAD_MAGNET_MAP: z.string().default(''),
   // RPM overrides: JSON object of niche → actual RPM from AdSense (e.g., '{"Korean Finance":14.5}')
   ADSENSE_RPM_OVERRIDES: z.string().default(''),
   // Reddit OAuth API credentials (optional — falls back to public JSON API if not set)
@@ -112,6 +114,9 @@ const envSchema = z.object({
   // LinkedIn — auto-share published posts (requires Marketing API access token)
   LINKEDIN_ACCESS_TOKEN: z.string().default(''),
   LINKEDIN_PERSON_ID: z.string().default(''),
+  // Reddit posting — auto-submit links to relevant subreddits (script app, password grant)
+  REDDIT_POST_USERNAME: z.string().default(''),
+  REDDIT_POST_PASSWORD: z.string().default(''),
 });
 
 export type AppConfig = z.infer<typeof envSchema>;

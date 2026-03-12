@@ -408,6 +408,10 @@ export interface PostHistoryEntry {
   activeExcerptVariant?: number;
   /** Search intent classification for funnel stage mapping */
   searchIntent?: string;
+  /** Featured image URL for performance tracking and reuse */
+  featuredImageUrl?: string;
+  /** Featured image WordPress media ID */
+  featuredImageMediaId?: number;
 }
 
 /** Ranking milestone event for Telegram alerts */

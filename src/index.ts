@@ -25,6 +25,7 @@ import { MediumService } from './services/medium.service.js';
 import { EmailAutomationService } from './services/email-automation.service.js';
 import { NaverBlogService } from './services/naver-blog.service.js';
 import { LinkedInService } from './services/linkedin.service.js';
+import { RedditPostService } from './services/reddit-post.service.js';
 import { AdSenseApiService } from './services/adsense-api.service.js';
 import type { PostResult, BatchResult, MediaUploadResult } from './types/index.js';
 import { CATEGORY_PUBLISH_TIMING } from './types/index.js';
@@ -134,6 +135,16 @@ async function main(): Promise<void> {
     logger.info('LinkedIn promotion service enabled');
   } else {
     logger.info('LINKEDIN_ACCESS_TOKEN not set, skipping LinkedIn promotion');
+  }
+
+  const redditPostService =
+    config.REDDIT_CLIENT_ID && config.REDDIT_CLIENT_SECRET && config.REDDIT_POST_USERNAME && config.REDDIT_POST_PASSWORD
+      ? new RedditPostService(config.REDDIT_CLIENT_ID, config.REDDIT_CLIENT_SECRET, config.REDDIT_POST_USERNAME, config.REDDIT_POST_PASSWORD)
+      : null;
+  if (redditPostService) {
+    logger.info('Reddit auto-posting service enabled');
+  } else {
+    logger.info('REDDIT_POST_USERNAME not set, skipping Reddit posting');
   }
 
   const devtoService = config.DEVTO_API_KEY
@@ -301,6 +312,13 @@ async function main(): Promise<void> {
     logger.warn(`Canonical fallback snippet setup failed: ${error instanceof Error ? error.message : error}`);
   }
 
+  // 2.9c3. Ensure GDPR cookie consent banner (Google Consent Mode v2)
+  try {
+    await seoService.ensureCookieConsentSnippet();
+  } catch (error) {
+    logger.warn(`Cookie consent snippet setup failed: ${error instanceof Error ? error.message : error}`);
+  }
+
   // 2.9d. Ensure WebSite + Organization JSON-LD schemas (Sitelinks Searchbox + Knowledge Panel)
   try {
     await seoService.ensureSiteSchemaSnippet(config.SITE_NAME, config.SITE_OWNER, {
@@ -377,7 +395,21 @@ async function main(): Promise<void> {
     logger.warn(`Pillar/Author/FAQ pages update failed: ${error instanceof Error ? error.message : error}`);
   }
 
-  // 2.12d. AdSense API: auto-collect RPM data per niche (replaces manual ADSENSE_RPM_OVERRIDES)
+  // 2.12d. Series hub pages (aggregate all posts in a content series)
+  try {
+    const seriesIds = history.getAllSeriesIds();
+    if (seriesIds.length > 0) {
+      const seriesMap = new Map<string, import('./types/index.js').PostHistoryEntry[]>();
+      for (const sid of seriesIds) {
+        seriesMap.set(sid, history.getSeriesEntries(sid));
+      }
+      await pagesService.ensureSeriesHubPages(seriesMap, config.SITE_NAME);
+    }
+  } catch (error) {
+    logger.warn(`Series hub pages update failed: ${error instanceof Error ? error.message : error}`);
+  }
+
+  // 2.12e. AdSense API: auto-collect RPM data per niche (replaces manual ADSENSE_RPM_OVERRIDES)
   if (config.ADSENSE_SA_KEY && config.ADSENSE_ACCOUNT_ID) {
     try {
       const adsenseApi = new AdSenseApiService(config.ADSENSE_ACCOUNT_ID, config.ADSENSE_SA_KEY);
@@ -563,7 +595,9 @@ async function main(): Promise<void> {
             ).join('\n') +
             '\nOptimize content for these queries using paragraph/list/table format matching the snippet type.';
           insightParts.push(snippetInsight);
-          logger.info(`Featured snippet: ${snippetOpps.length} opportunity(ies) detected`);
+          // Feed snippet opportunities into content generator for format optimization
+          contentService.setSnippetOpportunities(snippetOpps.slice(0, 5));
+          logger.info(`Featured snippet: ${snippetOpps.length} opportunity(ies) detected and fed to content generator`);
         }
       } catch (snippetErr) {
         logger.debug(`Featured snippet detection failed: ${snippetErr instanceof Error ? snippetErr.message : snippetErr}`);
@@ -1245,7 +1279,7 @@ async function main(): Promise<void> {
           featuredMediaResult = await wpService.uploadMedia(fallbackBuffer, filename, `${keyword} featured image`);
           logger.info(`Fallback ${config.IMAGE_FORMAT.toUpperCase()} placeholder uploaded for "${keyword}" (${(fallbackBuffer.length / 1024).toFixed(0)}KB)`);
         } catch (fallbackError) {
-          throw new Error(`Featured image required but all attempts failed for "${keyword}": ${fallbackError instanceof Error ? fallbackError.message : fallbackError}`);
+          logger.warn(`All image generation attempts failed for "${keyword}": ${fallbackError instanceof Error ? fallbackError.message : fallbackError}. Publishing without featured image.`);
         }
       }
 
@@ -1267,7 +1301,7 @@ async function main(): Promise<void> {
       }
 
       // B-3.5. Use featured image as OG image (better social CTR than generated text overlays)
-      const ogImageUrl = featuredMediaResult.sourceUrl;
+      const ogImageUrl = featuredMediaResult?.sourceUrl || '';
 
       // B-3.7. Generate cluster navigation HTML for related articles
       const clusterNavHtml = topicClusterService.generateClusterNavHtml(niche.id, '');
@@ -1371,13 +1405,19 @@ async function main(): Promise<void> {
       // Inject lead magnet mention for all niches with lead magnets
       content.html = wpService.injectLeadMagnetMention(content.html, niche.category);
 
-      // Enhanced lead magnet with category-specific CTA (requires LEAD_MAGNET_URL)
-      if (config.LEAD_MAGNET_URL) {
-        content.html = wpService.injectEnhancedLeadMagnet(
-          content.html, niche.category,
-          config.LEAD_MAGNET_URL,
-          config.LEAD_MAGNET_TITLE || `Free ${niche.category} Guide`,
-        );
+      // Enhanced lead magnet with category-specific CTA (supports per-niche URLs via LEAD_MAGNET_MAP)
+      {
+        const leadMagnetMap: Record<string, string> = config.LEAD_MAGNET_MAP
+          ? (() => { try { return JSON.parse(config.LEAD_MAGNET_MAP); } catch { return {}; } })()
+          : {};
+        const nicheLeadUrl = leadMagnetMap[niche.category] || config.LEAD_MAGNET_URL;
+        if (nicheLeadUrl) {
+          content.html = wpService.injectEnhancedLeadMagnet(
+            content.html, niche.category,
+            nicheLeadUrl,
+            config.LEAD_MAGNET_TITLE || `Free ${niche.category} Guide`,
+          );
+        }
       }
 
       // Content upgrade CTA (content-type-specific downloadable resource)
@@ -1449,16 +1489,25 @@ async function main(): Promise<void> {
         }
       }
 
+      // B-3.99. Inject contextual internal links within post body
+      content.html = WordPressService.injectContextualInternalLinks(
+        content.html, existingPosts, researched.analysis.selectedKeyword, config.WP_URL, 3,
+      );
+
       // B-4. Create WordPress post (English only)
+      // Get cluster-aware related posts for enhanced related posts widget
+      const clusterRelatedPosts = topicClusterService.getRelatedPostsByCluster(
+        niche.id, researched.analysis.selectedKeyword, existingPosts, 4,
+      );
       const post = await wpService.createPost(
         content,
-        featuredMediaResult.mediaId,
+        featuredMediaResult?.mediaId || 0,
         inlineImages,
         {
           contentType: researched.analysis.contentType,
           keyword: researched.analysis.selectedKeyword,
-          featuredImageUrl: featuredMediaResult.sourceUrl,
-          ogImageUrl,
+          featuredImageUrl: featuredMediaResult?.sourceUrl,
+          ogImageUrl: featuredMediaResult?.sourceUrl || '',
           publishStatus: effectivePublishStatus,
           existingPosts,
           scheduledDate,
@@ -1471,6 +1520,7 @@ async function main(): Promise<void> {
           affiliateMap: config.AFFILIATE_MAP ? (() => { try { return JSON.parse(config.AFFILIATE_MAP); } catch { return {}; } })() : undefined,
           selectedPersona,
           isNewPublisher,
+          clusterRelatedPosts: clusterRelatedPosts.length > 0 ? clusterRelatedPosts : undefined,
         },
       );
 
@@ -1523,12 +1573,12 @@ async function main(): Promise<void> {
                 tags: koreanVersion.tags,
                 slug: content.slug ? `ko-${content.slug}` : undefined,
               },
-              featuredMediaResult.mediaId,
+              featuredMediaResult?.mediaId || 0,
               undefined,
               {
                 contentType: researched.analysis.contentType,
                 keyword: koreanKeywords?.koreanKeyword || researched.analysis.selectedKeyword,
-                featuredImageUrl: featuredMediaResult.sourceUrl,
+                featuredImageUrl: featuredMediaResult?.sourceUrl,
                 publishStatus: effectivePublishStatus,
                 skipInlineCss: postCssSnippetActive,
               },
@@ -1559,14 +1609,57 @@ async function main(): Promise<void> {
       await seoService.notifyIndexNow([post.url]);
       await seoService.pingSitemap();
 
-      // B-6. X (Twitter) promotion (optional)
-      if (twitterService) {
-        await twitterService.promoteBlogPost(content, post);
+      // B-6. Social posting: Twitter/LinkedIn deferred 2h for engagement optimization, Pinterest stays immediate
+      const SOCIAL_DELAY_MS = 2 * 60 * 60 * 1000; // 2 hours
+      const socialScheduledAt = new Date(Date.now() + SOCIAL_DELAY_MS).toISOString();
+      const socialPlatforms: string[] = [];
+      if (twitterService) socialPlatforms.push('twitter');
+      if (linkedinService) socialPlatforms.push('linkedin');
+
+      if (socialPlatforms.length > 0) {
+        try {
+          await wpService.updatePostMeta(post.postId, {
+            _autoblog_social_scheduled: socialScheduledAt,
+            _autoblog_social_platforms: socialPlatforms.join(','),
+          });
+          logger.info(`Social posting scheduled for ${socialScheduledAt} (2h delay): ${socialPlatforms.join(', ')}`);
+        } catch (socialMetaError) {
+          logger.debug(`Social scheduling meta save failed: ${socialMetaError instanceof Error ? socialMetaError.message : socialMetaError}`);
+          // Fallback: post immediately if meta save fails
+          if (twitterService) await twitterService.promoteBlogPost(content, post);
+          if (linkedinService) await linkedinService.promoteBlogPost(content.title, content.excerpt, post.url, featuredMediaResult?.sourceUrl || undefined);
+        }
       }
 
-      // B-6b. LinkedIn promotion (optional)
-      if (linkedinService) {
-        await linkedinService.promoteBlogPost(content.title, content.excerpt, post.url, featuredMediaResult?.sourceUrl || undefined);
+      // Execute previously scheduled social posts that are now due
+      const pendingSocial = history.getAllEntries()
+        .filter(e => {
+          const meta = e as unknown as Record<string, unknown>;
+          return meta._autoblog_social_scheduled &&
+                 new Date(meta._autoblog_social_scheduled as string).getTime() <= Date.now();
+        });
+      for (const pending of pendingSocial.slice(0, 3)) {
+        try {
+          const meta = pending as unknown as Record<string, { _autoblog_social_platforms?: string }>;
+          const platforms = (meta._autoblog_social_platforms as unknown as string || '').split(',');
+          if (platforms.includes('twitter') && twitterService && pending.postUrl) {
+            await twitterService.promoteBlogPost(
+              { title: pending.originalTitle || pending.keyword, html: '', excerpt: '', tags: [], category: '', imagePrompts: [], imageCaptions: [], qualityScore: 0, metaDescription: '', slug: '' } as any,
+              { url: pending.postUrl, postId: pending.postId || 0 } as any,
+            );
+            logger.info(`Deferred Twitter post executed for "${pending.keyword}"`);
+          }
+          if (platforms.includes('linkedin') && linkedinService && pending.postUrl) {
+            await linkedinService.promoteBlogPost(pending.originalTitle || pending.keyword, '', pending.postUrl);
+            logger.info(`Deferred LinkedIn post executed for "${pending.keyword}"`);
+          }
+          // Clear the schedule meta
+          if (pending.postId) {
+            await wpService.updatePostMeta(pending.postId, { _autoblog_social_scheduled: '', _autoblog_social_platforms: '' });
+          }
+        } catch (deferredSocialErr) {
+          logger.debug(`Deferred social post failed: ${deferredSocialErr instanceof Error ? deferredSocialErr.message : deferredSocialErr}`);
+        }
       }
 
       // B-7/8: Syndication with 24h delay (prevents duplicate content — original must index first)
@@ -1625,7 +1718,19 @@ async function main(): Promise<void> {
 
       // B-8.5. Pinterest auto-pin (optional, visual categories only — immediate, benefits from freshness)
       if (pinterestService && PinterestService.isEligible(niche.category)) {
-        await pinterestService.pinBlogPost(content, post, featuredMediaResult.sourceUrl);
+        await pinterestService.pinBlogPost(content, post, featuredMediaResult?.sourceUrl || '');
+      }
+
+      // B-8.5b. Reddit auto-posting (optional)
+      if (redditPostService) {
+        try {
+          const redditCount = await redditPostService.autoPost(niche.category, content.title, post.url);
+          if (redditCount > 0) {
+            logger.info(`Reddit: Posted to ${redditCount} subreddit(s) for "${researched.analysis.selectedKeyword}"`);
+          }
+        } catch (redditError) {
+          logger.debug(`Reddit posting failed: ${redditError instanceof Error ? redditError.message : redditError}`);
+        }
       }
 
       // B-8.6. Medium syndication (deferred 24h for canonical indexing)
@@ -1700,6 +1805,8 @@ async function main(): Promise<void> {
         titleCandidates: content.titleCandidates,
         originalTitle: content.title,
         searchIntent: researched.analysis.searchIntent || undefined,
+        featuredImageUrl: featuredMediaResult?.sourceUrl,
+        featuredImageMediaId: featuredMediaResult?.mediaId,
         ...(seriesId ? { seriesId, seriesPart } : {}),
         ...(koreanPostUrl ? { koreanPostUrl } : {}),
       });
@@ -1744,6 +1851,48 @@ async function main(): Promise<void> {
     }
   } catch (error) {
     logger.warn(`Broken link check failed: ${error instanceof Error ? error.message : error}`);
+  }
+
+  // 4.1c. Link rot detection on Mondays — check last 50 posts for dead external links
+  if (new Date().getDay() === 1) {
+    try {
+      const linkRotPosts = await wpService.getRecentPosts(50);
+      const token = Buffer.from(`${config.WP_USERNAME}:${config.WP_APP_PASSWORD}`).toString('base64');
+      const linkApi = axios.create({
+        baseURL: `${config.WP_URL}/wp-json/wp/v2`,
+        headers: { Authorization: `Basic ${token}` },
+        timeout: 30000,
+      });
+      const brokenLinks: Array<{ postTitle: string; linkUrl: string; status: number }> = [];
+      for (const p of linkRotPosts.slice(0, 50)) {
+        try {
+          const { data } = await linkApi.get(`/posts/${p.postId}`, { params: { _fields: 'content' } });
+          const html = (data as { content: { rendered: string } }).content.rendered;
+          const extLinks: string[] = [];
+          const re = /href="(https?:\/\/[^"]+)"/gi;
+          let m;
+          while ((m = re.exec(html)) !== null) {
+            if (!m[1].includes('youtube.com') && !m[1].includes('schema.org')) extLinks.push(m[1]);
+          }
+          for (const link of [...new Set(extLinks)].slice(0, 5)) {
+            try {
+              const resp = await axios.head(link, { timeout: 8000, maxRedirects: 5, validateStatus: () => true });
+              if (resp.status >= 400) brokenLinks.push({ postTitle: p.title, linkUrl: link, status: resp.status });
+            } catch { brokenLinks.push({ postTitle: p.title, linkUrl: link, status: 0 }); }
+          }
+        } catch { /* skip individual post errors */ }
+      }
+      if (brokenLinks.length > 0) {
+        logger.warn(`Link rot check: ${brokenLinks.length} broken link(s) detected`);
+        if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
+          const lrMsg = `🔗 Link Rot: ${brokenLinks.length} broken link(s)\n` +
+            brokenLinks.slice(0, 8).map(b => `[${b.status}] ${b.linkUrl}\n  in: "${b.postTitle}"`).join('\n');
+          await sendTelegramAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, lrMsg);
+        }
+      }
+    } catch (linkRotError) {
+      logger.debug(`Link rot check failed: ${linkRotError instanceof Error ? linkRotError.message : linkRotError}`);
+    }
   }
 
   // 4.2. Auto-rewrite underperforming posts (when enabled, with timeout guard)
@@ -2670,7 +2819,25 @@ async function main(): Promise<void> {
   }
 }
 
+// Global unhandled error handlers — prevent silent hangs
+process.on('unhandledRejection', (reason) => {
+  logger.error(`Unhandled Promise rejection: ${reason instanceof Error ? reason.message : String(reason)}`);
+  process.exit(1);
+});
+process.on('uncaughtException', (error) => {
+  logger.error(`Uncaught exception: ${error.message}`);
+  process.exit(1);
+});
+
+// Batch-level timeout (40 min) — prevent exceeding GitHub Actions 45-min limit
+const BATCH_TIMEOUT_MS = 40 * 60 * 1000;
+const batchTimer = setTimeout(() => {
+  logger.error(`Batch timeout: exceeded ${BATCH_TIMEOUT_MS / 60000} minutes. Forcing exit.`);
+  process.exit(1);
+}, BATCH_TIMEOUT_MS);
+batchTimer.unref(); // Don't block process exit
+
 main().catch((error) => {
   logger.error(`Fatal error: ${error instanceof Error ? error.message : error}`);
   process.exit(1);
-});
+}).finally(() => clearTimeout(batchTimer));

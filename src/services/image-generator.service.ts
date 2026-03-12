@@ -3,6 +3,7 @@ import sharp from 'sharp';
 import { logger } from '../utils/logger.js';
 import { ImageGenerationError } from '../types/errors.js';
 import { costTracker } from '../utils/cost-tracker.js';
+import { circuitBreakers } from '../utils/retry.js';
 import type { ImageResult } from '../types/index.js';
 
 const TARGET_MAX_KB = 200;
@@ -150,6 +151,12 @@ export class ImageGeneratorService {
 
     const fullPrompt = prompt + styleSuffix;
 
+    // Circuit breaker: skip if Gemini API is consistently failing
+    if (circuitBreakers.gemini.isOpen()) {
+      logger.warn(`Image ${index + 1}: Gemini circuit breaker OPEN, skipping`);
+      return null;
+    }
+
     const MAX_RETRIES = 3;
     for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
       try {
@@ -191,6 +198,7 @@ export class ImageGeneratorService {
           }
 
           costTracker.addImageCall(1);
+          circuitBreakers.gemini.recordSuccess();
           const compressedBuffer = await this.convertImage(imageBuffer);
           logger.info(`Image ${index + 1} generated & compressed to ${this.imageFormat.toUpperCase()} (${(compressedBuffer.length / 1024).toFixed(0)}KB)`);
           return compressedBuffer;
@@ -213,6 +221,7 @@ export class ImageGeneratorService {
           await new Promise(r => setTimeout(r, delay));
           continue;
         }
+        circuitBreakers.gemini.recordFailure();
         logger.warn(new ImageGenerationError(`Image ${index + 1} generation failed: ${detail}`, error).message);
         return null;
       }

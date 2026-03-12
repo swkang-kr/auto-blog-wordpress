@@ -1,6 +1,6 @@
 import axios, { type AxiosInstance } from 'axios';
 import { logger } from '../utils/logger.js';
-import type { ExistingPost, NicheConfig, AuthorProfile } from '../types/index.js';
+import type { ExistingPost, NicheConfig, AuthorProfile, PostHistoryEntry } from '../types/index.js';
 import { NICHE_AUTHOR_PROFILES } from '../types/index.js';
 
 interface PageConfig {
@@ -783,6 +783,92 @@ ${faqHtml}
       }
     } catch (error) {
       logger.warn(`FAQ page failed: ${error instanceof Error ? error.message : error}`);
+    }
+  }
+
+  /**
+   * Create/update hub pages for content series with 2+ posts.
+   * Each series gets a /series/{slug}/ page listing all parts in order.
+   */
+  async ensureSeriesHubPages(
+    seriesEntries: Map<string, PostHistoryEntry[]>,
+    siteName: string,
+  ): Promise<void> {
+    for (const [seriesId, entries] of seriesEntries) {
+      if (entries.length < 2) continue;
+
+      const slug = `series-${seriesId}`;
+      const seriesTitle = seriesId
+        .split('-')
+        .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+        .join(' ');
+
+      const itemListSchema = JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        name: `${seriesTitle} Series`,
+        numberOfItems: entries.length,
+        itemListElement: entries.map((e, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          url: e.postUrl,
+          name: e.keyword,
+        })),
+      });
+
+      const postsHtml = entries.map((e, i) => {
+        const partLabel = `Part ${e.seriesPart || i + 1}`;
+        const date = new Date(e.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        return `<div style="display:flex; gap:16px; align-items:flex-start; margin:0 0 12px 0; padding:16px 20px; background:#fff; border:1px solid #e5e7eb; border-radius:8px;">
+<span style="flex-shrink:0; width:36px; height:36px; border-radius:50%; background:#0066FF; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px;">${e.seriesPart || i + 1}</span>
+<div>
+<a href="${e.postUrl}" style="font-size:15px; font-weight:600; color:#222; text-decoration:none; line-height:1.5;">${this.escapeHtml(e.keyword)}</a>
+<p style="margin:4px 0 0 0; font-size:13px; color:#888;">${partLabel} · ${date}</p>
+</div>
+</div>`;
+      }).join('\n');
+
+      const niche = entries[0].niche || 'General';
+      const content = `<script type="application/ld+json">${itemListSchema}</script>
+<div style="${S.wrapper}">
+<h2 style="${S.h2}">${this.escapeHtml(seriesTitle)} Series</h2>
+<div style="${S.infoBox}">
+<p style="margin:0; font-size:15px; color:#555; line-height:1.6;">
+<strong>${entries.length}-Part Series</strong> · Topic: ${this.escapeHtml(niche)} · Follow this series from start to finish for a complete understanding of ${this.escapeHtml(seriesTitle.toLowerCase())}.
+</p>
+</div>
+
+<h3 style="${S.h3}">All Parts in Reading Order</h3>
+${postsHtml}
+
+<div style="${S.highlightBox}">
+<p style="margin:0; line-height:1.7; color:#555;">This series is updated as new parts are published. Bookmark this page to stay current with the latest additions.</p>
+</div>
+
+<p style="margin:40px 0 0 0; padding-top:20px; border-top:1px solid #eee; font-size:13px; color:#999;">Part of the ${this.escapeHtml(siteName)} content library. New parts added regularly.</p>
+</div>`;
+
+      try {
+        const existingId = await this.getPageId(slug);
+        if (existingId) {
+          await this.api.post(`/pages/${existingId}`, {
+            title: `${seriesTitle} Series — ${siteName}`,
+            content,
+            status: 'publish',
+          });
+          logger.info(`Series hub page updated: /${slug} (${entries.length} parts)`);
+        } else {
+          await this.api.post('/pages', {
+            title: `${seriesTitle} Series — ${siteName}`,
+            slug,
+            content,
+            status: 'publish',
+          });
+          logger.info(`Series hub page created: /${slug} (${entries.length} parts)`);
+        }
+      } catch (error) {
+        logger.warn(`Series hub page failed for "${seriesId}": ${error instanceof Error ? error.message : error}`);
+      }
     }
   }
 

@@ -696,6 +696,7 @@ export class ContentGeneratorService {
   private authorTwitter: string;
   private monetizationContext: string;
   private competitiveContext: string;
+  private snippetContext: string;
   constructor(apiKey: string, siteOwner?: string, siteUrl?: string, minQualityScore?: number, authorLinks?: { linkedin?: string; twitter?: string }) {
     this.client = new Anthropic({ apiKey });
     this.siteOwner = siteOwner || '';
@@ -705,6 +706,7 @@ export class ContentGeneratorService {
     this.authorTwitter = authorLinks?.twitter || '';
     this.monetizationContext = '';
     this.competitiveContext = '';
+    this.snippetContext = '';
   }
 
   /** Set monetization awareness for content generation (affiliate/newsletter CTA hints) */
@@ -742,6 +744,22 @@ export class ContentGeneratorService {
   /** Set competitive context for content generation */
   setCompetitiveContext(context: string): void {
     this.competitiveContext = context ? `\n## Competitive Context\n${context}\n` : '';
+  }
+
+  /** Set featured snippet opportunities for content optimization */
+  setSnippetOpportunities(opportunities: Array<{ query: string; snippetType: 'paragraph' | 'list' | 'table' }>): void {
+    if (opportunities.length === 0) {
+      this.snippetContext = '';
+      return;
+    }
+    const hints = opportunities.map(o => {
+      const formatHint =
+        o.snippetType === 'paragraph' ? 'Start with a concise 40-60 word definition paragraph answering the query directly'
+        : o.snippetType === 'list' ? 'Include a numbered step-by-step list or bullet list near the top of the relevant section'
+        : 'Include a comparison table with clear headers for this topic';
+      return `- "${o.query}" (target: ${o.snippetType}): ${formatHint}`;
+    }).join('\n');
+    this.snippetContext = `\n## Featured Snippet Optimization\nFormat content to win these featured snippets:\n${hints}\n`;
   }
 
   async generateContent(
@@ -832,7 +850,7 @@ Unique Angle: ${analysis.uniqueAngle}
 Search Intent: ${analysis.searchIntent}
 Related Keywords to Include: ${analysis.relatedKeywordsToInclude.join(', ')}${clusterLinksSection}${internalLinksSection}
 
-${nicheVoice}${this.monetizationContext}${this.competitiveContext}
+${nicheVoice}${this.monetizationContext}${this.competitiveContext}${this.snippetContext}
 ${options?.similarPostTitles && options.similarPostTitles.length > 0 ? `
 IMPORTANT — CONTENT DIFFERENTIATION REQUIREMENT:
 The following similar posts already exist on this blog. Your article MUST cover a distinctly different angle, use different examples, and provide unique value:

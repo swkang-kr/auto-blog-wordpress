@@ -274,6 +274,58 @@ export class TopicClusterService {
   }
 
   /**
+   * Get related posts prioritized by cluster proximity:
+   * same sub-topic → same cluster → same niche (fallback).
+   * Used by buildRelatedPostsHtml for cluster-aware related posts.
+   */
+  getRelatedPostsByCluster(
+    nicheId: string,
+    keyword: string,
+    existingPosts: ExistingPost[],
+    maxPosts: number = 4,
+  ): ExistingPost[] {
+    const cluster = this.clusters.get(nicheId);
+    if (!cluster || cluster.posts.length === 0) return [];
+
+    // Determine sub-topic of current keyword
+    const nicheKey = nicheId.replace(/-[^-]+$/, ''); // e.g., "korean-tech-ai" → "korean-tech"
+    const subTopics = NICHE_SUBTOPICS[nicheKey] || {};
+    let currentSubTopic = '';
+    const kwLower = keyword.toLowerCase();
+    for (const [topic, patterns] of Object.entries(subTopics)) {
+      if (patterns.some(p => kwLower.includes(p))) {
+        currentSubTopic = topic;
+        break;
+      }
+    }
+
+    // Score each cluster post by proximity
+    const scored: Array<{ post: ClusterPost; score: number }> = [];
+    for (const post of cluster.posts) {
+      // Skip self
+      if (post.keyword && post.keyword.toLowerCase() === kwLower) continue;
+      let score = 0;
+      // Same sub-topic = highest priority
+      if (currentSubTopic && post.subTopic === currentSubTopic) score = 3;
+      // Same cluster but different sub-topic
+      else if (post.relevance > 0.15) score = 2;
+      // General cluster member
+      else score = 1;
+      // Boost by relevance
+      score += post.relevance * 0.5;
+      scored.push({ post, score });
+    }
+
+    scored.sort((a, b) => b.score - a.score);
+    const topUrls = scored.slice(0, maxPosts).map(s => s.post.url);
+
+    // Map back to ExistingPost objects
+    return topUrls
+      .map(url => existingPosts.find(p => p.url === url))
+      .filter((p): p is ExistingPost => !!p);
+  }
+
+  /**
    * Get content gap suggestions for a niche (topics not yet covered).
    */
   getContentGaps(nicheId: string): string[] {

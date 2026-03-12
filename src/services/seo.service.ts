@@ -23,6 +23,7 @@ const CWV_AUTOFIX_SNIPPET_TITLE = 'Auto Blog CWV Auto-Fix';
 const CRITICAL_CSS_SNIPPET_TITLE = 'Auto Blog Critical CSS';
 const HOMEPAGE_META_SNIPPET_TITLE = 'Auto Blog Homepage Meta Tags';
 const POST_CANONICAL_FALLBACK_SNIPPET_TITLE = 'Auto Blog Canonical Fallback';
+const COOKIE_CONSENT_SNIPPET_TITLE = 'Auto Blog Cookie Consent';
 
 export class SeoService {
   private api: AxiosInstance;
@@ -340,6 +341,21 @@ add_action('wp_head', function() {
     $mod_time = get_post_meta($post_id, '_autoblog_modified_time', true);
     if ($pub_time) echo '<meta property="article:published_time" content="' . esc_attr($pub_time) . '" />' . "\\n";
     if ($mod_time) echo '<meta property="article:modified_time" content="' . esc_attr($mod_time) . '" />' . "\\n";
+
+    // Pinterest Rich Pins + article OG tags (article:author, article:section)
+    $categories = get_the_category($post_id);
+    if (!empty($categories)) {
+        echo '<meta property="article:section" content="' . esc_attr($categories[0]->name) . '" />' . "\\n";
+    }
+    $author_name = get_the_author_meta('display_name', get_post_field('post_author', $post_id));
+    if ($author_name) {
+        echo '<meta property="article:author" content="' . esc_attr($author_name) . '" />' . "\\n";
+    }
+    // Pinterest pin description from excerpt
+    $excerpt = get_the_excerpt($post_id);
+    if ($excerpt) {
+        echo '<meta name="pinterest:description" content="' . esc_attr(wp_trim_words($excerpt, 50)) . '" />' . "\\n";
+    }
 });
 
 // Register autoblog meta fields for REST API write access
@@ -766,6 +782,105 @@ add_action('wp_head', function() {
     } catch (error) {
       const msg = error instanceof Error ? error.message : String(error);
       logger.warn(`Failed to install canonical fallback snippet: ${msg}`);
+    }
+  }
+
+  /**
+   * Ensure GDPR-compliant cookie consent banner via Code Snippets.
+   * Displays a bottom banner with localStorage persistence (30 days).
+   * Integrates with Google Consent Mode v2 for GA4/AdSense.
+   */
+  async ensureCookieConsentSnippet(): Promise<void> {
+    const phpCode = `
+// GDPR Cookie Consent Banner with Google Consent Mode v2
+add_action('wp_footer', function() {
+?>
+<div id="ab-cookie-consent" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#1a1a2e;color:#fff;padding:14px 20px;z-index:99999;font-size:14px;box-shadow:0 -2px 10px rgba(0,0,0,0.2);font-family:system-ui,sans-serif;">
+  <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+    <p style="margin:0;flex:1;min-width:200px;line-height:1.5;">We use cookies to improve your experience and analyze site traffic. By clicking "Accept", you consent to our use of cookies. <a href="/privacy-policy/" style="color:#4fc3f7;text-decoration:underline;">Privacy Policy</a></p>
+    <div style="display:flex;gap:8px;flex-shrink:0;">
+      <button onclick="abCookieAccept()" style="background:#4fc3f7;color:#1a1a2e;border:none;padding:8px 20px;border-radius:6px;cursor:pointer;font-weight:600;font-size:14px;">Accept</button>
+      <button onclick="abCookieDeny()" style="background:transparent;color:#aaa;border:1px solid #555;padding:8px 16px;border-radius:6px;cursor:pointer;font-size:14px;">Decline</button>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  // Google Consent Mode v2 default (denied until consent)
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'analytics_storage': 'denied',
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'wait_for_update': 500
+  });
+
+  var consent = localStorage.getItem('ab_cookie_consent');
+  var consentTime = parseInt(localStorage.getItem('ab_cookie_consent_time') || '0', 10);
+  var thirtyDays = 30 * 24 * 60 * 60 * 1000;
+
+  if (consent === 'accepted' && (Date.now() - consentTime) < thirtyDays) {
+    gtag('consent', 'update', {
+      'analytics_storage': 'granted',
+      'ad_storage': 'granted',
+      'ad_user_data': 'granted',
+      'ad_personalization': 'granted'
+    });
+  } else if (!consent || (Date.now() - consentTime) >= thirtyDays) {
+    document.getElementById('ab-cookie-consent').style.display = 'block';
+  }
+
+  window.abCookieAccept = function() {
+    localStorage.setItem('ab_cookie_consent', 'accepted');
+    localStorage.setItem('ab_cookie_consent_time', String(Date.now()));
+    gtag('consent', 'update', {
+      'analytics_storage': 'granted',
+      'ad_storage': 'granted',
+      'ad_user_data': 'granted',
+      'ad_personalization': 'granted'
+    });
+    document.getElementById('ab-cookie-consent').style.display = 'none';
+  };
+
+  window.abCookieDeny = function() {
+    localStorage.setItem('ab_cookie_consent', 'denied');
+    localStorage.setItem('ab_cookie_consent_time', String(Date.now()));
+    document.getElementById('ab-cookie-consent').style.display = 'none';
+  };
+})();
+</script>
+<?php
+});`.trim();
+
+    try {
+      const { data: snippets } = await axios.get(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      const existing = (snippets as Array<{ id: number; name: string }>)
+        .find((s) => s.name === COOKIE_CONSENT_SNIPPET_TITLE);
+
+      if (existing) {
+        await axios.put(
+          `${this.wpUrl}/wp-json/code-snippets/v1/snippets/${existing.id}`,
+          { code: phpCode, active: true },
+          { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+        );
+        logger.info(`Cookie consent snippet updated (ID=${existing.id})`);
+        return;
+      }
+
+      await axios.post(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { name: COOKIE_CONSENT_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 10 },
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      logger.info('Cookie consent snippet installed via Code Snippets plugin');
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      logger.warn(`Failed to install cookie consent snippet: ${msg}`);
     }
   }
 
@@ -1815,17 +1930,27 @@ add_action('wp_head', function() {
     ];
 
     // Organization schema — enables Knowledge Panel
+    $logo_url = get_site_icon_url(512) ?: '';
     $org_schema = [
         '@context' => 'https://schema.org',
         '@type' => 'Organization',
         'name' => $site_name,
         'url' => $site_url,
+        'description' => get_bloginfo('description'),
         'founder' => [
             '@type' => 'Person',
             'name' => $site_owner,
         ],
         ${sameAsPhp}
     ];
+    if ($logo_url) {
+        $org_schema['logo'] = [
+            '@type' => 'ImageObject',
+            'url' => $logo_url,
+            'width' => 512,
+            'height' => 512,
+        ];
+    }
 
     echo '<script type="application/ld+json">' . wp_json_encode($website_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . '</script>' . "\\n";
     echo '<script type="application/ld+json">' . wp_json_encode($org_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . '</script>' . "\\n";
@@ -2122,7 +2247,7 @@ add_action('wp_head', function() {
    */
   async ensureCommentEngagementSnippet(): Promise<void> {
     const phpCode = `
-// Enhanced comment form with topic-specific prompts
+// Enhanced comment form with topic-specific prompts and CTAs
 add_filter('comment_form_defaults', function(\$defaults) {
     \$post_id = get_the_ID();
     \$category = '';
@@ -2131,13 +2256,13 @@ add_filter('comment_form_defaults', function(\$defaults) {
         \$category = \$categories[0]->name;
     }
 
-    // Category-specific comment prompts
+    // Category-specific comment prompts (more specific CTAs per niche)
     \$prompts = array(
-        'Korean Tech' => 'Share your experience with Korean tech products or your thoughts on this analysis...',
-        'Korean Finance' => 'What\\'s your investment perspective? Share your strategy or questions...',
-        'K-Beauty' => 'What\\'s your skin type and which K-beauty products work for you?',
-        'Korea Travel' => 'Have you visited Korea? Share your tips or ask questions about planning your trip...',
-        'K-Entertainment' => 'Who\\'s your bias? Share your K-pop or K-drama opinions...',
+        'Korean Tech' => 'Which Korean tech brand do you use daily? Share your experience or ask a question about this analysis...',
+        'Korean Finance' => 'Are you investing in Korean markets? Share your portfolio strategy or ask about KOSPI/KOSDAQ...',
+        'K-Beauty' => 'What\\'s your skin type and current routine? Tell us which K-beauty products transformed your skincare...',
+        'Korea Travel' => 'Planning a Korea trip or already been? Share your hidden gems, budget tips, or ask for recommendations...',
+        'K-Entertainment' => 'Who\\'s your ult bias or current K-drama obsession? Drop your hot takes and recommendations...',
     );
 
     \$placeholder = isset(\$prompts[\$category]) ? \$prompts[\$category] : 'Share your thoughts, experience, or questions about this topic...';
@@ -2147,6 +2272,50 @@ add_filter('comment_form_defaults', function(\$defaults) {
     \$defaults['label_submit'] = 'Post Comment';
 
     return \$defaults;
+});
+
+// Auto thank-you email to comment authors (comment_post hook)
+add_action('comment_post', function(\$comment_id, \$approved) {
+    if (\$approved !== 1) return;
+    \$comment = get_comment(\$comment_id);
+    if (!\$comment || !\$comment->comment_author_email) return;
+    \$post = get_post(\$comment->comment_post_ID);
+    if (!\$post) return;
+    \$site_name = get_bloginfo('name');
+    \$subject = "Thanks for your comment on \\"{$post->post_title}\\" — " . \$site_name;
+    \$message = "Hi " . \$comment->comment_author . ",\\n\\n";
+    \$message .= "Thanks for joining the discussion on \\"" . \$post->post_title . "\\"!\\n";
+    \$message .= "Your insights help build a great community. Check out related articles: " . home_url() . "\\n\\n";
+    \$message .= "— " . \$site_name;
+    wp_mail(\$comment->comment_author_email, \$subject, \$message);
+}, 10, 2);
+
+// "Hot Discussion" badge for posts with 5+ comments
+add_filter('the_title', function(\$title, \$id = null) {
+    if (!is_singular('post') && !is_admin() && \$id) {
+        \$count = get_comments_number(\$id);
+        if (\$count >= 5) {
+            \$title .= ' <span class="ab-hot-badge" style="display:inline-block;background:#ff5722;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;vertical-align:middle;margin-left:4px;">Hot Discussion</span>';
+        }
+    }
+    return \$title;
+}, 10, 2);
+
+// Recent Comments widget in footer for engagement signals
+add_action('wp_footer', function() {
+    if (!is_singular('post')) return;
+    \$recent = get_comments(array('number' => 3, 'status' => 'approve', 'post_status' => 'publish'));
+    if (empty(\$recent)) return;
+    echo '<div class="ab-recent-comments" style="max-width:720px;margin:24px auto;padding:16px 20px;background:#f8f9fa;border-radius:10px;font-family:system-ui,sans-serif;">';
+    echo '<p style="margin:0 0 12px;font-weight:700;font-size:15px;color:#333;">Recent Comments Across the Site</p>';
+    foreach (\$recent as \$c) {
+        \$excerpt = wp_trim_words(wp_strip_all_tags(\$c->comment_content), 15);
+        \$link = get_comment_link(\$c);
+        echo '<div style="margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #e0e0e0;">';
+        echo '<a href="' . esc_url(\$link) . '" style="color:#0066FF;text-decoration:none;font-size:13px;"><strong>' . esc_html(\$c->comment_author) . '</strong>: ' . esc_html(\$excerpt) . '</a>';
+        echo '</div>';
+    }
+    echo '</div>';
 });
 
 // Add structured data for comments (UserInteraction signals)

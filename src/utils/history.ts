@@ -403,6 +403,17 @@ export class PostHistory {
       .sort((a, b) => (a.seriesPart || 0) - (b.seriesPart || 0));
   }
 
+  /** Get all unique series IDs that have 2+ posts */
+  getAllSeriesIds(): string[] {
+    const counts = new Map<string, number>();
+    for (const entry of this.data.entries) {
+      if (entry.seriesId) {
+        counts.set(entry.seriesId, (counts.get(entry.seriesId) || 0) + 1);
+      }
+    }
+    return [...counts.entries()].filter(([, count]) => count >= 2).map(([id]) => id);
+  }
+
   /**
    * Get posts with pending A/B title tests (have titleCandidates but not resolved).
    */
@@ -522,6 +533,17 @@ export class PostHistory {
     return dist;
   }
 
+  /**
+   * Get top-performing images by engagement score (for image style feedback/reuse).
+   * Returns entries with featuredImageUrl sorted by engagementScore descending.
+   */
+  getTopPerformingImages(limit: number = 10): Array<PostHistoryEntry & { engagementScore: number }> {
+    return this.data.entries
+      .filter(e => e.featuredImageUrl && e.engagementScore && e.engagementScore > 0)
+      .sort((a, b) => (b.engagementScore || 0) - (a.engagementScore || 0))
+      .slice(0, limit) as Array<PostHistoryEntry & { engagementScore: number }>;
+  }
+
   /** Persist current history data to disk (for external callers like ranking updates) */
   async persist(): Promise<void> {
     await this.save();
@@ -578,6 +600,12 @@ export class PostHistory {
 
   private async save(): Promise<void> {
     await fs.mkdir(path.dirname(HISTORY_FILE), { recursive: true });
+    // Create backup before overwriting to prevent data loss on corruption
+    try {
+      await fs.access(HISTORY_FILE);
+      const backupFile = HISTORY_FILE.replace('.json', '.backup.json');
+      await fs.copyFile(HISTORY_FILE, backupFile);
+    } catch { /* No existing file to back up */ }
     await fs.writeFile(HISTORY_FILE, JSON.stringify(this.data, null, 2), 'utf-8');
   }
 }

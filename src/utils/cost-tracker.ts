@@ -40,6 +40,7 @@ interface PostCostAttribution {
 export class CostTracker {
   private entries: CostEntry[] = [];
   private imageCount = 0;
+  private totalCost = 0;
   private static readonly IMAGE_COST_ESTIMATE = 0.04; // ~$0.04 per Gemini image
   /** Per-post cost tracking for ROI attribution */
   private postCosts = new Map<string, { keywordResearch: number; contentGeneration: number; imageGeneration: number; totalCost?: number; estimatedRevenue?: number; pageviews?: number; rpm?: number; roiDays?: number }>();
@@ -60,6 +61,9 @@ export class CostTracker {
       estimatedCost: cost,
       timestamp: new Date().toISOString(),
     });
+    this.totalCost += cost;
+    // Auto-track API call for quota monitoring (1000 RPD default for Claude)
+    this.trackApiCall('Claude', 1000);
   }
 
   /**
@@ -252,6 +256,19 @@ export class CostTracker {
     } else {
       this.apiUsage.set(key, { calls: 1, limit: dailyLimit, resetAt: Date.now() + 24 * 60 * 60 * 1000 });
     }
+  }
+
+  /** Check if daily quota is exceeded for a given API */
+  isQuotaExceeded(apiName: string): boolean {
+    const today = new Date().toISOString().slice(0, 10);
+    const key = `${apiName}:${today}`;
+    const usage = this.apiUsage.get(key);
+    return usage ? usage.calls >= usage.limit : false;
+  }
+
+  /** Get current daily spend estimate */
+  getDailySpend(): number {
+    return this.totalCost;
   }
 
   /** Get API usage summary for rate limit dashboard */

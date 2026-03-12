@@ -682,31 +682,38 @@ div[style*="background:#f8f9fa"]{background:#2a2a3e!important;border-color:#3a3a
     existingPosts: ExistingPost[],
     currentCategory: string,
     currentTitle: string,
+    clusterRelatedPosts?: ExistingPost[],
   ): string {
-    const sameCat = existingPosts
-      .filter(p =>
-        p.category.toLowerCase() === currentCategory.toLowerCase() &&
-        p.title !== currentTitle,
-      )
-      // Sort by recency (most recent first) for freshness
-      .sort((a, b) => {
-        const dateA = a.publishedAt ? new Date(a.publishedAt).getTime() : 0;
-        const dateB = b.publishedAt ? new Date(b.publishedAt).getTime() : 0;
-        return dateB - dateA;
-      })
-      .slice(0, 3);
+    let related: ExistingPost[];
 
-    // Cross-niche: pick 1 post from a related category for link diversity
-    const crossNicheCategories = WordPressService.CROSS_NICHE_MAP[currentCategory] || [];
-    const crossNichePost = crossNicheCategories.length > 0
-      ? existingPosts.find(p =>
-          crossNicheCategories.some(c => p.category.toLowerCase() === c.toLowerCase()) &&
-          p.title !== currentTitle &&
-          !sameCat.some(s => s.url === p.url),
+    // Prefer cluster-based related posts when available (topic cluster proximity)
+    if (clusterRelatedPosts && clusterRelatedPosts.length > 0) {
+      related = clusterRelatedPosts.filter(p => p.title !== currentTitle).slice(0, 4);
+    } else {
+      // Fallback: category-based selection
+      const sameCat = existingPosts
+        .filter(p =>
+          p.category.toLowerCase() === currentCategory.toLowerCase() &&
+          p.title !== currentTitle,
         )
-      : undefined;
+        .sort((a, b) => {
+          const dateA = a.publishedAt ? new Date(a.publishedAt).getTime() : 0;
+          const dateB = b.publishedAt ? new Date(b.publishedAt).getTime() : 0;
+          return dateB - dateA;
+        })
+        .slice(0, 3);
 
-    const related = crossNichePost ? [...sameCat, crossNichePost] : sameCat.slice(0, 4);
+      const crossNicheCategories = WordPressService.CROSS_NICHE_MAP[currentCategory] || [];
+      const crossNichePost = crossNicheCategories.length > 0
+        ? existingPosts.find(p =>
+            crossNicheCategories.some(c => p.category.toLowerCase() === c.toLowerCase()) &&
+            p.title !== currentTitle &&
+            !sameCat.some(s => s.url === p.url),
+          )
+        : undefined;
+
+      related = crossNichePost ? [...sameCat, crossNichePost] : sameCat.slice(0, 4);
+    }
     if (related.length === 0) return '';
 
     const cards = related
@@ -1404,6 +1411,7 @@ ${ga4TrackingScript}`;
       affiliateMap?: Record<string, string>;
       selectedPersona?: AuthorProfile;
       isNewPublisher?: boolean;
+      clusterRelatedPosts?: ExistingPost[];
     },
   ): Promise<PublishedPost> {
     // Ensure unique slug before publishing
@@ -1572,7 +1580,7 @@ ${ga4TrackingScript}`;
 
     // Inject Related Posts section
     if (options?.existingPosts && options.existingPosts.length > 0) {
-      const relatedHtml = this.buildRelatedPostsHtml(options.existingPosts, content.category, content.title);
+      const relatedHtml = this.buildRelatedPostsHtml(options.existingPosts, content.category, content.title, options.clusterRelatedPosts);
       if (relatedHtml) {
         htmlEn = htmlEn.replace(
           /(<p\s+(?:class="ab-disclaimer"|style="margin:40px 0 0 0; padding-top:20px; border-top:1px solid #eee; font-size:13px; color:#999;))/,
@@ -3208,6 +3216,88 @@ ${ga4TrackingScript}`;
       logger.info(`Reverse links: Inserted ${linked} backlink(s) to new post`);
     }
     return linked;
+  }
+
+  /**
+   * Inject contextual internal links into post body content.
+   * Scans paragraphs for keyword matches against existing posts and wraps first occurrence as a link.
+   * Max 3 links injected, min 1 paragraph apart to avoid over-linking.
+   */
+  static injectContextualInternalLinks(
+    html: string,
+    existingPosts: ExistingPost[],
+    currentKeyword: string,
+    wpUrl: string,
+    maxLinks: number = 3,
+  ): string {
+    if (existingPosts.length === 0) return html;
+
+    // Build candidate list from existing posts with keyword/title words
+    const currentKwWords = new Set(currentKeyword.toLowerCase().split(/\s+/).filter(w => w.length > 3));
+    const candidates = existingPosts
+      .filter(p => p.url && p.title && p.keyword)
+      .map(p => {
+        const kwWords = (p.keyword || p.title).toLowerCase().split(/\s+/).filter(w => w.length > 3);
+        return { post: p, anchorWords: kwWords };
+      })
+      .filter(c => {
+        // Don't link to self — skip if keyword overlap is too high
+        const overlap = c.anchorWords.filter(w => currentKwWords.has(w)).length;
+        return overlap < currentKwWords.size * 0.7;
+      })
+      .slice(0, 20);
+
+    if (candidates.length === 0) return html;
+
+    // Split HTML by paragraphs to inject links naturally
+    const paragraphs = html.split(/(<\/p>)/i);
+    let injected = 0;
+    let lastInjectedIdx = -3; // Ensure min 2 paragraphs between links
+    const usedUrls = new Set<string>();
+
+    for (let i = 0; i < paragraphs.length && injected < maxLinks; i++) {
+      const part = paragraphs[i];
+      if (!part.startsWith('<p') && !part.includes('<p ') && !part.includes('<p>')) continue;
+      if (i - lastInjectedIdx < 4) continue; // Space links out
+
+      const plainText = part.replace(/<[^>]+>/g, ' ').toLowerCase();
+      // Skip very short paragraphs
+      if (plainText.split(/\s+/).length < 15) continue;
+      // Skip paragraphs that already have links
+      if (part.includes('<a ')) continue;
+
+      for (const candidate of candidates) {
+        if (usedUrls.has(candidate.post.url)) continue;
+        // Check if any anchor word appears in this paragraph
+        const matchWord = candidate.anchorWords.find(w => plainText.includes(w));
+        if (!matchWord) continue;
+
+        // Find the word in HTML and wrap first occurrence as link
+        const wordRegex = new RegExp(`\\b(${matchWord.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\w{0,5})\\b`, 'i');
+        const match = part.match(wordRegex);
+        if (!match || !match.index) continue;
+
+        // Don't inject inside an existing tag
+        const before = part.slice(0, match.index);
+        if ((before.match(/</g) || []).length > (before.match(/>/g) || []).length) continue;
+
+        const anchorText = candidate.post.title.length > 50
+          ? candidate.post.title.slice(0, 47) + '...'
+          : candidate.post.title;
+        const link = `<a href="${candidate.post.url}" title="${anchorText.replace(/"/g, '&quot;')}">${match[0]}</a>`;
+        paragraphs[i] = part.slice(0, match.index) + link + part.slice(match.index + match[0].length);
+
+        usedUrls.add(candidate.post.url);
+        injected++;
+        lastInjectedIdx = i;
+        break;
+      }
+    }
+
+    if (injected > 0) {
+      logger.info(`Contextual internal links: injected ${injected} link(s) in post body`);
+    }
+    return paragraphs.join('');
   }
 
   /** Cached post content from detectOrphanPages for reuse */
