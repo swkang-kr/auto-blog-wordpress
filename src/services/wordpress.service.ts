@@ -629,6 +629,12 @@ div[style*="background:#fffbeb"]{background:#2a2a1e!important;border-color:#6655
 .post-content td{border-color:#3a3a5e!important}
 .post-content tr:nth-child(even){background:#222238!important}
 .post-content strong{color:#f0f0f0!important}
+div[style*="background:#fff"]{background:#2a2a3e!important;border-color:#3a3a5e!important}
+div[style*="background:#f8f9fa"]{background:#2a2a3e!important;border-color:#3a3a5e!important}
+.post-content svg rect[fill="#f0f4ff"]{fill:#2a2a3e}
+.post-content svg text[fill="#666"],.post-content svg text[fill="#999"]{fill:#b0b0b0}
+.post-content svg text[fill="#0052CC"]{fill:#6db8ff}
+.post-content img{box-shadow:0 2px 8px rgba(0,0,0,0.3)!important}
 }
 </style>`;
   }
