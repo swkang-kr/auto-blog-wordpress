@@ -615,10 +615,7 @@ export class GSCAnalyticsService {
       }
 
       if (decaying.length > 0) {
-        logger.warn(`Early decay detected: ${decaying.length} query(ies) with 3+ day consecutive decline`);
-        for (const d of decaying.slice(0, 5)) {
-          logger.warn(`  [${d.urgency.toUpperCase()}] "${d.query}" on ${d.page}: pos ${d.positionTrend[0].toFixed(1)} → ${d.currentPosition.toFixed(1)} (avg -${d.avgDailyDecline.toFixed(1)}/day)`);
-        }
+        logger.debug(`Early decay detected: ${decaying.length} query(ies) with 3+ day consecutive decline (pre-filter)`);
       }
 
       return decaying.sort((a, b) => b.avgDailyDecline - a.avgDailyDecline);
@@ -933,10 +930,7 @@ export class GSCAnalyticsService {
       }
 
       if (decaying.length > 0) {
-        logger.warn(`Early decay (slope): ${decaying.length} query(ies) with sustained ranking decline`);
-        for (const d of decaying.slice(0, 5)) {
-          logger.warn(`  [${d.urgency.toUpperCase()}] "${d.query}" on ${d.page}: slope=${d.slope}/day, R²=${d.r2}, projected=${d.projectedPosition7d} in 7d`);
-        }
+        logger.debug(`Early decay (slope): ${decaying.length} query(ies) with sustained ranking decline (pre-filter)`);
       }
 
       return decaying.sort((a, b) => b.slope - a.slope);
