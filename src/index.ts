@@ -1631,35 +1631,34 @@ async function main(): Promise<void> {
         }
       }
 
-      // Execute previously scheduled social posts that are now due
-      const pendingSocial = history.getAllEntries()
-        .filter(e => {
-          const meta = e as unknown as Record<string, unknown>;
-          return meta._autoblog_social_scheduled &&
-                 new Date(meta._autoblog_social_scheduled as string).getTime() <= Date.now();
-        });
-      for (const pending of pendingSocial.slice(0, 3)) {
-        try {
-          const meta = pending as unknown as Record<string, { _autoblog_social_platforms?: string }>;
-          const platforms = (meta._autoblog_social_platforms as unknown as string || '').split(',');
-          if (platforms.includes('twitter') && twitterService && pending.postUrl) {
-            await twitterService.promoteBlogPost(
-              { title: pending.originalTitle || pending.keyword, html: '', excerpt: '', tags: [], category: '', imagePrompts: [], imageCaptions: [], qualityScore: 0, metaDescription: '', slug: '' } as any,
-              { url: pending.postUrl, postId: pending.postId || 0 } as any,
-            );
-            logger.info(`Deferred Twitter post executed for "${pending.keyword}"`);
-          }
-          if (platforms.includes('linkedin') && linkedinService && pending.postUrl) {
-            await linkedinService.promoteBlogPost(pending.originalTitle || pending.keyword, '', pending.postUrl);
-            logger.info(`Deferred LinkedIn post executed for "${pending.keyword}"`);
-          }
-          // Clear the schedule meta
-          if (pending.postId) {
+      // Execute previously scheduled social posts that are now due (read from WP post meta)
+      try {
+        const pendingSocial = await wpService.getPostsByMeta('_autoblog_social_scheduled', 10);
+        for (const pending of pendingSocial.slice(0, 3)) {
+          const scheduledAt = pending.meta._autoblog_social_scheduled;
+          if (!scheduledAt || new Date(scheduledAt).getTime() > Date.now()) continue;
+
+          const platforms = (pending.meta._autoblog_social_platforms || '').split(',');
+          try {
+            if (platforms.includes('twitter') && twitterService) {
+              await twitterService.promoteBlogPost(
+                { title: pending.title, html: '', excerpt: '', tags: [], category: '', imagePrompts: [], imageCaptions: [], qualityScore: 0, metaDescription: '', slug: '' } as any,
+                { url: pending.url, postId: pending.postId } as any,
+              );
+              logger.info(`Deferred Twitter post executed for "${pending.title}"`);
+            }
+            if (platforms.includes('linkedin') && linkedinService) {
+              await linkedinService.promoteBlogPost(pending.title, '', pending.url);
+              logger.info(`Deferred LinkedIn post executed for "${pending.title}"`);
+            }
+            // Clear the schedule meta after successful execution
             await wpService.updatePostMeta(pending.postId, { _autoblog_social_scheduled: '', _autoblog_social_platforms: '' });
+          } catch (deferredSocialErr) {
+            logger.debug(`Deferred social post failed: ${deferredSocialErr instanceof Error ? deferredSocialErr.message : deferredSocialErr}`);
           }
-        } catch (deferredSocialErr) {
-          logger.debug(`Deferred social post failed: ${deferredSocialErr instanceof Error ? deferredSocialErr.message : deferredSocialErr}`);
         }
+      } catch (socialQueryErr) {
+        logger.debug(`Deferred social query failed: ${socialQueryErr instanceof Error ? socialQueryErr.message : socialQueryErr}`);
       }
 
       // B-7/8: Syndication with 24h delay (prevents duplicate content — original must index first)
@@ -1682,27 +1681,29 @@ async function main(): Promise<void> {
           logger.debug(`Syndication meta save failed: ${syndicationMetaError instanceof Error ? syndicationMetaError.message : syndicationMetaError}`);
         }
 
-        // Check if any PREVIOUSLY scheduled syndications are now due (from prior batches)
-        const pendingSyndications = history.getAllEntries()
-          .filter(e => {
-            const meta = e as unknown as Record<string, unknown>;
-            return meta._autoblog_syndication_scheduled &&
-                   new Date(meta._autoblog_syndication_scheduled as string).getTime() <= Date.now();
-          });
+        // Check if any PREVIOUSLY scheduled syndications are now due (read from WP post meta)
+        try {
+          const pendingSyndications = await wpService.getPostsByMeta('_autoblog_syndication_scheduled', 10);
+          for (const pending of pendingSyndications.slice(0, 3)) {
+            const scheduledAt = pending.meta._autoblog_syndication_scheduled;
+            if (!scheduledAt || new Date(scheduledAt).getTime() > Date.now()) continue;
 
-        for (const pending of pendingSyndications.slice(0, 3)) {
-          logger.info(`Executing deferred syndication for "${pending.keyword}"`);
-          // Create a minimal content object for syndication
-          try {
-            if (devtoService && pending.postUrl) {
-              await devtoService.syndicateBlogPost(
-                { title: pending.originalTitle || pending.keyword, html: '', excerpt: '', tags: [], category: '', imagePrompts: [], imageCaptions: [], qualityScore: 0, metaDescription: '', slug: '' } as any,
-                { url: pending.postUrl, postId: pending.postId || 0 } as any,
-              );
+            logger.info(`Executing deferred syndication for "${pending.title}"`);
+            try {
+              if (devtoService) {
+                await devtoService.syndicateBlogPost(
+                  { title: pending.title, html: '', excerpt: '', tags: [], category: '', imagePrompts: [], imageCaptions: [], qualityScore: 0, metaDescription: '', slug: '' } as any,
+                  { url: pending.url, postId: pending.postId } as any,
+                );
+              }
+              // Clear syndication meta after execution
+              await wpService.updatePostMeta(pending.postId, { _autoblog_syndication_scheduled: '', _autoblog_syndication_platforms: '' });
+            } catch (deferredErr) {
+              logger.debug(`Deferred syndication failed: ${deferredErr instanceof Error ? deferredErr.message : deferredErr}`);
             }
-          } catch (deferredErr) {
-            logger.debug(`Deferred syndication failed: ${deferredErr instanceof Error ? deferredErr.message : deferredErr}`);
           }
+        } catch (syndicationQueryErr) {
+          logger.debug(`Deferred syndication query failed: ${syndicationQueryErr instanceof Error ? syndicationQueryErr.message : syndicationQueryErr}`);
         }
       }
 

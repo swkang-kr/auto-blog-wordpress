@@ -2250,6 +2250,35 @@ ${ga4TrackingScript}`;
   }
 
   /**
+   * Fetch posts that have a specific meta key with a non-empty value.
+   * Used for deferred social posting and syndication scheduling.
+   */
+  async getPostsByMeta(metaKey: string, limit: number = 10): Promise<Array<{ postId: number; url: string; title: string; meta: Record<string, string> }>> {
+    try {
+      const { data } = await this.api.get('/posts', {
+        params: {
+          per_page: limit,
+          status: 'publish',
+          meta_key: metaKey,
+          _fields: 'id,link,title,meta',
+        },
+      });
+      const posts = data as Array<{ id: number; link: string; title: { rendered: string }; meta?: Record<string, string> }>;
+      return posts
+        .filter(p => p.meta?.[metaKey] && p.meta[metaKey] !== '')
+        .map(p => ({
+          postId: p.id,
+          url: p.link,
+          title: p.title.rendered,
+          meta: p.meta || {},
+        }));
+    } catch (error) {
+      logger.debug(`getPostsByMeta(${metaKey}) failed: ${error instanceof Error ? error.message : error}`);
+      return [];
+    }
+  }
+
+  /**
    * Update post meta fields (e.g., hreflang_ko, hreflang_en).
    */
   async updatePostMeta(postId: number, meta: Record<string, string>): Promise<void> {
