@@ -463,16 +463,17 @@ async function main(): Promise<void> {
   // 2.14c. Check evergreen ratio health
   ContentRefreshService.checkEvergreenRatio(history.getAllEntries());
 
-  // 2.15. Manual review mode: force draft for initial posts (AdSense safety)
+  // 2.15. Manual review mode: schedule initial posts for delayed auto-publish (AdSense safety)
   const isNewPublisher = config.MANUAL_REVIEW_THRESHOLD > 0 && history.getAllEntries().length < config.MANUAL_REVIEW_THRESHOLD * 2;
   let effectivePublishStatus = config.PUBLISH_STATUS as 'publish' | 'draft';
+  let manualReviewDelayMs = 0; // 0 = no delay, >0 = schedule future publish
   if (config.MANUAL_REVIEW_THRESHOLD > 0) {
     const totalPublished = history.getAllEntries().length;
     if (totalPublished < config.MANUAL_REVIEW_THRESHOLD) {
-      effectivePublishStatus = 'draft';
+      manualReviewDelayMs = 24 * 60 * 60 * 1000; // 24 hours
       logger.info(
         `Manual Review Mode: ${totalPublished}/${config.MANUAL_REVIEW_THRESHOLD} posts published. ` +
-        `Forcing draft mode for quality review. Set MANUAL_REVIEW_THRESHOLD=0 to disable.`,
+        `Scheduling auto-publish 24h later (WordPress future status). Set MANUAL_REVIEW_THRESHOLD=0 to disable.`,
       );
     } else {
       logger.info(`Manual Review Mode: threshold reached (${totalPublished} posts). Auto-publish enabled.`);
@@ -1127,9 +1128,7 @@ async function main(): Promise<void> {
   for (let gi = 0; gi < generated.length; gi++) {
     const { niche, postStart, researched, content, fastTrack, selectedPersona } = generated[gi];
     // Reset publish status per post (fact-check may have forced draft on previous post)
-    effectivePublishStatus = config.MANUAL_REVIEW_THRESHOLD > 0 && history.getAllEntries().length < config.MANUAL_REVIEW_THRESHOLD
-      ? 'draft'
-      : config.PUBLISH_STATUS as 'publish' | 'draft';
+    effectivePublishStatus = config.PUBLISH_STATUS as 'publish' | 'draft';
     logger.info(`\n[Phase B] Niche: "${niche.name}"${fastTrack ? ' [FAST-TRACK]' : ''}`);
 
     // Calculate scheduled date: niche-specific timing > GA4-driven > config fallback
@@ -1193,6 +1192,15 @@ async function main(): Promise<void> {
 
       scheduledDate = scheduleTime.toISOString();
       logger.info(`Scheduling "${niche.category}" for: ${scheduleTime.toLocaleString('en-US', { timeZone: publishTz })} (${publishTz}) [${timingSource}]`);
+    }
+
+    // Manual Review Mode: ensure scheduled date is at least 24h out for review window
+    if (manualReviewDelayMs > 0) {
+      const minPublishTime = new Date(Date.now() + manualReviewDelayMs);
+      if (!scheduledDate || new Date(scheduledDate).getTime() < minPublishTime.getTime()) {
+        scheduledDate = minPublishTime.toISOString();
+        logger.info(`Manual Review: auto-publish scheduled for ${minPublishTime.toLocaleString('en-US', { timeZone: publishTz })} (24h review window)`);
+      }
     }
 
     try {
@@ -1527,6 +1535,19 @@ async function main(): Promise<void> {
           clusterRelatedPosts: clusterRelatedPosts.length > 0 ? clusterRelatedPosts : undefined,
         },
       );
+
+      // Mark fact-check-drafted posts for auto-retry on next batch
+      if (effectivePublishStatus === 'draft' && post.postId) {
+        try {
+          await wpService.updatePostMeta(post.postId, {
+            _autoblog_factcheck_retry: new Date().toISOString(),
+            _autoblog_factcheck_category: niche.category,
+          });
+          logger.info(`Fact-check draft: post ${post.postId} marked for auto-retry on next batch`);
+        } catch (metaErr) {
+          logger.debug(`Failed to set factcheck retry meta: ${metaErr instanceof Error ? metaErr.message : metaErr}`);
+        }
+      }
 
       if (content.qualityScore !== undefined) {
         logger.info(`Quality score: ${content.qualityScore}/100 for "${content.title}"`);
@@ -2797,6 +2818,63 @@ async function main(): Promise<void> {
     } else {
       logger.error(`  [FAIL] [${r.niche}] "${r.keyword}" → ${r.error}`);
     }
+  }
+
+  // Auto-retry fact-check on draft posts from previous batches
+  try {
+    const draftPosts = await wpService.getPostsByMeta('_autoblog_factcheck_retry', 20, 'draft');
+    if (draftPosts.length > 0) {
+      logger.info(`\n=== Fact-Check Auto-Retry: ${draftPosts.length} draft post(s) to re-verify ===`);
+      for (const draft of draftPosts) {
+        try {
+          const postContent = await wpService.getPostContent(draft.postId);
+          if (!postContent) {
+            logger.debug(`Skipping fact-check retry for post ${draft.postId}: content not found`);
+            continue;
+          }
+          const retryResult = await factCheckService.verifyContent(postContent.content, postContent.category || draft.meta._autoblog_factcheck_category || '');
+          // Apply auto-corrections if available
+          if (retryResult.corrections.length > 0) {
+            const correctedHtml = factCheckService.applyCorrections(postContent.content, retryResult.corrections);
+            await wpService.updatePostMeta(draft.postId, {}); // trigger content update below
+            try {
+              await (wpService as any).api.post(`/posts/${draft.postId}`, { content: correctedHtml });
+              logger.info(`Fact-check retry: applied ${retryResult.corrections.length} correction(s) to post ${draft.postId}`);
+            } catch { /* ignore update error */ }
+          }
+
+          if (!retryResult.hasCriticalErrors) {
+            // Fact-check passed — schedule for publishing (2 hours from now)
+            const publishAt = new Date(Date.now() + 2 * 60 * 60 * 1000);
+            const scheduled = await wpService.schedulePost(draft.postId, publishAt);
+            if (scheduled) {
+              // Clear retry meta
+              await wpService.updatePostMeta(draft.postId, { _autoblog_factcheck_retry: '', _autoblog_factcheck_category: '' });
+              logger.info(`Fact-check retry PASSED: post ${draft.postId} "${draft.title}" scheduled for ${publishAt.toISOString()}`);
+              if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
+                await sendQualityAlert(
+                  config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, draft.title, draft.url,
+                  0, 0, [`Fact-check retry passed — auto-scheduled for ${publishAt.toLocaleString()}`],
+                );
+              }
+            }
+          } else {
+            // Still failing — check if too old (>7 days), then give up
+            const retryDate = draft.meta._autoblog_factcheck_retry;
+            if (retryDate && (Date.now() - new Date(retryDate).getTime()) > 7 * 24 * 60 * 60 * 1000) {
+              logger.warn(`Fact-check retry EXPIRED: post ${draft.postId} "${draft.title}" still has ${retryResult.criticalCount} critical errors after 7 days. Keeping as draft.`);
+              await wpService.updatePostMeta(draft.postId, { _autoblog_factcheck_retry: '', _autoblog_factcheck_category: '' });
+            } else {
+              logger.info(`Fact-check retry FAILED: post ${draft.postId} still has ${retryResult.criticalCount} critical error(s). Will retry next batch.`);
+            }
+          }
+        } catch (retryErr) {
+          logger.debug(`Fact-check retry error for post ${draft.postId}: ${retryErr instanceof Error ? retryErr.message : retryErr}`);
+        }
+      }
+    }
+  } catch (factRetryQueryErr) {
+    logger.debug(`Fact-check retry query failed: ${factRetryQueryErr instanceof Error ? factRetryQueryErr.message : factRetryQueryErr}`);
   }
 
   logger.info('=== Batch Complete ===');

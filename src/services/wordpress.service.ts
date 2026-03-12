@@ -2236,6 +2236,54 @@ ${ga4TrackingScript}`;
   }
 
   /**
+   * Schedule a draft post for future publishing.
+   * Used to auto-publish posts after fact-check retry passes.
+   */
+  async schedulePost(postId: number, publishDate: Date): Promise<boolean> {
+    try {
+      await this.api.post(`/posts/${postId}`, {
+        status: 'future',
+        date: publishDate.toISOString(),
+      });
+      logger.info(`Post ${postId} scheduled for ${publishDate.toISOString()}`);
+      return true;
+    } catch (error) {
+      logger.error(`Failed to schedule post ${postId}: ${error instanceof Error ? error.message : error}`);
+      return false;
+    }
+  }
+
+  /**
+   * Get full post content by ID (for fact-check retry on draft posts).
+   */
+  async getPostContent(postId: number): Promise<{ content: string; title: string; category: string } | null> {
+    try {
+      const { data } = await this.api.get(`/posts/${postId}`, {
+        params: { _fields: 'content,title,categories' },
+      });
+      const post = data as { content: { rendered: string }; title: { rendered: string }; categories: number[] };
+      // Resolve category name from ID
+      let categoryName = '';
+      if (post.categories?.[0]) {
+        try {
+          const { data: catData } = await this.api.get(`/categories/${post.categories[0]}`, {
+            params: { _fields: 'name' },
+          });
+          categoryName = (catData as { name: string }).name;
+        } catch { /* ignore */ }
+      }
+      return {
+        content: post.content.rendered,
+        title: post.title.rendered,
+        category: categoryName,
+      };
+    } catch (error) {
+      logger.debug(`getPostContent(${postId}) failed: ${error instanceof Error ? error.message : error}`);
+      return null;
+    }
+  }
+
+  /**
    * Delete a post (permanent removal for critically low quality).
    */
   async deletePost(postId: number, reason: string): Promise<boolean> {
@@ -2253,12 +2301,12 @@ ${ga4TrackingScript}`;
    * Fetch posts that have a specific meta key with a non-empty value.
    * Used for deferred social posting and syndication scheduling.
    */
-  async getPostsByMeta(metaKey: string, limit: number = 10): Promise<Array<{ postId: number; url: string; title: string; meta: Record<string, string> }>> {
+  async getPostsByMeta(metaKey: string, limit: number = 10, status: string = 'publish'): Promise<Array<{ postId: number; url: string; title: string; meta: Record<string, string> }>> {
     try {
       const { data } = await this.api.get('/posts', {
         params: {
           per_page: limit,
-          status: 'publish',
+          status,
           meta_key: metaKey,
           _fields: 'id,link,title,meta',
         },
