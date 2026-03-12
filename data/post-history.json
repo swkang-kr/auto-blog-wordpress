@@ -35,9 +35,16 @@
           "position": 1,
           "clicks": 0,
           "impressions": 1
+        },
+        {
+          "date": "2026-03-12",
+          "position": 1,
+          "clicks": 0,
+          "impressions": 1
         }
       ],
-      "lastPosition": 1
+      "lastPosition": 1,
+      "engagementScore": 1
     },
     {
       "keyword": "홍지윤",
@@ -74,9 +81,16 @@
           "position": 1,
           "clicks": 0,
           "impressions": 1
+        },
+        {
+          "date": "2026-03-12",
+          "position": 1,
+          "clicks": 0,
+          "impressions": 1
         }
       ],
-      "lastPosition": 1
+      "lastPosition": 1,
+      "engagementScore": 46
     },
     {
       "keyword": "how to save money",
@@ -94,7 +108,8 @@
       "postUrlKr": "https://trendhunt.net/passive-income-ideas-2026-kr/",
       "publishedAt": "2026-02-25T06:26:30.726Z",
       "niche": "personal-finance",
-      "contentType": "best-x-for-y"
+      "contentType": "best-x-for-y",
+      "engagementScore": 34
     },
     {
       "keyword": "budgeting tips",
@@ -104,7 +119,8 @@
       "postUrlKr": "https://trendhunt.net/budgeting-tips-2026-kr/",
       "publishedAt": "2026-02-25T06:58:17.257Z",
       "niche": "personal-finance",
-      "contentType": "how-to"
+      "contentType": "how-to",
+      "engagementScore": 31
     },
     {
       "keyword": "Best AI tools for writing",
@@ -114,7 +130,8 @@
       "postUrlKr": "https://trendhunt.net/best-ai-writing-tools-2026-kr/",
       "publishedAt": "2026-02-25T07:07:21.563Z",
       "niche": "ai-tools-review",
-      "contentType": "best-x-for-y"
+      "contentType": "best-x-for-y",
+      "engagementScore": 19
     },
     {
       "keyword": "how to save money in college",
@@ -124,7 +141,8 @@
       "postUrlKr": "https://trendhunt.net/save-money-college-2026-kr/",
       "publishedAt": "2026-02-25T09:09:23.035Z",
       "niche": "personal-finance",
-      "contentType": "how-to"
+      "contentType": "how-to",
+      "engagementScore": 30
     },
     {
       "keyword": "how to save money on a low income",
@@ -134,7 +152,8 @@
       "postUrlKr": "https://trendhunt.net/save-money-low-income-2026-kr/",
       "publishedAt": "2026-02-26T10:46:17.497Z",
       "niche": "personal-finance",
-      "contentType": "how-to"
+      "contentType": "how-to",
+      "engagementScore": 0
     },
     {
       "keyword": "how to use AI tools for SEO",
@@ -144,7 +163,8 @@
       "postUrlKr": "https://trendhunt.net/ai-tools-seo-guide-2026-kr/",
       "publishedAt": "2026-02-26T10:50:14.048Z",
       "niche": "ai-tools-review",
-      "contentType": "how-to"
+      "contentType": "how-to",
+      "engagementScore": 12
     },
     {
       "keyword": "best way to save money",
@@ -164,7 +184,8 @@
       "postUrlKr": "https://trendhunt.net/budget-save-money-2026-kr/",
       "publishedAt": "2026-02-27T06:13:55.574Z",
       "niche": "personal-finance",
-      "contentType": "how-to"
+      "contentType": "how-to",
+      "engagementScore": 0
     },
     {
       "keyword": "Korean startup ecosystem trends and investment opportunities",
@@ -172,7 +193,8 @@
       "postUrl": "https://trendhunt.net/korean-startup-ecosystem-trends-investment/",
       "publishedAt": "2026-03-06T04:47:51.767Z",
       "niche": "korean-tech",
-      "contentType": "analysis"
+      "contentType": "analysis",
+      "engagementScore": 8
     },
     {
       "keyword": "Korean webtoon platform global expansion strategy 2026",
@@ -180,7 +202,8 @@
       "postUrl": "https://trendhunt.net/korean-webtoon-platform-global-expansion-strategy/",
       "publishedAt": "2026-03-06T04:49:21.186Z",
       "niche": "k-entertainment",
-      "contentType": "deep-dive"
+      "contentType": "deep-dive",
+      "engagementScore": 16
     },
     {
       "keyword": "how to invest in Korean stocks as a foreigner",
@@ -188,7 +211,8 @@
       "postUrl": "https://trendhunt.net/how-to-invest-korean-stocks-foreigner/",
       "publishedAt": "2026-03-06T04:50:54.714Z",
       "niche": "korean-finance",
-      "contentType": "how-to"
+      "contentType": "how-to",
+      "engagementScore": 48
     },
     {
       "keyword": "best Korean spring street foods to try",
@@ -217,12 +241,63 @@
       "searchIntent": "commercial-investigation",
       "seriesId": "samsung-semiconductor",
       "seriesPart": 1
+    },
+    {
+      "keyword": "Samsung Electronics Q1 earnings analysis investment outlook 2026",
+      "postId": 15033,
+      "postUrl": "https://trendhunt.net/?p=15033",
+      "publishedAt": "2026-03-12T15:02:40.175Z",
+      "niche": "korean-finance-stocks",
+      "contentType": "analysis",
+      "titleCandidates": [
+        "Samsung KRX 005930: Buy, Hold, or Sell in Q1 2026?",
+        "Samsung Q1 2026: HBM Gap, Galaxy S25, and What Investors Miss"
+      ],
+      "originalTitle": "Samsung Electronics Q1 2026 Earnings: Investment Outlook",
+      "searchIntent": "commercial-investigation",
+      "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/samsung-electronics-q1-earnings-analysis-investment-outlook-2026-featured-2026.webp",
+      "featuredImageMediaId": 15028
+    },
+    {
+      "keyword": "best Korean sunscreen for outdoor activities spring 2026",
+      "postId": 15041,
+      "postUrl": "https://trendhunt.net/?p=15041",
+      "publishedAt": "2026-03-12T15:03:36.514Z",
+      "niche": "k-beauty-skincare",
+      "contentType": "best-x-for-y",
+      "titleCandidates": [
+        "Korean Sunscreen SPF PA Ratings: Best Picks for Spring Outdoors 2026",
+        "Best K-Beauty Sunscreens for Cherry Blossom Season Outdoor Use (2026)"
+      ],
+      "originalTitle": "7 Best Korean Sunscreens for Outdoor Activities (2026)",
+      "searchIntent": "commercial-investigation",
+      "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/best-korean-sunscreen-outdoor-activities-spring-2026-featured-2026.webp",
+      "featuredImageMediaId": 15036
+    },
+    {
+      "keyword": "best cherry blossom viewing spots in Korea ranked",
+      "postId": 15049,
+      "postUrl": "https://trendhunt.net/?p=15049",
+      "publishedAt": "2026-03-12T15:04:37.208Z",
+      "niche": "korea-travel-guide",
+      "contentType": "best-x-for-y",
+      "titleCandidates": [
+        "Korea Cherry Blossom Season 2026: Ranked by Crowds, Timing & Transit",
+        "Where to See Cherry Blossoms in Korea (2026): Scored & Ranked"
+      ],
+      "originalTitle": "10 Best Cherry Blossom Spots in Korea Ranked (2026)",
+      "searchIntent": "commercial-investigation",
+      "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/best-cherry-blossom-viewing-spots-korea-ranked-featured-2026.webp",
+      "featuredImageMediaId": 15044
     }
   ],
-  "lastRunAt": "2026-03-12T01:39:05.471Z",
-  "totalPosts": 16,
+  "lastRunAt": "2026-03-12T15:05:45.814Z",
+  "totalPosts": 19,
   "categoryLastPublished": {
     "korean-food-cooking": "2026-03-09T14:49:00.731Z",
-    "korean-tech-ai": "2026-03-12T01:38:35.603Z"
+    "korean-tech-ai": "2026-03-12T01:38:35.603Z",
+    "korean-finance-stocks": "2026-03-12T15:02:40.174Z",
+    "k-beauty-skincare": "2026-03-12T15:03:36.513Z",
+    "korea-travel-guide": "2026-03-12T15:04:37.207Z"
   }
 }
