@@ -1726,36 +1726,29 @@ else if(t.closest(".ab-related-card")){gtag("event","related_post_click",{event_
    */
   async ensureNewsSitemapSnippet(): Promise<void> {
     const phpCode = `
-// Google News Sitemap for news-explainer content
-add_action('init', function() {
-    add_rewrite_rule('^news-sitemap\\.xml$', 'index.php?autoblog_news_sitemap=1', 'top');
-});
-
-add_filter('query_vars', function(\$vars) {
-    \$vars[] = 'autoblog_news_sitemap';
-    return \$vars;
-});
-
+// Google News Sitemap — serves /news-sitemap.xml
+// Uses REQUEST_URI check instead of rewrite rules (no flush needed)
 add_action('template_redirect', function() {
-    if (!get_query_var('autoblog_news_sitemap')) return;
+    // Match /news-sitemap.xml or /?autoblog_news_sitemap=1
+    \$uri = trim(parse_url(\$_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+    if (\$uri !== 'news-sitemap.xml' && empty(\$_GET['autoblog_news_sitemap'])) return;
 
+    status_header(200);
     header('Content-Type: application/xml; charset=UTF-8');
     header('X-Robots-Tag: noindex');
+    header('Cache-Control: public, max-age=3600');
 
     echo '<?xml version="1.0" encoding="UTF-8"?>';
     echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">';
 
-    // Fetch posts from last 48 hours (Google News requirement)
+    // Google News: include posts from last 48 hours (all types, not just news-explainer)
     \$args = [
         'post_type' => 'post',
         'post_status' => 'publish',
-        'posts_per_page' => 50,
+        'posts_per_page' => 100,
         'date_query' => [['after' => '48 hours ago']],
-        'meta_query' => [
-            'relation' => 'OR',
-            ['key' => '_autoblog_content_type', 'value' => 'news-explainer', 'compare' => '='],
-            ['key' => '_autoblog_content_type', 'value' => 'analysis', 'compare' => '='],
-        ],
+        'orderby' => 'date',
+        'order' => 'DESC',
     ];
 
     \$query = new WP_Query(\$args);
@@ -1770,7 +1763,7 @@ add_action('template_redirect', function() {
         \$kw_tag = \$keywords ? '<news:keywords>' . htmlspecialchars(\$keywords, ENT_XML1, 'UTF-8') . '</news:keywords>' : '';
 
         echo '<url>';
-        echo '<loc>' . get_permalink() . '</loc>';
+        echo '<loc>' . esc_url(get_permalink()) . '</loc>';
         echo '<news:news>';
         echo '<news:publication>';
         echo '<news:name>' . htmlspecialchars(\$site_name, ENT_XML1, 'UTF-8') . '</news:name>';
@@ -1786,13 +1779,7 @@ add_action('template_redirect', function() {
 
     echo '</urlset>';
     exit;
-});
-
-// Flush rewrite rules on activation
-if (get_option('autoblog_news_sitemap_flush') !== '1') {
-    flush_rewrite_rules();
-    update_option('autoblog_news_sitemap_flush', '1');
-}`.trim();
+}, 1); // Priority 1: run before theme template loading`.trim();
 
     try {
       const { data: snippets } = await axios.get(
