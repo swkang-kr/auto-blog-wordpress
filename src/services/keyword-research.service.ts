@@ -469,11 +469,17 @@ IMPORTANT: Today's date is ${today}. All content must be written for ${year}.
 ${trendsContext}
 
 ## Already Posted Keywords (AVOID these AND semantically similar topics)
-${postedKeywords.length > 0 ? postedKeywords.slice(-30).map((k) => `- ${k}`).join('\n') : 'None yet'}
-${postedKeywords.length > 30 ? `(showing most recent 30 of ${postedKeywords.length} total)` : ''}
+${postedKeywords.length > 0 ? postedKeywords.map((k) => `- ${k}`).join('\n') : 'None yet'}
 
-IMPORTANT: Do NOT just avoid exact matches — avoid topics that would create content cannibalization.
-For example, if "how to invest in Korean stocks" is posted, do NOT select "investing in Korean stocks for beginners" or "Korean stock investment guide".
+CRITICAL ANTI-CANNIBALIZATION RULES:
+1. Do NOT just avoid exact matches — avoid ANY topic that covers the same core subject, even with different wording.
+2. Examples of FORBIDDEN overlaps (if the first is posted, ALL others must be avoided):
+   - "how to invest in Korean stocks" → "investing in Korean stocks for beginners", "Korean stock investment guide", "best way to buy Korean stocks"
+   - "best Korean skincare routine" → "Korean skincare routine for beginners", "how to do Korean skincare", "K-beauty skincare steps"
+   - "chicken breast meal prep recipes" → "easy chicken breast recipes", "healthy chicken breast cooking", "quick chicken recipes"
+   - "how to save money in Korea" → "budgeting tips for Korea", "money saving strategies Korea", "Korean budget living guide"
+3. The test: if a reader searching for your keyword would find an existing post equally relevant, your keyword is TOO SIMILAR.
+4. Choose a GENUINELY DIFFERENT subtopic within the niche — not the same topic reworded.
 ${this.performanceInsights}
 ${this.getSerpAnalysisSection()}${this.getCompetitorGapSection()}${this.contentTypeDistribution}
 ${this.getSeasonalSection(niche.category)}

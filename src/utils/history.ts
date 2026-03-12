@@ -39,23 +39,106 @@ export class PostHistory {
   }
 
   /**
+   * Core topic synonym map — maps related terms so "save money" ↔ "budgeting",
+   * "chicken recipes" ↔ "chicken cooking", etc. are detected as similar.
+   */
+  private static readonly TOPIC_SYNONYMS: Record<string, string[]> = {
+    save: ['budget', 'budgeting', 'saving', 'frugal', 'thrifty'],
+    budget: ['save', 'saving', 'budgeting', 'frugal', 'money management'],
+    invest: ['investment', 'investing', 'portfolio', 'stocks'],
+    recipe: ['recipes', 'cooking', 'cook', 'dish', 'meal'],
+    chicken: ['poultry'],
+    skincare: ['skin care', 'skin', 'complexion', 'facial'],
+    travel: ['trip', 'journey', 'tour', 'visiting', 'visit'],
+    guide: ['tutorial', 'walkthrough', 'handbook'],
+    tips: ['advice', 'tricks', 'hacks', 'strategies'],
+    beginner: ['beginners', 'newbie', 'starter', 'start', 'getting started'],
+    review: ['reviews', 'comparison', 'compare', 'versus'],
+    money: ['finance', 'financial', 'cash', 'funds'],
+    stock: ['stocks', 'equity', 'equities', 'shares'],
+    etf: ['index fund', 'fund', 'funds'],
+    makeup: ['cosmetics', 'beauty', 'cosmetic'],
+    drama: ['kdrama', 'k-drama', 'series', 'show'],
+    kpop: ['k-pop', 'idol', 'idols'],
+  };
+
+  /**
    * Check if two keywords are similar enough to cause cannibalization.
-   * Uses word overlap ratio — if 70%+ of significant words overlap, consider them similar.
+   * Uses three signals: word overlap, bigram similarity, and synonym-aware matching.
+   * Triggers if word overlap >= 50% OR bigram similarity >= 40%.
    */
   private isSimilarKeyword(a: string, b: string): boolean {
-    const stopWords = new Set(['a', 'an', 'the', 'in', 'on', 'at', 'to', 'for', 'of', 'and', 'or', 'is', 'are', 'was', 'were', 'your', 'you', 'how', 'what', 'why', 'best', 'top']);
+    const stopWords = new Set(['a', 'an', 'the', 'in', 'on', 'at', 'to', 'for', 'of', 'and', 'or', 'is', 'are', 'was', 'were', 'your', 'you', 'how', 'what', 'why', 'best', 'top', 'way', 'ways', 'can', 'do', 'does', 'will', 'should', 'new', 'about']);
     const wordsA = a.split(/\s+/).filter((w) => w.length > 2 && !stopWords.has(w));
     const wordsB = b.split(/\s+/).filter((w) => w.length > 2 && !stopWords.has(w));
 
     if (wordsA.length === 0 || wordsB.length === 0) return false;
 
-    const setA = new Set(wordsA);
-    const overlap = wordsB.filter((w) => setA.has(w)).length;
-    // Use max length to prevent short keywords from over-matching long ones
-    // e.g. "Korean ETF" should not match "how to use Korean ETF platforms for foreign investors"
-    const maxLen = Math.max(wordsA.length, wordsB.length);
+    // 1. Synonym-aware word overlap: expand each word with its synonym group
+    const expandWithSynonyms = (word: string): Set<string> => {
+      const expanded = new Set([word]);
+      for (const [key, synonyms] of Object.entries(PostHistory.TOPIC_SYNONYMS)) {
+        if (word === key || synonyms.includes(word)) {
+          expanded.add(key);
+          for (const s of synonyms) expanded.add(s);
+        }
+      }
+      return expanded;
+    };
 
-    return maxLen > 0 && overlap / maxLen >= 0.6;
+    const expandedA = wordsA.map(w => expandWithSynonyms(w));
+    let synonymOverlap = 0;
+    for (const wordB of wordsB) {
+      const expandedB = expandWithSynonyms(wordB);
+      if (expandedA.some(setA => {
+        for (const b2 of expandedB) {
+          if (setA.has(b2)) return true;
+        }
+        return false;
+      })) {
+        synonymOverlap++;
+      }
+    }
+    const maxLen = Math.max(wordsA.length, wordsB.length);
+    const wordOverlapRatio = maxLen > 0 ? synonymOverlap / maxLen : 0;
+
+    // 2. Bigram (word-pair) similarity using Jaccard coefficient
+    const bigramsA = this.getBigrams(a);
+    const bigramsB = this.getBigrams(b);
+    let bigramSimilarity = 0;
+    if (bigramsA.length > 0 && bigramsB.length > 0) {
+      const setBiA = new Set(bigramsA);
+      const intersection = bigramsB.filter(bg => setBiA.has(bg)).length;
+      const union = new Set([...bigramsA, ...bigramsB]).size;
+      bigramSimilarity = union > 0 ? intersection / union : 0;
+    }
+
+    // Trigger if EITHER threshold is met
+    return wordOverlapRatio >= 0.5 || bigramSimilarity >= 0.4;
+  }
+
+  /**
+   * Calculate word-overlap based title similarity between two titles.
+   * Returns a ratio 0-1 using synonym-aware matching.
+   */
+  titleSimilarity(titleA: string, titleB: string): number {
+    const stopWords = new Set(['a', 'an', 'the', 'in', 'on', 'at', 'to', 'for', 'of', 'and', 'or', 'is', 'are', 'was', 'were', 'your', 'you', 'how', 'what', 'why', 'best', 'top', 'way', 'ways', 'can', 'do', 'does', 'will', 'should', 'new', 'about', 'guide', 'complete', 'ultimate']);
+    const clean = (s: string) => s.toLowerCase().replace(/[^a-z0-9\s]/g, '');
+    const wordsA = clean(titleA).split(/\s+/).filter(w => w.length > 2 && !stopWords.has(w));
+    const wordsB = clean(titleB).split(/\s+/).filter(w => w.length > 2 && !stopWords.has(w));
+    if (wordsA.length === 0 || wordsB.length === 0) return 0;
+
+    const setA = new Set(wordsA);
+    const overlap = wordsB.filter(w => setA.has(w)).length;
+    const maxLen = Math.max(wordsA.length, wordsB.length);
+    return maxLen > 0 ? overlap / maxLen : 0;
+  }
+
+  /** Get posted titles for a niche (from originalTitle field) */
+  getPostedTitlesForNiche(nicheId: string): string[] {
+    return this.data.entries
+      .filter(e => e.niche === nicheId && e.originalTitle)
+      .map(e => e.originalTitle!);
   }
 
   /** Find a history entry by WordPress post ID */

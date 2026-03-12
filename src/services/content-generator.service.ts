@@ -740,7 +740,7 @@ export class ContentGeneratorService {
     researched: ResearchedKeyword,
     existingPosts?: ExistingPost[],
     clusterLinks?: Array<{ url: string; title: string; keyword?: string }>,
-    options?: { postCount?: number; rankingKeywords?: Map<string, { keyword: string; position: number; impressions: number }> },
+    options?: { postCount?: number; rankingKeywords?: Map<string, { keyword: string; position: number; impressions: number }>; similarPostTitles?: string[] },
   ): Promise<BlogContent> {
     const { niche, analysis } = researched;
     logger.info(`Generating content for: "${analysis.selectedKeyword}" [${niche.name} / ${analysis.contentType}]`);
@@ -825,7 +825,12 @@ Search Intent: ${analysis.searchIntent}
 Related Keywords to Include: ${analysis.relatedKeywordsToInclude.join(', ')}${clusterLinksSection}${internalLinksSection}
 
 ${nicheVoice}${this.monetizationContext}${this.competitiveContext}
-Write an in-depth ${analysis.contentType} blog post about "${analysis.selectedKeyword}" for the ${niche.name} niche. The post MUST be at least ${getWordCountTargets(analysis.contentType, analysis.searchIntent).target} words. Write thoroughly — expand each section with detailed explanations, Korean market data, and expert insights. Do NOT stop early.
+${options?.similarPostTitles && options.similarPostTitles.length > 0 ? `
+IMPORTANT — CONTENT DIFFERENTIATION REQUIREMENT:
+The following similar posts already exist on this blog. Your article MUST cover a distinctly different angle, use different examples, and provide unique value:
+${options.similarPostTitles.map(t => `- "${t}"`).join('\n')}
+DO NOT repeat the same advice, structure, examples, or recommendations used in these posts. If they cover general tips, go deep on a specific subtopic. If they are beginner-focused, target advanced readers.
+` : ''}Write an in-depth ${analysis.contentType} blog post about "${analysis.selectedKeyword}" for the ${niche.name} niche. The post MUST be at least ${getWordCountTargets(analysis.contentType, analysis.searchIntent).target} words. Write thoroughly — expand each section with detailed explanations, Korean market data, and expert insights. Do NOT stop early.
 Search intent: ${analysis.searchIntent || 'informational'}${analysis.searchIntent === 'transactional' ? ' — Focus on actionable steps and clear instructions. Readers want to DO something, not just learn about it.\nSTRUCTURE: Include pricing/cost section, step-by-step action guide, and a <div class="ab-keypoint"> CTA box near top with clear next steps. Use data-snippet-type="how-to" for featured snippet if applicable.' : analysis.searchIntent === 'commercial' ? ' — Focus on comparisons, pros/cons, and helping readers make a decision.\nSTRUCTURE: MUST include comparison table, pro/con analysis for top options, and a clear verdict in <div class="ab-highlight"> immediately after the comparison table. Use data-snippet-type="table" for featured snippet.' : analysis.searchIntent === 'navigational' ? ' — Provide a direct, comprehensive answer quickly. Less padding, more value per word.\nSTRUCTURE: Include quick answer in <div class="ab-highlight"> BEFORE the Table of Contents. Then supporting context. Keep total length shorter.' : ''}
 IMPORTANT: All information, statistics, recommendations, and references must be current as of ${year}. Do NOT use outdated data from previous years. Mention "${year}" where relevant.
 Use the unique angle: "${analysis.uniqueAngle}"

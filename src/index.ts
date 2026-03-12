@@ -905,7 +905,15 @@ async function main(): Promise<void> {
       const postCount = history.getPostedKeywordsForNiche(niche.id).length;
       const selectedPersona = contentService.selectAuthorPersona(niche.category, researched.analysis.contentType, postCount);
 
-      const content = await contentService.generateContent(researched, filteredPosts, clusterLinksForPrompt, { postCount, rankingKeywords: gscRankingKeywords });
+      // Gather similar post titles for content differentiation prompt
+      const similarPostTitles = history.getPostedTitlesForNiche(niche.id)
+        .filter(t => history.titleSimilarity(t, researched.analysis.suggestedTitle) > 0.25)
+        .slice(0, 5);
+      if (similarPostTitles.length > 0) {
+        logger.info(`Found ${similarPostTitles.length} similar post(s) for differentiation: ${similarPostTitles.map(t => `"${t}"`).join(', ')}`);
+      }
+
+      const content = await contentService.generateContent(researched, filteredPosts, clusterLinksForPrompt, { postCount, rankingKeywords: gscRankingKeywords, similarPostTitles });
       generated.push({ niche, postStart, researched, content, fastTrack: hasBreakout, selectedPersona });
 
       // Track keyword for cross-niche dedup
@@ -961,7 +969,10 @@ async function main(): Promise<void> {
         const retryPostCount = history.getPostedKeywordsForNiche(niche.id).length;
         const retryPersona = contentService.selectAuthorPersona(niche.category, researched.analysis.contentType, retryPostCount);
 
-        const content = await contentService.generateContent(researched, filteredPosts, retryClusterLinksForPrompt, { postCount: retryPostCount, rankingKeywords: gscRankingKeywords });
+        const retrySimilarTitles = history.getPostedTitlesForNiche(niche.id)
+          .filter(t => history.titleSimilarity(t, researched.analysis.suggestedTitle) > 0.25)
+          .slice(0, 5);
+        const content = await contentService.generateContent(researched, filteredPosts, retryClusterLinksForPrompt, { postCount: retryPostCount, rankingKeywords: gscRankingKeywords, similarPostTitles: retrySimilarTitles });
         generated.push({ niche, postStart: retryStart, researched, content, selectedPersona: retryPersona });
         batchKeywords.push(researched.analysis.selectedKeyword);
 
@@ -1186,13 +1197,32 @@ async function main(): Promise<void> {
       // B-3.7. Generate cluster navigation HTML for related articles
       const clusterNavHtml = topicClusterService.generateClusterNavHtml(niche.id, '');
 
-      // B-3.8. Pre-publish plagiarism check against existing posts
+      // B-3.7b. Pre-publish title similarity check against existing posts
+      {
+        const existingTitles = history.getPostedTitlesForNiche(niche.id);
+        let titleBlocked = false;
+        for (const existingTitle of existingTitles) {
+          const sim = history.titleSimilarity(content.title, existingTitle);
+          if (sim >= 0.6) {
+            logger.error(`Title too similar: "${content.title}" is ${(sim * 100).toFixed(0)}% similar to existing "${existingTitle}". Skipping publish.`);
+            results.push({ keyword: researched.analysis.selectedKeyword, niche: niche.id, success: false, error: `Title similarity: ${(sim * 100).toFixed(0)}% match with "${existingTitle}"`, duration: Date.now() - postStart });
+            titleBlocked = true;
+            break;
+          }
+          if (sim >= 0.4) {
+            logger.warn(`Title overlap warning: "${content.title}" is ${(sim * 100).toFixed(0)}% similar to existing "${existingTitle}". Publishing with caution.`);
+          }
+        }
+        if (titleBlocked) continue;
+      }
+
+      // B-3.8. Pre-publish plagiarism check against existing posts (thresholds: hard block 40%, warning 20%)
       try {
         const { detectPlagiarism } = await import('./utils/content-validator.js');
-        const plagiarismMatches = detectPlagiarism(content.html, existingPosts, 0.25);
+        const plagiarismMatches = detectPlagiarism(content.html, existingPosts, 0.20);
         if (plagiarismMatches.length > 0) {
           const topMatch = plagiarismMatches[0];
-          if (topMatch.similarity > 0.5) {
+          if (topMatch.similarity > 0.4) {
             logger.error(`High plagiarism risk: "${content.title}" is ${(topMatch.similarity * 100).toFixed(0)}% similar to "${topMatch.title}". Skipping publish.`);
             results.push({ keyword: researched.analysis.selectedKeyword, niche: niche.id, success: false, error: `Plagiarism: ${(topMatch.similarity * 100).toFixed(0)}% match with "${topMatch.title}"`, duration: Date.now() - postStart });
             continue;
