@@ -608,10 +608,7 @@ For presenting key statistics in a visually scannable format:
 ## HTML Structure Rules (USE CSS CLASSES — minimal inline styles)
 All styling is handled by a consolidated <style> block injected at publish time. Use CSS classes instead of inline styles wherever possible. This reduces HTML size by ~40% and improves page speed.
 
-### Wrapper
-<div class="post-content">
-
-### Article Header (MANDATORY — insert right after opening div)
+### Article Header (MANDATORY — start your output with this)
 <div class="ab-header">
 <p><time datetime="YYYY-MM-DD">Published: Month DD, YYYY</time> · <span class="ab-updated">Updated: Month DD, YYYY</span> · READING_TIME_PLACEHOLDER min read</p>
 </div>
@@ -659,7 +656,7 @@ Each H2 section MUST begin with a 2-3 sentence self-contained answer paragraph t
 This enables Google's Passage Ranking to surface individual sections as search results.
 
 ### Other Elements (use CSS classes)
-- Paragraphs: <p> (no inline style needed — .post-content p handles it)
+- Paragraphs: <p> (no inline style needed — .entry-content p handles it)
 - Highlight box: <div class="ab-highlight"><p>content</p></div>
 - Blockquote: <blockquote>quote</blockquote>
 - Divider: <hr>
