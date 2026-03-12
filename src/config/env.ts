@@ -74,7 +74,7 @@ const envSchema = z.object({
   NICHE_FOCUS_IDS: z.string().default(''),
   // Korean content generation: enable hreflang Korean versions of published posts
   // Set to 'true' to generate Korean versions after English posts are published
-  ENABLE_KOREAN_CONTENT: z.enum(['true', 'false']).default('false'),
+  ENABLE_KOREAN_CONTENT: z.string().default('false').transform(v => v === 'true' ? 'true' : 'false').pipe(z.enum(['true', 'false'])),
   // YouTube Data API key for finding relevant videos to embed in posts (optional)
   YOUTUBE_API_KEY: z.string().default(''),
   // Lead magnet download URL (e.g., free ebook, checklist) — category-specific CTAs
