@@ -2003,17 +2003,6 @@ ${ga4TrackingScript}`;
               'max-image-preview': 'large',
               'max-video-preview': '-1',
             }),
-            _autoblog_jsonld: jsonLdString,
-            _autoblog_published_time: nowIso,
-            _autoblog_modified_time: nowIso,
-            _autoblog_freshness_class: options?.contentType
-              ? (CONTENT_FRESHNESS_MAP[options.contentType as ContentType] || 'seasonal')
-              : 'seasonal',
-            ...(options?.titleCandidates?.length ? {
-              _autoblog_title_candidates: JSON.stringify(options.titleCandidates),
-              _autoblog_title_test_start: nowIso,
-            } : {}),
-            ...(options?.subNiche ? { _autoblog_cluster_id: options.subNiche } : {}),
           },
         };
         if (content.slug) {
@@ -2032,6 +2021,26 @@ ${ga4TrackingScript}`;
         };
 
         logger.info(`Post published: ID=${post.postId} URL=${post.url}`);
+
+        // Set _autoblog_* custom meta separately (may fail if register_post_meta snippet not installed)
+        try {
+          const autoblogMeta: Record<string, string> = {
+            _autoblog_jsonld: jsonLdString,
+            _autoblog_published_time: nowIso,
+            _autoblog_modified_time: nowIso,
+            _autoblog_freshness_class: options?.contentType
+              ? (CONTENT_FRESHNESS_MAP[options.contentType as ContentType] || 'seasonal')
+              : 'seasonal',
+            ...(options?.titleCandidates?.length ? {
+              _autoblog_title_candidates: JSON.stringify(options.titleCandidates),
+              _autoblog_title_test_start: nowIso,
+            } : {}),
+            ...(options?.subNiche ? { _autoblog_cluster_id: options.subNiche } : {}),
+          };
+          await this.api.post(`/posts/${post.postId}`, { meta: autoblogMeta });
+        } catch (metaErr) {
+          logger.warn(`Failed to set _autoblog meta for post ${post.postId} (non-fatal): ${metaErr instanceof Error ? metaErr.message : metaErr}`);
+        }
 
         // Social meta verification
         const socialMeta = {
