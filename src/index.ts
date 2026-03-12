@@ -1126,6 +1126,10 @@ async function main(): Promise<void> {
 
   for (let gi = 0; gi < generated.length; gi++) {
     const { niche, postStart, researched, content, fastTrack, selectedPersona } = generated[gi];
+    // Reset publish status per post (fact-check may have forced draft on previous post)
+    effectivePublishStatus = config.MANUAL_REVIEW_THRESHOLD > 0 && history.getAllEntries().length < config.MANUAL_REVIEW_THRESHOLD
+      ? 'draft'
+      : config.PUBLISH_STATUS as 'publish' | 'draft';
     logger.info(`\n[Phase B] Niche: "${niche.name}"${fastTrack ? ' [FAST-TRACK]' : ''}`);
 
     // Calculate scheduled date: niche-specific timing > GA4-driven > config fallback
