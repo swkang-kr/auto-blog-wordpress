@@ -32,23 +32,23 @@ export class FactCheckService {
     let verified = 0;
     let unverified = 0;
 
-    // 1. Check KRW exchange rate claims
-    const krwMatches = plainText.match(/(?:USD\/KRW|KRW\/USD|korean won|₩)\s*(?:at|around|approximately|is|was|reached|hit)?\s*([\d,]+(?:\.\d+)?)/gi);
-    if (krwMatches) {
+    // 1. Check KRW exchange rate claims (only explicit exchange rate context, NOT stock prices like ₩52,000)
+    const krwExchangeMatches = plainText.match(/(?:USD\/KRW|KRW\/USD|korean won|exchange rate|dollar.{0,20}won|won.{0,20}dollar)\s*(?:at|around|approximately|is|was|reached|hit|of|to)?\s*([\d,]+(?:\.\d+)?)/gi);
+    if (krwExchangeMatches) {
       const liveRate = await this.getUsdKrwRate();
       if (liveRate) {
-        for (const match of krwMatches) {
+        for (const match of krwExchangeMatches) {
           const numMatch = match.match(/([\d,]+(?:\.\d+)?)/);
           if (numMatch) {
             const claimed = parseFloat(numMatch[1].replace(/,/g, ''));
-            // Allow 10% tolerance for exchange rates (they fluctuate)
-            if (claimed > 100 && Math.abs(claimed - liveRate) / liveRate > 0.10) {
+            // Only flag values in plausible exchange rate range (800-2000 KRW/USD)
+            if (claimed >= 800 && claimed <= 2000 && Math.abs(claimed - liveRate) / liveRate > 0.10) {
               flagged.push(`KRW exchange rate claim "${match}" may be outdated (live: ~${liveRate.toFixed(0)})`);
               corrections.push({
                 claim: match,
                 correction: `Current rate is approximately ${liveRate.toFixed(0)} KRW/USD`,
               });
-            } else if (claimed > 100) {
+            } else if (claimed >= 800 && claimed <= 2000) {
               verified++;
             }
           }
