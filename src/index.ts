@@ -1777,16 +1777,21 @@ async function main(): Promise<void> {
     if (pruned > 0) {
       logger.info(`Content pruning: ${pruned} stale post(s) archived (draft + noindex)`);
       if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
-        await sendQualityAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, 'Content Pruning', '', 0, 0, [`${pruned} stale post(s) auto-archived`]);
+        await sendTelegramAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID,
+          `<b>Content Pruning</b>\n${pruned} stale post(s) auto-archived (draft + noindex)`, 'info');
       }
     }
   } catch (error) {
     logger.warn(`Content pruning failed: ${error instanceof Error ? error.message : error}`);
   }
 
+  // Build set of live post URLs — used to filter out deleted posts from decay/merge detection
+  const livePostUrls = new Set(existingPosts.map(p => p.url).filter(Boolean));
+
   // 4.22d. Content lifecycle: detect merge candidates (cannibalization reduction)
   try {
-    const mergeCandidates = ContentRefreshService.detectMergeCandidates(history.getAllEntries());
+    const liveEntries = history.getAllEntries().filter(e => e.postUrl && livePostUrls.has(e.postUrl));
+    const mergeCandidates = ContentRefreshService.detectMergeCandidates(liveEntries);
     if (mergeCandidates.length > 0) {
       logger.info(`Content lifecycle: ${mergeCandidates.length} merge candidate(s) detected — review recommended`);
 
@@ -1809,8 +1814,9 @@ async function main(): Promise<void> {
       }
 
       if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID && mergeCandidates.length > 0) {
-        const mergeMsg = mergeCandidates.slice(0, 3).map(c => c.recommendation).join('\n');
-        await sendQualityAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, 'Content Merge Candidates', '', 0, 0, [mergeMsg]);
+        const mergeMsg = mergeCandidates.slice(0, 3).map(c => c.recommendation).join('\n  - ');
+        await sendTelegramAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID,
+          `<b>Content Merge Candidates: ${mergeCandidates.length} pair(s)</b>\n  - ${mergeMsg}\n\n<i>Review recommended to reduce keyword cannibalization.</i>`, 'info');
       }
     }
   } catch (error) {
@@ -1952,8 +1958,9 @@ async function main(): Promise<void> {
       if (chains.length > 0) {
         logger.warn(`Redirect chains found: ${chains.length} chain(s) — update internal links to point directly to final URLs`);
         if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
-          const chainMsg = chains.slice(0, 3).map(c => `[${c.hops} hops] ${c.originalUrl} → ${c.finalUrl}`).join('\n');
-          await sendQualityAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, 'Redirect Chain Alert', '', 0, 0, [chainMsg]);
+          const chainMsg = chains.slice(0, 3).map(c => `[${c.hops} hops] ${c.originalUrl} → ${c.finalUrl}`).join('\n  - ');
+          await sendTelegramAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID,
+            `<b>Redirect Chain Alert: ${chains.length} chain(s)</b>\n  - ${chainMsg}\n\n<i>Update internal links to point directly to final URLs.</i>`, 'warning');
         }
       }
     }
@@ -2309,7 +2316,11 @@ async function main(): Promise<void> {
   // 4.9. [#2] Early content decay detection — 3-day consecutive + slope-based detection
   if (gscService) {
     try {
-      const decayItems = await gscService.detectEarlyDecay();
+      const decayItemsRaw = await gscService.detectEarlyDecay();
+      const decayItems = decayItemsRaw.filter(d => livePostUrls.has(d.page));
+      if (decayItemsRaw.length > decayItems.length) {
+        logger.info(`Early decay: filtered out ${decayItemsRaw.length - decayItems.length} deleted page(s) from decay detection`);
+      }
       if (decayItems.length > 0) {
         logger.warn(`Early decay: ${decayItems.length} page(s) with 3+ day consecutive decline`);
         for (const item of decayItems.slice(0, 5)) {
@@ -2330,7 +2341,11 @@ async function main(): Promise<void> {
 
     // Enhanced: slope-based early decay (linear regression on 14-day rolling averages)
     try {
-      const slopeDecay = await gscService.detectEarlyDecayWithSlope();
+      const slopeDecayRaw = await gscService.detectEarlyDecayWithSlope();
+      const slopeDecay = slopeDecayRaw.filter(d => livePostUrls.has(d.page));
+      if (slopeDecayRaw.length > slopeDecay.length) {
+        logger.info(`Slope decay: filtered out ${slopeDecayRaw.length - slopeDecay.length} deleted page(s) from slope detection`);
+      }
       if (slopeDecay.length > 0) {
         logger.warn(`Slope-based decay: ${slopeDecay.length} page(s) with statistically significant decline`);
         for (const item of slopeDecay.slice(0, 5)) {
