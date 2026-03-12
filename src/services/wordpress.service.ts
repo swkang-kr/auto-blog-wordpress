@@ -613,6 +613,22 @@ html{scroll-behavior:smooth;scroll-padding-top:60px}
 .ab-author-bio p{color:#e0e0e0!important}
 .ab-disclaimer-finance,.ab-disclaimer-beauty{background:#2a2a1e!important;border-color:#665500!important;color:#d4d4d4!important}
 .ab-what-changed{background:#1a2e1a!important;border-color:#2e5e2e!important;color:#d4d4d4!important}
+.ab-ai-disclosure{background:#2a2a3e!important;border-color:#3a3a5e!important;color:#b0b0b0!important}
+.ab-ai-disclosure a{color:#6db8ff!important}
+.ab-comment-prompt{background:#2a2a3e!important;border-color:#4a4aff!important}
+.ab-comment-prompt p{color:#e0e0e0!important}
+.ab-comment-prompt a{color:#6db8ff!important}
+.ab-series-nav{background:#2a2a3e!important;border-color:#3a3a5e!important;color:#e0e0e0!important}
+.ab-affiliate-disclosure{background:#2a2a1e!important;border-color:#665500!important;color:#d4d4d4!important}
+.ab-ad-slot{background:transparent!important}
+div[style*="background:#f0f8ff"]{background:#1a2a3e!important;border-color:#3a4a6e!important;color:#e0e0e0!important}
+div[style*="background:#f0fff4"]:not(.ab-pros):not(.ab-what-changed){background:#1a2e1a!important;border-color:#2e5e2e!important;color:#d4d4d4!important}
+div[style*="background:#fffbeb"]{background:#2a2a1e!important;border-color:#665500!important;color:#d4d4d4!important}
+.post-content table{border-color:#3a3a5e!important}
+.post-content th{background:#2a2a3e!important;color:#e0e0e0!important}
+.post-content td{border-color:#3a3a5e!important}
+.post-content tr:nth-child(even){background:#222238!important}
+.post-content strong{color:#f0f0f0!important}
 }
 </style>`;
   }
