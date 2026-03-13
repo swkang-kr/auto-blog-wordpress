@@ -26,6 +26,7 @@ const POST_CANONICAL_FALLBACK_SNIPPET_TITLE = 'Auto Blog Canonical Fallback';
 const COOKIE_CONSENT_SNIPPET_TITLE = 'Auto Blog Cookie Consent';
 const STICKY_ADS_SNIPPET_TITLE = 'Auto Blog Sticky Sidebar & Anchor Ads';
 const EXIT_INTENT_SNIPPET_TITLE = 'Auto Blog Exit-Intent Lead Magnet';
+const ADS_TXT_SNIPPET_TITLE = 'Auto Blog ads.txt';
 
 export class SeoService {
   private api: AxiosInstance;
@@ -971,6 +972,61 @@ add_action('wp_head', function() {
    * Displays a bottom banner with localStorage persistence (30 days).
    * Integrates with Google Consent Mode v2 for GA4/AdSense.
    */
+
+  /**
+   * Ensure ads.txt is served at the site root for Google AdSense verification.
+   * Uses WordPress init hook to intercept /ads.txt requests and output the correct content.
+   * This avoids needing file-level access to the web server root.
+   */
+  async ensureAdsTxtSnippet(adsensePubId: string): Promise<void> {
+    if (!adsensePubId) {
+      logger.debug('ads.txt snippet skipped: no AdSense publisher ID');
+      return;
+    }
+    // Ensure pub ID format: "ca-pub-XXXX" → extract the numeric part for ads.txt
+    const pubId = adsensePubId.startsWith('ca-pub-') ? adsensePubId : `ca-pub-${adsensePubId}`;
+
+    const phpCode = `
+// Serve ads.txt at site root for Google AdSense verification
+add_action('init', function() {
+    if (isset(\$_SERVER['REQUEST_URI']) && \$_SERVER['REQUEST_URI'] === '/ads.txt') {
+        header('Content-Type: text/plain; charset=UTF-8');
+        header('Cache-Control: public, max-age=86400');
+        echo 'google.com, ${pubId.replace('ca-pub-', 'pub-')}, DIRECT, f08c47fec0942fa0' . "\\n";
+        exit;
+    }
+});`.trim();
+
+    try {
+      const { data: snippets } = await axios.get(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      const existing = (snippets as Array<{ id: number; name: string }>)
+        .find((s) => s.name === ADS_TXT_SNIPPET_TITLE);
+
+      if (existing) {
+        await axios.put(
+          `${this.wpUrl}/wp-json/code-snippets/v1/snippets/${existing.id}`,
+          { code: phpCode, active: true },
+          { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+        );
+        logger.info(`ads.txt snippet updated (ID=${existing.id}) for ${pubId}`);
+        return;
+      }
+
+      await axios.post(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { name: ADS_TXT_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 1 },
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      logger.info(`ads.txt snippet installed for ${pubId}`);
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      logger.warn(`Failed to install ads.txt snippet: ${msg}`);
+    }
+  }
+
   async ensureCookieConsentSnippet(): Promise<void> {
     const phpCode = `
 // GDPR Cookie Consent Banner with Google Consent Mode v2

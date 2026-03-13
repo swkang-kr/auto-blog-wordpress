@@ -227,6 +227,15 @@ async function main(): Promise<void> {
     logger.warn(`SEO/GA setup failed: ${error instanceof Error ? error.message : error}`);
   }
 
+  // 2.7b. Ensure ads.txt is served for Google AdSense verification
+  if (config.ADSENSE_PUB_ID) {
+    try {
+      await seoService.ensureAdsTxtSnippet(config.ADSENSE_PUB_ID);
+    } catch (error) {
+      logger.warn(`ads.txt snippet setup failed: ${error instanceof Error ? error.message : error}`);
+    }
+  }
+
   // 2.8. Ensure mobile AdSense padding (prevent bottom banner covering navigation)
   try {
     await seoService.ensureAdSensePaddingSnippet();
