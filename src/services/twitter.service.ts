@@ -14,31 +14,125 @@ export class TwitterService {
     });
   }
 
-  /** 블로그 포스트 기반 홍보 트윗 발행 (실패해도 전체 파이프라인에 영향 없음) */
+  /** Promote blog post as a 5-tweet thread (hook → insights → CTA) */
   async promoteBlogPost(content: BlogContent, post: PublishedPost): Promise<void> {
-    const tweet = this.buildTweet(content, post.url);
+    const thread = this.buildThread(content, post.url);
 
     try {
-      const result = await this.client.v2.tweet(tweet);
-      logger.info(`X tweet posted (id: ${result.data.id}): "${content.title}"`);
+      // Post first tweet
+      const first = await this.client.v2.tweet(thread[0]);
+      let lastId = first.data.id;
+      logger.info(`X thread started (id: ${lastId}): "${content.title}"`);
+
+      // Reply chain for remaining tweets
+      for (let i = 1; i < thread.length; i++) {
+        try {
+          const reply = await this.client.v2.tweet({
+            text: thread[i],
+            reply: { in_reply_to_tweet_id: lastId },
+          });
+          lastId = reply.data.id;
+        } catch (replyError) {
+          logger.warn(`X thread tweet ${i + 1}/${thread.length} failed: ${replyError instanceof Error ? replyError.message : replyError}`);
+          break; // Stop chain on failure to avoid orphaned tweets
+        }
+      }
+      logger.info(`X thread completed: ${thread.length} tweets for "${content.title}"`);
     } catch (error) {
-      logger.warn(`X tweet failed (non-critical): ${error instanceof Error ? error.message : error}`);
+      logger.warn(`X thread failed (non-critical): ${error instanceof Error ? error.message : error}`);
     }
   }
 
-  private buildTweet(content: BlogContent, url: string): string {
-    // 해시태그: 공백 제거 후 최대 3개
+  /**
+   * Build a 5-tweet thread from blog content.
+   * [0]: Hook — provocative question or key stat + keyword
+   * [1-3]: Core insights extracted from FAQ or excerpt
+   * [4]: CTA + URL + hashtags
+   */
+  buildThread(content: BlogContent, url: string): string[] {
     const hashtags = content.tags
       .slice(0, 3)
       .map((tag) => `#${tag.replace(/\s+/g, '')}`)
       .join(' ');
 
-    // excerpt 첫 문장을 요약으로 사용
-    const summary = content.excerpt.split('.')[0].trim();
+    // Extract insights from FAQ items or excerpt sentences
+    const insights = this.extractInsights(content);
 
-    const body = `${content.title}\n\n${summary}.\n\n${url}\n\n${hashtags}`;
+    // [0] Hook tweet: key question or stat to grab attention
+    const hookStat = this.extractHookStat(content);
+    const hook = this.truncateTweet(
+      `${hookStat}\n\nA thread on ${content.title} 🧵👇`,
+    );
 
-    // 트위터 280자 제한
-    return body.length <= 280 ? body : `${body.substring(0, 277)}...`;
+    // [1-3] Insight tweets
+    const insightTweets = insights.slice(0, 3).map((insight, i) => {
+      const num = i + 2;
+      return this.truncateTweet(`${num}/ ${insight}`);
+    });
+
+    // Pad to 3 insights if we don't have enough
+    while (insightTweets.length < 3) {
+      const sentences = content.excerpt.split(/[.!?]+/).filter(s => s.trim().length > 20);
+      const sentence = sentences[insightTweets.length] || sentences[0] || content.excerpt;
+      insightTweets.push(this.truncateTweet(`${insightTweets.length + 2}/ ${sentence.trim()}.`));
+    }
+
+    // [4] CTA tweet
+    const cta = this.truncateTweet(
+      `5/ Read the full breakdown:\n\n${url}\n\n${hashtags}`,
+    );
+
+    return [hook, ...insightTweets, cta];
+  }
+
+  /** Extract key insights from FAQ items or content excerpt */
+  private extractInsights(content: BlogContent): string[] {
+    const insights: string[] = [];
+
+    // Try FAQ items first (structured, high-quality insights)
+    if (content.faqItems && content.faqItems.length > 0) {
+      for (const faq of content.faqItems.slice(0, 4)) {
+        // Use the answer, trimmed to a tweet-friendly length
+        const answer = faq.answer.replace(/<[^>]+>/g, '').trim();
+        const firstSentence = answer.split(/[.!?]+/)[0]?.trim();
+        if (firstSentence && firstSentence.length > 20) {
+          insights.push(`${faq.question}\n\n${firstSentence}.`);
+        }
+      }
+    }
+
+    // Fall back to excerpt sentences
+    if (insights.length < 3) {
+      const sentences = content.excerpt
+        .split(/[.!?]+/)
+        .map(s => s.trim())
+        .filter(s => s.length > 25 && s.length < 250);
+      for (const sentence of sentences) {
+        if (insights.length >= 3) break;
+        insights.push(`${sentence}.`);
+      }
+    }
+
+    return insights;
+  }
+
+  /** Extract a hook stat or question from content */
+  private extractHookStat(content: BlogContent): string {
+    // Try to find a compelling number/stat in the excerpt
+    const statMatch = content.excerpt.match(/\d[\d,.]*\s*(%|billion|million|trillion|won|USD)/i);
+    if (statMatch) {
+      const sentence = content.excerpt.split(/[.!?]+/).find(s => s.includes(statMatch[0]));
+      if (sentence && sentence.trim().length > 15) {
+        return sentence.trim() + '.';
+      }
+    }
+
+    // Fall back to a question format using the title
+    return `Did you know? ${content.excerpt.split('.')[0].trim()}.`;
+  }
+
+  /** Truncate tweet to 280 characters */
+  private truncateTweet(text: string): string {
+    return text.length <= 280 ? text : text.substring(0, 277) + '...';
   }
 }

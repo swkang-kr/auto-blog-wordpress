@@ -28,6 +28,7 @@ export class KeywordResearchService {
   private researchModel: string;
   private serpFormatHint: string = '';
   private paaQuestions: string[] = [];
+  private rpmByNiche: Record<string, number> = {};
 
   constructor(apiKey: string, geo: string, redditCredentials?: { clientId: string; clientSecret: string }, serpApiKey?: string) {
     this.client = new Anthropic({ apiKey });
@@ -61,6 +62,11 @@ export class KeywordResearchService {
   /** Set SERP format hint for content type alignment */
   setSerpFormatHint(hint: string): void {
     this.serpFormatHint = hint;
+  }
+
+  /** Set RPM data per niche for revenue-aware keyword prioritization */
+  setRpmData(rpmByNiche: Record<string, number>): void {
+    this.rpmByNiche = rpmByNiche;
   }
 
   /** Set People Also Ask questions for FAQ enrichment */
@@ -336,19 +342,20 @@ export class KeywordResearchService {
         analysis.keywordDifficulty = this.estimateKeywordDifficulty(analysis.selectedKeyword, averageInterest, analysis.estimatedCompetition);
       }
 
-      // Reject keywords with KD > 70 (unlikely to rank for new sites) — force retry
-      if (analysis.keywordDifficulty > 70 && attempt < MAX_ATTEMPTS) {
+      // Dynamic KD threshold: short keywords (≤3 words) → stricter limit, long-tail (4+) → more lenient
+      const maxKd = KeywordResearchService.getMaxKd(analysis.selectedKeyword);
+      if (analysis.keywordDifficulty > maxKd && attempt < MAX_ATTEMPTS) {
         logger.warn(
-          `Attempt ${attempt}/${MAX_ATTEMPTS}: "${analysis.selectedKeyword}" has KD=${analysis.keywordDifficulty} (>70). ` +
+          `Attempt ${attempt}/${MAX_ATTEMPTS}: "${analysis.selectedKeyword}" has KD=${analysis.keywordDifficulty} (>${maxKd} for ${analysis.selectedKeyword.split(/\s+/).length}-word keyword). ` +
           `Too competitive for ranking. Retrying with lower-difficulty keyword.`,
         );
         rejectedKeywords.push(analysis.selectedKeyword);
         analysis = undefined;
         continue;
       }
-      if (analysis.keywordDifficulty > 70) {
+      if (analysis.keywordDifficulty > maxKd) {
         logger.warn(
-          `Final attempt: accepting "${analysis.selectedKeyword}" with high KD=${analysis.keywordDifficulty}. ` +
+          `Final attempt: accepting "${analysis.selectedKeyword}" with high KD=${analysis.keywordDifficulty} (limit=${maxKd}). ` +
           `No lower-difficulty keywords found after ${MAX_ATTEMPTS} attempts.`,
         );
       }
@@ -396,6 +403,12 @@ export class KeywordResearchService {
     );
 
     return { niche, trendsData, analysis };
+  }
+
+  /** Dynamic KD threshold: short keywords are harder to rank for, long-tail are easier */
+  static getMaxKd(keyword: string): number {
+    const wordCount = keyword.split(/\s+/).length;
+    return wordCount >= 4 ? 80 : 60;
   }
 
   private async analyzeWithClaude(
@@ -482,6 +495,7 @@ CRITICAL ANTI-CANNIBALIZATION RULES:
 4. Choose a GENUINELY DIFFERENT subtopic within the niche — not the same topic reworded.
 ${this.performanceInsights}
 ${this.getSerpAnalysisSection()}${this.getCompetitorGapSection()}${this.contentTypeDistribution}
+${this.getRpmSection(niche.category)}
 ${this.getSeasonalSection(niche.category)}
 ${recentContentTypes && recentContentTypes.length > 0 ? `## Content Type Diversity (IMPORTANT)\nRecent content types for this niche: ${recentContentTypes.join(', ')}\nAvoid overusing the same content type. If "${recentContentTypes[recentContentTypes.length - 1]}" was used recently, PREFER a different type to maintain reader variety.\n` : ''}
 ${this.serpFormatHint ? `\n## SERP Format Intelligence\n${this.serpFormatHint}\nThe content type MUST match the dominant SERP format unless there's a compelling reason to differentiate.` : ''}
@@ -579,6 +593,18 @@ Creating targeted content for these can dramatically improve rankings:
 ${gapLines}
 
 STRATEGY: Consider creating content that directly targets one of these content gaps, or use them as LSI keywords in your chosen topic.`;
+  }
+
+  private getRpmSection(currentCategory: string): string {
+    if (Object.keys(this.rpmByNiche).length === 0) return '';
+    const lines = Object.entries(this.rpmByNiche)
+      .sort(([, a], [, b]) => b - a)
+      .map(([cat, rpm]) => {
+        const tier = rpm >= 10 ? 'high revenue' : rpm >= 5 ? 'moderate revenue' : 'low revenue';
+        const marker = cat === currentCategory ? ' ← THIS NICHE' : '';
+        return `  - ${cat}: $${rpm.toFixed(2)}/1k RPM (${tier})${marker}`;
+      });
+    return `\n## Ad Revenue by Niche (RPM Data — prioritize high-RPM topics)\n${lines.join('\n')}\nPRIORITIZE keywords in high-RPM niches when quality and relevance are equal. Higher RPM = more revenue per visitor.\n`;
   }
 
   private getSeasonalSection(category: string): string {

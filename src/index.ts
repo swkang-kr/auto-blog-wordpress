@@ -166,6 +166,15 @@ async function main(): Promise<void> {
     logger.info('HASHNODE_TOKEN not set, skipping Hashnode syndication');
   }
 
+  const mediumService = config.MEDIUM_TOKEN
+    ? new MediumService(config.MEDIUM_TOKEN)
+    : null;
+  if (mediumService) {
+    logger.info('Medium syndication service enabled');
+  } else {
+    logger.info('MEDIUM_TOKEN not set, skipping Medium syndication');
+  }
+
   const pinterestService = config.PINTEREST_ACCESS_TOKEN
     ? new PinterestService(config.PINTEREST_ACCESS_TOKEN)
     : null;
@@ -424,6 +433,11 @@ async function main(): Promise<void> {
             logger.info(`AdSense RPM [${niche.category}]: $${rpmData[niche.category].toFixed(2)}`);
           }
         }
+      }
+      // Pass RPM data to keyword research for revenue-aware prioritization
+      if (Object.keys(rpmData).length > 0) {
+        researchService.setRpmData(rpmData);
+        logger.info(`RPM data passed to keyword research: ${Object.keys(rpmData).length} categories`);
       }
     } catch (adsError) {
       logger.debug(`AdSense API RPM collection failed: ${adsError instanceof Error ? adsError.message : adsError}`);
@@ -1624,14 +1638,14 @@ async function main(): Promise<void> {
       const syndicationScheduledAt = new Date(Date.now() + SYNDICATION_DELAY_MS).toISOString();
 
       // Store syndication intent in post meta for deferred processing
-      if (devtoService || hashnodeService || config.MEDIUM_TOKEN) {
+      if (devtoService || hashnodeService || mediumService) {
         try {
           await wpService.updatePostMeta(post.postId, {
             _autoblog_syndication_scheduled: syndicationScheduledAt,
             _autoblog_syndication_platforms: [
               devtoService ? 'devto' : '',
               hashnodeService ? 'hashnode' : '',
-              config.MEDIUM_TOKEN ? 'medium' : '',
+              mediumService ? 'medium' : '',
             ].filter(Boolean).join(','),
           });
           logger.info(`Syndication scheduled for ${syndicationScheduledAt} (24h delay for canonical indexing)`);
@@ -1647,12 +1661,28 @@ async function main(): Promise<void> {
             if (!scheduledAt || new Date(scheduledAt).getTime() > Date.now()) continue;
 
             logger.info(`Executing deferred syndication for "${pending.title}"`);
+            const syndicationPlatforms = (pending.meta._autoblog_syndication_platforms || '').split(',');
+            // Fetch full post content for syndication (needed for HTML→Markdown conversion)
+            let syndicationContent: any = { title: pending.title, html: '', excerpt: '', tags: [], category: '', imagePrompts: [], imageCaptions: [], qualityScore: 0, metaDescription: '', slug: '' };
             try {
-              if (devtoService) {
-                await devtoService.syndicateBlogPost(
-                  { title: pending.title, html: '', excerpt: '', tags: [], category: '', imagePrompts: [], imageCaptions: [], qualityScore: 0, metaDescription: '', slug: '' } as any,
-                  { url: pending.url, postId: pending.postId } as any,
-                );
+              const fullPost = await wpService.getPostContent(pending.postId);
+              if (fullPost) {
+                syndicationContent = { ...syndicationContent, title: fullPost.title, html: fullPost.content, category: fullPost.category, excerpt: fullPost.content.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().substring(0, 300) };
+              }
+            } catch { /* use minimal content */ }
+            const syndicationPost = { url: pending.url, postId: pending.postId, title: pending.title, featuredImageId: 0 };
+            try {
+              if (syndicationPlatforms.includes('devto') && devtoService) {
+                await devtoService.syndicateBlogPost(syndicationContent as any, syndicationPost as any);
+                logger.info(`Deferred DEV.to syndication executed for "${pending.title}"`);
+              }
+              if (syndicationPlatforms.includes('hashnode') && hashnodeService) {
+                await hashnodeService.syndicateBlogPost(syndicationContent as any, syndicationPost as any);
+                logger.info(`Deferred Hashnode syndication executed for "${pending.title}"`);
+              }
+              if (syndicationPlatforms.includes('medium') && mediumService) {
+                const mediumUrl = await mediumService.syndicate(syndicationContent as any, syndicationPost as any);
+                if (mediumUrl) logger.info(`Deferred Medium syndication executed: ${mediumUrl}`);
               }
               // Clear syndication meta after execution
               await wpService.updatePostMeta(pending.postId, { _autoblog_syndication_scheduled: '', _autoblog_syndication_platforms: '' });
@@ -1693,7 +1723,7 @@ async function main(): Promise<void> {
       }
 
       // B-8.6. Medium syndication (deferred 24h for canonical indexing)
-      if (config.MEDIUM_TOKEN) {
+      if (mediumService) {
         logger.info(`Medium syndication: deferred 24h for canonical indexing (scheduled: ${syndicationScheduledAt})`);
       }
 
@@ -2789,6 +2819,26 @@ async function main(): Promise<void> {
     }
   } catch (factRetryQueryErr) {
     logger.debug(`Fact-check retry query failed: ${factRetryQueryErr instanceof Error ? factRetryQueryErr.message : factRetryQueryErr}`);
+  }
+
+  // Monthly expired content archive (1st of each month)
+  if (new Date().getDate() === 1) {
+    try {
+      const allEntries = history.getAllEntries();
+      const archived = await wpService.archiveExpiredPosts(allEntries);
+      if (archived.length > 0) {
+        logger.info(`Archived ${archived.length} expired low-traffic post(s) → noindex,nofollow`);
+        if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
+          const archiveList = archived.map(a => `• Post #${a.postId}: "${a.keyword}"`).join('\n');
+          await sendTelegramAlert(
+            config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID,
+            `📦 Monthly Archive: ${archived.length} post(s) set to noindex\n\n${archiveList}`,
+          );
+        }
+      }
+    } catch (archiveErr) {
+      logger.debug(`Expired content archive failed: ${archiveErr instanceof Error ? archiveErr.message : archiveErr}`);
+    }
   }
 
   logger.info('=== Batch Complete ===');

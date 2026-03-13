@@ -148,7 +148,7 @@ export class SeoService {
         `document.addEventListener('DOMContentLoaded',function(){` +
         `var st=0;window.addEventListener('scroll',function(){var h=document.documentElement.scrollHeight-window.innerHeight;if(h>0){var p=Math.round(window.scrollY/h*100);if(p>=25&&st<25){st=25;gtag('event','scroll_depth',{percent:25})}if(p>=50&&st<50){st=50;gtag('event','scroll_depth',{percent:50})}if(p>=75&&st<75){st=75;gtag('event','scroll_depth',{percent:75})}if(p>=90&&st<90){st=90;gtag('event','scroll_depth',{percent:90})}}});` +
         `document.querySelectorAll('.ab-share-btn').forEach(function(b){b.addEventListener('click',function(){gtag('event','share',{method:b.textContent.trim()})})});` +
-        `document.querySelectorAll('a[rel*="sponsored"],a[data-affiliate="true"]').forEach(function(a){a.addEventListener('click',function(){gtag('event','affiliate_click',{link_url:a.href,link_text:a.textContent.trim().slice(0,50)})})});` +
+        `document.querySelectorAll('a[rel*="sponsored"],a[data-affiliate="true"]').forEach(function(a){a.addEventListener('click',function(){var cg='';var cm=document.querySelector('meta[property="article:section"]');if(cm)cg=cm.getAttribute('content')||'';gtag('event','affiliate_click',{link_url:a.href,link_text:a.textContent.trim().slice(0,50),page_path:location.pathname,content_group:cg})})});` +
         `var t=setTimeout(function(){gtag('event','engaged_reader',{engagement_time:30})},30000);` +
         `document.addEventListener('visibilitychange',function(){if(document.hidden)clearTimeout(t)});` +
         `});\n</script>`);

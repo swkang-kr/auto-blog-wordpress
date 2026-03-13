@@ -3,7 +3,7 @@ import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { logger } from '../utils/logger.js';
 import { WordPressError } from '../types/errors.js';
-import type { BlogContent, PublishedPost, MediaUploadResult, ExistingPost, AuthorProfile } from '../types/index.js';
+import type { BlogContent, PublishedPost, MediaUploadResult, ExistingPost, AuthorProfile, PostHistoryEntry } from '../types/index.js';
 import { NICHE_AUTHOR_PROFILES, NICHE_DISCLAIMERS, CONTENT_FRESHNESS_MAP } from '../types/index.js';
 import type { ContentType } from '../types/index.js';
 
@@ -2294,6 +2294,47 @@ ${ga4TrackingScript}`;
       logger.error(`Failed to trash post ${postId}: ${error instanceof Error ? error.message : error}`);
       return false;
     }
+  }
+
+  /**
+   * Archive expired low-traffic posts by setting noindex,nofollow meta.
+   * Criteria: published > 365 days ago AND engagementScore < 5.
+   * Does NOT delete or unpublish — just removes from search index.
+   * Returns list of archived post IDs and titles.
+   */
+  async archiveExpiredPosts(historyEntries: PostHistoryEntry[]): Promise<Array<{ postId: number; keyword: string }>> {
+    const now = Date.now();
+    const ONE_YEAR_MS = 365 * 24 * 60 * 60 * 1000;
+    const archived: Array<{ postId: number; keyword: string }> = [];
+
+    const candidates = historyEntries.filter(entry => {
+      if (!entry.publishedAt || !entry.postId) return false;
+      const age = now - new Date(entry.publishedAt).getTime();
+      return age > ONE_YEAR_MS && (entry.engagementScore ?? 0) < 5;
+    });
+
+    if (candidates.length === 0) {
+      logger.info('Archive check: no expired low-traffic posts found');
+      return archived;
+    }
+
+    logger.info(`Archive check: ${candidates.length} candidate(s) for noindex archival`);
+
+    for (const entry of candidates) {
+      try {
+        await this.updatePostMeta(entry.postId, {
+          rank_math_robots: 'noindex,nofollow',
+          _autoblog_archived: new Date().toISOString(),
+          _autoblog_archive_reason: `Age: ${Math.floor((now - new Date(entry.publishedAt).getTime()) / (24 * 60 * 60 * 1000))}d, Engagement: ${entry.engagementScore ?? 0}`,
+        });
+        archived.push({ postId: entry.postId, keyword: entry.keyword });
+        logger.info(`Archived post ${entry.postId} "${entry.keyword}" → noindex,nofollow`);
+      } catch (error) {
+        logger.debug(`Failed to archive post ${entry.postId}: ${error instanceof Error ? error.message : error}`);
+      }
+    }
+
+    return archived;
   }
 
   /**
