@@ -164,6 +164,23 @@ export class PostHistory {
   }
 
   /**
+   * Detect niche saturation: warn when a niche has too many posts relative to others.
+   * Returns saturation data per niche for balanced content planning.
+   */
+  getNicheSaturation(nicheIds: string[]): Record<string, { count: number; pct: number; saturated: boolean }> {
+    const total = this.data.entries.length;
+    if (total === 0) return {};
+    const result: Record<string, { count: number; pct: number; saturated: boolean }> = {};
+    for (const id of nicheIds) {
+      const count = this.data.entries.filter(e => e.niche === id).length;
+      const pct = Math.round((count / total) * 100);
+      // Saturated if a niche has >30% of all posts (unbalanced)
+      result[id] = { count, pct, saturated: pct > 30 };
+    }
+    return result;
+  }
+
+  /**
    * Compute content freshness score (0-100) for a post based on time decay.
    * Score decreases as content ages, weighted by content type volatility.
    * Higher scores = fresher content, lower scores = needs refresh.

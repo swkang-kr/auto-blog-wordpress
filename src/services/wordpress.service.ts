@@ -1463,7 +1463,11 @@ ${ga4TrackingScript}`;
     };
     const wpm = categoryWpm[content.category] || 238;
     const readingTimeMin = Math.max(1, Math.ceil(bannerWordCount / wpm + bannerImageCount * 0.2));
-    const lastUpdatedBanner = `<div style="background:#f0f8ff; border-left:4px solid #0066FF; padding:12px 20px; margin:0 0 24px 0; border-radius:0 8px 8px 0; font-size:14px; color:#555; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;"><span><span style="display:inline-block; padding:2px 8px; background:#0066FF; color:#fff; border-radius:4px; font-size:11px; font-weight:700; margin-right:8px; vertical-align:middle;">UPDATED</span><strong>Last Updated:</strong> ${publishDate}</span><span style="color:#0066FF; font-weight:600;">${readingTimeMin} min read</span></div>`;
+    // YMYL reviewer badge for Finance content
+    const reviewerBadge = content.category === 'Korean Finance' && this.siteOwner
+      ? ` <span style="margin-left:12px; padding:2px 8px; background:#15803d; color:#fff; border-radius:4px; font-size:11px; font-weight:700; vertical-align:middle;">REVIEWED</span><span style="margin-left:4px; font-weight:600;">by ${this.escapeHtml(this.siteOwner)}${this.authorCredentials ? `, ${this.escapeHtml(this.authorCredentials)}` : ''}</span>`
+      : '';
+    const lastUpdatedBanner = `<div style="background:#f0f8ff; border-left:4px solid #0066FF; padding:12px 20px; margin:0 0 24px 0; border-radius:0 8px 8px 0; font-size:14px; color:#555; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;"><span><span style="display:inline-block; padding:2px 8px; background:#0066FF; color:#fff; border-radius:4px; font-size:11px; font-weight:700; margin-right:8px; vertical-align:middle;">UPDATED</span><strong>Last Updated:</strong> ${publishDate}${reviewerBadge}</span><span style="color:#0066FF; font-weight:600;">${readingTimeMin} min read</span></div>`;
     // Insert after the first heading or date div
     const firstH2 = htmlEn.indexOf('<h2');
     if (firstH2 > 0) {
@@ -1700,6 +1704,16 @@ ${ga4TrackingScript}`;
         ...(options?.featuredImageUrl ? { logo: { '@type': 'ImageObject', url: options.featuredImageUrl } } : {}),
       },
       mainEntityOfPage: { '@type': 'WebPage', '@id': content.slug ? `${this.wpUrl}/${content.slug}/` : this.wpUrl },
+      // YMYL reviewer metadata for Finance content (E-E-A-T compliance)
+      ...(content.category === 'Korean Finance' && this.siteOwner ? {
+        reviewedBy: {
+          '@type': 'Person',
+          name: this.siteOwner,
+          url: `${this.wpUrl}/about/`,
+          ...(this.authorCredentials ? { hasCredential: { '@type': 'EducationalOccupationalCredential', credentialCategory: this.authorCredentials } } : {}),
+          knowsAbout: ['Korean stock market', 'KOSPI', 'Korean economy', 'Investment analysis'],
+        },
+      } : {}),
       // InteractionCounter for social proof signals (updated by GA4 data in refresh cycles)
       interactionStatistic: [
         {

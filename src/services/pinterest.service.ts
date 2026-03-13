@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { logger } from '../utils/logger.js';
+import { buildUtmUrl, extractSlugFromUrl } from '../utils/utm.js';
 import type { BlogContent, PublishedPost } from '../types/index.js';
 
 /** Pinterest-eligible categories for auto-pinning */
@@ -65,13 +66,14 @@ export class PinterestService {
       // Build Pinterest-optimized description (max 500 chars)
       const description = this.buildPinDescription(content);
 
+      const utmUrl = buildUtmUrl(post.url, 'pinterest', 'social', extractSlugFromUrl(post.url));
       await axios.post(
         'https://api.pinterest.com/v5/pins',
         {
           board_id: boardId,
           title: content.title.slice(0, 100),
           description,
-          link: post.url,
+          link: utmUrl,
           media_source: {
             source_type: 'image_url',
             url: featuredImageUrl,

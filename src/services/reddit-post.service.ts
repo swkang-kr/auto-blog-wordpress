@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { logger } from '../utils/logger.js';
+import { buildUtmUrl, extractSlugFromUrl } from '../utils/utm.js';
 
 /** Niche → subreddit mapping for auto-posting */
 const NICHE_SUBREDDITS: Record<string, string[]> = {
@@ -101,8 +102,9 @@ export class RedditPostService {
     }
   }
 
-  /** Auto-post to relevant subreddits for a given niche category */
+  /** Auto-post to relevant subreddits for a given niche category (with UTM tracking) */
   async autoPost(category: string, title: string, url: string): Promise<number> {
+    url = buildUtmUrl(url, 'reddit', 'social', extractSlugFromUrl(url));
     const subreddits = NICHE_SUBREDDITS[category];
     if (!subreddits || subreddits.length === 0) {
       logger.debug(`No subreddit mapping for category: ${category}`);

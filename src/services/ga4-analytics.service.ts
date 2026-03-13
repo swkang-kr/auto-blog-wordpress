@@ -415,6 +415,51 @@ Favor top-performing content types when choosing format for each niche.`;
     return result;
   }
 
+  /**
+   * Estimate per-post revenue attribution by combining GA4 pageviews with niche RPM data.
+   * Returns top revenue-generating posts for insight into which content drives revenue.
+   */
+  async getPostRevenueAttribution(
+    historyEntries: PostHistoryEntry[],
+    rpmByCategory: Record<string, number>,
+  ): Promise<Array<{ url: string; title: string; niche: string; pageviews: number; estimatedRevenue: number }>> {
+    try {
+      const posts = await this.getTopPerformingPosts(100);
+      if (posts.length === 0) return [];
+
+      const attributed: Array<{ url: string; title: string; niche: string; pageviews: number; estimatedRevenue: number }> = [];
+
+      for (const post of posts) {
+        const entry = historyEntries.find(e => {
+          try {
+            return new URL(e.postUrl).pathname.replace(/\/$/, '') === post.url.replace(/\/$/, '');
+          } catch { return false; }
+        });
+        if (!entry?.niche) continue;
+
+        // Find category for this niche
+        const category = entry.niche.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+          .replace('K Beauty', 'K-Beauty')
+          .replace('K Entertainment', 'K-Entertainment');
+        const rpm = rpmByCategory[category] || 3; // Default RPM $3 if unknown
+        const estimatedRevenue = (post.pageviews / 1000) * rpm;
+
+        attributed.push({
+          url: post.url,
+          title: entry.keyword || post.url,
+          niche: entry.niche,
+          pageviews: post.pageviews,
+          estimatedRevenue,
+        });
+      }
+
+      return attributed.sort((a, b) => b.estimatedRevenue - a.estimatedRevenue);
+    } catch (error) {
+      logger.debug(`Post revenue attribution failed: ${error instanceof Error ? error.message : error}`);
+      return [];
+    }
+  }
+
   private async getAccessToken(): Promise<string> {
     return getGoogleAccessToken(this.saKey, 'https://www.googleapis.com/auth/analytics.readonly');
   }

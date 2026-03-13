@@ -2,6 +2,7 @@ import axios from 'axios';
 import { logger } from '../utils/logger.js';
 import type { BlogContent, PublishedPost } from '../types/index.js';
 import { htmlToMarkdown } from '../utils/html-to-markdown.js';
+import { buildUtmUrl, extractSlugFromUrl } from '../utils/utm.js';
 
 export class MediumService {
   private token: string;
@@ -33,7 +34,9 @@ export class MediumService {
       const userId = await this.getUserId();
 
       // Convert HTML to Markdown for better Medium rendering
-      const markdown = htmlToMarkdown(content.html);
+      const utmUrl = buildUtmUrl(post.url, 'medium', 'syndication', extractSlugFromUrl(post.url));
+      const markdown = htmlToMarkdown(content.html) +
+        `\n\n---\n*Originally published at [${new URL(post.url).hostname}](${utmUrl})*`;
 
       // Build tags (Medium allows max 5 tags)
       const tags = content.tags

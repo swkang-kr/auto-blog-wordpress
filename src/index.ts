@@ -359,6 +359,13 @@ async function main(): Promise<void> {
     logger.warn(`Comment settings/cleanup failed: ${error instanceof Error ? error.message : error}`);
   }
 
+  // 2.10b2. Ensure sticky sidebar + anchor ad placements
+  try {
+    await seoService.ensureStickyAdsSnippet();
+  } catch (error) {
+    logger.warn(`Sticky ads snippet setup failed: ${error instanceof Error ? error.message : error}`);
+  }
+
   // 2.10c. Ensure CWV auto-fix snippet (LCP preload, CLS dimension forcing, prefetch)
   try {
     await seoService.ensureCwvAutoFixSnippet();
@@ -827,6 +834,20 @@ async function main(): Promise<void> {
     }
   }
 
+  // 3.7a. Niche saturation detection — warn if any niche is overrepresented
+  const saturation = history.getNicheSaturation(activeNiches.map(n => n.id));
+  const saturatedNiches = Object.entries(saturation).filter(([, s]) => s.saturated);
+  if (saturatedNiches.length > 0) {
+    for (const [nicheId, data] of saturatedNiches) {
+      logger.warn(`Niche saturation: "${nicheId}" has ${data.pct}% of all posts (${data.count} total). Consider diversifying.`);
+    }
+    // Feed saturation data to keyword research
+    const satInsight = '\n## Niche Saturation Alert\n' +
+      saturatedNiches.map(([id, d]) => `- "${id}": ${d.pct}% of all posts (OVER-REPRESENTED — deprioritize unless high RPM)`).join('\n') +
+      '\nFor saturated niches, only publish if the keyword fills a genuine gap or has exceptional search demand.';
+    insightParts.push(satInsight);
+  }
+
   // Log series opportunities for each active niche
   for (const niche of activeNiches) {
     const seriesOpps = topicClusterService.getSeriesOpportunities(niche.id);
@@ -858,13 +879,29 @@ async function main(): Promise<void> {
       if (gapStriking.length > 0 || gapTopQueries.length > 0) {
         const competitorGaps = topicClusterService.analyzeCompetitorGaps(gapStriking, gapTopQueries, existingPosts);
         if (competitorGaps.length > 0) {
-          // Feed high-priority create opportunities into keyword research as seed suggestions
-          const createOpportunities = competitorGaps
+          // Revenue-weighted gap scoring: prioritize gaps in high-RPM niches
+          const rpmWeightedGaps = competitorGaps
             .filter(g => g.opportunity === 'create' && g.priority === 'high')
-            .slice(0, 5)
-            .map(g => g.query);
-          if (createOpportunities.length > 0) {
-            const gapInsight = `\n## Content Gap Opportunities (from competitor analysis)\nHigh-value queries with impressions but no dedicated content: ${createOpportunities.map(q => `"${q}"`).join(', ')}. Prioritize creating targeted content for these queries.`;
+            .map(g => {
+              // Match gap query to niche by checking which niche it belongs to
+              const matchedNiche = NICHES.find(n => {
+                const kwLower = g.query.toLowerCase();
+                return n.seedKeywords.some(s => kwLower.includes(s.toLowerCase().split(' ')[0])) ||
+                  kwLower.includes(n.category.toLowerCase().replace('korean ', '').replace('k-', ''));
+              });
+              const rpm = matchedNiche?.dynamicRpmValue || 3;
+              const revenueScore = g.estimatedTraffic * rpm / 1000;
+              return { ...g, rpm, revenueScore, niche: matchedNiche?.category || 'Unknown' };
+            })
+            .sort((a, b) => b.revenueScore - a.revenueScore)
+            .slice(0, 5);
+
+          if (rpmWeightedGaps.length > 0) {
+            const gapInsight = `\n## Content Gap Opportunities (revenue-weighted)\n` +
+              rpmWeightedGaps.map(g =>
+                `- "${g.query}" (${g.estimatedTraffic} est. traffic, $${g.rpm.toFixed(2)} RPM, est. revenue: $${g.revenueScore.toFixed(2)}/mo) [${g.niche}]`,
+              ).join('\n') +
+              '\nPrioritize high-revenue gaps when selecting keywords.';
             researchService.setPerformanceInsights(
               researchService.getPerformanceInsights() + gapInsight,
             );
@@ -1581,20 +1618,32 @@ async function main(): Promise<void> {
       await seoService.notifyIndexNow([post.url]);
       await seoService.pingSitemap();
 
-      // B-6. Social posting: Twitter/LinkedIn deferred 2h for engagement optimization, Pinterest stays immediate
-      const SOCIAL_DELAY_MS = 2 * 60 * 60 * 1000; // 2 hours
-      const socialScheduledAt = new Date(Date.now() + SOCIAL_DELAY_MS).toISOString();
+      // B-6. Multi-day social campaign: stagger platforms for sustained engagement
+      // Day 0 (immediate): Pinterest + Reddit (algorithmic, benefits from freshness)
+      // Day 0 +2h: Twitter thread (engagement window)
+      // Day 0 +6h: LinkedIn (professional audience, different timezone peak)
+      const TWITTER_DELAY_MS = 2 * 60 * 60 * 1000; // 2 hours
+      const LINKEDIN_DELAY_MS = 6 * 60 * 60 * 1000; // 6 hours
       const socialPlatforms: string[] = [];
       if (twitterService) socialPlatforms.push('twitter');
       if (linkedinService) socialPlatforms.push('linkedin');
 
       if (socialPlatforms.length > 0) {
         try {
-          await wpService.updatePostMeta(post.postId, {
-            _autoblog_social_scheduled: socialScheduledAt,
-            _autoblog_social_platforms: socialPlatforms.join(','),
-          });
-          logger.info(`Social posting scheduled for ${socialScheduledAt} (2h delay): ${socialPlatforms.join(', ')}`);
+          // Schedule Twitter at +2h
+          if (twitterService) {
+            await wpService.updatePostMeta(post.postId, {
+              _autoblog_social_scheduled: new Date(Date.now() + TWITTER_DELAY_MS).toISOString(),
+              _autoblog_social_platforms: 'twitter',
+            });
+          }
+          // Schedule LinkedIn at +6h (separate meta key for staggering)
+          if (linkedinService) {
+            await wpService.updatePostMeta(post.postId, {
+              _autoblog_linkedin_scheduled: new Date(Date.now() + LINKEDIN_DELAY_MS).toISOString(),
+            });
+          }
+          logger.info(`Multi-day campaign: Twitter +2h, LinkedIn +6h for "${content.title}"`);
         } catch (socialMetaError) {
           logger.debug(`Social scheduling meta save failed: ${socialMetaError instanceof Error ? socialMetaError.message : socialMetaError}`);
           // Fallback: post immediately if meta save fails
@@ -1605,6 +1654,7 @@ async function main(): Promise<void> {
 
       // Execute previously scheduled social posts that are now due (read from WP post meta)
       try {
+        // Twitter execution
         const pendingSocial = await wpService.getPostsByMeta('_autoblog_social_scheduled', 10);
         for (const pending of pendingSocial.slice(0, 3)) {
           const scheduledAt = pending.meta._autoblog_social_scheduled;
@@ -1619,14 +1669,24 @@ async function main(): Promise<void> {
               );
               logger.info(`Deferred Twitter post executed for "${pending.title}"`);
             }
-            if (platforms.includes('linkedin') && linkedinService) {
-              await linkedinService.promoteBlogPost(pending.title, '', pending.url);
-              logger.info(`Deferred LinkedIn post executed for "${pending.title}"`);
-            }
-            // Clear the schedule meta after successful execution
             await wpService.updatePostMeta(pending.postId, { _autoblog_social_scheduled: '', _autoblog_social_platforms: '' });
           } catch (deferredSocialErr) {
             logger.debug(`Deferred social post failed: ${deferredSocialErr instanceof Error ? deferredSocialErr.message : deferredSocialErr}`);
+          }
+        }
+        // LinkedIn execution (staggered separately)
+        if (linkedinService) {
+          const pendingLinkedin = await wpService.getPostsByMeta('_autoblog_linkedin_scheduled', 10);
+          for (const pending of pendingLinkedin.slice(0, 3)) {
+            const scheduledAt = pending.meta._autoblog_linkedin_scheduled;
+            if (!scheduledAt || new Date(scheduledAt).getTime() > Date.now()) continue;
+            try {
+              await linkedinService.promoteBlogPost(pending.title, '', pending.url);
+              logger.info(`Deferred LinkedIn post executed for "${pending.title}"`);
+              await wpService.updatePostMeta(pending.postId, { _autoblog_linkedin_scheduled: '' });
+            } catch (liErr) {
+              logger.debug(`Deferred LinkedIn post failed: ${liErr instanceof Error ? liErr.message : liErr}`);
+            }
           }
         }
       } catch (socialQueryErr) {
@@ -1908,7 +1968,37 @@ async function main(): Promise<void> {
       );
       if (rewritten > 0) {
         logger.info(`Auto-rewrote ${rewritten} underperforming post(s)`);
-        // Korean content sync removed — English-only publishing
+        // Re-promote refreshed content to SNS for renewed traffic
+        try {
+          const recentRefreshed = await wpService.getPostsByMeta('_autoblog_last_refreshed', 5);
+          for (const refreshed of recentRefreshed.slice(0, 2)) {
+            const refreshedAt = refreshed.meta._autoblog_last_refreshed;
+            // Only re-promote if refreshed within last 24h
+            if (!refreshedAt || Date.now() - new Date(refreshedAt).getTime() > 24 * 60 * 60 * 1000) continue;
+            logger.info(`Re-promoting refreshed post: "${refreshed.title}"`);
+            if (twitterService) {
+              try {
+                await twitterService.promoteBlogPost(
+                  { title: refreshed.title, html: '', excerpt: '', tags: [], category: '', imagePrompts: [], imageCaptions: [], qualityScore: 0, metaDescription: '', slug: '' } as any,
+                  { url: refreshed.url, postId: refreshed.postId, title: refreshed.title, featuredImageId: 0 },
+                );
+                logger.info(`Re-promotion: Twitter thread posted for "${refreshed.title}"`);
+              } catch (reproErr) {
+                logger.debug(`Re-promotion Twitter failed: ${reproErr instanceof Error ? reproErr.message : reproErr}`);
+              }
+            }
+            if (linkedinService) {
+              try {
+                await linkedinService.promoteBlogPost(refreshed.title, '', refreshed.url);
+                logger.info(`Re-promotion: LinkedIn post shared for "${refreshed.title}"`);
+              } catch (reproErr) {
+                logger.debug(`Re-promotion LinkedIn failed: ${reproErr instanceof Error ? reproErr.message : reproErr}`);
+              }
+            }
+          }
+        } catch (reproError) {
+          logger.debug(`Re-promotion lookup failed: ${reproError instanceof Error ? reproError.message : reproError}`);
+        }
       }
     } catch (error) {
       logger.warn(`Auto-rewrite failed: ${error instanceof Error ? error.message : error}`);
@@ -2838,6 +2928,34 @@ async function main(): Promise<void> {
       }
     } catch (archiveErr) {
       logger.debug(`Expired content archive failed: ${archiveErr instanceof Error ? archiveErr.message : archiveErr}`);
+    }
+  }
+
+  // Post-level revenue attribution (weekly on Mondays)
+  if (new Date().getDay() === 1 && config.GA4_PROPERTY_ID && config.GOOGLE_INDEXING_SA_KEY) {
+    try {
+      const revenueGa4 = new GA4AnalyticsService(config.GA4_PROPERTY_ID, config.GOOGLE_INDEXING_SA_KEY);
+      const rpmData: Record<string, number> = {};
+      for (const niche of NICHES) {
+        if (niche.dynamicRpmValue) rpmData[niche.category] = niche.dynamicRpmValue;
+      }
+      if (Object.keys(rpmData).length > 0) {
+        const revenueAttr = await revenueGa4.getPostRevenueAttribution(history.getAllEntries(), rpmData);
+        if (revenueAttr.length > 0) {
+          const topRevenue = revenueAttr.slice(0, 5);
+          logger.info('=== Top Revenue Posts (estimated) ===');
+          for (const r of topRevenue) {
+            logger.info(`  $${r.estimatedRevenue.toFixed(2)} — "${r.title}" (${r.pageviews} views, ${r.niche})`);
+          }
+          if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
+            const revMsg = '💰 Top Revenue Posts (weekly)\n' +
+              topRevenue.map(r => `$${r.estimatedRevenue.toFixed(2)} — ${r.title} (${r.pageviews} views)`).join('\n');
+            await sendTelegramAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, revMsg);
+          }
+        }
+      }
+    } catch (revError) {
+      logger.debug(`Revenue attribution failed: ${revError instanceof Error ? revError.message : revError}`);
     }
   }
 

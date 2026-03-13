@@ -1,5 +1,6 @@
 import { TwitterApi } from 'twitter-api-v2';
 import { logger } from '../utils/logger.js';
+import { buildUtmUrl, extractSlugFromUrl } from '../utils/utm.js';
 import type { BlogContent, PublishedPost } from '../types/index.js';
 
 export class TwitterService {
@@ -16,7 +17,8 @@ export class TwitterService {
 
   /** Promote blog post as a 5-tweet thread (hook → insights → CTA) */
   async promoteBlogPost(content: BlogContent, post: PublishedPost): Promise<void> {
-    const thread = this.buildThread(content, post.url);
+    const utmUrl = buildUtmUrl(post.url, 'twitter', 'social', extractSlugFromUrl(post.url));
+    const thread = this.buildThread(content, utmUrl);
 
     try {
       // Post first tweet
@@ -50,10 +52,7 @@ export class TwitterService {
    * [4]: CTA + URL + hashtags
    */
   buildThread(content: BlogContent, url: string): string[] {
-    const hashtags = content.tags
-      .slice(0, 3)
-      .map((tag) => `#${tag.replace(/\s+/g, '')}`)
-      .join(' ');
+    const hashtags = this.buildHashtags(content.tags, content.category);
 
     // Extract insights from FAQ items or excerpt sentences
     const insights = this.extractInsights(content);
@@ -129,6 +128,22 @@ export class TwitterService {
 
     // Fall back to a question format using the title
     return `Did you know? ${content.excerpt.split('.')[0].trim()}.`;
+  }
+
+  /** Build category-aware hashtags for better discoverability */
+  private buildHashtags(tags: string[], category: string): string {
+    const categoryHashtags: Record<string, string[]> = {
+      'Korean Tech': ['#KoreanTech', '#AI', '#Samsung'],
+      'Korean Finance': ['#KOSPI', '#KoreanStocks', '#Investing'],
+      'K-Beauty': ['#KBeauty', '#Skincare', '#KoreanBeauty'],
+      'Korea Travel': ['#KoreaTravel', '#Seoul', '#VisitKorea'],
+      'K-Entertainment': ['#KPop', '#KDrama', '#Hallyu'],
+    };
+    const catTags = categoryHashtags[category] || [];
+    const contentTags = tags.slice(0, 2).map((t) => `#${t.replace(/\s+/g, '')}`);
+    // Merge: 1-2 content tags + 1-2 category tags, deduplicated
+    const all = [...new Set([...contentTags, ...catTags])].slice(0, 4);
+    return all.join(' ');
   }
 
   /** Truncate tweet to 280 characters */

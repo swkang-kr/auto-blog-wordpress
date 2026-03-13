@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { logger } from '../utils/logger.js';
 import { htmlToMarkdown } from '../utils/html-to-markdown.js';
+import { buildUtmUrl, extractSlugFromUrl } from '../utils/utm.js';
 import type { BlogContent, PublishedPost } from '../types/index.js';
 
 const DEVTO_API = 'https://dev.to/api';
@@ -36,7 +37,9 @@ export class DevToService {
         .slice(0, 4)
         .map((tag) => tag.replace(/\s+/g, '').toLowerCase().substring(0, 30));
 
-      const bodyMarkdown = htmlToMarkdown(content.html);
+      const utmUrl = buildUtmUrl(post.url, 'devto', 'syndication', extractSlugFromUrl(post.url));
+      const bodyMarkdown = htmlToMarkdown(content.html) +
+        `\n\n---\n*Originally published at [${new URL(post.url).hostname}](${utmUrl})*`;
 
       const response = await axios.post(
         `${DEVTO_API}/articles`,

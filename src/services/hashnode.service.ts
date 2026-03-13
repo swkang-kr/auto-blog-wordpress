@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { logger } from '../utils/logger.js';
 import { htmlToMarkdown } from '../utils/html-to-markdown.js';
+import { buildUtmUrl, extractSlugFromUrl } from '../utils/utm.js';
 import type { BlogContent, PublishedPost } from '../types/index.js';
 
 const HASHNODE_GQL = 'https://gql.hashnode.com';
@@ -46,7 +47,9 @@ export class HashnodeService {
           .replace(/[^a-z0-9]+/g, '-')
           .replace(/(^-|-$)/g, '');
 
-      const contentMarkdown = htmlToMarkdown(content.html);
+      const utmUrl = buildUtmUrl(post.url, 'hashnode', 'syndication', extractSlugFromUrl(post.url));
+      const contentMarkdown = htmlToMarkdown(content.html) +
+        `\n\n---\n*Originally published at [${new URL(post.url).hostname}](${utmUrl})*`;
 
       const mutation = `
         mutation PublishPost($input: PublishPostInput!) {

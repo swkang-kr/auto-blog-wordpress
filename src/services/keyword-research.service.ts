@@ -431,9 +431,16 @@ export class KeywordResearchService {
     let trendsContext: string;
 
     if (risingData.trendsSource === 'rising' && (risingData.risingQueries.length > 0 || risingData.topQueries.length > 0)) {
-      const risingLines = risingData.risingQueries.length > 0
-        ? risingData.risingQueries
-            .map(q => `  - "${q.query}" (${q.value === 'Breakout' ? 'Breakout 🔥' : `+${q.value}%`})`)
+      // Score trend velocity: Breakout = 100, percentage = normalized score
+      const scoredRising = risingData.risingQueries.map(q => {
+        const velocity = q.value === 'Breakout' ? 100 : Math.min(100, parseInt(String(q.value)) || 0);
+        const tier = velocity >= 80 ? '🔥 HOT' : velocity >= 40 ? '📈 RISING' : '📊 GROWING';
+        return { ...q, velocity, tier };
+      }).sort((a, b) => b.velocity - a.velocity);
+
+      const risingLines = scoredRising.length > 0
+        ? scoredRising
+            .map(q => `  - "${q.query}" (${q.value === 'Breakout' ? 'Breakout 🔥' : `+${q.value}%`} | velocity: ${q.velocity}/100 ${q.tier})`)
             .join('\n')
         : '  (none found)';
 

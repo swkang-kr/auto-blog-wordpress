@@ -24,6 +24,7 @@ const CRITICAL_CSS_SNIPPET_TITLE = 'Auto Blog Critical CSS';
 const HOMEPAGE_META_SNIPPET_TITLE = 'Auto Blog Homepage Meta Tags';
 const POST_CANONICAL_FALLBACK_SNIPPET_TITLE = 'Auto Blog Canonical Fallback';
 const COOKIE_CONSENT_SNIPPET_TITLE = 'Auto Blog Cookie Consent';
+const STICKY_ADS_SNIPPET_TITLE = 'Auto Blog Sticky Sidebar & Anchor Ads';
 
 export class SeoService {
   private api: AxiosInstance;
@@ -311,6 +312,88 @@ add_action('wp_head', function() {
       const msg = error instanceof Error ? error.message : String(error);
       logger.warn(`Failed to install AdSense padding snippet: ${msg}`);
       logger.warn('Manually add CSS: @media (max-width:768px) { body { padding-bottom:70px !important; } }');
+    }
+  }
+
+  /**
+   * Ensure sticky sidebar ad + anchor ad CSS/JS snippet is installed.
+   * Sticky sidebar stays visible on scroll (desktop). Anchor ad sticks to bottom (mobile).
+   * Only activates when AdSense Auto Ads is enabled.
+   */
+  async ensureStickyAdsSnippet(): Promise<void> {
+    const phpCode = `
+// Sticky sidebar ad + anchor bottom ad for improved viewability and RPM
+add_action('wp_head', function() {
+    if (!is_singular('post')) return;
+    echo '<style>
+/* Sticky sidebar ad (desktop only) */
+@media (min-width: 1024px) {
+    .sidebar .widget_custom_html:last-child,
+    .sidebar .widget_block:last-child {
+        position: sticky;
+        top: 80px;
+        z-index: 10;
+    }
+}
+/* Anchor ad container (mobile) */
+.autoblog-anchor-ad {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    background: rgba(30,30,46,0.95);
+    padding: 8px;
+    text-align: center;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+    display: none;
+}
+@media (max-width: 768px) {
+    .autoblog-anchor-ad { display: block; }
+    body { padding-bottom: 90px !important; }
+}
+.autoblog-anchor-close {
+    position: absolute;
+    top: 2px;
+    right: 8px;
+    background: none;
+    border: none;
+    color: #999;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 4px;
+}
+</style>';
+});
+// Anchor ad close button script
+add_action('wp_footer', function() {
+    if (!is_singular('post')) return;
+    echo '<div class="autoblog-anchor-ad" id="anchor-ad">
+        <button class="autoblog-anchor-close" onclick="document.getElementById(\\'anchor-ad\\').style.display=\\'none\\'">&times;</button>
+        <ins class="adsbygoogle" style="display:inline-block;width:320;height:50" data-ad-format="auto"></ins>
+    </div>';
+});`.trim();
+
+    try {
+      const { data: snippets } = await axios.get(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      const existing = (snippets as Array<{ id: number; name: string }>)
+        .find((s) => s.name === STICKY_ADS_SNIPPET_TITLE);
+      if (existing) {
+        logger.info(`Sticky ads snippet already exists (ID=${existing.id}), skipping`);
+        return;
+      }
+
+      await axios.post(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { name: STICKY_ADS_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 10 },
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      logger.info('Sticky sidebar & anchor ad snippet installed');
+    } catch (error) {
+      logger.warn(`Sticky ads snippet setup failed: ${error instanceof Error ? error.message : error}`);
     }
   }
 
