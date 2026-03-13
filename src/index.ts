@@ -298,12 +298,7 @@ async function main(): Promise<void> {
     logger.warn(`IndexNow key snippet setup failed: ${error instanceof Error ? error.message : error}`);
   }
 
-  // 2.9c. Ensure hreflang snippet for internationalization signals
-  try {
-    await seoService.ensureHreflangSnippet();
-  } catch (error) {
-    logger.warn(`Hreflang snippet setup failed: ${error instanceof Error ? error.message : error}`);
-  }
+  // 2.9c. Hreflang snippet removed — English-only publishing
 
   // 2.9c2. Ensure canonical URL fallback when Rank Math is inactive
   try {
@@ -1566,69 +1561,7 @@ async function main(): Promise<void> {
         }
       }
 
-      // B-4.5. Generate Korean version (if enabled) for hreflang SEO
-      let koreanPostUrl: string | undefined;
-      if (config.ENABLE_KOREAN_CONTENT === 'true') {
-        try {
-          const { KoreanContentService } = await import('./services/korean-content.service.js');
-          const koreanService = new KoreanContentService(config.ANTHROPIC_API_KEY, config.CLAUDE_MODEL);
-
-          // Korean keyword research: find the right Korean search terms
-          const koreanKeywords = await koreanService.researchKoreanKeyword(
-            researched.analysis.selectedKeyword, niche.category,
-          );
-
-          const koreanVersion = await koreanService.generateKoreanVersion(
-            content.title, content.html, content.excerpt,
-            niche.category, koreanKeywords?.koreanKeyword || researched.analysis.selectedKeyword,
-          );
-          if (koreanVersion) {
-            // Merge Naver tags into Korean post tags
-            if (koreanKeywords?.naverTags) {
-              koreanVersion.tags = [...new Set([...koreanVersion.tags, ...koreanKeywords.naverTags])].slice(0, 10);
-            }
-
-            // Create Korean version as a separate post with hreflang linking
-            const koreanPost = await wpService.createPost(
-              {
-                ...content,
-                title: koreanVersion.title,
-                html: koreanVersion.html,
-                excerpt: koreanVersion.excerpt,
-                tags: koreanVersion.tags,
-                slug: content.slug ? `ko-${content.slug}` : undefined,
-              },
-              featuredMediaResult?.mediaId || 0,
-              undefined,
-              {
-                contentType: researched.analysis.contentType,
-                keyword: koreanKeywords?.koreanKeyword || researched.analysis.selectedKeyword,
-                featuredImageUrl: featuredMediaResult?.sourceUrl,
-                publishStatus: effectivePublishStatus,
-                skipInlineCss: postCssSnippetActive,
-              },
-            );
-            // Set hreflang meta + Naver SEO meta on both posts for mutual linking
-            const naverMeta = koreanKeywords
-              ? KoreanContentService.buildNaverMetaTags(koreanVersion.title, koreanVersion.excerpt, koreanKeywords.naverTags, koreanPost.url)
-              : {};
-            await wpService.updatePostMeta(post.postId, {
-              _autoblog_hreflang_ko: koreanPost.url,
-              _autoblog_hreflang_en: post.url,
-            });
-            await wpService.updatePostMeta(koreanPost.postId, {
-              _autoblog_hreflang_en: post.url,
-              _autoblog_hreflang_ko: koreanPost.url,
-              ...(koreanKeywords?.koreanKeyword ? { rank_math_focus_keyword: koreanKeywords.koreanKeyword } : {}),
-              ...naverMeta,
-            });
-            koreanPostUrl = koreanPost.url;
-            logger.info(`Korean version published: ${koreanPost.url} (hreflang linked${koreanKeywords ? ', Naver SEO applied' : ''})`);
-          }
-        } catch (koError) {
-          logger.debug(`Korean content generation failed: ${koError instanceof Error ? koError.message : koError}`);
-        }
-      }
+      // B-4.5. Korean content generation removed — English-only publishing
 
       // B-5. IndexNow + Bing Sitemap Ping
       await seoService.notifyIndexNow([post.url]);
@@ -1834,7 +1767,6 @@ async function main(): Promise<void> {
         featuredImageUrl: featuredMediaResult?.sourceUrl,
         featuredImageMediaId: featuredMediaResult?.mediaId,
         ...(seriesId ? { seriesId, seriesPart } : {}),
-        ...(koreanPostUrl ? { koreanPostUrl } : {}),
       });
 
       results.push({
@@ -1946,25 +1878,7 @@ async function main(): Promise<void> {
       );
       if (rewritten > 0) {
         logger.info(`Auto-rewrote ${rewritten} underperforming post(s)`);
-        // Flag Korean versions of rewritten posts for refresh
-        if (config.ENABLE_KOREAN_CONTENT === 'true') {
-          const rewrittenEntries = history.getAllEntries()
-            .filter(e => e.koreanPostUrl && e.lastRefreshedAt)
-            .filter(e => {
-              const refreshedAt = new Date(e.lastRefreshedAt!).getTime();
-              return Date.now() - refreshedAt < 2 * 60 * 60 * 1000; // refreshed in this batch
-            });
-          if (rewrittenEntries.length > 0) {
-            logger.info(`Korean content sync needed: ${rewrittenEntries.length} rewritten post(s) have Korean versions. Run Korean refresh manually or wait for next batch.`);
-            // Send Telegram alert for Korean sync needed
-            if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
-              await sendTelegramAlert(
-                config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID,
-                `🇰🇷 Korean Content Sync Needed\n${rewrittenEntries.length} English post(s) were rewritten but their Korean versions are now outdated:\n${rewrittenEntries.map(e => `• "${e.keyword}"`).join('\n')}`,
-              );
-            }
-          }
-        }
+        // Korean content sync removed — English-only publishing
       }
     } catch (error) {
       logger.warn(`Auto-rewrite failed: ${error instanceof Error ? error.message : error}`);
