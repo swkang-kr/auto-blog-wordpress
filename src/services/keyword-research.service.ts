@@ -107,6 +107,25 @@ export class KeywordResearchService {
     this.contentTypeDistribution = `\n## Content Type Distribution (IMPORTANT — maintain diversity)\n${lines.join('\n')}\nTypes marked [OVERREPRESENTED] (above 30%) should be AVOIDED unless the topic strongly demands it. PREFER underrepresented types.\n${freshnessLine}`;
   }
 
+  /** Set per-category content type distribution for category-level diversity warnings */
+  setCategoryContentTypeDistribution(categoryDist: Record<string, Record<string, number>>): void {
+    const warnings: string[] = [];
+    for (const [category, dist] of Object.entries(categoryDist)) {
+      const total = Object.values(dist).reduce((a, b) => a + b, 0);
+      if (total < 3) continue; // not enough data to judge
+      for (const [type, count] of Object.entries(dist)) {
+        const pct = Math.round((count / total) * 100);
+        if (pct > 70) {
+          warnings.push(`  ⚠ "${category}" has ${pct}% "${type}" content (${count}/${total}) — diversify to strengthen topical authority`);
+        }
+      }
+    }
+    if (warnings.length > 0) {
+      this.contentTypeDistribution += `\n## Category Content Type Imbalance\n${warnings.join('\n')}\nAvoid the dominant type for these categories in this batch.`;
+      logger.info(`Content type imbalance detected: ${warnings.length} category warning(s)`);
+    }
+  }
+
   /** Set SERP analysis data from GSC for competitive intelligence */
   setSerpAnalysis(strikingDistance: GSCQueryData[], topQueries: GSCQueryData[]): void {
     const contentGapHints: string[] = [];

@@ -577,7 +577,10 @@ export class PostHistory {
   }): Promise<void> {
     const checkpointFile = path.resolve('data', 'batch-checkpoint.json');
     await fs.mkdir(path.dirname(checkpointFile), { recursive: true });
-    await fs.writeFile(checkpointFile, JSON.stringify(checkpoint, null, 2), 'utf-8');
+    // Atomic write: write to temp file then rename (prevents corruption on crash)
+    const tmpFile = checkpointFile + '.tmp';
+    await fs.writeFile(tmpFile, JSON.stringify(checkpoint, null, 2), 'utf-8');
+    await fs.rename(tmpFile, checkpointFile);
     logger.debug(`Checkpoint saved: ${checkpoint.completedNiches.length} niches completed`);
   }
 
@@ -623,6 +626,9 @@ export class PostHistory {
       const backupFile = HISTORY_FILE.replace('.json', '.backup.json');
       await fs.copyFile(HISTORY_FILE, backupFile);
     } catch { /* No existing file to back up */ }
-    await fs.writeFile(HISTORY_FILE, JSON.stringify(this.data, null, 2), 'utf-8');
+    // Atomic write: write to temp file then rename (prevents corruption on crash)
+    const tmpFile = HISTORY_FILE + '.tmp';
+    await fs.writeFile(tmpFile, JSON.stringify(this.data, null, 2), 'utf-8');
+    await fs.rename(tmpFile, HISTORY_FILE);
   }
 }

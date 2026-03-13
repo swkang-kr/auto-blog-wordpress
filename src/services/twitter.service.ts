@@ -1,6 +1,6 @@
 import { TwitterApi } from 'twitter-api-v2';
 import { logger } from '../utils/logger.js';
-import { buildUtmUrl, extractSlugFromUrl } from '../utils/utm.js';
+import { buildUtmUrl, extractSlugFromUrl, type UtmParams } from '../utils/utm.js';
 import type { BlogContent, PublishedPost } from '../types/index.js';
 
 export class TwitterService {
@@ -15,10 +15,20 @@ export class TwitterService {
     });
   }
 
-  /** Promote blog post as a 5-tweet thread (hook → insights → CTA) */
-  async promoteBlogPost(content: BlogContent, post: PublishedPost): Promise<void> {
-    const utmUrl = buildUtmUrl(post.url, 'twitter', 'social', extractSlugFromUrl(post.url));
-    const thread = this.buildThread(content, utmUrl);
+  /** Promote blog post as a 5-tweet thread (hook → insights → CTA) with A/B CTA variants.
+   * Returns the first tweet ID for engagement tracking, or null on failure. */
+  async promoteBlogPost(content: BlogContent, post: PublishedPost): Promise<string | null> {
+    const slug = extractSlugFromUrl(post.url);
+    const ctaVariant = this.pickCtaVariant();
+    const utmParams: UtmParams = {
+      source: 'twitter',
+      medium: 'social',
+      campaign: slug,
+      content: `thread-${ctaVariant.id}`,
+      term: content.tags[0] || '',
+    };
+    const utmUrl = buildUtmUrl(post.url, utmParams);
+    const thread = this.buildThread(content, utmUrl, ctaVariant);
 
     try {
       // Post first tweet
@@ -40,8 +50,10 @@ export class TwitterService {
         }
       }
       logger.info(`X thread completed: ${thread.length} tweets for "${content.title}"`);
+      return first.data.id;
     } catch (error) {
       logger.warn(`X thread failed (non-critical): ${error instanceof Error ? error.message : error}`);
+      return null;
     }
   }
 
@@ -51,8 +63,9 @@ export class TwitterService {
    * [1-3]: Core insights extracted from FAQ or excerpt
    * [4]: CTA + URL + hashtags
    */
-  buildThread(content: BlogContent, url: string): string[] {
+  buildThread(content: BlogContent, url: string, ctaVariant?: { id: string; text: string }): string[] {
     const hashtags = this.buildHashtags(content.tags, content.category);
+    const cta = ctaVariant || this.pickCtaVariant();
 
     // Extract insights from FAQ items or excerpt sentences
     const insights = this.extractInsights(content);
@@ -76,12 +89,12 @@ export class TwitterService {
       insightTweets.push(this.truncateTweet(`${insightTweets.length + 2}/ ${sentence.trim()}.`));
     }
 
-    // [4] CTA tweet
-    const cta = this.truncateTweet(
-      `5/ Read the full breakdown:\n\n${url}\n\n${hashtags}`,
+    // [4] CTA tweet — uses A/B variant for testing
+    const ctaTweet = this.truncateTweet(
+      `5/ ${cta.text}\n\n${url}\n\n${hashtags}`,
     );
 
-    return [hook, ...insightTweets, cta];
+    return [hook, ...insightTweets, ctaTweet];
   }
 
   /** Extract key insights from FAQ items or content excerpt */
@@ -144,6 +157,17 @@ export class TwitterService {
     // Merge: 1-2 content tags + 1-2 category tags, deduplicated
     const all = [...new Set([...contentTags, ...catTags])].slice(0, 4);
     return all.join(' ');
+  }
+
+  /** Pick a random CTA variant for A/B testing (tracked via utm_content) */
+  private pickCtaVariant(): { id: string; text: string } {
+    const variants = [
+      { id: 'cta-a', text: 'Read the full breakdown:' },
+      { id: 'cta-b', text: 'Get the complete analysis here:' },
+      { id: 'cta-c', text: 'Want the full story? Read more:' },
+      { id: 'cta-d', text: 'Dive deeper into this topic:' },
+    ];
+    return variants[Math.floor(Math.random() * variants.length)];
   }
 
   /** Truncate tweet to 280 characters */

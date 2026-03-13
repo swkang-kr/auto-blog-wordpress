@@ -36,6 +36,7 @@ export class ImageGeneratorService {
       model: modelName,
       generationConfig: {
         responseModalities: ['IMAGE', 'TEXT'] as unknown as undefined,
+        responseMimeType: 'image/png',
       } as Record<string, unknown>,
     });
   }
@@ -366,6 +367,7 @@ export class ImageGeneratorService {
         model: 'gemini-2.5-flash-image',
         generationConfig: {
           responseModalities: ['IMAGE', 'TEXT'] as unknown as undefined,
+          responseMimeType: 'image/png',
         } as Record<string, unknown>,
       });
 

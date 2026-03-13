@@ -1,3 +1,5 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
 import axios from 'axios';
 import { loadConfig } from './config/env.js';
 import { NICHES, getSeasonallyOrderedNiches, getSeasonalContentSuggestions } from './config/niches.js';
@@ -366,6 +368,13 @@ async function main(): Promise<void> {
     logger.warn(`Sticky ads snippet setup failed: ${error instanceof Error ? error.message : error}`);
   }
 
+  // 2.10b3. Ensure exit-intent lead magnet popup
+  try {
+    await seoService.ensureExitIntentSnippet(config.NEWSLETTER_FORM_URL);
+  } catch (error) {
+    logger.warn(`Exit-intent snippet setup failed: ${error instanceof Error ? error.message : error}`);
+  }
+
   // 2.10c. Ensure CWV auto-fix snippet (LCP preload, CLS dimension forcing, prefetch)
   try {
     await seoService.ensureCwvAutoFixSnippet();
@@ -420,6 +429,19 @@ async function main(): Promise<void> {
     logger.warn(`Series hub pages update failed: ${error instanceof Error ? error.message : error}`);
   }
 
+  // 2.12e-pre. Load cached RPM data from previous runs (fallback when AdSense API unavailable)
+  const RPM_CACHE_FILE = path.resolve('data', 'rpm-cache.json');
+  try {
+    const rpmCacheRaw = await fs.readFile(RPM_CACHE_FILE, 'utf-8');
+    const rpmCache = JSON.parse(rpmCacheRaw) as Record<string, number>;
+    for (const niche of NICHES) {
+      if (rpmCache[niche.category] && !niche.dynamicRpmValue) {
+        niche.dynamicRpmValue = rpmCache[niche.category];
+        logger.debug(`RPM cache loaded [${niche.category}]: $${rpmCache[niche.category].toFixed(2)}`);
+      }
+    }
+  } catch { /* No cache file yet, OK */ }
+
   // 2.12e. AdSense API: auto-collect RPM data per niche (replaces manual ADSENSE_RPM_OVERRIDES)
   if (config.ADSENSE_SA_KEY && config.ADSENSE_ACCOUNT_ID) {
     try {
@@ -441,11 +463,34 @@ async function main(): Promise<void> {
           }
         }
       }
+      // Apply seasonal RPM multipliers to dynamic RPM values
+      for (const niche of NICHES) {
+        if (niche.dynamicRpmValue) {
+          const seasonalMultiplier = CostTracker.SEASONAL_RPM_MULTIPLIERS[niche.category]?.[new Date().getMonth() + 1] || 1.0;
+          if (seasonalMultiplier > 1.0) {
+            const seasonalRpm = niche.dynamicRpmValue * seasonalMultiplier;
+            logger.info(`Seasonal RPM boost [${niche.category}]: $${niche.dynamicRpmValue.toFixed(2)} × ${seasonalMultiplier}x = $${seasonalRpm.toFixed(2)}`);
+            niche.dynamicRpmValue = seasonalRpm;
+          }
+        }
+      }
       // Pass RPM data to keyword research for revenue-aware prioritization
       if (Object.keys(rpmData).length > 0) {
         researchService.setRpmData(rpmData);
         logger.info(`RPM data passed to keyword research: ${Object.keys(rpmData).length} categories`);
       }
+      // Persist RPM data for next run (survives process restart)
+      try {
+        const rpmToCache: Record<string, number> = {};
+        for (const niche of NICHES) {
+          if (niche.dynamicRpmValue) rpmToCache[niche.category] = niche.dynamicRpmValue;
+        }
+        if (Object.keys(rpmToCache).length > 0) {
+          await fs.mkdir(path.dirname(RPM_CACHE_FILE), { recursive: true });
+          await fs.writeFile(RPM_CACHE_FILE, JSON.stringify(rpmToCache, null, 2), 'utf-8');
+          logger.debug(`RPM cache saved: ${Object.keys(rpmToCache).length} categories`);
+        }
+      } catch { /* non-critical */ }
     } catch (adsError) {
       logger.debug(`AdSense API RPM collection failed: ${adsError instanceof Error ? adsError.message : adsError}`);
     }
@@ -503,9 +548,29 @@ async function main(): Promise<void> {
   let ga4OptimalDay: number | null = null;
   const insightParts: string[] = [];
 
-  if (config.GA4_PROPERTY_ID && config.GOOGLE_INDEXING_SA_KEY) {
+  // Singleton service instances — reused throughout the batch (avoids repeated auth handshakes)
+  const ga4Singleton = (config.GA4_PROPERTY_ID && config.GOOGLE_INDEXING_SA_KEY)
+    ? new GA4AnalyticsService(config.GA4_PROPERTY_ID, config.GOOGLE_INDEXING_SA_KEY)
+    : null;
+  const gscSingleton = (config.GSC_SITE_URL && config.GOOGLE_INDEXING_SA_KEY)
+    ? new GSCAnalyticsService(config.GSC_SITE_URL || config.WP_URL, config.GOOGLE_INDEXING_SA_KEY)
+    : null;
+
+  // Pre-batch GA4 metrics snapshot for ROI comparison
+  let preBatchMetrics: { pageviews: number; sessions: number; engagementRate: number; avgEngagementDuration: number } | null = null;
+
+  if (ga4Singleton) {
     try {
-      const ga4Service = new GA4AnalyticsService(config.GA4_PROPERTY_ID, config.GOOGLE_INDEXING_SA_KEY);
+      // Capture 7-day baseline before batch runs
+      preBatchMetrics = await ga4Singleton.getSiteMetricsSnapshot('7daysAgo', 'today');
+      if (preBatchMetrics) {
+        logger.info(`Pre-batch GA4 snapshot: ${preBatchMetrics.pageviews} pageviews, ${preBatchMetrics.sessions} sessions, ${(preBatchMetrics.engagementRate * 100).toFixed(1)}% engagement`);
+      }
+    } catch (snapErr) {
+      logger.debug(`Pre-batch GA4 snapshot failed: ${snapErr instanceof Error ? snapErr.message : snapErr}`);
+    }
+    try {
+      const ga4Service = ga4Singleton;
       const insights = await ga4Service.getPerformanceInsights();
       if (insights) {
         insightParts.push(insights);
@@ -525,26 +590,48 @@ async function main(): Promise<void> {
       if (topPosts.length > 0) {
         await history.updateEngagementScores(topPosts);
       }
+
+      // Core Web Vitals monitoring — flag slow posts (LCP > 2500ms)
+      try {
+        const cwvPages = await ga4Service.getCoreWebVitals(20);
+        const slowPages = cwvPages.filter(p => p.lcp > 2500);
+        if (slowPages.length > 0) {
+          logger.warn(`CWV: ${slowPages.length} page(s) with LCP > 2.5s — consider image optimization`);
+          for (const sp of slowPages.slice(0, 5)) {
+            logger.warn(`  ${sp.pagePath}: LCP=${Math.round(sp.lcp)}ms, CLS=${sp.cls.toFixed(3)}, INP=${Math.round(sp.inp)}ms`);
+          }
+        } else if (cwvPages.length > 0) {
+          logger.info(`CWV: all ${cwvPages.length} measured pages have LCP < 2.5s`);
+        }
+      } catch (cwvErr) {
+        logger.debug(`CWV monitoring skipped: ${cwvErr instanceof Error ? cwvErr.message : cwvErr}`);
+      }
     } catch (error) {
       logger.warn(`GA4 performance feedback failed: ${error instanceof Error ? error.message : error}`);
     }
   }
 
   // Google Search Console integration (impressions, clicks, positions, decay, threats)
+  // Cache GSC results for reuse (avoids duplicate API calls in competitor gap analysis)
+  let cachedStrikingDistance: Awaited<ReturnType<GSCAnalyticsService['getStrikingDistanceKeywords']>> = [];
+  let cachedTopQueries: Awaited<ReturnType<GSCAnalyticsService['getTopQueries']>> = [];
   let gscService: GSCAnalyticsService | null = null;
-  if (config.GSC_SITE_URL && config.GOOGLE_INDEXING_SA_KEY) {
+  if (gscSingleton) {
     try {
-      gscService = new GSCAnalyticsService(config.GSC_SITE_URL || config.WP_URL, config.GOOGLE_INDEXING_SA_KEY);
+      gscService = gscSingleton;
       const searchInsights = await gscService.getSearchInsights();
       if (searchInsights) {
         insightParts.push(searchInsights);
         logger.info('GSC search insights loaded for keyword research');
       }
       // SERP competition analysis: feed striking distance + top queries for content gap detection
-      const [strikingDistance, topQueries] = await Promise.all([
+      // Results cached in outer scope for reuse by competitor gap analysis (avoids duplicate API calls)
+      [cachedStrikingDistance, cachedTopQueries] = await Promise.all([
         gscService.getStrikingDistanceKeywords(),
         gscService.getTopQueries(30),
       ]);
+      const strikingDistance = cachedStrikingDistance;
+      const topQueries = cachedTopQueries;
       if (strikingDistance.length > 0 || topQueries.length > 0) {
         researchService.setSerpAnalysis(strikingDistance, topQueries);
         logger.info(`SERP analysis loaded: ${strikingDistance.length} striking distance, ${topQueries.length} top queries`);
@@ -868,14 +955,11 @@ async function main(): Promise<void> {
     }
   }
 
-  // 3.7b. Competitor gap analysis: find high-value content opportunities from GSC data
-  if (config.GSC_SITE_URL && config.GOOGLE_INDEXING_SA_KEY) {
+  // 3.7b. Competitor gap analysis: reuse cached GSC data (no duplicate API calls)
+  if (cachedStrikingDistance.length > 0 || cachedTopQueries.length > 0) {
     try {
-      const gscGapService = new GSCAnalyticsService(config.GSC_SITE_URL || config.WP_URL, config.GOOGLE_INDEXING_SA_KEY);
-      const [gapStriking, gapTopQueries] = await Promise.all([
-        gscGapService.getStrikingDistanceKeywords(),
-        gscGapService.getTopQueries(50),
-      ]);
+      const gapStriking = cachedStrikingDistance;
+      const gapTopQueries = cachedTopQueries;
       if (gapStriking.length > 0 || gapTopQueries.length > 0) {
         const competitorGaps = topicClusterService.analyzeCompetitorGaps(gapStriking, gapTopQueries, existingPosts);
         if (competitorGaps.length > 0) {
@@ -959,6 +1043,10 @@ async function main(): Promise<void> {
   if (checkpoint) {
     checkpointResumeIdx = checkpoint.currentNicheIdx + 1;
     logger.info(`Batch checkpoint found: resuming from niche index ${checkpointResumeIdx} (${checkpoint.completedNiches.join(', ')} already done)`);
+    // Pre-fill results for already-completed niches so batch summary is accurate
+    for (let ci = 0; ci < checkpointResumeIdx && ci < activeNiches.length; ci++) {
+      results.push({ keyword: activeNiches[ci].name, niche: activeNiches[ci].id, success: true, duration: 0 });
+    }
   }
 
   // ── Phase A: Research + Content Generation ──────────────────────────────
@@ -989,6 +1077,21 @@ async function main(): Promise<void> {
       const dist: Record<string, number> = {};
       for (const ct of allContentTypes) dist[ct] = (dist[ct] || 0) + 1;
       researchService.setContentTypeDistribution(dist);
+    }
+    // Per-category content type distribution (detect >70% dominance per category)
+    if (nicheIdx === 0) {
+      const categoryDist: Record<string, Record<string, number>> = {};
+      for (const n of activeNiches) {
+        const cts = history.getRecentContentTypes(n.id, 999);
+        if (cts.length >= 3) {
+          const d: Record<string, number> = {};
+          for (const ct of cts) d[ct] = (d[ct] || 0) + 1;
+          categoryDist[n.name] = d;
+        }
+      }
+      if (Object.keys(categoryDist).length > 0) {
+        researchService.setCategoryContentTypeDistribution(categoryDist);
+      }
     }
 
     try {
@@ -1401,8 +1504,12 @@ async function main(): Promise<void> {
       }
 
       // B-3.9. Pre-publish fact verification (critical errors → force draft)
+      let factCheckClaims: Array<{ claim: string; correction: string }> = [];
       try {
         const factResult = await factCheckService.verifyContent(content.html, niche.category);
+        if (factResult.corrections.length > 0) {
+          factCheckClaims = factResult.corrections;
+        }
         if (factResult.flagged.length > 0) {
           logger.warn(`Fact-check: ${factResult.flagged.length} issue(s) detected for "${content.title}"`);
           // Apply auto-corrections where possible
@@ -1479,8 +1586,12 @@ async function main(): Promise<void> {
       }
 
       // Content upgrade CTA (content-type-specific downloadable resource)
+      const upgradeLeadMagnetMap: Record<string, string> = config.LEAD_MAGNET_MAP
+        ? (() => { try { return JSON.parse(config.LEAD_MAGNET_MAP); } catch { return {}; } })()
+        : {};
+      const upgradeLeadUrl = upgradeLeadMagnetMap[niche.category] || config.LEAD_MAGNET_URL || config.NEWSLETTER_FORM_URL || '';
       const contentUpgradeCta = wpService.buildContentUpgradeCta(
-        researched.analysis.selectedKeyword, niche.category, researched.analysis.contentType,
+        researched.analysis.selectedKeyword, niche.category, researched.analysis.contentType, upgradeLeadUrl,
       );
       if (contentUpgradeCta) {
         // Insert before the last </div> or at end of content
@@ -1579,6 +1690,7 @@ async function main(): Promise<void> {
           selectedPersona,
           isNewPublisher,
           clusterRelatedPosts: clusterRelatedPosts.length > 0 ? clusterRelatedPosts : undefined,
+          factCheckClaims: factCheckClaims.length > 0 ? factCheckClaims : undefined,
         },
       );
 
@@ -1646,9 +1758,15 @@ async function main(): Promise<void> {
           logger.info(`Multi-day campaign: Twitter +2h, LinkedIn +6h for "${content.title}"`);
         } catch (socialMetaError) {
           logger.debug(`Social scheduling meta save failed: ${socialMetaError instanceof Error ? socialMetaError.message : socialMetaError}`);
-          // Fallback: post immediately if meta save fails
-          if (twitterService) await twitterService.promoteBlogPost(content, post);
-          if (linkedinService) await linkedinService.promoteBlogPost(content.title, content.excerpt, post.url, featuredMediaResult?.sourceUrl || undefined);
+          // Fallback: post immediately if meta save fails, save social IDs for tracking
+          if (twitterService) {
+            const tweetId = await twitterService.promoteBlogPost(content, post);
+            if (tweetId) await wpService.updatePostMeta(post.postId, { _autoblog_tweet_id: tweetId }).catch(() => {});
+          }
+          if (linkedinService) {
+            const linkedinPostId = await linkedinService.promoteBlogPost(content.title, content.excerpt, post.url, featuredMediaResult?.sourceUrl || undefined);
+            if (linkedinPostId) await wpService.updatePostMeta(post.postId, { _autoblog_linkedin_post_id: linkedinPostId }).catch(() => {});
+          }
         }
       }
 
@@ -1663,10 +1781,11 @@ async function main(): Promise<void> {
           const platforms = (pending.meta._autoblog_social_platforms || '').split(',');
           try {
             if (platforms.includes('twitter') && twitterService) {
-              await twitterService.promoteBlogPost(
+              const deferredTweetId = await twitterService.promoteBlogPost(
                 { title: pending.title, html: '', excerpt: '', tags: [], category: '', imagePrompts: [], imageCaptions: [], qualityScore: 0, metaDescription: '', slug: '' } as any,
                 { url: pending.url, postId: pending.postId } as any,
               );
+              if (deferredTweetId) await wpService.updatePostMeta(pending.postId, { _autoblog_tweet_id: deferredTweetId }).catch(() => {});
               logger.info(`Deferred Twitter post executed for "${pending.title}"`);
             }
             await wpService.updatePostMeta(pending.postId, { _autoblog_social_scheduled: '', _autoblog_social_platforms: '' });
@@ -1681,7 +1800,8 @@ async function main(): Promise<void> {
             const scheduledAt = pending.meta._autoblog_linkedin_scheduled;
             if (!scheduledAt || new Date(scheduledAt).getTime() > Date.now()) continue;
             try {
-              await linkedinService.promoteBlogPost(pending.title, '', pending.url);
+              const deferredLiId = await linkedinService.promoteBlogPost(pending.title, '', pending.url);
+              if (deferredLiId) await wpService.updatePostMeta(pending.postId, { _autoblog_linkedin_post_id: deferredLiId }).catch(() => {});
               logger.info(`Deferred LinkedIn post executed for "${pending.title}"`);
               await wpService.updatePostMeta(pending.postId, { _autoblog_linkedin_scheduled: '' });
             } catch (liErr) {
@@ -1698,7 +1818,8 @@ async function main(): Promise<void> {
       const syndicationScheduledAt = new Date(Date.now() + SYNDICATION_DELAY_MS).toISOString();
 
       // Store syndication intent in post meta for deferred processing
-      if (devtoService || hashnodeService || mediumService) {
+      const naverBlogReady = !!(config.NAVER_BLOG_ID && config.NAVER_CLIENT_ID && config.NAVER_CLIENT_SECRET);
+      if (devtoService || hashnodeService || mediumService || naverBlogReady) {
         try {
           await wpService.updatePostMeta(post.postId, {
             _autoblog_syndication_scheduled: syndicationScheduledAt,
@@ -1706,6 +1827,7 @@ async function main(): Promise<void> {
               devtoService ? 'devto' : '',
               hashnodeService ? 'hashnode' : '',
               mediumService ? 'medium' : '',
+              naverBlogReady ? 'naver' : '',
             ].filter(Boolean).join(','),
           });
           logger.info(`Syndication scheduled for ${syndicationScheduledAt} (24h delay for canonical indexing)`);
@@ -1727,7 +1849,32 @@ async function main(): Promise<void> {
             try {
               const fullPost = await wpService.getPostContent(pending.postId);
               if (fullPost) {
-                syndicationContent = { ...syndicationContent, title: fullPost.title, html: fullPost.content, category: fullPost.category, excerpt: fullPost.content.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().substring(0, 300) };
+                const plainText = fullPost.content.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+                // Extract tags from WP post for proper Twitter thread building
+                let postTags: string[] = [];
+                let postSlug = '';
+                try {
+                  const { data: wpPostData } = await (wpService as any).api.get(`/posts/${pending.postId}`, {
+                    params: { _fields: 'tags,slug' },
+                  });
+                  postSlug = (wpPostData as any).slug || '';
+                  const tagIds: number[] = (wpPostData as any).tags || [];
+                  if (tagIds.length > 0) {
+                    const { data: tagsData } = await (wpService as any).api.get('/tags', {
+                      params: { include: tagIds.slice(0, 10).join(','), _fields: 'name' },
+                    });
+                    postTags = (tagsData as any[]).map((t: any) => t.name);
+                  }
+                } catch { /* tags extraction optional */ }
+                syndicationContent = {
+                  ...syndicationContent,
+                  title: fullPost.title,
+                  html: fullPost.content,
+                  category: fullPost.category,
+                  excerpt: plainText.substring(0, 300),
+                  tags: postTags,
+                  slug: postSlug,
+                };
               }
             } catch { /* use minimal content */ }
             const syndicationPost = { url: pending.url, postId: pending.postId, title: pending.title, featuredImageId: 0 };
@@ -1743,6 +1890,11 @@ async function main(): Promise<void> {
               if (syndicationPlatforms.includes('medium') && mediumService) {
                 const mediumUrl = await mediumService.syndicate(syndicationContent as any, syndicationPost as any);
                 if (mediumUrl) logger.info(`Deferred Medium syndication executed: ${mediumUrl}`);
+              }
+              if (syndicationPlatforms.includes('naver') && config.NAVER_BLOG_ID && config.NAVER_CLIENT_ID && config.NAVER_CLIENT_SECRET) {
+                const naverSvc = new NaverBlogService(config.NAVER_BLOG_ID, config.NAVER_CLIENT_ID, config.NAVER_CLIENT_SECRET);
+                const naverUrl = await naverSvc.seedPost(syndicationContent as any, syndicationPost as any);
+                if (naverUrl) logger.info(`Deferred Naver Blog seeding executed: ${naverUrl}`);
               }
               // Clear syndication meta after execution
               await wpService.updatePostMeta(pending.postId, { _autoblog_syndication_scheduled: '', _autoblog_syndication_platforms: '' });
@@ -1803,8 +1955,8 @@ async function main(): Promise<void> {
         }
       }
 
-      // B-8.8. Naver Blog auto-seeding (deferred 24h for canonical indexing)
-      if (config.NAVER_BLOG_ID && config.NAVER_CLIENT_ID && config.NAVER_CLIENT_SECRET) {
+      // B-8.8. Naver Blog auto-seeding (deferred 24h for canonical indexing — wired in syndication block above)
+      if (naverBlogReady) {
         logger.info(`Naver Blog seeding: deferred 24h for canonical indexing (scheduled: ${syndicationScheduledAt})`);
       }
 
@@ -1856,6 +2008,7 @@ async function main(): Promise<void> {
         searchIntent: researched.analysis.searchIntent || undefined,
         featuredImageUrl: featuredMediaResult?.sourceUrl,
         featuredImageMediaId: featuredMediaResult?.mediaId,
+        affiliateLinkCount: content.affiliateLinksCount || 0,
         ...(seriesId ? { seriesId, seriesPart } : {}),
       });
 
@@ -1948,7 +2101,7 @@ async function main(): Promise<void> {
   const REWRITE_TIME_BUDGET_MIN = 35; // Skip rewrite if already past 35 min (GitHub Actions timeout is 45 min)
   if (config.AUTO_REWRITE_COUNT > 0 && config.GA4_PROPERTY_ID && config.GOOGLE_INDEXING_SA_KEY && elapsedMinutes < REWRITE_TIME_BUDGET_MIN) {
     try {
-      const ga4Service = new GA4AnalyticsService(config.GA4_PROPERTY_ID, config.GOOGLE_INDEXING_SA_KEY);
+      const ga4Service = ga4Singleton!;
       const refreshService = new ContentRefreshService(
         config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD,
         config.ANTHROPIC_API_KEY, config.CLAUDE_MODEL,
@@ -1960,14 +2113,26 @@ async function main(): Promise<void> {
           logger.info(`Content freshness: ${staleCount} post(s) with freshness score < 30 (needs refresh)`);
         }
       }
-      const gscForRefresh = (config.GSC_SITE_URL && config.GOOGLE_INDEXING_SA_KEY)
-        ? new GSCAnalyticsService(config.GSC_SITE_URL || config.WP_URL, config.GOOGLE_INDEXING_SA_KEY)
-        : undefined;
+      const gscForRefresh = gscSingleton ?? undefined;
       const rewritten = await refreshService.refreshDecliningPosts(
         ga4Service, seoService, config.AUTO_REWRITE_COUNT, config.AUTO_REWRITE_MIN_AGE_DAYS, freshnessData, gscForRefresh,
       );
       if (rewritten > 0) {
         logger.info(`Auto-rewrote ${rewritten} underperforming post(s)`);
+        // Purge Cloudflare cache for refreshed URLs so updated content propagates immediately
+        if (config.CLOUDFLARE_API_TOKEN && config.CLOUDFLARE_ZONE_ID) {
+          try {
+            const refreshedForPurge = await wpService.getPostsByMeta('_autoblog_last_refreshed', 10);
+            const refreshedUrls = refreshedForPurge
+              .filter(r => r.meta._autoblog_last_refreshed && Date.now() - new Date(r.meta._autoblog_last_refreshed).getTime() < 24 * 60 * 60 * 1000)
+              .map(r => r.url);
+            if (refreshedUrls.length > 0) {
+              await seoService.purgeCloudflareUrls(config.CLOUDFLARE_API_TOKEN, config.CLOUDFLARE_ZONE_ID, refreshedUrls);
+            }
+          } catch (purgeErr) {
+            logger.debug(`Cloudflare purge after refresh failed: ${purgeErr instanceof Error ? purgeErr.message : purgeErr}`);
+          }
+        }
         // Re-promote refreshed content to SNS for renewed traffic
         try {
           const recentRefreshed = await wpService.getPostsByMeta('_autoblog_last_refreshed', 5);
@@ -1976,10 +2141,30 @@ async function main(): Promise<void> {
             // Only re-promote if refreshed within last 24h
             if (!refreshedAt || Date.now() - new Date(refreshedAt).getTime() > 24 * 60 * 60 * 1000) continue;
             logger.info(`Re-promoting refreshed post: "${refreshed.title}"`);
+            // Fetch enriched content from WP for proper social post building
+            let reproContent: any = { title: refreshed.title, html: '', excerpt: '', tags: [], category: '', imagePrompts: [], imageCaptions: [], qualityScore: 0, metaDescription: '', slug: '' };
+            let reproExcerpt = '';
+            try {
+              const fullPost = await wpService.getPostContent(refreshed.postId);
+              if (fullPost) {
+                reproExcerpt = fullPost.content.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().substring(0, 300);
+                reproContent = { ...reproContent, title: fullPost.title, html: fullPost.content, category: fullPost.category, excerpt: reproExcerpt };
+                // Fetch tags for Twitter thread
+                try {
+                  const { data: wpData } = await (wpService as any).api.get(`/posts/${refreshed.postId}`, { params: { _fields: 'tags,slug' } });
+                  reproContent.slug = (wpData as any).slug || '';
+                  const tagIds: number[] = (wpData as any).tags || [];
+                  if (tagIds.length > 0) {
+                    const { data: tagsData } = await (wpService as any).api.get('/tags', { params: { include: tagIds.slice(0, 10).join(','), _fields: 'name' } });
+                    reproContent.tags = (tagsData as any[]).map((t: any) => t.name);
+                  }
+                } catch { /* tags extraction optional */ }
+              }
+            } catch { /* use minimal content */ }
             if (twitterService) {
               try {
                 await twitterService.promoteBlogPost(
-                  { title: refreshed.title, html: '', excerpt: '', tags: [], category: '', imagePrompts: [], imageCaptions: [], qualityScore: 0, metaDescription: '', slug: '' } as any,
+                  reproContent as any,
                   { url: refreshed.url, postId: refreshed.postId, title: refreshed.title, featuredImageId: 0 },
                 );
                 logger.info(`Re-promotion: Twitter thread posted for "${refreshed.title}"`);
@@ -1989,7 +2174,7 @@ async function main(): Promise<void> {
             }
             if (linkedinService) {
               try {
-                await linkedinService.promoteBlogPost(refreshed.title, '', refreshed.url);
+                await linkedinService.promoteBlogPost(refreshed.title, reproExcerpt, refreshed.url);
                 logger.info(`Re-promotion: LinkedIn post shared for "${refreshed.title}"`);
               } catch (reproErr) {
                 logger.debug(`Re-promotion LinkedIn failed: ${reproErr instanceof Error ? reproErr.message : reproErr}`);
@@ -2011,7 +2196,7 @@ async function main(): Promise<void> {
   // Targets posts where position is stable but CTR is declining → title/meta problem
   if (config.GSC_SITE_URL && config.GOOGLE_INDEXING_SA_KEY) {
     try {
-      const gscCtrService = new GSCAnalyticsService(config.GSC_SITE_URL || config.WP_URL, config.GOOGLE_INDEXING_SA_KEY);
+      const gscCtrService = gscSingleton!;
       const ctrRefreshService = new ContentRefreshService(
         config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD,
         config.ANTHROPIC_API_KEY, config.CLAUDE_MODEL,
@@ -2069,7 +2254,7 @@ async function main(): Promise<void> {
   // 4.22d. Striking distance post strengthening (position 5-20 → strengthen for target query)
   if (config.GSC_SITE_URL && config.GOOGLE_INDEXING_SA_KEY && elapsedMinutes < REWRITE_TIME_BUDGET_MIN) {
     try {
-      const gscForStrength = new GSCAnalyticsService(config.GSC_SITE_URL, config.GOOGLE_INDEXING_SA_KEY);
+      const gscForStrength = gscSingleton!;
       const strengthService = new ContentRefreshService(
         config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD,
         config.ANTHROPIC_API_KEY, config.CLAUDE_MODEL,
@@ -2103,12 +2288,8 @@ async function main(): Promise<void> {
       config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD,
       config.ANTHROPIC_API_KEY, config.CLAUDE_MODEL,
     );
-    const ga4ForPrune = config.GA4_PROPERTY_ID && config.GOOGLE_INDEXING_SA_KEY
-      ? new GA4AnalyticsService(config.GA4_PROPERTY_ID, config.GOOGLE_INDEXING_SA_KEY)
-      : undefined;
-    const gscForPrune = config.GSC_SITE_URL && config.GOOGLE_INDEXING_SA_KEY
-      ? new GSCAnalyticsService(config.GSC_SITE_URL || config.WP_URL, config.GOOGLE_INDEXING_SA_KEY)
-      : undefined;
+    const ga4ForPrune = ga4Singleton ?? undefined;
+    const gscForPrune = gscSingleton ?? undefined;
     const pruned = await pruneService.pruneStaleContent(history.getAllEntries(), ga4ForPrune, gscForPrune, 3);
     if (pruned > 0) {
       logger.info(`Content pruning: ${pruned} stale post(s) archived (draft + noindex)`);
@@ -2162,7 +2343,7 @@ async function main(): Promise<void> {
   // 4.23. Keyword ranking tracking — store position trends in history
   if (config.GSC_SITE_URL && config.GOOGLE_INDEXING_SA_KEY) {
     try {
-      const gscRankingService = new GSCAnalyticsService(config.GSC_SITE_URL || config.WP_URL, config.GOOGLE_INDEXING_SA_KEY);
+      const gscRankingService = gscSingleton!;
       const allEntries = history.getAllEntries();
       const postKeywords = allEntries
         .filter(e => e.keyword && e.postUrl)
@@ -2226,7 +2407,7 @@ async function main(): Promise<void> {
   // 4.23c. Keyword cannibalization detection — find queries where 2+ pages compete
   if (config.GSC_SITE_URL && config.GOOGLE_INDEXING_SA_KEY) {
     try {
-      const gscCannibal = new GSCAnalyticsService(config.GSC_SITE_URL || config.WP_URL, config.GOOGLE_INDEXING_SA_KEY);
+      const gscCannibal = gscSingleton!;
       const cannibalized = await gscCannibal.detectCannibalization();
       const highSeverity = cannibalized.filter(c => c.severity === 'high');
       const medSeverity = cannibalized.filter(c => c.severity === 'medium');
@@ -2292,11 +2473,13 @@ async function main(): Promise<void> {
     if (internalUrls.length > 0) {
       const chains = await wpService.detectRedirectChains(internalUrls);
       if (chains.length > 0) {
-        logger.warn(`Redirect chains found: ${chains.length} chain(s) — update internal links to point directly to final URLs`);
+        logger.warn(`Redirect chains found: ${chains.length} chain(s) — auto-fixing internal links`);
+        // Auto-fix: replace chain links in post content with direct final URLs
+        const fixedCount = await wpService.fixRedirectChains(chains);
         if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
           const chainMsg = chains.slice(0, 3).map(c => `[${c.hops} hops] ${c.originalUrl} → ${c.finalUrl}`).join('\n  - ');
           await sendTelegramAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID,
-            `<b>Redirect Chain Alert: ${chains.length} chain(s)</b>\n  - ${chainMsg}\n\n<i>Update internal links to point directly to final URLs.</i>`, 'warning');
+            `<b>Redirect Chain Alert: ${chains.length} chain(s)</b>\n  - ${chainMsg}\n\n${fixedCount > 0 ? `✅ Auto-fixed links in ${fixedCount} post(s)` : '<i>No fixable links found in recent posts.</i>'}`, 'warning');
         }
       }
     }
@@ -2307,7 +2490,7 @@ async function main(): Promise<void> {
   // 4.23b. Title pattern CTR analysis (log insights for keyword research optimization)
   if (config.GA4_PROPERTY_ID && config.GOOGLE_INDEXING_SA_KEY) {
     try {
-      const ga4Patterns = new GA4AnalyticsService(config.GA4_PROPERTY_ID, config.GOOGLE_INDEXING_SA_KEY);
+      const ga4Patterns = ga4Singleton!;
       const titlePatterns = await ga4Patterns.getTitlePatternPerformance(history.getAllEntries());
       if (titlePatterns.length > 0) {
         logger.info('Title pattern performance:');
@@ -2334,10 +2517,8 @@ async function main(): Promise<void> {
   // Requires minimum 200 impressions per phase for statistical significance
   if (config.GA4_PROPERTY_ID && config.GOOGLE_INDEXING_SA_KEY) {
     try {
-      const ga4Service = new GA4AnalyticsService(config.GA4_PROPERTY_ID, config.GOOGLE_INDEXING_SA_KEY);
-      const gscService = (config.GSC_SITE_URL && config.GOOGLE_INDEXING_SA_KEY)
-        ? new GSCAnalyticsService(config.GSC_SITE_URL || config.WP_URL, config.GOOGLE_INDEXING_SA_KEY)
-        : null;
+      const ga4Service = ga4Singleton!;
+      const gscAbService = gscSingleton;
 
       const entriesWithCandidates = history.getAllEntries()
         .filter(e => e.titleCandidates?.length && !e.titleTestResolved);
@@ -2345,7 +2526,7 @@ async function main(): Promise<void> {
       if (entriesWithCandidates.length > 0) {
         const [ga4Perf, gscPages] = await Promise.all([
           ga4Service.getTopPerformingPosts(200),
-          gscService ? gscService.getPagePerformance(100) : Promise.resolve([]),
+          gscAbService ? gscAbService.getPagePerformance(100) : Promise.resolve([]),
         ]);
 
         for (const entry of entriesWithCandidates.slice(0, 5)) {
@@ -2513,7 +2694,7 @@ async function main(): Promise<void> {
         config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD,
         config.ANTHROPIC_API_KEY, config.CLAUDE_MODEL,
       );
-      const gscForAB = new GSCAnalyticsService(config.GSC_SITE_URL || config.WP_URL, config.GOOGLE_INDEXING_SA_KEY);
+      const gscForAB = gscSingleton!;
       const pendingTests = history.getPendingTitleTests();
       const abResults = await abRefreshService.runTitleABTests(pendingTests, gscForAB);
       if (abResults.tested > 0) {
@@ -2566,7 +2747,7 @@ async function main(): Promise<void> {
   // 4.26. Social proof: update InteractionCounter in JSON-LD with real GA4 pageview data
   if (config.GA4_PROPERTY_ID && config.GOOGLE_INDEXING_SA_KEY) {
     try {
-      const ga4Social = new GA4AnalyticsService(config.GA4_PROPERTY_ID, config.GOOGLE_INDEXING_SA_KEY);
+      const ga4Social = ga4Singleton!;
       const topPostsForSocial = await ga4Social.getTopPerformingPosts(100);
       const postPerformance = topPostsForSocial
         .filter(p => p.pageviews >= 10)
@@ -2639,7 +2820,7 @@ async function main(): Promise<void> {
         config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD,
         config.ANTHROPIC_API_KEY, config.CLAUDE_MODEL,
       );
-      const gscSnippet = new GSCAnalyticsService(config.GSC_SITE_URL || config.WP_URL, config.GOOGLE_INDEXING_SA_KEY);
+      const gscSnippet = gscSingleton!;
       const snippetOptimized = await refreshService.optimizeForFeaturedSnippets(gscSnippet, seoService, 2);
       if (snippetOptimized > 0) {
         logger.info(`Featured snippet: Optimized ${snippetOptimized} post(s) for Position 0 capture`);
@@ -2700,7 +2881,7 @@ async function main(): Promise<void> {
   // 4.10. [#16] RPM feedback loop — auto-adjust RPM from GA4 AdSense revenue data
   if (config.GA4_PROPERTY_ID && config.GOOGLE_INDEXING_SA_KEY) {
     try {
-      const ga4RpmService = new GA4AnalyticsService(config.GA4_PROPERTY_ID, config.GOOGLE_INDEXING_SA_KEY);
+      const ga4RpmService = ga4Singleton!;
       const rpmData = await ga4RpmService.getActualRpmData();
       if (rpmData.size > 0) {
         costTracker.updateActualRpm(rpmData);
@@ -2758,7 +2939,7 @@ async function main(): Promise<void> {
   // 4.99c. Post-level revenue tracking (RPM-based estimation per published post)
   if (config.GA4_PROPERTY_ID && config.GOOGLE_INDEXING_SA_KEY) {
     try {
-      const ga4Revenue = new GA4AnalyticsService(config.GA4_PROPERTY_ID, config.GOOGLE_INDEXING_SA_KEY);
+      const ga4Revenue = ga4Singleton!;
       const topPostsRevenue = await ga4Revenue.getTopPerformingPosts(100);
       for (const p of topPostsRevenue) {
         const entry = history.getAllEntries().find(e => e.postUrl && p.url.includes(e.postUrl.replace(/^https?:\/\/[^/]+/, '')));
@@ -2767,8 +2948,12 @@ async function main(): Promise<void> {
           const rpmTierMap: Record<string, number> = { high: 8, medium: 4, low: 2 };
           const rpm = nicheConf?.dynamicRpmValue ?? (nicheConf?.adSenseRpm ? rpmTierMap[nicheConf.adSenseRpm] : 3);
           costTracker.trackPostRevenue(entry.postUrl, p.pageviews, rpm);
+          // Persist post-level RPM to history for content format optimization analysis
+          entry.estimatedRpm = rpm;
+          entry.estimatedRevenue = (p.pageviews / 1000) * rpm;
         }
       }
+      await history.persist(); // Save post-level RPM data to disk
     } catch (revError) {
       logger.debug(`Post-level revenue tracking failed: ${revError instanceof Error ? revError.message : revError}`);
     }
@@ -2801,7 +2986,7 @@ async function main(): Promise<void> {
   // Dynamic RPM optimization: learn actual RPM from GA4 pageview data per niche
   if (config.GA4_PROPERTY_ID && config.GOOGLE_INDEXING_SA_KEY) {
     try {
-      const ga4Rpm = new GA4AnalyticsService(config.GA4_PROPERTY_ID, config.GOOGLE_INDEXING_SA_KEY);
+      const ga4Rpm = ga4Singleton!;
       const topPosts = await ga4Rpm.getTopPerformingPosts(200);
       if (topPosts.length >= 10) {
         // Calculate actual pageviews-per-post by niche for RPM refinement
@@ -2845,6 +3030,33 @@ async function main(): Promise<void> {
 
   logger.info('\n=== Batch Summary ===');
   logger.info(`Total: ${batch.totalKeywords} | Success: ${batch.successCount} | Failed: ${batch.failureCount} | Skipped: ${batch.skippedCount}`);
+
+  // Search intent distribution report
+  const intentCounts: Record<string, number> = {};
+  for (const g of generated) {
+    const intent = g.researched.analysis.searchIntent || 'informational';
+    intentCounts[intent] = (intentCounts[intent] || 0) + 1;
+  }
+  if (Object.keys(intentCounts).length > 0) {
+    const intentStr = Object.entries(intentCounts)
+      .sort((a, b) => b[1] - a[1])
+      .map(([intent, count]) => `${intent}: ${count}`)
+      .join(', ');
+    logger.info(`Search Intent Distribution: ${intentStr}`);
+    // Warn if >80% informational (revenue imbalance)
+    const total = Object.values(intentCounts).reduce((a, b) => a + b, 0);
+    const infoRatio = (intentCounts['informational'] || 0) / total;
+    if (infoRatio > 0.8 && total >= 3) {
+      logger.warn(`Intent imbalance: ${(infoRatio * 100).toFixed(0)}% informational — consider more transactional/commercial content for better monetization`);
+    }
+  }
+
+  // Affiliate link distribution report
+  const totalAffLinks = generated.reduce((sum, g) => sum + (g.content.affiliateLinksCount || 0), 0);
+  const postsWithAff = generated.filter(g => (g.content.affiliateLinksCount || 0) > 0).length;
+  if (totalAffLinks > 0) {
+    logger.info(`Affiliate Links: ${totalAffLinks} total across ${postsWithAff}/${generated.length} posts (avg ${(totalAffLinks / generated.length).toFixed(1)}/post)`);
+  }
 
   for (const r of results) {
     if (r.success) {
@@ -2911,6 +3123,49 @@ async function main(): Promise<void> {
     logger.debug(`Fact-check retry query failed: ${factRetryQueryErr instanceof Error ? factRetryQueryErr.message : factRetryQueryErr}`);
   }
 
+  // Monthly niche revenue comparison report (1st of each month)
+  if (new Date().getDate() === 1) {
+    try {
+      const allEntries = history.getAllEntries();
+      const nicheRevenue: Record<string, { totalRevenue: number; postCount: number; avgRpm: number; topPost: string }> = {};
+      for (const entry of allEntries) {
+        if (!entry.estimatedRevenue || !entry.niche) continue;
+        const nicheConf = NICHES.find(n => n.id === entry.niche);
+        const cat = nicheConf?.category || 'Unknown';
+        if (!nicheRevenue[cat]) nicheRevenue[cat] = { totalRevenue: 0, postCount: 0, avgRpm: 0, topPost: '' };
+        nicheRevenue[cat].totalRevenue += entry.estimatedRevenue;
+        nicheRevenue[cat].postCount++;
+        if (!nicheRevenue[cat].topPost || entry.estimatedRevenue > (nicheRevenue[nicheRevenue[cat].topPost]?.totalRevenue || 0)) {
+          nicheRevenue[cat].topPost = entry.keyword;
+        }
+      }
+      // Calculate avg RPM per niche
+      for (const cat of Object.keys(nicheRevenue)) {
+        const entries = allEntries.filter(e => {
+          const nc = NICHES.find(n => n.id === e.niche);
+          return nc?.category === cat && e.estimatedRpm;
+        });
+        if (entries.length > 0) {
+          nicheRevenue[cat].avgRpm = entries.reduce((sum, e) => sum + (e.estimatedRpm || 0), 0) / entries.length;
+        }
+      }
+      if (Object.keys(nicheRevenue).length > 0) {
+        const sorted = Object.entries(nicheRevenue).sort((a, b) => b[1].totalRevenue - a[1].totalRevenue);
+        logger.info('=== Monthly Niche Revenue Report ===');
+        for (const [cat, data] of sorted) {
+          logger.info(`  ${cat}: $${data.totalRevenue.toFixed(2)} total (${data.postCount} posts, $${data.avgRpm.toFixed(2)} avg RPM)`);
+        }
+        if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
+          const reportLines = sorted.map(([cat, d]) => `${cat}: $${d.totalRevenue.toFixed(2)} (${d.postCount} posts, $${d.avgRpm.toFixed(2)} RPM)`);
+          await sendTelegramAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID,
+            `💰 Monthly Niche Revenue Report\n\n${reportLines.join('\n')}`);
+        }
+      }
+    } catch (revenueReportErr) {
+      logger.debug(`Monthly revenue report failed: ${revenueReportErr instanceof Error ? revenueReportErr.message : revenueReportErr}`);
+    }
+  }
+
   // Monthly expired content archive (1st of each month)
   if (new Date().getDate() === 1) {
     try {
@@ -2931,10 +3186,36 @@ async function main(): Promise<void> {
     }
   }
 
+  // Weekly email digest (Monday) — send top posts from last 7 days to email subscribers
+  if (new Date().getDay() === 1 && config.EMAIL_WEBHOOK_URL) {
+    try {
+      const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+      const recentEntries = history.getAllEntries()
+        .filter(e => new Date(e.publishedAt) >= weekAgo && e.postUrl)
+        .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
+        .slice(0, 10);
+      if (recentEntries.length >= 2) {
+        const digestService = new EmailAutomationService(config.EMAIL_WEBHOOK_URL);
+        await digestService.sendDigestWebhook(
+          recentEntries.map(e => ({
+            title: e.keyword,
+            url: e.postUrl,
+            category: NICHES.find(n => n.id === e.niche)?.category || e.niche || 'General',
+          })),
+        );
+        logger.info(`Weekly email digest sent with ${recentEntries.length} posts`);
+      } else {
+        logger.debug('Weekly digest skipped: fewer than 2 posts this week');
+      }
+    } catch (digestErr) {
+      logger.debug(`Weekly digest failed: ${digestErr instanceof Error ? digestErr.message : digestErr}`);
+    }
+  }
+
   // Post-level revenue attribution (weekly on Mondays)
   if (new Date().getDay() === 1 && config.GA4_PROPERTY_ID && config.GOOGLE_INDEXING_SA_KEY) {
     try {
-      const revenueGa4 = new GA4AnalyticsService(config.GA4_PROPERTY_ID, config.GOOGLE_INDEXING_SA_KEY);
+      const revenueGa4 = ga4Singleton!;
       const rpmData: Record<string, number> = {};
       for (const niche of NICHES) {
         if (niche.dynamicRpmValue) rpmData[niche.category] = niche.dynamicRpmValue;
@@ -2953,13 +3234,98 @@ async function main(): Promise<void> {
             await sendTelegramAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, revMsg);
           }
         }
+
+        // Traffic source revenue attribution (which channels drive revenue?)
+        const sourceRevenue = await revenueGa4.getRevenueByTrafficSource(rpmData);
+        if (sourceRevenue.length > 0) {
+          logger.info('=== Revenue by Traffic Source ===');
+          const topSources = sourceRevenue.slice(0, 8);
+          for (const s of topSources) {
+            logger.info(`  $${s.estimatedRevenue.toFixed(2)} — ${s.source} (${s.pageviews} views, ${s.sessions} sessions)`);
+          }
+          if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
+            const srcMsg = '📊 Revenue by Traffic Source (weekly)\n' +
+              topSources.map(s => `$${s.estimatedRevenue.toFixed(2)} — ${s.source} (${s.pageviews} views)`).join('\n');
+            await sendTelegramAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, srcMsg);
+          }
+        }
+
+        // Cross-niche user journey analysis
+        const journeys = await revenueGa4.getCrossNicheJourneys();
+        if (journeys.length > 0) {
+          logger.info('=== Cross-Niche User Journeys ===');
+          for (const j of journeys.slice(0, 5)) {
+            logger.info(`  ${j.fromCategory} → ${j.toCategory}: ~${j.transitions} cross-visits`);
+          }
+        }
       }
     } catch (revError) {
       logger.debug(`Revenue attribution failed: ${revError instanceof Error ? revError.message : revError}`);
     }
   }
 
+  // Post-batch GA4 metrics comparison
+  if (ga4Singleton && preBatchMetrics) {
+    try {
+      const postBatchMetrics = await ga4Singleton.getSiteMetricsSnapshot('7daysAgo', 'today');
+      if (postBatchMetrics) {
+        const pvDelta = postBatchMetrics.pageviews - preBatchMetrics.pageviews;
+        const sessDelta = postBatchMetrics.sessions - preBatchMetrics.sessions;
+        const engDelta = (postBatchMetrics.engagementRate - preBatchMetrics.engagementRate) * 100;
+        logger.info(`Post-batch GA4 delta: pageviews ${pvDelta >= 0 ? '+' : ''}${pvDelta}, sessions ${sessDelta >= 0 ? '+' : ''}${sessDelta}, engagement ${engDelta >= 0 ? '+' : ''}${engDelta.toFixed(1)}pp`);
+        if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
+          const metricsMsg = [
+            '📊 *Batch GA4 Metrics Snapshot*',
+            '',
+            `*Pre-batch (7d):* ${preBatchMetrics.pageviews.toLocaleString()} PV | ${preBatchMetrics.sessions.toLocaleString()} sessions | ${(preBatchMetrics.engagementRate * 100).toFixed(1)}% engagement`,
+            `*Post-batch (7d):* ${postBatchMetrics.pageviews.toLocaleString()} PV | ${postBatchMetrics.sessions.toLocaleString()} sessions | ${(postBatchMetrics.engagementRate * 100).toFixed(1)}% engagement`,
+            `*Delta:* ${pvDelta >= 0 ? '+' : ''}${pvDelta} PV | ${sessDelta >= 0 ? '+' : ''}${sessDelta} sessions | ${engDelta >= 0 ? '+' : ''}${engDelta.toFixed(1)}pp engagement`,
+          ].join('\n');
+          await sendTelegramAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, metricsMsg);
+        }
+      }
+    } catch (postSnapErr) {
+      logger.debug(`Post-batch GA4 snapshot failed: ${postSnapErr instanceof Error ? postSnapErr.message : postSnapErr}`);
+    }
+  }
+
   logger.info('=== Batch Complete ===');
+
+  // Batch performance SLA tracking — persist duration/cost trends
+  const batchDurationMs = new Date(batch.completedAt).getTime() - new Date(batch.startedAt).getTime();
+  try {
+    const slaFile = path.join(process.cwd(), 'data', 'batch-sla.json');
+    let slaHistory: Array<{ date: string; durationMs: number; posts: number; costUsd: number }> = [];
+    try { slaHistory = JSON.parse(await fs.readFile(slaFile, 'utf-8')); } catch { /* first run */ }
+    const totalCost = costTracker.getTotalCost?.() ?? 0;
+    slaHistory.push({
+      date: new Date().toISOString().slice(0, 10),
+      durationMs: batchDurationMs,
+      posts: batch.successCount,
+      costUsd: totalCost,
+    });
+    // Keep last 90 entries
+    if (slaHistory.length > 90) slaHistory = slaHistory.slice(-90);
+    const tmpSla = slaFile + '.tmp';
+    await fs.writeFile(tmpSla, JSON.stringify(slaHistory, null, 2), 'utf-8');
+    await fs.rename(tmpSla, slaFile);
+    // SLA alert: warn if batch took >150% of 7-day average
+    const recent = slaHistory.slice(-7);
+    if (recent.length >= 3) {
+      const avgDuration = recent.slice(0, -1).reduce((s, e) => s + e.durationMs, 0) / (recent.length - 1);
+      if (batchDurationMs > avgDuration * 1.5 && config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
+        await sendTelegramAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID,
+          `⏱ *Batch SLA Warning*\nDuration: ${Math.round(batchDurationMs / 60000)}min (avg: ${Math.round(avgDuration / 60000)}min)\nThis batch took ${Math.round((batchDurationMs / avgDuration) * 100)}% of recent average.`);
+      }
+      // Cost per post trend
+      const costPerPost = batch.successCount > 0 ? totalCost / batch.successCount : 0;
+      if (costPerPost > 0) {
+        logger.info(`Batch SLA: ${Math.round(batchDurationMs / 60000)}min, $${costPerPost.toFixed(2)}/post, ${batch.successCount} posts`);
+      }
+    }
+  } catch (slaErr) {
+    logger.debug(`Batch SLA tracking failed: ${slaErr instanceof Error ? slaErr.message : slaErr}`);
+  }
 
   // Send Telegram notification
   if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
@@ -2967,7 +3333,7 @@ async function main(): Promise<void> {
       successCount: batch.successCount,
       failureCount: batch.failureCount,
       skippedCount: batch.skippedCount,
-      totalDuration: new Date(batch.completedAt).getTime() - new Date(batch.startedAt).getTime(),
+      totalDuration: batchDurationMs,
       results: results.map(r => ({
         keyword: r.keyword,
         niche: r.niche,

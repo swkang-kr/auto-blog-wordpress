@@ -151,6 +151,26 @@ export class CostTracker {
   };
 
   /**
+   * Seasonal RPM multipliers — certain niches earn significantly more during peak seasons.
+   * Month is 1-based (1=Jan, 12=Dec). Multipliers are applied to base RPM.
+   */
+  static readonly SEASONAL_RPM_MULTIPLIERS: Record<string, Record<number, number>> = {
+    'Korea Travel': { 3: 1.5, 4: 2.0, 5: 2.5, 6: 3.0, 7: 3.0, 8: 2.5, 9: 2.0, 10: 1.5 }, // Spring-Summer peak
+    'Korean Finance': { 1: 1.5, 3: 1.3, 6: 1.3, 10: 1.5, 11: 2.0, 12: 2.0 }, // Year-end + tax season
+    'K-Beauty': { 3: 1.3, 4: 1.5, 10: 1.5, 11: 2.0, 12: 1.8 }, // Spring routine + holiday gifting
+    'Korean Tech': { 1: 1.8, 2: 1.5, 8: 1.3, 9: 1.5 }, // CES + product launch season
+    'K-Entertainment': { 11: 1.5, 12: 1.8 }, // Award season (MAMA, etc.)
+  };
+
+  /** Get RPM with seasonal multiplier applied */
+  static getSeasonalRpm(category: string, month?: number): number {
+    const baseRpm = CostTracker.NICHE_RPM_ESTIMATES[category] || 5;
+    const m = month || (new Date().getMonth() + 1);
+    const multiplier = CostTracker.SEASONAL_RPM_MULTIPLIERS[category]?.[m] || 1.0;
+    return baseRpm * multiplier;
+  }
+
+  /**
    * Estimate monthly revenue based on published post count and niche.
    * Assumes average of 200 pageviews/month per post (conservative for new sites).
    */

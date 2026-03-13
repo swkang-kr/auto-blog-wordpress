@@ -13,21 +13,22 @@ export const KOREAN_SEASONAL_EVENTS: Array<{
   /** Suggested content angles */
   contentAngles: string[];
 }> = [
-  { name: 'Seollal (Lunar New Year)', startMonth: 1, startDay: 20, endMonth: 2, endDay: 10, leadTimeDays: 21, relevantNiches: ['Korea Travel', 'K-Entertainment', 'Korean Finance'], contentAngles: ['travel tips for Seollal', 'Korean New Year traditions', 'stock market during Lunar New Year'] },
-  { name: 'Cherry Blossom Season', startMonth: 3, startDay: 25, endMonth: 4, endDay: 15, leadTimeDays: 21, relevantNiches: ['Korea Travel', 'K-Beauty'], contentAngles: ['best cherry blossom spots in Korea', 'spring skincare routine', 'Seoul spring travel guide'] },
-  { name: 'Buddha\'s Birthday', startMonth: 5, startDay: 1, endMonth: 5, endDay: 15, leadTimeDays: 14, relevantNiches: ['Korea Travel', 'K-Entertainment'], contentAngles: ['lantern festival guide', 'temple stay experience'] },
-  { name: 'Summer Monsoon Season', startMonth: 6, startDay: 15, endMonth: 8, endDay: 15, leadTimeDays: 14, relevantNiches: ['Korea Travel', 'K-Beauty'], contentAngles: ['rainy season travel tips', 'summer skincare for humidity', 'best indoor activities Seoul'] },
-  { name: 'Chuseok (Korean Thanksgiving)', startMonth: 9, startDay: 5, endMonth: 9, endDay: 25, leadTimeDays: 21, relevantNiches: ['Korea Travel', 'Korean Finance', 'K-Entertainment'], contentAngles: ['Chuseok travel guide', 'Korean harvest festival traditions', 'stock market Chuseok effect'] },
-  { name: 'MAMA Awards Season', startMonth: 11, startDay: 15, endMonth: 12, endDay: 5, leadTimeDays: 14, relevantNiches: ['K-Entertainment'], contentAngles: ['MAMA Awards predictions', 'K-pop year-end awards guide', 'best K-pop performances'] },
-  { name: 'Black Friday / Singles Day', startMonth: 11, startDay: 1, endMonth: 11, endDay: 30, leadTimeDays: 14, relevantNiches: ['K-Beauty', 'Korean Tech', 'Korean Finance'], contentAngles: ['best K-beauty deals', 'Korean tech deals guide', 'holiday shopping Korea'] },
-  { name: 'Year-End / New Year', startMonth: 12, startDay: 15, endMonth: 1, endDay: 5, leadTimeDays: 14, relevantNiches: ['Korea Travel', 'Korean Finance', 'Korean Tech'], contentAngles: ['year-end stock review', 'New Year in Seoul guide', 'tech predictions for next year'] },
-  { name: 'CES (Korean Tech Showcase)', startMonth: 1, startDay: 5, endMonth: 1, endDay: 12, leadTimeDays: 14, relevantNiches: ['Korean Tech'], contentAngles: ['Samsung CES announcements', 'Korean tech at CES', 'LG innovation showcase'] },
-  { name: 'MWC (Mobile World Congress)', startMonth: 2, startDay: 24, endMonth: 2, endDay: 28, leadTimeDays: 14, relevantNiches: ['Korean Tech'], contentAngles: ['Samsung MWC launches', 'Korean 5G/6G technology', 'mobile innovation Korea'] },
-  { name: 'Korean Earnings Season Q1', startMonth: 1, startDay: 20, endMonth: 2, endDay: 15, leadTimeDays: 7, relevantNiches: ['Korean Finance', 'Korean Tech'], contentAngles: ['Samsung earnings preview', 'KOSPI earnings season outlook', 'SK Hynix quarterly results'] },
-  { name: 'Korean Earnings Season Q2', startMonth: 4, startDay: 20, endMonth: 5, endDay: 15, leadTimeDays: 7, relevantNiches: ['Korean Finance', 'Korean Tech'], contentAngles: ['Korean Q1 earnings analysis', 'chaebol performance review'] },
-  { name: 'Summer Olympics (if applicable)', startMonth: 7, startDay: 20, endMonth: 8, endDay: 12, leadTimeDays: 30, relevantNiches: ['Korea Travel', 'K-Entertainment', 'Korean Tech'], contentAngles: ['Korean athletes to watch', 'Korea Olympic tech', 'travel guide for Olympics'] },
-  { name: 'K-Beauty Awards Season', startMonth: 12, startDay: 1, endMonth: 12, endDay: 31, leadTimeDays: 14, relevantNiches: ['K-Beauty'], contentAngles: ['best K-beauty products of the year', 'Olive Young award winners', 'skincare trends next year'] },
-  { name: 'BIFF (Busan Film Festival)', startMonth: 10, startDay: 1, endMonth: 10, endDay: 12, leadTimeDays: 14, relevantNiches: ['K-Entertainment', 'Korea Travel'], contentAngles: ['BIFF highlights', 'Korean cinema spotlight', 'Busan travel for BIFF'] },
+  // Lead times extended to 45-60 days for major events (SEO indexing + ranking takes 30-45 days)
+  { name: 'Seollal (Lunar New Year)', startMonth: 1, startDay: 20, endMonth: 2, endDay: 10, leadTimeDays: 60, relevantNiches: ['Korea Travel', 'K-Entertainment', 'Korean Finance'], contentAngles: ['travel tips for Seollal', 'Korean New Year traditions', 'stock market during Lunar New Year'] },
+  { name: 'Cherry Blossom Season', startMonth: 3, startDay: 25, endMonth: 4, endDay: 15, leadTimeDays: 60, relevantNiches: ['Korea Travel', 'K-Beauty'], contentAngles: ['best cherry blossom spots in Korea', 'spring skincare routine', 'Seoul spring travel guide'] },
+  { name: 'Buddha\'s Birthday', startMonth: 5, startDay: 1, endMonth: 5, endDay: 15, leadTimeDays: 45, relevantNiches: ['Korea Travel', 'K-Entertainment'], contentAngles: ['lantern festival guide', 'temple stay experience'] },
+  { name: 'Summer Monsoon Season', startMonth: 6, startDay: 15, endMonth: 8, endDay: 15, leadTimeDays: 45, relevantNiches: ['Korea Travel', 'K-Beauty'], contentAngles: ['rainy season travel tips', 'summer skincare for humidity', 'best indoor activities Seoul'] },
+  { name: 'Chuseok (Korean Thanksgiving)', startMonth: 9, startDay: 5, endMonth: 9, endDay: 25, leadTimeDays: 60, relevantNiches: ['Korea Travel', 'Korean Finance', 'K-Entertainment'], contentAngles: ['Chuseok travel guide', 'Korean harvest festival traditions', 'stock market Chuseok effect'] },
+  { name: 'MAMA Awards Season', startMonth: 11, startDay: 15, endMonth: 12, endDay: 5, leadTimeDays: 45, relevantNiches: ['K-Entertainment'], contentAngles: ['MAMA Awards predictions', 'K-pop year-end awards guide', 'best K-pop performances'] },
+  { name: 'Black Friday / Singles Day', startMonth: 11, startDay: 1, endMonth: 11, endDay: 30, leadTimeDays: 45, relevantNiches: ['K-Beauty', 'Korean Tech', 'Korean Finance'], contentAngles: ['best K-beauty deals', 'Korean tech deals guide', 'holiday shopping Korea'] },
+  { name: 'Year-End / New Year', startMonth: 12, startDay: 15, endMonth: 1, endDay: 5, leadTimeDays: 45, relevantNiches: ['Korea Travel', 'Korean Finance', 'Korean Tech'], contentAngles: ['year-end stock review', 'New Year in Seoul guide', 'tech predictions for next year'] },
+  { name: 'CES (Korean Tech Showcase)', startMonth: 1, startDay: 5, endMonth: 1, endDay: 12, leadTimeDays: 45, relevantNiches: ['Korean Tech'], contentAngles: ['Samsung CES announcements', 'Korean tech at CES', 'LG innovation showcase'] },
+  { name: 'MWC (Mobile World Congress)', startMonth: 2, startDay: 24, endMonth: 2, endDay: 28, leadTimeDays: 45, relevantNiches: ['Korean Tech'], contentAngles: ['Samsung MWC launches', 'Korean 5G/6G technology', 'mobile innovation Korea'] },
+  { name: 'Korean Earnings Season Q1', startMonth: 1, startDay: 20, endMonth: 2, endDay: 15, leadTimeDays: 21, relevantNiches: ['Korean Finance', 'Korean Tech'], contentAngles: ['Samsung earnings preview', 'KOSPI earnings season outlook', 'SK Hynix quarterly results'] },
+  { name: 'Korean Earnings Season Q2', startMonth: 4, startDay: 20, endMonth: 5, endDay: 15, leadTimeDays: 21, relevantNiches: ['Korean Finance', 'Korean Tech'], contentAngles: ['Korean Q1 earnings analysis', 'chaebol performance review'] },
+  { name: 'Summer Olympics (if applicable)', startMonth: 7, startDay: 20, endMonth: 8, endDay: 12, leadTimeDays: 60, relevantNiches: ['Korea Travel', 'K-Entertainment', 'Korean Tech'], contentAngles: ['Korean athletes to watch', 'Korea Olympic tech', 'travel guide for Olympics'] },
+  { name: 'K-Beauty Awards Season', startMonth: 12, startDay: 1, endMonth: 12, endDay: 31, leadTimeDays: 45, relevantNiches: ['K-Beauty'], contentAngles: ['best K-beauty products of the year', 'Olive Young award winners', 'skincare trends next year'] },
+  { name: 'BIFF (Busan Film Festival)', startMonth: 10, startDay: 1, endMonth: 10, endDay: 12, leadTimeDays: 45, relevantNiches: ['K-Entertainment', 'Korea Travel'], contentAngles: ['BIFF highlights', 'Korean cinema spotlight', 'Busan travel for BIFF'] },
 ];
 
 /** 콘텐츠 유형 */
@@ -368,6 +369,12 @@ export interface PostHistoryEntry {
   niche?: string;
   contentType?: ContentType;
   engagementScore?: number;
+  /** Estimated RPM for this post (from GA4 pageviews × niche RPM) */
+  estimatedRpm?: number;
+  /** Estimated monthly revenue for this post */
+  estimatedRevenue?: number;
+  /** Number of affiliate links in the post (for ROI tracking) */
+  affiliateLinkCount?: number;
   /** A/B title candidates for testing */
   titleCandidates?: string[];
   /** Whether A/B title test has been resolved */

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { logger } from '../utils/logger.js';
 import { getGoogleAccessToken } from '../utils/google-auth.js';
+import { circuitBreakers } from '../utils/retry.js';
 import type { PostPerformance, PostHistoryEntry } from '../types/index.js';
 
 /**
@@ -21,6 +22,10 @@ export class GA4AnalyticsService {
    * Returns posts sorted by pageviews descending.
    */
   async getTopPerformingPosts(limit: number = 20): Promise<PostPerformance[]> {
+    if (circuitBreakers.ga4.isOpen()) {
+      logger.debug('GA4 circuit breaker open, skipping');
+      return [];
+    }
     try {
       const accessToken = await this.getAccessToken();
       const { data } = await axios.post(
@@ -30,7 +35,7 @@ export class GA4AnalyticsService {
           dimensions: [{ name: 'pagePath' }, { name: 'pageTitle' }],
           metrics: [
             { name: 'screenPageViews' },
-            { name: 'averageSessionDuration' },
+            { name: 'userEngagementDuration' },
             { name: 'bounceRate' },
           ],
           orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }],
@@ -44,6 +49,7 @@ export class GA4AnalyticsService {
 
       const rows = (data as { rows?: Array<{ dimensionValues: Array<{ value: string }>; metricValues: Array<{ value: string }> }> }).rows || [];
 
+      circuitBreakers.ga4.recordSuccess();
       return rows
         .filter((row) => {
           const path = row.dimensionValues[0].value;
@@ -57,6 +63,7 @@ export class GA4AnalyticsService {
           bounceRate: parseFloat(row.metricValues[2].value) || 0,
         }));
     } catch (error) {
+      circuitBreakers.ga4.recordFailure();
       logger.warn(`GA4 analytics fetch failed: ${error instanceof Error ? error.message : error}`);
       return [];
     }
@@ -456,6 +463,206 @@ Favor top-performing content types when choosing format for each niche.`;
       return attributed.sort((a, b) => b.estimatedRevenue - a.estimatedRevenue);
     } catch (error) {
       logger.debug(`Post revenue attribution failed: ${error instanceof Error ? error.message : error}`);
+      return [];
+    }
+  }
+
+  /**
+   * Revenue attribution by traffic source (organic, twitter, pinterest, linkedin, etc.).
+   * Combines GA4 session source with pageview data and niche RPM for per-channel revenue estimates.
+   */
+  async getRevenueByTrafficSource(
+    rpmByCategory: Record<string, number>,
+  ): Promise<Array<{ source: string; sessions: number; pageviews: number; estimatedRevenue: number }>> {
+    try {
+      const accessToken = await this.getAccessToken();
+      const { data } = await axios.post(
+        `https://analyticsdata.googleapis.com/v1beta/properties/${this.propertyId}:runReport`,
+        {
+          dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
+          dimensions: [{ name: 'sessionSource' }],
+          metrics: [
+            { name: 'sessions' },
+            { name: 'screenPageViews' },
+          ],
+          orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }],
+          limit: 20,
+        },
+        { headers: { Authorization: `Bearer ${accessToken}` }, timeout: 15000 },
+      );
+      const rows = (data as { rows?: Array<{ dimensionValues: Array<{ value: string }>; metricValues: Array<{ value: string }> }> }).rows || [];
+      const avgRpm = Object.values(rpmByCategory).reduce((a, b) => a + b, 0) / Math.max(Object.keys(rpmByCategory).length, 1) || 5;
+      return rows.map(row => {
+        const pageviews = parseInt(row.metricValues[1].value) || 0;
+        return {
+          source: row.dimensionValues[0].value,
+          sessions: parseInt(row.metricValues[0].value) || 0,
+          pageviews,
+          estimatedRevenue: (pageviews / 1000) * avgRpm,
+        };
+      });
+    } catch (error) {
+      logger.debug(`Revenue by traffic source failed: ${error instanceof Error ? error.message : error}`);
+      return [];
+    }
+  }
+
+  /**
+   * Cross-niche user journey analysis: detect users who visit multiple categories.
+   * Identifies cross-category navigation patterns for internal linking optimization.
+   */
+  async getCrossNicheJourneys(): Promise<Array<{
+    fromCategory: string;
+    toCategory: string;
+    transitions: number;
+  }>> {
+    try {
+      const accessToken = await this.getAccessToken();
+      const { data } = await axios.post(
+        `https://analyticsdata.googleapis.com/v1beta/properties/${this.propertyId}:runReport`,
+        {
+          dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
+          dimensions: [{ name: 'contentGroup' }, { name: 'pagePath' }],
+          metrics: [{ name: 'screenPageViews' }],
+          orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }],
+          limit: 200,
+        },
+        { headers: { Authorization: `Bearer ${accessToken}` }, timeout: 15000 },
+      );
+      const rows = (data as { rows?: Array<{ dimensionValues: Array<{ value: string }>; metricValues: Array<{ value: string }> }> }).rows || [];
+
+      // Group by content group (category) and count cross-category transitions
+      const categoryPaths: Record<string, number> = {};
+      for (const row of rows) {
+        const category = row.dimensionValues[0].value;
+        const views = parseInt(row.metricValues[0].value) || 0;
+        if (category && category !== '(not set)') {
+          categoryPaths[category] = (categoryPaths[category] || 0) + views;
+        }
+      }
+
+      // Build transition pairs based on category co-occurrence
+      const categories = Object.keys(categoryPaths).sort((a, b) => categoryPaths[b] - categoryPaths[a]);
+      const journeys: Array<{ fromCategory: string; toCategory: string; transitions: number }> = [];
+      for (let i = 0; i < categories.length; i++) {
+        for (let j = i + 1; j < categories.length; j++) {
+          const transitions = Math.min(categoryPaths[categories[i]], categoryPaths[categories[j]]);
+          if (transitions > 5) {
+            journeys.push({
+              fromCategory: categories[i],
+              toCategory: categories[j],
+              transitions: Math.floor(transitions * 0.15), // Estimate ~15% cross-visit rate
+            });
+          }
+        }
+      }
+      return journeys.sort((a, b) => b.transitions - a.transitions).slice(0, 10);
+    } catch (error) {
+      logger.debug(`Cross-niche journey analysis failed: ${error instanceof Error ? error.message : error}`);
+      return [];
+    }
+  }
+
+  /**
+   * Get aggregate site metrics snapshot (pageviews, sessions, engagement) for a date range.
+   * Used to compare pre-batch vs post-batch traffic.
+   */
+  async getSiteMetricsSnapshot(startDate: string = '7daysAgo', endDate: string = 'today'): Promise<{
+    pageviews: number;
+    sessions: number;
+    engagementRate: number;
+    avgEngagementDuration: number;
+  } | null> {
+    if (circuitBreakers.ga4.isOpen()) return null;
+    try {
+      const accessToken = await this.getAccessToken();
+      const { data } = await axios.post(
+        `https://analyticsdata.googleapis.com/v1beta/properties/${this.propertyId}:runReport`,
+        {
+          dateRanges: [{ startDate, endDate }],
+          metrics: [
+            { name: 'screenPageViews' },
+            { name: 'sessions' },
+            { name: 'engagementRate' },
+            { name: 'userEngagementDuration' },
+          ],
+        },
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+          timeout: 15000,
+        },
+      );
+      const rows = (data as { rows?: Array<{ metricValues: Array<{ value: string }> }> }).rows;
+      if (!rows || rows.length === 0) return null;
+      const mv = rows[0].metricValues;
+      circuitBreakers.ga4.recordSuccess();
+      return {
+        pageviews: parseInt(mv[0].value) || 0,
+        sessions: parseInt(mv[1].value) || 0,
+        engagementRate: parseFloat(mv[2].value) || 0,
+        avgEngagementDuration: parseFloat(mv[3].value) || 0,
+      };
+    } catch (error) {
+      circuitBreakers.ga4.recordFailure();
+      logger.debug(`GA4 site metrics snapshot failed: ${error instanceof Error ? error.message : error}`);
+      return null;
+    }
+  }
+
+  /**
+   * Get Core Web Vitals (LCP, CLS, INP) per page from GA4 web-vitals events.
+   * Requires web-vitals.js library to be sending events to GA4.
+   * Falls back gracefully if CWV events are not available.
+   */
+  async getCoreWebVitals(limit: number = 20): Promise<Array<{
+    pagePath: string;
+    lcp: number;
+    cls: number;
+    inp: number;
+  }>> {
+    if (circuitBreakers.ga4.isOpen()) return [];
+    try {
+      const accessToken = await this.getAccessToken();
+      const { data } = await axios.post(
+        `https://analyticsdata.googleapis.com/v1beta/properties/${this.propertyId}:runReport`,
+        {
+          dateRanges: [{ startDate: '28daysAgo', endDate: 'today' }],
+          dimensions: [{ name: 'pagePath' }, { name: 'eventName' }],
+          metrics: [{ name: 'eventValue' }, { name: 'eventCount' }],
+          dimensionFilter: {
+            filter: {
+              fieldName: 'eventName',
+              inListFilter: { values: ['LCP', 'CLS', 'INP'] },
+            },
+          },
+          orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
+          limit: limit * 3,
+        },
+        { headers: { Authorization: `Bearer ${accessToken}` }, timeout: 15000 },
+      );
+      const rows = (data as { rows?: Array<{ dimensionValues: Array<{ value: string }>; metricValues: Array<{ value: string }> }> }).rows || [];
+      // Aggregate by page
+      const pageMetrics = new Map<string, { lcp: number[]; cls: number[]; inp: number[] }>();
+      for (const row of rows) {
+        const page = row.dimensionValues[0].value;
+        const event = row.dimensionValues[1].value;
+        const value = parseFloat(row.metricValues[0].value) || 0;
+        if (!pageMetrics.has(page)) pageMetrics.set(page, { lcp: [], cls: [], inp: [] });
+        const m = pageMetrics.get(page)!;
+        if (event === 'LCP') m.lcp.push(value);
+        else if (event === 'CLS') m.cls.push(value);
+        else if (event === 'INP') m.inp.push(value);
+      }
+      circuitBreakers.ga4.recordSuccess();
+      const results: Array<{ pagePath: string; lcp: number; cls: number; inp: number }> = [];
+      for (const [pagePath, m] of pageMetrics) {
+        const avg = (arr: number[]) => arr.length > 0 ? arr.reduce((a, b) => a + b, 0) / arr.length : 0;
+        results.push({ pagePath, lcp: avg(m.lcp), cls: avg(m.cls), inp: avg(m.inp) });
+      }
+      return results.sort((a, b) => b.lcp - a.lcp).slice(0, limit);
+    } catch (error) {
+      circuitBreakers.ga4.recordFailure();
+      logger.debug(`GA4 CWV metrics failed: ${error instanceof Error ? error.message : error}`);
       return [];
     }
   }

@@ -15,7 +15,7 @@ export class LinkedInService {
    * Share a blog post to LinkedIn as UGC Post with professional formatting.
    * Uses LinkedIn Marketing API v2 UGC Posts endpoint.
    */
-  async promoteBlogPost(title: string, excerpt: string, url: string, imageUrl?: string): Promise<void> {
+  async promoteBlogPost(title: string, excerpt: string, url: string, imageUrl?: string): Promise<string | null> {
     const utmUrl = buildUtmUrl(url, 'linkedin', 'social', extractSlugFromUrl(url));
     const commentary = this.buildProfessionalCommentary(title, excerpt, utmUrl);
 
@@ -55,11 +55,13 @@ export class LinkedInService {
       );
       const postId = (data as { id?: string }).id || 'unknown';
       logger.info(`LinkedIn post shared (id: ${postId}): "${title}"`);
+      return postId;
     } catch (error) {
       const msg = axios.isAxiosError(error)
         ? `${error.response?.status} ${JSON.stringify(error.response?.data ?? error.message)}`
         : (error instanceof Error ? error.message : String(error));
       logger.warn(`LinkedIn share failed (non-critical): ${msg}`);
+      return null;
     }
   }
 

@@ -102,8 +102,40 @@ export class RedditPostService {
     }
   }
 
+  /** Check account karma and age before posting (prevent shadowban) */
+  private async verifyAccountHealth(): Promise<boolean> {
+    const token = await this.getOAuthToken();
+    if (!token) return false;
+    try {
+      const { data } = await axios.get('https://oauth.reddit.com/api/v1/me', {
+        headers: { Authorization: `Bearer ${token}`, 'User-Agent': this.userAgent },
+        timeout: 10000,
+      });
+      const karma = (data.link_karma || 0) + (data.comment_karma || 0);
+      const createdUtc = data.created_utc || 0;
+      const accountAgeDays = (Date.now() / 1000 - createdUtc) / 86400;
+      if (accountAgeDays < 30) {
+        logger.warn(`Reddit: Account too young (${accountAgeDays.toFixed(0)} days) — skipping to avoid shadowban`);
+        return false;
+      }
+      if (karma < 10) {
+        logger.warn(`Reddit: Low karma (${karma}) — skipping auto-post to avoid spam filters`);
+        return false;
+      }
+      logger.debug(`Reddit account health: ${karma} karma, ${accountAgeDays.toFixed(0)} days old`);
+      return true;
+    } catch (error) {
+      logger.debug(`Reddit account check failed: ${error instanceof Error ? error.message : error}`);
+      return true; // Allow posting on check failure (non-blocking)
+    }
+  }
+
   /** Auto-post to relevant subreddits for a given niche category (with UTM tracking) */
   async autoPost(category: string, title: string, url: string): Promise<number> {
+    // Verify account health before posting (prevent shadowban on new/low-karma accounts)
+    const healthy = await this.verifyAccountHealth();
+    if (!healthy) return 0;
+
     url = buildUtmUrl(url, 'reddit', 'social', extractSlugFromUrl(url));
     const subreddits = NICHE_SUBREDDITS[category];
     if (!subreddits || subreddits.length === 0) {

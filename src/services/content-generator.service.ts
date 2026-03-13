@@ -4,6 +4,7 @@ import { logger } from '../utils/logger.js';
 import { ContentGenerationError } from '../types/errors.js';
 import { validateContent, autoFixContent, logContentScore } from '../utils/content-validator.js';
 import { costTracker } from '../utils/cost-tracker.js';
+import { circuitBreakers } from '../utils/retry.js';
 import type { ResearchedKeyword, BlogContent, ExistingPost, AuthorProfile } from '../types/index.js';
 import { NICHE_AUTHOR_PERSONAS, CONTENT_TYPE_PERSONA_MAP } from '../types/index.js';
 
@@ -897,6 +898,11 @@ Respond with pure JSON only.`;
     const systemPrompt = buildSystemPrompt(variant).replace(/WORD_COUNT_TARGET/g, String(targets.target));
     logger.debug(`Using layout variant: ${variant} (niche: ${researched.niche.id}), word target: ${targets.target}`);
 
+    // Circuit breaker check — skip Claude API if consecutive failures detected
+    if (circuitBreakers.claude.isOpen()) {
+      throw new ContentGenerationError('Claude API circuit breaker OPEN — skipping to prevent cascade failure');
+    }
+
     const stream = this.client.messages.stream({
       model: process.env.CLAUDE_MODEL || 'claude-sonnet-4-6',
       max_tokens: 64000,
@@ -911,7 +917,14 @@ Respond with pure JSON only.`;
       messages: [{ role: 'user', content: userPrompt }],
     });
 
-    const response = await stream.finalMessage();
+    let response;
+    try {
+      response = await stream.finalMessage();
+      circuitBreakers.claude.recordSuccess();
+    } catch (claudeError) {
+      circuitBreakers.claude.recordFailure();
+      throw claudeError;
+    }
 
     const usage = response.usage as typeof response.usage & {
       cache_creation_input_tokens?: number;

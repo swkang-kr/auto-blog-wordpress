@@ -55,6 +55,7 @@ export class ContentRefreshService {
     minAgeDays: number = 30,
     freshnessData?: Array<PostHistoryEntry & { freshnessScore: number }>,
     gscService?: GSCAnalyticsService,
+    rpmByCategory?: Record<string, number>,
   ): Promise<number> {
     const allPosts = await ga4Service.getTopPerformingPosts(100);
     if (allPosts.length === 0) {
@@ -80,8 +81,19 @@ export class ContentRefreshService {
         .map(p => {
           const slug = '/' + p.url.replace(/^\/|\/$/g, '') + '/';
           const freshness = freshnessMap.get(slug) ?? freshnessMap.get(p.url) ?? 50;
-          // Combined score: lower = higher priority for refresh
-          const refreshPriority = (freshness * 0.4) + ((1 - p.bounceRate) * 100 * 0.3) + (Math.min(p.pageviews, 100) * 0.3);
+          // Revenue-weighted combined score: lower = higher priority for refresh
+          // Posts in high-RPM niches get priority boost (revenue × age decay)
+          let revenueBoost = 0;
+          if (rpmByCategory) {
+            const entry = freshnessData.find(f => f.postUrl && (slug.includes(f.postUrl.replace(/^https?:\/\/[^/]+/, '').replace(/\/+$/, '')) || f.postUrl.includes(p.url.replace(/^\//, ''))));
+            if (entry?.niche) {
+              const nicheCategory = entry.niche.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()).replace('K Beauty', 'K-Beauty').replace('K Entertainment', 'K-Entertainment');
+              const rpm = rpmByCategory[nicheCategory] || 5;
+              // High RPM posts get negative boost (lower score = higher priority)
+              revenueBoost = -(rpm / 15) * 10; // Max ~-8 for $12 RPM categories
+            }
+          }
+          const refreshPriority = (freshness * 0.4) + ((1 - p.bounceRate) * 100 * 0.3) + (Math.min(p.pageviews, 100) * 0.3) + revenueBoost;
           return { ...p, refreshPriority };
         })
         .sort((a, b) => a.refreshPriority - b.refreshPriority);
@@ -898,6 +910,10 @@ REWRITE RULES:
     - If the title already contains ${currentYear}, keep it as-is
     - Keep the title 50-65 characters (SERP sweet spot)
 13. EXCERPT/META DESCRIPTION update: Must reference "${currentYear}" or "latest" for freshness signal
+14. AFFILIATE LINK RENEWAL: Check all product links, affiliate links (rel="sponsored"), and external URLs in the content.
+    - If any link text references an old year (e.g., "2024 model", "2025 edition"), update the text to ${currentYear}
+    - If any product name includes discontinued models, keep the link but note "(discontinued)" and suggest current alternatives
+    - Ensure all rel="sponsored" and data-affiliate="true" attributes are preserved on affiliate links
 
 Return JSON: {"title":"improved title","html":"full HTML content","excerpt":"compelling 145-158 char meta description"}
 Return pure JSON only. No markdown.`;

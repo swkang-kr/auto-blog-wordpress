@@ -25,6 +25,7 @@ const HOMEPAGE_META_SNIPPET_TITLE = 'Auto Blog Homepage Meta Tags';
 const POST_CANONICAL_FALLBACK_SNIPPET_TITLE = 'Auto Blog Canonical Fallback';
 const COOKIE_CONSENT_SNIPPET_TITLE = 'Auto Blog Cookie Consent';
 const STICKY_ADS_SNIPPET_TITLE = 'Auto Blog Sticky Sidebar & Anchor Ads';
+const EXIT_INTENT_SNIPPET_TITLE = 'Auto Blog Exit-Intent Lead Magnet';
 
 export class SeoService {
   private api: AxiosInstance;
@@ -126,9 +127,16 @@ export class SeoService {
       const uploadsHost = new URL(this.wpUrl).host;
       parts.push(`<link rel="preconnect" href="https://${uploadsHost}" />`);
     } catch { /* skip if URL parse fails */ }
-    // DNS prefetch for common external resources
+    // DNS prefetch for common external resources + affiliate networks
     parts.push(`<link rel="dns-prefetch" href="https://www.googletagmanager.com" />`);
     parts.push(`<link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />`);
+    parts.push(`<link rel="dns-prefetch" href="https://www.amazon.com" />`);
+    parts.push(`<link rel="dns-prefetch" href="https://www.cj.com" />`);
+    parts.push(`<link rel="dns-prefetch" href="https://www.shareasale.com" />`);
+    // Referrer-Policy: send origin only on cross-origin (protects query strings, preserves affiliate attribution)
+    parts.push(`<meta name="referrer" content="strict-origin-when-cross-origin" />`);
+    // OG locale for social media language detection (Facebook, LinkedIn preview language)
+    parts.push(`<meta property="og:locale" content="en_US" />`);
 
     // AdSense Auto Ads script (requires publisher ID)
     if (adsensePubId) {
@@ -144,14 +152,20 @@ export class SeoService {
     if (gaMeasurementId) {
       parts.push(`<!-- Google Analytics 4 -->`);
       parts.push(`<script async src="https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}"></script>`);
-      parts.push(`<script>\nwindow.dataLayer = window.dataLayer || [];\nfunction gtag(){dataLayer.push(arguments);}\ngtag('js', new Date());\ngtag('config', '${gaMeasurementId}');\n` +
+      parts.push(`<script>\nwindow.dataLayer = window.dataLayer || [];\nfunction gtag(){dataLayer.push(arguments);}\ngtag('js', new Date());\ngtag('config', '${gaMeasurementId}', {site_search_term: new URLSearchParams(location.search).get('s')||undefined});\n` +
         `/* Micro-conversion tracking: scroll depth, share clicks, engaged reader */\n` +
         `document.addEventListener('DOMContentLoaded',function(){` +
         `var st=0;window.addEventListener('scroll',function(){var h=document.documentElement.scrollHeight-window.innerHeight;if(h>0){var p=Math.round(window.scrollY/h*100);if(p>=25&&st<25){st=25;gtag('event','scroll_depth',{percent:25})}if(p>=50&&st<50){st=50;gtag('event','scroll_depth',{percent:50})}if(p>=75&&st<75){st=75;gtag('event','scroll_depth',{percent:75})}if(p>=90&&st<90){st=90;gtag('event','scroll_depth',{percent:90})}}});` +
         `document.querySelectorAll('.ab-share-btn').forEach(function(b){b.addEventListener('click',function(){gtag('event','share',{method:b.textContent.trim()})})});` +
-        `document.querySelectorAll('a[rel*="sponsored"],a[data-affiliate="true"]').forEach(function(a){a.addEventListener('click',function(){var cg='';var cm=document.querySelector('meta[property="article:section"]');if(cm)cg=cm.getAttribute('content')||'';gtag('event','affiliate_click',{link_url:a.href,link_text:a.textContent.trim().slice(0,50),page_path:location.pathname,content_group:cg})})});` +
+        `document.querySelectorAll('a[rel*="sponsored"],a[data-affiliate="true"]').forEach(function(a){a.addEventListener('click',function(){var cg='';var ct='';var cm=document.querySelector('meta[property="article:section"]');if(cm)cg=cm.getAttribute('content')||'';var ctm=document.querySelector('meta[name="autoblog:content_type"]');if(ctm)ct=ctm.getAttribute('content')||'';gtag('event','affiliate_click',{link_url:a.href,link_text:a.textContent.trim().slice(0,50),page_path:location.pathname,content_group:cg,content_type:ct})})});` +
+        `/* Lead magnet CTA click tracking */` +
+        `document.querySelectorAll('.ab-lead-magnet a,.ab-cta-newsletter a,.ab-content-upgrade a,.ab-lead-magnet-enhanced a').forEach(function(a){a.addEventListener('click',function(){var cg2='';var cm2=document.querySelector('meta[property="article:section"]');if(cm2)cg2=cm2.getAttribute('content')||'';gtag('event','lead_magnet_click',{link_url:a.href,link_text:a.textContent.trim().slice(0,50),page_path:location.pathname,content_group:cg2})})});` +
+        `/* Outbound link click tracking */` +
+        `document.querySelectorAll('a[href^="http"]').forEach(function(a){if(!a.href.includes(location.hostname)){a.addEventListener('click',function(){gtag('event','outbound_click',{link_url:a.href,link_text:a.textContent.trim().slice(0,50),page_path:location.pathname})})}});` +
         `var t=setTimeout(function(){gtag('event','engaged_reader',{engagement_time:30})},30000);` +
         `document.addEventListener('visibilitychange',function(){if(document.hidden)clearTimeout(t)});` +
+        `/* Lead magnet CTA impression tracking (IntersectionObserver) */` +
+        `if('IntersectionObserver' in window){var io=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){gtag('event','lead_magnet_view',{page_path:location.pathname,element:e.target.className.split(' ')[0]||'cta'});io.unobserve(e.target)}})},{threshold:0.5});document.querySelectorAll('.ab-cta-newsletter,.ab-lead-magnet,.ab-lead-magnet-enhanced,.ab-content-upgrade').forEach(function(el){io.observe(el)})}` +
         `});\n</script>`);
     }
 
@@ -398,6 +412,71 @@ add_action('wp_footer', function() {
   }
 
   /**
+   * Exit-intent popup that offers a lead magnet when the user is about to leave.
+   * Triggers on mouse leaving viewport (desktop) or back button intent (mobile).
+   * Suppressed for 7 days via cookie after dismissal or conversion.
+   */
+  async ensureExitIntentSnippet(newsletterUrl?: string): Promise<void> {
+    const formUrl = newsletterUrl || '';
+    const phpCode = `
+// Exit-intent lead magnet popup — shown once per 7 days
+add_action('wp_footer', function() {
+    if (!is_singular('post')) return;
+    \$newsletter_url = '${formUrl}';
+    if (empty(\$newsletter_url)) \$newsletter_url = home_url('/newsletter/');
+    ?>
+    <div id="ab-exit-popup" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.6);align-items:center;justify-content:center;">
+        <div style="background:#1e1e2e;color:#e0e0e0;border-radius:12px;padding:32px;max-width:420px;width:90%;text-align:center;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.4);">
+            <button onclick="document.getElementById('ab-exit-popup').style.display='none';document.cookie='ab_exit_seen=1;max-age=604800;path=/'" style="position:absolute;top:8px;right:12px;background:none;border:none;color:#999;font-size:22px;cursor:pointer;">&times;</button>
+            <p style="font-size:20px;font-weight:700;margin:0 0 8px;">Wait — before you go!</p>
+            <p style="font-size:14px;color:#aaa;margin:0 0 16px;">Get exclusive Korea insights delivered to your inbox. Free weekly digest.</p>
+            <a href="<?php echo esc_url(\$newsletter_url); ?>" onclick="if(typeof gtag==='function')gtag('event','exit_intent_conversion',{page_path:location.pathname});document.cookie='ab_exit_seen=1;max-age=604800;path=/'" class="ab-lead-magnet" style="display:inline-block;padding:12px 28px;background:#0066FF;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;font-size:15px;">Subscribe Free</a>
+        </div>
+    </div>
+    <script>
+    (function(){
+        if(document.cookie.indexOf('ab_exit_seen=1')!==-1)return;
+        var shown=false;
+        document.addEventListener('mouseout',function(e){
+            if(!shown&&e.clientY<5&&e.relatedTarget===null){
+                shown=true;
+                document.getElementById('ab-exit-popup').style.display='flex';
+                if(typeof gtag==='function')gtag('event','exit_intent_shown',{page_path:location.pathname});
+            }
+        });
+    })();
+    </script>
+    <?php
+});`.trim();
+
+    try {
+      const { data: snippets } = await axios.get(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      const existing = (snippets as Array<{ id: number; name: string }>)
+        .find((s) => s.name === EXIT_INTENT_SNIPPET_TITLE);
+      if (existing) {
+        await axios.put(
+          `${this.wpUrl}/wp-json/code-snippets/v1/snippets/${existing.id}`,
+          { code: phpCode, active: true },
+          { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+        );
+        logger.info(`Exit-intent snippet updated (ID=${existing.id})`);
+        return;
+      }
+      await axios.post(
+        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
+        { name: EXIT_INTENT_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 10 },
+        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
+      );
+      logger.info('Exit-intent lead magnet popup snippet installed');
+    } catch (error) {
+      logger.warn(`Exit-intent snippet setup failed: ${error instanceof Error ? error.message : error}`);
+    }
+  }
+
+  /**
    * Install a PHP snippet that outputs JSON-LD from post meta into wp_head.
    * Posts store JSON-LD in _autoblog_jsonld meta field instead of post content body.
    */
@@ -425,6 +504,10 @@ add_action('wp_head', function() {
     if ($pub_time) echo '<meta property="article:published_time" content="' . esc_attr($pub_time) . '" />' . "\\n";
     if ($mod_time) echo '<meta property="article:modified_time" content="' . esc_attr($mod_time) . '" />' . "\\n";
 
+    // Content type meta tag for GA4 affiliate_click attribution
+    $content_type = get_post_meta($post_id, '_autoblog_content_type', true);
+    if ($content_type) echo '<meta name="autoblog:content_type" content="' . esc_attr($content_type) . '" />' . "\\n";
+
     // Pinterest Rich Pins + article OG tags (article:author, article:section)
     $categories = get_the_category($post_id);
     if (!empty($categories)) {
@@ -434,6 +517,21 @@ add_action('wp_head', function() {
     if ($author_name) {
         echo '<meta property="article:author" content="' . esc_attr($author_name) . '" />' . "\\n";
     }
+    // OG image metadata (type, width, height) for proper social share rendering
+    $thumb_id = get_post_thumbnail_id($post_id);
+    if ($thumb_id) {
+        $img_data = wp_get_attachment_image_src($thumb_id, 'full');
+        if ($img_data) {
+            $src = $img_data[0]; $w = $img_data[1]; $h = $img_data[2];
+            $ext = strtolower(pathinfo(parse_url($src, PHP_URL_PATH), PATHINFO_EXTENSION));
+            $type_map = ['jpg'=>'image/jpeg','jpeg'=>'image/jpeg','png'=>'image/png','webp'=>'image/webp','avif'=>'image/avif','gif'=>'image/gif'];
+            $mime = isset($type_map[$ext]) ? $type_map[$ext] : 'image/jpeg';
+            echo '<meta property="og:image:type" content="' . esc_attr($mime) . '" />' . "\\n";
+            echo '<meta property="og:image:width" content="' . esc_attr($w) . '" />' . "\\n";
+            echo '<meta property="og:image:height" content="' . esc_attr($h) . '" />' . "\\n";
+        }
+    }
+
     // Pinterest pin description from excerpt
     $excerpt = get_the_excerpt($post_id);
     if ($excerpt) {
@@ -443,7 +541,7 @@ add_action('wp_head', function() {
 
 // Register autoblog meta fields for REST API write access
 add_action('init', function() {
-    $fields = ['_autoblog_jsonld', '_autoblog_published_time', '_autoblog_modified_time'];
+    $fields = ['_autoblog_jsonld', '_autoblog_published_time', '_autoblog_modified_time', '_autoblog_content_type'];
     foreach ($fields as $field) {
         register_post_meta('post', $field, [
             'show_in_rest' => true,
@@ -1319,6 +1417,28 @@ add_action('wp_head', function() {
         \$cat = get_queried_object();
         if (\$cat && \$cat->count < 3) {
             echo '<meta name="robots" content="noindex, follow" />' . "\\n";
+        }
+    }
+    // Pagination rel next/prev for archive pages (saves crawl budget on paginated categories)
+    if ((is_category() || is_tag() || is_home()) && get_query_var('paged') > 0) {
+        global \$wp_query;
+        \$paged = get_query_var('paged');
+        if (\$paged > 1) {
+            \$prev = get_pagenum_link(\$paged - 1);
+            echo '<link rel="prev" href="' . esc_url(\$prev) . '" />' . "\\n";
+        }
+        if (\$paged < \$wp_query->max_num_pages) {
+            \$next = get_pagenum_link(\$paged + 1);
+            echo '<link rel="next" href="' . esc_url(\$next) . '" />' . "\\n";
+        }
+    }
+    // unavailable_after for time-sensitive posts (news-explainer, event coverage) — expires 60 days after publish
+    if (is_singular('post')) {
+        \$ct = get_post_meta(get_the_ID(), '_autoblog_content_type', true);
+        if (in_array(\$ct, array('news-explainer', 'event-coverage', 'seasonal-guide'), true)) {
+            \$pub = get_the_date('U');
+            \$expiry = gmdate('d M Y H:i:s', \$pub + 60 * 86400) . ' GMT';
+            echo '<meta name="robots" content="unavailable_after: ' . esc_attr(\$expiry) . '" />' . "\\n";
         }
     }
 });`.trim();
@@ -2360,6 +2480,27 @@ add_action('wp_head', function() {
       logger.info('Cloudflare: Set browser cache TTL to 4 hours');
     } catch (error) {
       logger.warn(`Cloudflare cache setup failed: ${error instanceof Error ? error.message : error}`);
+    }
+  }
+
+  /**
+   * Purge specific URLs from Cloudflare edge cache (call after content refresh).
+   */
+  async purgeCloudflareUrls(cloudflareToken: string, zoneId: string, urls: string[]): Promise<number> {
+    if (!cloudflareToken || !zoneId || urls.length === 0) return 0;
+    try {
+      // Cloudflare allows up to 30 URLs per purge request
+      const batch = urls.slice(0, 30);
+      await axios.post(
+        `https://api.cloudflare.com/client/v4/zones/${zoneId}/purge_cache`,
+        { files: batch },
+        { headers: { Authorization: `Bearer ${cloudflareToken}`, 'Content-Type': 'application/json' }, timeout: 15000 },
+      );
+      logger.info(`Cloudflare: Purged cache for ${batch.length} URL(s)`);
+      return batch.length;
+    } catch (error) {
+      logger.warn(`Cloudflare cache purge failed: ${error instanceof Error ? error.message : error}`);
+      return 0;
     }
   }
 

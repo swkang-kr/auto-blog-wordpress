@@ -4,6 +4,7 @@ import { join, dirname } from 'path';
 import { logger } from '../utils/logger.js';
 import { WordPressError } from '../types/errors.js';
 import type { BlogContent, PublishedPost, MediaUploadResult, ExistingPost, AuthorProfile, PostHistoryEntry } from '../types/index.js';
+import { circuitBreakers } from '../utils/retry.js';
 import { NICHE_AUTHOR_PROFILES, NICHE_DISCLAIMERS, CONTENT_FRESHNESS_MAP } from '../types/index.js';
 import type { ContentType } from '../types/index.js';
 
@@ -132,12 +133,14 @@ export class WordPressService {
       : 'image/png';
     logger.debug(`Uploading media: ${filename} (${contentType}, ${(imageBuffer.length / 1024).toFixed(0)}KB)`);
     try {
-      const response = await this.api.post('/media', imageBuffer, {
-        headers: {
-          'Content-Type': contentType,
-          'Content-Disposition': `attachment; filename="${filename}"`,
-        },
-      });
+      const response = await circuitBreakers.wordpress.exec(() =>
+        this.api.post('/media', imageBuffer, {
+          headers: {
+            'Content-Type': contentType,
+            'Content-Disposition': `attachment; filename="${filename}"`,
+          },
+        }),
+      );
       const mediaId = response.data.id as number;
       const sourceUrl = (response.data.source_url ?? response.data.guid?.rendered ?? '') as string;
 
@@ -832,7 +835,7 @@ div[style*="background:#f8f9fa"]{background:#1e1e2e!important;border-color:#3b3b
       return `<div class="ab-cta ab-cta-newsletter">
 <p style="margin:0 0 8px 0; font-size:20px; font-weight:700;">Get ${safeCategory} Insights Weekly</p>
 ${leadMagnetHtml}<p style="margin:0 0 14px 0; font-size:14px; color:rgba(255,255,255,0.85); line-height:1.5;">Join readers who get our latest Korea analysis delivered to their inbox. No spam, unsubscribe anytime.</p>
-<form action="${this.escapeHtml(newsletterFormUrl)}" method="POST" target="_blank" rel="noopener noreferrer" style="display:flex; flex-wrap:wrap; justify-content:center; gap:8px;">
+<form action="${this.escapeHtml(newsletterFormUrl)}" method="POST" target="_blank" rel="noopener noreferrer" style="display:flex; flex-wrap:wrap; justify-content:center; gap:8px;" onsubmit="if(typeof gtag==='function'){gtag('event','newsletter_signup',{event_category:'conversion',event_label:'${safeCategory}',content_type:'inline_cta',page_path:location.pathname})}">
 <input type="email" name="email" placeholder="your@email.com" required style="padding:10px 16px; border:none; border-radius:6px; font-size:15px; width:60%; max-width:280px;">
 <input type="hidden" name="source" value="${safeCategory}">
 <input type="hidden" name="category" value="${safeCategory}">
@@ -941,7 +944,7 @@ ${leadMagnetHtml}<p style="margin:0 0 14px 0; font-size:14px; color:rgba(255,255
 <div style="display:flex; align-items:flex-start; gap:16px; flex-wrap:wrap;">
 <div style="width:64px; height:64px; background:linear-gradient(135deg,#0052CC,#0066FF); border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-size:24px; font-weight:700; flex-shrink:0;">${authorName.charAt(0).toUpperCase()}</div>
 <div style="flex:1; min-width:200px;">
-<p style="margin:0 0 2px 0; font-size:17px; font-weight:700; color:#222;">${this.escapeHtml(authorName)}</p>
+<p style="margin:0 0 2px 0; font-size:17px; font-weight:700; color:#222;"><a href="${this.wpUrl}/author/${authorName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}/" style="color:#222; text-decoration:none; border-bottom:2px solid #0066FF;">${this.escapeHtml(authorName)}</a></p>
 <p style="margin:0 0 8px 0; font-size:14px; font-weight:600; color:#0066FF;">${this.escapeHtml(profile.title)}</p>
 <p style="margin:0 0 10px 0; font-size:14px; color:#555; line-height:1.6;">${this.escapeHtml(profile.bio)}</p>
 <div style="margin:0 0 8px 0;">${expertiseTags}</div>
@@ -1328,6 +1331,7 @@ ${ga4TrackingScript}`;
    * Get merged affiliate map: user-provided AFFILIATE_MAP overrides + category defaults.
    * Only includes entries with non-empty URLs.
    */
+  private affiliatePlaceholderWarned = false;
   private getMergedAffiliateMap(userMap: Record<string, string>, category?: string): Record<string, string> {
     const merged: Record<string, string> = {};
     // Add category defaults (only those with URLs)
@@ -1342,6 +1346,16 @@ ${ga4TrackingScript}`;
     // User overrides take priority
     for (const [kw, url] of Object.entries(userMap)) {
       if (url) merged[kw] = url;
+    }
+    // Warn once about placeholder URLs that won't earn revenue
+    if (!this.affiliatePlaceholderWarned && Object.keys(merged).length > 0 && Object.keys(userMap).length === 0) {
+      const hasPlaceholder = Object.values(merged).some(url =>
+        url.includes('link.coupang.com/...') || url.includes('amazon.com/...') || url.endsWith('...'),
+      );
+      if (hasPlaceholder) {
+        logger.warn('⚠️ Affiliate links use PLACEHOLDER URLs — set AFFILIATE_MAP env var with real tracking URLs to earn commissions');
+        this.affiliatePlaceholderWarned = true;
+      }
     }
     return merged;
   }
@@ -1378,7 +1392,8 @@ ${ga4TrackingScript}`;
       // Add FTC disclosure at top of content (required when affiliate links are present)
       const disclosure = `<p class="ab-affiliate-disclosure" style="margin:0 0 20px 0; padding:12px 16px; background:#fff8e1; border:1px solid #ffe082; border-radius:8px; font-size:12px; color:#666; line-height:1.5;"><strong>Disclosure:</strong> This article contains affiliate links. If you make a purchase through these links, we may earn a small commission at no extra cost to you. This helps support our content. <a href="/privacy-policy/" style="color:#0066FF;">Learn more</a>.</p>`;
       // Insert after the Last Updated banner or at the very start
-      const lastUpdatedEnd = result.indexOf('</div>', result.indexOf('Last Updated:'));
+      const lastUpdIdx = result.indexOf('Last Updated:');
+      const lastUpdatedEnd = lastUpdIdx !== -1 ? result.indexOf('</div>', lastUpdIdx) : -1;
       if (lastUpdatedEnd !== -1) {
         const insertPos = lastUpdatedEnd + '</div>'.length;
         result = result.slice(0, insertPos) + '\n' + disclosure + '\n' + result.slice(insertPos);
@@ -1411,6 +1426,7 @@ ${ga4TrackingScript}`;
       selectedPersona?: AuthorProfile;
       isNewPublisher?: boolean;
       clusterRelatedPosts?: ExistingPost[];
+      factCheckClaims?: Array<{ claim: string; correction: string }>;
     },
   ): Promise<PublishedPost> {
     // Ensure unique slug before publishing
@@ -1570,12 +1586,11 @@ ${ga4TrackingScript}`;
 <p style="margin:0; font-size:14px; color:#555; line-height:1.6;">What's your take on this? Share your experience or questions in the comments — we read and respond to every one.</p>
 <p style="margin:8px 0 0 0;"><a href="#respond" style="color:#0066FF; font-weight:600; text-decoration:none; font-size:14px;">Jump to comments &darr;</a></p></div>`;
     // Insert before Related Posts or Disclaimer
-    const commentInsertIdx = htmlEn.indexOf('class="ab-related-posts"') !== -1
-      ? htmlEn.lastIndexOf('<', htmlEn.indexOf('class="ab-related-posts"'))
-      : htmlEn.lastIndexOf('class="ab-disclaimer"') !== -1
-        ? htmlEn.lastIndexOf('<', htmlEn.indexOf('class="ab-disclaimer"'))
-        : -1;
-    if (commentInsertIdx > 0) {
+    const relatedIdx = htmlEn.indexOf('class="ab-related-posts"');
+    const disclaimerIdx = relatedIdx === -1 ? htmlEn.indexOf('class="ab-disclaimer"') : -1;
+    const anchorIdx = relatedIdx !== -1 ? relatedIdx : disclaimerIdx;
+    const commentInsertIdx = anchorIdx !== -1 ? htmlEn.lastIndexOf('<', anchorIdx) : -1;
+    if (commentInsertIdx !== -1) {
       htmlEn = htmlEn.slice(0, commentInsertIdx) + commentPromptHtml + '\n' + htmlEn.slice(commentInsertIdx);
     } else {
       htmlEn += '\n' + commentPromptHtml;
@@ -1636,7 +1651,8 @@ ${ga4TrackingScript}`;
     // Inject niche-specific disclaimer (finance, beauty, etc.) after Last Updated banner
     const nicheDisclaimer = this.buildNicheDisclaimer(content.category);
     if (nicheDisclaimer) {
-      const lastUpdatedEnd = htmlEn.indexOf('</div>', htmlEn.indexOf('Last Updated:'));
+      const lastUpdatedIdx = htmlEn.indexOf('Last Updated:');
+      const lastUpdatedEnd = lastUpdatedIdx !== -1 ? htmlEn.indexOf('</div>', lastUpdatedIdx) : -1;
       if (lastUpdatedEnd !== -1) {
         const insertPos = lastUpdatedEnd + '</div>'.length;
         htmlEn = htmlEn.slice(0, insertPos) + '\n' + nicheDisclaimer + '\n' + htmlEn.slice(insertPos);
@@ -1663,6 +1679,7 @@ ${ga4TrackingScript}`;
       description: validatedExcerpt,
       inLanguage: 'en',
       articleSection: content.category,
+      articleBody: htmlEn.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 5000),
       wordCount,
       datePublished: nowIso,
       dateModified: nowIso,
@@ -1851,6 +1868,7 @@ ${ga4TrackingScript}`;
         '@type': 'NewsArticle',
         headline: content.title,
         description: validatedExcerpt,
+        articleBody: htmlEn.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 5000),
         datePublished: nowIso,
         dateModified: nowIso,
         articleSection: content.category,
@@ -1888,10 +1906,44 @@ ${ga4TrackingScript}`;
         uploadDate: nowIso,
         embedUrl: `https://www.youtube.com/embed/${videoId}`,
         contentUrl: `https://www.youtube.com/watch?v=${videoId}`,
+        // YouTube auto-generated captions URL for accessibility rich results
+        caption: `https://www.youtube.com/api/timedtext?v=${videoId}&lang=en&fmt=srv3`,
+        inLanguage: 'en',
       });
     }
     if (ytEmbeds.length > 0) {
       logger.debug(`VideoObject schema: ${Math.min(ytEmbeds.length, 3)} YouTube embed(s) detected`);
+    }
+
+    // ClaimReview schema for fact-checked Finance content (Google fact-check carousel eligibility)
+    if (options?.factCheckClaims && options.factCheckClaims.length > 0 && content.category.toLowerCase().includes('finance')) {
+      for (const fc of options.factCheckClaims.slice(0, 3)) {
+        jsonLdSchemas.push({
+          '@context': 'https://schema.org',
+          '@type': 'ClaimReview',
+          url: content.slug ? `${this.wpUrl}/${content.slug}/` : this.wpUrl,
+          claimReviewed: fc.claim,
+          author: {
+            '@type': 'Organization',
+            name: this.siteOwner || 'TrendHunt',
+            url: this.wpUrl,
+          },
+          reviewRating: {
+            '@type': 'Rating',
+            ratingValue: 1,
+            bestRating: 5,
+            worstRating: 1,
+            alternateName: fc.correction ? 'Corrected' : 'Verified',
+          },
+          itemReviewed: {
+            '@type': 'Claim',
+            author: { '@type': 'Organization', name: 'Various Sources' },
+            datePublished: nowIso,
+          },
+          datePublished: nowIso,
+        });
+      }
+      logger.debug(`ClaimReview schema: ${Math.min(options.factCheckClaims.length, 3)} fact-checked claim(s)`);
     }
 
     // Product schema for best-x-for-y and product-review content (rich results for product searches)
@@ -2054,7 +2106,21 @@ ${ga4TrackingScript}`;
         if (options?.scheduledDate) {
           postData.date = options.scheduledDate;
         }
-        const response = await this.api.post('/posts', postData);
+        let response;
+        try {
+          response = await circuitBreakers.wordpress.exec(() => this.api.post('/posts', postData));
+        } catch (postError) {
+          // Retry once for scheduled posts (schedule failures are critical)
+          if (options?.scheduledDate) {
+            logger.warn(`Scheduled post failed, retrying without schedule: ${postError instanceof Error ? postError.message : postError}`);
+            delete postData.date;
+            postData.status = 'draft';
+            response = await circuitBreakers.wordpress.exec(() => this.api.post('/posts', postData));
+            logger.warn(`Post saved as draft (schedule failed): "${content.title}" — manually publish at ${options.scheduledDate}`);
+          } else {
+            throw postError;
+          }
+        }
 
         const post: PublishedPost = {
           postId: response.data.id,
@@ -2074,6 +2140,7 @@ ${ga4TrackingScript}`;
             _autoblog_freshness_class: options?.contentType
               ? (CONTENT_FRESHNESS_MAP[options.contentType as ContentType] || 'seasonal')
               : 'seasonal',
+            _autoblog_content_type: options?.contentType || '',
             ...(options?.titleCandidates?.length ? {
               _autoblog_title_candidates: JSON.stringify(options.titleCandidates),
               _autoblog_title_test_start: nowIso,
@@ -2795,7 +2862,8 @@ ${ga4TrackingScript}`;
 
     // First ad: after TOC (approximately 15-20% of content)
     const tocEndNav = html.indexOf('</nav>');
-    const tocEndDiv = html.indexOf('ab-toc') !== -1 ? html.indexOf('</div>', html.indexOf('ab-toc')) : -1;
+    const tocIdx = html.indexOf('ab-toc');
+    const tocEndDiv = tocIdx !== -1 ? html.indexOf('</div>', tocIdx) : -1;
     const tocEnd = tocEndNav > 0 ? tocEndNav : tocEndDiv;
     if (tocEnd > 0) {
       positions.push(tocEnd + 6);
@@ -2869,7 +2937,14 @@ ${ga4TrackingScript}`;
     }
 
     // Sort by priority (exact > phrase > branded), then by term length (longer = more specific)
-    linkCandidates.sort((a, b) => b.priority - a.priority || b.term.length - a.term.length);
+    // Revenue-weighted: boost high-RPM posts to get more internal links
+    const HIGH_RPM_CATEGORIES = ['Korean Finance', 'Korean Tech'];
+    linkCandidates.sort((a, b) => {
+      // Boost high-RPM category posts (+2 priority)
+      const aBoost = HIGH_RPM_CATEGORIES.some(c => a.url.includes(c.toLowerCase().replace(/\s+/g, '-'))) ? 2 : 0;
+      const bBoost = HIGH_RPM_CATEGORIES.some(c => b.url.includes(c.toLowerCase().replace(/\s+/g, '-'))) ? 2 : 0;
+      return (b.priority + bBoost) - (a.priority + aBoost) || b.term.length - a.term.length;
+    });
 
     let result = html;
     let injected = 0;
@@ -3878,6 +3953,44 @@ ${ga4TrackingScript}`;
   }
 
   /**
+   * Auto-fix redirect chains by updating internal links in post content.
+   * Replaces A→B→C chain with direct A→C links in all published posts.
+   */
+  async fixRedirectChains(chains: Array<{ originalUrl: string; finalUrl: string }>): Promise<number> {
+    if (chains.length === 0) return 0;
+    let fixedCount = 0;
+    // Build replacement map: intermediate URL → final URL
+    const replacements = new Map<string, string>();
+    for (const c of chains) {
+      replacements.set(c.originalUrl, c.finalUrl);
+    }
+    // Fetch recent posts and update internal links
+    try {
+      const { data: posts } = await this.api.get('/posts', { params: { per_page: 100, status: 'publish', _fields: 'id,content' } });
+      for (const post of (posts as Array<{ id: number; content: { rendered: string } }>)) {
+        let content = post.content.rendered;
+        let modified = false;
+        for (const [from, to] of replacements) {
+          if (content.includes(from)) {
+            content = content.split(from).join(to);
+            modified = true;
+          }
+        }
+        if (modified) {
+          await this.api.post(`/posts/${post.id}`, { content });
+          fixedCount++;
+        }
+      }
+    } catch (error) {
+      logger.debug(`Redirect chain auto-fix failed: ${error instanceof Error ? error.message : error}`);
+    }
+    if (fixedCount > 0) {
+      logger.info(`Redirect chains: auto-fixed links in ${fixedCount} post(s)`);
+    }
+    return fixedCount;
+  }
+
+  /**
    * Build FAQ JSON-LD schema from extracted FAQ items in content.
    * Targets Google's FAQ rich result for SERP area expansion.
    */
@@ -4035,7 +4148,7 @@ ${ga4TrackingScript}`;
    * Build content-specific upgrade CTA (higher conversion than generic lead magnets).
    * Creates a download offer directly related to the article topic.
    */
-  buildContentUpgradeCta(keyword: string, category: string, contentType: string): string {
+  buildContentUpgradeCta(keyword: string, category: string, contentType: string, leadMagnetUrl?: string): string {
     // Generate content-specific upgrade based on content type
     const upgrades: Record<string, { title: string; description: string }> = {
       'how-to': { title: `${keyword} — Quick Reference Checklist`, description: 'Get a printable step-by-step checklist for this guide' },
@@ -4051,8 +4164,8 @@ ${ga4TrackingScript}`;
 <p style="margin:0 0 4px 0; font-size:11px; font-weight:700; color:#0066FF; text-transform:uppercase; letter-spacing:1px;">FREE RESOURCE</p>
 <p style="margin:0 0 8px 0; font-size:18px; font-weight:700; color:#222;">${this.escapeHtml(upgrade.title)}</p>
 <p style="margin:0 0 16px 0; font-size:14px; color:#555; line-height:1.6;">${this.escapeHtml(upgrade.description)}</p>
-<a href="#respond" onclick="if(typeof gtag==='function'){gtag('event','content_upgrade_click',{event_category:'conversion',event_label:'${this.escapeHtml(contentType)}',value:1})}" style="display:inline-block; padding:12px 32px; background:#0066FF; color:#fff; text-decoration:none; border-radius:8px; font-weight:700; font-size:15px;">Get Free Download</a>
-<p style="margin:10px 0 0 0; font-size:11px; color:#999;">No signup required — instant access</p></div>`;
+<a href="${this.escapeHtml(leadMagnetUrl || '#respond')}" ${leadMagnetUrl ? 'target="_blank" rel="noopener noreferrer"' : ''} onclick="if(typeof gtag==='function'){gtag('event','content_upgrade_click',{event_category:'conversion',event_label:'${this.escapeHtml(contentType)}',content_group:'${this.escapeHtml(category)}',value:1})}" class="ab-content-upgrade" style="display:inline-block; padding:12px 32px; background:#0066FF; color:#fff; text-decoration:none; border-radius:8px; font-weight:700; font-size:15px;">Get Free Download</a>
+<p style="margin:10px 0 0 0; font-size:11px; color:#999;">${leadMagnetUrl ? 'Free download — instant access' : 'Join the discussion below'}</p></div>`;
   }
 
   /**
