@@ -1637,33 +1637,47 @@ async function main(): Promise<void> {
       // YouTube video embed (search for relevant video and inject responsive embed)
       if (config.YOUTUBE_API_KEY) {
         try {
-          const searchQuery = `${researched.analysis.selectedKeyword} Korea ${new Date().getFullYear()}`;
-          const ytResponse = await axios.get('https://www.googleapis.com/youtube/v3/search', {
-            params: {
-              part: 'snippet',
-              q: searchQuery,
-              type: 'video',
-              maxResults: 1,
-              relevanceLanguage: 'en',
-              key: config.YOUTUBE_API_KEY,
-            },
-            timeout: 10000,
-          });
-          const ytItems = ytResponse.data?.items;
-          if (ytItems?.length > 0) {
-            const videoId = ytItems[0].id?.videoId;
-            const videoTitle = ytItems[0].snippet?.title || searchQuery;
-            if (videoId) {
-              content.html = WordPressService.injectYouTubeEmbed(
-                content.html,
-                `https://www.youtube.com/watch?v=${videoId}`,
-                videoTitle,
-              );
-              logger.info(`YouTube embed injected: "${videoTitle}" for "${researched.analysis.selectedKeyword}"`);
+          // Fallback query chain: specific → niche-level → broad niche
+          const ytQueries = [
+            `${researched.analysis.selectedKeyword} ${new Date().getFullYear()}`,
+            `${niche.name} ${new Date().getFullYear()}`,
+            niche.broadTerm,
+          ];
+          let ytInjected = false;
+          for (const searchQuery of ytQueries) {
+            const ytResponse = await axios.get('https://www.googleapis.com/youtube/v3/search', {
+              params: {
+                part: 'snippet',
+                q: searchQuery,
+                type: 'video',
+                maxResults: 3,
+                relevanceLanguage: 'en',
+                videoEmbeddable: 'true',
+                key: config.YOUTUBE_API_KEY,
+              },
+              timeout: 10000,
+            });
+            const ytItems = ytResponse.data?.items;
+            if (ytItems?.length > 0) {
+              const videoId = ytItems[0].id?.videoId;
+              const videoTitle = ytItems[0].snippet?.title || searchQuery;
+              if (videoId) {
+                content.html = WordPressService.injectYouTubeEmbed(
+                  content.html,
+                  `https://www.youtube.com/watch?v=${videoId}`,
+                  videoTitle,
+                );
+                logger.info(`YouTube embed injected: "${videoTitle}" for "${researched.analysis.selectedKeyword}" (query: "${searchQuery}")`);
+                ytInjected = true;
+                break;
+              }
             }
           }
+          if (!ytInjected) {
+            logger.warn(`YouTube embed skipped: no results for "${researched.analysis.selectedKeyword}"`);
+          }
         } catch (ytError) {
-          logger.debug(`YouTube embed skipped: ${ytError instanceof Error ? ytError.message : ytError}`);
+          logger.warn(`YouTube embed skipped: ${ytError instanceof Error ? ytError.message : ytError}`);
         }
       }
 
