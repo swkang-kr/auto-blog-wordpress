@@ -1160,6 +1160,17 @@ async function main(): Promise<void> {
           continue;
         }
 
+        // Pre-generation title similarity check: reject keyword if too similar to any existing post title
+        // This prevents wasting API calls on content that will be rejected after generation
+        const postedTitles = history.getPostedTitlesForNiche(niche.id);
+        const suggestedTitle = candidate.analysis.suggestedTitle || candidate.analysis.selectedKeyword;
+        const similarTitle = postedTitles.find(t => history.titleSimilarity(t, suggestedTitle) >= 0.6);
+        if (similarTitle) {
+          logger.warn(`Attempt ${kwAttempt}/${MAX_KEYWORD_ATTEMPTS}: Keyword pre-check rejected "${candidate.analysis.selectedKeyword}" — title too similar to "${similarTitle}". Retrying...`);
+          rejectedDupKeywords.push(candidate.analysis.selectedKeyword);
+          continue;
+        }
+
         // Passed all checks — use this keyword
         researched = candidate;
         break;
