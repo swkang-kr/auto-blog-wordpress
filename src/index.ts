@@ -743,9 +743,8 @@ async function main(): Promise<void> {
     logger.debug(`Funnel distribution failed: ${funnelError instanceof Error ? funnelError.message : funnelError}`);
   }
 
-  if (insightParts.length > 0) {
-    researchService.setPerformanceInsights(insightParts.join('\n'));
-  }
+  // NOTE: insightParts is still being populated below (topical gaps, saturation, sequencing)
+  // setPerformanceInsights() is called after all insight-gathering loops (after line ~863)
 
   // 3.6. Fetch existing posts for internal linking + similarity dedup
   const existingPosts = await wpService.getRecentPosts(500);
@@ -860,6 +859,11 @@ async function main(): Promise<void> {
         insightParts.push(`\n## Pillar Sequencing: ${niche.name}\n${sequenceAdvice.advice}\nPrioritize creating a pillar page for this niche.`);
       }
     }
+  }
+
+  // Feed all accumulated insights (GA4/GSC + topical gaps + saturation + sequencing) to research service
+  if (insightParts.length > 0) {
+    researchService.setPerformanceInsights(insightParts.join('\n'));
   }
 
   // 3.7b. Competitor gap analysis: reuse cached GSC data (no duplicate API calls)
@@ -1637,8 +1641,10 @@ async function main(): Promise<void> {
 
       // B-4.5. Korean content generation removed — English-only publishing
 
-      // B-5. IndexNow + Bing Sitemap Ping
-      await seoService.notifyIndexNow([post.url]);
+      // B-5. IndexNow + Bing Sitemap Ping (skip for scheduled/future posts — URL returns 404 until publish time)
+      if (!scheduledDate) {
+        await seoService.notifyIndexNow([post.url]);
+      }
       await seoService.pingSitemap();
 
       // B-6. Multi-day social campaign: stagger platforms for sustained engagement
@@ -1690,7 +1696,7 @@ async function main(): Promise<void> {
       // Execute previously scheduled social posts that are now due (read from WP post meta)
       try {
         // Twitter execution
-        const pendingSocial = await wpService.getPostsByMeta('_autoblog_social_scheduled', 10);
+        const pendingSocial = await wpService.getPostsByMeta('_autoblog_social_scheduled', 10, 'publish,future');
         for (const pending of pendingSocial.slice(0, 3)) {
           const scheduledAt = pending.meta._autoblog_social_scheduled;
           if (!scheduledAt || new Date(scheduledAt).getTime() > Date.now()) continue;
@@ -1712,7 +1718,7 @@ async function main(): Promise<void> {
         }
         // LinkedIn execution (staggered separately)
         if (linkedinService) {
-          const pendingLinkedin = await wpService.getPostsByMeta('_autoblog_linkedin_scheduled', 10);
+          const pendingLinkedin = await wpService.getPostsByMeta('_autoblog_linkedin_scheduled', 10, 'publish,future');
           for (const pending of pendingLinkedin.slice(0, 3)) {
             const scheduledAt = pending.meta._autoblog_linkedin_scheduled;
             if (!scheduledAt || new Date(scheduledAt).getTime() > Date.now()) continue;
@@ -1754,7 +1760,7 @@ async function main(): Promise<void> {
 
         // Check if any PREVIOUSLY scheduled syndications are now due (read from WP post meta)
         try {
-          const pendingSyndications = await wpService.getPostsByMeta('_autoblog_syndication_scheduled', 10);
+          const pendingSyndications = await wpService.getPostsByMeta('_autoblog_syndication_scheduled', 10, 'publish,future');
           for (const pending of pendingSyndications.slice(0, 3)) {
             const scheduledAt = pending.meta._autoblog_syndication_scheduled;
             if (!scheduledAt || new Date(scheduledAt).getTime() > Date.now()) continue;
@@ -1834,13 +1840,13 @@ async function main(): Promise<void> {
         logger.info(`Hashnode syndication: deferred 24h for canonical indexing (scheduled: ${syndicationScheduledAt})`);
       }
 
-      // B-8.5. Pinterest auto-pin (optional, visual categories only — immediate, benefits from freshness)
-      if (pinterestService && PinterestService.isEligible(niche.category)) {
+      // B-8.5. Pinterest auto-pin (skip for scheduled posts — URL not live yet)
+      if (pinterestService && PinterestService.isEligible(niche.category) && !scheduledDate) {
         await pinterestService.pinBlogPost(content, post, featuredMediaResult?.sourceUrl || '');
       }
 
-      // B-8.5b. Reddit auto-posting (optional)
-      if (redditPostService) {
+      // B-8.5b. Reddit auto-posting (skip for scheduled posts — URL not live yet)
+      if (redditPostService && !scheduledDate) {
         try {
           const redditCount = await redditPostService.autoPost(niche.category, content.title, post.url);
           if (redditCount > 0) {
@@ -1877,17 +1883,21 @@ async function main(): Promise<void> {
         logger.info(`Naver Blog seeding: deferred 24h for canonical indexing (scheduled: ${syndicationScheduledAt})`);
       }
 
-      // B-9. Google Indexing API
-      await seoService.requestIndexing(post.url);
+      // B-9. Google Indexing API (skip for scheduled posts — URL returns 404 until publish time)
+      if (!scheduledDate) {
+        await seoService.requestIndexing(post.url);
+      }
 
-      // B-9.5. Reverse internal linking — inject links to new post in related existing posts
-      try {
-        await wpService.insertReverseLinks(
-          post.url, content.title, researched.analysis.selectedKeyword,
-          niche.id, existingPosts, 5,
-        );
-      } catch (revLinkError) {
-        logger.debug(`Reverse linking failed: ${revLinkError instanceof Error ? revLinkError.message : revLinkError}`);
+      // B-9.5. Reverse internal linking — skip for scheduled posts (URL is ?p=ID, would create 404 links)
+      if (!scheduledDate) {
+        try {
+          await wpService.insertReverseLinks(
+            post.url, content.title, researched.analysis.selectedKeyword,
+            niche.id, existingPosts, 5,
+          );
+        } catch (revLinkError) {
+          logger.debug(`Reverse linking failed: ${revLinkError instanceof Error ? revLinkError.message : revLinkError}`);
+        }
       }
 
       // B-10. Record history + category publish timestamp (with series detection)
