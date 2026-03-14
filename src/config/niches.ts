@@ -56,10 +56,7 @@ export function getSeasonallyOrderedNiches(): NicheConfig[] {
 /**
  * CORE NICHES (2 focused niches for rapid topical authority)
  * Strategy: 2 niches × 2-3 posts/day = 15-20 posts/niche/month
- * Goal: reach 15+ posts per niche ASAP for Google topical authority signals.
- *
- * Phase 1 (current): K-Beauty + K-Entertainment — medium competition, high engagement
- * Phase 2 (after 15+ posts each): re-add Korean Tech & Korean Finance (high RPM)
+ * Focus: K-Beauty + K-Entertainment — medium competition, high engagement
  *
  * Selected based on: competition level (lower wins for new sites),
  * audience overlap, viral potential, and monetization diversity.
