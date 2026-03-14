@@ -1699,8 +1699,8 @@ async function main(): Promise<void> {
           try {
             if (platforms.includes('twitter') && twitterService) {
               const deferredTweetId = await twitterService.promoteBlogPost(
-                { title: pending.title, html: '', excerpt: '', tags: [], category: '', imagePrompts: [], imageCaptions: [], qualityScore: 0, metaDescription: '', slug: '' } as any,
-                { url: pending.url, postId: pending.postId } as any,
+                { title: pending.title, html: '', excerpt: pending.excerpt, tags: [], category: '', imagePrompts: [], imageCaptions: [], qualityScore: 0, metaDescription: '', slug: pending.slug } as any,
+                { url: pending.url, postId: pending.postId, slug: pending.slug } as any,
               );
               if (deferredTweetId) await wpService.updatePostMeta(pending.postId, { _autoblog_tweet_id: deferredTweetId }).catch(() => {});
               logger.info(`Deferred Twitter post executed for "${pending.title}"`);
@@ -1717,7 +1717,7 @@ async function main(): Promise<void> {
             const scheduledAt = pending.meta._autoblog_linkedin_scheduled;
             if (!scheduledAt || new Date(scheduledAt).getTime() > Date.now()) continue;
             try {
-              const deferredLiId = await linkedinService.promoteBlogPost(pending.title, '', pending.url);
+              const deferredLiId = await linkedinService.promoteBlogPost(pending.title, pending.excerpt, pending.url);
               if (deferredLiId) await wpService.updatePostMeta(pending.postId, { _autoblog_linkedin_post_id: deferredLiId }).catch(() => {});
               logger.info(`Deferred LinkedIn post executed for "${pending.title}"`);
               await wpService.updatePostMeta(pending.postId, { _autoblog_linkedin_scheduled: '' });

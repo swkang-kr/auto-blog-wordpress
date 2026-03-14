@@ -2409,23 +2409,25 @@ ${ga4TrackingScript}`;
    * Fetch posts that have a specific meta key with a non-empty value.
    * Used for deferred social posting and syndication scheduling.
    */
-  async getPostsByMeta(metaKey: string, limit: number = 10, status: string = 'publish'): Promise<Array<{ postId: number; url: string; title: string; meta: Record<string, string> }>> {
+  async getPostsByMeta(metaKey: string, limit: number = 10, status: string = 'publish'): Promise<Array<{ postId: number; url: string; slug: string; title: string; excerpt: string; meta: Record<string, string> }>> {
     try {
       const { data } = await this.api.get('/posts', {
         params: {
           per_page: limit,
           status,
           meta_key: metaKey,
-          _fields: 'id,link,title,meta',
+          _fields: 'id,link,slug,title,excerpt,meta',
         },
       });
-      const posts = data as Array<{ id: number; link: string; title: { rendered: string }; meta?: Record<string, string> }>;
+      const posts = data as Array<{ id: number; link: string; slug: string; title: { rendered: string }; excerpt?: { rendered: string }; meta?: Record<string, string> }>;
       return posts
         .filter(p => p.meta?.[metaKey] && p.meta[metaKey] !== '')
         .map(p => ({
           postId: p.id,
           url: p.link,
+          slug: p.slug || '',
           title: p.title.rendered,
+          excerpt: p.excerpt?.rendered?.replace(/<[^>]+>/g, '').trim() || '',
           meta: p.meta || {},
         }));
     } catch (error) {

@@ -20,6 +20,10 @@ export class TwitterService {
   async promoteBlogPost(content: BlogContent, post: PublishedPost): Promise<string | null> {
     // Resolve pretty permalink — ?p=ID URLs are for scheduled posts and not publicly accessible
     const resolvedUrl = resolvePostUrl(post);
+    if (resolvedUrl.includes('?p=') || resolvedUrl.includes('&p=')) {
+      logger.warn(`X thread skipped: cannot resolve pretty URL for post ${post.postId} (scheduled, no slug)`);
+      return null;
+    }
     const slug = extractSlugFromUrl(resolvedUrl);
     const ctaVariant = this.pickCtaVariant();
     const utmParams: UtmParams = {

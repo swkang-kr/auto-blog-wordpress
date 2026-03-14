@@ -41,7 +41,7 @@ export class LinkedInService {
     };
 
     try {
-      const { data } = await axios.post(
+      const res = await axios.post(
         'https://api.linkedin.com/v2/posts',
         postBody,
         {
@@ -54,8 +54,9 @@ export class LinkedInService {
           timeout: 15000,
         },
       );
-      // Posts API returns the post URN in the x-linkedin-id header; body may be empty
-      const postId = (data as { id?: string }).id
+      // v2/posts returns URN in x-restli-id header (body is empty on 201 Created)
+      const postId = (res.headers['x-restli-id'] as string)
+        || (res.data as { id?: string })?.id
         || 'unknown';
       logger.info(`LinkedIn post shared (id: ${postId}): "${title}"`);
       return postId;
