@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-03-11T01:38:24.992Z",
+  "lastUpdated": "2026-03-14T05:27:24.262Z",
   "activeFeatures": [
     "auto-blog-wordpress",
     "config",
@@ -38,9 +38,9 @@
       },
       "phaseNumber": 3,
       "doCompleted": true,
-      "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/index.ts",
+      "lastFile": "C:\\workspace\\Claude\\auto-blog-wordpress\\src\\index.ts",
       "timestamps": {
-        "lastUpdated": "2026-03-11T01:22:42.852Z"
+        "lastUpdated": "2026-03-14T05:12:23.742Z"
       }
     },
     "config": {
@@ -52,9 +52,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-02-24T13:58:27.485Z",
-        "lastUpdated": "2026-03-11T01:14:39.742Z"
+        "lastUpdated": "2026-03-14T05:27:24.262Z"
       },
-      "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/config/env.ts"
+      "lastFile": "C:\\workspace\\Claude\\auto-blog-wordpress\\src\\config\\niches.ts"
     },
     "scripts": {
       "phase": "do",
@@ -65,9 +65,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-09T01:26:04.863Z",
-        "lastUpdated": "2026-03-10T00:40:52.602Z"
+        "lastUpdated": "2026-03-14T05:24:55.879Z"
       },
-      "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/scripts/apply-site-settings.ts"
+      "lastFile": "C:\\workspace\\Claude\\auto-blog-wordpress\\src\\scripts\\patch-kbeauty-affiliate.ts"
     },
     "wordpress.service.ts": {
       "phase": "do",
@@ -78,9 +78,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-09T02:04:01.095Z",
-        "lastUpdated": "2026-03-11T01:23:34.115Z"
+        "lastUpdated": "2026-03-14T04:19:35.707Z"
       },
-      "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/wordpress.service.ts"
+      "lastFile": "C:/workspace/Claude/auto-blog-wordpress/src/services/wordpress.service.ts"
     },
     "seo.service.ts": {
       "phase": "do",
@@ -91,9 +91,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-09T02:05:25.652Z",
-        "lastUpdated": "2026-03-11T01:25:44.793Z"
+        "lastUpdated": "2026-03-14T03:47:00.539Z"
       },
-      "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/seo.service.ts"
+      "lastFile": "C:/workspace/Claude/auto-blog-wordpress/src/services/seo.service.ts"
     },
     "content-generator.service.ts": {
       "phase": "do",
@@ -312,7 +312,7 @@
   "session": {
     "startedAt": "2026-02-24T10:12:24.092Z",
     "onboardingCompleted": true,
-    "lastActivity": "2026-03-11T01:38:24.992Z"
+    "lastActivity": "2026-03-14T05:27:24.262Z"
   },
   "history": [
     {
@@ -7353,6 +7353,186 @@
     {
       "timestamp": "2026-03-11T01:38:24.992Z",
       "feature": "image-generator.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T03:25:34.673Z",
+      "feature": "scripts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T03:25:45.129Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T03:27:09.894Z",
+      "feature": "scripts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T03:27:15.226Z",
+      "feature": "scripts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T03:30:22.608Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T03:30:36.067Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T03:34:33.580Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T03:34:44.020Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T03:35:01.520Z",
+      "feature": "scripts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T03:35:07.545Z",
+      "feature": "scripts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T03:40:09.155Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T03:47:00.539Z",
+      "feature": "seo.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T03:51:43.061Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T03:53:44.862Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T04:18:48.346Z",
+      "feature": "wordpress.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T04:18:54.438Z",
+      "feature": "wordpress.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T04:19:01.255Z",
+      "feature": "wordpress.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T04:19:06.662Z",
+      "feature": "wordpress.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T04:19:11.608Z",
+      "feature": "wordpress.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T04:19:23.163Z",
+      "feature": "wordpress.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T04:19:35.707Z",
+      "feature": "wordpress.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T04:46:21.945Z",
+      "feature": "auto-blog-wordpress",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T04:49:57.671Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T04:55:49.450Z",
+      "feature": "auto-blog-wordpress",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T04:56:04.560Z",
+      "feature": "auto-blog-wordpress",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T05:02:26.124Z",
+      "feature": "auto-blog-wordpress",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T05:12:23.742Z",
+      "feature": "auto-blog-wordpress",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T05:14:52.856Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T05:24:55.879Z",
+      "feature": "scripts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T05:27:24.262Z",
+      "feature": "config",
       "phase": "do",
       "action": "updated"
     }
