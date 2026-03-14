@@ -340,6 +340,8 @@ export class WordPressService {
     'hybecorp.com', 'smentertainment.com', 'jype.com',
     // Niche-specific
     'cosmeticsdesign-asia.com', 'lonelyplanet.com',
+    // Affiliate
+    'amazon.com', 'amazon.co.uk', 'amazon.co.jp',
     // Social & general
     'twitter.com', 'x.com', 'linkedin.com', 'facebook.com',
     'google.com', 'youtube.com', 'wikipedia.org',
