@@ -8,7 +8,7 @@ async function main() {
     console.error('Missing required env vars: WP_URL, WP_USERNAME, WP_APP_PASSWORD, ADSENSE_PUB_ID');
     process.exit(1);
   }
-  const seo = new SeoService(WP_URL, WP_USERNAME, WP_APP_PASSWORD, '', '', '');
+  const seo = new SeoService(WP_URL, WP_USERNAME, WP_APP_PASSWORD);
   await seo.ensureAdsTxtSnippet(ADSENSE_PUB_ID);
   console.log(`\nDone! Verify at: ${WP_URL}/ads.txt`);
 }

@@ -12,48 +12,51 @@ export class LinkedInService {
   }
 
   /**
-   * Share a blog post to LinkedIn as UGC Post with professional formatting.
-   * Uses LinkedIn Marketing API v2 UGC Posts endpoint.
+   * Share a blog post to LinkedIn using the Posts API (v202501+).
+   * Migrated from deprecated ugcPosts endpoint (removed 2024).
    */
   async promoteBlogPost(title: string, excerpt: string, url: string, imageUrl?: string): Promise<string | null> {
     const utmUrl = buildUtmUrl(url, 'linkedin', 'social', extractSlugFromUrl(url));
     const commentary = this.buildProfessionalCommentary(title, excerpt, utmUrl);
 
-    const shareContent: Record<string, unknown> = {
+    const postBody: Record<string, unknown> = {
       author: `urn:li:person:${this.personId}`,
-      lifecycleState: 'PUBLISHED',
-      specificContent: {
-        'com.linkedin.ugc.ShareContent': {
-          shareCommentary: { text: commentary },
-          shareMediaCategory: 'ARTICLE',
-          media: [
-            {
-              status: 'READY',
-              originalUrl: utmUrl,
-              title: { text: title },
-              description: { text: excerpt.split('.')[0].trim() },
-              ...(imageUrl ? { thumbnails: [{ url: imageUrl }] } : {}),
-            },
-          ],
+      commentary,
+      visibility: 'PUBLIC',
+      distribution: {
+        feedDistribution: 'MAIN_FEED',
+        targetEntities: [],
+        thirdPartyDistributionChannels: [],
+      },
+      content: {
+        article: {
+          source: utmUrl,
+          title,
+          description: excerpt.split('.')[0].trim(),
+          ...(imageUrl ? { thumbnail: imageUrl } : {}),
         },
       },
-      visibility: { 'com.linkedin.ugc.MemberNetworkVisibility': 'PUBLIC' },
+      lifecycleState: 'PUBLISHED',
+      isReshareDisabledByAuthor: false,
     };
 
     try {
       const { data } = await axios.post(
-        'https://api.linkedin.com/v2/ugcPosts',
-        shareContent,
+        'https://api.linkedin.com/v2/posts',
+        postBody,
         {
           headers: {
             Authorization: `Bearer ${this.accessToken}`,
             'Content-Type': 'application/json',
+            'LinkedIn-Version': '202501',
             'X-Restli-Protocol-Version': '2.0.0',
           },
           timeout: 15000,
         },
       );
-      const postId = (data as { id?: string }).id || 'unknown';
+      // Posts API returns the post URN in the x-linkedin-id header; body may be empty
+      const postId = (data as { id?: string }).id
+        || 'unknown';
       logger.info(`LinkedIn post shared (id: ${postId}): "${title}"`);
       return postId;
     } catch (error) {

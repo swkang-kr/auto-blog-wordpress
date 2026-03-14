@@ -438,8 +438,9 @@ export class WordPressService {
             return { ...link, ok: true };
           } catch (headErr) {
             if (axios.isAxiosError(headErr) && !headErr.response) {
-              this.cacheDomainValidation(link.url, true);
-              return { ...link, ok: true }; // Timeout = likely valid
+              // Network timeout or connection refused — don't cache (unknown), preserve link
+              logger.debug(`External link HEAD check timed out (preserved): ${link.url}`);
+              return { ...link, ok: true };
             }
             try {
               await axios.get(link.url, { timeout: 3000, maxRedirects: 3, headers: { Range: 'bytes=0-0' } });
@@ -450,7 +451,8 @@ export class WordPressService {
                 this.cacheDomainValidation(link.url, false);
                 return { ...link, ok: false };
               }
-              this.cacheDomainValidation(link.url, true);
+              // No response on GET fallback either — don't cache, preserve link
+              logger.debug(`External link GET check timed out (preserved): ${link.url}`);
               return { ...link, ok: true };
             }
           }

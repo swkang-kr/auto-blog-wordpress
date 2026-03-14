@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { logger } from '../utils/logger.js';
-import { buildUtmUrl, extractSlugFromUrl, type UtmParams } from '../utils/utm.js';
+import { buildUtmUrl, extractSlugFromUrl, resolvePostUrl, type UtmParams } from '../utils/utm.js';
 import type { BlogContent, PublishedPost } from '../types/index.js';
 
-const GRAPH_API = 'https://graph.facebook.com/v21.0';
+const GRAPH_API_VERSION = process.env.FACEBOOK_GRAPH_API_VERSION || 'v22.0';
+const GRAPH_API = `https://graph.facebook.com/${GRAPH_API_VERSION}`;
 
 export class FacebookService {
   constructor(
@@ -14,8 +15,9 @@ export class FacebookService {
   /** Post blog article to Facebook Page with link preview + caption */
   async promoteBlogPost(content: BlogContent, post: PublishedPost): Promise<string | null> {
     // Resolve pretty permalink — ?p=ID URLs are not publicly accessible (scheduled posts)
-    const resolvedUrl = this.resolveUrl(post);
-    if (!resolvedUrl) {
+    const resolvedUrl = resolvePostUrl(post);
+    const isUnresolved = resolvedUrl.includes('?p=') || resolvedUrl.includes('&p=');
+    if (isUnresolved) {
       logger.warn(`Facebook: skipping post ${post.postId} — cannot resolve pretty URL (post may be scheduled)`);
       return null;
     }
@@ -62,14 +64,6 @@ export class FacebookService {
     ].join(' ');
 
     return `${emoji} ${content.title}\n\n${content.excerpt || ''}\n\n🔗 ${url}\n\n${hashtags}`;
-  }
-
-  /** Resolve post URL — if ?p=ID format, reconstruct from slug */
-  private resolveUrl(post: PublishedPost): string | null {
-    if (!post.url.includes('?p=') && !post.url.includes('&p=')) return post.url;
-    // ?p=ID means post is scheduled/not yet published with pretty permalink
-    if (post.slug) return `${new URL(post.url).origin}/${post.slug}/`;
-    return null;
   }
 
   private nicheEmoji(category: string): string {

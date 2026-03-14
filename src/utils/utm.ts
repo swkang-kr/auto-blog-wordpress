@@ -47,6 +47,18 @@ export function buildUtmUrl(
   }
 }
 
+/**
+ * Resolve a WordPress post URL to a pretty permalink.
+ * Scheduled posts return ?p=ID URLs — reconstruct from slug when available.
+ */
+export function resolvePostUrl(post: { url: string; slug?: string }): string {
+  if (!post.url.includes('?p=') && !post.url.includes('&p=')) return post.url;
+  if (post.slug) {
+    try { return `${new URL(post.url).origin}/${post.slug}/`; } catch { /* fall through */ }
+  }
+  return post.url;
+}
+
 /** Extract a slug from a URL path for use as campaign name */
 export function extractSlugFromUrl(url: string): string {
   try {

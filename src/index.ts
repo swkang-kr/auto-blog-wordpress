@@ -32,17 +32,7 @@ import { RedditPostService } from './services/reddit-post.service.js';
 import { AdSenseApiService } from './services/adsense-api.service.js';
 import type { PostResult, BatchResult, MediaUploadResult } from './types/index.js';
 import { CATEGORY_PUBLISH_TIMING } from './types/index.js';
-
-/** Extract data points from HTML content for infographic generation */
-/** Resolve a PublishedPost URL to a pretty permalink.
- * WordPress returns ?p=ID for scheduled posts — reconstruct from slug when needed. */
-function resolvePostUrl(post: import('./types/index.js').PublishedPost): string {
-  if (!post.url.includes('?p=') && !post.url.includes('&p=')) return post.url;
-  if (post.slug) {
-    try { return `${new URL(post.url).origin}/${post.slug}/`; } catch { /* fall through */ }
-  }
-  return post.url;
-}
+import { resolvePostUrl } from './utils/utm.js';
 
 function extractDataPoints(html: string): Array<{ label: string; value: string }> {
   const points: Array<{ label: string; value: string }> = [];
@@ -235,188 +225,71 @@ async function main(): Promise<void> {
     logger.warn(`Permalink setup failed: ${error instanceof Error ? error.message : error}`);
   }
 
-  // 2.7. Ensure search engine verification meta tags + GA4
-  try {
-    await seoService.ensureHeaderScripts({
+  // 2.7–2.10d. Install all independent SEO/PHP snippets in parallel (was 20+ sequential API calls)
+  logger.info('Installing SEO snippets in parallel...');
+  const snippetTasks: Array<Promise<unknown>> = [
+    seoService.ensureHeaderScripts({
       googleCode: config.GOOGLE_SITE_VERIFICATION,
       naverCode: config.NAVER_SITE_VERIFICATION,
       gaMeasurementId: config.GA_MEASUREMENT_ID,
       adsensePubId: config.ADSENSE_PUB_ID || undefined,
       clarityProjectId: config.CLARITY_PROJECT_ID || undefined,
-    });
-  } catch (error) {
-    logger.warn(`SEO/GA setup failed: ${error instanceof Error ? error.message : error}`);
+    }),
+    seoService.ensureAdSensePaddingSnippet(),
+    seoService.ensureNoindexThinPagesSnippet(),
+    seoService.ensureJsonLdSnippet(),
+    seoService.ensureDarkModeSnippet(),
+    seoService.ensureRssFeedOptimization(),
+    seoService.ensureImageSitemapSnippet(),
+    seoService.ensureSitemapPrioritySnippet(),
+    seoService.ensureNewsSitemapSnippet(),
+    seoService.ensureVideoSitemapSnippet(),
+    seoService.ensurePostCssSnippet(),
+    seoService.ensureIndexNowKeySnippet(),
+    seoService.ensurePostCanonicalFallbackSnippet(),
+    seoService.ensureCookieConsentSnippet(),
+    seoService.ensureSiteSchemaSnippet(config.SITE_NAME, config.SITE_OWNER, {
+      linkedin: config.AUTHOR_LINKEDIN,
+      twitter: config.AUTHOR_TWITTER,
+      website: config.AUTHOR_WEBSITE,
+    }),
+    seoService.ensureNavigationMenu(nicheCategories),
+    seoService.ensureStickyAdsSnippet(),
+    seoService.ensureExitIntentSnippet(config.NEWSLETTER_FORM_URL),
+    seoService.ensureCwvAutoFixSnippet(),
+    seoService.ensureCriticalCssSnippet(),
+    // Conditional tasks
+    ...(config.ADSENSE_PUB_ID ? [seoService.ensureAdsTxtSnippet(config.ADSENSE_PUB_ID)] : []),
+    ...(config.CLOUDFLARE_API_TOKEN && config.CLOUDFLARE_ZONE_ID
+      ? [seoService.ensureCacheHeaders(config.CLOUDFLARE_API_TOKEN, config.CLOUDFLARE_ZONE_ID)]
+      : []),
+  ];
+  const snippetResults = await Promise.allSettled(snippetTasks);
+  const snippetFailures = snippetResults.filter((r) => r.status === 'rejected');
+  if (snippetFailures.length > 0) {
+    logger.warn(`${snippetFailures.length}/${snippetTasks.length} SEO snippet tasks failed (non-critical)`);
+  } else {
+    logger.info(`All ${snippetTasks.length} SEO snippets installed successfully`);
   }
 
-  // 2.7b. Ensure ads.txt is served for Google AdSense verification
-  if (config.ADSENSE_PUB_ID) {
-    try {
-      await seoService.ensureAdsTxtSnippet(config.ADSENSE_PUB_ID);
-    } catch (error) {
-      logger.warn(`ads.txt snippet setup failed: ${error instanceof Error ? error.message : error}`);
-    }
-  }
-
-  // 2.8. Ensure mobile AdSense padding (prevent bottom banner covering navigation)
-  try {
-    await seoService.ensureAdSensePaddingSnippet();
-  } catch (error) {
-    logger.warn(`AdSense padding snippet setup failed: ${error instanceof Error ? error.message : error}`);
-  }
-
-  // 2.8b. Ensure thin archive pages are noindexed
-  try {
-    await seoService.ensureNoindexThinPagesSnippet();
-  } catch (error) {
-    logger.warn(`Noindex thin pages snippet setup failed: ${error instanceof Error ? error.message : error}`);
-  }
-
-  // 2.9a. Ensure JSON-LD wp_head snippet is installed
-  try {
-    await seoService.ensureJsonLdSnippet();
-  } catch (error) {
-    logger.warn(`JSON-LD snippet setup failed: ${error instanceof Error ? error.message : error}`);
-  }
-
-  // 2.9b. Ensure dark mode CSS snippet is installed (server-side, not inline)
-  try {
-    await seoService.ensureDarkModeSnippet();
-  } catch (error) {
-    logger.warn(`Dark mode snippet setup failed: ${error instanceof Error ? error.message : error}`);
-  }
-
-  // 2.8c. Ensure RSS feed optimization (full content, featured images)
-  try {
-    await seoService.ensureRssFeedOptimization();
-  } catch (error) {
-    logger.warn(`RSS feed optimization failed: ${error instanceof Error ? error.message : error}`);
-  }
-
-  // 2.8d. Ensure image sitemap enhancement
-  try {
-    await seoService.ensureImageSitemapSnippet();
-  } catch (error) {
-    logger.warn(`Image sitemap setup failed: ${error instanceof Error ? error.message : error}`);
-  }
-
-  // 2.8e. Ensure sitemap priority by content freshness class
-  try {
-    await seoService.ensureSitemapPrioritySnippet();
-  } catch (error) {
-    logger.warn(`Sitemap priority setup failed: ${error instanceof Error ? error.message : error}`);
-  }
-
-  // 2.8g. Ensure News Sitemap for news-explainer content (Google News eligibility)
-  try {
-    await seoService.ensureNewsSitemapSnippet();
-  } catch (error) {
-    logger.warn(`News sitemap setup failed: ${error instanceof Error ? error.message : error}`);
-  }
-
-  // 2.8h. Ensure Video Sitemap for YouTube embeds (Google Video carousel)
-  try {
-    await seoService.ensureVideoSitemapSnippet();
-  } catch (error) {
-    logger.warn(`Video sitemap setup failed: ${error instanceof Error ? error.message : error}`);
-  }
-
-  // 2.8f. Ensure post content CSS snippet is installed site-wide
+  // Post-CSS snippet status check (depends on ensurePostCssSnippet completing above)
   let postCssSnippetActive = false;
   try {
-    await seoService.ensurePostCssSnippet();
     postCssSnippetActive = await seoService.isPostCssSnippetActive();
     if (postCssSnippetActive) {
       logger.info('Post CSS loaded via site-wide snippet (inline CSS disabled)');
     }
   } catch (error) {
-    logger.warn(`Post CSS snippet setup failed: ${error instanceof Error ? error.message : error}`);
+    logger.warn(`Post CSS status check failed: ${error instanceof Error ? error.message : error}`);
   }
 
-  // 2.9. Ensure IndexNow key file is served (for Naver Search Advisor)
-  try {
-    await seoService.ensureIndexNowKeySnippet();
-  } catch (error) {
-    logger.warn(`IndexNow key snippet setup failed: ${error instanceof Error ? error.message : error}`);
-  }
-
-  // 2.9c. Hreflang snippet removed — English-only publishing
-
-  // 2.9c2. Ensure canonical URL fallback when Rank Math is inactive
-  try {
-    await seoService.ensurePostCanonicalFallbackSnippet();
-  } catch (error) {
-    logger.warn(`Canonical fallback snippet setup failed: ${error instanceof Error ? error.message : error}`);
-  }
-
-  // 2.9c3. Ensure GDPR cookie consent banner (Google Consent Mode v2)
-  try {
-    await seoService.ensureCookieConsentSnippet();
-  } catch (error) {
-    logger.warn(`Cookie consent snippet setup failed: ${error instanceof Error ? error.message : error}`);
-  }
-
-  // 2.9d. Ensure WebSite + Organization JSON-LD schemas (Sitelinks Searchbox + Knowledge Panel)
-  try {
-    await seoService.ensureSiteSchemaSnippet(config.SITE_NAME, config.SITE_OWNER, {
-      linkedin: config.AUTHOR_LINKEDIN,
-      twitter: config.AUTHOR_TWITTER,
-      website: config.AUTHOR_WEBSITE,
-    });
-  } catch (error) {
-    logger.warn(`Site schema snippet setup failed: ${error instanceof Error ? error.message : error}`);
-  }
-
-  // 2.10. Ensure navigation menu matches niche categories
-  try {
-    await seoService.ensureNavigationMenu(nicheCategories);
-  } catch (error) {
-    logger.warn(`Navigation menu setup failed: ${error instanceof Error ? error.message : error}`);
-  }
-
-  // 2.10a2. Ensure CDN/Edge caching headers (Cloudflare)
-  if (config.CLOUDFLARE_API_TOKEN && config.CLOUDFLARE_ZONE_ID) {
-    try {
-      await seoService.ensureCacheHeaders(config.CLOUDFLARE_API_TOKEN, config.CLOUDFLARE_ZONE_ID);
-    } catch (error) {
-      logger.warn(`CDN cache setup failed: ${error instanceof Error ? error.message : error}`);
-    }
-  }
-
-  // 2.10b. Ensure comment settings + spam cleanup
+  // Comment settings + spam cleanup (sequential — interdependent)
   try {
     await seoService.ensureCommentSettings();
     await seoService.cleanupSpamComments();
     await seoService.ensureCommentEngagementSnippet();
   } catch (error) {
     logger.warn(`Comment settings/cleanup failed: ${error instanceof Error ? error.message : error}`);
-  }
-
-  // 2.10b2. Ensure sticky sidebar + anchor ad placements
-  try {
-    await seoService.ensureStickyAdsSnippet();
-  } catch (error) {
-    logger.warn(`Sticky ads snippet setup failed: ${error instanceof Error ? error.message : error}`);
-  }
-
-  // 2.10b3. Ensure exit-intent lead magnet popup
-  try {
-    await seoService.ensureExitIntentSnippet(config.NEWSLETTER_FORM_URL);
-  } catch (error) {
-    logger.warn(`Exit-intent snippet setup failed: ${error instanceof Error ? error.message : error}`);
-  }
-
-  // 2.10c. Ensure CWV auto-fix snippet (LCP preload, CLS dimension forcing, prefetch)
-  try {
-    await seoService.ensureCwvAutoFixSnippet();
-  } catch (error) {
-    logger.warn(`CWV auto-fix snippet setup failed: ${error instanceof Error ? error.message : error}`);
-  }
-
-  // 2.10d. Ensure critical CSS inlining snippet (FCP/LCP optimization)
-  try {
-    await seoService.ensureCriticalCssSnippet();
-  } catch (error) {
-    logger.warn(`Critical CSS snippet setup failed: ${error instanceof Error ? error.message : error}`);
   }
 
   // 2.11. Check robots.txt + WordPress indexing settings + sitemap

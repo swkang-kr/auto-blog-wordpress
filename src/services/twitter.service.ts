@@ -1,6 +1,6 @@
 import { TwitterApi } from 'twitter-api-v2';
 import { logger } from '../utils/logger.js';
-import { buildUtmUrl, extractSlugFromUrl, type UtmParams } from '../utils/utm.js';
+import { buildUtmUrl, extractSlugFromUrl, resolvePostUrl, type UtmParams } from '../utils/utm.js';
 import type { BlogContent, PublishedPost } from '../types/index.js';
 
 export class TwitterService {
@@ -19,9 +19,7 @@ export class TwitterService {
    * Returns the first tweet ID for engagement tracking, or null on failure. */
   async promoteBlogPost(content: BlogContent, post: PublishedPost): Promise<string | null> {
     // Resolve pretty permalink — ?p=ID URLs are for scheduled posts and not publicly accessible
-    const resolvedUrl = post.url.includes('?p=') && post.slug
-      ? `${new URL(post.url).origin}/${post.slug}/`
-      : post.url;
+    const resolvedUrl = resolvePostUrl(post);
     const slug = extractSlugFromUrl(resolvedUrl);
     const ctaVariant = this.pickCtaVariant();
     const utmParams: UtmParams = {

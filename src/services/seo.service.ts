@@ -53,6 +53,28 @@ export class SeoService {
   }
 
   /**
+   * Upsert a Code Snippets plugin PHP snippet (create if not exists, skip if already installed).
+   * Returns true if the snippet is now active (installed or already existed), false on error.
+   */
+  private async upsertCodeSnippet(name: string, code: string): Promise<boolean> {
+    const headers = this.api.defaults.headers as Record<string, string>;
+    const snippetsUrl = `${this.wpUrl}/wp-json/code-snippets/v1/snippets`;
+    try {
+      const { data: snippets } = await axios.get(snippetsUrl, { headers, timeout: 30000 });
+      const existing = (snippets as Array<{ id: number; name: string }>).find((s) => s.name === name);
+      if (existing) {
+        logger.debug(`Code snippet already installed (ID=${existing.id}): "${name}"`);
+        return true;
+      }
+      await axios.post(snippetsUrl, { name, code, scope: 'global', active: true, priority: 10 }, { headers, timeout: 30000 });
+      logger.info(`Code snippet installed: "${name}"`);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  /**
    * Set WordPress site title and tagline to reflect niche focus.
    */
   async ensureSiteTitle(siteName: string, categories: string[]): Promise<void> {
@@ -200,13 +222,6 @@ export class SeoService {
    * When hreflang_ko meta is set, also outputs Korean alternate link.
    */
   async ensureHreflangSnippet(): Promise<void> {
-    const snippetsApi = axios.create({
-      baseURL: `${this.wpUrl}/wp-json/wp/v2`,
-      headers: this.api.defaults.headers as Record<string, string>,
-      timeout: 30000,
-    });
-
-    // The PHP code that will run on the WordPress site
     const phpCode = `
 // Register hreflang post meta for REST API
 add_action('init', function() {
@@ -235,46 +250,15 @@ add_action('wp_head', function() {
     }
 });`.trim();
 
-    // Try Code Snippets plugin REST API first
-    try {
-      const { data: snippets } = await snippetsApi.get(
-        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`.replace(snippetsApi.defaults.baseURL || '', ''),
-        { baseURL: this.wpUrl },
-      );
-      const existing = (snippets as Array<{ id: number; name: string }>)
-        .find((s) => s.name === HREFLANG_SNIPPET_TITLE);
-      if (existing) {
-        logger.info(`hreflang snippet already exists (ID=${existing.id}), skipping`);
-        return;
-      }
-
-      await axios.post(
-        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
-        {
-          name: HREFLANG_SNIPPET_TITLE,
-          code: phpCode,
-          scope: 'global',
-          active: true,
-          priority: 10,
-        },
-        {
-          headers: this.api.defaults.headers as Record<string, string>,
-          timeout: 30000,
-        },
-      );
-      logger.info('hreflang PHP snippet installed via Code Snippets plugin');
-      return;
-    } catch {
-      logger.debug('Code Snippets plugin API not available, trying mu-plugins fallback');
+    const installed = await this.upsertCodeSnippet(HREFLANG_SNIPPET_TITLE, phpCode);
+    if (!installed) {
+      logger.warn('=== hreflang Snippet Manual Setup Required ===');
+      logger.warn('Install the "Code Snippets" plugin, then add the following PHP snippet:');
+      logger.warn(`Title: ${HREFLANG_SNIPPET_TITLE}`);
+      logger.warn(phpCode);
+      logger.warn('Or add it to your theme functions.php');
+      logger.warn('============================================');
     }
-
-    // Fallback: create as mu-plugin via WordPress filesystem (manual instruction)
-    logger.warn('=== hreflang Snippet Manual Setup Required ===');
-    logger.warn('Install the "Code Snippets" plugin, then add the following PHP snippet:');
-    logger.warn(`Title: ${HREFLANG_SNIPPET_TITLE}`);
-    logger.warn(phpCode);
-    logger.warn('Or add it to your theme functions.php');
-    logger.warn('============================================');
   }
 
   /**
@@ -293,39 +277,9 @@ add_action('wp_head', function() {
 </style>';
 });`.trim();
 
-    try {
-      const { data: snippets } = await axios.get(
-        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
-        {
-          headers: this.api.defaults.headers as Record<string, string>,
-          timeout: 30000,
-        },
-      );
-      const existing = (snippets as Array<{ id: number; name: string }>)
-        .find((s) => s.name === ADSENSE_PADDING_SNIPPET_TITLE);
-      if (existing) {
-        logger.info(`AdSense padding snippet already exists (ID=${existing.id}), skipping`);
-        return;
-      }
-
-      await axios.post(
-        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
-        {
-          name: ADSENSE_PADDING_SNIPPET_TITLE,
-          code: phpCode,
-          scope: 'global',
-          active: true,
-          priority: 10,
-        },
-        {
-          headers: this.api.defaults.headers as Record<string, string>,
-          timeout: 30000,
-        },
-      );
-      logger.info('AdSense mobile padding snippet installed via Code Snippets plugin');
-    } catch (error) {
-      const msg = error instanceof Error ? error.message : String(error);
-      logger.warn(`Failed to install AdSense padding snippet: ${msg}`);
+    const installed = await this.upsertCodeSnippet(ADSENSE_PADDING_SNIPPET_TITLE, phpCode);
+    if (!installed) {
+      logger.warn('Failed to install AdSense padding snippet via Code Snippets plugin');
       logger.warn('Manually add CSS: @media (max-width:768px) { body { padding-bottom:70px !important; } }');
     }
   }
@@ -389,26 +343,9 @@ add_action('wp_footer', function() {
     </div>';
 });`.trim();
 
-    try {
-      const { data: snippets } = await axios.get(
-        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
-        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-      );
-      const existing = (snippets as Array<{ id: number; name: string }>)
-        .find((s) => s.name === STICKY_ADS_SNIPPET_TITLE);
-      if (existing) {
-        logger.info(`Sticky ads snippet already exists (ID=${existing.id}), skipping`);
-        return;
-      }
-
-      await axios.post(
-        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
-        { name: STICKY_ADS_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 10 },
-        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-      );
-      logger.info('Sticky sidebar & anchor ad snippet installed');
-    } catch (error) {
-      logger.warn(`Sticky ads snippet setup failed: ${error instanceof Error ? error.message : error}`);
+    const installed = await this.upsertCodeSnippet(STICKY_ADS_SNIPPET_TITLE, phpCode);
+    if (!installed) {
+      logger.warn(`Sticky ads snippet setup failed`);
     }
   }
 
@@ -450,30 +387,9 @@ add_action('wp_footer', function() {
     <?php
 });`.trim();
 
-    try {
-      const { data: snippets } = await axios.get(
-        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
-        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-      );
-      const existing = (snippets as Array<{ id: number; name: string }>)
-        .find((s) => s.name === EXIT_INTENT_SNIPPET_TITLE);
-      if (existing) {
-        await axios.put(
-          `${this.wpUrl}/wp-json/code-snippets/v1/snippets/${existing.id}`,
-          { code: phpCode, active: true },
-          { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-        );
-        logger.info(`Exit-intent snippet updated (ID=${existing.id})`);
-        return;
-      }
-      await axios.post(
-        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
-        { name: EXIT_INTENT_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 10 },
-        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-      );
-      logger.info('Exit-intent lead magnet popup snippet installed');
-    } catch (error) {
-      logger.warn(`Exit-intent snippet setup failed: ${error instanceof Error ? error.message : error}`);
+    const installed = await this.upsertCodeSnippet(EXIT_INTENT_SNIPPET_TITLE, phpCode);
+    if (!installed) {
+      logger.warn(`Exit-intent snippet setup failed`);
     }
   }
 
@@ -553,33 +469,9 @@ add_action('init', function() {
     }
 });`.trim();
 
-    try {
-      const { data: snippets } = await axios.get(
-        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
-        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-      );
-      const existing = (snippets as Array<{ id: number; name: string }>)
-        .find((s) => s.name === JSONLD_SNIPPET_TITLE);
-
-      if (existing) {
-        await axios.put(
-          `${this.wpUrl}/wp-json/code-snippets/v1/snippets/${existing.id}`,
-          { code: phpCode, active: true },
-          { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-        );
-        logger.info(`JSON-LD snippet updated (ID=${existing.id})`);
-        return;
-      }
-
-      await axios.post(
-        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
-        { name: JSONLD_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 5 },
-        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-      );
-      logger.info('JSON-LD wp_head snippet installed via Code Snippets plugin');
-    } catch (error) {
-      const msg = error instanceof Error ? error.message : String(error);
-      logger.warn(`Failed to install JSON-LD snippet: ${msg}`);
+    const installed = await this.upsertCodeSnippet(JSONLD_SNIPPET_TITLE, phpCode);
+    if (!installed) {
+      logger.warn(`Failed to install JSON-LD snippet`);
     }
   }
 
@@ -602,28 +494,9 @@ add_action('init', function() {
     }
 });`.trim();
 
-    try {
-      const { data: snippets } = await axios.get(
-        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
-        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-      );
-      const existing = (snippets as Array<{ id: number; name: string }>)
-        .find((s) => s.name === INDEXNOW_SNIPPET_TITLE);
-
-      if (existing) {
-        logger.debug(`IndexNow key snippet already exists (ID=${existing.id}), skipping`);
-        return;
-      }
-
-      await axios.post(
-        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
-        { name: INDEXNOW_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 1 },
-        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-      );
-      logger.info(`IndexNow key snippet installed (key=${key})`);
-    } catch (error) {
-      const msg = error instanceof Error ? error.message : String(error);
-      logger.warn(`Failed to install IndexNow key snippet: ${msg}`);
+    const installed = await this.upsertCodeSnippet(INDEXNOW_SNIPPET_TITLE, phpCode);
+    if (!installed) {
+      logger.warn(`Failed to install IndexNow key snippet`);
     }
   }
 
@@ -889,34 +762,9 @@ add_action('init', function() {
     }
 });`.trim();
 
-    try {
-      const { data: snippets } = await axios.get(
-        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
-        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-      );
-      const existing = (snippets as Array<{ id: number; name: string }>)
-        .find((s) => s.name === RANKMATH_REST_SNIPPET_TITLE);
-
-      if (existing) {
-        // Update existing snippet with latest code
-        await axios.put(
-          `${this.wpUrl}/wp-json/code-snippets/v1/snippets/${existing.id}`,
-          { code: phpCode, active: true },
-          { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-        );
-        logger.info(`Rank Math REST snippet updated (ID=${existing.id})`);
-        return;
-      }
-
-      await axios.post(
-        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
-        { name: RANKMATH_REST_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 5 },
-        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-      );
-      logger.info('Rank Math REST meta snippet installed via Code Snippets plugin');
-    } catch (error) {
-      const msg = error instanceof Error ? error.message : String(error);
-      logger.warn(`Failed to install Rank Math REST snippet: ${msg}`);
+    const installed = await this.upsertCodeSnippet(RANKMATH_REST_SNIPPET_TITLE, phpCode);
+    if (!installed) {
+      logger.warn(`Failed to install Rank Math REST snippet`);
       logger.warn('Manually add via Code Snippets plugin with title: ' + RANKMATH_REST_SNIPPET_TITLE);
     }
   }
@@ -937,33 +785,9 @@ add_action('wp_head', function() {
     echo '<link rel="canonical" href="' . esc_url($canonical) . '" />' . "\\n";
 }, 1);`.trim();
 
-    try {
-      const { data: snippets } = await axios.get(
-        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
-        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-      );
-      const existing = (snippets as Array<{ id: number; name: string }>)
-        .find((s) => s.name === POST_CANONICAL_FALLBACK_SNIPPET_TITLE);
-
-      if (existing) {
-        await axios.put(
-          `${this.wpUrl}/wp-json/code-snippets/v1/snippets/${existing.id}`,
-          { code: phpCode, active: true },
-          { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-        );
-        logger.info(`Canonical fallback snippet updated (ID=${existing.id})`);
-        return;
-      }
-
-      await axios.post(
-        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
-        { name: POST_CANONICAL_FALLBACK_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 3 },
-        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-      );
-      logger.info('Canonical fallback snippet installed via Code Snippets plugin');
-    } catch (error) {
-      const msg = error instanceof Error ? error.message : String(error);
-      logger.warn(`Failed to install canonical fallback snippet: ${msg}`);
+    const installed = await this.upsertCodeSnippet(POST_CANONICAL_FALLBACK_SNIPPET_TITLE, phpCode);
+    if (!installed) {
+      logger.warn(`Failed to install canonical fallback snippet`);
     }
   }
 
@@ -997,33 +821,9 @@ add_action('init', function() {
     }
 });`.trim();
 
-    try {
-      const { data: snippets } = await axios.get(
-        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
-        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-      );
-      const existing = (snippets as Array<{ id: number; name: string }>)
-        .find((s) => s.name === ADS_TXT_SNIPPET_TITLE);
-
-      if (existing) {
-        await axios.put(
-          `${this.wpUrl}/wp-json/code-snippets/v1/snippets/${existing.id}`,
-          { code: phpCode, active: true },
-          { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-        );
-        logger.info(`ads.txt snippet updated (ID=${existing.id}) for ${pubId}`);
-        return;
-      }
-
-      await axios.post(
-        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
-        { name: ADS_TXT_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 1 },
-        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-      );
-      logger.info(`ads.txt snippet installed for ${pubId}`);
-    } catch (error) {
-      const msg = error instanceof Error ? error.message : String(error);
-      logger.warn(`Failed to install ads.txt snippet: ${msg}`);
+    const installed = await this.upsertCodeSnippet(ADS_TXT_SNIPPET_TITLE, phpCode);
+    if (!installed) {
+      logger.warn(`Failed to install ads.txt snippet`);
     }
   }
 
@@ -1091,33 +891,9 @@ add_action('wp_footer', function() {
 <?php
 });`.trim();
 
-    try {
-      const { data: snippets } = await axios.get(
-        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
-        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-      );
-      const existing = (snippets as Array<{ id: number; name: string }>)
-        .find((s) => s.name === COOKIE_CONSENT_SNIPPET_TITLE);
-
-      if (existing) {
-        await axios.put(
-          `${this.wpUrl}/wp-json/code-snippets/v1/snippets/${existing.id}`,
-          { code: phpCode, active: true },
-          { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-        );
-        logger.info(`Cookie consent snippet updated (ID=${existing.id})`);
-        return;
-      }
-
-      await axios.post(
-        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
-        { name: COOKIE_CONSENT_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 10 },
-        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-      );
-      logger.info('Cookie consent snippet installed via Code Snippets plugin');
-    } catch (error) {
-      const msg = error instanceof Error ? error.message : String(error);
-      logger.warn(`Failed to install cookie consent snippet: ${msg}`);
+    const installed = await this.upsertCodeSnippet(COOKIE_CONSENT_SNIPPET_TITLE, phpCode);
+    if (!installed) {
+      logger.warn(`Failed to install cookie consent snippet`);
     }
   }
 
@@ -1421,35 +1197,12 @@ input[type="submit"],.comment-form .submit{background:#5b8def!important;color:#f
 </style>';
 });`.trim();
 
-    try {
-      const { data: snippets } = await axios.get(
-        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
-        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-      );
-      const existing = (snippets as Array<{ id: number; name: string }>)
-        .find((s) => s.name === DARKMODE_SNIPPET_TITLE);
-
-      if (existing) {
-        await axios.put(
-          `${this.wpUrl}/wp-json/code-snippets/v1/snippets/${existing.id}`,
-          { code: phpCode, active: true },
-          { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-        );
-        logger.info(`Dark mode snippet updated (ID=${existing.id})`);
-        return;
-      }
-
-      await axios.post(
-        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
-        { name: DARKMODE_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 10 },
-        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-      );
-      logger.info('Dark mode CSS snippet installed via Code Snippets plugin');
-    } catch (error) {
-      const msg = error instanceof Error ? error.message : String(error);
-      logger.warn(`Failed to install dark mode snippet: ${msg}`);
+    const installed = await this.upsertCodeSnippet(DARKMODE_SNIPPET_TITLE, phpCode);
+    if (!installed) {
+      logger.warn(`Failed to install dark mode snippet`);
     }
   }
+
 
   /**
    * Ensure thin archive pages (tag, author, date) have noindex meta tag.
@@ -1500,34 +1253,9 @@ add_action('wp_head', function() {
     // Stale content management is now handled by content-refresh.service.ts pruning logic only
 });`.trim();
 
-    try {
-      const { data: snippets } = await axios.get(
-        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
-        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-      );
-      const existing = (snippets as Array<{ id: number; name: string }>)
-        .find((s) => s.name === NOINDEX_THIN_SNIPPET_TITLE);
-
-      if (existing) {
-        // Update existing snippet with latest code (includes category noindex)
-        await axios.put(
-          `${this.wpUrl}/wp-json/code-snippets/v1/snippets/${existing.id}`,
-          { code: phpCode, active: true },
-          { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-        );
-        logger.info(`Noindex thin pages snippet updated (ID=${existing.id})`);
-        return;
-      }
-
-      await axios.post(
-        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
-        { name: NOINDEX_THIN_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 5 },
-        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-      );
-      logger.info('Noindex thin pages snippet installed via Code Snippets plugin');
-    } catch (error) {
-      const msg = error instanceof Error ? error.message : String(error);
-      logger.warn(`Failed to install noindex thin pages snippet: ${msg}`);
+    const installed = await this.upsertCodeSnippet(NOINDEX_THIN_SNIPPET_TITLE, phpCode);
+    if (!installed) {
+      logger.warn(`Failed to install noindex thin pages snippet`);
     }
   }
 
@@ -1579,33 +1307,9 @@ add_filter('rss2_ns', function() {
     echo 'xmlns:media="http://search.yahoo.com/mrss/" ';
 });`.trim();
 
-    try {
-      const { data: snippets } = await axios.get(
-        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
-        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-      );
-      const existing = (snippets as Array<{ id: number; name: string }>)
-        .find((s) => s.name === RSS_OPTIMIZATION_SNIPPET_TITLE);
-
-      if (existing) {
-        await axios.put(
-          `${this.wpUrl}/wp-json/code-snippets/v1/snippets/${existing.id}`,
-          { code: phpCode, active: true },
-          { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-        );
-        logger.info(`RSS optimization snippet updated (ID=${existing.id})`);
-        return;
-      }
-
-      await axios.post(
-        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
-        { name: RSS_OPTIMIZATION_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 10 },
-        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-      );
-      logger.info('RSS feed optimization snippet installed via Code Snippets plugin');
-    } catch (error) {
-      const msg = error instanceof Error ? error.message : String(error);
-      logger.warn(`Failed to install RSS optimization snippet: ${msg}`);
+    const installed = await this.upsertCodeSnippet(RSS_OPTIMIZATION_SNIPPET_TITLE, phpCode);
+    if (!installed) {
+      logger.warn(`Failed to install RSS optimization snippet`);
     }
   }
 
@@ -1658,33 +1362,9 @@ add_filter('wp_sitemaps_posts_entry', function(\$entry, \$post) {
     return \$entry;
 }, 10, 2);`.trim();
 
-    try {
-      const { data: snippets } = await axios.get(
-        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
-        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-      );
-      const existing = (snippets as Array<{ id: number; name: string }>)
-        .find((s) => s.name === IMAGE_SITEMAP_SNIPPET_TITLE);
-
-      if (existing) {
-        await axios.put(
-          `${this.wpUrl}/wp-json/code-snippets/v1/snippets/${existing.id}`,
-          { code: phpCode, active: true },
-          { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-        );
-        logger.info(`Image sitemap snippet updated (ID=${existing.id})`);
-        return;
-      }
-
-      await axios.post(
-        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
-        { name: IMAGE_SITEMAP_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 10 },
-        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-      );
-      logger.info('Image sitemap enhancement snippet installed via Code Snippets plugin');
-    } catch (error) {
-      const msg = error instanceof Error ? error.message : String(error);
-      logger.warn(`Failed to install image sitemap snippet: ${msg}`);
+    const installed = await this.upsertCodeSnippet(IMAGE_SITEMAP_SNIPPET_TITLE, phpCode);
+    if (!installed) {
+      logger.warn(`Failed to install image sitemap snippet`);
     }
   }
 
@@ -1759,33 +1439,9 @@ add_filter('wp_sitemaps_posts_entry', function(\$entry, \$post) {
     return \$entry;
 }, 10, 2);`.trim();
 
-    try {
-      const { data: snippets } = await axios.get(
-        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
-        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-      );
-      const existing = (snippets as Array<{ id: number; name: string }>)
-        .find((s) => s.name === SITEMAP_PRIORITY_SNIPPET_TITLE);
-
-      if (existing) {
-        await axios.put(
-          `${this.wpUrl}/wp-json/code-snippets/v1/snippets/${existing.id}`,
-          { code: phpCode, active: true },
-          { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-        );
-        logger.info(`Sitemap priority snippet updated (ID=${existing.id})`);
-        return;
-      }
-
-      await axios.post(
-        `${this.wpUrl}/wp-json/code-snippets/v1/snippets`,
-        { name: SITEMAP_PRIORITY_SNIPPET_TITLE, code: phpCode, scope: 'global', active: true, priority: 5 },
-        { headers: this.api.defaults.headers as Record<string, string>, timeout: 30000 },
-      );
-      logger.info('Sitemap priority snippet installed via Code Snippets plugin');
-    } catch (error) {
-      const msg = error instanceof Error ? error.message : String(error);
-      logger.warn(`Failed to install sitemap priority snippet: ${msg}`);
+    const installed = await this.upsertCodeSnippet(SITEMAP_PRIORITY_SNIPPET_TITLE, phpCode);
+    if (!installed) {
+      logger.warn(`Failed to install sitemap priority snippet`);
     }
   }
 
