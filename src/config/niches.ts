@@ -95,28 +95,27 @@ export const NICHES: NicheConfig[] = [
   // ── K-Entertainment Business (high engagement, viral potential) ──
   {
     id: 'k-entertainment-business',
-    name: 'K-Pop & K-Drama Business',
+    name: 'K-Pop & K-Drama',
     category: 'K-Entertainment',
     broadTerm: 'K-pop K-drama BTS BLACKPINK NewJeans',
     seedKeywords: [
       // BTS (global fanbase, high search volume)
-      'BTS military service impact on K-pop industry revenue',
-      'BTS solo albums ranking sales comparison 2026',
       'BTS reunion comeback what to expect timeline',
       'BTS members solo careers success comparison analysis',
-      // Multi-group (diversified, avoids BTS-only dependency)
+      'BTS solo albums ranking 2026 fan guide',
+      // Multi-group fan content
       'NewJeans vs BLACKPINK popularity comparison 2026',
-      'HYBE vs JYP vs SM which K-pop agency is winning 2026',
-      'Stray Kids world tour revenue and global fanbase growth',
-      'best K-pop albums 2026 ranked by sales and streaming',
+      'best K-pop groups to stan in 2026 ranked',
+      'best K-pop albums 2026 ranked by fans',
+      'Stray Kids world tour dates setlist 2026',
       // K-Drama (high search volume, Netflix audience)
       'best Korean dramas on Netflix 2026 must watch list',
-      'how Korean dramas conquered global streaming platforms',
+      'best K-drama of 2026 ranked by viewers',
       'K-drama actors who became global stars overnight',
-      // Industry explainers (evergreen, shareable)
-      'how does K-pop make money business model explained',
+      // Fan culture & entertainment
       'K-pop idol agency contracts explained for fans',
       'Korean webtoon apps for English readers complete guide',
+      'best K-pop reality shows to watch 2026',
     ],
     contentTypes: ['analysis', 'deep-dive', 'news-explainer', 'best-x-for-y', 'how-to', 'case-study', 'listicle', 'x-vs-y'],
     adSenseRpm: 'medium',
