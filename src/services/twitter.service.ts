@@ -18,7 +18,11 @@ export class TwitterService {
   /** Promote blog post as a 5-tweet thread (hook → insights → CTA) with A/B CTA variants.
    * Returns the first tweet ID for engagement tracking, or null on failure. */
   async promoteBlogPost(content: BlogContent, post: PublishedPost): Promise<string | null> {
-    const slug = extractSlugFromUrl(post.url);
+    // Resolve pretty permalink — ?p=ID URLs are for scheduled posts and not publicly accessible
+    const resolvedUrl = post.url.includes('?p=') && post.slug
+      ? `${new URL(post.url).origin}/${post.slug}/`
+      : post.url;
+    const slug = extractSlugFromUrl(resolvedUrl);
     const ctaVariant = this.pickCtaVariant();
     const utmParams: UtmParams = {
       source: 'twitter',
@@ -27,7 +31,7 @@ export class TwitterService {
       content: `thread-${ctaVariant.id}`,
       term: content.tags[0] || '',
     };
-    const utmUrl = buildUtmUrl(post.url, utmParams);
+    const utmUrl = buildUtmUrl(resolvedUrl, utmParams);
     const thread = this.buildThread(content, utmUrl, ctaVariant);
 
     try {

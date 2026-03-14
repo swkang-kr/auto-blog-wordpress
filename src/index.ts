@@ -34,6 +34,16 @@ import type { PostResult, BatchResult, MediaUploadResult } from './types/index.j
 import { CATEGORY_PUBLISH_TIMING } from './types/index.js';
 
 /** Extract data points from HTML content for infographic generation */
+/** Resolve a PublishedPost URL to a pretty permalink.
+ * WordPress returns ?p=ID for scheduled posts — reconstruct from slug when needed. */
+function resolvePostUrl(post: import('./types/index.js').PublishedPost): string {
+  if (!post.url.includes('?p=') && !post.url.includes('&p=')) return post.url;
+  if (post.slug) {
+    try { return `${new URL(post.url).origin}/${post.slug}/`; } catch { /* fall through */ }
+  }
+  return post.url;
+}
+
 function extractDataPoints(html: string): Array<{ label: string; value: string }> {
   const points: Array<{ label: string; value: string }> = [];
   // Match patterns like "X is Y%", "X: Y", "X reached Y" in text content
@@ -1798,7 +1808,7 @@ async function main(): Promise<void> {
             if (tweetId) await wpService.updatePostMeta(post.postId, { _autoblog_tweet_id: tweetId }).catch(() => {});
           }
           if (linkedinService) {
-            const linkedinPostId = await linkedinService.promoteBlogPost(content.title, content.excerpt, post.url, featuredMediaResult?.sourceUrl || undefined);
+            const linkedinPostId = await linkedinService.promoteBlogPost(content.title, content.excerpt, resolvePostUrl(post), featuredMediaResult?.sourceUrl || undefined);
             if (linkedinPostId) await wpService.updatePostMeta(post.postId, { _autoblog_linkedin_post_id: linkedinPostId }).catch(() => {});
           }
         }
