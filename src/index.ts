@@ -1700,6 +1700,12 @@ async function main(): Promise<void> {
         for (const pending of pendingSocial.slice(0, 3)) {
           const scheduledAt = pending.meta._autoblog_social_scheduled;
           if (!scheduledAt || new Date(scheduledAt).getTime() > Date.now()) continue;
+          // Skip if post URL is still ?p=ID (WordPress hasn't auto-published yet)
+          const socialResolvedUrl = resolvePostUrl(pending);
+          if (socialResolvedUrl.includes('?p=') || socialResolvedUrl.includes('&p=')) {
+            logger.debug(`Deferred social skip: post ${pending.postId} not yet published (future status)`);
+            continue;
+          }
 
           const platforms = (pending.meta._autoblog_social_platforms || '').split(',');
           try {
@@ -1723,7 +1729,8 @@ async function main(): Promise<void> {
             const scheduledAt = pending.meta._autoblog_linkedin_scheduled;
             if (!scheduledAt || new Date(scheduledAt).getTime() > Date.now()) continue;
             try {
-              const deferredLiId = await linkedinService.promoteBlogPost(pending.title, pending.excerpt, pending.url);
+              const liResolvedUrl = resolvePostUrl(pending);
+              const deferredLiId = await linkedinService.promoteBlogPost(pending.title, pending.excerpt, liResolvedUrl);
               if (deferredLiId) await wpService.updatePostMeta(pending.postId, { _autoblog_linkedin_post_id: deferredLiId }).catch(() => {});
               logger.info(`Deferred LinkedIn post executed for "${pending.title}"`);
               await wpService.updatePostMeta(pending.postId, { _autoblog_linkedin_scheduled: '' });
@@ -1768,7 +1775,7 @@ async function main(): Promise<void> {
             logger.info(`Executing deferred syndication for "${pending.title}"`);
             const syndicationPlatforms = (pending.meta._autoblog_syndication_platforms || '').split(',');
             // Fetch full post content for syndication (needed for HTML→Markdown conversion)
-            let syndicationContent: any = { title: pending.title, html: '', excerpt: '', tags: [], category: '', imagePrompts: [], imageCaptions: [], qualityScore: 0, metaDescription: '', slug: '' };
+            let syndicationContent: any = { title: pending.title, html: '', excerpt: pending.excerpt, tags: [], category: '', imagePrompts: [], imageCaptions: [], qualityScore: 0, metaDescription: '', slug: pending.slug };
             try {
               const fullPost = await wpService.getPostContent(pending.postId);
               if (fullPost) {
@@ -2847,7 +2854,7 @@ async function main(): Promise<void> {
   }
 
   // 4.99a. Clear batch checkpoint on successful completion
-  history.clearCheckpoint();
+  await history.clearCheckpoint();
 
   // 4.99b. Rate limit dashboard — log API usage summary
   try {
@@ -2890,14 +2897,16 @@ async function main(): Promise<void> {
   await history.updateLastRun();
 
   // 6. Summary
+  // Remove retry-pending placeholders (Phase A retry failures replaced in Phase B with actual results)
+  const finalResults = results.filter((r) => r.error !== 'retry-pending');
   const batch: BatchResult = {
     startedAt,
     completedAt: new Date().toISOString(),
-    totalKeywords: NICHES.length,
-    successCount: results.filter((r) => r.success).length,
-    failureCount: results.filter((r) => !r.success).length,
+    totalKeywords: activeNiches.length,
+    successCount: finalResults.filter((r) => r.success).length,
+    failureCount: finalResults.filter((r) => !r.success).length,
     skippedCount,
-    results,
+    results: finalResults,
   };
 
   // API cost summary + revenue estimate
