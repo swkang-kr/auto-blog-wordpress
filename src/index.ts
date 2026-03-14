@@ -1768,8 +1768,8 @@ async function main(): Promise<void> {
       if (twitterService) socialPlatforms.push('twitter');
       if (linkedinService) socialPlatforms.push('linkedin');
 
-      // Facebook: post immediately (Day 0, benefits from fresh content)
-      if (facebookService) {
+      // Facebook: post immediately only when published (not scheduled/future — URL not accessible yet)
+      if (facebookService && effectivePublishStatus === 'publish') {
         const fbPostId = await facebookService.promoteBlogPost(content, post);
         if (fbPostId) await wpService.updatePostMeta(post.postId, { _autoblog_fb_post_id: fbPostId }).catch(() => {});
       }
