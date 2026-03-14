@@ -2040,7 +2040,9 @@ async function main(): Promise<void> {
         config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD,
         config.ANTHROPIC_API_KEY, config.CLAUDE_MODEL,
       );
-      const freshnessData = history.getPostsByFreshnessScore(config.AUTO_REWRITE_MIN_AGE_DAYS);
+      const activeNicheIds = NICHES.map(n => n.id);
+      const freshnessData = history.getPostsByFreshnessScore(config.AUTO_REWRITE_MIN_AGE_DAYS)
+        .filter(e => e.niche && activeNicheIds.includes(e.niche));
       if (freshnessData.length > 0) {
         const staleCount = freshnessData.filter(f => f.freshnessScore < 30).length;
         if (staleCount > 0) {
@@ -2049,7 +2051,7 @@ async function main(): Promise<void> {
       }
       const gscForRefresh = gscSingleton ?? undefined;
       const rewritten = await refreshService.refreshDecliningPosts(
-        ga4Service, seoService, config.AUTO_REWRITE_COUNT, config.AUTO_REWRITE_MIN_AGE_DAYS, freshnessData, gscForRefresh,
+        ga4Service, seoService, config.AUTO_REWRITE_COUNT, config.AUTO_REWRITE_MIN_AGE_DAYS, freshnessData, gscForRefresh, undefined, activeNicheIds,
       );
       if (rewritten > 0) {
         logger.info(`Auto-rewrote ${rewritten} underperforming post(s)`);
@@ -2135,7 +2137,13 @@ async function main(): Promise<void> {
         config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD,
         config.ANTHROPIC_API_KEY, config.CLAUDE_MODEL,
       );
-      const ctrRefreshed = await ctrRefreshService.refreshDecliningCtrPosts(gscCtrService, seoService, 2);
+      const activeNicheUrlsForCtr = new Set(
+        history.getAllEntries()
+          .filter(e => e.niche && NICHES.map(n => n.id).includes(e.niche) && e.postUrl)
+          .map(e => { try { return new URL(e.postUrl).pathname.replace(/^\/|\/$/g, ''); } catch { return ''; } })
+          .filter(Boolean),
+      );
+      const ctrRefreshed = await ctrRefreshService.refreshDecliningCtrPosts(gscCtrService, seoService, 2, activeNicheUrlsForCtr);
       if (ctrRefreshed > 0) {
         logger.info(`CTR refresh: Updated title/meta for ${ctrRefreshed} post(s) with stable position but declining CTR`);
       }
@@ -2147,7 +2155,8 @@ async function main(): Promise<void> {
   // 4.22. Time-based content refresh fallback (works WITHOUT GA4)
   // Refreshes posts that exceed their freshness class update interval
   try {
-    const freshnessData = history.getPostsByFreshnessScore(14);
+    const freshnessData = history.getPostsByFreshnessScore(14)
+      .filter(e => e.niche && NICHES.map(n => n.id).includes(e.niche));
     if (freshnessData.length > 0) {
       const refreshService = new ContentRefreshService(
         config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD,
@@ -2240,8 +2249,13 @@ async function main(): Promise<void> {
   const livePostUrls = new Set(existingPosts.map(p => p.url).filter(Boolean));
 
   // 4.22d. Content lifecycle: detect merge candidates (cannibalization reduction)
+  // Only consider active-niche posts — off-niche posts are handled via noindex, not merge
   try {
-    const liveEntries = history.getAllEntries().filter(e => e.postUrl && livePostUrls.has(e.postUrl));
+    const activeNicheIdsForMerge = NICHES.map(n => n.id);
+    const liveEntries = history.getAllEntries().filter(e =>
+      e.postUrl && livePostUrls.has(e.postUrl) &&
+      e.niche && activeNicheIdsForMerge.includes(e.niche),
+    );
     const mergeCandidates = ContentRefreshService.detectMergeCandidates(liveEntries);
     if (mergeCandidates.length > 0) {
       logger.info(`Content lifecycle: ${mergeCandidates.length} merge candidate(s) detected — review recommended`);

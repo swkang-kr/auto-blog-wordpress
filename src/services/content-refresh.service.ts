@@ -56,6 +56,7 @@ export class ContentRefreshService {
     freshnessData?: Array<PostHistoryEntry & { freshnessScore: number }>,
     gscService?: GSCAnalyticsService,
     rpmByCategory?: Record<string, number>,
+    allowedNicheIds?: string[],
   ): Promise<number> {
     const allPosts = await ga4Service.getTopPerformingPosts(100);
     if (allPosts.length === 0) {
@@ -73,6 +74,19 @@ export class ContentRefreshService {
         allPosts.filter(p => p.bounceRate > 0.7 && p.pageviews >= 5),
       )
       .filter((p, i, arr) => arr.findIndex(x => x.url === p.url) === i);
+
+    // Filter to active niches only — avoid refreshing off-niche or deprecated posts
+    if (allowedNicheIds && allowedNicheIds.length > 0 && freshnessData && freshnessData.length > 0) {
+      const allowedSlugs = new Set(
+        freshnessData
+          .filter(f => f.niche && allowedNicheIds.includes(f.niche) && f.postUrl)
+          .map(f => { try { return new URL(f.postUrl).pathname.replace(/^\/|\/$/g, ''); } catch { return ''; } })
+          .filter(Boolean),
+      );
+      if (allowedSlugs.size > 0) {
+        underperformers = underperformers.filter(p => allowedSlugs.has(p.url.replace(/^\/|\/$/g, '')));
+      }
+    }
 
     // Boost priority for posts with low freshness scores (content decay)
     if (freshnessData && freshnessData.length > 0) {
@@ -670,6 +684,7 @@ export class ContentRefreshService {
     gscService: GSCAnalyticsService,
     seoService?: SeoService,
     limit: number = 3,
+    allowedUrls?: Set<string>,
   ): Promise<number> {
     try {
       // Get page performance for CTR analysis
@@ -696,6 +711,12 @@ export class ContentRefreshService {
       for (const recent of recentPages) {
         const prev = previousMap.get(recent.page);
         if (!prev || prev.impressions < 10) continue;
+
+        // Filter to active-niche URLs only
+        if (allowedUrls && allowedUrls.size > 0) {
+          const slug = recent.page.replace(/^https?:\/\/[^/]+/, '').replace(/^\/|\/$/g, '');
+          if (!allowedUrls.has(slug)) continue;
+        }
 
         // Position stable or improving (delta <= 2 positions) but CTR dropped 30%+
         const positionDelta = recent.position - prev.position;
