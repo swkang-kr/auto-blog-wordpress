@@ -1118,23 +1118,23 @@ ${rows}
   private static readonly PRODUCT_AFFILIATE_DB: Record<string, { keywords: string[]; defaultUrl: string }> = {
     'Korean Tech': {
       keywords: ['Samsung', 'Galaxy', 'SK Hynix', 'LG', 'Naver', 'Kakao', 'NVIDIA', 'MacBook', 'iPad', 'iPhone'],
-      defaultUrl: 'https://www.amazon.com/s?k=korean+tech&tag=trendhunt-20',
+      defaultUrl: 'https://www.amazon.com/s?k=korean+tech&tag=trendhunt2007-20',
     },
     'Korean Finance': {
       keywords: ['ETF', 'brokerage', 'trading platform', 'investing app', 'financial advisor'],
-      defaultUrl: 'https://www.amazon.com/s?k=investing+korean+market&tag=trendhunt-20',
+      defaultUrl: 'https://www.amazon.com/s?k=investing+korean+market&tag=trendhunt2007-20',
     },
     'K-Beauty': {
       keywords: ['COSRX', 'Laneige', 'Innisfree', 'Sulwhasoo', 'Beauty of Joseon', 'Missha', 'Etude', 'SKIN1004', 'Anua', 'Torriden', 'sunscreen', 'serum', 'moisturizer', 'toner', 'cleanser', 'sheet mask'],
-      defaultUrl: 'https://www.amazon.com/s?k=korean+skincare&tag=trendhunt-20',
+      defaultUrl: 'https://www.amazon.com/s?k=korean+skincare&tag=trendhunt2007-20',
     },
     'Korea Travel': {
       keywords: ['T-money', 'SIM card', 'WiFi egg', 'travel adapter', 'luggage', 'backpack', 'guidebook'],
-      defaultUrl: 'https://www.amazon.com/s?k=korea+travel+essentials&tag=trendhunt-20',
+      defaultUrl: 'https://www.amazon.com/s?k=korea+travel+essentials&tag=trendhunt2007-20',
     },
     'K-Entertainment': {
       keywords: ['album', 'lightstick', 'photocard', 'BTS', 'BLACKPINK', 'Stray Kids', 'SEVENTEEN', 'aespa', 'NewJeans'],
-      defaultUrl: 'https://www.amazon.com/s?k=kpop+merchandise&tag=trendhunt-20',
+      defaultUrl: 'https://www.amazon.com/s?k=kpop+merchandise&tag=trendhunt2007-20',
     },
   };
 
@@ -1293,11 +1293,17 @@ ${ga4TrackingScript}`;
    */
   private static readonly CATEGORY_AFFILIATE_KEYWORDS: Record<string, Record<string, string>> = {
     'K-Beauty': {
-      'Olive Young': 'https://global.oliveyoung.com/',
-      'YesStyle': 'https://www.yesstyle.com/',
-      'StyleKorean': 'https://www.stylekorean.com/',
-      'COSRX': 'https://www.cosrx.com/',
-      'Innisfree': 'https://www.innisfree.com/',
+      'COSRX': 'https://www.amazon.com/s?k=COSRX&tag=trendhunt2007-20',
+      'Laneige': 'https://www.amazon.com/s?k=Laneige&tag=trendhunt2007-20',
+      'Innisfree': 'https://www.amazon.com/s?k=Innisfree&tag=trendhunt2007-20',
+      'Sulwhasoo': 'https://www.amazon.com/s?k=Sulwhasoo&tag=trendhunt2007-20',
+      'Beauty of Joseon': 'https://www.amazon.com/s?k=Beauty+of+Joseon&tag=trendhunt2007-20',
+      'Missha': 'https://www.amazon.com/s?k=Missha&tag=trendhunt2007-20',
+      'SKIN1004': 'https://www.amazon.com/s?k=SKIN1004&tag=trendhunt2007-20',
+      'Anua': 'https://www.amazon.com/s?k=Anua+skincare&tag=trendhunt2007-20',
+      'Torriden': 'https://www.amazon.com/s?k=Torriden&tag=trendhunt2007-20',
+      'Etude': 'https://www.amazon.com/s?k=Etude+House&tag=trendhunt2007-20',
+      'Olive Young': 'https://www.amazon.com/s?k=korean+skincare+best+seller&tag=trendhunt2007-20',
     },
     'Korea Travel': {
       'Klook': 'https://www.klook.com/',
@@ -1324,6 +1330,15 @@ ${ga4TrackingScript}`;
       'Talk To Me In Korean': 'https://talktomeinkorean.com/',
       'LingoDeer': 'https://www.lingodeer.com/',
       'italki': 'https://www.italki.com/',
+    },
+    'K-Entertainment': {
+      'BTS': 'https://www.amazon.com/s?k=BTS+album&tag=trendhunt2007-20',
+      'BLACKPINK': 'https://www.amazon.com/s?k=BLACKPINK+album&tag=trendhunt2007-20',
+      'Stray Kids': 'https://www.amazon.com/s?k=Stray+Kids+album&tag=trendhunt2007-20',
+      'NewJeans': 'https://www.amazon.com/s?k=NewJeans+album&tag=trendhunt2007-20',
+      'SEVENTEEN': 'https://www.amazon.com/s?k=SEVENTEEN+kpop&tag=trendhunt2007-20',
+      'aespa': 'https://www.amazon.com/s?k=aespa+album&tag=trendhunt2007-20',
+      'lightstick': 'https://www.amazon.com/s?k=kpop+lightstick&tag=trendhunt2007-20',
     },
   };
 
