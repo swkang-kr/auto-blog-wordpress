@@ -68,9 +68,9 @@ const NICHE_SUBTOPICS: Record<string, Record<string, string[]>> = {
   'k-entertainment': {
     'K-Pop': ['kpop', 'k-pop', 'idol', 'comeback', 'album', 'concert', 'bts', 'blackpink', 'aespa', 'music'],
     'K-Drama': ['kdrama', 'k-drama', 'drama', 'netflix', 'series', 'actor', 'actress', 'ratings'],
-    'Webtoons & Content': ['webtoon', 'manhwa', 'animation', 'naver webtoon', 'kakao', 'content'],
-    'Business & Industry': ['hybe', 'sm', 'jyp', 'yg', 'agency', 'revenue', 'ipo', 'stock', 'business model'],
-    'Awards & Global Impact': ['award', 'grammy', 'billboard', 'global', 'hallyu', 'soft power', 'export'],
+    'Fan Culture & Community': ['fan', 'fandom', 'stan', 'fansite', 'light stick', 'merch', 'fan meet', 'sasaeng', 'fan war'],
+    'Idol News & Updates': ['comeback', 'debut', 'disbandment', 'hiatus', 'solo', 'collab', 'scandal', 'news', 'update'],
+    'Awards & Global Impact': ['award', 'grammy', 'billboard', 'mama', 'melon', 'global', 'hallyu', 'chart', 'ranking'],
   },
 };
 
@@ -135,17 +135,21 @@ const NICHE_TOPICAL_MAP: Record<string, string[]> = {
     'Korean airport guide Incheon', 'Korean travel insurance', 'Seoul itinerary planning',
   ],
   'k-entertainment': [
-    'K-pop business model analysis', 'HYBE stock analysis', 'SM Entertainment financials',
-    'JYP Entertainment strategy', 'YG Entertainment business', 'K-pop trainee system explained',
-    'K-pop idol contracts', 'K-pop global revenue', 'K-pop concert economics', 'K-pop fan culture economics',
-    'K-drama streaming platforms', 'Korean Netflix originals', 'K-drama production costs',
-    'Korean webtoon industry', 'Korean webtoon to drama adaptations', 'Korean animation industry',
-    'Korean film industry analysis', 'Hallyu economic impact', 'Korean content export statistics',
-    'K-pop agencies comparison', 'K-pop marketing strategies', 'K-pop social media strategy',
-    'Korean variety show industry', 'Korean music streaming platforms', 'Korean OST industry',
-    'K-pop merchandise market', 'Korean entertainment stocks', 'Korean content IP licensing',
-    'K-pop world tour analysis', 'Korean entertainment technology', 'K-pop AI and virtual idols',
-    'Korean cultural content fund', 'K-drama international ratings', 'Korean OTT platforms',
+    // K-Pop fan content
+    'BTS comeback 2026 what to expect', 'BLACKPINK members solo careers', 'aespa Supernova era explained',
+    'NewJeans comeback songs ranked', 'BABYMONSTER debut ranking', 'SEVENTEEN world tour 2026',
+    'Stray Kids best songs ranked', 'IVE songs ranked by fans', 'LE SSERAFIM comeback update',
+    'K-pop best songs of 2026', 'K-pop music videos ranked by views', 'K-pop idol fun facts fans',
+    'K-pop reality shows to watch', 'K-pop concert experience guide', 'K-pop lightstick collection guide',
+    'MAMA Awards 2026 winners', 'Melon Music Awards 2026 predictions', 'K-pop fandom culture explained',
+    // K-Drama fan content
+    'best K-dramas on Netflix 2026', 'most watched K-dramas 2026 ranked', 'K-drama ending explained 2026',
+    'K-drama recommendations by genre', 'best K-drama actors 2026', 'K-drama OST songs ranked',
+    'underrated K-dramas to watch', 'K-drama vs C-drama comparison', 'K-drama rewatch rankings',
+    // Fan community & culture
+    'K-pop fan meetup guide USA', 'K-pop concerts in USA 2026', 'how to become a K-pop fan',
+    'K-pop merchandise buying guide', 'K-pop album unboxing guide', 'K-pop photocard collecting tips',
+    'K-pop fan art community', 'K-pop stan Twitter explained', 'K-pop fandom wars history',
   ],
 };
 

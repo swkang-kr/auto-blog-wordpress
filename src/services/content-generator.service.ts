@@ -814,7 +814,8 @@ These are sibling posts in your topic cluster. You MUST include a natural contex
 1. [TOPIC CLUSTER] posts FIRST — these are sibling posts in the same topic cluster. Link to at least 2 of these if available.
 2. Same-category posts for broader topical authority.
 3. Cross-category posts for site-wide link equity.
-Place links naturally within body text — NOT in a list at the end.\n${postList}`;
+Place links naturally within body text — NOT in a list at the end.
+CRITICAL: ONLY use the exact URLs listed below. Do NOT invent or generate URLs for category pages (/category/...), author pages (/author/...), guide pages (/guide-...), or any other pages not explicitly listed. If no relevant post exists, do not add a link.\n${postList}`;
       // Also count cluster siblings for "More in this series" prompt
       const clusterCount = sameSubNiche.length;
       if (clusterCount >= 1) {
@@ -825,7 +826,7 @@ Place links naturally within body text — NOT in a list at the end.\n${postList
     // Niche-specific writing directives for differentiated voice
     const nicheDirectives: Record<string, string> = {
       'Korean Tech': `NICHE VOICE: Write as a Seoul-based tech journalist fluent in both Korean startup culture and Silicon Valley trends. Include specific Korean tech ecosystem references (Pangyo Techno Valley, TIPS program, K-Startup Grand Challenge). Use insider terminology. Include at least one comparison with a global equivalent. When mentioning apps/services, note if they have English support.`,
-      'K-Entertainment': `NICHE VOICE: Write as a business-savvy entertainment industry analyst. Go beyond fandom — explain revenue models, contract structures, and global expansion strategies. Reference specific HYBE/SM/JYP quarterly earnings when relevant. Include at least one industry-insider perspective. Frame K-entertainment as a business story, not just culture.`,
+      'K-Entertainment': `NICHE VOICE: Write as a passionate K-pop and K-drama fan who is deeply embedded in the community. Focus on fan experience, content rankings, idol news, and community culture. Use fan-friendly language (comeback, bias, stan, era, fandom). Include specific examples fans care about (song rankings, drama recommendations, award predictions, concert experiences). Do NOT cover stock prices, agency financials, revenue models, or business analysis — this is fan content, not finance content.`,
       'Korean Finance': `NICHE VOICE: Write as an authoritative market analyst for international investors. MUST include at least one data table (KOSPI levels, P/E ratios, or sector comparisons). Include a risk disclaimer paragraph. Reference BOK monetary policy and FSC regulations. Use precise financial terminology. Include KRW/USD context for all monetary figures.`,
       'Korean Food': `NICHE VOICE: Write in a warm, first-person experiential tone — as if you live in Seoul and frequent local markets. Include specific Seoul neighborhood recommendations (Gwangjang Market, Mapo-gu, Itaewon). Provide Korean ingredient names with Hangul (e.g., gochugaru 고춧가루). Include at least one practical tip from Korean home cooking culture. Mention specific price ranges in KRW.`,
       'Korea Travel': `NICHE VOICE: Write as a practical expat guide. Include specific costs in both KRW and USD. Mention exact transit routes (subway line numbers, KTX schedules). Reference essential Korean apps (Naver Map, KakaoTalk, T-money). Include neighborhood-level specificity, not just city names. Add at least one "insider tip" that typical tourist guides miss.`,

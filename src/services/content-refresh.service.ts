@@ -1533,15 +1533,8 @@ Return pure JSON only.`;
 
       for (const target of targets) {
         try {
-          // Find the page ranking for this query
-          const pages = await gscService.getPagePerformance(50);
-          const page = pages.find(p => {
-            const pPath = new URL(p.page).pathname.replace(/^\/|\/$/g, '');
-            return pPath.length > 0;
-          });
-          if (!page) continue;
-
-          const slug = new URL(page.page).pathname.replace(/^\/|\/$/g, '');
+          // Use the page URL that actually ranks for this specific query
+          const slug = new URL(target.page).pathname.replace(/^\/|\/$/g, '');
           if (!slug) continue;
 
           const { data: posts } = await this.api.get('/posts', {

@@ -22,6 +22,7 @@ const OFF_TOPIC_SLUGS = [
   'passive-income-ideas-2026',
   'how-to-save-money-fast-17-proven-strategies-that-work-in-2024',
   // Korean Tech & Finance (Phase 2 보류 - 현재 2니치 집중 전략)
+  'ai-tools-content-creation-2026-kr',
   'ai-tools-seo-guide-2026',
   'best-ai-writing-tools-2026',
   'sk-hynix-hbm-memory-market-share',
@@ -32,6 +33,7 @@ const OFF_TOPIC_SLUGS = [
   'yoon-yu-seons-whirlwind-marriage-shocks-best-friend-yoo-ho-jung',
   'hong-jas-comeback-can-she-overturn-last-place-in-semifinals',
   // Misc off-niche
+  'budgeting-tips-families-2026-kr',
   'korean-startup-ecosystem-trends-investment',
   'korean-webtoon-platform-global-expansion-strategy',
 ];

@@ -781,27 +781,43 @@ export class GSCAnalyticsService {
    */
   async getFeaturedSnippetOpportunities(): Promise<Array<{
     query: string;
+    page: string;
     position: number;
     impressions: number;
     ctr: number;
     snippetType: 'paragraph' | 'list' | 'table';
   }>> {
     try {
-      const queries = await this.getTopQueries(300);
-      const opportunities = queries
-        .filter(q => q.position >= 2 && q.position <= 10 && q.impressions >= 20)
-        .map(q => {
-          // Infer snippet type from query pattern
-          const qLower = q.query.toLowerCase();
+      const accessToken = await this.getAccessToken();
+      const { data } = await axios.post(
+        `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(this.siteUrl)}/searchAnalytics/query`,
+        {
+          startDate: this.getDateString(-28),
+          endDate: this.getDateString(-1),
+          dimensions: ['query', 'page'],
+          rowLimit: 500,
+          dataState: 'final',
+        },
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+          timeout: 15000,
+        },
+      );
+
+      const rows = (data as { rows?: Array<{ keys: string[]; clicks: number; impressions: number; ctr: number; position: number }> }).rows || [];
+      const opportunities = rows
+        .filter(row => row.position >= 2 && row.position <= 10 && row.impressions >= 20)
+        .map(row => {
+          const qLower = row.keys[0].toLowerCase();
           let snippetType: 'paragraph' | 'list' | 'table' = 'paragraph';
           if (/^(?:what is|what are|who is|why|how does|what does)/i.test(qLower)) {
-            snippetType = 'paragraph'; // Definition-style snippet
+            snippetType = 'paragraph';
           } else if (/^(?:best|top|how to|steps|ways to|tips)/i.test(qLower)) {
-            snippetType = 'list'; // List snippet
+            snippetType = 'list';
           } else if (/(?:vs|versus|comparison|compared|difference)/i.test(qLower)) {
-            snippetType = 'table'; // Table snippet
+            snippetType = 'table';
           }
-          return { query: q.query, position: q.position, impressions: q.impressions, ctr: q.ctr, snippetType };
+          return { query: row.keys[0], page: row.keys[1], position: row.position, impressions: row.impressions, ctr: row.ctr, snippetType };
         })
         .sort((a, b) => b.impressions - a.impressions)
         .slice(0, 15);

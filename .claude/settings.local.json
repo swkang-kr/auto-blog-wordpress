@@ -67,7 +67,22 @@
       "Bash(gh secret set AUTHOR_WEBSITE --body \"https://trendhunt.net\")",
       "Bash(gh secret set TELEGRAM_BOT_TOKEN --body \"8670344162:AAHM5qD5IY1k720t69srhpKTTeMQ9ruieFw\")",
       "Bash(gh secret set TELEGRAM_CHAT_ID --body \"8747376563\")",
-      "Bash(gh secret set YOUTUBE_API_KEY --body \"AIzaSyBK5qeWMfibg9SNKOHEF0G6how_lcfYCzw\")"
+      "Bash(gh secret set YOUTUBE_API_KEY --body \"AIzaSyBK5qeWMfibg9SNKOHEF0G6how_lcfYCzw\")",
+      "Bash(cd \"C:/workspace/Claude/auto-blog-wordpress\" && npx tsc --noEmit 2>&1)",
+      "Bash(cd \"C:/workspace/Claude/auto-blog-wordpress\" && POST_COUNT=5 node --import tsx/esm --env-file=.env src/index.ts 2>&1)",
+      "Bash(cd \"C:/workspace/Claude/auto-blog-wordpress\" && POST_COUNT=2 node --import tsx/esm --env-file=.env src/index.ts 2>&1)",
+      "Bash(POST_COUNT=2 node --env-file=.env --import tsx/esm src/index.ts 2>&1)",
+      "Bash(grep -n \"content.category\\\\|\\\\.category\\\\s*=\" /c/workspace/Claude/auto-blog-wordpress/src/services/wordpress.service.ts | grep -v \"//\" | head -20)",
+      "Bash(ls \"C:\\\\Users\\\\snixk\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--workspace-Claude-auto-blog-wordpress\\\\88176303-c18a-48cb-a02b-efbaa0f52a9a\\\\tasks\\\\\" 2>/dev/null && echo \"Files found\" || echo \"Dir not found\")",
+      "Bash(ls /c/workspace/Claude/auto-blog-wordpress/*.env* 2>/dev/null; ls /c/workspace/Claude/auto-blog-wordpress/.env* 2>/dev/null)",
+      "Bash(where gh:*)",
+      "Read(//usr/local/bin/**)",
+      "Read(//c/Users/snixk/AppData/Local/**)",
+      "Read(//c/Program Files/**)",
+      "Read(//c/workspace/Claude/auto-blog-wordpress/$LOCALAPPDATA/Programs/**)",
+      "Read(//c/Users/snixk/**)",
+      "Read(//c/tmp/**)",
+      "Bash(unzip -o run-logs.zip -d run-logs/)"
     ]
   }
 }

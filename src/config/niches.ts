@@ -29,11 +29,6 @@ export function getSeasonallyOrderedNiches(): NicheConfig[] {
     'Singles Day': ['K-Beauty'],
     'Christmas': ['K-Beauty', 'K-Entertainment'],
     'New Year': ['K-Entertainment'],
-    'CES': ['K-Entertainment'],
-    'MWC': ['K-Entertainment'],
-    'Auto Show': ['K-Entertainment'],
-    'Mobility Show': ['K-Entertainment'],
-    'Earnings Season': ['K-Entertainment'],
     'K-Beauty Awards': ['K-Beauty'],
   };
 
