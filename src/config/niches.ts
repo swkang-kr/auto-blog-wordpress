@@ -54,70 +54,77 @@ export function getSeasonallyOrderedNiches(): NicheConfig[] {
 }
 
 /**
- * CORE NICHES (2 focused niches for rapid topical authority)
- * Strategy: 2 niches × 2-3 posts/day = 15-20 posts/niche/month
- * Focus: K-Beauty + K-Entertainment — medium competition, high engagement
+ * CORE NICHES — 목표: 각 니치 15개 포스트로 구글 토픽 권위 확보
  *
- * Selected based on: competition level (lower wins for new sites),
- * audience overlap, viral potential, and monetization diversity.
+ * K-Beauty   (현재 3/15): Amazon 어필리에이트 + AdSense
+ *   → 제품 리뷰/비교/쇼핑 가이드 중심 (구매 의도 키워드 우선)
+ *
+ * K-Entertainment (현재 7/15): AdSense (트래픽 중심)
+ *   → 팬 트래픽/바이럴 콘텐츠 중심 (검색량 + 소셜 공유 우선)
  */
 export const NICHES: NicheConfig[] = [
-  // ── K-Beauty & Skincare (high commercial intent, strong product review potential) ──
+  // ── K-Beauty: Amazon 어필리에이트 + AdSense ──
+  // 전략: 제품 비교·리뷰·쇼핑 가이드로 구매 의도 트래픽 확보
   {
     id: 'k-beauty-skincare',
     name: 'Korean Skincare & Beauty',
     category: 'K-Beauty',
-    broadTerm: 'Korean skincare K-beauty routine',
+    broadTerm: 'Korean skincare K-beauty products review',
     seedKeywords: [
-      // Beginner how-to (high search volume, evergreen)
-      'best Korean skincare routine for beginners step by step',
-      'Korean double cleansing method how to do it right',
-      'Korean skincare routine for oily skin step by step',
-      'how to build a Korean skincare routine on a budget',
-      // Product comparisons (high commercial intent, affiliate potential)
-      'Korean sunscreen vs Western sunscreen comparison',
-      'COSRX snail mucin vs Beauty of Joseon dynasty cream review',
-      'best Korean serums under 20 dollars ranked',
-      'best Korean sunscreen for sensitive skin no white cast',
-      // Shopping guides (tourist + online buyer intent)
-      'top Korean beauty brands at Olive Young what locals actually buy',
-      'best Korean sheet masks ranked by skin type',
-      'best Korean moisturizers for dry skin winter 2026',
-      // Trend explainers (shareable, social traffic)
-      'Korean glass skin trend how to get it complete guide',
-      'Korean skincare ingredients that actually work explained',
-      'why Korean sunscreen is better than American sunscreen',
+      // Product reviews (Amazon 어필리에이트 전환율 최고)
+      'COSRX snail mucin essence review before and after',
+      'Beauty of Joseon relief sun rice probiotics review',
+      'Anua heartleaf toner review for sensitive skin',
+      'best SKIN1004 Madagascar centella products ranked',
+      'Torriden dive-in serum vs COSRX hyaluronic acid review',
+      // Best-of / shopping guides (구매 의도 키워드)
+      'best Korean toner for dry skin 2026 ranked',
+      'best Korean moisturizer under 30 dollars Amazon 2026',
+      'best Korean vitamin C serum ranked dermatologist tested',
+      'best Korean sunscreen for dark skin no white cast 2026',
+      'best Korean sheet masks for glowing skin ranked',
+      // Comparisons (x-vs-y: high commercial intent)
+      'COSRX vs CeraVe which is better for sensitive skin',
+      'Korean sunscreen vs American sunscreen SPF comparison',
+      'Laneige lip sleeping mask vs Tatcha review comparison',
+      // Routine how-to (evergreen, internal link hub)
+      'Korean skincare routine for beginners step by step 2026',
+      'how to build a Korean glass skin routine on a budget',
     ],
-    contentTypes: ['how-to', 'best-x-for-y', 'x-vs-y', 'analysis', 'deep-dive', 'listicle', 'product-review', 'case-study'],
-    adSenseRpm: 'medium',
+    contentTypes: ['product-review', 'best-x-for-y', 'x-vs-y', 'how-to', 'listicle', 'case-study'],
+    adSenseRpm: 'high',
   },
 
-  // ── K-Entertainment Business (high engagement, viral potential) ──
+  // ── K-Entertainment: AdSense 트래픽 중심 ──
+  // 전략: 팬덤 트래픽·뉴스·바이럴 리스티클로 페이지뷰 극대화
   {
     id: 'k-entertainment-business',
     name: 'K-Pop & K-Drama',
     category: 'K-Entertainment',
-    broadTerm: 'K-pop K-drama BTS BLACKPINK NewJeans',
+    broadTerm: 'K-pop K-drama BTS BLACKPINK NewJeans 2026',
     seedKeywords: [
-      // BTS (global fanbase, high search volume)
-      'BTS reunion comeback what to expect timeline',
-      'BTS members solo careers success comparison analysis',
-      'BTS solo albums ranking 2026 fan guide',
-      // Multi-group fan content
-      'NewJeans vs BLACKPINK popularity comparison 2026',
-      'best K-pop groups to stan in 2026 ranked',
-      'best K-pop albums 2026 ranked by fans',
-      'Stray Kids world tour dates setlist 2026',
-      // K-Drama (high search volume, Netflix audience)
-      'best Korean dramas on Netflix 2026 must watch list',
-      'best K-drama of 2026 ranked by viewers',
-      'K-drama actors who became global stars overnight',
-      // Fan culture & entertainment
-      'K-pop idol agency contracts explained for fans',
-      'Korean webtoon apps for English readers complete guide',
+      // BTS — 글로벌 최고 검색량
+      'BTS comeback 2026 date songs what to expect',
+      'BTS members solo activities ranked 2026',
+      'BTS Jungkook solo career 2026 update',
+      // 신규 그룹 — 급상승 트래픽
+      'NewJeans 2026 comeback songs ranked',
+      'aespa Supernova era what happened explained',
+      'BABYMONSTER debut songs ranked 2026',
+      // K-Drama — Netflix 글로벌 트래픽
+      'best Korean dramas on Netflix 2026 must watch',
+      'most watched K-dramas of 2026 ranked by viewers',
+      'K-drama ending explained 2026 popular shows',
+      // 팬덤 바이럴 — 소셜 공유율 높음
+      'best K-pop music videos 2026 ranked by views',
+      'K-pop idol facts fans dont know 2026',
       'best K-pop reality shows to watch 2026',
+      // 시즌 이벤트 — 검색 스파이크
+      'MAMA Awards 2026 winners complete list',
+      'Melon Music Awards 2026 predictions ranked',
+      'K-pop concerts in USA 2026 schedule dates',
     ],
-    contentTypes: ['analysis', 'deep-dive', 'news-explainer', 'best-x-for-y', 'how-to', 'case-study', 'listicle', 'x-vs-y'],
+    contentTypes: ['listicle', 'news-explainer', 'best-x-for-y', 'deep-dive', 'how-to', 'x-vs-y'],
     adSenseRpm: 'medium',
   },
 ];
