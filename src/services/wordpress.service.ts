@@ -403,10 +403,16 @@ export class WordPressService {
       }
     }
 
-    // HEAD-check remaining external links
+    // HEAD-check remaining external links (skip approved domains — they already passed whitelist)
     const remainingRegex = /<a\s+[^>]*href="(https?:\/\/[^"]+)"[^>]*target="_blank"[^>]*>(.*?)<\/a>/gi;
     const remainingLinks: Array<{ full: string; url: string; text: string }> = [];
     while ((match = remainingRegex.exec(updatedHtml)) !== null) {
+      try {
+        const domain = new URL(match[1]).hostname.replace(/^www\./, '');
+        const isApproved = WordPressService.APPROVED_DOMAINS.has(domain) ||
+          [...WordPressService.APPROVED_DOMAINS].some(d => domain.endsWith('.' + d));
+        if (isApproved) continue; // Skip HEAD check for trusted domains (amazon.com, etc.)
+      } catch { /* invalid URL, include for check */ }
       remainingLinks.push({ full: match[0], url: match[1], text: match[2] });
     }
 
