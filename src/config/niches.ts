@@ -85,6 +85,13 @@ export const NICHES: NicheConfig[] = [
       // Routine how-to (evergreen, internal link hub)
       'Korean skincare routine for beginners step by step 2026',
       'how to build a Korean glass skin routine on a budget',
+      // K-Beauty 헤어 케어 — Amazon 어필리에이트 추가 기회
+      'best Korean shampoo for hair loss thinning hair 2026',
+      'Daeng Gi Meo Ri vs Ryo shampoo review comparison',
+      // K-Beauty 메이크업 — 구매 의도 키워드
+      'rom&nd blur fudge tint review best shades swatches',
+      'best Korean cushion foundation for oily skin no oxidation 2026',
+      'Clio kill cover foundation review vs MAC comparison',
     ],
     contentTypes: ['product-review', 'best-x-for-y', 'x-vs-y', 'how-to', 'listicle', 'case-study'],
     adSenseRpm: 'high',
@@ -118,6 +125,15 @@ export const NICHES: NicheConfig[] = [
       'MAMA Awards 2026 winners complete list',
       'Melon Music Awards 2026 predictions ranked',
       'K-pop concerts in USA 2026 schedule dates',
+      // 3-4세대 그룹 — 글로벌 팬덤 검색량
+      'Stray Kids world tour 2026 setlist fan experience',
+      'SEVENTEEN discography ranked best songs guide',
+      'LE SSERAFIM songs ranked best tracks to start with',
+      'ATEEZ comeback 2026 what fans need to know',
+      'TWICE best songs ranked for new fans guide',
+      // K-Drama 배우/OST — 팬 검색 의도
+      'best K-drama OST songs ranked all time',
+      'top K-drama actors to watch 2026 breakout performances',
       // 에버그린 — 시간 독립적 (트래픽 지속성 확보)
       'how K-pop training system works explained',
       'K-drama tropes explained for beginners complete guide',

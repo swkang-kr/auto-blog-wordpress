@@ -208,13 +208,14 @@ export const CATEGORY_PUBLISH_TIMING: Record<string, { optimalHour: number; best
   'Korean Finance': { optimalHour: 7, bestDays: [1, 2] },         // Mon-Tue early morning (market open)
   'K-Beauty': { optimalHour: 10, bestDays: [5, 6, 0] },           // Weekend morning (lifestyle shopping)
   'Korea Travel': { optimalHour: 10, bestDays: [6, 0, 5] },       // Weekend + Friday (trip planning)
-  'K-Entertainment': { optimalHour: 18, bestDays: [4, 5, 6] },    // Thu-Sat evening (leisure time)
+  'K-Entertainment': { optimalHour: 9, bestDays: [4, 5, 6] },     // Thu-Sat KST morning = Wed-Fri EST evening (global fan prime time)
 };
 
 /** Niche-specific disclaimer templates for legal compliance */
 export const NICHE_DISCLAIMERS: Record<string, string> = {
   'Korean Finance': '<div class="ab-disclaimer-finance" style="margin:0 0 24px 0; padding:16px 20px; background:#fff8e1; border:1px solid #ffe082; border-radius:8px; font-size:13px; color:#666; line-height:1.6;"><strong>Financial Disclaimer:</strong> The information in this article is for educational and informational purposes only and should not be construed as financial, investment, or tax advice. Past performance does not guarantee future results. Investing in Korean securities involves risks, including currency exchange risk and potential loss of principal. Always consult a qualified financial advisor before making investment decisions. The author and TrendHunt are not licensed financial advisors.</div>',
   'K-Beauty': '<div class="ab-disclaimer-beauty" style="margin:0 0 24px 0; padding:16px 20px; background:#f0fff4; border:1px solid #c6f6d5; border-radius:8px; font-size:13px; color:#666; line-height:1.6;"><strong>Skincare Disclaimer:</strong> Product recommendations are based on research and editorial analysis. Individual results may vary. Always patch-test new products and consult a dermatologist for specific skin concerns. This content is not medical advice.</div>',
+  'K-Entertainment': '<div class="ab-disclaimer-entertainment" style="margin:0 0 24px 0; padding:16px 20px; background:#f0f4ff; border:1px solid #c6d6f6; border-radius:8px; font-size:13px; color:#666; line-height:1.6;"><strong>Entertainment Disclaimer:</strong> Schedule, comeback, and project information is based on publicly available sources and may change without notice. This content represents editorial analysis and fan perspective, not official announcements from artists or agencies.</div>',
 };
 
 /** Search intent to valid content type mapping for enforcement */

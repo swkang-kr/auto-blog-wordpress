@@ -36,10 +36,10 @@ const NICHE_SIGNATURE_SECTIONS: Record<string, Record<string, string[]>> = {
     'x-vs-y': ['Head-to-Head Verdict', 'Insider Tips'],
   },
   'K-Entertainment': {
-    default: ['Industry Analysis', "Fan's Take", 'Global Entertainment Context', 'Behind the Scenes'],
-    'how-to': ['Pro Tips', 'Industry Analysis'],
-    'listicle': ["Editor's Picks", "Fan's Take"],
-    'x-vs-y': ['Head-to-Head Verdict', 'Industry Analysis'],
+    default: ["Fan's Take", 'Fandom Spotlight', 'Global Hallyu Context', 'Behind the Scenes'],
+    'how-to': ['Pro Tips', 'Fan Community Guide'],
+    'listicle': ["Editor's Picks", 'Fandom Spotlight'],
+    'x-vs-y': ['Head-to-Head Verdict', "Fan's Take"],
   },
   'Korean Finance': {
     default: ['Investment Outlook', 'Market Context', 'What This Means for Investors', 'Global Market Perspective'],
@@ -306,6 +306,13 @@ To reach WORD_COUNT_TARGET+ words WITHOUT padding:
 - End with a clear recommendation summary and FAQ (3-5 Q&As)
 - Do NOT include a "Common Misconceptions" section (not natural for lists)
 
+### Product Review
+- Open with a "Quick Verdict" box (<div class="ab-highlight">) summarizing who this product is for
+- Cover: what it is, key ingredients/specs, texture/feel/finish, results timeline, value for money
+- Include pros (3+) and cons (2+) in a structured list
+- **For K-Beauty product-review**: MANDATORY pricing comparison table (Olive Young KRW / Amazon USD / YesStyle or Stylevana) and skin type suitability matrix (oily / dry / combination / sensitive)
+- End with a clear "Buy or Skip?" verdict and FAQ (3-5 Q&As)
+
 ### X vs Y Content
 - Start with a detailed overview of both options
 - Create a detailed comparison table
@@ -335,7 +342,7 @@ To reach WORD_COUNT_TARGET+ words WITHOUT padding:
 - Korean Finance: Authoritative market analyst — cite KOSPI/KOSDAQ data, BOK policy, Korean regulatory environment. Write for investors and analysts, not casual readers. Include Korean won context and institutional data.
 - K-Beauty: Expert skincare advisor — combine product knowledge with dermatological science. Reference Korean beauty innovations, ingredient analysis, and brand comparisons. Include Korean product names and Olive Young context.
 - Korea Travel: Practical insider guide tone — write like an expat who has navigated the system. Include specific costs in KRW/USD, real transit routes, neighborhood-level recommendations. Reference T-money, KTX, Korean apps foreigners need.
-- K-Entertainment: Business-savvy cultural analysis — go beyond fandom to explain the industry mechanics, revenue models, and global strategy. Reference HYBE, SM, JYP as business entities, not just talent agencies.
+- K-Entertainment: Fan-centric cultural writer — cover comebacks, rankings, fan experiences, and community culture. Reference idol activities, drama recommendations, and award predictions through a fan lens. Use fan-friendly language (comeback, bias, stan, era, fandom). Do NOT analyze agency finances or business strategy — this is fan content, not finance content.
 
 ## Signature Section (MANDATORY)
 Every article MUST include a signature analysis section as an H2. The exact section name will be specified in the user prompt.
@@ -460,7 +467,8 @@ This targets Google's List Featured Snippet for ranking queries.
   * Korean institutions: bok, krx, dart, kosis, fsc, ftc, msit, kotra, kisa, kocca
   * Korean companies: samsung, hyundai, lg, skhynix, naver, kakao, coupang
   * News/Data: bloomberg, reuters, nikkei, statista, worldbank
-  * Entertainment: hybe, sm-entertainment, jyp
+  * Entertainment agencies: hybe, sm-entertainment, jyp
+  * K-Entertainment fan/industry: kocca, hanteo, circle-chart, billboard-korea, kbs, mnet
 - data-topic: brief topic context for URL resolution (e.g., "markets", "earnings", "policy")
 - Example: <cite data-source="bloomberg" data-topic="markets">Bloomberg Markets</cite>
 - Example: <cite data-source="bok" data-topic="monetary-policy">Bank of Korea</cite>
@@ -560,7 +568,7 @@ Include ONE simple inline SVG infographic per article:
 Niche-specific SVG formats:
 - **Finance**: Bar chart comparing key metrics (KOSPI sectors, P/E ratios, revenue)
 - **Tech**: Comparison chart showing feature/spec differences between products
-- **K-Entertainment**: Timeline showing key events or revenue milestones
+- **K-Entertainment**: Timeline showing comeback schedules, music chart positions, or award history
 - **Korean Food**: Ingredient proportion chart or nutrition comparison
 - **Korea Travel**: Cost breakdown bars (accommodation, transport, food, activities)
 - **Korean Language**: Grammar structure chart or TOPIK level comparison
