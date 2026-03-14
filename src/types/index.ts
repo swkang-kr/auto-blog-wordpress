@@ -104,10 +104,10 @@ export const NICHE_AUTHOR_PROFILES: Record<string, AuthorProfile> = {
   },
   'K-Entertainment': {
     name: '',
-    title: 'K-Entertainment Business Analyst',
-    bio: 'Analyzing the business side of K-pop, K-drama, and Korean content industries. Covering agency financials (HYBE, SM, JYP), global streaming strategies, and the economics behind Korea\'s cultural export dominance.',
-    expertise: ['K-pop business models', 'Korean entertainment stocks', 'K-drama streaming economics', 'Webtoon industry', 'Korean content global expansion'],
-    credentials: ['Korean Entertainment Industry Researcher', 'Media & Entertainment Analyst'],
+    title: 'K-Pop & K-Drama Culture Writer',
+    bio: 'Deeply embedded in the global K-pop and K-drama fan community. Covering comeback seasons, idol news, drama recommendations, award show predictions, and the fan experiences that define Hallyu culture worldwide.',
+    expertise: ['K-pop fandom culture', 'K-drama recommendations & rankings', 'Idol comeback news', 'Award show predictions', 'Fan community & Hallyu culture'],
+    credentials: ['Hallyu Culture Researcher', 'K-Entertainment Content Writer'],
     yearsExperience: 4,
   },
 };

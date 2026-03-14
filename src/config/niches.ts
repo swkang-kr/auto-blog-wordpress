@@ -14,13 +14,13 @@ export function getSeasonallyOrderedNiches(): NicheConfig[] {
   // Map seasonal events back to niche categories that are relevant right now
   const KOREAN_EVENTS_NICHE_MAP: Record<string, string[]> = {
     'Seollal': ['K-Entertainment'],
-    'Cherry Blossom': ['K-Beauty'],
+    'Cherry Blossom': ['K-Beauty', 'K-Entertainment'],
     'Children': ['K-Entertainment'],
     'Summer': ['K-Beauty'],
     'Chuseok': ['K-Entertainment'],
     'BIFF': ['K-Entertainment'],
     'Suneung': ['K-Entertainment'],
-    'MAMA': ['K-Entertainment'],
+    'MAMA': ['K-Entertainment', 'K-Beauty'],
     'Memorial': ['K-Entertainment'],
     'Dano': ['K-Entertainment'],
     'Summer Sales': ['K-Beauty'],
@@ -118,6 +118,12 @@ export const NICHES: NicheConfig[] = [
       'MAMA Awards 2026 winners complete list',
       'Melon Music Awards 2026 predictions ranked',
       'K-pop concerts in USA 2026 schedule dates',
+      // 에버그린 — 시간 독립적 (트래픽 지속성 확보)
+      'how K-pop training system works explained',
+      'K-drama tropes explained for beginners complete guide',
+      'why K-pop dominated global music industry explained',
+      'how to attend K-pop concerts in Korea as a foreigner',
+      'K-pop fan culture guide bias stan fandom terms explained',
     ],
     contentTypes: ['listicle', 'news-explainer', 'best-x-for-y', 'deep-dive', 'how-to', 'x-vs-y'],
     adSenseRpm: 'medium',
