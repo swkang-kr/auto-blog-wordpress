@@ -213,7 +213,7 @@ async function main(): Promise<void> {
   const nicheCategories = [...new Set(NICHES.map((n) => n.category))];
 
   try {
-    await seoService.ensureSiteTitle(config.SITE_NAME, nicheCategories);
+    await seoService.ensureSiteTitle(config.SITE_NAME, nicheCategories, config.SITE_TAGLINE || undefined);
   } catch (error) {
     logger.warn(`Site title setup failed: ${error instanceof Error ? error.message : error}`);
   }
