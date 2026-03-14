@@ -1462,20 +1462,33 @@ input[type="submit"],.comment-form .submit{background:#5b8def!important;color:#f
    */
   async ensureNoindexThinPagesSnippet(): Promise<void> {
     const phpCode = `
-// Add noindex to thin archive pages (tag, author, date) and categories with <3 posts
-add_action('wp_head', function() {
+// Noindex thin archive pages via Rank Math filter (prevents duplicate robots meta tag)
+// Uses rank_math/frontend/robots hook to avoid conflicting with Rank Math's own robots output
+add_filter('rank_math/frontend/robots', function(\$robots) {
+    // Noindex tag, author, date archives (thin content, wastes crawl budget)
     if (is_tag() || is_author() || is_date()) {
-        echo '<meta name="robots" content="noindex, follow" />' . "\\n";
-        return;
+        \$robots['index'] = 'noindex';
+        \$robots['follow'] = 'follow';
+        return \$robots;
     }
     // Noindex category pages with fewer than 3 posts (thin content)
     if (is_category()) {
         \$cat = get_queried_object();
         if (\$cat && \$cat->count < 3) {
-            echo '<meta name="robots" content="noindex, follow" />' . "\\n";
+            \$robots['index'] = 'noindex';
+            \$robots['follow'] = 'follow';
         }
     }
-    // Pagination rel next/prev for archive pages (saves crawl budget on paginated categories)
+    // Noindex paginated archive pages (page 2+) — low value for search
+    if ((is_category() || is_tag() || is_home()) && get_query_var('paged') > 1) {
+        \$robots['index'] = 'noindex';
+        \$robots['follow'] = 'follow';
+    }
+    return \$robots;
+});
+
+// Pagination rel next/prev for archive pages (saves crawl budget on paginated categories)
+add_action('wp_head', function() {
     if ((is_category() || is_tag() || is_home()) && get_query_var('paged') > 0) {
         global \$wp_query;
         \$paged = get_query_var('paged');
@@ -1488,15 +1501,8 @@ add_action('wp_head', function() {
             echo '<link rel="next" href="' . esc_url(\$next) . '" />' . "\\n";
         }
     }
-    // unavailable_after for time-sensitive posts (news-explainer, event coverage) — expires 60 days after publish
-    if (is_singular('post')) {
-        \$ct = get_post_meta(get_the_ID(), '_autoblog_content_type', true);
-        if (in_array(\$ct, array('news-explainer', 'event-coverage', 'seasonal-guide'), true)) {
-            \$pub = get_the_date('U');
-            \$expiry = gmdate('d M Y H:i:s', \$pub + 60 * 86400) . ' GMT';
-            echo '<meta name="robots" content="unavailable_after: ' . esc_attr(\$expiry) . '" />' . "\\n";
-        }
-    }
+    // NOTE: unavailable_after REMOVED — was expiring posts after 60 days causing mass de-indexing
+    // Stale content management is now handled by content-refresh.service.ts pruning logic only
 });`.trim();
 
     try {
