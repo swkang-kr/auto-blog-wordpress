@@ -107,6 +107,12 @@
           "position": 1,
           "clicks": 0,
           "impressions": 1
+        },
+        {
+          "date": "2026-03-14",
+          "position": 1,
+          "clicks": 0,
+          "impressions": 1
         }
       ],
       "lastPosition": 1,
@@ -219,10 +225,16 @@
           "position": 1,
           "clicks": 0,
           "impressions": 1
+        },
+        {
+          "date": "2026-03-14",
+          "position": 1,
+          "clicks": 0,
+          "impressions": 1
         }
       ],
       "lastPosition": 1,
-      "engagementScore": 0
+      "engagementScore": 32
     },
     {
       "keyword": "how to save money",
@@ -246,7 +258,7 @@
       "contentType": "best-x-for-y",
       "engagementScore": 60,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0
+      "estimatedRevenue": 0.003
     },
     {
       "keyword": "budgeting tips",
@@ -285,7 +297,7 @@
       "contentType": "how-to",
       "engagementScore": 31,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0
+      "estimatedRevenue": 0.003
     },
     {
       "keyword": "how to save money on a low income",
@@ -296,9 +308,9 @@
       "publishedAt": "2026-02-26T10:46:17.497Z",
       "niche": "personal-finance",
       "contentType": "how-to",
-      "engagementScore": 1,
+      "engagementScore": 2,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0
+      "estimatedRevenue": 0.003
     },
     {
       "keyword": "how to use AI tools for SEO",
@@ -335,7 +347,7 @@
       "publishedAt": "2026-02-27T06:13:55.574Z",
       "niche": "personal-finance",
       "contentType": "how-to",
-      "engagementScore": 30,
+      "engagementScore": 60,
       "estimatedRpm": 3,
       "estimatedRevenue": 0
     },
@@ -788,16 +800,52 @@
       "affiliateLinkCount": 0,
       "seriesId": "k-entertainment-business-best-korean-dramas-on-netflix-",
       "seriesPart": 4
+    },
+    {
+      "keyword": "Torriden dive-in serum vs COSRX hyaluronic acid",
+      "postId": 69443,
+      "postUrl": "https://trendhunt.net/?p=69443",
+      "publishedAt": "2026-03-14T14:40:03.618Z",
+      "niche": "k-beauty-skincare",
+      "contentType": "x-vs-y",
+      "titleCandidates": [
+        "Torriden Dive-In vs COSRX HA Serum: Ingredient-Level Breakdown",
+        "COSRX vs Torriden Hyaluronic Acid: Which Korean Serum Is Right for You?"
+      ],
+      "originalTitle": "Torriden Dive-In vs COSRX Hyaluronic Acid: Which Wins?",
+      "searchIntent": "commercial-investigation",
+      "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/torriden-divein-serum-vs-cosrx-hyaluronic-acid-featured-2026.webp",
+      "featuredImageMediaId": 69319,
+      "affiliateLinkCount": 0
+    },
+    {
+      "keyword": "K-pop business model how agencies make money",
+      "postId": 69722,
+      "postUrl": "https://trendhunt.net/?p=69722",
+      "publishedAt": "2026-03-14T14:41:33.296Z",
+      "niche": "k-entertainment-business",
+      "contentType": "deep-dive",
+      "titleCandidates": [
+        "Inside K-pop's Money Machine: How Agencies Build Billion-Dollar IP (2026)",
+        "HYBE, SM, YG, JYP: Who Has the Best K-pop Business Model in 2026?"
+      ],
+      "originalTitle": "K-pop Business Model: How Korean Agencies Make Money (2026)",
+      "searchIntent": "informational",
+      "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/kpop-business-model-agencies-make-money-featured-2026.webp",
+      "featuredImageMediaId": 69586,
+      "affiliateLinkCount": 0,
+      "seriesId": "k-entertainment-business-best-korean-dramas-on-netflix-",
+      "seriesPart": 5
     }
   ],
-  "lastRunAt": "2026-03-14T09:55:19.670Z",
-  "totalPosts": 38,
+  "lastRunAt": "2026-03-14T14:43:57.600Z",
+  "totalPosts": 40,
   "categoryLastPublished": {
     "korean-food-cooking": "2026-03-09T14:49:00.731Z",
     "korean-tech-ai": "2026-03-13T14:58:36.162Z",
     "korean-finance-stocks": "2026-03-13T14:59:25.920Z",
-    "k-beauty-skincare": "2026-03-14T09:52:39.438Z",
+    "k-beauty-skincare": "2026-03-14T14:40:03.616Z",
     "korea-travel-guide": "2026-03-12T15:04:37.207Z",
-    "k-entertainment-business": "2026-03-14T09:54:07.284Z"
+    "k-entertainment-business": "2026-03-14T14:41:33.282Z"
   }
 }
