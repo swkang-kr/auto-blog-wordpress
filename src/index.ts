@@ -919,8 +919,12 @@ async function main(): Promise<void> {
         }
 
         // Auto-fill topical map gaps: inject gap topics as priority seed keywords for next batch
-        // This ensures keyword research strongly considers uncovered sub-topics
-        const gapSeedKeywords = completeness.highPriorityGaps
+        // Only inject seeds for completely uncovered sub-topics (0 posts) to avoid
+        // generating near-duplicate content for sub-topics already partially covered.
+        const zeroCoverageGaps = completeness.highPriorityGaps.filter(gap =>
+          !completeness.subTopicDetails?.find((d: { subTopic: string; postCount: number }) => d.subTopic === gap && d.postCount > 0),
+        );
+        const gapSeedKeywords = zeroCoverageGaps
           .slice(0, 3) // Top 3 gaps per niche
           .map(gap => `${gap} ${niche.category} guide ${new Date().getFullYear()}`);
 
