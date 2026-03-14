@@ -1659,8 +1659,21 @@ async function main(): Promise<void> {
             });
             const ytItems = ytResponse.data?.items;
             if (ytItems?.length > 0) {
-              const videoId = ytItems[0].id?.videoId;
-              const videoTitle = ytItems[0].snippet?.title || searchQuery;
+              // Verify embed is actually allowed via oEmbed (videoEmbeddable param is not always reliable)
+              let videoId: string | null = null;
+              let videoTitle = searchQuery;
+              for (const item of ytItems) {
+                const vid = item.id?.videoId;
+                if (!vid) continue;
+                try {
+                  await axios.get(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${vid}&format=json`, { timeout: 5000 });
+                  videoId = vid;
+                  videoTitle = item.snippet?.title || searchQuery;
+                  break;
+                } catch {
+                  logger.debug(`YouTube video ${vid} is not embeddable, trying next`);
+                }
+              }
               if (videoId) {
                 content.html = WordPressService.injectYouTubeEmbed(
                   content.html,
