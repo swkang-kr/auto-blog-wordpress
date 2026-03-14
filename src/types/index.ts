@@ -15,9 +15,9 @@ export const KOREAN_SEASONAL_EVENTS: Array<{
 }> = [
   // Lead times extended to 45-60 days for major events (SEO indexing + ranking takes 30-45 days)
   { name: 'Seollal (Lunar New Year)', startMonth: 1, startDay: 20, endMonth: 2, endDay: 10, leadTimeDays: 60, relevantNiches: ['Korea Travel', 'K-Entertainment', 'Korean Finance'], contentAngles: ['travel tips for Seollal', 'Korean New Year traditions', 'stock market during Lunar New Year'] },
-  { name: 'Cherry Blossom Season', startMonth: 3, startDay: 25, endMonth: 4, endDay: 15, leadTimeDays: 60, relevantNiches: ['Korea Travel', 'K-Beauty'], contentAngles: ['best cherry blossom spots in Korea', 'spring skincare routine', 'Seoul spring travel guide'] },
+  { name: 'Cherry Blossom Season', startMonth: 3, startDay: 25, endMonth: 4, endDay: 15, leadTimeDays: 60, relevantNiches: ['K-Beauty', 'K-Entertainment'], contentAngles: ['spring skincare routine', 'K-beauty spring essentials', 'cherry blossom K-drama filming locations', 'spring comeback season K-pop preview'] },
   { name: 'Buddha\'s Birthday', startMonth: 5, startDay: 1, endMonth: 5, endDay: 15, leadTimeDays: 45, relevantNiches: ['Korea Travel', 'K-Entertainment'], contentAngles: ['lantern festival guide', 'temple stay experience'] },
-  { name: 'Summer Monsoon Season', startMonth: 6, startDay: 15, endMonth: 8, endDay: 15, leadTimeDays: 45, relevantNiches: ['Korea Travel', 'K-Beauty'], contentAngles: ['rainy season travel tips', 'summer skincare for humidity', 'best indoor activities Seoul'] },
+  { name: 'Summer Monsoon Season', startMonth: 6, startDay: 15, endMonth: 8, endDay: 15, leadTimeDays: 45, relevantNiches: ['K-Beauty', 'K-Entertainment'], contentAngles: ['summer skincare for humidity', 'best Korean sunscreen for summer', 'summer comeback season K-pop ranked', 'best K-dramas to watch this summer'] },
   { name: 'Chuseok (Korean Thanksgiving)', startMonth: 9, startDay: 5, endMonth: 9, endDay: 25, leadTimeDays: 60, relevantNiches: ['Korea Travel', 'Korean Finance', 'K-Entertainment'], contentAngles: ['Chuseok travel guide', 'Korean harvest festival traditions', 'stock market Chuseok effect'] },
   { name: 'MAMA Awards Season', startMonth: 11, startDay: 15, endMonth: 12, endDay: 5, leadTimeDays: 45, relevantNiches: ['K-Entertainment'], contentAngles: ['MAMA Awards predictions', 'K-pop year-end awards guide', 'best K-pop performances'] },
   { name: 'Black Friday / Singles Day', startMonth: 11, startDay: 1, endMonth: 11, endDay: 30, leadTimeDays: 45, relevantNiches: ['K-Beauty', 'Korean Tech', 'Korean Finance'], contentAngles: ['best K-beauty deals', 'Korean tech deals guide', 'holiday shopping Korea'] },
@@ -28,7 +28,9 @@ export const KOREAN_SEASONAL_EVENTS: Array<{
   { name: 'Korean Earnings Season Q2', startMonth: 4, startDay: 20, endMonth: 5, endDay: 15, leadTimeDays: 21, relevantNiches: ['Korean Finance', 'Korean Tech'], contentAngles: ['Korean Q1 earnings analysis', 'chaebol performance review'] },
   { name: 'Summer Olympics (if applicable)', startMonth: 7, startDay: 20, endMonth: 8, endDay: 12, leadTimeDays: 60, relevantNiches: ['Korea Travel', 'K-Entertainment', 'Korean Tech'], contentAngles: ['Korean athletes to watch', 'Korea Olympic tech', 'travel guide for Olympics'] },
   { name: 'K-Beauty Awards Season', startMonth: 12, startDay: 1, endMonth: 12, endDay: 31, leadTimeDays: 45, relevantNiches: ['K-Beauty'], contentAngles: ['best K-beauty products of the year', 'Olive Young award winners', 'skincare trends next year'] },
-  { name: 'BIFF (Busan Film Festival)', startMonth: 10, startDay: 1, endMonth: 10, endDay: 12, leadTimeDays: 45, relevantNiches: ['K-Entertainment', 'Korea Travel'], contentAngles: ['BIFF highlights', 'Korean cinema spotlight', 'Busan travel for BIFF'] },
+  { name: 'K-pop Spring Comeback Season', startMonth: 2, startDay: 1, endMonth: 4, endDay: 30, leadTimeDays: 60, relevantNiches: ['K-Entertainment'], contentAngles: ['spring comeback preview K-pop 2026', 'best K-pop comebacks spring ranked', 'new K-pop releases to watch'] },
+  { name: 'K-pop Summer Comeback Season', startMonth: 6, startDay: 1, endMonth: 8, endDay: 31, leadTimeDays: 60, relevantNiches: ['K-Entertainment'], contentAngles: ['summer comeback season K-pop 2026', 'best K-pop summer releases ranked', 'K-pop festival season guide'] },
+  { name: 'BIFF (Busan Film Festival)', startMonth: 10, startDay: 1, endMonth: 10, endDay: 12, leadTimeDays: 45, relevantNiches: ['K-Entertainment'], contentAngles: ['BIFF highlights', 'Korean cinema spotlight', 'best Korean films at BIFF'] },
 ];
 
 /** 콘텐츠 유형 */
@@ -144,6 +146,14 @@ export const NICHE_AUTHOR_PERSONAS: Record<string, AuthorProfile[]> = {
       bio: 'Testing and reviewing Korean skincare products hands-on, with a focus on ingredient transparency, texture analysis, and real-world routine results. Sensitive skin perspective.',
       expertise: ['Product texture analysis', 'Sensitive skin routines', 'Olive Young hauls', 'Korean drugstore picks'],
       credentials: ['Certified Cosmetic Ingredient Reviewer', 'K-Beauty Content Creator'],
+      yearsExperience: 3,
+    },
+    {
+      name: '',
+      title: 'K-Beauty Hair & Makeup Specialist',
+      bio: 'Covering the full spectrum of Korean beauty — from viral makeup looks and K-pop idol beauty trends to hair loss treatments and scalp care innovations. Focused on products available on Amazon and Olive Young.',
+      expertise: ['Korean makeup brands', 'K-pop idol makeup looks', 'Korean hair loss treatments', 'Scalp care', 'Korean cosmetics on Amazon'],
+      credentials: ['Korean Beauty Content Specialist', 'Makeup & Haircare Product Reviewer'],
       yearsExperience: 3,
     },
   ],

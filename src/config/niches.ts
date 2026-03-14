@@ -93,7 +93,7 @@ export const NICHES: NicheConfig[] = [
       'best Korean cushion foundation for oily skin no oxidation 2026',
       'Clio kill cover foundation review vs MAC comparison',
     ],
-    contentTypes: ['product-review', 'best-x-for-y', 'x-vs-y', 'how-to', 'listicle', 'case-study'],
+    contentTypes: ['product-review', 'best-x-for-y', 'x-vs-y', 'how-to', 'listicle', 'case-study', 'deep-dive'],
     adSenseRpm: 'high',
   },
 
@@ -103,7 +103,7 @@ export const NICHES: NicheConfig[] = [
     id: 'k-entertainment-business',
     name: 'K-Pop & K-Drama',
     category: 'K-Entertainment',
-    broadTerm: 'K-pop K-drama BTS BLACKPINK NewJeans 2026',
+    broadTerm: 'K-pop K-drama comeback 2026 fan guide',
     seedKeywords: [
       // BTS — 글로벌 최고 검색량
       'BTS comeback 2026 date songs what to expect',
@@ -141,7 +141,7 @@ export const NICHES: NicheConfig[] = [
       'how to attend K-pop concerts in Korea as a foreigner',
       'K-pop fan culture guide bias stan fandom terms explained',
     ],
-    contentTypes: ['listicle', 'news-explainer', 'best-x-for-y', 'deep-dive', 'how-to', 'x-vs-y'],
+    contentTypes: ['listicle', 'news-explainer', 'best-x-for-y', 'deep-dive', 'how-to', 'x-vs-y', 'case-study'],
     adSenseRpm: 'medium',
   },
 ];

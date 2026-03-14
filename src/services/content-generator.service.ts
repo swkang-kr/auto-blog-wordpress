@@ -17,35 +17,21 @@ type LayoutVariant = 'standard' | 'narrative' | 'compact' | 'journal' | 'opinion
  * (previously all niches used same 3 names).
  */
 const NICHE_SIGNATURE_SECTIONS: Record<string, Record<string, string[]>> = {
-  'Korean Tech': {
-    default: ['Technical Deep Dive', 'Innovation Spotlight', 'Global Tech Context', 'Seoul to Silicon Valley'],
-    'how-to': ['Pro Tips', 'Technical Deep Dive'],
-    'listicle': ["Editor's Picks", 'Innovation Spotlight'],
-    'x-vs-y': ['Head-to-Head Verdict', 'Technical Deep Dive'],
-  },
   'K-Beauty': {
     default: ['Expert Skincare Insight', 'Product Science', 'Global Beauty Context', 'Behind the Formula'],
     'how-to': ['Pro Tips', 'Expert Skincare Insight'],
     'listicle': ["Editor's Picks", 'Product Science'],
     'x-vs-y': ['Head-to-Head Verdict', 'Product Science'],
-  },
-  'Korea Travel': {
-    default: ['Insider Tips', "Local's Perspective", 'Global Travel Context', 'Off the Beaten Path'],
-    'how-to': ['Pro Tips', 'Insider Tips'],
-    'listicle': ["Editor's Picks", "Local's Perspective"],
-    'x-vs-y': ['Head-to-Head Verdict', 'Insider Tips'],
+    'product-review': ['Behind the Formula', 'Expert Skincare Insight'],
+    'deep-dive': ['Product Science', 'Global Beauty Context'],
   },
   'K-Entertainment': {
     default: ["Fan's Take", 'Fandom Spotlight', 'Global Hallyu Context', 'Behind the Scenes'],
     'how-to': ['Pro Tips', 'Fan Community Guide'],
     'listicle': ["Editor's Picks", 'Fandom Spotlight'],
     'x-vs-y': ['Head-to-Head Verdict', "Fan's Take"],
-  },
-  'Korean Finance': {
-    default: ['Investment Outlook', 'Market Context', 'What This Means for Investors', 'Global Market Perspective'],
-    'how-to': ['Pro Tips', 'Investment Outlook'],
-    'listicle': ["Editor's Picks", 'Market Context'],
-    'x-vs-y': ['Head-to-Head Verdict', 'Investment Outlook'],
+    'case-study': ['Global Hallyu Context', 'Behind the Scenes'],
+    'deep-dive': ['Fandom Spotlight', 'Global Hallyu Context'],
   },
 };
 
@@ -338,10 +324,7 @@ To reach WORD_COUNT_TARGET+ words WITHOUT padding:
 - End with "What Others Can Learn" section and FAQ (3-5 Q&As)
 
 ## Niche-Specific Tone
-- Korean Tech: Insider tone — write like a Seoul-based tech journalist with Silicon Valley fluency. Reference Korean tech ecosystem specifics (Pangyo Techno Valley, government R&D programs, chaebol dynamics, Samsung/SK Hynix strategy).
-- Korean Finance: Authoritative market analyst — cite KOSPI/KOSDAQ data, BOK policy, Korean regulatory environment. Write for investors and analysts, not casual readers. Include Korean won context and institutional data.
 - K-Beauty: Expert skincare advisor — combine product knowledge with dermatological science. Reference Korean beauty innovations, ingredient analysis, and brand comparisons. Include Korean product names and Olive Young context.
-- Korea Travel: Practical insider guide tone — write like an expat who has navigated the system. Include specific costs in KRW/USD, real transit routes, neighborhood-level recommendations. Reference T-money, KTX, Korean apps foreigners need.
 - K-Entertainment: Fan-centric cultural writer — cover comebacks, rankings, fan experiences, and community culture. Reference idol activities, drama recommendations, and award predictions through a fan lens. Use fan-friendly language (comeback, bias, stan, era, fandom). Do NOT analyze agency finances or business strategy — this is fan content, not finance content.
 
 ## Signature Section (MANDATORY)
@@ -566,12 +549,8 @@ Include ONE simple inline SVG infographic per article:
 </div>
 
 Niche-specific SVG formats:
-- **Finance**: Bar chart comparing key metrics (KOSPI sectors, P/E ratios, revenue)
-- **Tech**: Comparison chart showing feature/spec differences between products
+- **K-Beauty**: Price comparison bar chart (Olive Young KRW vs Amazon USD vs YesStyle), ingredient concentration bar, or skin type suitability matrix
 - **K-Entertainment**: Timeline showing comeback schedules, music chart positions, or award history
-- **Korean Food**: Ingredient proportion chart or nutrition comparison
-- **Korea Travel**: Cost breakdown bars (accommodation, transport, food, activities)
-- **Korean Language**: Grammar structure chart or TOPIK level comparison
 
 Keep SVG charts simple: max 5 bars/items, clear labels, brand colors (#0066FF, #00CC66, #FF6B35).
 
@@ -801,6 +780,7 @@ These are sibling posts in your topic cluster. You MUST include a natural contex
         )
         .slice(0, 6);
       // Tier 3: Cross-category (for broad topical authority)
+      // K-Beauty ↔ K-Entertainment natural bridges: idol skincare routines, K-drama makeup trends, celebrity beauty looks
       const crossCategory = existingPosts
         .filter(p => p.category.toLowerCase() !== niche.category.toLowerCase())
         .slice(0, 4);
@@ -833,13 +813,8 @@ CRITICAL: ONLY use the exact URLs listed below. Do NOT invent or generate URLs f
 
     // Niche-specific writing directives for differentiated voice
     const nicheDirectives: Record<string, string> = {
-      'Korean Tech': `NICHE VOICE: Write as a Seoul-based tech journalist fluent in both Korean startup culture and Silicon Valley trends. Include specific Korean tech ecosystem references (Pangyo Techno Valley, TIPS program, K-Startup Grand Challenge). Use insider terminology. Include at least one comparison with a global equivalent. When mentioning apps/services, note if they have English support.`,
       'K-Beauty': `NICHE VOICE: Write as a trusted K-beauty skincare specialist who has personally tested the products. MANDATORY real-use signals: describe texture, skin feel on application, absorption speed, and visible results timeline (e.g., "after 2 weeks", "first use glow"). Specify skin type suitability (oily, dry, combination, sensitive). Include key active ingredients with their function (e.g., niacinamide 5% for pore-tightening). Where applicable, compare Olive Young (KRW) vs Amazon (USD) pricing. Call out any scent, finish (matte/dewy/satin), or irritation potential. Never write about K-beauty products in purely abstract terms — reader experience is paramount.`,
       'K-Entertainment': `NICHE VOICE: Write as a passionate K-pop and K-drama fan who is deeply embedded in the community. Focus on fan experience, content rankings, idol news, and community culture. Use fan-friendly language (comeback, bias, stan, era, fandom). Include specific examples fans care about (song rankings, drama recommendations, award predictions, concert experiences). Do NOT cover stock prices, agency financials, revenue models, or business analysis — this is fan content, not finance content.`,
-      'Korean Finance': `NICHE VOICE: Write as an authoritative market analyst for international investors. MUST include at least one data table (KOSPI levels, P/E ratios, or sector comparisons). Include a risk disclaimer paragraph. Reference BOK monetary policy and FSC regulations. Use precise financial terminology. Include KRW/USD context for all monetary figures.`,
-      'Korean Food': `NICHE VOICE: Write in a warm, first-person experiential tone — as if you live in Seoul and frequent local markets. Include specific Seoul neighborhood recommendations (Gwangjang Market, Mapo-gu, Itaewon). Provide Korean ingredient names with Hangul (e.g., gochugaru 고춧가루). Include at least one practical tip from Korean home cooking culture. Mention specific price ranges in KRW.`,
-      'Korea Travel': `NICHE VOICE: Write as a practical expat guide. Include specific costs in both KRW and USD. Mention exact transit routes (subway line numbers, KTX schedules). Reference essential Korean apps (Naver Map, KakaoTalk, T-money). Include neighborhood-level specificity, not just city names. Add at least one "insider tip" that typical tourist guides miss.`,
-      'Korean Language': `NICHE VOICE: Write as an encouraging Korean language teacher. Include Hangul examples with romanization for every Korean term introduced. Mention TOPIK level relevance where applicable. Include common mistakes foreigners make and how to avoid them. Reference specific textbooks or apps with pros/cons. Add cultural context behind language patterns (honorifics, age-based speech).`,
     };
     const nicheVoice = nicheDirectives[niche.category] || '';
 
