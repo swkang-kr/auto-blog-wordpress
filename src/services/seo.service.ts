@@ -1144,19 +1144,14 @@ add_action('init', function() {
     $menu_name = 'TrendHunt Main';
     $menu_exists = wp_get_nav_menu_object($menu_name);
 
-    // If menu already exists with items, skip recreation to preserve custom edits
+    // Always rebuild menu to reflect current niche configuration
     if ($menu_exists) {
         $existing_items = wp_get_nav_menu_items($menu_exists->term_id);
         if (!empty($existing_items)) {
-            // Assign to primary location if not already assigned
-            $locations = get_theme_mod('nav_menu_locations', []);
-            if (empty($locations['primary']) || $locations['primary'] !== $menu_exists->term_id) {
-                $locations['primary'] = $menu_exists->term_id;
-                set_theme_mod('nav_menu_locations', $locations);
+            foreach ($existing_items as $item) {
+                wp_delete_post($item->ID, true);
             }
-            return;
         }
-        // Menu exists but empty — rebuild it
         $menu_id = $menu_exists->term_id;
     } else {
         $menu_id = wp_create_nav_menu($menu_name);
