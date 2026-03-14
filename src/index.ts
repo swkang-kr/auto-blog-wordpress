@@ -1673,6 +1673,8 @@ async function main(): Promise<void> {
       );
 
       // B-4. Create WordPress post (English only)
+      // Enforce niche category to prevent AI from generating mismatched category names
+      content.category = niche.category;
       // Get cluster-aware related posts for enhanced related posts widget
       const clusterRelatedPosts = topicClusterService.getRelatedPostsByCluster(
         niche.id, researched.analysis.selectedKeyword, existingPosts, 4,
