@@ -1,6 +1,16 @@
-import 'dotenv/config';
+import dotenv from 'dotenv';
 import { z } from 'zod';
 import { ConfigError } from '../types/errors.js';
+
+// dotenv v17 no longer auto-injects into process.env — manually merge parsed values
+const parsed = dotenv.config().parsed;
+if (parsed) {
+  for (const [key, value] of Object.entries(parsed)) {
+    if (process.env[key] === undefined) {
+      process.env[key] = value;
+    }
+  }
+}
 
 const envSchema = z.object({
   ANTHROPIC_API_KEY: z.string().min(1, 'ANTHROPIC_API_KEY is required'),
