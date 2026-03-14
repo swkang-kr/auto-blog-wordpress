@@ -79,12 +79,6 @@ const envSchema = z.object({
   ENABLE_KOREAN_CONTENT: z.string().default('false').transform(v => v === 'true' ? 'true' : 'false').pipe(z.enum(['true', 'false'])),
   // YouTube Data API key for finding relevant videos to embed in posts (optional)
   YOUTUBE_API_KEY: z.string().default(''),
-  // Lead magnet download URL (e.g., free ebook, checklist) — category-specific CTAs
-  LEAD_MAGNET_URL: z.string().default(''),
-  // Lead magnet title (e.g., "Free Korea Investment Guide 2026")
-  LEAD_MAGNET_TITLE: z.string().default(''),
-  // Per-niche lead magnet URLs (JSON: {"Korean Tech":"https://...","K-Beauty":"https://..."})
-  LEAD_MAGNET_MAP: z.string().default(''),
   // RPM overrides: JSON object of niche → actual RPM from AdSense (e.g., '{"Korean Finance":14.5}')
   ADSENSE_RPM_OVERRIDES: z.string().default(''),
   // Reddit OAuth API credentials (optional — falls back to public JSON API if not set)

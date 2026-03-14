@@ -596,15 +596,6 @@ For comparison/review content, add a lightweight poll-style question to boost en
 <p style="margin:0 0 12px 0; font-size:17px; font-weight:700; color:#222;">Quick Poll: Which do you prefer?</p>
 <p style="margin:0; font-size:15px; color:#555; line-height:1.7;">Drop your answer in the comments — Option A or Option B? We'll share the community consensus in our next update.</p></div>
 
-## Contextual Content Upgrade
-If the content type is how-to, deep-dive, or analysis, include ONE contextual content upgrade box using this format:
-<div class="ab-content-upgrade" style="background:linear-gradient(135deg,#f0f7ff 0%,#e8f4f8 100%);border:2px solid #3498db;border-radius:12px;padding:24px;margin:30px 0;text-align:center;">
-<p style="font-size:18px;font-weight:700;margin:0 0 8px;">📥 Free Download: [Relevant Resource Title]</p>
-<p style="font-size:14px;color:#555;margin:0 0 16px;">[1-sentence description of what they'll get — checklist, template, cheatsheet, etc.]</p>
-<a href="LEAD_MAGNET_URL" class="ab-cta-btn" style="display:inline-block;background:#3498db;color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:600;">Download Free [Resource Type]</a>
-</div>
-The content upgrade MUST be contextually relevant to the article topic (not generic). Place it at approximately 60-70% through the article.
-
 ### Infographic-Style Data Box (Finance, Tech — data-heavy content)
 For presenting key statistics in a visually scannable format:
 <div style="margin:24px 0; padding:20px; background:#f8f9fa; border-radius:12px; border:1px solid #e5e7eb;">

@@ -1576,42 +1576,6 @@ async function main(): Promise<void> {
           logger.debug(`Infographic skipped: ${infoErr instanceof Error ? infoErr.message : infoErr}`);
         }
       }
-      // Inject lead magnet mention for all niches with lead magnets
-      content.html = wpService.injectLeadMagnetMention(content.html, niche.category);
-
-      // Enhanced lead magnet with category-specific CTA (supports per-niche URLs via LEAD_MAGNET_MAP)
-      {
-        const leadMagnetMap: Record<string, string> = config.LEAD_MAGNET_MAP
-          ? (() => { try { return JSON.parse(config.LEAD_MAGNET_MAP); } catch { return {}; } })()
-          : {};
-        const nicheLeadUrl = leadMagnetMap[niche.category] || config.LEAD_MAGNET_URL;
-        if (nicheLeadUrl) {
-          content.html = wpService.injectEnhancedLeadMagnet(
-            content.html, niche.category,
-            nicheLeadUrl,
-            config.LEAD_MAGNET_TITLE || `Free ${niche.category} Guide`,
-          );
-        }
-      }
-
-      // Content upgrade CTA (content-type-specific downloadable resource)
-      const upgradeLeadMagnetMap: Record<string, string> = config.LEAD_MAGNET_MAP
-        ? (() => { try { return JSON.parse(config.LEAD_MAGNET_MAP); } catch { return {}; } })()
-        : {};
-      const upgradeLeadUrl = upgradeLeadMagnetMap[niche.category] || config.LEAD_MAGNET_URL || config.NEWSLETTER_FORM_URL || '';
-      const contentUpgradeCta = wpService.buildContentUpgradeCta(
-        researched.analysis.selectedKeyword, niche.category, researched.analysis.contentType, upgradeLeadUrl,
-      );
-      if (contentUpgradeCta) {
-        // Insert before the last </div> or at end of content
-        const lastDivIdx = content.html.lastIndexOf('</div>');
-        if (lastDivIdx > 0) {
-          content.html = content.html.slice(0, lastDivIdx) + contentUpgradeCta + content.html.slice(lastDivIdx);
-        } else {
-          content.html += contentUpgradeCta;
-        }
-        logger.debug(`Content upgrade CTA injected for "${researched.analysis.selectedKeyword}"`);
-      }
 
       // Engagement poll injection (if content generated a poll question)
       if (content.pollQuestion) {

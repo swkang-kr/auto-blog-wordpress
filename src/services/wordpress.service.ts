@@ -828,13 +828,9 @@ div[style*="background:#f8f9fa"]{background:#1e1e2e!important;border-color:#3b3b
 
     // If newsletter form URL is configured, show email capture form
     if (newsletterFormUrl) {
-      const leadMagnet = WordPressService.NICHE_LEAD_MAGNETS[category];
-      const leadMagnetHtml = leadMagnet
-        ? `<p style="margin:0 0 12px 0; padding:8px 14px; background:rgba(255,255,255,0.15); border-radius:6px; font-size:13px; color:rgba(255,255,255,0.95); line-height:1.5;"><strong>${this.escapeHtml(leadMagnet.title)}</strong> — ${this.escapeHtml(leadMagnet.description)}</p>`
-        : '';
       return `<div class="ab-cta ab-cta-newsletter">
 <p style="margin:0 0 8px 0; font-size:20px; font-weight:700;">Get ${safeCategory} Insights Weekly</p>
-${leadMagnetHtml}<p style="margin:0 0 14px 0; font-size:14px; color:rgba(255,255,255,0.85); line-height:1.5;">Join readers who get our latest Korea analysis delivered to their inbox. No spam, unsubscribe anytime.</p>
+<p style="margin:0 0 14px 0; font-size:14px; color:rgba(255,255,255,0.85); line-height:1.5;">Join readers who get our latest Korea analysis delivered to their inbox. No spam, unsubscribe anytime.</p>
 <form action="${this.escapeHtml(newsletterFormUrl)}" method="POST" target="_blank" rel="noopener noreferrer" style="display:flex; flex-wrap:wrap; justify-content:center; gap:8px;" onsubmit="if(typeof gtag==='function'){gtag('event','newsletter_signup',{event_category:'conversion',event_label:'${safeCategory}',content_type:'inline_cta',page_path:location.pathname})}">
 <input type="email" name="email" placeholder="your@email.com" required style="padding:10px 16px; border:none; border-radius:6px; font-size:15px; width:60%; max-width:280px;">
 <input type="hidden" name="source" value="${safeCategory}">
@@ -958,28 +954,6 @@ ${socialHtml}
    */
   private buildNicheDisclaimer(category: string): string {
     return NICHE_DISCLAIMERS[category] || '';
-  }
-
-  /**
-   * Inject lead magnet callout at approximately 60% of the content.
-   * Uses the niche-specific lead magnets from NICHE_LEAD_MAGNETS.
-   */
-  injectLeadMagnetMention(html: string, category: string): string {
-    const leadMagnet = WordPressService.NICHE_LEAD_MAGNETS[category];
-    if (!leadMagnet) return html;
-
-    const calloutHtml = `<div class="ab-lead-magnet" style="margin:24px 0; padding:20px 24px; background:linear-gradient(135deg,#f0f4ff,#e8f0fe); border:2px solid #0066FF; border-radius:12px; text-align:center;">
-<p style="margin:0 0 8px 0; font-size:18px; font-weight:700; color:#0052CC;">📥 ${this.escapeHtml(leadMagnet.title)}</p>
-<p style="margin:0; font-size:14px; color:#555; line-height:1.6;">${this.escapeHtml(leadMagnet.description)}</p></div>`;
-
-    // Insert at approximately 60% of the content (find nearest H2 boundary)
-    const h2Positions = this.findH2SectionEnds(html);
-    if (h2Positions.length >= 3) {
-      const targetIdx = Math.floor(h2Positions.length * 0.6);
-      const insertPos = h2Positions[Math.min(targetIdx, h2Positions.length - 1)];
-      return html.slice(0, insertPos) + '\n' + calloutHtml + '\n' + html.slice(insertPos);
-    }
-    return html;
   }
 
   /**
@@ -1251,28 +1225,15 @@ ${rows}
   /**
    * Build email newsletter subscription CTA with form.
    */
-  /** Niche-specific lead magnet descriptions for newsletter CTA */
-  private static readonly NICHE_LEAD_MAGNETS: Record<string, { title: string; description: string }> = {
-    'Korean Tech': { title: 'Free: Korean Tech Investment Cheat Sheet', description: 'Get our curated list of top Korean tech companies, key metrics, and analyst picks — updated monthly.' },
-    'Korean Finance': { title: 'Free: KOSPI Investor Starter Kit', description: 'Download our guide to investing in Korean stocks: brokerage comparison, tax tips, and top ETF picks.' },
-    'K-Beauty': { title: 'Free: K-Beauty Routine Builder Guide', description: 'Get our step-by-step skincare routine builder with product recommendations for your skin type.' },
-    'Korea Travel': { title: 'Free: Korea Travel Planning Checklist', description: 'Download our comprehensive Korea trip checklist: visa, budget, itinerary templates, and insider tips.' },
-    'K-Entertainment': { title: 'Free: K-Pop Industry Map', description: 'Get our visual guide to the K-pop business ecosystem: agencies, revenue streams, and market data.' },
-  };
-
   private buildEmailNewsletterCta(category: string, formUrl: string): string {
     const safeCategory = this.escapeHtml(category);
-    const leadMagnet = WordPressService.NICHE_LEAD_MAGNETS[category];
-    const leadMagnetHtml = leadMagnet
-      ? `<p style="margin:0 0 12px 0; padding:10px 16px; background:rgba(255,255,255,0.15); border-radius:6px; font-size:13px; color:rgba(255,255,255,0.95); line-height:1.5;">🎁 <strong>${this.escapeHtml(leadMagnet.title)}</strong> — ${this.escapeHtml(leadMagnet.description)}</p>`
-      : '';
 
     // GA4 event tracking: gtag conversion event on form submit
     const ga4TrackingScript = `<script>document.querySelector('.ab-newsletter-form')?.addEventListener('submit',function(){if(typeof gtag==='function'){gtag('event','newsletter_signup',{event_category:'engagement',event_label:'${safeCategory}',value:1})}});</script>`;
 
     return `<div class="ab-newsletter-cta">
 <p style="margin:0 0 8px 0; font-size:20px; font-weight:700;">Get ${safeCategory} Insights Weekly</p>
-${leadMagnetHtml}<p style="margin:0 0 16px 0; font-size:14px; color:rgba(255,255,255,0.85); line-height:1.5;">Join readers who get our latest Korea analysis delivered to their inbox every week. No spam, unsubscribe anytime.</p>
+<p style="margin:0 0 16px 0; font-size:14px; color:rgba(255,255,255,0.85); line-height:1.5;">Join readers who get our latest Korea analysis delivered to their inbox every week. No spam, unsubscribe anytime.</p>
 <form class="ab-newsletter-form" action="${this.escapeHtml(formUrl)}" method="POST" target="_blank" rel="noopener noreferrer" style="display:flex; flex-wrap:wrap; justify-content:center; gap:8px;">
 <input type="email" name="email" placeholder="your@email.com" required style="padding:10px 16px; border:none; border-radius:6px; font-size:15px; width:60%; max-width:300px;">
 <input type="hidden" name="source" value="${safeCategory}">
@@ -4159,59 +4120,4 @@ ${ga4TrackingScript}`;
     return embedHtml + '\n' + html;
   }
 
-  /**
-   * Build content-specific upgrade CTA (higher conversion than generic lead magnets).
-   * Creates a download offer directly related to the article topic.
-   */
-  buildContentUpgradeCta(keyword: string, category: string, contentType: string, leadMagnetUrl?: string): string {
-    // Generate content-specific upgrade based on content type
-    const upgrades: Record<string, { title: string; description: string }> = {
-      'how-to': { title: `${keyword} — Quick Reference Checklist`, description: 'Get a printable step-by-step checklist for this guide' },
-      'best-x-for-y': { title: `${keyword} — Comparison Spreadsheet`, description: 'Download our detailed comparison spreadsheet with ratings and prices' },
-      'analysis': { title: `${keyword} — Full Data Report`, description: 'Get the complete data analysis with charts and projections' },
-      'product-review': { title: `${keyword} — Buyer\'s Decision Matrix`, description: 'Download our scoring matrix to make your purchase decision' },
-      'deep-dive': { title: `${keyword} — Executive Summary PDF`, description: 'Get a concise 2-page executive summary of this deep dive' },
-      'x-vs-y': { title: `${keyword} — Side-by-Side Comparison PDF`, description: 'Download the full comparison table with all features and specs' },
-    };
-    const upgrade = upgrades[contentType] || { title: `${keyword} — Resource Guide`, description: 'Get additional resources and references for this topic' };
-
-    return `<div class="ab-content-upgrade" style="margin:24px 0; padding:24px; background:linear-gradient(135deg,#f0f4ff,#e8f0fe); border:2px dashed #0066FF; border-radius:12px; text-align:center;">
-<p style="margin:0 0 4px 0; font-size:11px; font-weight:700; color:#0066FF; text-transform:uppercase; letter-spacing:1px;">FREE RESOURCE</p>
-<p style="margin:0 0 8px 0; font-size:18px; font-weight:700; color:#222;">${this.escapeHtml(upgrade.title)}</p>
-<p style="margin:0 0 16px 0; font-size:14px; color:#555; line-height:1.6;">${this.escapeHtml(upgrade.description)}</p>
-<a href="${this.escapeHtml(leadMagnetUrl || '#respond')}" ${leadMagnetUrl ? 'target="_blank" rel="noopener noreferrer"' : ''} onclick="if(typeof gtag==='function'){gtag('event','content_upgrade_click',{event_category:'conversion',event_label:'${this.escapeHtml(contentType)}',content_group:'${this.escapeHtml(category)}',value:1})}" class="ab-content-upgrade" style="display:inline-block; padding:12px 32px; background:#0066FF; color:#fff; text-decoration:none; border-radius:8px; font-weight:700; font-size:15px;">Get Free Download</a>
-<p style="margin:10px 0 0 0; font-size:11px; color:#999;">${leadMagnetUrl ? 'Free download — instant access' : 'Join the discussion below'}</p></div>`;
-  }
-
-  /**
-   * Build enhanced lead magnet CTA with download link and category-specific offer.
-   */
-  injectEnhancedLeadMagnet(
-    html: string,
-    category: string,
-    leadMagnetUrl: string,
-    leadMagnetTitle: string,
-  ): string {
-    if (!leadMagnetUrl) return html;
-
-    const magnet = WordPressService.NICHE_LEAD_MAGNETS[category];
-    const title = leadMagnetTitle || magnet?.title || 'Free Download';
-    const description = magnet?.description || 'Get our exclusive guide — free for our readers.';
-
-    const ctaHtml = `<div class="ab-lead-magnet-enhanced" style="margin:32px 0; padding:24px; background:linear-gradient(135deg,#0052CC,#0066FF); border-radius:12px; text-align:center; color:#fff;">
-<p style="margin:0 0 8px 0; font-size:20px; font-weight:700; color:#fff;">${this.escapeHtml(title)}</p>
-<p style="margin:0 0 16px 0; font-size:14px; color:rgba(255,255,255,0.85); line-height:1.6;">${this.escapeHtml(description)}</p>
-<a href="${this.escapeHtml(leadMagnetUrl)}" target="_blank" rel="noopener noreferrer" style="display:inline-block; padding:12px 32px; background:#fff; color:#0066FF; border-radius:8px; font-weight:700; font-size:15px; text-decoration:none;">Download Free Guide</a>
-<p style="margin:12px 0 0 0; font-size:11px; color:rgba(255,255,255,0.5);">No signup required. Instant download.</p>
-</div>`;
-
-    // Insert at approximately 40% of content
-    const h2Positions = this.findH2SectionEnds(html);
-    if (h2Positions.length >= 3) {
-      const targetIdx = Math.floor(h2Positions.length * 0.4);
-      const insertPos = h2Positions[Math.min(targetIdx, h2Positions.length - 1)];
-      return html.slice(0, insertPos) + '\n' + ctaHtml + '\n' + html.slice(insertPos);
-    }
-    return html;
-  }
 }

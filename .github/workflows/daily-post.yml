@@ -84,9 +84,6 @@ jobs:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
 
           # Lead Magnet (category-specific download CTA)
-          LEAD_MAGNET_URL: ${{ secrets.LEAD_MAGNET_URL }}
-          LEAD_MAGNET_TITLE: ${{ secrets.LEAD_MAGNET_TITLE }}
-
           # Telegram alerts
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
