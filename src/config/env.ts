@@ -113,6 +113,11 @@ const envSchema = z.object({
   // Reddit posting — auto-submit links to relevant subreddits (script app, password grant)
   REDDIT_POST_USERNAME: z.string().default(''),
   REDDIT_POST_PASSWORD: z.string().default(''),
+  // Facebook Page auto-posting
+  FB_ACCESS_TOKEN: z.string().default(''),
+  FB_PAGE_ID: z.string().default(''),
+  FB_APP_ID: z.string().default(''),
+  FB_APP_SECRET: z.string().default(''),
 });
 
 export type AppConfig = z.infer<typeof envSchema>;

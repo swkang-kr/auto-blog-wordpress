@@ -27,6 +27,7 @@ import { MediumService } from './services/medium.service.js';
 import { EmailAutomationService } from './services/email-automation.service.js';
 import { NaverBlogService } from './services/naver-blog.service.js';
 import { LinkedInService } from './services/linkedin.service.js';
+import { FacebookService } from './services/facebook.service.js';
 import { RedditPostService } from './services/reddit-post.service.js';
 import { AdSenseApiService } from './services/adsense-api.service.js';
 import type { PostResult, BatchResult, MediaUploadResult } from './types/index.js';
@@ -137,6 +138,16 @@ async function main(): Promise<void> {
     logger.info('LinkedIn promotion service enabled');
   } else {
     logger.info('LINKEDIN_ACCESS_TOKEN not set, skipping LinkedIn promotion');
+  }
+
+  const facebookService =
+    config.FB_ACCESS_TOKEN && config.FB_PAGE_ID
+      ? new FacebookService(config.FB_ACCESS_TOKEN, config.FB_PAGE_ID)
+      : null;
+  if (facebookService) {
+    logger.info('Facebook Page promotion service enabled');
+  } else {
+    logger.info('FB_ACCESS_TOKEN not set, skipping Facebook promotion');
   }
 
   const redditPostService =
@@ -1733,7 +1744,7 @@ async function main(): Promise<void> {
       await seoService.pingSitemap();
 
       // B-6. Multi-day social campaign: stagger platforms for sustained engagement
-      // Day 0 (immediate): Pinterest + Reddit (algorithmic, benefits from freshness)
+      // Day 0 (immediate): Pinterest + Reddit + Facebook (freshness-sensitive)
       // Day 0 +2h: Twitter thread (engagement window)
       // Day 0 +6h: LinkedIn (professional audience, different timezone peak)
       const TWITTER_DELAY_MS = 2 * 60 * 60 * 1000; // 2 hours
@@ -1741,6 +1752,12 @@ async function main(): Promise<void> {
       const socialPlatforms: string[] = [];
       if (twitterService) socialPlatforms.push('twitter');
       if (linkedinService) socialPlatforms.push('linkedin');
+
+      // Facebook: post immediately (Day 0, benefits from fresh content)
+      if (facebookService) {
+        const fbPostId = await facebookService.promoteBlogPost(content, post);
+        if (fbPostId) await wpService.updatePostMeta(post.postId, { _autoblog_fb_post_id: fbPostId }).catch(() => {});
+      }
 
       if (socialPlatforms.length > 0) {
         try {
