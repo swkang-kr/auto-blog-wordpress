@@ -13,27 +13,27 @@ export function getSeasonallyOrderedNiches(): NicheConfig[] {
 
   // Map seasonal events back to niche categories that are relevant right now
   const KOREAN_EVENTS_NICHE_MAP: Record<string, string[]> = {
-    'Seollal': ['K-Entertainment', 'Korean Finance'],
+    'Seollal': ['K-Entertainment'],
     'Cherry Blossom': ['K-Beauty'],
     'Children': ['K-Entertainment'],
     'Summer': ['K-Beauty'],
-    'Chuseok': ['Korean Finance', 'K-Entertainment'],
+    'Chuseok': ['K-Entertainment'],
     'BIFF': ['K-Entertainment'],
-    'Suneung': ['K-Entertainment', 'Korean Tech'],
+    'Suneung': ['K-Entertainment'],
     'MAMA': ['K-Entertainment'],
     'Memorial': ['K-Entertainment'],
     'Dano': ['K-Entertainment'],
-    'Summer Sales': ['K-Beauty', 'Korean Tech', 'Korean Finance'],
-    'Mid-Year': ['K-Beauty', 'Korean Tech', 'Korean Finance'],
-    'Black Friday': ['K-Beauty', 'Korean Tech', 'Korean Finance'],
-    'Singles Day': ['K-Beauty', 'Korean Tech', 'Korean Finance'],
+    'Summer Sales': ['K-Beauty'],
+    'Mid-Year': ['K-Beauty'],
+    'Black Friday': ['K-Beauty'],
+    'Singles Day': ['K-Beauty'],
     'Christmas': ['K-Beauty', 'K-Entertainment'],
-    'New Year': ['Korean Finance', 'Korean Tech'],
-    'CES': ['Korean Tech'],
-    'MWC': ['Korean Tech'],
-    'Auto Show': ['Korean Tech'],
-    'Mobility Show': ['Korean Tech'],
-    'Earnings Season': ['Korean Finance', 'Korean Tech'],
+    'New Year': ['K-Entertainment'],
+    'CES': ['K-Entertainment'],
+    'MWC': ['K-Entertainment'],
+    'Auto Show': ['K-Entertainment'],
+    'Mobility Show': ['K-Entertainment'],
+    'Earnings Season': ['K-Entertainment'],
     'K-Beauty Awards': ['K-Beauty'],
   };
 
@@ -54,54 +54,17 @@ export function getSeasonallyOrderedNiches(): NicheConfig[] {
 }
 
 /**
- * CORE NICHES (5 focused niches for topical authority)
- * Strategy: 3-5 niches × 1-2 posts/day = 10-15 posts/niche/month
- * This builds Google's topical authority signals vs spreading thin across 15 niches.
+ * CORE NICHES (2 focused niches for rapid topical authority)
+ * Strategy: 2 niches × 2-3 posts/day = 15-20 posts/niche/month
+ * Goal: reach 15+ posts per niche ASAP for Google topical authority signals.
  *
- * Selected based on: search volume, monetization potential (AdSense RPM),
- * competition level, and content sustainability.
+ * Phase 1 (current): K-Beauty + K-Entertainment — medium competition, high engagement
+ * Phase 2 (after 15+ posts each): re-add Korean Tech & Korean Finance (high RPM)
+ *
+ * Selected based on: competition level (lower wins for new sites),
+ * audience overlap, viral potential, and monetization diversity.
  */
 export const NICHES: NicheConfig[] = [
-  // ── Korean Tech & AI (highest AdSense RPM, strong search volume) ──
-  {
-    id: 'korean-tech-ai',
-    name: 'Korean AI & Semiconductors',
-    category: 'Korean Tech',
-    broadTerm: 'Korea AI semiconductor',
-    seedKeywords: [
-      'Samsung AI chip vs NVIDIA comparison 2026',
-      'SK Hynix HBM memory market share analysis',
-      'South Korea AI startup investment opportunities 2026',
-      'Korean government AI investment policy explained',
-      'how Korea became a global semiconductor powerhouse',
-      'best Korean tech stocks for AI investors',
-      'Korean AI companies to watch for global expansion',
-      'Samsung Galaxy AI features vs Apple Intelligence comparison',
-    ],
-    contentTypes: ['analysis', 'deep-dive', 'news-explainer', 'x-vs-y', 'how-to', 'case-study', 'best-x-for-y', 'listicle', 'product-review'],
-    adSenseRpm: 'high',
-  },
-
-  // ── Korean Finance & Investment (high RPM, evergreen content) ──
-  {
-    id: 'korean-finance-stocks',
-    name: 'Korean Stock Market & Investment',
-    category: 'Korean Finance',
-    broadTerm: 'Korean stock market KOSPI investment',
-    seedKeywords: [
-      'how to invest in Korean stocks as a foreigner',
-      'best Korean ETF for international investors 2026',
-      'KOSPI index explained for beginners',
-      'how to open Korean brokerage account from abroad',
-      'top Korean blue chip stocks for long term investors',
-      'Korean won exchange rate forecast analysis 2026',
-      'Bank of Korea interest rate impact on investments',
-      'Korea economic outlook GDP growth forecast 2026',
-    ],
-    contentTypes: ['how-to', 'best-x-for-y', 'analysis', 'deep-dive', 'x-vs-y', 'case-study', 'news-explainer', 'listicle', 'product-review'],
-    adSenseRpm: 'high',
-  },
-
   // ── K-Beauty & Skincare (high commercial intent, strong product review potential) ──
   {
     id: 'k-beauty-skincare',

@@ -13,6 +13,7 @@ const WP_USERNAME = process.env.WP_USERNAME!;
 const WP_APP_PASSWORD = process.env.WP_APP_PASSWORD!;
 
 const OFF_TOPIC_SLUGS = [
+  // Save Money (off-topic, no Korea relevance)
   'best-ways-save-money-2026',
   'save-money-college-2026',
   'save-money-low-income-2026',
@@ -20,6 +21,19 @@ const OFF_TOPIC_SLUGS = [
   'budgeting-tips-2026',
   'passive-income-ideas-2026',
   'how-to-save-money-fast-17-proven-strategies-that-work-in-2024',
+  // Korean Tech & Finance (Phase 2 보류 - 현재 2니치 집중 전략)
+  'ai-tools-seo-guide-2026',
+  'best-ai-writing-tools-2026',
+  'sk-hynix-hbm-memory-market-share',
+  'kospi-q1-earnings-korean-stock-picks',
+  'how-to-invest-korean-stocks-foreigner',
+  // K-Entertainment romanized slugs (영어권 검색 불가)
+  'cha-ji-yeons-bold-challenge-on-hyeon-yeok-gawang-3-no-regrets',
+  'yoon-yu-seons-whirlwind-marriage-shocks-best-friend-yoo-ho-jung',
+  'hong-jas-comeback-can-she-overturn-last-place-in-semifinals',
+  // Misc off-niche
+  'korean-startup-ecosystem-trends-investment',
+  'korean-webtoon-platform-global-expansion-strategy',
 ];
 
 const api = axios.create({
@@ -66,7 +80,7 @@ async function main() {
         meta: {
           rank_math_robots: 'noindex,nofollow',
           _autoblog_archived: new Date().toISOString(),
-          _autoblog_archive_reason: 'Off-topic: not aligned with site niche (save money → Korea focus)',
+          _autoblog_archive_reason: 'Off-topic or deferred: 2-niche focus strategy (K-Beauty + K-Entertainment)',
         },
       });
 
