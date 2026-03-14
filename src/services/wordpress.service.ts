@@ -2109,6 +2109,7 @@ ${ga4TrackingScript}`;
         const post: PublishedPost = {
           postId: response.data.id,
           url: response.data.link,
+          slug: response.data.slug || content.slug || undefined,
           title: content.title,
           featuredImageId: featuredImageId ?? 0,
         };

@@ -329,6 +329,7 @@ export interface ImageResult {
 export interface PublishedPost {
   postId: number;
   url: string;
+  slug?: string;
   title: string;
   featuredImageId: number;
 }

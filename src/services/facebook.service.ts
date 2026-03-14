@@ -13,7 +13,13 @@ export class FacebookService {
 
   /** Post blog article to Facebook Page with link preview + caption */
   async promoteBlogPost(content: BlogContent, post: PublishedPost): Promise<string | null> {
-    const slug = extractSlugFromUrl(post.url);
+    // Resolve pretty permalink — ?p=ID URLs are not publicly accessible (scheduled posts)
+    const resolvedUrl = this.resolveUrl(post);
+    if (!resolvedUrl) {
+      logger.warn(`Facebook: skipping post ${post.postId} — cannot resolve pretty URL (post may be scheduled)`);
+      return null;
+    }
+    const slug = extractSlugFromUrl(resolvedUrl);
     const utmParams: UtmParams = {
       source: 'facebook',
       medium: 'social',
@@ -21,7 +27,7 @@ export class FacebookService {
       content: 'page-post',
       term: content.tags[0] || '',
     };
-    const utmUrl = buildUtmUrl(post.url, utmParams);
+    const utmUrl = buildUtmUrl(resolvedUrl, utmParams);
     const message = this.buildCaption(content, utmUrl);
 
     try {
@@ -56,6 +62,14 @@ export class FacebookService {
     ].join(' ');
 
     return `${emoji} ${content.title}\n\n${content.excerpt || ''}\n\n🔗 ${url}\n\n${hashtags}`;
+  }
+
+  /** Resolve post URL — if ?p=ID format, reconstruct from slug */
+  private resolveUrl(post: PublishedPost): string | null {
+    if (!post.url.includes('?p=') && !post.url.includes('&p=')) return post.url;
+    // ?p=ID means post is scheduled/not yet published with pretty permalink
+    if (post.slug) return `${new URL(post.url).origin}/${post.slug}/`;
+    return null;
   }
 
   private nicheEmoji(category: string): string {
