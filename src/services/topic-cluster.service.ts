@@ -39,12 +39,21 @@ interface ClusterPost {
 const NICHE_SUBTOPICS: Record<string, Record<string, string[]>> = {
   'k-beauty': {
     'Skincare Routines': ['routine', 'step', 'regimen', 'morning', 'night', 'double cleanse', 'layering', 'skip-care', 'glass skin routine', 'skin barrier'],
-    'Ingredients & Science': ['ingredient', 'niacinamide', 'retinol', 'hyaluronic', 'centella', 'snail', 'ferment', 'peptide', 'aha', 'bha', 'pha', 'vitamin c', 'collagen', 'ceramide', 'ph', 'concentration'],
+    'Ingredients & Science': [
+      'ingredient', 'niacinamide', 'retinol', 'hyaluronic', 'centella', 'snail', 'ferment', 'peptide', 'aha', 'bha', 'pha', 'vitamin c', 'collagen', 'ceramide', 'ph', 'concentration',
+      // 2025-2026 breakout ingredients (high search volume — must classify correctly)
+      'glutathione', 'tranexamic acid', 'bakuchiol', 'polyglutamic acid', 'pga', 'adenosine',
+      'mugwort', 'artemisia', 'mushroom', 'tremella', 'bio-cellulose', 'microbiome', 'probiotic',
+      'postbiotic', 'galactomyces', 'bifida', 'saccharomyces',
+    ],
     'Brands & Products': [
       // Established brands
       'cosrx', 'innisfree', 'sulwhasoo', 'laneige', 'missha', 'etude', 'skin1004', 'anua', 'torriden', 'beauty of joseon',
       // Emerging 2025-2026 brands
       'medicube', 'isntree', 'haruharu wonder', 'round lab', 'mixsoon', 'some by mi', 'klairs', 'purito', 'abib', 'numbuzin', 'axis-y',
+      // Viral/breakout 2024-2026 brands
+      'tirtir', 'biodance', 'd\'alba', 'dalba', 'white truffle', 'vt cosmetics', 'vt cica', 'fwee',
+      'aestura', 'dr.g', 'dr.jart', 'drjart', 'cicapair',
       // General
       'brand', 'product', 'olive young', 'review',
     ],
@@ -67,22 +76,26 @@ const NICHE_SUBTOPICS: Record<string, Record<string, string[]>> = {
       // 3rd gen
       'bts', 'blackpink', 'twice', 'exo', 'shinee', 'got7', 'nct', 'red velvet', 'mamamoo', 'monsta x', 'seventeen', 'stray kids',
       // 4th gen
-      'aespa', 'ive', 'le sserafim', 'newjeans', 'babymonster', 'illit', 'kiss of life', 'tws', 'ateez', 'txt', 'enhypen', 'xg', 'kep1er',
+      'aespa', 'ive', 'le sserafim', 'newjeans', 'njz', 'babymonster', 'illit', 'kiss of life', 'tws', 'ateez', 'txt', 'enhypen', 'xg', 'kep1er',
+      // 4th gen newer debuts (2023-2024)
+      'riize', 'boynextdoor', 'zerobaseone', 'zb1', '8turn', 'unis', 'izna', 'nct wish', 'katseye', 'whiplash', 'qwer',
       // General
       'kpop', 'k-pop', 'idol', 'comeback', 'album', 'concert', 'music', 'mv', 'music video',
     ],
     'K-Drama': ['kdrama', 'k-drama', 'drama', 'netflix', 'disney plus', 'series', 'actor', 'actress', 'ratings', 'ost', 'ending explained', 'where to watch', 'streaming'],
     'Fan Culture & Community': [
       'fan', 'fandom', 'stan', 'bias', 'ult', 'fansite', 'merch', 'fan meet', 'sasaeng', 'fan war',
-      // Fan platforms (2025-2026 핵심)
-      'weverse', 'bubble', 'vlive', 'universe',
+      // Fan platforms (2025-2026 핵심) — NOTE: V Live(VLIVE) 2023년 12월 서비스 종료 → Weverse 통합. 역사적 참조용으로만 유지.
+      'weverse', 'bubble', 'universe',
+      // vlive retained as historical keyword only (service ended Dec 2023, merged into Weverse)
+      'vlive',
       // Collectibles
       'photocard', 'lightstick', 'pob', 'pre-order benefit', 'limited edition', 'photobook',
     ],
     'Idol News & Updates': ['comeback', 'debut', 'disbandment', 'hiatus', 'solo', 'collab', 'scandal', 'news', 'update', 'military', 'enlistment', 'world tour', 'concert tickets'],
     'Streaming & Charts': ['chart', 'melon', 'circle chart', 'hanteo', 'billboard', 'spotify', 'youtube views', 'streaming', 'ranking', 'number one'],
     'Awards & Global Impact': ['award', 'grammy', 'mama', 'mma', 'gda', 'golden disc', 'global', 'hallyu', 'worldwide', 'daesang'],
-    'Idol Beauty & Style': ['skincare', 'makeup look', 'beauty routine', 'fashion', 'outfit', 'idol style', 'no-makeup', 'beauty secret'],
+    'Idol Beauty & Style': ['skincare', 'makeup look', 'beauty routine', 'fashion', 'outfit', 'idol style', 'no-makeup', 'beauty secret', 'iu', 'brand ambassador', 'ambassador', 'laneige ambassador', 'karina skincare', 'wonyoung beauty', 'idol product'],
   },
 };
 
@@ -107,6 +120,12 @@ const NICHE_TOPICAL_MAP: Record<string, string[]> = {
     'Korean beauty tech innovation', 'Korean clean beauty brands', 'Korean vegan skincare',
     'Korean skincare dupes', 'Korean drugstore skincare', 'Korean luxury skincare brands',
     'Korean beauty subscription boxes', 'Korean hair care products', 'Korean makeup trends',
+    // 2025-2026 high-priority gaps (breakout segments)
+    'Korean toner pads guide ranked', 'Korean glutathione brightening serum', 'Korean tranexamic acid hyperpigmentation',
+    'Korean bakuchiol retinol alternative', 'Korean polyglutamic acid hydration', 'Korean mugwort skincare sensitive',
+    'Korean mushroom tremella skincare', 'Korean bio-cellulose mask Biodance', 'Korean microbiome probiotic skincare',
+    'Olive Young Global shipping international guide', 'Korean glass body skincare routine',
+    'Korean skin flooding layering method', 'd\'Alba white truffle serum Olive Young',
   ],
   'k-entertainment': [
     // K-Pop fan content
@@ -124,6 +143,12 @@ const NICHE_TOPICAL_MAP: Record<string, string[]> = {
     'K-pop fan meetup guide USA', 'K-pop concerts in USA 2026', 'how to become a K-pop fan',
     'K-pop merchandise buying guide', 'K-pop album unboxing guide', 'K-pop photocard collecting tips',
     'K-pop fan art community', 'K-pop stan Twitter explained', 'K-pop fandom wars history',
+    // 2025-2026 high-priority gaps
+    'NewJeans NJZ status update 2026', 'RIIZE comeback 2026 guide', 'BOYNEXTDOOR songs ranked',
+    'ZeroBaseOne ZB1 fandom guide', 'Weverse vs Bubble comparison', 'KCON USA 2026 guide',
+    'K-pop photocard trading guide safe', 'how to stream K-pop music chart',
+    'IU skincare Laneige ambassador routine', 'K-pop idol no-makeup beauty secrets',
+    'Baeksang Arts Awards 2026 predictions', 'TVING vs Netflix K-drama guide',
   ],
 };
 

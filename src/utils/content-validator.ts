@@ -93,7 +93,10 @@ function computeOriginalResearchBonus(plainText: string, html: string): number {
     // Finance & institution
     'bok', 'kosis', 'dart', 'kotra', 'kisa', 'bank of korea', 'korean statistical',
     // K-Beauty editorial & ingredient sources
-    'allure', 'harpers bazaar', 'vogue korea', 'inci decoder', 'olive young', 'kocca',
+    // NOTE: 'allure korea' (not plain 'allure') to avoid false-positive matches with US Allure
+    'allure korea', 'harpers bazaar korea', 'vogue korea', 'inci decoder', 'olive young', 'kocca',
+    // Also accept abbreviated form that naturally occurs in K-Beauty writing
+    'allure korea award', 'incidecoder', 'cosdna',
     // K-Entertainment chart & industry sources
     'hanteo', 'circle chart', 'billboard korea', 'weverse magazine', 'melon chart',
   ];
