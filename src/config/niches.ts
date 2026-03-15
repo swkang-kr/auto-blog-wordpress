@@ -214,6 +214,14 @@ export const NICHES: NicheConfig[] = [
       'best Korean anti-aging skincare for women over 50 ranked 2026',
       'Korean skincare routine for mature skin 40s 50s guide 2026',
       'best Korean retinol serum for mature skin anti-wrinkle 2026',
+      // Bakuchiol — 레티놀 대체 K-Beauty 성분, 민감성·임산부 피부 세그먼트 급성장
+      'best Korean bakuchiol serum retinol alternative sensitive skin 2026',
+      'bakuchiol vs retinol Korean skincare which is better for beginners',
+      // Polyglutamic acid (PGA) — 히알루론산보다 강력한 수분 결합, 2025-2026 신흥 성분
+      'polyglutamic acid Korean skincare products best serums ranked 2026',
+      'polyglutamic acid vs hyaluronic acid Korean serum comparison guide',
+      // Adenosine — 식약처 공인 주름개선 고시 성분, K-Beauty 차별점
+      'best Korean adenosine anti-wrinkle serum products ranked 2026',
     ],
     contentTypes: ['product-review', 'best-x-for-y', 'x-vs-y', 'how-to', 'listicle', 'case-study', 'deep-dive', 'news-explainer'],
     adSenseRpm: 'high',
@@ -353,6 +361,12 @@ export const NICHES: NicheConfig[] = [
       // K-pop idol variety show — 팬 검색 높은 에버그린 카테고리
       'best K-pop idol variety shows to watch ranked all time guide',
       'funniest K-pop idol variety show moments compilation guide 2026',
+      // NCT WISH — SM 2024년 신유닛, NCT 프랜차이즈 글로벌 팬덤 확장
+      'NCT WISH debut story SM Entertainment concept explained guide fans',
+      'NCT WISH songs ranked best tracks for new fans guide 2026',
+      // KATSEYE — HYBE 글로벌 걸그룹 프로젝트 (Dream Academy 출신), K팝 ↔ 서양 크로스오버
+      'KATSEYE HYBE global girl group debut story explained guide fans',
+      'KATSEYE songs ranked best tracks guide new fans 2026',
     ],
     contentTypes: ['listicle', 'news-explainer', 'best-x-for-y', 'deep-dive', 'how-to', 'x-vs-y', 'case-study'],
     adSenseRpm: 'medium',

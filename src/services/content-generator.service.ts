@@ -309,7 +309,7 @@ To reach WORD_COUNT_TARGET+ words WITHOUT padding:
 - Cover: what it is, key ingredients/specs, texture/feel/finish, results timeline, value for money
 - Include pros (3+) and cons (2+) in a structured list
 - **For K-Beauty product-review**: MANDATORY pricing comparison table (Olive Young KRW / Amazon USD / YesStyle or Stylevana) and skin type suitability matrix (oily / dry / combination / sensitive / acne-prone)
-- **K-Beauty price disclaimer (MANDATORY)**: Immediately below any pricing table, include: <p style="font-size:12px; color:#888; margin-top:6px;">Prices verified as of [Month Year]; check current listings before purchase — K-Beauty prices vary frequently across platforms and during sale events.</p>
+- **K-Beauty price disclaimer (MANDATORY for product-review AND best-x-for-y)**: Immediately below any pricing table or product price mention, include: <p style="font-size:12px; color:#888; margin-top:6px;">Prices verified as of [Month Year]; check current listings before purchase — K-Beauty prices vary frequently across platforms and during sale events.</p>
 - End with a clear "Buy or Skip?" verdict and FAQ (3-5 Q&As)
 
 ### X vs Y Content
@@ -338,7 +338,7 @@ To reach WORD_COUNT_TARGET+ words WITHOUT padding:
 - End with "What Others Can Learn" section and FAQ (3-5 Q&As)
 
 ## Niche-Specific Tone
-- K-Beauty: Expert skincare advisor — combine product knowledge with dermatological science. Reference Korean beauty innovations, ingredient analysis (include active ingredient concentration % and pH level where known — these are high-trust signals for ingredient-savvy readers), and brand comparisons. Include Korean product names and Olive Young context. Always note whether a product is Olive Young exclusive or globally available (Amazon/YesStyle/Stylevana/Soko Glam). Highlight toner pads, glass skin routines, and double cleansing (iconic K-Beauty two-step cleanse method) as the fastest-growing K-Beauty segments in 2025-2026. For centella asiatica content: it remains an evergreen mega-category — cite specific product concentrations (Madecassoside % where known). Cover breakout 2025-2026 brands (Numbuzin, TIRTIR, Biodance) and emerging brands (MEDICUBE, Isntree, Haruharu Wonder, Round Lab, Mixsoon, Some By Mi, ABIB) alongside established ones (COSRX, Beauty of Joseon, SKIN1004, Anua). Trending 2025-2026 ingredients: tranexamic acid (brightening/hyperpigmentation — fastest-growing segment), bio-cellulose collagen patches (Biodance), microbiome-supporting prebiotics/postbiotics, and peptide blends. Where relevant, reference skin cycling and slugging as popular Korean-adjacent routines with high search demand. For dupe content, always compare against the luxury original (Drunk Elephant, Tatcha, La Mer) to capture high-intent search traffic.
+- K-Beauty: Expert skincare advisor — combine product knowledge with dermatological science. Reference Korean beauty innovations, ingredient analysis (include active ingredient concentration % and pH level where known — these are high-trust signals for ingredient-savvy readers), and brand comparisons. Include Korean product names and Olive Young context. Always note whether a product is Olive Young exclusive or globally available (Amazon/YesStyle/Stylevana/Soko Glam). Highlight toner pads, glass skin routines, and double cleansing (iconic K-Beauty two-step cleanse method) as the fastest-growing K-Beauty segments in 2025-2026. For centella asiatica content: it remains an evergreen mega-category — cite specific product concentrations (Madecassoside % where known). Cover breakout 2025-2026 brands (Numbuzin, TIRTIR, Biodance) and emerging brands (MEDICUBE, Isntree, Haruharu Wonder, Round Lab, Mixsoon, Some By Mi, ABIB) alongside established ones (COSRX, Beauty of Joseon, SKIN1004, Anua). Trending 2025-2026 ingredients: tranexamic acid (brightening/hyperpigmentation — fastest-growing segment), bio-cellulose collagen patches (Biodance), microbiome-supporting prebiotics/postbiotics, peptide blends, polyglutamic acid (PGA — superior moisture-binding vs hyaluronic acid, rapidly growing K-Beauty segment), bakuchiol (plant-derived retinol alternative — rapidly growing for sensitive/pregnant skin audiences), and adenosine (MFDS-approved anti-wrinkle active — a key K-Beauty regulatory differentiator vs Western brands). Where relevant, reference skin cycling and slugging as popular Korean-adjacent routines with high search demand. For dupe content, always compare against the luxury original (Drunk Elephant, Tatcha, La Mer) to capture high-intent search traffic.
 - K-Entertainment: Fan-centric cultural writer — cover comebacks, rankings, fan experiences, and community culture. Reference idol activities, drama recommendations, and award predictions through a fan lens. Use fan-friendly language (comeback, bias, stan, era, fandom, ult). Include fan-relevant metrics where available: MV view counts (YouTube), streaming chart positions (Melon/Circle Chart/Hanteo), and Weverse community context. Cover 4th-gen groups (IVE, ILLIT, aespa, BABYMONSTER, KISS OF LIFE, TWS, XG, LE SSERAFIM) alongside 3rd-gen and 3.5-gen (BTS, BLACKPINK, TWICE, SEVENTEEN, TXT/Tomorrow X Together, Stray Kids, ATEEZ, ENHYPEN). Key notes on groups: KISS OF LIFE (retro R&B concept, 4-member group under S2 Entertainment), TWS (6-member group under PLEDIS/HYBE, debut January 2024), XG (7-member Japanese group trained in Korea, XGALX label), ENHYPEN (7-member group under HYBE/Belift Lab, debut November 2020 — classified as 3.5-gen alongside TXT, massive global fanbase). Note: Gaon Charts rebranded to Circle Chart in 2023 — always use "Circle Chart" not "Gaon" for current references. For K-drama content, highlight webtoon/manhwa source material where applicable — webtoon adaptations are a dominant 2025-2026 trend. Do NOT analyze stock prices, investment metrics, or earnings reports — this is fan content, not finance content. General label/company context (e.g., "under HYBE", "SM Entertainment group") is fine when relevant to fans.
 
 ## Signature Section (MANDATORY)
@@ -748,6 +748,26 @@ export class ContentGeneratorService {
       }
     }
 
+    // K-Entertainment how-to/x-vs-y: only use Sora Lee (tertiary) for drama-adjacent content.
+    // K-pop how-to (streaming, photocards, merch, concerts) should use Alex Han (secondary).
+    if (
+      category === 'K-Entertainment' &&
+      preferredVoice === 'tertiary' &&
+      personas.length >= 3 &&
+      keyword
+    ) {
+      const kw = keyword.toLowerCase();
+      const isDramaContent =
+        kw.includes('drama') || kw.includes('kdrama') || kw.includes('k-drama') ||
+        kw.includes(' ost') || kw.includes('webtoon') || kw.includes('netflix') ||
+        kw.includes('streaming') || kw.includes('watch') || kw.includes('actor') ||
+        kw.includes('actress') || kw.includes('manhwa');
+      // Non-drama K-Entertainment how-to → Alex Han (index 1) is more appropriate
+      if (!isDramaContent && postCount % 3 !== 0) {
+        return personas[1]; // Alex Han — K-Pop & Hallyu Culture Writer
+      }
+    }
+
     // Tertiary persona for specialist content types (rotate every 3rd post back to primary)
     if (preferredVoice === 'tertiary' && personas.length >= 3 && postCount % 3 !== 0) {
       return personas[2];
@@ -861,8 +881,14 @@ ${analysis.contentType === 'case-study' ? `K-BEAUTY CASE STUDY STRUCTURE: Focus 
       'K-Entertainment': `NICHE VOICE: Write as a passionate K-pop and K-drama fan who is deeply embedded in the community. Focus on fan experience, content rankings, idol news, and community culture. Use fan-friendly language (comeback, bias, stan, era, fandom). Include specific examples fans care about (song rankings, drama recommendations, award predictions, concert experiences). General label or agency context (e.g., "under HYBE", "SM Entertainment group", "aespa's label SM") is acceptable when naturally relevant to fans. Do NOT analyze stock prices, earnings reports, revenue breakdowns, or investment outlooks — this is fan content, not finance content.
 
 K-ENTERTAINMENT E-E-A-T SOURCES: Reference fan-trusted K-pop/K-drama sources — cite Hanteo Chart and Circle Chart (formerly Gaon) for album sales, Melon/Bugs for digital streaming, YouTube for MV view counts, Weverse for fan community activity, KOCCA (Korea Creative Content Agency) for industry statistics, and Billboard Korea. Do NOT cite KRX, BOK, DART, KOSIS, or financial/economic data sources — this is fan content.
+CHART ACCURACY: Hanteo Chart tracks physical album sales (real-time, often the first-day/first-week sales benchmark); Circle Chart (formerly Gaon) is the official comprehensive chart aggregating physical, digital, and streaming. When citing sales data, specify which chart and timeframe (e.g., "600,000 first-week sales on Hanteo"). Do NOT conflate the two.
 SCHEDULE ACCURACY: K-pop comeback dates and K-drama air dates change frequently. Always qualify schedule information with "as of [month] ${year}" and include: "Schedule subject to change — check the group's official Weverse or agency SNS for the latest updates." Never present an unconfirmed comeback date as fact.
 FAN TERMINOLOGY: Use light fandom vocabulary naturally (comeback, bias, era, stan, ult, fancam, fanchant) but define any term that new fans might not know, on first use, in a parenthetical (e.g., "bias (your favourite member)"). Do not overuse slang — aim for 1-2 terms per 400 words. Never misrepresent fan speculation or community theories as official information from the artist or agency.
+GROUP-SPECIFIC NOTES (accuracy-critical — verify before mentioning):
+- RIIZE: SM Entertainment 7-member boy group (debut Sept 2023). Member Seunghan took a hiatus due to personal controversy; he returned to activities in 2024. If writing about member profiles or unit activities, note "all 7 members currently active" only if confirmed current — otherwise describe as "RIIZE members" without an exact count.
+- ILLIT vs NewJeans: A plagiarism/concept similarity dispute between ILLIT's label ADOR (HYBE) and NewJeans' former management has escalated to legal proceedings. Do NOT write comparison content (ILLIT vs NewJeans style/concept) that could be interpreted as taking sides in the ongoing legal dispute. Fan-focused content on each group independently is fine.
+- KATSEYE: Global girl group project by HYBE/Geffen Records (debuted 2024), members selected via Dream Academy reality show. Cover as a K-pop adjacent / global K-pop expansion group. Not a traditional Korean idol group — members are international.
+- NCT WISH: SM Entertainment's 2024 NCT sub-unit (6 members). Part of the broader NCT universe alongside NCT 127, NCT Dream, WayV, and NCT U.
 ${analysis.contentType === 'case-study' ? `K-ENTERTAINMENT CASE STUDY STRUCTURE: Focus on ONE idol group, K-drama, or fan cultural phenomenon as the subject. Structure: Origin & Debut Context → Breakthrough Moment (chart milestone, viral MV, award win) → Global Fandom Growth (YouTube views, Weverse members, tour scale) → Why Fans Connected → What This Means for Hallyu. Measure success in chart positions, MV views, concert sold-out speed, and fandom milestones — NOT revenue or stock performance.` : ''}`,
     };
     const nicheVoice = nicheDirectives[niche.category] || '';
