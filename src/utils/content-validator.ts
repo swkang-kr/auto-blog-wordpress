@@ -42,7 +42,8 @@ const CATEGORY_MIN_QUALITY: Record<string, number> = {
   'Korean Tech': 65,
   'K-Entertainment': 60,
   'Korea Travel': 60,
-  'K-Beauty': 60,
+  // K-Beauty product-review/best-x-for-y = purchase-intent (YMYL-adjacent) → stricter bar
+  'K-Beauty': 65,
 };
 
 /** Content type-specific minimum word counts — lowered for information density over padding */
@@ -84,8 +85,18 @@ function computeOriginalResearchBonus(plainText: string, html: string): number {
   const hasMethodology = methodologyPatterns.some(p => lower.includes(p));
   if (hasMethodology) bonus += 2;
 
-  // +2: Korean data source citations (BOK, KOSIS, DART, KOTRA)
-  const koreanDataSources = ['bok', 'kosis', 'dart', 'kotra', 'kisa', 'bank of korea', 'korean statistical'];
+  // +2: Korean data source citations
+  // Finance/Tech: BOK, KOSIS, DART, KOTRA
+  // K-Beauty: Allure Korea, Harpers Bazaar, Vogue Korea, INCI Decoder, Olive Young
+  // K-Entertainment: KOCCA, Hanteo, Circle Chart, Billboard Korea, Weverse Magazine
+  const koreanDataSources = [
+    // Finance & institution
+    'bok', 'kosis', 'dart', 'kotra', 'kisa', 'bank of korea', 'korean statistical',
+    // K-Beauty editorial & ingredient sources
+    'allure', 'harpers bazaar', 'vogue korea', 'inci decoder', 'olive young', 'kocca',
+    // K-Entertainment chart & industry sources
+    'hanteo', 'circle chart', 'billboard korea', 'weverse magazine', 'melon chart',
+  ];
   const citedSources = koreanDataSources.filter(s => lower.includes(s)).length;
   if (citedSources >= 2) bonus += 2;
   else if (citedSources >= 1) bonus += 1;

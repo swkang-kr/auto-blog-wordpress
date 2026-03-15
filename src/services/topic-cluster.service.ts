@@ -52,11 +52,22 @@ const NICHE_SUBTOPICS: Record<string, Record<string, string[]>> = {
     'Crypto & Digital Assets': ['crypto', 'bitcoin', 'digital asset', 'blockchain', 'defi', 'exchange'],
   },
   'k-beauty': {
-    'Skincare Routines': ['routine', 'step', 'regimen', 'morning', 'night', 'double cleanse', 'layering'],
-    'Ingredients & Science': ['ingredient', 'niacinamide', 'retinol', 'hyaluronic', 'centella', 'snail', 'ferment', 'peptide'],
-    'Brands & Products': ['brand', 'cosrx', 'innisfree', 'sulwhasoo', 'laneige', 'product', 'olive young'],
-    'Industry & Market': ['market', 'industry', 'export', 'revenue', 'growth', 'trend', 'k-beauty market'],
-    'Trends & Innovations': ['trend', 'innovation', 'glass skin', 'clean beauty', 'sustainable', 'minimalist'],
+    'Skincare Routines': ['routine', 'step', 'regimen', 'morning', 'night', 'double cleanse', 'layering', 'skip-care', 'glass skin routine', 'skin barrier'],
+    'Ingredients & Science': ['ingredient', 'niacinamide', 'retinol', 'hyaluronic', 'centella', 'snail', 'ferment', 'peptide', 'aha', 'bha', 'pha', 'vitamin c', 'collagen', 'ceramide', 'ph', 'concentration'],
+    'Brands & Products': [
+      // Established brands
+      'cosrx', 'innisfree', 'sulwhasoo', 'laneige', 'missha', 'etude', 'skin1004', 'anua', 'torriden', 'beauty of joseon',
+      // Emerging 2025-2026 brands
+      'medicube', 'isntree', 'haruharu wonder', 'round lab', 'mixsoon', 'some by mi', 'klairs', 'purito', 'abib', 'numbuzin', 'axis-y',
+      // General
+      'brand', 'product', 'olive young', 'review',
+    ],
+    'Toner Pads & Exfoliation': ['toner pad', 'exfoliating pad', 'cotton pad', 'gauze pad', 'exfoliation', 'aha pad', 'bha pad', 'pore', 'texture'],
+    'K-Beauty Makeup': ['makeup', 'foundation', 'cushion', 'tint', 'lip', 'blush', 'contour', 'eyeshadow', 'mascara', 'rom&nd', 'clio', 'peripera', 'wakemake', 'eyeliner', 'bb cream', 'cc cream'],
+    'Hair & Scalp Care': ['shampoo', 'hair loss', 'scalp', 'hair care', 'conditioner', 'hair mask', 'thinning', 'daeng gi meo ri', 'ryo', 'hair serum'],
+    'Men\'s K-Beauty': ['men', 'male', 'men\'s skincare', 'men\'s grooming', 'men\'s moisturizer', 'men\'s sunscreen', 'gender neutral'],
+    'Industry & Market': ['market', 'industry', 'export', 'revenue', 'growth', 'trend', 'k-beauty market', 'olive young sales', 'amazon k-beauty'],
+    'Trends & Innovations': ['trend', 'innovation', 'glass skin', 'clean beauty', 'sustainable', 'minimalist', 'skip care', 'cloud skin', 'pore care', 'babyface', 'dupe', 'budget'],
   },
   'korea-travel': {
     'Cities & Destinations': ['seoul', 'busan', 'jeju', 'gyeongju', 'incheon', 'daegu', 'city', 'destination'],
@@ -66,11 +77,26 @@ const NICHE_SUBTOPICS: Record<string, Record<string, string[]>> = {
     'Culture & Experiences': ['temple', 'palace', 'festival', 'tradition', 'hanbok', 'culture', 'museum'],
   },
   'k-entertainment': {
-    'K-Pop': ['kpop', 'k-pop', 'idol', 'comeback', 'album', 'concert', 'bts', 'blackpink', 'aespa', 'music'],
-    'K-Drama': ['kdrama', 'k-drama', 'drama', 'netflix', 'series', 'actor', 'actress', 'ratings'],
-    'Fan Culture & Community': ['fan', 'fandom', 'stan', 'fansite', 'light stick', 'merch', 'fan meet', 'sasaeng', 'fan war'],
-    'Idol News & Updates': ['comeback', 'debut', 'disbandment', 'hiatus', 'solo', 'collab', 'scandal', 'news', 'update'],
-    'Awards & Global Impact': ['award', 'grammy', 'billboard', 'mama', 'melon', 'global', 'hallyu', 'chart', 'ranking'],
+    'K-Pop': [
+      // 3rd gen
+      'bts', 'blackpink', 'twice', 'exo', 'shinee', 'got7', 'nct', 'red velvet', 'mamamoo', 'monsta x', 'seventeen', 'stray kids',
+      // 4th gen
+      'aespa', 'ive', 'le sserafim', 'newjeans', 'babymonster', 'illit', 'kiss of life', 'tws', 'ateez', 'txt', 'enhypen', 'xg', 'kep1er',
+      // General
+      'kpop', 'k-pop', 'idol', 'comeback', 'album', 'concert', 'music', 'mv', 'music video',
+    ],
+    'K-Drama': ['kdrama', 'k-drama', 'drama', 'netflix', 'disney plus', 'series', 'actor', 'actress', 'ratings', 'ost', 'ending explained', 'where to watch', 'streaming'],
+    'Fan Culture & Community': [
+      'fan', 'fandom', 'stan', 'bias', 'ult', 'fansite', 'merch', 'fan meet', 'sasaeng', 'fan war',
+      // Fan platforms (2025-2026 핵심)
+      'weverse', 'bubble', 'vlive', 'universe',
+      // Collectibles
+      'photocard', 'lightstick', 'pob', 'pre-order benefit', 'limited edition', 'photobook',
+    ],
+    'Idol News & Updates': ['comeback', 'debut', 'disbandment', 'hiatus', 'solo', 'collab', 'scandal', 'news', 'update', 'military', 'enlistment', 'world tour', 'concert tickets'],
+    'Streaming & Charts': ['chart', 'melon', 'circle chart', 'hanteo', 'billboard', 'spotify', 'youtube views', 'streaming', 'ranking', 'number one'],
+    'Awards & Global Impact': ['award', 'grammy', 'mama', 'mma', 'gda', 'golden disc', 'global', 'hallyu', 'worldwide', 'daesang'],
+    'Idol Beauty & Style': ['skincare', 'makeup look', 'beauty routine', 'fashion', 'outfit', 'idol style', 'no-makeup', 'beauty secret'],
   },
 };
 

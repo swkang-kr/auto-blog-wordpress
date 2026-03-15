@@ -656,12 +656,25 @@ STRATEGY: Consider creating content that directly targets one of these content g
 
   private validateKoreaRelevance(analysis: KeywordAnalysis): KeywordAnalysis {
     const koreaTerms = [
+      // Core Korea terms
       'korea', 'korean', 'seoul', 'samsung', 'hyundai', 'lg', 'sk', 'kospi', 'kosdaq',
       'hallyu', 'k-pop', 'kpop', 'k-drama', 'kdrama', 'k-entertainment', 'kimchi',
       'chaebol', 'won', 'krw', 'naver', 'kakao', 'hybe', 'bts', 'blackpink',
       'webtoon', 'hanwha', 'posco', 'kia', 'lotte', 'cj', 'pangyo', 'gangnam',
       'bibimbap', 'soju', 'hanbok', 'tteokbokki', 'busan', 'jeju', 'incheon',
       'chaebols', 'kbank', 'toss', 'coupang', 'baemin', 'daum', 'musinsa',
+      // K-Beauty brands — must pass Korea relevance for skincare/beauty keywords
+      'cosrx', 'anua', 'laneige', 'innisfree', 'sulwhasoo', 'missha', 'etude',
+      'skin1004', 'torriden', 'beauty of joseon', 'medicube', 'isntree',
+      'haruharu', 'round lab', 'mixsoon', 'olive young', 'rom&nd', 'clio',
+      'peripera', 'wakemake', 'daeng gi meo ri', 'ryo', 'some by mi',
+      'klairs', 'd.i.y', 'axis-y', 'purito', 'abib', 'numbuzin',
+      // K-Entertainment groups — 3rd & 4th gen
+      'twice', 'seventeen', 'stray kids', 'ateez', 'txt', 'enhypen',
+      'le sserafim', 'ive', 'newjeans', 'aespa', 'babymonster',
+      'illit', 'kiss of life', 'twentiez', 'tws', 'xg', 'kep1er',
+      'shinee', 'exo', 'nct', 'got7', 'monsta x', 'super junior',
+      'mamamoo', 'red velvet', 'f(x)', 'girls generation',
     ];
     const keywordLower = analysis.selectedKeyword.toLowerCase();
     const titleLower = analysis.suggestedTitle.toLowerCase();

@@ -101,7 +101,7 @@ export class ContentRefreshService {
           if (rpmByCategory) {
             const entry = freshnessData.find(f => f.postUrl && (slug.includes(f.postUrl.replace(/^https?:\/\/[^/]+/, '').replace(/\/+$/, '')) || f.postUrl.includes(p.url.replace(/^\//, ''))));
             if (entry?.niche) {
-              const nicheCategory = entry.niche.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()).replace('K Beauty', 'K-Beauty').replace('K Entertainment', 'K-Entertainment');
+              const nicheCategory = entry.niche.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()).replaceAll('K Beauty', 'K-Beauty').replaceAll('K Entertainment', 'K-Entertainment');
               const rpm = rpmByCategory[nicheCategory] || 5;
               // High RPM posts get negative boost (lower score = higher priority)
               revenueBoost = -(rpm / 15) * 10; // Max ~-8 for $12 RPM categories
@@ -898,6 +898,31 @@ Return JSON only: {"title":"new title","metaDescription":"new meta description",
     const dateFormatted = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
     const monthYear = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 
+    // Detect niche from title and content for context-aware rewrite instructions
+    const titleAndContent = (post.title.rendered + ' ' + contentPreview).toLowerCase();
+    const isKBeauty = ['cosrx', 'anua', 'laneige', 'innisfree', 'skin1004', 'medicube', 'isntree',
+      'haruharu', 'skincare', 'k-beauty', 'korean skincare', 'sunscreen', 'serum', 'toner pad',
+      'moisturizer', 'olive young', 'beauty of joseon', 'torriden', 'rom&nd', 'clio'].some(t => titleAndContent.includes(t));
+    const isKEntertainment = ['kpop', 'k-pop', 'k-drama', 'kdrama', 'idol', 'comeback', 'bts',
+      'blackpink', 'twice', 'aespa', 'illit', 'newjeans', 'le sserafim', 'ateez', 'stray kids',
+      'seventeen', 'drama', 'netflix korea', 'hallyu', 'weverse', 'hanteo'].some(t => titleAndContent.includes(t));
+
+    const nicheRewriteRules = isKBeauty ? `
+NICHE-SPECIFIC RULES — K-Beauty:
+- Include active ingredient concentration (%) and pH where known (high E-E-A-T signal)
+- Add or update pricing table: Olive Young KRW / Amazon USD / YesStyle (if product review)
+- Note whether products are Olive Young exclusive or globally available (Amazon/YesStyle)
+- Add or update skin type suitability matrix (oily / dry / combination / sensitive)
+- Reference emerging 2025-2026 brands where relevant: MEDICUBE, Isntree, Haruharu Wonder
+- Cite editorial sources: Allure, Harper's Bazaar Korea, INCI Decoder for credibility` : isKEntertainment ? `
+NICHE-SPECIFIC RULES — K-Entertainment:
+- Use fan-friendly language: comeback, era, stan, bias, ult, fandom
+- Include fan-relevant metrics where available: MV view counts (YouTube), Melon/Circle Chart positions
+- Update group/member status to ${currentYear} (comebacks, hiatuses, military enlistment)
+- Cover 4th-gen groups if relevant: ILLIT, KISS OF LIFE, TWS, ATEEZ, LE SSERAFIM
+- Reference Weverse, photocard culture, or fan community dynamics for depth
+- Cite industry sources: Hanteo Chart, Circle Chart, Billboard Korea` : '';
+
     const prompt = `You are rewriting an underperforming blog post to improve reader engagement and reduce bounce rate. The post exists at ${post.link} and must keep its URL/slug unchanged.
 
 CURRENT TITLE: ${post.title.rendered}
@@ -905,7 +930,7 @@ ${focusKeyword ? `PRIMARY KEYWORD: ${focusKeyword}\n` : ''}CURRENT WORD COUNT: $
 CURRENT CONTENT (plain text): ${contentPreview}${isTruncated ? '...' : ''}
 
 PERFORMANCE DATA: ${perf.pageviews} views, ${(perf.bounceRate * 100).toFixed(0)}% bounce rate, ${perf.avgEngagementTime.toFixed(0)}s avg engagement
-
+${nicheRewriteRules}
 REWRITE RULES:
 1. Keep the same topic and primary keyword
 2. Add a much stronger opening hook (first paragraph must grab attention)
