@@ -215,6 +215,33 @@ const KOREAN_EVENTS: SeasonalEvent[] = [
     ],
   },
   {
+    // 단오 (음력 5월 5일) — 전통 여름 절기. 한방 식물 성분 K-Beauty 콘텐츠와 연결.
+    // NOTE: 음력 기준이라 양력 날짜가 매년 변동 (보통 6월 초~중순)
+    name: 'Dano (Korean Summer Solstice Festival)',
+    months: [5, 6],
+    days: [20, 20],
+    niches: ['K-Entertainment', 'K-Beauty'],
+    suggestions: [
+      'Dano Korean traditional holiday what is it fan culture guide',
+      'best Korean traditional botanical skincare ingredients for summer Dano',
+      'Korean mugwort skincare tradition Dano holiday history explained',
+      'K-pop idol Dano greetings Korean holiday fan community highlights',
+    ],
+  },
+  {
+    // 페페로데이 (11월 11일) — 커플·팬서비스 선물 시즌. K-Beauty 선물 세트 + K-Entertainment 팬덤 이벤트 복합 트리거.
+    name: 'Pepero Day',
+    months: [11, 11],
+    days: [11, 11],
+    niches: ['K-Beauty', 'K-Entertainment'],
+    suggestions: [
+      'best Korean skincare gift sets for Pepero Day under 30 dollars',
+      'Pepero Day K-beauty couples gift guide lip tints hand creams',
+      'K-pop idol Pepero Day fan service moments compilation guide',
+      'how Korean couples celebrate Pepero Day K-drama fan culture',
+    ],
+  },
+  {
     name: 'Korean Winter Skincare & Holiday K-Beauty',
     months: [12, 12],
     days: [1, 31],

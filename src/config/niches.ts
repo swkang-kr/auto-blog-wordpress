@@ -150,7 +150,8 @@ export const NICHES: NicheConfig[] = [
       'BLACKPINK members skincare routine products revealed',
       'aespa Karina skincare routine products 2026 guide',
       'IVE Wonyoung beauty routine skincare products revealed',
-      // NOTE: NewJeans 어도어 계약 분쟁 진행 중 — 법적 분쟁 언급 금지, 뷰티 룩/제품 중심으로만 작성
+      // NOTE: NewJeans — 멤버 5인이 어도어와의 계약을 종료하고 독립 활동 중 (2025-2026).
+      //       콘텐츠 작성 시: 법적 분쟁/소속사 갈등 주장 금지, 뷰티 룩/제품 중심으로만 작성할 것.
       'NewJeans makeup looks how to recreate K-Beauty products',
       // K-Beauty 헤어 케어 — Amazon 어필리에이트 추가 기회
       'best Korean shampoo for hair loss thinning hair 2026',
@@ -174,7 +175,7 @@ export const NICHES: NicheConfig[] = [
       // Olive Young 직구 — 2025-2026 폭발적 성장 트렌드
       'how to buy from Olive Young internationally shipping guide 2026',
       'Olive Young best sellers 2026 ranked what to buy',
-      'Olive Young vs YesStyle vs Soko Glam where to buy Korean beauty',
+      'Olive Young vs YesStyle vs Stylevana where to buy Korean beauty 2026',
       // K-Beauty Tools — 신흥 카테고리
       'best Korean gua sha face tools for lifting 2026 guide',
       'Korean facial massage tools ice roller gua sha guide beginner',
@@ -256,7 +257,7 @@ export const NICHES: NicheConfig[] = [
       // BTS — 글로벌 최고 검색량 (2026년: 전원 전역 완료, 그룹 컴백 앵글 중심)
       // NOTE: 모든 멤버 2025년 중반까지 전역 완료 — "after military service" 앵글은 과거완료형으로 작성
       'BTS group comeback 2026 what fans need to know full guide',
-      'BTS after military service reunion comeback 2026 what happened',
+      'BTS 2026 comeback latest what fans need to know full update',
       'BTS members solo activities ranked 2026 update',
       // 4세대 주력 그룹 — 급상승 트래픽
       // NOTE: NewJeans — 멤버 5인이 어도어와의 계약을 종료하고 독립 활동 중 (2025-2026).
@@ -317,8 +318,10 @@ export const NICHES: NicheConfig[] = [
       'best K-drama OST songs ranked all time',
       'top K-drama actors to watch 2026 breakout performances',
       // 아이돌 뷰티 — K-Beauty ↔ K-Entertainment 크로스 니치 교두보
-      'K-pop idol no-makeup looks what products they use',
-      'K-pop idol skincare routine favorite products 2026',
+      // NOTE: 'K-pop idol skincare routine' 계열 키워드는 K-Beauty 섹션에 이미 있음 (cannibalization 방지)
+      'K-pop idol no-makeup looks natural beauty secrets revealed',
+      // IU(아이유) — Laneige 글로벌 앰배서더, 한국 최고 스킨케어 아이콘, 검색량 폭발적
+      'IU skincare routine products Laneige ambassador what she uses',
       // BLACKPINK 멤버별 솔로 — 개인 검색량 폭발적
       'Jennie solo career 2026 BLACKPINK comeback update fans',
       'Lisa solo comeback 2026 what fans need to know',
