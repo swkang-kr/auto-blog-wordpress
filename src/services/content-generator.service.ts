@@ -183,11 +183,15 @@ function getWordCountTargets(contentType: string, searchIntent?: string) {
   };
 }
 
-/** Common English stop words to remove from slugs for cleaner URLs */
+/** Common English stop words to remove from slugs for cleaner URLs.
+ * NOTE: 'how', 'what', 'why', 'when', 'where', 'which', 'who' are intentionally EXCLUDED
+ * from this list — they carry search intent signal for informational/how-to queries and
+ * removing them degrades keyword matching (e.g. "how-to-korean-glass-skin" is better than
+ * "korean-glass-skin" for how-to content). */
 const SLUG_STOP_WORDS = new Set([
   'a', 'an', 'the', 'in', 'on', 'at', 'to', 'for', 'of', 'and', 'or', 'is', 'are',
   'was', 'were', 'be', 'been', 'with', 'from', 'by', 'as', 'it', 'its', 'this', 'that',
-  'how', 'what', 'why', 'when', 'where', 'which', 'who', 'your', 'you', 'our', 'my',
+  'your', 'you', 'our', 'my',
   'can', 'do', 'does', 'will', 'should', 'could', 'would', 'has', 'have', 'had',
   'not', 'but', 'if', 'about', 'into', 'through', 'just', 'also', 'than', 'very',
 ]);
@@ -324,8 +328,8 @@ To reach WORD_COUNT_TARGET+ words WITHOUT padding:
 - End with "What Others Can Learn" section and FAQ (3-5 Q&As)
 
 ## Niche-Specific Tone
-- K-Beauty: Expert skincare advisor — combine product knowledge with dermatological science. Reference Korean beauty innovations, ingredient analysis, and brand comparisons. Include Korean product names and Olive Young context.
-- K-Entertainment: Fan-centric cultural writer — cover comebacks, rankings, fan experiences, and community culture. Reference idol activities, drama recommendations, and award predictions through a fan lens. Use fan-friendly language (comeback, bias, stan, era, fandom). Do NOT analyze agency finances or business strategy — this is fan content, not finance content.
+- K-Beauty: Expert skincare advisor — combine product knowledge with dermatological science. Reference Korean beauty innovations, ingredient analysis (include active ingredient concentration % and pH level where known — these are high-trust signals for ingredient-savvy readers), and brand comparisons. Include Korean product names and Olive Young context. Always note whether a product is Olive Young exclusive or globally available (Amazon/YesStyle/Stylevana). Highlight toner pads as a category where relevant — one of the fastest-growing K-Beauty segments in 2025-2026. Cover emerging brands (MEDICUBE, Isntree, Haruharu Wonder) alongside established ones (COSRX, Beauty of Joseon, SKIN1004).
+- K-Entertainment: Fan-centric cultural writer — cover comebacks, rankings, fan experiences, and community culture. Reference idol activities, drama recommendations, and award predictions through a fan lens. Use fan-friendly language (comeback, bias, stan, era, fandom, ult). Include fan-relevant metrics where available: MV view counts (YouTube), streaming chart positions (Melon/Circle Chart/Hanteo), and Weverse community context. Cover 4th-gen groups (ILLIT, KISS OF LIFE, TWS, ATEEZ, Stray Kids, LE SSERAFIM) alongside 3rd-gen (BTS, BLACKPINK, TWICE, SEVENTEEN). Do NOT analyze agency finances or business strategy — this is fan content, not finance content.
 
 ## Signature Section (MANDATORY)
 Every article MUST include a signature analysis section as an H2. The exact section name will be specified in the user prompt.
@@ -451,7 +455,8 @@ This targets Google's List Featured Snippet for ranking queries.
   * Korean companies: samsung, hyundai, lg, skhynix, naver, kakao, coupang
   * News/Data: bloomberg, reuters, nikkei, statista, worldbank
   * Entertainment agencies: hybe, sm-entertainment, jyp
-  * K-Entertainment fan/industry: kocca, hanteo, circle-chart, billboard-korea, kbs, mnet
+  * K-Entertainment fan/industry: kocca, hanteo, circle-chart, billboard-korea, kbs, mnet, weverse-magazine, melon, bugs
+  * K-Beauty editorial: allure-korea, harpers-bazaar-korea, vogue-korea, inci-decoder, olive-young
 - data-topic: brief topic context for URL resolution (e.g., "markets", "earnings", "policy")
 - Example: <cite data-source="bloomberg" data-topic="markets">Bloomberg Markets</cite>
 - Example: <cite data-source="bok" data-topic="monetary-policy">Bank of Korea</cite>

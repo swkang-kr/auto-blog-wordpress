@@ -69,20 +69,20 @@ export interface AuthorProfile {
 /** Niche-specific author profiles for visible E-E-A-T bio sections (primary persona) */
 export const NICHE_AUTHOR_PROFILES: Record<string, AuthorProfile> = {
   'K-Beauty': {
-    name: '',
+    name: 'Sophie Kim',
     title: 'K-Beauty & Skincare Specialist',
     bio: 'Researching Korean skincare innovations, ingredient science, and beauty industry trends. Providing evidence-based product analysis and routine recommendations backed by dermatological research and Korean cosmetic formulation expertise.',
     expertise: ['Korean skincare formulations', 'K-beauty ingredient analysis', 'Olive Young product reviews', 'Korean sunscreen technology', 'Glass skin routines'],
     credentials: ['Cosmetic Science Researcher', 'Korean Beauty Industry Analyst'],
-    yearsExperience: 4,
+    yearsExperience: 6,
   },
   'K-Entertainment': {
-    name: '',
+    name: 'Jamie Yoon',
     title: 'K-Pop & K-Drama Culture Writer',
     bio: 'Deeply embedded in the global K-pop and K-drama fan community. Covering comeback seasons, idol news, drama recommendations, award show predictions, and the fan experiences that define Hallyu culture worldwide.',
     expertise: ['K-pop fandom culture', 'K-drama recommendations & rankings', 'Idol comeback news', 'Award show predictions', 'Fan community & Hallyu culture'],
     credentials: ['Hallyu Culture Researcher', 'K-Entertainment Content Writer'],
-    yearsExperience: 4,
+    yearsExperience: 7,
   },
 };
 
@@ -91,31 +91,31 @@ export const NICHE_AUTHOR_PERSONAS: Record<string, AuthorProfile[]> = {
   'K-Beauty': [
     NICHE_AUTHOR_PROFILES['K-Beauty'],
     {
-      name: '',
+      name: 'Mia Cho',
       title: 'K-Beauty Product Tester',
       bio: 'Testing and reviewing Korean skincare products hands-on, with a focus on ingredient transparency, texture analysis, and real-world routine results. Sensitive skin perspective.',
       expertise: ['Product texture analysis', 'Sensitive skin routines', 'Olive Young hauls', 'Korean drugstore picks'],
       credentials: ['Certified Cosmetic Ingredient Reviewer', 'K-Beauty Content Creator'],
-      yearsExperience: 3,
+      yearsExperience: 5,
     },
     {
-      name: '',
+      name: 'Ella Park',
       title: 'K-Beauty Hair & Makeup Specialist',
       bio: 'Covering the full spectrum of Korean beauty — from viral makeup looks and K-pop idol beauty trends to hair loss treatments and scalp care innovations. Focused on products available on Amazon and Olive Young.',
       expertise: ['Korean makeup brands', 'K-pop idol makeup looks', 'Korean hair loss treatments', 'Scalp care', 'Korean cosmetics on Amazon'],
       credentials: ['Korean Beauty Content Specialist', 'Makeup & Haircare Product Reviewer'],
-      yearsExperience: 3,
+      yearsExperience: 4,
     },
   ],
   'K-Entertainment': [
     NICHE_AUTHOR_PROFILES['K-Entertainment'],
     {
-      name: '',
+      name: 'Alex Han',
       title: 'K-Pop & Hallyu Culture Writer',
       bio: 'Exploring Korean pop culture through the lens of global fandom, concert economics, and digital content trends. Covering everything from comeback strategies to fan community dynamics.',
       expertise: ['K-pop fandom economics', 'Concert & tour analysis', 'Digital content trends', 'Fan community dynamics'],
       credentials: ['Hallyu Culture Researcher', 'Digital Media Analyst'],
-      yearsExperience: 3,
+      yearsExperience: 5,
     },
   ],
 };

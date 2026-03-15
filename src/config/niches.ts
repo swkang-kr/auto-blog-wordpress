@@ -68,25 +68,49 @@ export const NICHES: NicheConfig[] = [
     category: 'K-Beauty',
     broadTerm: 'Korean skincare K-beauty products review',
     seedKeywords: [
-      // Product reviews (Amazon 어필리에이트 전환율 최고)
+      // Product reviews — established brands (Amazon 어필리에이트 전환율 최고)
       'COSRX snail mucin essence review before and after',
       'Beauty of Joseon relief sun rice probiotics review',
       'Anua heartleaf toner review for sensitive skin',
       'best SKIN1004 Madagascar centella products ranked',
       'Torriden dive-in serum vs COSRX hyaluronic acid review',
+      // Emerging brands 2025-2026 (급성장 중)
+      'MEDICUBE age R booster review before after results',
+      'Isntree hyaluronic acid toner review sensitive skin',
+      'Haruharu Wonder black rice toner review vs Anua',
+      'Round Lab birch juice moisturizer review dry skin',
+      'Mixsoon bean ferment essence review glow skin',
+      // Toner pads — fastest-growing K-Beauty segment
+      'best Korean toner pads 2026 Anua COSRX ranked',
+      'Anua heartleaf 77 toner pad review vs cloth toner',
+      'best Korean exfoliating pads for sensitive skin 2026',
       // Best-of / shopping guides (구매 의도 키워드)
       'best Korean toner for dry skin 2026 ranked',
       'best Korean moisturizer under 30 dollars Amazon 2026',
       'best Korean vitamin C serum ranked dermatologist tested',
       'best Korean sunscreen for dark skin no white cast 2026',
       'best Korean sheet masks for glowing skin ranked',
+      'best Korean collagen supplement drink 2026 ranked results',
+      // Dupes — high-demand 2025-2026 segment
+      'best Korean skincare dupes for luxury brands that work',
+      'Tatcha vs Korean alternative skincare dupes ranked',
+      'La Mer dupe Korean moisturizer that actually works',
+      // Men K-Beauty — growing sub-niche
+      'best Korean skincare routine for men beginners 2026',
+      'best Korean moisturizer for men oily skin 2026',
+      'Korean sunscreen for men no white cast lightweight',
       // Comparisons (x-vs-y: high commercial intent)
       'COSRX vs CeraVe which is better for sensitive skin',
       'Korean sunscreen vs American sunscreen SPF comparison',
       'Laneige lip sleeping mask vs Tatcha review comparison',
+      'MEDICUBE vs COSRX peptide serum comparison review',
       // Routine how-to (evergreen, internal link hub)
       'Korean skincare routine for beginners step by step 2026',
       'how to build a Korean glass skin routine on a budget',
+      'skip-care Korean minimalist skincare routine guide 2026',
+      // Idol beauty crossover (K-Beauty ↔ K-Entertainment bridge)
+      'K-pop idol skincare routine products they actually use',
+      'BLACKPINK members skincare routine products revealed',
       // K-Beauty 헤어 케어 — Amazon 어필리에이트 추가 기회
       'best Korean shampoo for hair loss thinning hair 2026',
       'Daeng Gi Meo Ri vs Ryo shampoo review comparison',
@@ -111,22 +135,34 @@ export const NICHES: NicheConfig[] = [
       'BTS comeback 2026 date songs what to expect',
       'BTS members solo activities ranked 2026',
       'BTS Jungkook solo career 2026 update',
-      // 신규 그룹 — 급상승 트래픽
-      'NewJeans 2026 comeback songs ranked',
-      'aespa Supernova era what happened explained',
-      'BABYMONSTER debut songs ranked 2026',
+      // 4세대 주력 그룹 — 급상승 트래픽
+      // NOTE: NewJeans는 어도어 계약 분쟁/민희진 독립 사안 진행 중 — 콘텐츠 작성 시
+      //       법적 분쟁 관련 주장 포함 금지, 음악/팬덤 중심으로만 작성할 것
+      'NewJeans best songs ranked guide for new fans',
+      'aespa 2026 comeback songs what fans need to know',
+      'BABYMONSTER songs ranked best tracks guide 2026',
+      'ILLIT debut songs ranked best tracks for new fans 2026',
+      'ILLIT comeback 2026 what fans need to know',
+      'KISS OF LIFE songs ranked retro concept explained',
+      'TWS debut songs ranked guide for new listeners 2026',
+      // 글로벌 팬덤 그룹 — 검색량 안정적
+      'XG songs ranked best tracks to start with guide',
+      'tripleS concept explained guide for new fans',
       // K-Drama — Netflix 글로벌 트래픽
       'best Korean dramas on Netflix 2026 must watch',
       'most watched K-dramas of 2026 ranked by viewers',
+      'K-drama 2026 release schedule complete list Netflix Disney',
+      'where to watch K-dramas online streaming platforms compared',
       'K-drama ending explained 2026 popular shows',
       // 팬덤 바이럴 — 소셜 공유율 높음
-      'best K-pop music videos 2026 ranked by views',
+      'best K-pop music videos 2026 ranked by YouTube views',
+      'K-pop idol age height facts complete list 2026',
       'K-pop idol facts fans dont know 2026',
       'best K-pop reality shows to watch 2026',
       // 시즌 이벤트 — 검색 스파이크
-      'MAMA Awards 2026 winners complete list',
+      'MAMA Awards 2026 winners predictions complete guide',
       'Melon Music Awards 2026 predictions ranked',
-      'K-pop concerts in USA 2026 schedule dates',
+      'K-pop concerts in USA 2026 schedule tour dates',
       // 3-4세대 그룹 — 글로벌 팬덤 검색량
       'Stray Kids world tour 2026 setlist fan experience',
       'SEVENTEEN discography ranked best songs guide',
@@ -136,12 +172,16 @@ export const NICHES: NicheConfig[] = [
       // K-Drama 배우/OST — 팬 검색 의도
       'best K-drama OST songs ranked all time',
       'top K-drama actors to watch 2026 breakout performances',
+      // 아이돌 뷰티 — K-Beauty ↔ K-Entertainment 크로스 니치 교두보
+      'K-pop idol no-makeup looks what products they use',
+      'K-pop idol skincare routine favorite products 2026',
       // 에버그린 — 시간 독립적 (트래픽 지속성 확보)
       'how K-pop training system works explained',
       'K-drama tropes explained for beginners complete guide',
       'why K-pop dominated global music industry explained',
       'how to attend K-pop concerts in Korea as a foreigner',
       'K-pop fan culture guide bias stan fandom terms explained',
+      'K-pop playlist for studying working out mood guide',
     ],
     contentTypes: ['listicle', 'news-explainer', 'best-x-for-y', 'deep-dive', 'how-to', 'x-vs-y', 'case-study'],
     adSenseRpm: 'medium',

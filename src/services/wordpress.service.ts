@@ -299,11 +299,20 @@ export class WordPressService {
     'sm-entertainment': { domain: 'https://www.smentertainment.com', paths: { default: '/', artists: '/artists/', ir: '/ir/' }, label: 'SM Entertainment' },
     jyp:               { domain: 'https://www.jype.com', paths: { default: '/', artists: '/artists/', ir: '/ir/' }, label: 'JYP Entertainment' },
     // K-Entertainment fan/industry sources
-    hanteo:            { domain: 'https://www.hanteochart.com', paths: { default: '/', chart: '/chart/', album: '/chart/album/' }, label: 'Hanteo Chart' },
-    'circle-chart':    { domain: 'https://circlechart.kr', paths: { default: '/', chart: '/page_chart/onoff.circle' }, label: 'Circle Chart' },
-    'billboard-korea': { domain: 'https://www.billboard.com', paths: { default: '/charts/', 'k-pop': '/charts/k-pop-hot-100/' }, label: 'Billboard K-Pop' },
-    kbs:               { domain: 'https://www.kbs.co.kr', paths: { default: '/', entertainment: '/enter/' }, label: 'KBS' },
-    mnet:              { domain: 'https://www.mnet.com', paths: { default: '/', schedule: '/schedule/' }, label: 'Mnet' },
+    hanteo:              { domain: 'https://www.hanteochart.com', paths: { default: '/', chart: '/chart/', album: '/chart/album/' }, label: 'Hanteo Chart' },
+    'circle-chart':      { domain: 'https://circlechart.kr', paths: { default: '/', chart: '/page_chart/onoff.circle' }, label: 'Circle Chart' },
+    'billboard-korea':   { domain: 'https://www.billboard.com', paths: { default: '/charts/', 'k-pop': '/charts/k-pop-hot-100/' }, label: 'Billboard K-Pop' },
+    kbs:                 { domain: 'https://www.kbs.co.kr', paths: { default: '/', entertainment: '/enter/' }, label: 'KBS' },
+    mnet:                { domain: 'https://www.mnet.com', paths: { default: '/', schedule: '/schedule/' }, label: 'Mnet' },
+    'weverse-magazine':  { domain: 'https://weversemagazine.com', paths: { default: '/', artists: '/artists/' }, label: 'Weverse Magazine' },
+    melon:               { domain: 'https://www.melon.com', paths: { default: '/', chart: '/chart/index.htm' }, label: 'Melon Chart' },
+    bugs:                { domain: 'https://music.bugs.co.kr', paths: { default: '/', chart: '/chart/rise' }, label: 'Bugs Music' },
+    // K-Beauty editorial sources
+    'allure-korea':       { domain: 'https://www.allure.com', paths: { default: '/', 'skin-care': '/gallery/best-korean-skin-care-products', makeup: '/gallery/korean-beauty-makeup-products', beauty: '/topic/korean-beauty' }, label: 'Allure' },
+    'harpers-bazaar-korea': { domain: 'https://www.harpersbazaar.com', paths: { default: '/', beauty: '/beauty/', 'k-beauty': '/beauty/skin-care/g35732121/best-korean-skin-care-products/' }, label: "Harper's Bazaar" },
+    'vogue-korea':         { domain: 'https://www.vogue.com', paths: { default: '/', beauty: '/beauty/', 'k-beauty': '/beauty/article/korean-beauty-products' }, label: 'Vogue' },
+    'inci-decoder':        { domain: 'https://incidecoder.com', paths: { default: '/', ingredients: '/ingredients/' }, label: 'INCI Decoder' },
+    'olive-young':         { domain: 'https://www.oliveyoung.co.kr', paths: { default: '/store/main/getMemberMain.do', ranking: '/store/main/getBestList.do' }, label: 'Olive Young' },
     // General
     wikipedia: { domain: 'https://en.wikipedia.org', paths: { default: '/' }, label: 'Wikipedia' },
   };
