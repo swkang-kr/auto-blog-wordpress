@@ -29,6 +29,34 @@ interface WPPost {
   meta: Record<string, string>;
 }
 
+/** Check if an ItemList item name looks like the post title (not a product) */
+function isPostTitle(name: string, postTitle: string): boolean {
+  const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
+  const n = norm(name);
+  const t = norm(postTitle);
+  // If the item name shares 25+ chars of normalized text with the title, it IS the title
+  return n.length >= 20 && (n.includes(t.substring(0, 25)) || t.includes(n.substring(0, 25)));
+}
+
+/** Get the longest answer paragraph from HTML following a heading */
+function getFullAnswer(html: string, question: string): string | null {
+  const escaped = question.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const regex = new RegExp(`<h[23][^>]*>[^<]*${escaped.substring(0, 40)}[^<]*<\\/h[23]>([\\s\\S]*?)(?=<h[2]|$)`, 'i');
+  const match = regex.exec(html);
+  if (!match) return null;
+  // Collect all <p> text in that section, up to 500 chars
+  const paragraphs: string[] = [];
+  const pRegex = /<p[^>]*>([\s\S]*?)<\/p>/gi;
+  let pMatch;
+  let total = 0;
+  while ((pMatch = pRegex.exec(match[1])) !== null && total < 500) {
+    const text = pMatch[1].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+    if (text.length > 20) { paragraphs.push(text); total += text.length; }
+  }
+  const combined = paragraphs.join(' ').trim();
+  return combined.length > 20 ? combined.substring(0, 500) : null;
+}
+
 /** Check if a name is a non-product heading that should be excluded */
 function isNonProductHeading(name: string): boolean {
   if (!name) return true;
@@ -96,9 +124,50 @@ async function fixJsonLd(): Promise<void> {
         continue;
       }
 
+      const postTitle = post.title.rendered.replace(/<[^>]+>/g, '').trim();
       const htmlContent = post.content.rendered;
       const sectionImages = extractSectionImages(htmlContent);
       let changed = false;
+
+      // Fix FAQPage: expand truncated answers from actual HTML content
+      for (const schema of schemas) {
+        if (schema['@type'] !== 'FAQPage') continue;
+        for (const entity of (schema.mainEntity || [])) {
+          const currentAnswer = entity.acceptedAnswer?.text || '';
+          // If answer is exactly 300 chars it was truncated — fetch full answer from HTML
+          if (currentAnswer.length >= 290) {
+            const fullAnswer = getFullAnswer(htmlContent, entity.name);
+            if (fullAnswer && fullAnswer.length > currentAnswer.length) {
+              entity.acceptedAnswer.text = fullAnswer;
+              changed = true;
+              console.log(`  FAQ expanded: "${entity.name.substring(0, 50)}" (${currentAnswer.length} → ${fullAnswer.length} chars)`);
+            }
+          }
+        }
+      }
+
+      // Deduplicate ItemList schemas — keep the one with more valid items, remove others
+      const itemListIndices = schemas.reduce<number[]>((acc, s, i) => {
+        if (s['@type'] === 'ItemList') acc.push(i);
+        return acc;
+      }, []);
+      if (itemListIndices.length > 1) {
+        // Sort by number of valid items descending, remove all but the best
+        const scored = itemListIndices.map(idx => {
+          const items = schemas[idx].itemListElement || [];
+          const validCount = items.filter((it: any) => {
+            const n = it.item?.name || it.name || '';
+            return !isNonProductHeading(n) && !isPostTitle(n, postTitle);
+          }).length;
+          return { idx, validCount };
+        }).sort((a, b) => b.validCount - a.validCount);
+        // Remove all duplicate ItemLists (keep first/best, remove the rest)
+        for (let k = scored.length - 1; k >= 1; k--) {
+          schemas.splice(scored[k].idx, 1);
+          changed = true;
+          console.log(`  Removed duplicate ItemList (kept best with ${scored[0].validCount} valid items)`);
+        }
+      }
 
       for (let i = schemas.length - 1; i >= 0; i--) {
         const schema = schemas[i];
@@ -128,8 +197,8 @@ async function fixJsonLd(): Promise<void> {
 
           const productName = product.name || '';
 
-          // Remove non-product items
-          if (isNonProductHeading(productName)) {
+          // Remove non-product items (structural headings, question headings, post title)
+          if (isNonProductHeading(productName) || isPostTitle(productName, postTitle)) {
             console.log(`  ❌ Removed non-product: "${productName.substring(0, 60)}"`);
             changed = true;
             continue;
