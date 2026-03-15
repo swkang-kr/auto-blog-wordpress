@@ -294,10 +294,16 @@ export class WordPressService {
     nikkei:    { domain: 'https://asia.nikkei.com', paths: { default: '/', business: '/Business/', economy: '/Economy/', tech: '/Business/Tech/', markets: '/Business/Markets/' }, label: 'Nikkei Asia' },
     statista:  { domain: 'https://www.statista.com', paths: { default: '/', korea: '/topics/5730/south-korea/', ai: '/topics/3104/artificial-intelligence-ai/', semiconductors: '/topics/3617/semiconductor-industry/' }, label: 'Statista' },
     worldbank: { domain: 'https://www.worldbank.org', paths: { default: '/', data: '/en/country/korea/', indicators: '/en/data/', research: '/en/research/' }, label: 'World Bank' },
-    // Entertainment
+    // Entertainment agencies
     hybe:              { domain: 'https://www.hybecorp.com', paths: { default: '/', ir: '/eng/ir/', artists: '/eng/artists/', earnings: '/eng/ir/financial/' }, label: 'HYBE' },
     'sm-entertainment': { domain: 'https://www.smentertainment.com', paths: { default: '/', artists: '/artists/', ir: '/ir/' }, label: 'SM Entertainment' },
     jyp:               { domain: 'https://www.jype.com', paths: { default: '/', artists: '/artists/', ir: '/ir/' }, label: 'JYP Entertainment' },
+    // K-Entertainment fan/industry sources
+    hanteo:            { domain: 'https://www.hanteochart.com', paths: { default: '/', chart: '/chart/', album: '/chart/album/' }, label: 'Hanteo Chart' },
+    'circle-chart':    { domain: 'https://circlechart.kr', paths: { default: '/', chart: '/page_chart/onoff.circle' }, label: 'Circle Chart' },
+    'billboard-korea': { domain: 'https://www.billboard.com', paths: { default: '/charts/', 'k-pop': '/charts/k-pop-hot-100/' }, label: 'Billboard K-Pop' },
+    kbs:               { domain: 'https://www.kbs.co.kr', paths: { default: '/', entertainment: '/enter/' }, label: 'KBS' },
+    mnet:              { domain: 'https://www.mnet.com', paths: { default: '/', schedule: '/schedule/' }, label: 'Mnet' },
     // General
     wikipedia: { domain: 'https://en.wikipedia.org', paths: { default: '/' }, label: 'Wikipedia' },
   };
@@ -1568,7 +1574,7 @@ ${ga4TrackingScript}`;
 
     // Inject end-of-article comment engagement prompt
     const commentPromptHtml = `<div class="ab-comment-prompt" style="margin:32px 0; padding:20px 24px; background:#f8f9fa; border-left:4px solid #0066FF; border-radius:0 8px 8px 0;">
-<p style="margin:0 0 8px 0; font-size:17px; font-weight:700; color:#222;">💬 Your Turn</p>
+<p style="margin:0 0 8px 0; font-size:17px; font-weight:700; color:#222;">Your Turn</p>
 <p style="margin:0; font-size:14px; color:#555; line-height:1.6;">What's your take on this? Share your experience or questions in the comments — we read and respond to every one.</p>
 <p style="margin:8px 0 0 0;"><a href="#respond" style="color:#0066FF; font-weight:600; text-decoration:none; font-size:14px;">Jump to comments &darr;</a></p></div>`;
     // Insert before Related Posts or Disclaimer

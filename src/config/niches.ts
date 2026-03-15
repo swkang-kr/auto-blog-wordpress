@@ -19,6 +19,8 @@ export function getSeasonallyOrderedNiches(): NicheConfig[] {
     'Summer': ['K-Beauty'],
     'Chuseok': ['K-Entertainment'],
     'BIFF': ['K-Entertainment'],
+    'K-pop Spring Comeback': ['K-Entertainment'],
+    'K-pop Summer Comeback': ['K-Entertainment'],
     'Suneung': ['K-Entertainment'],
     'MAMA': ['K-Entertainment', 'K-Beauty'],
     'Memorial': ['K-Entertainment'],
@@ -28,7 +30,7 @@ export function getSeasonallyOrderedNiches(): NicheConfig[] {
     'Black Friday': ['K-Beauty'],
     'Singles Day': ['K-Beauty'],
     'Christmas': ['K-Beauty', 'K-Entertainment'],
-    'New Year': ['K-Entertainment'],
+    'New Year': ['K-Entertainment', 'K-Beauty'],
     'K-Beauty Awards': ['K-Beauty'],
   };
 

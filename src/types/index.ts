@@ -14,19 +14,15 @@ export const KOREAN_SEASONAL_EVENTS: Array<{
   contentAngles: string[];
 }> = [
   // Lead times extended to 45-60 days for major events (SEO indexing + ranking takes 30-45 days)
-  { name: 'Seollal (Lunar New Year)', startMonth: 1, startDay: 20, endMonth: 2, endDay: 10, leadTimeDays: 60, relevantNiches: ['Korea Travel', 'K-Entertainment', 'Korean Finance'], contentAngles: ['travel tips for Seollal', 'Korean New Year traditions', 'stock market during Lunar New Year'] },
+  { name: 'Seollal (Lunar New Year)', startMonth: 1, startDay: 20, endMonth: 2, endDay: 10, leadTimeDays: 60, relevantNiches: ['K-Entertainment', 'K-Beauty'], contentAngles: ['best K-dramas to watch during Seollal', 'K-pop idol Seollal greetings ranked', 'Korean holiday skincare gift sets', 'Hanbok beauty makeup looks'] },
   { name: 'Cherry Blossom Season', startMonth: 3, startDay: 25, endMonth: 4, endDay: 15, leadTimeDays: 60, relevantNiches: ['K-Beauty', 'K-Entertainment'], contentAngles: ['spring skincare routine', 'K-beauty spring essentials', 'cherry blossom K-drama filming locations', 'spring comeback season K-pop preview'] },
-  { name: 'Buddha\'s Birthday', startMonth: 5, startDay: 1, endMonth: 5, endDay: 15, leadTimeDays: 45, relevantNiches: ['Korea Travel', 'K-Entertainment'], contentAngles: ['lantern festival guide', 'temple stay experience'] },
+  { name: 'Buddha\'s Birthday', startMonth: 5, startDay: 1, endMonth: 5, endDay: 15, leadTimeDays: 45, relevantNiches: ['K-Entertainment', 'K-Beauty'], contentAngles: ['K-pop idols spring comeback ranked', 'natural K-beauty skincare inspired by Korean traditions'] },
   { name: 'Summer Monsoon Season', startMonth: 6, startDay: 15, endMonth: 8, endDay: 15, leadTimeDays: 45, relevantNiches: ['K-Beauty', 'K-Entertainment'], contentAngles: ['summer skincare for humidity', 'best Korean sunscreen for summer', 'summer comeback season K-pop ranked', 'best K-dramas to watch this summer'] },
-  { name: 'Chuseok (Korean Thanksgiving)', startMonth: 9, startDay: 5, endMonth: 9, endDay: 25, leadTimeDays: 60, relevantNiches: ['Korea Travel', 'Korean Finance', 'K-Entertainment'], contentAngles: ['Chuseok travel guide', 'Korean harvest festival traditions', 'stock market Chuseok effect'] },
+  { name: 'Chuseok (Korean Thanksgiving)', startMonth: 9, startDay: 5, endMonth: 9, endDay: 25, leadTimeDays: 60, relevantNiches: ['K-Entertainment', 'K-Beauty'], contentAngles: ['best K-dramas to binge during Chuseok', 'K-pop idol Chuseok content ranked', 'Korean beauty gift sets for Chuseok holiday'] },
   { name: 'MAMA Awards Season', startMonth: 11, startDay: 15, endMonth: 12, endDay: 5, leadTimeDays: 45, relevantNiches: ['K-Entertainment'], contentAngles: ['MAMA Awards predictions', 'K-pop year-end awards guide', 'best K-pop performances'] },
-  { name: 'Black Friday / Singles Day', startMonth: 11, startDay: 1, endMonth: 11, endDay: 30, leadTimeDays: 45, relevantNiches: ['K-Beauty', 'Korean Tech', 'Korean Finance'], contentAngles: ['best K-beauty deals', 'Korean tech deals guide', 'holiday shopping Korea'] },
-  { name: 'Year-End / New Year', startMonth: 12, startDay: 15, endMonth: 1, endDay: 5, leadTimeDays: 45, relevantNiches: ['Korea Travel', 'Korean Finance', 'Korean Tech'], contentAngles: ['year-end stock review', 'New Year in Seoul guide', 'tech predictions for next year'] },
-  { name: 'CES (Korean Tech Showcase)', startMonth: 1, startDay: 5, endMonth: 1, endDay: 12, leadTimeDays: 45, relevantNiches: ['Korean Tech'], contentAngles: ['Samsung CES announcements', 'Korean tech at CES', 'LG innovation showcase'] },
-  { name: 'MWC (Mobile World Congress)', startMonth: 2, startDay: 24, endMonth: 2, endDay: 28, leadTimeDays: 45, relevantNiches: ['Korean Tech'], contentAngles: ['Samsung MWC launches', 'Korean 5G/6G technology', 'mobile innovation Korea'] },
-  { name: 'Korean Earnings Season Q1', startMonth: 1, startDay: 20, endMonth: 2, endDay: 15, leadTimeDays: 21, relevantNiches: ['Korean Finance', 'Korean Tech'], contentAngles: ['Samsung earnings preview', 'KOSPI earnings season outlook', 'SK Hynix quarterly results'] },
-  { name: 'Korean Earnings Season Q2', startMonth: 4, startDay: 20, endMonth: 5, endDay: 15, leadTimeDays: 21, relevantNiches: ['Korean Finance', 'Korean Tech'], contentAngles: ['Korean Q1 earnings analysis', 'chaebol performance review'] },
-  { name: 'Summer Olympics (if applicable)', startMonth: 7, startDay: 20, endMonth: 8, endDay: 12, leadTimeDays: 60, relevantNiches: ['Korea Travel', 'K-Entertainment', 'Korean Tech'], contentAngles: ['Korean athletes to watch', 'Korea Olympic tech', 'travel guide for Olympics'] },
+  { name: 'Black Friday / Singles Day', startMonth: 11, startDay: 1, endMonth: 11, endDay: 30, leadTimeDays: 45, relevantNiches: ['K-Beauty'], contentAngles: ['best K-beauty Black Friday deals ranked', 'Olive Young sale picks', 'Amazon K-beauty holiday deals guide'] },
+  { name: 'Year-End / New Year', startMonth: 12, startDay: 15, endMonth: 1, endDay: 5, leadTimeDays: 45, relevantNiches: ['K-Entertainment', 'K-Beauty'], contentAngles: ['best K-pop songs of the year ranked', 'K-drama year-end awards winners', 'best K-beauty products of the year', 'new year skincare reset routine'] },
+  { name: 'Summer Olympics (if applicable)', startMonth: 7, startDay: 20, endMonth: 8, endDay: 12, leadTimeDays: 60, relevantNiches: ['K-Entertainment'], contentAngles: ['Korean athletes to watch at Olympics', 'K-pop songs for Olympic hype playlist'] },
   { name: 'K-Beauty Awards Season', startMonth: 12, startDay: 1, endMonth: 12, endDay: 31, leadTimeDays: 45, relevantNiches: ['K-Beauty'], contentAngles: ['best K-beauty products of the year', 'Olive Young award winners', 'skincare trends next year'] },
   { name: 'K-pop Spring Comeback Season', startMonth: 2, startDay: 1, endMonth: 4, endDay: 30, leadTimeDays: 60, relevantNiches: ['K-Entertainment'], contentAngles: ['spring comeback preview K-pop 2026', 'best K-pop comebacks spring ranked', 'new K-pop releases to watch'] },
   { name: 'K-pop Summer Comeback Season', startMonth: 6, startDay: 1, endMonth: 8, endDay: 31, leadTimeDays: 60, relevantNiches: ['K-Entertainment'], contentAngles: ['summer comeback season K-pop 2026', 'best K-pop summer releases ranked', 'K-pop festival season guide'] },
@@ -72,22 +68,6 @@ export interface AuthorProfile {
 
 /** Niche-specific author profiles for visible E-E-A-T bio sections (primary persona) */
 export const NICHE_AUTHOR_PROFILES: Record<string, AuthorProfile> = {
-  'Korean Tech': {
-    name: '', // Filled from SITE_OWNER env
-    title: 'Korea Tech & Semiconductor Analyst',
-    bio: 'Covering Korean technology, AI, and semiconductor industries with a focus on Samsung, SK Hynix, and the broader Korean tech ecosystem. Tracking Korea\'s role in global AI infrastructure, chip manufacturing, and digital innovation.',
-    expertise: ['Korean semiconductor industry', 'AI & machine learning in Korea', 'Korean tech startups', 'Samsung Electronics strategy', 'SK Hynix HBM memory'],
-    credentials: ['Korea Technology Market Researcher', 'Published analyst covering KOSDAQ tech sector'],
-    yearsExperience: 5,
-  },
-  'Korean Finance': {
-    name: '',
-    title: 'Korean Markets & Investment Analyst',
-    bio: 'Analyzing Korean financial markets, KOSPI/KOSDAQ indices, and investment opportunities for international investors. Specializing in Korean economic policy, BOK interest rate analysis, and cross-border investment strategies.',
-    expertise: ['KOSPI & KOSDAQ analysis', 'Korean ETF investing', 'BOK monetary policy', 'Korean won forex', 'Chaebol financial analysis'],
-    credentials: ['Certified Financial Analyst', 'Korean Capital Markets Specialist'],
-    yearsExperience: 7,
-  },
   'K-Beauty': {
     name: '',
     title: 'K-Beauty & Skincare Specialist',
@@ -95,14 +75,6 @@ export const NICHE_AUTHOR_PROFILES: Record<string, AuthorProfile> = {
     expertise: ['Korean skincare formulations', 'K-beauty ingredient analysis', 'Olive Young product reviews', 'Korean sunscreen technology', 'Glass skin routines'],
     credentials: ['Cosmetic Science Researcher', 'Korean Beauty Industry Analyst'],
     yearsExperience: 4,
-  },
-  'Korea Travel': {
-    name: '',
-    title: 'Korea Travel & Expat Life Writer',
-    bio: 'Writing practical guides for travelers and expats navigating South Korea. From Seoul subway tips to countryside adventures, providing first-hand insights on Korean culture, costs, visas, and daily life for international visitors.',
-    expertise: ['Seoul travel logistics', 'Korean visa requirements', 'Cost of living in Korea', 'Korean food culture', 'Expat life in Seoul'],
-    credentials: ['Resident Korea Travel Writer', 'Published in major travel platforms'],
-    yearsExperience: 5,
   },
   'K-Entertainment': {
     name: '',
@@ -116,28 +88,6 @@ export const NICHE_AUTHOR_PROFILES: Record<string, AuthorProfile> = {
 
 /** Multiple author personas per niche for voice rotation (academic, casual, enthusiast) */
 export const NICHE_AUTHOR_PERSONAS: Record<string, AuthorProfile[]> = {
-  'Korean Tech': [
-    NICHE_AUTHOR_PROFILES['Korean Tech'],
-    {
-      name: '',
-      title: 'Korean AI Researcher',
-      bio: 'Researching the intersection of Korean AI policy, open-source LLM development, and semiconductor supply chains. Previously covered Korean tech startups for international media.',
-      expertise: ['Korean AI policy', 'Open-source LLM ecosystem', 'Semiconductor supply chains', 'Korean startup ecosystem'],
-      credentials: ['AI Research Analyst', 'Korean Tech Startup Advisor'],
-      yearsExperience: 3,
-    },
-  ],
-  'Korean Finance': [
-    NICHE_AUTHOR_PROFILES['Korean Finance'],
-    {
-      name: '',
-      title: 'Korean Retail Investing Guide',
-      bio: 'Making Korean financial markets accessible for first-time international investors. Breaking down KOSPI, ETFs, and BOK policy in plain English with actionable insights.',
-      expertise: ['Korean ETF beginner guides', 'KOSPI for international investors', 'Korean brokerage account setup', 'KRW hedging strategies'],
-      credentials: ['Financial Literacy Educator', 'Korean Markets Contributor'],
-      yearsExperience: 4,
-    },
-  ],
   'K-Beauty': [
     NICHE_AUTHOR_PROFILES['K-Beauty'],
     {
@@ -154,17 +104,6 @@ export const NICHE_AUTHOR_PERSONAS: Record<string, AuthorProfile[]> = {
       bio: 'Covering the full spectrum of Korean beauty — from viral makeup looks and K-pop idol beauty trends to hair loss treatments and scalp care innovations. Focused on products available on Amazon and Olive Young.',
       expertise: ['Korean makeup brands', 'K-pop idol makeup looks', 'Korean hair loss treatments', 'Scalp care', 'Korean cosmetics on Amazon'],
       credentials: ['Korean Beauty Content Specialist', 'Makeup & Haircare Product Reviewer'],
-      yearsExperience: 3,
-    },
-  ],
-  'Korea Travel': [
-    NICHE_AUTHOR_PROFILES['Korea Travel'],
-    {
-      name: '',
-      title: 'Korea Budget Travel Specialist',
-      bio: 'Navigating South Korea on a backpacker budget. Specializing in free attractions, affordable eats, hostel reviews, and money-saving transit strategies across Seoul and beyond.',
-      expertise: ['Budget travel in Korea', 'Free Seoul attractions', 'Korean hostel reviews', 'Regional KTX deals'],
-      credentials: ['Long-term Korea Resident', 'Budget Travel Content Specialist'],
       yearsExperience: 3,
     },
   ],
