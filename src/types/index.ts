@@ -134,15 +134,15 @@ export const NICHE_AUTHOR_PERSONAS: Record<string, AuthorProfile[]> = {
 };
 
 /** Content-type to persona voice mapping for automatic rotation */
-export const CONTENT_TYPE_PERSONA_MAP: Record<string, 'primary' | 'secondary'> = {
+export const CONTENT_TYPE_PERSONA_MAP: Record<string, 'primary' | 'secondary' | 'tertiary'> = {
   'deep-dive': 'primary',
   'analysis': 'primary',
   'case-study': 'primary',
   'news-explainer': 'primary',
-  'how-to': 'secondary',
+  'how-to': 'tertiary',       // K-Beauty: Ella Park (makeup/hair how-to); K-Entertainment: Sora Lee (drama how-to)
   'listicle': 'secondary',
   'best-x-for-y': 'secondary',
-  'x-vs-y': 'primary',
+  'x-vs-y': 'tertiary',       // K-Beauty: Ella Park (product comparisons); K-Entertainment: Sora Lee (drama vs drama)
   'product-review': 'secondary',
 };
 

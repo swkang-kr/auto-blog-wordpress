@@ -1084,7 +1084,7 @@ async function main(): Promise<void> {
 
       // Select author persona based on content type
       const postCount = history.getPostedKeywordsForNiche(niche.id).length;
-      const selectedPersona = contentService.selectAuthorPersona(niche.category, researched.analysis.contentType, postCount);
+      const selectedPersona = contentService.selectAuthorPersona(niche.category, researched.analysis.contentType, postCount, researched.analysis.selectedKeyword);
 
       // Gather similar post titles for content differentiation prompt
       const similarPostTitles = history.getPostedTitlesForNiche(niche.id)
@@ -1148,7 +1148,7 @@ async function main(): Promise<void> {
         const retryClusterLinksForPrompt = retryClusterLinks.map(cl => ({ url: cl.url, title: cl.title, keyword: cl.keyword }));
 
         const retryPostCount = history.getPostedKeywordsForNiche(niche.id).length;
-        const retryPersona = contentService.selectAuthorPersona(niche.category, researched.analysis.contentType, retryPostCount);
+        const retryPersona = contentService.selectAuthorPersona(niche.category, researched.analysis.contentType, retryPostCount, researched.analysis.selectedKeyword);
 
         const retrySimilarTitles = history.getPostedTitlesForNiche(niche.id)
           .filter(t => history.titleSimilarity(t, researched.analysis.suggestedTitle) > 0.25)

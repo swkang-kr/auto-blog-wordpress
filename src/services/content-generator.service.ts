@@ -300,7 +300,7 @@ To reach WORD_COUNT_TARGET+ words WITHOUT padding:
 - Open with a "Quick Verdict" box (<div class="ab-highlight">) summarizing who this product is for
 - Cover: what it is, key ingredients/specs, texture/feel/finish, results timeline, value for money
 - Include pros (3+) and cons (2+) in a structured list
-- **For K-Beauty product-review**: MANDATORY pricing comparison table (Olive Young KRW / Amazon USD / YesStyle or Stylevana) and skin type suitability matrix (oily / dry / combination / sensitive)
+- **For K-Beauty product-review**: MANDATORY pricing comparison table (Olive Young KRW / Amazon USD / YesStyle or Stylevana) and skin type suitability matrix (oily / dry / combination / sensitive / acne-prone)
 - End with a clear "Buy or Skip?" verdict and FAQ (3-5 Q&As)
 
 ### X vs Y Content
@@ -329,7 +329,7 @@ To reach WORD_COUNT_TARGET+ words WITHOUT padding:
 
 ## Niche-Specific Tone
 - K-Beauty: Expert skincare advisor — combine product knowledge with dermatological science. Reference Korean beauty innovations, ingredient analysis (include active ingredient concentration % and pH level where known — these are high-trust signals for ingredient-savvy readers), and brand comparisons. Include Korean product names and Olive Young context. Always note whether a product is Olive Young exclusive or globally available (Amazon/YesStyle/Stylevana). Highlight toner pads and glass skin routines as the fastest-growing K-Beauty segments in 2025-2026. Cover breakout 2025-2026 brands (Numbuzin, TIRTIR) and emerging brands (MEDICUBE, Isntree, Haruharu Wonder, Round Lab, Mixsoon) alongside established ones (COSRX, Beauty of Joseon, SKIN1004, Anua). Where relevant, reference skin cycling and slugging as popular Korean-adjacent routines with high search demand. For dupe content, always compare against the luxury original (Drunk Elephant, Tatcha, La Mer) to capture high-intent search traffic.
-- K-Entertainment: Fan-centric cultural writer — cover comebacks, rankings, fan experiences, and community culture. Reference idol activities, drama recommendations, and award predictions through a fan lens. Use fan-friendly language (comeback, bias, stan, era, fandom, ult). Include fan-relevant metrics where available: MV view counts (YouTube), streaming chart positions (Melon/Circle Chart/Hanteo/Gaon), and Weverse community context. Cover 4th-gen groups (IVE, ILLIT, aespa, BABYMONSTER, KISS OF LIFE, TWS, ATEEZ, Stray Kids, LE SSERAFIM) alongside 3rd-gen (BTS, BLACKPINK, TWICE, SEVENTEEN). For K-drama content, highlight webtoon/manhwa source material where applicable — webtoon adaptations are a dominant 2025-2026 trend. Do NOT analyze agency finances or business strategy — this is fan content, not finance content.
+- K-Entertainment: Fan-centric cultural writer — cover comebacks, rankings, fan experiences, and community culture. Reference idol activities, drama recommendations, and award predictions through a fan lens. Use fan-friendly language (comeback, bias, stan, era, fandom, ult). Include fan-relevant metrics where available: MV view counts (YouTube), streaming chart positions (Melon/Circle Chart/Hanteo/Gaon), and Weverse community context. Cover 4th-gen groups (IVE, ILLIT, aespa, BABYMONSTER, KISS OF LIFE, TWS, XG, ATEEZ, Stray Kids, LE SSERAFIM) alongside 3rd-gen (BTS, BLACKPINK, TWICE, SEVENTEEN). Key notes on 4th-gen groups: KISS OF LIFE (retro R&B concept, 4-member group under KISS Entertainment), TWS (5-member group under PLEDIS/HYBE, debut 2024), XG (7-member Japanese group trained in Korea, XGALX label). For K-drama content, highlight webtoon/manhwa source material where applicable — webtoon adaptations are a dominant 2025-2026 trend. Do NOT analyze stock prices, investment metrics, or earnings reports — this is fan content, not finance content. General label/company context (e.g., "under HYBE", "SM Entertainment group") is fine when relevant to fans.
 
 ## Signature Section (MANDATORY)
 Every article MUST include a signature analysis section as an H2. The exact section name will be specified in the user prompt.
@@ -708,20 +708,43 @@ export class ContentGeneratorService {
   }
 
   /**
-   * Select author persona based on content type and post count modulo.
-   * Academic voice for deep-dive/analysis, casual for listicle/how-to.
+   * Select author persona based on content type, post count, and keyword.
+   * Supports 3-tier rotation: primary (academic), secondary (casual), tertiary (specialist).
+   *
+   * K-Beauty:  Sophie Kim (primary) → Mia Cho (secondary) → Ella Park (tertiary: makeup/hair)
+   * K-Entertainment: Jamie Yoon (primary) → Alex Han (secondary) → Sora Lee (tertiary: K-drama)
    */
-  selectAuthorPersona(category: string, contentType: string, postCount: number): AuthorProfile {
+  selectAuthorPersona(category: string, contentType: string, postCount: number, keyword?: string): AuthorProfile {
     const personas = NICHE_AUTHOR_PERSONAS[category];
     if (!personas || personas.length <= 1) {
       return personas?.[0] || { name: '', title: 'Korea Analyst', bio: '', expertise: [], credentials: [], yearsExperience: 3 };
     }
 
     const preferredVoice = CONTENT_TYPE_PERSONA_MAP[contentType] || 'primary';
+
+    // K-Entertainment: detect K-drama content for Sora Lee (index 2)
+    if (category === 'K-Entertainment' && personas.length >= 3 && keyword) {
+      const kw = keyword.toLowerCase();
+      const isDramaContent =
+        kw.includes('drama') || kw.includes('kdrama') || kw.includes('k-drama') ||
+        kw.includes(' ost') || kw.includes('webtoon') || kw.includes('netflix') ||
+        kw.includes('streaming') || kw.includes('watch') || kw.includes('actor') ||
+        kw.includes('actress') || kw.includes('manhwa');
+      if (isDramaContent) {
+        return personas[2]; // Sora Lee — K-Drama & Korean Cinema Critic
+      }
+    }
+
+    // Tertiary persona for specialist content types (rotate every 3rd post back to primary)
+    if (preferredVoice === 'tertiary' && personas.length >= 3 && postCount % 3 !== 0) {
+      return personas[2];
+    }
+
+    // Secondary persona for casual content types (rotate every 3rd post back to primary)
     if (preferredVoice === 'secondary' && postCount % 3 !== 0) {
-      // Use secondary persona for casual content types, but rotate every 3rd post back to primary
       return personas[1];
     }
+
     return personas[0];
   }
 
@@ -819,7 +842,7 @@ CRITICAL: ONLY use the exact URLs listed below. Do NOT invent or generate URLs f
     // Niche-specific writing directives for differentiated voice
     const nicheDirectives: Record<string, string> = {
       'K-Beauty': `NICHE VOICE: Write as a trusted K-beauty skincare specialist who has personally tested the products. MANDATORY real-use signals: describe texture, skin feel on application, absorption speed, and visible results timeline (e.g., "after 2 weeks", "first use glow"). Specify skin type suitability (oily, dry, combination, sensitive). Include key active ingredients with their function (e.g., niacinamide 5% for pore-tightening). Where applicable, compare Olive Young (KRW) vs Amazon (USD) pricing. Call out any scent, finish (matte/dewy/satin), or irritation potential. Never write about K-beauty products in purely abstract terms — reader experience is paramount.`,
-      'K-Entertainment': `NICHE VOICE: Write as a passionate K-pop and K-drama fan who is deeply embedded in the community. Focus on fan experience, content rankings, idol news, and community culture. Use fan-friendly language (comeback, bias, stan, era, fandom). Include specific examples fans care about (song rankings, drama recommendations, award predictions, concert experiences). Do NOT cover stock prices, agency financials, revenue models, or business analysis — this is fan content, not finance content.`,
+      'K-Entertainment': `NICHE VOICE: Write as a passionate K-pop and K-drama fan who is deeply embedded in the community. Focus on fan experience, content rankings, idol news, and community culture. Use fan-friendly language (comeback, bias, stan, era, fandom). Include specific examples fans care about (song rankings, drama recommendations, award predictions, concert experiences). General label or agency context (e.g., "under HYBE", "SM Entertainment group", "aespa's label SM") is acceptable when naturally relevant to fans. Do NOT analyze stock prices, earnings reports, revenue breakdowns, or investment outlooks — this is fan content, not finance content.`,
     };
     const nicheVoice = nicheDirectives[niche.category] || '';
 
@@ -1125,11 +1148,17 @@ Respond with pure JSON only.`;
         ? `<p style="margin:6px 0 0 0; font-size:13px;">${socialLinks.join(' · ')}</p>`
         : '';
 
+      const NICHE_BYLINE_BIO: Record<string, string> = {
+        'K-Beauty': 'K-Beauty & Skincare Specialist | Evidence-based product analysis, ingredient science, and Korean beauty routines for global readers.',
+        'K-Entertainment': 'K-Pop & K-Drama Culture Writer | Covering comebacks, idol news, drama recommendations, and Hallyu fan culture worldwide.',
+      };
+      const bylineBio = NICHE_BYLINE_BIO[niche.category] || 'Korea Market & Trends Analyst | Covering Korean tech, entertainment, and financial markets for global readers.';
+
       const byline =
         `<div style="margin:30px 0 0 0; padding:20px 24px; background:#f8f9fa; border-radius:8px; display:flex; align-items:center; gap:16px;">` +
         `<div style="${avatarStyle}">${initial}</div>` +
         `<div><p style="margin:0; font-weight:700; font-size:15px; color:#222;">Written by: <a href="/about" style="color:#0066FF; text-decoration:none;">${this.siteOwner}</a></p>` +
-        `<p style="margin:4px 0 0 0; font-size:13px; color:#888;">Korea Market & Trends Analyst | Covering Korean tech, entertainment, and financial markets for global readers.</p>` +
+        `<p style="margin:4px 0 0 0; font-size:13px; color:#888;">${bylineBio}</p>` +
         `${socialHtml}</div></div>`;
 
       // Insert byline before the disclaimer paragraph (not at random last </div>)

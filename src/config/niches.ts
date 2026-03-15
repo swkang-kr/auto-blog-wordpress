@@ -143,7 +143,7 @@ export const NICHES: NicheConfig[] = [
       'best Korean cushion foundation for oily skin no oxidation 2026',
       'Clio kill cover foundation review vs MAC comparison',
     ],
-    contentTypes: ['product-review', 'best-x-for-y', 'x-vs-y', 'how-to', 'listicle', 'case-study', 'deep-dive'],
+    contentTypes: ['product-review', 'best-x-for-y', 'x-vs-y', 'how-to', 'listicle', 'case-study', 'deep-dive', 'news-explainer'],
     adSenseRpm: 'high',
   },
 
