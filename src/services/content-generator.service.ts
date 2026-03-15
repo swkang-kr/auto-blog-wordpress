@@ -286,7 +286,7 @@ To reach WORD_COUNT_TARGET+ words WITHOUT padding:
 - Explain the Korean context that foreign media often miss
 - Include timeline of events and key players involved
 - Add "Why This Matters Globally" section
-- End with "What to Watch Next" forward-looking section and FAQ (3-7 Q&As)
+- End with "What to Watch Next" forward-looking section and FAQ (3-5 Q&As)
 
 ### How-to Content
 - Structure as a step-by-step guide with numbered steps (minimum 6-8 steps)
@@ -328,10 +328,11 @@ To reach WORD_COUNT_TARGET+ words WITHOUT padding:
 - End with "Honorable Mentions" section and FAQ (3-5 Q&As)
 
 ### Case Study
-- Focus on ONE Korean company, product, or event as the subject
+- Focus on ONE Korean brand, product, trend, group, or cultural event as the subject
 - Structure: Background → Challenge → Strategy → Results → Lessons
-- Include specific data: revenue figures, growth percentages, timelines
-- Add expert quotes or industry analysis to support claims
+- K-Beauty metrics: ingredient innovation, Olive Young bestseller rank, Amazon sales rank, brand growth timeline
+- K-Entertainment metrics: MV view counts, streaming chart peaks (Circle Chart/Melon/Hanteo), concert tour scale, fandom growth
+- Add expert commentary or industry analysis to support claims
 - Include a "Key Takeaways for [Audience]" section with actionable insights
 - Include a comparison with a global equivalent (e.g., "Unlike Western beauty brands...", "Compared to Western fan communities...")
 - End with "What Others Can Learn" section and FAQ (3-5 Q&As)

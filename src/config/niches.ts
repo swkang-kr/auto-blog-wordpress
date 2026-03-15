@@ -112,6 +112,7 @@ export const NICHES: NicheConfig[] = [
       'best Korean sunscreen for dark skin no white cast 2026',
       'best Korean sunscreen tone up cream no white cast 2026',
       'best Korean sheet masks for glowing skin ranked',
+      // NOTE: 음용 보충제 — 콘텐츠 내 "not a substitute for medical advice" 고지 필수, 효능 과장 금지
       'best Korean collagen supplement drink 2026 ranked results',
       // Dupes — high-demand 2025-2026 segment (최고 전환율)
       'best Korean skincare dupes for luxury brands that work',
@@ -217,8 +218,8 @@ export const NICHES: NicheConfig[] = [
       // NOTE: NewJeans는 어도어 계약 분쟁/민희진 독립 사안 진행 중 — 콘텐츠 작성 시
       //       법적 분쟁 관련 주장 포함 금지, 음악/팬덤 중심으로만 작성할 것
       'NewJeans best songs ranked guide for new fans',
-      'aespa 2026 comeback songs what fans need to know',
-      'aespa Karina solo activities 2026 what fans need to know',
+      'aespa KWANGYA universe lore explained complete guide for new fans',
+      'aespa Karina solo debut 2026 what fans need to know',
       // BABYMONSTER — YG 소속 걸그룹, 서바이벌 출신, 글로벌 데뷔 전략 특화
       'BABYMONSTER YG survival show debut story explained guide fans',
       'BABYMONSTER songs ranked best tracks guide 2026',
@@ -246,9 +247,9 @@ export const NICHES: NicheConfig[] = [
       // 팬덤 바이럴 — 소셜 공유율 높음
       'best K-pop music videos 2026 ranked by YouTube views',
       'K-pop idol age height facts complete list 2026',
-      'K-pop idol facts fans dont know 2026',
+      'K-pop idol facts fans don\'t know 2026',
       'best K-pop reality shows to watch 2026',
-      'K-pop idol dating confirmed fan reaction guide',
+      'K-pop idol relationship news fan culture guide how fandoms react',
       'K-pop album unboxing guide photocards inclusions 2026',
       // 시즌 이벤트 — 검색 스파이크
       'MAMA Awards 2026 winners predictions complete guide',
@@ -257,11 +258,13 @@ export const NICHES: NicheConfig[] = [
       'K-pop concerts in USA 2026 schedule tour dates',
       // 3-4세대 그룹 — 글로벌 팬덤 검색량
       'Stray Kids world tour 2026 setlist fan experience',
-      'SEVENTEEN discography ranked best songs guide',
+      // SEVENTEEN — 13인 자작곡/퍼포먼스 유닛 시스템이 핵심 차별점
+      'SEVENTEEN self-producing idol group how units work explained guide',
       // LE SSERAFIM — HYBE, "fearless" 브랜드 아이덴티티 + 스포츠 콜라보 특화
       'LE SSERAFIM fearless concept brand identity explained guide fans',
       'ATEEZ comeback 2026 what fans need to know',
-      'TWICE best songs ranked for new fans guide',
+      // TWICE — 9년 차 K-pop 그룹 롱런 비결이 독보적 앵글
+      'TWICE how they became K-pop longest-running girl group explained',
       // K-Drama 배우/OST — 팬 검색 의도
       'best K-drama OST songs ranked all time',
       'top K-drama actors to watch 2026 breakout performances',
