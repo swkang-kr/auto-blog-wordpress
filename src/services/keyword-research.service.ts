@@ -513,10 +513,10 @@ ${postedKeywords.length > 0 ? postedKeywords.map((k) => `- ${k}`).join('\n') : '
 CRITICAL ANTI-CANNIBALIZATION RULES:
 1. Do NOT just avoid exact matches — avoid ANY topic that covers the same core subject, even with different wording.
 2. Examples of FORBIDDEN overlaps (if the first is posted, ALL others must be avoided):
-   - "how to invest in Korean stocks" → "investing in Korean stocks for beginners", "Korean stock investment guide", "best way to buy Korean stocks"
+   - "best Korean toner for dry skin" → "Korean toner dry skin recommendations", "which Korean toner for dehydrated skin", "top Korean hydrating toners ranked"
    - "best Korean skincare routine" → "Korean skincare routine for beginners", "how to do Korean skincare", "K-beauty skincare steps"
-   - "chicken breast meal prep recipes" → "easy chicken breast recipes", "healthy chicken breast cooking", "quick chicken recipes"
-   - "how to save money in Korea" → "budgeting tips for Korea", "money saving strategies Korea", "Korean budget living guide"
+   - "BTS comeback 2026 what to expect" → "BTS 2026 return date", "BTS new album 2026 guide", "when is BTS coming back 2026"
+   - "COSRX snail mucin review" → "COSRX snail essence before after", "is COSRX snail mucin worth it", "COSRX snail mucin results"
 3. The test: if a reader searching for your keyword would find an existing post equally relevant, your keyword is TOO SIMILAR.
 4. Choose a GENUINELY DIFFERENT subtopic within the niche — not the same topic reworded.
 ${this.performanceInsights}
@@ -544,9 +544,9 @@ ${this.paaQuestions.length > 0 ? `\n## People Also Ask (PAA) Questions\nThese qu
    - MUST include "Korea", "Korean", or a specific Korean brand/entity
    - Choose the pattern matching the content type:
      * how-to / explainer: "[How/What] [Korea topic] [qualifier]" or "[Primary Keyword] ([Year] Guide)"
-       e.g. "How to Invest in Korean Stocks as a Foreigner (2026 Guide)"
+       e.g. "How to Build a Korean Glass Skin Routine (2026 Guide)"
      * best-x-for-y / x-vs-y: "[Number] Best [thing] for [audience] in [Year]" or "[X] vs [Y]: [insight]"
-       e.g. "5 Best Korean ETFs for Foreign Investors in 2026"
+       e.g. "7 Best Korean Toner Pads for Sensitive Skin in 2026"
      * analysis / deep-dive / news-explainer: "[Korea topic]: [what the analysis reveals]"
        e.g. "K-pop's Business Model: How Agencies Turn Fans Into Revenue"
    - Target 50-65 characters total
@@ -572,9 +572,9 @@ CRITICAL keyword selection rules — follow in strict priority order:
    Target keywords with difficulty < 40 for best ranking potential.
 8. Estimate monthly search volume as a number (rough estimate based on niche knowledge)
 9. Classify search intent precisely: informational, commercial, commercial-investigation, transactional, or navigational
-   - commercial-investigation: User is comparing options before purchase (e.g., "best Korean ETF vs US ETF", "COSRX vs Innisfree for oily skin")
-   - commercial: User wants to buy/find a product (e.g., "best Korean sunscreen")
-   - transactional: User is ready to act (e.g., "how to buy Korean stocks")
+   - commercial-investigation: User is comparing options before purchase (e.g., "COSRX vs Anua toner which is better", "Numbuzin vs TIRTIR cushion comparison")
+   - commercial: User wants to buy/find a product (e.g., "best Korean sunscreen for dark skin")
+   - transactional: User is ready to act (e.g., "where to buy Anua toner online", "buy COSRX snail mucin Amazon")
 10. CRITICAL intent-type alignment:
    - transactional intent → MUST use: product-review, best-x-for-y, or how-to
    - commercial intent → MUST use: best-x-for-y, x-vs-y, product-review, listicle, or analysis

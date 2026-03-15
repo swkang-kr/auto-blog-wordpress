@@ -146,8 +146,8 @@ export class ImageGeneratorService {
     existingResults: Buffer[],
   ): Promise<Buffer | null> {
     const styleSuffix = index === 0
-      ? ', digital illustration, wide composition for blog hero banner, vivid colors, high detail, 16:9 aspect ratio, professional editorial quality, no text or watermark'
-      : ', digital illustration, clean composition, bright natural lighting, detailed and sharp, editorial blog style, no text or watermark, 16:9 aspect ratio';
+      ? ', digital illustration, wide composition for blog hero banner, vivid colors, high detail, 16:9 aspect ratio, professional editorial quality, absolutely no text, no letters, no words, no Korean characters, no watermark, no captions, text-free image only'
+      : ', digital illustration, clean composition, bright natural lighting, detailed and sharp, editorial blog style, absolutely no text, no letters, no words, no Korean characters, no watermark, no captions, text-free image only, 16:9 aspect ratio';
 
     const fullPrompt = prompt + styleSuffix;
 
@@ -245,7 +245,10 @@ export class ImageGeneratorService {
     const [c1, c2] = gradients[category] || ['#0052CC', '#0066FF'];
 
     // Truncate and escape title for SVG
-    const safeTitle = title.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    // Strip non-ASCII characters (e.g. Korean/CJK glyphs) that cause rendering artifacts
+    // when system fonts lack the required Unicode block — titles should always be English
+    const asciiTitle = title.replace(/[^\x00-\x7F]/g, '').trim();
+    const safeTitle = asciiTitle.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     const truncTitle = safeTitle.length > 60 ? safeTitle.substring(0, 57) + '...' : safeTitle;
     const safeCategory = category.replace(/&/g, '&amp;');
 
@@ -282,10 +285,10 @@ export class ImageGeneratorService {
       <rect width="1200" height="630" fill="url(#bg)"/>
       ${decoration}
       <rect x="60" y="180" width="1080" height="280" rx="16" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-      <text x="600" y="${line2 ? '280' : '305'}" text-anchor="middle" fill="#fff" font-family="system-ui,sans-serif" font-size="38" font-weight="bold">${line1}</text>
-      ${line2 ? `<text x="600" y="330" text-anchor="middle" fill="#fff" font-family="system-ui,sans-serif" font-size="38" font-weight="bold">${line2}</text>` : ''}
+      <text x="600" y="${line2 ? '280' : '305'}" text-anchor="middle" fill="#fff" font-family="'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',system-ui,sans-serif" font-size="38" font-weight="bold">${line1}</text>
+      ${line2 ? `<text x="600" y="330" text-anchor="middle" fill="#fff" font-family="'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',system-ui,sans-serif" font-size="38" font-weight="bold">${line2}</text>` : ''}
       <line x1="520" y1="${line2 ? '355' : '335'}" x2="680" y2="${line2 ? '355' : '335'}" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
-      <text x="600" y="${line2 ? '390' : '370'}" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-family="system-ui,sans-serif" font-size="22">${safeCategory}</text>
+      <text x="600" y="${line2 ? '390' : '370'}" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-family="'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',system-ui,sans-serif" font-size="22">${safeCategory}</text>
       <rect x="60" y="580" width="1080" height="3" rx="1" fill="rgba(255,255,255,0.1)"/>
     </svg>`;
 
@@ -370,7 +373,7 @@ export class ImageGeneratorService {
       });
 
       const pinterestPrompt = prompt +
-        ', digital illustration, portrait orientation 2:3 aspect ratio, tall composition optimized for Pinterest, vivid colors, high detail, professional editorial quality, no text or watermark';
+        ', digital illustration, portrait orientation 2:3 aspect ratio, tall composition optimized for Pinterest, vivid colors, high detail, professional editorial quality, absolutely no text, no letters, no words, no Korean characters, no watermark, no captions, text-free image only';
 
       const response = await model.generateContent(pinterestPrompt);
       const parts = response.response.candidates?.[0]?.content?.parts ?? [];

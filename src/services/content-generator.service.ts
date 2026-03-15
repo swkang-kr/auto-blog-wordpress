@@ -510,12 +510,13 @@ This targets Google's List Featured Snippet for ranking queries.
 7. tags: 5-10 related English keywords (include Korea-specific terms)
 8. category: One best-fit English category name
 
-## Data Tables (Finance & Tech Categories)
-- For Korean Finance and Korean Tech content types (especially deep-dive and analysis):
+## Data Tables (K-Beauty & K-Entertainment)
+- For product-review, best-x-for-y, x-vs-y, and deep-dive content types:
   MUST include at least ONE HTML data table with real or representative data
 - Use responsive table markup: <div class="ab-table-wrap"><table style="width:100%; border-collapse:collapse;">...</table></div>
 - Tables should have clear headers, aligned numbers, and source attribution in a caption
-- Examples: KOSPI sector breakdown, Samsung vs SK Hynix comparison, ETF fee comparison, chip process node timeline
+- K-Beauty examples: ingredient comparison table (active %, pH), price table (Olive Young KRW / Amazon USD / YesStyle USD), skin type suitability matrix, SPF/PA rating comparison
+- K-Entertainment examples: comeback album sales comparison, drama viewership ratings by episode, music show wins tally (Inkigayo / Music Bank / M Countdown), streaming chart positions
 
 Accuracy Rules (CRITICAL — violating these damages site credibility):
 - NEVER cite specific version numbers for software products that change frequently
@@ -525,7 +526,7 @@ Accuracy Rules (CRITICAL — violating these damages site credibility):
 - Prefer ranges over exact numbers when uncertain (e.g., "between $2-3 billion" instead of "$2.47 billion")
 - Always attribute data to a named source — never present unverified numbers as standalone facts
 - For ${new Date().getFullYear()} data: use "projected", "estimated", or "forecast" qualifiers. Most ${new Date().getFullYear()} annual data is not yet finalized — do NOT present mid-year estimates as confirmed full-year figures
-- When referencing market data (KOSPI, KRW): use "as of [month] ${new Date().getFullYear()}" or "recent trading sessions" — avoid exact closing prices unless explicitly provided in the prompt
+- When referencing product prices or sales data: use "as of [month] ${new Date().getFullYear()}" or "according to recent listings" — avoid exact prices unless explicitly provided in the prompt, as K-Beauty pricing changes frequently across platforms
 - NEVER invent Korean government policy names, bill numbers, or regulation titles — reference only well-known policies you are certain about
 
 Image Prompt Rules:
@@ -534,18 +535,19 @@ Image Prompt Rules:
 - Remaining 4 (index 1-4): Inline images distributed across sections
 - All 5 prompts MUST describe completely different scenes/subjects/compositions (NO duplicates!)
 - Each prompt MUST be at least 50 words with specific details
-- Include Korean visual elements where appropriate (Seoul skyline, Korean signage, Korean business settings)
+- Include Korean visual elements where appropriate: K-Beauty content → skincare products on white marble vanity, Olive Young store shelves, Korean spa aesthetic, flat lay of glass bottles and pastel packaging; K-Entertainment content → concert stage with lights, K-pop photocard aesthetic, Seoul Hongdae street fashion, idol group concept imagery
 
 imageCaptions Rules:
 - Generate exactly 5 descriptive English image captions (8-20 words each)
 - Each caption MUST include the primary keyword or topic context + descriptive scene
-- Good: "Seoul's Gangnam financial district skyline showcasing Korean tech company headquarters"
+- Good (K-Beauty): "Flat lay of Korean skincare products including COSRX snail mucin and Anua toner on white marble background"
+- Good (K-Entertainment): "K-pop album photocards and glowing light stick arranged on soft purple gradient background"
 - Bad: "City skyline" or "article image 1"
 - NEVER use generic captions — every caption must be SEO-descriptive
 
 ## Rich Content Formats (use when appropriate for the niche/content type)
 
-### Data Comparison Tables (Finance, Tech, Best-X-for-Y, X-vs-Y)
+### Data Comparison Tables (Best-X-for-Y, X-vs-Y, Product Review)
 When comparing items, pricing, or features, ALWAYS include a styled comparison table:
 <table style="width:100%; border-collapse:collapse; margin:24px 0; font-size:14px;">
 <tr style="background:#0066FF; color:#fff;"><th style="padding:12px 16px; text-align:left;">...</th></tr>
@@ -568,12 +570,12 @@ Niche-specific SVG formats:
 
 Keep SVG charts simple: max 5 bars/items, clear labels, brand colors (#0066FF, #00CC66, #FF6B35).
 
-### Key Metrics Highlight (Finance, Tech analysis)
-Display key numbers prominently:
+### Key Metrics Highlight (K-Beauty & K-Entertainment)
+Display key numbers prominently — K-Beauty: star rating, price, skin type score; K-Entertainment: MV view count, chart position, album sales:
 <div class="ab-metrics">
 <div>
-<p style="margin:0; font-size:28px; font-weight:700; color:#0066FF;">$XX.XB</p>
-<p style="margin:4px 0 0 0; font-size:13px; color:#666;">Market Cap</p>
+<p style="margin:0; font-size:28px; font-weight:700; color:#0066FF;">8.5/10</p>
+<p style="margin:4px 0 0 0; font-size:13px; color:#666;">Overall Rating</p>
 </div></div>
 
 ### Pro/Con Boxes (Best-X-for-Y, X-vs-Y)
@@ -597,7 +599,7 @@ For comparison/review content, add a lightweight poll-style question to boost en
 <p style="margin:0 0 12px 0; font-size:17px; font-weight:700; color:#222;">Quick Poll: Which do you prefer?</p>
 <p style="margin:0; font-size:15px; color:#555; line-height:1.7;">Drop your answer in the comments — Option A or Option B? We'll share the community consensus in our next update.</p></div>
 
-### Infographic-Style Data Box (Finance, Tech — data-heavy content)
+### Infographic-Style Data Box (K-Beauty & K-Entertainment — data-heavy content)
 For presenting key statistics in a visually scannable format:
 <div style="margin:24px 0; padding:20px; background:#f8f9fa; border-radius:12px; border:1px solid #e5e7eb;">
 <p style="margin:0 0 16px 0; font-size:16px; font-weight:700; color:#222;">Key Data Points</p>
@@ -620,8 +622,8 @@ When updating existing content, include a "What's New" changelog section before 
 <div class="ab-changelog" style="background:#f8f9fa;border-left:4px solid #4CAF50;padding:16px 20px;margin:20px 0;border-radius:0 8px 8px 0;">
 <p style="font-weight:700;margin:0 0 8px;">📝 Last Updated: [CURRENT_DATE]</p>
 <ul style="margin:0;padding-left:20px;font-size:14px;">
-<li>[Key change 1 — e.g., "Updated KOSPI data for Q1 2026"]</li>
-<li>[Key change 2 — e.g., "Added new Samsung Galaxy S26 comparison"]</li>
+<li>[Key change 1 — e.g., "Updated product pricing for Olive Young 2026 sale season"]</li>
+<li>[Key change 2 — e.g., "Added new COSRX vs Anua ingredient comparison section"]</li>
 </ul>
 </div>
 
