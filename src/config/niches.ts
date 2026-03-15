@@ -29,7 +29,7 @@ export function getSeasonallyOrderedNiches(): NicheConfig[] {
     'Suneung': ['K-Entertainment'],
     'MAMA': ['K-Entertainment', 'K-Beauty'],
     'Pepero': ['K-Beauty', 'K-Entertainment'],
-    'Memorial': ['K-Entertainment'],
+    // NOTE: 현충일(Memorial Day, June 6) is NOT a K-Entertainment event — removed from mapping
     'Dano': ['K-Entertainment'],
     'Summer Sales': ['K-Beauty'],
     'Mid-Year': ['K-Beauty'],
@@ -222,6 +222,24 @@ export const NICHES: NicheConfig[] = [
       'polyglutamic acid vs hyaluronic acid Korean serum comparison guide',
       // Adenosine — 식약처 공인 주름개선 고시 성분, K-Beauty 차별점
       'best Korean adenosine anti-wrinkle serum products ranked 2026',
+      // d'Alba (달바) — Olive Young 글로벌 탑 5 베스트셀러 브랜드 (화이트 트러플)
+      'd\'Alba white truffle serum review before after results glow',
+      'd\'Alba peptide firming serum review vs COSRX comparison 2026',
+      'best d\'Alba products ranked Olive Young bestsellers guide 2026',
+      // VT Cosmetics (비티) — 씨카 라인 + K팝 콜라보 브랜드
+      'VT Cosmetics CICA products review best for sensitive skin 2026',
+      'VT Cosmetics vs COSRX which is better for sensitive acne skin',
+      // Glutathione — 2024-2026 최대 브라이트닝 트렌드 (Olive Young 폭발적 성장)
+      'best Korean glutathione serum for brightening dark spots 2026',
+      'Korean glutathione skincare products Olive Young ranked 2026',
+      'glutathione vs tranexamic acid Korean brightening serum comparison',
+      // Mugwort (쑥) — 한국 전통 식물 성분, 민감성 피부 특화
+      'best Korean mugwort skincare products for sensitive skin 2026',
+      'innisfree mugwort essence review calming skin guide 2026',
+      'mugwort vs centella asiatica which Korean botanical is better',
+      // Dr.Jart+ (닥터자르트) — Sephora 글로벌 유통, Cicapair 최강 브랜드
+      'Dr.Jart+ Cicapair Tiger Grass review before after results 2026',
+      'Dr.Jart+ vs SKIN1004 centella products comparison review 2026',
     ],
     contentTypes: ['product-review', 'best-x-for-y', 'x-vs-y', 'how-to', 'listicle', 'case-study', 'deep-dive', 'news-explainer'],
     adSenseRpm: 'high',
@@ -368,9 +386,16 @@ export const NICHES: NicheConfig[] = [
       // NCT WISH — SM 2024년 신유닛, NCT 프랜차이즈 글로벌 팬덤 확장
       'NCT WISH debut story SM Entertainment concept explained guide fans',
       'NCT WISH songs ranked best tracks for new fans guide 2026',
-      // KATSEYE — HYBE 글로벌 걸그룹 프로젝트 (Dream Academy 출신), K팝 ↔ 서양 크로스오버
+      // KATSEYE — HYBE 글로벌 걸그룹 프로젝트 (The Debut: Dream Academy 출신), K팝 ↔ 서양 크로스오버
       'KATSEYE HYBE global girl group debut story explained guide fans',
       'KATSEYE songs ranked best tracks guide new fans 2026',
+      // WHIPLASH — SM Entertainment 4세대 보이그룹 (2024년 10월 데뷔)
+      'WHIPLASH SM Entertainment boy group debut story explained guide 2026',
+      'WHIPLASH songs ranked best tracks for new fans guide 2026',
+      // QWER (큐더블유이알) — 밴드돌 걸그룹, 라이브 악기 연주, 팬덤 급성장
+      'QWER K-pop girl band concept explained instruments guide new fans',
+      'QWER songs ranked best tracks Melon chart hits guide 2026',
+      'QWER vs BLACKPINK vs aespa why band idol concept is different',
     ],
     contentTypes: ['listicle', 'news-explainer', 'best-x-for-y', 'deep-dive', 'how-to', 'x-vs-y', 'case-study'],
     adSenseRpm: 'medium',
