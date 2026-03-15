@@ -235,9 +235,10 @@ export const NICHES: NicheConfig[] = [
     category: 'K-Entertainment',
     broadTerm: 'K-pop 2026',
     seedKeywords: [
-      // BTS — 글로벌 최고 검색량 (2026년: 모든 멤버 전역 완료, 그룹 컴백 앵글 중심)
+      // BTS — 글로벌 최고 검색량 (2026년: 전원 전역 완료, 그룹 컴백 앵글 중심)
+      // NOTE: 모든 멤버 2025년 중반까지 전역 완료 — "after military service" 앵글은 과거완료형으로 작성
       'BTS group comeback 2026 what fans need to know full guide',
-      'BTS reunion 2026 after military service what to expect',
+      'BTS after military service reunion comeback 2026 what happened',
       'BTS members solo activities ranked 2026 update',
       // 4세대 주력 그룹 — 급상승 트래픽
       // NOTE: NewJeans — 멤버 5인이 어도어와의 계약을 종료하고 독립 활동 중 (2025-2026).
@@ -261,11 +262,14 @@ export const NICHES: NicheConfig[] = [
       // 글로벌 팬덤 그룹 — 검색량 안정적
       'XG songs ranked best tracks to start with guide',
       'tripleS concept explained guide for new fans',
-      // K-Drama — Netflix 글로벌 트래픽
+      // K-Drama — Netflix 글로벌 + TVING 국내 트래픽
       'best Korean dramas on Netflix 2026 must watch',
       'most watched K-dramas of 2026 ranked by viewers',
-      'K-drama 2026 release schedule complete list Netflix Disney',
+      'K-drama 2026 release schedule complete list Netflix Disney TVING',
       'where to watch K-dramas online streaming platforms compared',
+      // TVING — 2024-2025 국내 OTT 1위, 한국 오리지널 독점 콘텐츠
+      'TVING vs Netflix which is better for K-dramas 2026 guide',
+      'best K-dramas on TVING 2026 exclusive Korean originals ranked',
       'K-drama ending explained 2026 popular shows',
       // K-Drama 웹툰 원작 — 2025-2026 최대 트렌드
       'best K-drama webtoon adaptations 2026 complete list',
