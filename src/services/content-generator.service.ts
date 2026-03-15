@@ -35,6 +35,7 @@ const NICHE_SIGNATURE_SECTIONS: Record<string, Record<string, string[]>> = {
     'deep-dive': ['Fandom Spotlight', 'Global Hallyu Context'],
     'news-explainer': ['Fan News Breakdown', 'Global Hallyu Context'],
     'product-review': ['Behind the Scenes', "Fan's Take"],
+    'best-x-for-y': ["Editor's Picks", 'Fandom Spotlight'],
   },
 };
 

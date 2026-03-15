@@ -53,7 +53,7 @@ const NICHE_SUBTOPICS: Record<string, Record<string, string[]>> = {
       'medicube', 'isntree', 'haruharu wonder', 'round lab', 'mixsoon', 'some by mi', 'klairs', 'purito', 'abib', 'numbuzin', 'axis-y',
       // Viral/breakout 2024-2026 brands
       'tirtir', 'biodance', 'd\'alba', 'dalba', 'white truffle', 'vt cosmetics', 'vt cica', 'fwee',
-      'aestura', 'dr.g', 'dr.jart', 'drjart', 'cicapair',
+      'aestura', 'dr.g', 'dr.jart', 'drjart', 'cicapair', 'jumiso',
       // General
       'brand', 'product', 'olive young', 'review',
     ],
@@ -61,6 +61,8 @@ const NICHE_SUBTOPICS: Record<string, Record<string, string[]>> = {
     'K-Beauty Makeup': ['makeup', 'foundation', 'cushion', 'tint', 'lip', 'blush', 'contour', 'eyeshadow', 'mascara', 'rom&nd', 'clio', 'peripera', 'wakemake', 'eyeliner', 'bb cream', 'cc cream'],
     'Hair & Scalp Care': ['shampoo', 'hair loss', 'scalp', 'hair care', 'conditioner', 'hair mask', 'thinning', 'daeng gi meo ri', 'ryo', 'hair serum'],
     'Men\'s K-Beauty': ['men', 'male', 'men\'s skincare', 'men\'s grooming', 'men\'s moisturizer', 'men\'s sunscreen', 'gender neutral'],
+    'Inclusive Beauty': ['dark skin', 'deeper skin', 'melanin', 'dark tones', 'hyperpigmentation skin tone', 'no white cast dark', 'dark complexion'],
+    'Pregnancy & Safe Skin': ['pregnancy', 'pregnant', 'prenatal', 'pregnancy safe', 'pregnancy-safe', 'safe for pregnancy', 'safe during pregnancy'],
     'Industry & Market': ['market', 'industry', 'export', 'revenue', 'growth', 'trend', 'k-beauty market', 'olive young sales', 'amazon k-beauty'],
     'Trends & Innovations': ['trend', 'innovation', 'glass skin', 'clean beauty', 'sustainable', 'minimalist', 'skip care', 'cloud skin', 'pore care', 'babyface', 'dupe', 'budget'],
   },
@@ -77,8 +79,9 @@ const NICHE_SUBTOPICS: Record<string, Record<string, string[]>> = {
       'bts', 'blackpink', 'twice', 'exo', 'shinee', 'got7', 'nct', 'red velvet', 'mamamoo', 'monsta x', 'seventeen', 'stray kids',
       // 4th gen
       'aespa', 'ive', 'le sserafim', 'newjeans', 'njz', 'babymonster', 'illit', 'kiss of life', 'tws', 'ateez', 'txt', 'enhypen', 'xg', 'kep1er',
-      // 4th gen newer debuts (2023-2024)
+      // 4th gen newer debuts (2023-2025)
       'riize', 'boynextdoor', 'zerobaseone', 'zb1', '8turn', 'unis', 'izna', 'nct wish', 'katseye', 'whiplash', 'qwer',
+      'plave', 'g-dragon', 'gdragon',
       // General
       'kpop', 'k-pop', 'idol', 'comeback', 'album', 'concert', 'music', 'mv', 'music video',
     ],
@@ -126,6 +129,12 @@ const NICHE_TOPICAL_MAP: Record<string, string[]> = {
     'Korean mushroom tremella skincare', 'Korean bio-cellulose mask Biodance', 'Korean microbiome probiotic skincare',
     'Olive Young Global shipping international guide', 'Korean glass body skincare routine',
     'Korean skin flooding layering method', 'd\'Alba white truffle serum Olive Young',
+    // 16차 추가: 신규 seed keyword 군 갭 탐지용
+    'Korean skincare for dark skin tones melanin guide',
+    'Korean pregnancy-safe skincare routine bakuchiol guide',
+    'Olive Young app international shopping guide foreigners',
+    'PURITO sunscreen centella review guide',
+    'Jumiso vitamin C serum brightening review',
   ],
   'k-entertainment': [
     // K-Pop fan content
@@ -149,6 +158,11 @@ const NICHE_TOPICAL_MAP: Record<string, string[]> = {
     'K-pop photocard trading guide safe', 'how to stream K-pop music chart',
     'IU skincare Laneige ambassador routine', 'K-pop idol no-makeup beauty secrets',
     'Baeksang Arts Awards 2026 predictions', 'TVING vs Netflix K-drama guide',
+    // 16차 추가: 신규 seed keyword 군 갭 탐지용
+    'PLAVE virtual idol group guide fans ASTERDOM',
+    'G-Dragon solo comeback 2025 2026 guide',
+    'K-pop idols turned actors drama roles guide',
+    'KBS SBS MBC year-end drama awards guide',
   ],
 };
 

@@ -24,7 +24,7 @@ const KOREA_SUBREDDITS: Record<string, string[]> = {
   'Korean Food': ['KoreanFood', 'korea', 'cooking'],
   'Korea Travel': ['korea', 'travel', 'solotravel'],
   'Korean Language': ['Korean', 'languagelearning'],
-  'K-Beauty': ['AsianBeauty', 'SkincareAddiction'],
+  'K-Beauty': ['kbeauty', 'AsianBeauty', 'SkincareAddiction'],
   'Korean Crypto': ['CryptoCurrency', 'korea'],
   'Korean Automotive': ['electricvehicles', 'cars', 'korea'],
 };
