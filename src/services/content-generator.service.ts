@@ -182,10 +182,10 @@ function getWordCountTargets(contentType: string, searchIntent?: string, nicheCa
     rejection: Math.round(base.rejection * multiplier),
   };
 
-  // K-Entertainment news-explainer: fan comeback news is short-form content
-  // Fans expect scannable 4-5 min reads, not 8-min finance-style analysis
+  // K-Entertainment news-explainer: fans expect context-rich breakdown (album tracklist,
+  // MV concept analysis, chart predictions) — 1,600 target is the HCU-safe floor
   if (nicheCategory === 'K-Entertainment' && contentType === 'news-explainer') {
-    result = { min: 900, target: 1200, continuation: 900, rejection: 800 };
+    result = { min: 1200, target: 1600, continuation: 1100, rejection: 950 };
   }
 
   return result;
@@ -309,6 +309,7 @@ To reach WORD_COUNT_TARGET+ words WITHOUT padding:
 - Cover: what it is, key ingredients/specs, texture/feel/finish, results timeline, value for money
 - Include pros (3+) and cons (2+) in a structured list
 - **For K-Beauty product-review**: MANDATORY pricing comparison table (Olive Young KRW / Amazon USD / YesStyle or Stylevana) and skin type suitability matrix (oily / dry / combination / sensitive / acne-prone)
+- **K-Beauty price disclaimer (MANDATORY)**: Immediately below any pricing table, include: <p style="font-size:12px; color:#888; margin-top:6px;">Prices verified as of [Month Year]; check current listings before purchase — K-Beauty prices vary frequently across platforms and during sale events.</p>
 - End with a clear "Buy or Skip?" verdict and FAQ (3-5 Q&As)
 
 ### X vs Y Content

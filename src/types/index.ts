@@ -29,6 +29,9 @@ export const KOREAN_SEASONAL_EVENTS: Array<{
   { name: 'Summer Olympics (if applicable)', startMonth: 7, startDay: 20, endMonth: 8, endDay: 12, leadTimeDays: 60, relevantNiches: ['K-Entertainment'], contentAngles: ['Korean athletes to watch at Olympics', 'K-pop songs for Olympic hype playlist'] },
   { name: 'K-Beauty Awards Season', startMonth: 12, startDay: 1, endMonth: 12, endDay: 31, leadTimeDays: 45, relevantNiches: ['K-Beauty'], contentAngles: ['best K-beauty products of the year', 'Olive Young award winners', 'skincare trends next year'] },
   { name: 'Circle Chart (Gaon) Year-End Awards', startMonth: 12, startDay: 20, endMonth: 12, endDay: 31, leadTimeDays: 45, relevantNiches: ['K-Entertainment'], contentAngles: ['Circle Chart year-end awards predictions', 'Gaon chart best songs of the year ranked', 'K-pop year-end chart winners 2026', 'Gayo Daejun SBS year-end show performers guide'] },
+  { name: 'KCON Japan', startMonth: 4, startDay: 1, endMonth: 4, endDay: 30, leadTimeDays: 45, relevantNiches: ['K-Entertainment'], contentAngles: ['KCON Japan 2026 lineup schedule guide', 'how to attend KCON Japan as a foreigner', 'KCON Japan artists performing 2026', 'K-pop fan events Japan 2026 guide'] },
+  { name: 'KCON USA', startMonth: 6, startDay: 15, endMonth: 7, endDay: 31, leadTimeDays: 45, relevantNiches: ['K-Entertainment'], contentAngles: ['KCON USA 2026 lineup schedule how to get tickets', 'KCON USA what to expect first timer guide', 'K-pop concerts USA 2026 summer schedule', 'best K-pop fan events in USA 2026'] },
+  { name: 'KCON Europe', startMonth: 9, startDay: 1, endMonth: 10, endDay: 15, leadTimeDays: 45, relevantNiches: ['K-Entertainment'], contentAngles: ['KCON Europe 2026 lineup schedule guide', 'K-pop concerts Europe 2026 tour dates cities', 'how to attend KCON Europe tips guide'] },
   { name: 'K-pop Spring Comeback Season', startMonth: 2, startDay: 1, endMonth: 4, endDay: 30, leadTimeDays: 60, relevantNiches: ['K-Entertainment'], contentAngles: ['spring comeback preview K-pop 2026', 'best K-pop comebacks spring ranked', 'new K-pop releases to watch'] },
   { name: 'K-pop Summer Comeback Season', startMonth: 6, startDay: 1, endMonth: 8, endDay: 31, leadTimeDays: 60, relevantNiches: ['K-Entertainment'], contentAngles: ['summer comeback season K-pop 2026', 'best K-pop summer releases ranked', 'K-pop festival season guide'] },
   { name: 'BIFF (Busan Film Festival)', startMonth: 10, startDay: 1, endMonth: 10, endDay: 12, leadTimeDays: 45, relevantNiches: ['K-Entertainment'], contentAngles: ['BIFF highlights', 'Korean cinema spotlight', 'best Korean films at BIFF'] },
@@ -57,7 +60,7 @@ export const CONTENT_FRESHNESS_MAP: Record<ContentType, FreshnessClass> = {
 export const FRESHNESS_UPDATE_INTERVALS: Record<FreshnessClass, number> = {
   'evergreen': 180,       // Semi-annual review
   'seasonal': 60,         // Bi-monthly update
-  'time-sensitive': 60,   // K-Entertainment comeback news expires in 30-45 days; 60 is the safe max before archiving
+  'time-sensitive': 30,   // K-Entertainment comeback news expires in 30 days; archive/update promptly to avoid stale content
 };
 
 /** Author profile for E-E-A-T credibility signals */
@@ -143,7 +146,7 @@ export const CONTENT_TYPE_PERSONA_MAP: Record<string, 'primary' | 'secondary' | 
   'listicle': 'secondary',
   'best-x-for-y': 'secondary',
   'x-vs-y': 'tertiary',       // K-Beauty: Ella Park (product comparisons); K-Entertainment: Sora Lee (drama vs drama)
-  'product-review': 'secondary',
+  'product-review': 'tertiary', // K-Beauty: Ella Park (makeup/Amazon affiliate focus); K-Entertainment: Sora Lee (drama/OST review)
 };
 
 /** 니치 설정 */

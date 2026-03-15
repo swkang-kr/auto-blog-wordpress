@@ -13,11 +13,12 @@ export function getSeasonallyOrderedNiches(): NicheConfig[] {
 
   // Map seasonal events back to niche categories that are relevant right now
   const KOREAN_EVENTS_NICHE_MAP: Record<string, string[]> = {
-    'Seollal': ['K-Entertainment'],
+    'Seollal': ['K-Entertainment', 'K-Beauty'],
     'Valentine': ['K-Beauty', 'K-Entertainment'],
     'White Day': ['K-Beauty', 'K-Entertainment'],
     'Cherry Blossom': ['K-Beauty', 'K-Entertainment'],
     'Seoul Fashion Week': ['K-Beauty', 'K-Entertainment'],
+    'KCON': ['K-Entertainment'],
     'Children': ['K-Entertainment'],
     'Summer': ['K-Beauty'],
     'Chuseok': ['K-Entertainment'],
@@ -180,6 +181,20 @@ export const NICHES: NicheConfig[] = [
       // Body care 확장 — 급성장 세그먼트
       'how to use Korean Italy towel exfoliation body scrub guide',
       'Korean body glow routine products glass skin body 2026',
+      // Peptide 스킨케어 — 글로벌 2위 성장 세그먼트 (2025-2026)
+      'best Korean peptide serum for anti-aging firming skin 2026',
+      'peptide skincare Korean brands MEDICUBE Isntree ranked guide',
+      'Korean peptide vs retinol which is better for beginners 2026',
+      // Korean SPF Stick — TikTok 바이럴 2025-2026 (빠른 성장)
+      'best Korean sunscreen stick for on-the-go reapplication 2026',
+      'Korean SPF stick vs lotion which is better for reapplication',
+      // Pore care / sebum control — 아시아 검색량 폭발, K-Beauty 강점
+      'best Korean pore minimizer serum toner for enlarged pores 2026',
+      'Korean sebum control skincare routine for oily skin 2026',
+      'best Korean BHA exfoliant for blackheads pores ranked 2026',
+      // K-Beauty Advent Calendar — 연말 어필리에이트 최고 수익 콘텐츠 (11-12월 한정)
+      'best K-beauty advent calendar 2026 ranked what is inside',
+      'Olive Young advent calendar 2026 review worth it or not',
     ],
     contentTypes: ['product-review', 'best-x-for-y', 'x-vs-y', 'how-to', 'listicle', 'case-study', 'deep-dive', 'news-explainer'],
     adSenseRpm: 'high',
@@ -191,7 +206,7 @@ export const NICHES: NicheConfig[] = [
     id: 'k-entertainment-business',
     name: 'K-Pop & K-Drama',
     category: 'K-Entertainment',
-    broadTerm: 'K-pop comeback',
+    broadTerm: 'K-pop 2026',
     seedKeywords: [
       // BTS — 글로벌 최고 검색량
       'BTS comeback 2026 date songs what to expect',
@@ -258,18 +273,22 @@ export const NICHES: NicheConfig[] = [
       'how to trade K-pop photocards online safely guide',
       // K팝 스트리밍 — 팬 문화 에버그린
       'how to stream K-pop music help your favorite artist chart',
-      // 2023-2025 데뷔 그룹 — 급성장 글로벌 팬덤
+      // 2023-2025 데뷔 그룹 — 그룹별 차별화된 앵글 (cannibalization 방지)
+      // RIIZE — SM 루키, 데뷔 후 빠른 성장 케이스
+      'RIIZE SM Entertainment rookie group rise explained guide 2026',
       'RIIZE songs ranked best tracks for new fans guide',
-      'RIIZE comeback 2026 what fans need to know',
-      'BOYNEXTDOOR songs ranked guide for new fans 2026',
-      'ZeroBaseOne ZB1 songs ranked best tracks guide',
-      'ZeroBaseOne comeback 2026 what fans need to know',
+      // BOYNEXTDOOR — 스토리텔링 가사 콘셉트 특화
+      'BOYNEXTDOOR concept storytelling lyrics explained guide for new fans',
+      'BOYNEXTDOOR comeback 2026 what fans need to know',
+      // ZeroBaseOne — 서바이벌 오디션 출신, 팬덤 결속력 강함
+      'ZeroBaseOne ZB1 how they debuted Boys Planet survival show explained',
+      'ZeroBaseOne ZB1 fandom guide lightstick fan culture 2026',
       // ENHYPEN — 글로벌 팬덤 최상위권 4세대 (2020 데뷔, HYBE/Belift Lab)
-      'ENHYPEN comeback 2026 what fans need to know',
+      'ENHYPEN dark concept explained vampire storyline guide fans',
       'ENHYPEN best songs ranked guide for new fans 2026',
-      // TXT (Tomorrow X Together) — 3.5세대 최강 글로벌 팬덤 (2019 데뷔, HYBE)
-      'Tomorrow X Together TXT comeback 2026 what fans need to know',
-      'TXT Tomorrow X Together best songs ranked guide for new fans',
+      // TXT (Tomorrow X Together) — 3.5세대 최강 글로벌 팬덤, 챕터 세계관
+      'TXT Tomorrow X Together The Dream Chapter universe explained complete guide',
+      'TXT best songs ranked by era guide for new fans 2026',
       // 에버그린 — 시간 독립적 (트래픽 지속성 확보)
       'how K-pop training system works explained',
       'K-drama tropes explained for beginners complete guide',
