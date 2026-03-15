@@ -2524,8 +2524,10 @@ ${ga4TrackingScript}`;
       const h2Regex = /<h2[^>]*>(.*?)<\/h2>/gi;
       while ((match = h2Regex.exec(html)) !== null && items.length < 20) {
         const name = match[1].replace(/<[^>]+>/g, '').trim();
-        // Skip structural headings
-        if (/FAQ|Table of Contents|Key Takeaways|Conclusion|Global Context/i.test(name)) continue;
+        // Skip structural and non-product headings
+        if (/FAQ|Table of Contents|Key Takeaways|Conclusion|Global Context|Honorable Mentions?/i.test(name)) continue;
+        // Skip question-style headings (belong in FAQ schema, not ItemList)
+        if (name.endsWith('?')) continue;
         if (name.length > 5) items.push({ name });
       }
     }
