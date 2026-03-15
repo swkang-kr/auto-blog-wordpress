@@ -64,7 +64,10 @@ function isNonProductHeading(name: string): boolean {
   if (name.endsWith('?')) return true;
   // Structural / non-product headings
   const skipPattern = /FAQ|Table of Contents|Key Takeaways|Conclusion|How We|Bottom Line|Honorable Mentions?|Final (?:Thoughts|Verdict|Words)|What (?:to|You)|Where |When |Which |Why |How (?:Do|Does|Can|To|Should|Is|Are)|Is It|Are There/i;
-  return skipPattern.test(name);
+  if (skipPattern.test(name)) return true;
+  // Educational / analysis / collection headings — not single products
+  const analysisPattern = /Explained(?:\s*:|$)|(?:What|Tips?)\s+(?:International|You|To)|Bestsellers?|Best\s+Sellers?|Buying\s+Guide|Shopping\s+Guide|Overview|Our\s+(?:Top|Pick|Verdict|Methodology)|Ingredients?\s+(?:List|Guide|Breakdown)|Sun(?:screen)?\s+(?:Types?|Guide|Tips?)|SPF\s+(?:Guide|Explained|Ratings?)|PA\s+Rating|Skin\s+Types?\s+Guide|Comparison\s+(?:Table|Chart)|Rating\s+System|Travelers?\s+(?:Miss|Need|Should)|Spring\s+\d{4}|Summer\s+\d{4}|Fall\s+\d{4}|Winter\s+\d{4}|(?:Q[1-4])\s+\d{4}|What(?:'s|s)?\s+(?:Actually|Really|Worth|New)/i;
+  return analysisPattern.test(name);
 }
 
 /** Extract image URLs from HTML sections, keyed by product name */
@@ -211,6 +214,21 @@ async function fixJsonLd(): Promise<void> {
               product.image = imageUrl;
               changed = true;
             }
+          }
+
+          // Google requires Product to have at least one of: offers, review, aggregateRating
+          // If none present, downgrade to a plain ListItem (no @type: Product) to avoid GSC errors
+          const hasRequiredProductField = product.offers || product.review || product.aggregateRating;
+          if (!hasRequiredProductField) {
+            // Preserve name and image but drop Product type to avoid validation error
+            const plainItem = { '@type': 'ListItem', position, name: product.name } as any;
+            if (product.image) plainItem.image = product.image;
+            if (product.url) plainItem.url = product.url;
+            console.log(`  ⬇️  Downgraded Product→ListItem (no offers/review/rating): "${productName.substring(0, 60)}"`);
+            changed = true;
+            filteredItems.push(plainItem);
+            position++;
+            continue;
           }
 
           filteredItems.push({ ...item, item: product, position });
