@@ -157,7 +157,7 @@ export class PagesService {
       name: owner,
       jobTitle: credentials,
       description: bio,
-      knowsAbout: ['Korean technology', 'K-pop industry', 'Korean stock market', 'KOSPI', 'South Korean economy', 'Korean startups', 'K-drama', 'Korean food culture', 'Korean beauty industry', 'Korean cryptocurrency market'],
+      knowsAbout: ['Korean skincare', 'K-beauty ingredient science', 'COSRX', 'Olive Young', 'K-pop fandom culture', 'K-drama recommendations', 'Korean beauty brands', 'Hallyu wave', 'K-pop comebacks', 'Korean entertainment industry'],
       knowsLanguage: ['English', 'Korean'],
       ...(sameAs.length > 0 ? { sameAs } : {}),
     });
@@ -165,63 +165,51 @@ export class PagesService {
     return `<script type="application/ld+json">${personJsonLd}</script>
 <div style="${S.wrapper}">
 <h2 style="${S.h2}">About ${siteName}</h2>
-<p style="${S.p}">Thank you for visiting ${siteName} -- your go-to source for in-depth English coverage of Korean technology, entertainment, and financial markets.</p>
+<p style="${S.p}">Welcome to ${siteName} -- your go-to English source for Korean skincare reviews, K-pop coverage, and K-drama recommendations. We cover K-Beauty and K-Entertainment for a global audience that wants honest, expert-level content without the language barrier.</p>
 
 <h3 style="${S.h3}">What We Cover</h3>
-<p style="${S.p}">${siteName} delivers expert analysis of South Korea's most dynamic industries for a global audience. We bridge the information gap between Korean-language sources and English-speaking readers interested in:</p>
 <ul style="${S.ul}">
-<li><strong>Korean Tech & Startups</strong> -- Samsung, Naver, Kakao, and the Pangyo startup ecosystem</li>
-<li><strong>K-Entertainment</strong> -- The business side of K-pop, K-drama, and the Hallyu wave</li>
-<li><strong>Korean Investment & Finance</strong> -- KOSPI/KOSDAQ analysis, Korean economic policy, and investment opportunities</li>
-<li><strong>Korean Food & Culture</strong> -- Authentic Korean cuisine, dining culture, and travel tips</li>
-<li><strong>Korean Language</strong> -- Learning resources, TOPIK prep, and language tips for global learners</li>
-<li><strong>K-Beauty</strong> -- Korean skincare science, product analysis, and industry trends</li>
-<li><strong>Korean Crypto & Web3</strong> -- Upbit, Bithumb, regulation analysis, and DeFi in Korea</li>
-<li><strong>Korean Automotive</strong> -- Hyundai, Kia EV strategy, and battery industry analysis</li>
+<li><strong>K-Beauty</strong> -- Product reviews, ingredient deep-dives, skincare routines, brand comparisons, and shopping guides for Korean skincare and makeup. From COSRX to Biodance, Olive Young to Amazon.</li>
+<li><strong>K-Entertainment</strong> -- K-pop comeback guides, group and artist spotlights, K-drama recommendations, streaming platform guides, award show coverage, and fan culture explained for global audiences.</li>
 </ul>
 
 <h3 style="${S.h3}">Our Mission</h3>
-<p style="${S.p}">Korea is one of the world's most innovative economies, but much of the best reporting stays locked in Korean-language media. We translate that insight -- not just the language, but the context, the market dynamics, and the cultural nuance -- into actionable English content.</p>
+<p style="${S.p}">Korean beauty science and Korean pop culture move fast. The best product reviews are in Korean. The most accurate chart data is on Korean sites. The freshest comeback news breaks in Korean first. ${siteName} translates that -- not just the words, but the context and the nuance -- into clear, actionable English content for K-beauty shoppers and K-culture fans worldwide.</p>
 <ul style="${S.ul}">
-<li>Data-driven analysis grounded in Korean-language primary sources</li>
-<li>Market context that international media often misses</li>
-<li>Practical insights for investors, analysts, and Korea watchers</li>
-<li>Timely coverage reflecting real-time Korean market trends</li>
+<li>Ingredient-honest K-beauty reviews with concentration data and pH where available</li>
+<li>Fan-first K-entertainment coverage that respects the fandom perspective</li>
+<li>Sourced from Korean-language primary media, Olive Young, Circle Chart, and Soompi</li>
+<li>Regularly updated as products, comebacks, and dramas evolve</li>
 </ul>
 
 <h3 style="${S.h3}">About the Author</h3>
 <div itemscope itemtype="https://schema.org/Person" style="${S.infoBox}">
-<p style="${S.p}"><strong itemprop="name">${owner}</strong> is a <span itemprop="jobTitle">${credentials}</span> with expertise in Korean technology, K-entertainment business models, and KOSPI/KOSDAQ investment analysis.</p>
+<p style="${S.p}"><strong itemprop="name">${owner}</strong> is a <span itemprop="jobTitle">${credentials}</span> specializing in Korean skincare formulations, K-pop fandom culture, and K-drama storytelling.</p>
 <p style="${S.p}">${bio}</p>
-<p style="${S.p}">With direct access to Korean-language sources and institutional data (BOK, DART, KRX, FSC, KOSIS), ${owner} bridges the gap between Korean media and global readers seeking actionable insights.</p>
 <meta itemprop="knowsLanguage" content="English" />
 <meta itemprop="knowsLanguage" content="Korean" />
 ${authorLinks?.linkedin ? `<p style="margin:0 0 8px 0;"><a href="${authorLinks.linkedin}" target="_blank" rel="noopener noreferrer" itemprop="sameAs" style="color:#0066FF; text-decoration:none;">LinkedIn Profile</a></p>` : ''}
 ${authorLinks?.twitter ? `<p style="margin:0;"><a href="${authorLinks.twitter}" target="_blank" rel="noopener noreferrer" itemprop="sameAs" style="color:#0066FF; text-decoration:none;">X (Twitter) Profile</a></p>` : ''}
 </div>
 
-<h3 style="${S.h3}">Editorial Standards & Methodology</h3>
-<p style="${S.p}">Every article published on ${siteName} follows a rigorous editorial process:</p>
+<h3 style="${S.h3}">Editorial Standards</h3>
 <ul style="${S.ul}">
-<li><strong>Primary Source Verification</strong> -- All analysis is grounded in Korean-language primary sources and official institutional data (BOK, DART, KRX, KOSIS)</li>
-<li><strong>Multi-Source Cross-Reference</strong> -- Market data is verified against at least two independent sources before publication</li>
-<li><strong>Fact-Checked Statistics</strong> -- All numerical claims include source attribution and publication dates</li>
-<li><strong>Clear Opinion Labeling</strong> -- We clearly distinguish between factual reporting and analytical commentary</li>
-<li><strong>Regular Updates</strong> -- Time-sensitive content is reviewed and updated quarterly to maintain accuracy</li>
-<li><strong>Correction Policy</strong> -- If errors are identified, corrections are published promptly with transparent disclosure</li>
+<li><strong>Ingredient Transparency</strong> -- K-beauty reviews cite active concentrations and pH levels where known, sourced from INCI Decoder, Skinsort, and brand official data</li>
+<li><strong>Fan-Accurate K-Entertainment</strong> -- Group facts (member count, label, debut date) are verified against official agency announcements and Circle Chart / Hanteo data</li>
+<li><strong>No Fabricated Claims</strong> -- We do not invent statistics. All numerical data includes a named source and date</li>
+<li><strong>Affiliate Disclosure</strong> -- Product links may be affiliate links (Amazon Associates). This is always disclosed and does not affect our ratings</li>
+<li><strong>Regular Updates</strong> -- K-beauty rankings and K-entertainment guides are reviewed quarterly as new products launch and comeback schedules change</li>
 </ul>
 
 <h3 style="${S.h3}">Sources We Rely On</h3>
-<p style="${S.p}">Our reporting draws from trusted Korean and international sources:</p>
 <ul style="${S.ul}">
-<li><strong>Korean Institutions</strong> -- Bank of Korea (BOK), Financial Supervisory Commission (FSC), Korea Exchange (KRX), DART corporate filings</li>
-<li><strong>Government Data</strong> -- KOSIS (Korean Statistical Information Service), MSIT, KOTRA, KISA</li>
-<li><strong>Korean Media</strong> -- Maeil Business Newspaper, Korea Economic Daily, Chosun Biz, Electronic Times</li>
-<li><strong>International</strong> -- Bloomberg, Reuters, Nikkei Asia, Statista, World Bank</li>
+<li><strong>K-Beauty</strong> -- Olive Young, Vogue Korea, Allure Korea, Harper's Bazaar Korea, INCI Decoder, Skinsort, Amazon brand storefronts</li>
+<li><strong>K-Entertainment</strong> -- Soompi, Weverse Magazine, Circle Chart, Hanteo, Melon, official agency announcements (HYBE, SM, JYP, YG)</li>
+<li><strong>Korean Media</strong> -- Naver News, Koreaboo (English aggregator), Korea Creative Content Agency (KOCCA)</li>
 </ul>
 
 <div style="${S.highlightBox}">
-<p style="margin:0; line-height:1.7; color:#555;">We welcome feedback, tips, corrections, and collaboration inquiries from readers, journalists, and industry professionals. Reach us through our <a href="/contact" style="color:#0066FF; text-decoration:none;">Contact page</a>.</p>
+<p style="margin:0; line-height:1.7; color:#555;">Questions, product tips, or collaboration inquiries? Reach us through our <a href="/contact" style="color:#0066FF; text-decoration:none;">Contact page</a> -- we read every message.</p>
 </div>
 </div>`;
   }
@@ -255,7 +243,7 @@ ${authorLinks?.twitter ? `<p style="margin:0;"><a href="${authorLinks.twitter}" 
 <option value="Business Partnership">Advertising &amp; Business Partnership</option>
 <option value="Copyright">Copyright Inquiry</option>
 <option value="Privacy">Privacy Request</option>
-<option value="Tip">Korean Market Tip</option>
+<option value="Tip">K-Beauty Product Tip or K-Entertainment Content Request</option>
 <option value="Other">Other</option>
 </select>
 </div>
@@ -355,35 +343,17 @@ ${authorLinks?.twitter ? `<p style="margin:0;"><a href="${authorLinks.twitter}" 
     siteName: string,
   ): string {
     const nicheDescriptions: Record<string, { short: string; intro: string; whyMatters: string; keyTopics: string[] }> = {
-      'Korean Tech': {
-        short: 'Korean technology, AI, semiconductors, and digital innovation',
-        intro: 'South Korea is a global technology powerhouse. Home to Samsung, SK Hynix, and a thriving AI startup ecosystem centered in Pangyo Techno Valley, Korea plays an outsized role in shaping the future of semiconductors, artificial intelligence, and digital infrastructure. This guide covers everything from Korean chip dominance to the apps that power daily life in Seoul.',
-        whyMatters: 'Korea produces over 60% of the world\'s memory chips. Samsung and SK Hynix are critical suppliers for everything from iPhones to data centers powering AI models. Understanding Korean tech is essential for investors, industry analysts, and anyone tracking global innovation trends. The Korean government\'s aggressive AI investment policies and semiconductor subsidies make this sector one to watch closely.',
-        keyTopics: ['Samsung AI & semiconductor strategy', 'SK Hynix HBM memory leadership', 'Korean AI startups and government funding', 'Naver and Kakao digital ecosystem', 'Pangyo Techno Valley startup scene', 'Korean 5G and digital infrastructure'],
+      'K-Beauty': {
+        short: 'Korean skincare routines, product reviews, and ingredient guides',
+        intro: 'Korean beauty (K-beauty) has become the global skincare standard. Built on the iconic double-cleanse method, layered hydration, and relentless ingredient innovation — from snail mucin and centella asiatica to tranexamic acid and bio-cellulose collagen patches — Korean brands have redefined what affordable, effective skincare looks like. This guide is your complete resource for navigating K-beauty with confidence.',
+        whyMatters: 'K-beauty is not a trend — it\'s a system. Korean skincare brands like COSRX, Beauty of Joseon, Anua, SKIN1004, Numbuzin, TIRTIR, and Biodance consistently outperform global alternatives at a fraction of the price. Olive Young, Korea\'s largest beauty retailer, curates the fastest-moving products — what sells there usually goes viral globally within months. Whether you\'re building your first routine or looking for specific solutions (glass skin, barrier repair, brightening), this guide covers it all.',
+        keyTopics: ['Korean skincare routine by skin type (oily, dry, sensitive, combination)', 'Best K-beauty products on Amazon and Olive Young', 'Glass skin routine: products and steps explained', 'Korean sunscreen guide: no white cast SPF picks', 'Double cleansing: best Korean cleansing oils and balms', 'K-beauty ingredient guide: snail mucin, centella, tranexamic acid, ceramides'],
       },
       'K-Entertainment': {
-        short: 'K-Pop, K-Drama, and the Korean content industry business',
-        intro: 'The Korean entertainment industry — known globally as Hallyu (한류, Korean Wave) — is a multi-billion dollar export machine. From BTS and BLACKPINK to Squid Game and Korean webtoons, Korean content dominates global streaming charts. But behind the cultural phenomenon lies a sophisticated business model worth understanding.',
-        whyMatters: 'Korea\'s content industry exported over $13 billion in 2024. HYBE, SM, JYP, and CJ ENM are publicly traded companies with complex revenue models spanning music, drama production, IP licensing, and fan commerce. For investors and business analysts, Korean entertainment represents one of the most compelling growth stories in global media.',
-        keyTopics: ['K-pop agency business models and revenue streams', 'K-drama global licensing and Netflix deals', 'Korean webtoon and IP monetization', 'HYBE, SM, JYP stock analysis', 'Fan economy and concert touring economics', 'Korean content regulation and government support'],
-      },
-      'Korean Finance': {
-        short: 'Korean stock markets, investment strategies, and economic analysis',
-        intro: 'The Korean financial market — anchored by KOSPI and KOSDAQ — offers unique opportunities for international investors. With world-class companies like Samsung, Hyundai, and LG trading at significant discounts to global peers (the famous "Korea Discount"), understanding Korean markets can unlock substantial value.',
-        whyMatters: 'Korea is the world\'s 13th largest economy and home to globally dominant companies in semiconductors, automotive, shipbuilding, and entertainment. The Korean won (KRW) exchange rate, Bank of Korea monetary policy, and Korea\'s national pension fund (NPS) — the world\'s 3rd largest — significantly impact global financial markets.',
-        keyTopics: ['How to invest in Korean stocks from abroad', 'KOSPI and KOSDAQ index explained', 'Korean ETFs for international investors', 'Bank of Korea policy analysis', 'Korean won exchange rate forecasting', 'Korea Discount thesis and valuation'],
-      },
-      'K-Beauty': {
-        short: 'Korean skincare routines, product reviews, and beauty industry analysis',
-        intro: 'Korean beauty (K-beauty) has redefined global skincare. The famous 10-step routine, innovative ingredients like snail mucin and centella asiatica, and brands like COSRX, Laneige, and Sulwhasoo have made Korean skincare the gold standard worldwide. Olive Young stores in Seoul have become pilgrimage destinations for beauty enthusiasts.',
-        whyMatters: 'The Korean beauty industry is valued at over $10 billion and growing. Korean brands consistently lead in product innovation — from sheet masks to glass skin serums. For consumers, understanding K-beauty means better skincare choices. For investors, Amorepacific and LG H&H represent significant opportunities in the global beauty market.',
-        keyTopics: ['Korean skincare routines by skin type', 'Best K-beauty products and brands', 'Korean sunscreen science and comparisons', 'Olive Young must-buy products', 'K-beauty industry market analysis', 'Korean beauty tech innovations'],
-      },
-      'Korea Travel': {
-        short: 'travel planning, expat guides, and living in South Korea',
-        intro: 'South Korea welcomes over 17 million tourists annually, and the number keeps growing. From Seoul\'s neon-lit streets and ancient palaces to Jeju Island\'s natural beauty and Busan\'s coastal charm, Korea offers experiences that blend ultra-modern convenience with rich cultural heritage. This guide covers everything you need — whether you\'re visiting for a week or moving for a year.',
-        whyMatters: 'Korea\'s tourism infrastructure is world-class: an efficient subway system, ultra-fast internet everywhere, and apps like Naver Map and KakaoTalk that make navigation seamless. But navigating housing, visas, healthcare, and daily life as a foreigner requires insider knowledge that most travel guides miss. Our coverage draws from real expat experiences and local expertise.',
-        keyTopics: ['Seoul neighborhood guides and where to stay', 'Korean public transportation mastery', 'Cost of living breakdown for foreigners', 'Visa types and requirements explained', 'Best Korean food for first-time visitors', 'Living in Korea as an expat'],
+        short: 'K-pop comebacks, K-drama recommendations, and fan culture guides',
+        intro: 'Korean pop culture — Hallyu (한류) — is the most globally engaged entertainment ecosystem in the world. BTS broke streaming records. BLACKPINK headlined Coachella. Squid Game became the most-watched Netflix series ever. In 2026, K-pop\'s 4th generation (aespa, IVE, ENHYPEN, LE SSERAFIM, ILLIT) and a new wave of K-dramas are driving even larger global fanbases. This guide is your home base for all of it.',
+        whyMatters: 'K-entertainment is fan-driven at its core. Comeback season brings weekly chart battles on Circle Chart and Hanteo. New drama releases spark global discussion on Netflix and Viki. The photocard economy, Weverse fan communities, and KCON conventions connect fans across 190+ countries. Whether you\'re a new fan finding your first group or a longtime stan keeping up with every comeback, our guides are written for you.',
+        keyTopics: ['Best K-pop groups to start with in 2026', 'K-pop comeback calendar and what to expect', 'Best K-dramas on Netflix and Disney+ in 2026', 'K-pop photocard collecting and trading guide', 'Circle Chart and Hanteo: how K-pop charts work', 'K-pop fan culture explained: bias, stan, fandom terms'],
       },
     };
 
@@ -571,7 +541,7 @@ ${faqItems}
 <p style="${S.p}">Some articles may contain affiliate links. When you purchase through these links, we may earn a commission at no additional cost to you. This helps support our content creation. Affiliate relationships do not influence our editorial recommendations. All affiliate links are clearly disclosed in accordance with FTC guidelines. This site also displays third-party advertisements through Google AdSense.</p>
 
 <h3 style="${S.h3}">4. Disclaimer of Warranties</h3>
-<p style="${S.p}">Content is provided "as is" without warranties of any kind. ${siteName} does not guarantee the accuracy, completeness, or timeliness of information. Content about Korean stocks, investments, or financial products does not constitute financial advice. Always consult qualified professionals before making investment or medical decisions.</p>
+<p style="${S.p}">Content is provided "as is" without warranties of any kind. ${siteName} does not guarantee the accuracy, completeness, or timeliness of information. K-beauty product reviews reflect our editorial assessment and may not match every individual's experience due to varying skin types. Always consult a qualified dermatologist before making skincare decisions for medical skin conditions.</p>
 
 <h3 style="${S.h3}">5. User Conduct</h3>
 <p style="${S.p}">You agree not to: (a) use this site for any unlawful purpose; (b) attempt to interfere with site operations; (c) scrape or reproduce content without permission; (d) post spam or misleading comments.</p>
@@ -875,8 +845,8 @@ ${postsHtml}
 <h3 style="${S.h3}">3. Accuracy of Information</h3>
 <p style="${S.p}">While we strive to provide accurate information sourced from reputable Korean institutions and media, we do not guarantee the completeness, accuracy, or reliability of our content. Any decisions or actions taken based on the information provided are at your own risk.</p>
 
-<h3 style="${S.h3}">4. Not Investment Advice</h3>
-<p style="${S.p}">Content discussing Korean stocks, markets, or financial instruments is for informational and educational purposes only. It does not constitute investment advice, and readers should consult a qualified financial advisor before making investment decisions.</p>
+<h3 style="${S.h3}">4. Not Professional Skincare or Medical Advice</h3>
+<p style="${S.p}">K-beauty product reviews and skincare routine guides on ${siteName} are for informational purposes only. They do not constitute medical or dermatological advice. Individual skin types and sensitivities vary. Always perform a patch test before using new products and consult a qualified dermatologist if you have persistent skin concerns or conditions.</p>
 
 <h3 style="${S.h3}">5. External Links</h3>
 <p style="${S.p}">External links on this Site are provided for reference purposes only. ${siteName} is not responsible for the content of external websites.</p>
