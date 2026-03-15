@@ -27,7 +27,7 @@ async function main() {
   console.log(`Categories: ${categories.join(', ')}`);
 
   console.log('\n=== 1. Site Title & Tagline ===');
-  await seoService.ensureSiteTitle(SITE_NAME, categories);
+  await seoService.ensureSiteTitle(SITE_NAME, categories, 'Korean Skincare Reviews & K-pop · K-drama Fan Guides');
 
   console.log('\n=== 2. Navigation Menu ===');
   await seoService.ensureNavigationMenu(categories);
