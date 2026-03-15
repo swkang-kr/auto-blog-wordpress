@@ -37,20 +37,6 @@ interface ClusterPost {
  * Each sub-topic has keyword patterns that posts are matched against.
  */
 const NICHE_SUBTOPICS: Record<string, Record<string, string[]>> = {
-  'korean-tech': {
-    'AI & Machine Learning': ['ai', 'artificial intelligence', 'machine learning', 'deep learning', 'llm', 'chatbot', 'gpt', 'neural'],
-    'Semiconductors': ['semiconductor', 'chip', 'hbm', 'memory', 'nand', 'dram', 'foundry', 'fab', 'hynix', 'samsung semiconductor'],
-    'Startups & Venture': ['startup', 'venture', 'unicorn', 'funding', 'vc', 'accelerator', 'pangyo'],
-    'Smartphones & Consumer': ['smartphone', 'galaxy', 'phone', 'mobile', 'app', 'wearable', 'tablet'],
-    'EVs & Mobility': ['ev', 'electric vehicle', 'autonomous', 'battery', 'hyundai motor', 'kia', 'charging'],
-  },
-  'korean-finance': {
-    'Stocks & ETFs': ['stock', 'etf', 'kospi', 'kosdaq', 'equity', 'share', 'dividend', 'ipo'],
-    'Forex & Currency': ['forex', 'won', 'krw', 'usd', 'exchange rate', 'currency', 'fx'],
-    'Monetary Policy': ['interest rate', 'bok', 'bank of korea', 'monetary', 'inflation', 'cpi'],
-    'Real Estate': ['real estate', 'property', 'housing', 'apartment', 'jeonse', 'rent', 'mortgage'],
-    'Crypto & Digital Assets': ['crypto', 'bitcoin', 'digital asset', 'blockchain', 'defi', 'exchange'],
-  },
   'k-beauty': {
     'Skincare Routines': ['routine', 'step', 'regimen', 'morning', 'night', 'double cleanse', 'layering', 'skip-care', 'glass skin routine', 'skin barrier'],
     'Ingredients & Science': ['ingredient', 'niacinamide', 'retinol', 'hyaluronic', 'centella', 'snail', 'ferment', 'peptide', 'aha', 'bha', 'pha', 'vitamin c', 'collagen', 'ceramide', 'ph', 'concentration'],
@@ -109,32 +95,6 @@ const NICHE_SUBTOPICS: Record<string, Record<string, string[]>> = {
  * These represent the ideal topic universe that the blog should cover for topical authority.
  */
 const NICHE_TOPICAL_MAP: Record<string, string[]> = {
-  'korean-tech': [
-    'Samsung semiconductor strategy', 'SK Hynix HBM memory', 'Korean AI startups', 'NAVER AI platform',
-    'Kakao AI services', 'Korean 5G deployment', 'Samsung Galaxy AI', 'Korean chip export policy',
-    'Korean EV battery technology', 'LG Energy Solution', 'Korean autonomous driving', 'Hyundai robotics',
-    'Korean quantum computing', 'Samsung foundry vs TSMC', 'Korean tech IPOs', 'Pangyo tech valley',
-    'Korean gaming industry', 'Korean cloud computing', 'Samsung display OLED', 'Korean cybersecurity',
-    'Korean space technology', 'Korean biotech AI', 'Korean fintech innovation', 'Korean smart city projects',
-    'Samsung vs Apple comparison', 'Korean semiconductor equipment', 'Korean AI regulation policy',
-    'Korean tech stock analysis', 'Samsung Research institutes', 'Korean open source LLM',
-    'DRAM market outlook Korea', 'NAND flash Korea market', 'Korean 6G research', 'Korean robot industry',
-    'Korean drone technology', 'Samsung AI chip development', 'Korean tech talent market',
-    'Korean government tech subsidies', 'Korean metaverse platforms', 'Korean edge computing',
-  ],
-  'korean-finance': [
-    'KOSPI index analysis', 'KOSDAQ growth stocks', 'Korean ETF guide', 'BOK interest rate policy',
-    'Korean won exchange rate', 'Korean blue chip stocks', 'Korean dividend stocks', 'Korean IPO market',
-    'Korean brokerage accounts foreigners', 'Korean real estate investment', 'Korean REIT market',
-    'Korean government bond yields', 'Korean pension system NPS', 'Korean tax for investors',
-    'Korean chaebol financial analysis', 'Samsung stock analysis', 'Hyundai Motor stock', 'SK Group financials',
-    'Korean cryptocurrency regulation', 'Korean economic outlook', 'Korean inflation analysis',
-    'Korean trade balance', 'Korean FDI trends', 'Korean corporate governance reform',
-    'Korean ESG investing', 'Korean value investing strategy', 'Korean small cap stocks',
-    'Korean financial technology', 'Korean insurance market', 'Korean banking sector analysis',
-    'Korean won hedging strategies', 'Korean fiscal policy', 'Korean economic indicators guide',
-    'Korean startup investment', 'Korean angel investing', 'Korean venture capital landscape',
-  ],
   'k-beauty': [
     'Korean skincare routine beginner', 'Korean sunscreen comparison', 'Korean moisturizer guide',
     'Korean serum guide', 'Korean cleansing oil', 'Korean sheet mask ranking', 'Korean toner guide',
@@ -147,18 +107,6 @@ const NICHE_TOPICAL_MAP: Record<string, string[]> = {
     'Korean beauty tech innovation', 'Korean clean beauty brands', 'Korean vegan skincare',
     'Korean skincare dupes', 'Korean drugstore skincare', 'Korean luxury skincare brands',
     'Korean beauty subscription boxes', 'Korean hair care products', 'Korean makeup trends',
-  ],
-  'korea-travel': [
-    'Seoul travel guide complete', 'Busan travel guide', 'Jeju Island guide', 'Korean visa requirements',
-    'Seoul subway guide', 'Korean food guide tourists', 'Seoul neighborhoods guide', 'Korean temple stay',
-    'Korean DMZ tour', 'Seoul budget travel', 'Korean countryside travel', 'Korean festival calendar',
-    'Korean accommodation types', 'Korean travel apps', 'Korean SIM card tourist', 'Korean T-money guide',
-    'Seoul day trips', 'Korean street food guide', 'Korean BBQ restaurant guide', 'Korean cafe culture',
-    'Korean nightlife guide', 'Korean shopping guide Myeongdong', 'Korean duty free shopping',
-    'Korean medical tourism', 'Korean ski resorts', 'Korean beach destinations', 'Korean autumn foliage',
-    'Korean cherry blossom spots', 'Korean hiking trails', 'Seoul museum guide', 'Korean palace guide',
-    'Korean language basics travelers', 'Korean etiquette guide', 'Korean transportation KTX',
-    'Korean airport guide Incheon', 'Korean travel insurance', 'Seoul itinerary planning',
   ],
   'k-entertainment': [
     // K-Pop fan content

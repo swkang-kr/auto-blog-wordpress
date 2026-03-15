@@ -318,14 +318,6 @@ export class PostHistory {
 
   /** Predefined series patterns: niche → series ID → keyword patterns */
   private static readonly MANUAL_SERIES: Record<string, Record<string, string[]>> = {
-    'korean-tech-ai': {
-      'samsung-semiconductor': ['samsung', 'semiconductor', 'chip', 'hbm', 'foundry', 'memory'],
-      'korean-ai-ecosystem': ['ai', 'artificial intelligence', 'machine learning', 'llm', 'naver ai'],
-    },
-    'korean-finance-stocks': {
-      'kospi-investing-101': ['kospi', 'kosdaq', 'korean stocks', 'etf', 'index fund'],
-      'bok-monetary-policy': ['bok', 'bank of korea', 'interest rate', 'monetary policy', 'korean won'],
-    },
     'k-beauty-skincare': {
       'skincare-routine-guide': ['routine', 'skincare', 'glass skin', 'step', 'regimen'],
       'ingredient-deep-dive': ['ingredient', 'niacinamide', 'retinol', 'vitamin c', 'hyaluronic', 'centella'],
