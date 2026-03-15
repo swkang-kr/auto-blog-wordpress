@@ -14,7 +14,10 @@ export function getSeasonallyOrderedNiches(): NicheConfig[] {
   // Map seasonal events back to niche categories that are relevant right now
   const KOREAN_EVENTS_NICHE_MAP: Record<string, string[]> = {
     'Seollal': ['K-Entertainment'],
+    'Valentine': ['K-Beauty', 'K-Entertainment'],
+    'White Day': ['K-Beauty', 'K-Entertainment'],
     'Cherry Blossom': ['K-Beauty', 'K-Entertainment'],
+    'Seoul Fashion Week': ['K-Beauty', 'K-Entertainment'],
     'Children': ['K-Entertainment'],
     'Summer': ['K-Beauty'],
     'Chuseok': ['K-Entertainment'],
@@ -23,6 +26,7 @@ export function getSeasonallyOrderedNiches(): NicheConfig[] {
     'K-pop Summer Comeback': ['K-Entertainment'],
     'Suneung': ['K-Entertainment'],
     'MAMA': ['K-Entertainment', 'K-Beauty'],
+    'Pepero': ['K-Beauty', 'K-Entertainment'],
     'Memorial': ['K-Entertainment'],
     'Dano': ['K-Entertainment'],
     'Summer Sales': ['K-Beauty'],
@@ -32,6 +36,8 @@ export function getSeasonallyOrderedNiches(): NicheConfig[] {
     'Christmas': ['K-Beauty', 'K-Entertainment'],
     'New Year': ['K-Entertainment', 'K-Beauty'],
     'K-Beauty Awards': ['K-Beauty'],
+    'Circle Chart': ['K-Entertainment'],
+    'Gaon': ['K-Entertainment'],
   };
 
   const boostedCategories = new Set<string>();
@@ -80,21 +86,38 @@ export const NICHES: NicheConfig[] = [
       'Haruharu Wonder black rice toner review vs Anua',
       'Round Lab birch juice moisturizer review dry skin',
       'Mixsoon bean ferment essence review glow skin',
+      // Breakout brands 2025-2026 (TikTok 바이럴 + Amazon 급등)
+      'Numbuzin No 5 serum review before after glow results',
+      'Numbuzin vs COSRX which serum is better for glow',
+      'TIRTIR cushion foundation review shades swatches coverage',
+      'TIRTIR vs Laneige cushion foundation comparison 2026',
       // Toner pads — fastest-growing K-Beauty segment
       'best Korean toner pads 2026 Anua COSRX ranked',
       'Anua heartleaf 77 toner pad review vs cloth toner',
       'best Korean exfoliating pads for sensitive skin 2026',
+      // Glass skin — biggest K-Beauty search category globally
+      'glass skin routine Korean products step by step 2026',
+      'how to get glass skin Korean skincare method explained',
+      'best Korean products for glass skin ranked 2026',
+      // Skin barrier repair — high conversion intent
+      'skin barrier repair Korean skincare ceramide products ranked',
+      'best Korean ceramide moisturizer for damaged skin barrier',
+      // Skin cycling + slugging — evergreen 2024-2026
+      'skin cycling Korean skincare method guide beginner',
+      'slugging Korean skincare overnight method products 2026',
       // Best-of / shopping guides (구매 의도 키워드)
       'best Korean toner for dry skin 2026 ranked',
       'best Korean moisturizer under 30 dollars Amazon 2026',
       'best Korean vitamin C serum ranked dermatologist tested',
       'best Korean sunscreen for dark skin no white cast 2026',
+      'best Korean sunscreen tone up cream no white cast 2026',
       'best Korean sheet masks for glowing skin ranked',
       'best Korean collagen supplement drink 2026 ranked results',
-      // Dupes — high-demand 2025-2026 segment
+      // Dupes — high-demand 2025-2026 segment (최고 전환율)
       'best Korean skincare dupes for luxury brands that work',
       'Tatcha vs Korean alternative skincare dupes ranked',
       'La Mer dupe Korean moisturizer that actually works',
+      'Drunk Elephant dupe Korean skincare alternatives ranked',
       // Men K-Beauty — growing sub-niche
       'best Korean skincare routine for men beginners 2026',
       'best Korean moisturizer for men oily skin 2026',
@@ -104,6 +127,7 @@ export const NICHES: NicheConfig[] = [
       'Korean sunscreen vs American sunscreen SPF comparison',
       'Laneige lip sleeping mask vs Tatcha review comparison',
       'MEDICUBE vs COSRX peptide serum comparison review',
+      'Numbuzin vs Mixsoon which ferment serum is better',
       // Routine how-to (evergreen, internal link hub)
       'Korean skincare routine for beginners step by step 2026',
       'how to build a Korean glass skin routine on a budget',
@@ -140,11 +164,15 @@ export const NICHES: NicheConfig[] = [
       //       법적 분쟁 관련 주장 포함 금지, 음악/팬덤 중심으로만 작성할 것
       'NewJeans best songs ranked guide for new fans',
       'aespa 2026 comeback songs what fans need to know',
+      'aespa Karina solo activities 2026 what fans need to know',
       'BABYMONSTER songs ranked best tracks guide 2026',
       'ILLIT debut songs ranked best tracks for new fans 2026',
       'ILLIT comeback 2026 what fans need to know',
+      'IVE comeback 2026 songs what fans need to know',
+      'IVE best songs ranked guide for new fans 2026',
       'KISS OF LIFE songs ranked retro concept explained',
       'TWS debut songs ranked guide for new listeners 2026',
+      'BLACKPINK solo comeback 2026 members update guide',
       // 글로벌 팬덤 그룹 — 검색량 안정적
       'XG songs ranked best tracks to start with guide',
       'tripleS concept explained guide for new fans',
@@ -154,14 +182,20 @@ export const NICHES: NicheConfig[] = [
       'K-drama 2026 release schedule complete list Netflix Disney',
       'where to watch K-dramas online streaming platforms compared',
       'K-drama ending explained 2026 popular shows',
+      // K-Drama 웹툰 원작 — 2025-2026 최대 트렌드
+      'best K-drama webtoon adaptations 2026 complete list',
+      'K-drama based on webtoon manhwa ranked 2026 guide',
       // 팬덤 바이럴 — 소셜 공유율 높음
       'best K-pop music videos 2026 ranked by YouTube views',
       'K-pop idol age height facts complete list 2026',
       'K-pop idol facts fans dont know 2026',
       'best K-pop reality shows to watch 2026',
+      'K-pop idol dating confirmed fan reaction guide',
+      'K-pop album unboxing guide photocards inclusions 2026',
       // 시즌 이벤트 — 검색 스파이크
       'MAMA Awards 2026 winners predictions complete guide',
       'Melon Music Awards 2026 predictions ranked',
+      'Circle Chart Gaon year-end awards 2026 winners ranked',
       'K-pop concerts in USA 2026 schedule tour dates',
       // 3-4세대 그룹 — 글로벌 팬덤 검색량
       'Stray Kids world tour 2026 setlist fan experience',
