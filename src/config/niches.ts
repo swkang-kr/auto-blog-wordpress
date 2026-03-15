@@ -231,7 +231,7 @@ export const NICHES: NicheConfig[] = [
       'IVE best songs ranked guide for new fans 2026',
       'KISS OF LIFE songs ranked retro concept explained',
       'TWS debut songs ranked guide for new listeners 2026',
-      'BLACKPINK solo comeback 2026 members update guide',
+      'BLACKPINK members solo activities 2026 update what fans need to know',
       // 글로벌 팬덤 그룹 — 검색량 안정적
       'XG songs ranked best tracks to start with guide',
       'tripleS concept explained guide for new fans',
@@ -246,7 +246,7 @@ export const NICHES: NicheConfig[] = [
       'K-drama based on webtoon manhwa ranked 2026 guide',
       // 팬덤 바이럴 — 소셜 공유율 높음
       'best K-pop music videos 2026 ranked by YouTube views',
-      'K-pop idol age height facts complete list 2026',
+      'K-pop idol debut story how each group was formed explained',
       'K-pop idol facts fans don\'t know 2026',
       'best K-pop reality shows to watch 2026',
       'K-pop idol relationship news fan culture guide how fandoms react',
@@ -304,7 +304,7 @@ export const NICHES: NicheConfig[] = [
       'why K-pop dominated global music industry explained',
       'how to attend K-pop concerts in Korea as a foreigner',
       'K-pop fan culture guide bias stan fandom terms explained',
-      'K-pop playlist for studying working out mood guide',
+      'K-pop world domination how Korean music conquered global charts explained',
       // 팬 멤버십 앱 — Z세대 팬 필수 정보 (에버그린 고수요)
       'Weverse vs Bubble which K-pop fan subscription is worth it 2026',
       'how to use Weverse complete guide for beginners K-pop fans',
