@@ -256,6 +256,15 @@ export const NICHES: NicheConfig[] = [
       'best Korean pregnancy-safe skincare routine products 2026 guide',
       'Korean skincare safe during pregnancy bakuchiol retinol alternative guide',
       'best Korean sunscreen safe for pregnancy SPF guide 2026',
+      // 다크스킨/멜라닌 피부 K-Beauty — 동남아·아프리카·남미 팬 폭발적 증가 (Amazon 전환율 최고)
+      // NOTE: 피부색 표현 시 중립적·존중적 언어 사용 필수 (예: "deeper skin tones", "melanin-rich skin")
+      'K-beauty skincare routine for dark skin tones guide 2026 what actually works',
+      'best Korean brightening products for dark skin hyperpigmentation 2026',
+      'Korean sunscreen for dark skin tones no white cast ranked 2026',
+      'best Korean vitamin C serum for dark skin hyperpigmentation before after',
+      // Olive Young 앱·국제직구 가이드 — 에버그린 고수요 (Reddit r/AsianBeauty 상위 질문)
+      'how to use Olive Young app in English international shopping guide 2026',
+      'Olive Young membership rewards points guide for international shoppers 2026',
     ],
     contentTypes: ['product-review', 'best-x-for-y', 'x-vs-y', 'how-to', 'listicle', 'case-study', 'deep-dive', 'news-explainer'],
     adSenseRpm: 'high',

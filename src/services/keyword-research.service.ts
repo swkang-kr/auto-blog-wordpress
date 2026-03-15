@@ -683,6 +683,19 @@ STRATEGY: Consider creating content that directly targets one of these content g
       'riize', 'boynextdoor', 'boy next door', 'zerobaseone', 'zb1',
       'meovv', 'triples', 'tripless', 'hearts2hearts', 'izna', 'ciipher',
       'drippin', 'cravity', 'the boyz',
+      // 2024-2026 신규 그룹/아티스트 (seed keywords에 추가됨 — 검증 일관성 필수)
+      'plave',            // 버추얼 아이돌, VLAST 소속 (팬덤명 ASTERDOM)
+      'g-dragon', 'gdragon', 'kwon jiyong', // YG 솔로 아티스트, BIGBANG 멤버
+      'qwer',             // 밴드돌 걸그룹, YGKPLUS (팬덤명 AUBE)
+      'whiplash',         // SM Entertainment 4세대 보이그룹 (2024 데뷔)
+      '8turn',            // JYP 4세대 보이그룹
+      'katseye',          // HYBE/Geffen 글로벌 걸그룹
+      'njz',              // NJZ (NewJeans 2025-2026 활동명)
+      // K-Beauty 신규 브랜드 (seed keywords에 추가됨 — 검증 일관성 필수)
+      'jumiso',           // 성분 투명성 인디 K-Beauty 브랜드
+      'biodance',         // 바이오셀룰로오스 콜라겐 패치 전문
+      "d'alba", 'dalba',  // 달바 — Olive Young 글로벌 탑 5 (화이트 트러플)
+      'fwee',             // 아이돌 메이크업 브랜드, 지수 콜라보
     ];
     const keywordLower = analysis.selectedKeyword.toLowerCase();
     const titleLower = analysis.suggestedTitle.toLowerCase();

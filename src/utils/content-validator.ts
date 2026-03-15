@@ -99,6 +99,11 @@ function computeOriginalResearchBonus(plainText: string, html: string): number {
     'allure korea award', 'incidecoder', 'cosdna',
     // K-Entertainment chart & industry sources
     'hanteo', 'circle chart', 'billboard korea', 'weverse magazine', 'melon chart',
+    // system prompt에서 권장하나 validator에 미포함이었던 소스 (보너스 점수 일관성)
+    'soompi',       // K-Entertainment 최대 영문 뉴스 아웃렛
+    'dispatch',     // 디스패치 — K-Entertainment 주요 취재 매체
+    'cosmorning',   // 코스모닝 — 한국 화장품 산업 전문 뉴스
+    'skinsort',     // K-Beauty 성분 분석 사이트 (cite 소스로 등록)
   ];
   const citedSources = koreanDataSources.filter(s => lower.includes(s)).length;
   if (citedSources >= 2) bonus += 2;
@@ -138,6 +143,12 @@ function computeExperienceScore(plainText: string): number {
   const koreanLocationPatterns = [
     'gangnam', 'pangyo', 'yeouido', 'mapo', 'itaewon', 'hongdae',
     'myeongdong', 'insadong', 'gwanghwamun', 'jamsil', 'songpa',
+    // K-Beauty/K-Entertainment 핵심 지역 (E-E-A-T 현장 경험 신호)
+    'cheongdam',   // 청담동 — 럭셔리 K-Beauty 플래그십 + K-Entertainment 사무소 밀집
+    'apgujeong',   // 압구정 — 성형외과·피부과 밀집, K-Beauty 트렌드 발신지
+    'seongsu',     // 성수동 — K-Beauty 팝업·K-Entertainment 팬미팅 핫스팟 (2024-2026)
+    'coex',        // COEX — K-pop 콘서트·팬사인회 주요 행사장
+    'sinchon',     // 신촌 — K-Beauty 쇼핑·팬 이벤트 밀집
   ];
   const hasKoreanLocation = koreanLocationPatterns.some(p => lower.includes(p));
   const hasDateRef = /\b(?:january|february|march|april|may|june|july|august|september|october|november|december)\s+\d{4}\b/i.test(plainText);
