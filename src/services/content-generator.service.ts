@@ -269,16 +269,16 @@ To reach WORD_COUNT_TARGET+ words WITHOUT padding:
 
 ### Analysis
 - Structure as a multi-angle analysis with clear thesis statement
-- Include market data, company financials, or industry metrics where relevant
-- Present bull and bear cases or multiple stakeholder perspectives
-- Include a signature analysis section explaining why this matters beyond Korea
+- Include industry data, brand performance metrics, or fan engagement metrics where relevant
+- Present multiple stakeholder perspectives (brands, consumers, fans, critics)
+- Include a signature analysis section explaining why this matters to global K-Beauty/K-Entertainment audiences
 - End with forward-looking outlook and FAQ (3-7 Q&As)
 
 ### Deep-dive
-- Comprehensive exploration of a single topic, company, or trend
+- Comprehensive exploration of a single topic, brand, trend, or cultural phenomenon
 - Include historical context (how Korea got here), current state, and future trajectory
-- Incorporate interviews, earnings data, or regulatory filings where relevant
-- Include a signature analysis section (e.g., "Investment Outlook", "Strategic Implications")
+- Incorporate expert commentary, consumer reviews, or cultural industry data where relevant
+- Include a signature analysis section (e.g., "Expert Skincare Insight", "Global Hallyu Context", "Fandom Deep Dive")
 - End with key takeaways and FAQ (3-7 Q&As)
 
 ### News-explainer
@@ -333,7 +333,7 @@ To reach WORD_COUNT_TARGET+ words WITHOUT padding:
 - Include specific data: revenue figures, growth percentages, timelines
 - Add expert quotes or industry analysis to support claims
 - Include a "Key Takeaways for [Audience]" section with actionable insights
-- Include a comparison with global equivalent (e.g., "Unlike Uber's approach...")
+- Include a comparison with a global equivalent (e.g., "Unlike Western beauty brands...", "Compared to Western fan communities...")
 - End with "What Others Can Learn" section and FAQ (3-5 Q&As)
 
 ## Niche-Specific Tone

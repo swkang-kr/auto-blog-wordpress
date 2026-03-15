@@ -148,6 +148,7 @@ export const NICHES: NicheConfig[] = [
       'BLACKPINK members skincare routine products revealed',
       'aespa Karina skincare routine products 2026 guide',
       'IVE Wonyoung beauty routine skincare products revealed',
+      // NOTE: NewJeans 어도어 계약 분쟁 진행 중 — 법적 분쟁 언급 금지, 뷰티 룩/제품 중심으로만 작성
       'NewJeans makeup looks how to recreate K-Beauty products',
       // K-Beauty 헤어 케어 — Amazon 어필리에이트 추가 기회
       'best Korean shampoo for hair loss thinning hair 2026',
@@ -218,10 +219,14 @@ export const NICHES: NicheConfig[] = [
       'NewJeans best songs ranked guide for new fans',
       'aespa 2026 comeback songs what fans need to know',
       'aespa Karina solo activities 2026 what fans need to know',
+      // BABYMONSTER — YG 소속 걸그룹, 서바이벌 출신, 글로벌 데뷔 전략 특화
+      'BABYMONSTER YG survival show debut story explained guide fans',
       'BABYMONSTER songs ranked best tracks guide 2026',
-      'ILLIT debut songs ranked best tracks for new fans 2026',
+      // ILLIT — HYBE 뉴진스 스타일 여부 논란 → 고유 정체성 앵글
+      'ILLIT HYBE girl group concept sound explained for new fans',
       'ILLIT comeback 2026 what fans need to know',
-      'IVE comeback 2026 songs what fans need to know',
+      // IVE — Starship, 스타일리시 컨셉 + 멤버별 인기
+      'IVE member profiles who is who complete guide new fans 2026',
       'IVE best songs ranked guide for new fans 2026',
       'KISS OF LIFE songs ranked retro concept explained',
       'TWS debut songs ranked guide for new listeners 2026',
@@ -247,13 +252,14 @@ export const NICHES: NicheConfig[] = [
       'K-pop album unboxing guide photocards inclusions 2026',
       // 시즌 이벤트 — 검색 스파이크
       'MAMA Awards 2026 winners predictions complete guide',
-      'Melon Music Awards 2026 predictions ranked',
+      'Golden Disc Awards 2026 predictions K-pop winners ranked',
       'Circle Chart year-end awards 2026 K-pop winners ranked',
       'K-pop concerts in USA 2026 schedule tour dates',
       // 3-4세대 그룹 — 글로벌 팬덤 검색량
       'Stray Kids world tour 2026 setlist fan experience',
       'SEVENTEEN discography ranked best songs guide',
-      'LE SSERAFIM songs ranked best tracks to start with',
+      // LE SSERAFIM — HYBE, "fearless" 브랜드 아이덴티티 + 스포츠 콜라보 특화
+      'LE SSERAFIM fearless concept brand identity explained guide fans',
       'ATEEZ comeback 2026 what fans need to know',
       'TWICE best songs ranked for new fans guide',
       // K-Drama 배우/OST — 팬 검색 의도
