@@ -39,6 +39,8 @@ export function getSeasonallyOrderedNiches(): NicheConfig[] {
     'New Year': ['K-Entertainment', 'K-Beauty'],
     'K-Beauty Awards': ['K-Beauty'],
     'Circle Chart': ['K-Entertainment'],
+    'Year-End K-Drama Awards': ['K-Entertainment'],
+    'Gayo Daejun': ['K-Entertainment'],
   };
 
   const boostedCategories = new Set<string>();
@@ -241,6 +243,19 @@ export const NICHES: NicheConfig[] = [
       // Dr.Jart+ (닥터자르트) — Sephora 글로벌 유통, Cicapair 최강 브랜드
       'Dr.Jart+ Cicapair Tiger Grass review before after results 2026',
       'Dr.Jart+ vs SKIN1004 centella products comparison review 2026',
+      // PURITO — 선크림·센텔라 전문, Amazon 급성장 브랜드 (2025-2026)
+      // NOTE: 무향 제품 라인업이 민감성·성분 덕후 커뮤니티(Reddit r/AsianBeauty) 최상위 추천
+      'PURITO centella green level recovery cream review sensitive skin',
+      'PURITO unscented sunscreen SPF50 review no white cast comparison 2026',
+      'PURITO vs Beauty of Joseon sunscreen which is better 2026',
+      // Jumiso — 성분 투명성 전문 브랜드, 글로벌 인디 K-Beauty 커뮤니티 인기
+      'Jumiso cheek and fix vitamin C serum review brightening before after',
+      'Jumiso hello skin plump serum review hyaluronic acid comparison 2026',
+      // 임신 중 안전한 스킨케어 — 고전환 미개척 세그먼트 (bakuchiol·PHA·niacinamide 중심)
+      // NOTE: 효능 과장 금지, "consult your healthcare provider" 고지 필수
+      'best Korean pregnancy-safe skincare routine products 2026 guide',
+      'Korean skincare safe during pregnancy bakuchiol retinol alternative guide',
+      'best Korean sunscreen safe for pregnancy SPF guide 2026',
     ],
     contentTypes: ['product-review', 'best-x-for-y', 'x-vs-y', 'how-to', 'listicle', 'case-study', 'deep-dive', 'news-explainer'],
     adSenseRpm: 'high',
@@ -399,6 +414,22 @@ export const NICHES: NicheConfig[] = [
       'QWER K-pop girl band concept explained instruments guide new fans',
       'QWER songs ranked best tracks Melon chart hits guide 2026',
       'QWER vs BLACKPINK vs aespa why band idol concept is different',
+      // PLAVE (플레이브) — VLAST 소속 버추얼 아이돌, 2024-2026 최고 성장 4세대 보이그룹
+      // NOTE: 5명 전원 버추얼 아바타로 활동, 팬덤명 ASTERDOM, Melon/Circle Chart 다수 1위
+      'PLAVE virtual idol group explained concept lore guide for new fans',
+      'PLAVE songs ranked best tracks for new fans 2026 guide',
+      'PLAVE comeback 2026 what fans need to know full update',
+      'PLAVE vs aespa virtual concept comparison K-pop metaverse explained',
+      // G-Dragon (권지용) — YG, 2025년 솔로 컴백, K팝 레전드 복귀 초대형 이벤트
+      // NOTE: 솔로 아티스트 활동 기준으로 작성 — BIGBANG 그룹 컴백 앵글은 미확정이므로 헤지 필수
+      'G-Dragon solo comeback 2025 2026 what fans need to know guide',
+      'G-Dragon Power of GD concert tour setlist fan guide 2026',
+      'G-Dragon best songs ranked solo discography guide for new fans',
+      // 아이돌 배우 크로스오버 — 2025-2026 K-Drama 최대 트렌드
+      // NOTE: 특정 배우 이름 없이 보편적 검색 의도 앵글로 작성 — 개인 사생활 추정 금지
+      'K-pop idols turned actors best drama performances ranked 2026',
+      'best K-dramas starring K-pop idols 2026 who surprised fans',
+      'K-pop idol acting debut guide what to watch ranked 2026',
     ],
     contentTypes: ['listicle', 'news-explainer', 'best-x-for-y', 'deep-dive', 'how-to', 'x-vs-y', 'case-study'],
     adSenseRpm: 'medium',
