@@ -72,7 +72,7 @@ export const NICHES: NicheConfig[] = [
     id: 'k-beauty-skincare',
     name: 'Korean Skincare & Beauty',
     category: 'K-Beauty',
-    broadTerm: 'Korean skincare K-beauty products review',
+    broadTerm: 'Korean skincare routine',
     seedKeywords: [
       // Product reviews — established brands (Amazon 어필리에이트 전환율 최고)
       'COSRX snail mucin essence review before and after',
@@ -153,7 +153,7 @@ export const NICHES: NicheConfig[] = [
     id: 'k-entertainment-business',
     name: 'K-Pop & K-Drama',
     category: 'K-Entertainment',
-    broadTerm: 'K-pop K-drama comeback 2026 fan guide',
+    broadTerm: 'K-pop comeback',
     seedKeywords: [
       // BTS — 글로벌 최고 검색량
       'BTS comeback 2026 date songs what to expect',

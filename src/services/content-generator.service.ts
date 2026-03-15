@@ -24,14 +24,16 @@ const NICHE_SIGNATURE_SECTIONS: Record<string, Record<string, string[]>> = {
     'x-vs-y': ['Head-to-Head Verdict', 'Product Science'],
     'product-review': ['Behind the Formula', 'Expert Skincare Insight'],
     'deep-dive': ['Product Science', 'Global Beauty Context'],
+    'news-explainer': ['Industry Watch', 'Beauty Science Update'],
   },
   'K-Entertainment': {
     default: ["Fan's Take", 'Fandom Spotlight', 'Global Hallyu Context', 'Behind the Scenes'],
     'how-to': ['Pro Tips', 'Fan Community Guide'],
     'listicle': ["Editor's Picks", 'Fandom Spotlight'],
     'x-vs-y': ['Head-to-Head Verdict', "Fan's Take"],
-    'case-study': ['Global Hallyu Context', 'Behind the Scenes'],
+    'case-study': ['Global Hallyu Context', 'Fandom Deep Dive'],
     'deep-dive': ['Fandom Spotlight', 'Global Hallyu Context'],
+    'news-explainer': ['Fan News Breakdown', 'Global Hallyu Context'],
   },
 };
 
@@ -554,8 +556,8 @@ Include ONE simple inline SVG infographic per article:
 </div>
 
 Niche-specific SVG formats:
-- **K-Beauty**: Price comparison bar chart (Olive Young KRW vs Amazon USD vs YesStyle), ingredient concentration bar, or skin type suitability matrix
-- **K-Entertainment**: Timeline showing comeback schedules, music chart positions, or award history
+- **K-Beauty**: Price comparison bar chart (Olive Young KRW vs Amazon USD vs YesStyle), ingredient concentration bar (e.g., active % per product), or skin type suitability matrix (oily/dry/combination/sensitive/acne-prone)
+- **K-Entertainment**: MV YouTube view count comparison bar chart (group A vs B vs C), music show wins bar chart (Show Champion / M Countdown / Inkigayo / Music Bank), or group timeline (debut year → breakthrough → current era)
 
 Keep SVG charts simple: max 5 bars/items, clear labels, brand colors (#0066FF, #00CC66, #FF6B35).
 
@@ -841,8 +843,14 @@ CRITICAL: ONLY use the exact URLs listed below. Do NOT invent or generate URLs f
 
     // Niche-specific writing directives for differentiated voice
     const nicheDirectives: Record<string, string> = {
-      'K-Beauty': `NICHE VOICE: Write as a trusted K-beauty skincare specialist who has personally tested the products. MANDATORY real-use signals: describe texture, skin feel on application, absorption speed, and visible results timeline (e.g., "after 2 weeks", "first use glow"). Specify skin type suitability (oily, dry, combination, sensitive). Include key active ingredients with their function (e.g., niacinamide 5% for pore-tightening). Where applicable, compare Olive Young (KRW) vs Amazon (USD) pricing. Call out any scent, finish (matte/dewy/satin), or irritation potential. Never write about K-beauty products in purely abstract terms — reader experience is paramount.`,
-      'K-Entertainment': `NICHE VOICE: Write as a passionate K-pop and K-drama fan who is deeply embedded in the community. Focus on fan experience, content rankings, idol news, and community culture. Use fan-friendly language (comeback, bias, stan, era, fandom). Include specific examples fans care about (song rankings, drama recommendations, award predictions, concert experiences). General label or agency context (e.g., "under HYBE", "SM Entertainment group", "aespa's label SM") is acceptable when naturally relevant to fans. Do NOT analyze stock prices, earnings reports, revenue breakdowns, or investment outlooks — this is fan content, not finance content.`,
+      'K-Beauty': `NICHE VOICE: Write as a trusted K-beauty skincare specialist who has personally tested the products. MANDATORY real-use signals: describe texture, skin feel on application, absorption speed, and visible results timeline (e.g., "after 2 weeks", "first use glow"). Specify skin type suitability (oily, dry, combination, sensitive, acne-prone). Include key active ingredients with their function (e.g., niacinamide 5% for pore-tightening). Where applicable, compare Olive Young (KRW) vs Amazon (USD) pricing. Call out any scent, finish (matte/dewy/satin), or irritation potential. Never write about K-beauty products in purely abstract terms — reader experience is paramount.
+
+K-BEAUTY E-E-A-T SOURCES: Reference Korean beauty industry sources — cite Olive Young (올리브영) bestseller rankings, Allure Korea awards, Vogue Korea beauty editors, INCIDecoder or CosDNA for ingredient analysis, and Korean cosmetic formulation research. Do NOT cite KOSPI, KRX, BOK, FSC, or financial regulatory bodies — this is beauty content, not finance content.
+${analysis.contentType === 'case-study' ? `K-BEAUTY CASE STUDY STRUCTURE: Focus on ONE brand, product line, or beauty trend as the subject. Structure: Origin Story → Innovation (formula/ingredient breakthrough) → Market Reception (Olive Young rankings, Amazon growth, TikTok virality) → Why It Worked → Lessons for Skincare Consumers. Include before/after timelines and community reception data rather than revenue figures.` : ''}`,
+      'K-Entertainment': `NICHE VOICE: Write as a passionate K-pop and K-drama fan who is deeply embedded in the community. Focus on fan experience, content rankings, idol news, and community culture. Use fan-friendly language (comeback, bias, stan, era, fandom). Include specific examples fans care about (song rankings, drama recommendations, award predictions, concert experiences). General label or agency context (e.g., "under HYBE", "SM Entertainment group", "aespa's label SM") is acceptable when naturally relevant to fans. Do NOT analyze stock prices, earnings reports, revenue breakdowns, or investment outlooks — this is fan content, not finance content.
+
+K-ENTERTAINMENT E-E-A-T SOURCES: Reference fan-trusted K-pop/K-drama sources — cite Hanteo Chart and Circle Chart (formerly Gaon) for album sales, Melon/Bugs for digital streaming, YouTube for MV view counts, Weverse for fan community activity, KOCCA (Korea Creative Content Agency) for industry statistics, and Billboard Korea. Do NOT cite KRX, BOK, DART, KOSIS, or financial/economic data sources — this is fan content.
+${analysis.contentType === 'case-study' ? `K-ENTERTAINMENT CASE STUDY STRUCTURE: Focus on ONE idol group, K-drama, or fan cultural phenomenon as the subject. Structure: Origin & Debut Context → Breakthrough Moment (chart milestone, viral MV, award win) → Global Fandom Growth (YouTube views, Weverse members, tour scale) → Why Fans Connected → What This Means for Hallyu. Measure success in chart positions, MV views, concert sold-out speed, and fandom milestones — NOT revenue or stock performance.` : ''}`,
     };
     const nicheVoice = nicheDirectives[niche.category] || '';
 
@@ -872,12 +880,13 @@ LSI Keyword Integration Rules (CRITICAL for semantic SEO):
 - Naturally weave remaining LSI keywords into body paragraphs (aim for each LSI keyword appearing 1-2 times)
 - Do NOT force LSI keywords unnaturally — readability always wins over keyword density
 
-Include 2-4 internal links to relevant existing posts listed above, and 2-4 external source citations using <cite data-source="KEY" data-topic="TOPIC"> tags (Korean institutional sources preferred: bok, krx, dart, kosis).
+Include 2-4 internal links to relevant existing posts listed above, and 2-4 external source citations using <cite data-source="KEY" data-topic="TOPIC"> tags.
+${niche.category === 'K-Beauty' ? 'Preferred sources for K-Beauty: allure-korea, vogue-korea, harpers-bazaar-korea, inci-decoder, skinsort, olive-young. Use kocca or kotra only if covering K-Beauty global export trends.' : niche.category === 'K-Entertainment' ? 'Preferred sources for K-Entertainment: hanteo, circle-chart, gaon, billboard-korea, kocca, melon, mnet, weverse-magazine. Do NOT use bok, krx, dart, or kosis.' : 'Korean institutional sources preferred: bok, krx, dart, kosis.'}
 MANDATORY: Include a "${getSignatureSection(niche.category, analysis.contentType, analysis.selectedKeyword)}" signature analysis section (as an H2 heading, 300-500 words of unique analytical value).
 ${['analysis', 'deep-dive', 'case-study'].includes(analysis.contentType) ? `
 ORIGINAL RESEARCH SIGNALS (for ${analysis.contentType} content):
 - Include a "Methodology" or "Our Analysis Approach" section explaining how data was gathered/analyzed
-- Cite specific Korean data sources: BOK (Bank of Korea), KOSIS (Korean Statistical Information Service), DART (disclosure system), or industry reports
+${niche.category === 'K-Beauty' ? '- Cite K-Beauty data sources: Olive Young bestseller rankings, INCIDecoder ingredient databases, Allure Korea awards, Korean cosmetic safety (MFDS) data, or brand-published clinical studies' : niche.category === 'K-Entertainment' ? '- Cite K-Entertainment data sources: Hanteo/Circle Chart album sales, YouTube MV view counts, Weverse fan community stats, KOCCA industry reports, or streaming chart data (Melon/Bugs/Genie)' : '- Cite specific Korean data sources: BOK (Bank of Korea), KOSIS (Korean Statistical Information Service), DART (disclosure system), or industry reports'}
 - Use phrasing like "Based on our analysis of [X data points]..." or "According to industry data from [source]..."
 - Include at least one data-driven insight that requires cross-referencing multiple sources
 - This qualifies the post as original research for E-E-A-T scoring` : ''}

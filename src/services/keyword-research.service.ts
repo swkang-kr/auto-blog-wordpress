@@ -669,12 +669,20 @@ STRATEGY: Consider creating content that directly targets one of these content g
       'haruharu', 'round lab', 'mixsoon', 'olive young', 'rom&nd', 'clio',
       'peripera', 'wakemake', 'daeng gi meo ri', 'ryo', 'some by mi',
       'klairs', 'd.i.y', 'axis-y', 'purito', 'abib', 'numbuzin',
+      // Breakout 2025-2026 K-Beauty brands
+      'tirtir', 'by wishtrend', 'tonymoly', 'holika holika', 'dr. jart',
+      'iope', 'hanyul', 'o hui', 'whoo', 'su:m37', 'heimish', 'benton',
+      'ma:nyo', 'illiyoon', 'aestura', 'ample:n', 'dr.g', 'no7 korea',
       // K-Entertainment groups — 3rd & 4th gen
       'twice', 'seventeen', 'stray kids', 'ateez', 'txt', 'enhypen',
       'le sserafim', 'ive', 'newjeans', 'aespa', 'babymonster',
-      'illit', 'kiss of life', 'twentiez', 'tws', 'xg', 'kep1er',
+      'illit', 'kiss of life', 'tws', 'xg', 'kep1er',
       'shinee', 'exo', 'nct', 'got7', 'monsta x', 'super junior',
       'mamamoo', 'red velvet', 'f(x)', 'girls generation',
+      // 2023-2025 debut groups gaining global search traffic
+      'riize', 'boynextdoor', 'boy next door', 'zerobaseone', 'zb1',
+      'meovv', 'triples', 'tripless', 'hearts2hearts', 'izna', 'ciipher',
+      'drippin', 'cravity', 'the boyz',
     ];
     const keywordLower = analysis.selectedKeyword.toLowerCase();
     const titleLower = analysis.suggestedTitle.toLowerCase();
