@@ -519,30 +519,19 @@ ${faqItems}
 
   private buildPillarFaq(category: string, year: number): string {
     const faqs: Record<string, Array<{ q: string; a: string }>> = {
-      'Korean Tech': [
-        { q: 'Why is Korean technology important globally?', a: `Korea is the world's largest producer of memory semiconductors and a leader in AI research. Samsung and SK Hynix supply critical components for smartphones, data centers, and AI systems worldwide. In ${year}, Korean tech companies continue to invest heavily in next-generation chips and AI infrastructure.` },
-        { q: 'How can I invest in Korean tech companies from abroad?', a: 'International investors can access Korean tech stocks through Korean ETFs (like EWY), ADRs on US exchanges, or by opening a Korean brokerage account. Several Korean brokerages now offer English-language services for foreign investors.' },
-        { q: 'What is Pangyo Techno Valley?', a: 'Pangyo Techno Valley is Korea\'s answer to Silicon Valley, located just south of Seoul in Seongnam city. It hosts major tech companies including Kakao, Naver, and hundreds of startups. It\'s the epicenter of Korean digital innovation.' },
+      'K-Beauty': [
+        { q: 'What is the Korean skincare routine?', a: `The Korean skincare routine starts with double cleansing (oil cleanser + water-based cleanser) to fully remove sunscreen and makeup, followed by toner, essence, serum, moisturizer, and SPF. Modern K-beauty favors a streamlined 4-5 step approach — using fewer but well-chosen products — over the older 10-step model. In ${year}, the biggest trends are glass skin layering, skin barrier repair with ceramides, and tranexamic acid brightening serums.` },
+        { q: 'Which Korean skincare brands are best for beginners?', a: 'For beginners, start with established brands that have consistent formulations and strong international availability: COSRX (snail mucin, low-pH cleanser), Beauty of Joseon (sunscreen, serum), Anua (heartleaf toner), and SKIN1004 (centella ampoule). All are available on Amazon and YesStyle with verified reviews.' },
+        { q: 'Are Korean skincare products safe?', a: 'Korean skincare is regulated by the Ministry of Food and Drug Safety (MFDS), with ingredient safety standards comparable to the EU — often stricter than the US FDA on certain preservatives and fragrances. Korean brands are known for thorough clinical testing and allergen disclosure. Always check ingredient lists for personal sensitivities, especially fragrance and alcohol.' },
+        { q: `Where can I buy authentic K-beauty products in ${year}?`, a: `Authentic K-beauty is available globally through: Olive Young (Korea's largest beauty retailer, ships internationally), Amazon (look for Korean brand storefronts), Soko Glam (US-based curated K-beauty retailer), YesStyle, Stylevana, and Jolse. When in Korea, Olive Young stores in Myeongdong, Hongdae, and Gangnam offer the widest in-person selection.` },
+        { q: 'What is double cleansing and why do Koreans use it?', a: 'Double cleansing is a two-step process: first an oil-based cleanser (balm or oil) to dissolve sunscreen, makeup, and sebum, then a water-based cleanser to remove any remaining residue. Korean dermatologists recommend it because most SPF and long-wear makeup is oil-soluble and water cleansers alone cannot fully remove them. Incomplete cleansing is one of the top causes of clogged pores and breakouts.' },
       ],
       'K-Entertainment': [
-        { q: 'How does the K-pop industry make money?', a: 'K-pop agencies generate revenue through multiple streams: album sales, concert tours, merchandise, fan memberships (like Weverse), brand endorsements, IP licensing, and increasingly, NFTs and virtual content. Top agencies like HYBE generate over $1 billion annually.' },
-        { q: 'Are K-entertainment stocks a good investment?', a: `Korean entertainment companies like HYBE, SM, and JYP are publicly traded on KOSPI/KOSDAQ. They offer exposure to the global Hallyu wave but can be volatile based on artist activities and regulatory changes. As of ${year}, analysts focus on IP monetization and global touring revenue.` },
-        { q: 'What makes Korean dramas so popular globally?', a: 'Korean dramas succeed globally due to high production values, compelling storytelling, and cultural uniqueness. Netflix\'s investment in Korean content (over $2.5 billion committed) has accelerated global distribution, making K-dramas accessible to audiences in 190+ countries.' },
-      ],
-      'Korean Finance': [
-        { q: 'Can foreigners invest in Korean stocks?', a: 'Yes. Foreign investors can buy Korean stocks through several methods: Korean ETFs on US/European exchanges, ADRs (American Depositary Receipts), or by opening a direct brokerage account with a Korean securities firm. Some brokerages like Samsung Securities and Mirae Asset offer English services.' },
-        { q: 'What is the "Korea Discount" in stock markets?', a: 'The Korea Discount refers to Korean stocks trading at lower valuations (P/E ratios) compared to global peers, despite strong fundamentals. Contributing factors include chaebol governance concerns, geopolitical risk from North Korea, and complex ownership structures. Recent corporate governance reforms aim to close this gap.' },
-        { q: 'How does Bank of Korea policy affect investments?', a: `The Bank of Korea (BOK) sets the base interest rate, which impacts the Korean won, bond yields, and stock market valuations. In ${year}, BOK policy decisions are closely watched for their impact on inflation, housing markets, and foreign investment flows.` },
-      ],
-      'K-Beauty': [
-        { q: 'What is the Korean skincare routine?', a: 'The traditional Korean skincare routine involves multiple steps: oil cleanser, water cleanser, toner, essence, serum, sheet mask, eye cream, moisturizer, and sunscreen. However, modern K-beauty emphasizes customization — many Korean dermatologists now recommend simplified routines of 3-5 key products tailored to your skin type.' },
-        { q: 'Are Korean skincare products safe?', a: 'Korean skincare products are regulated by the Korean Ministry of Food and Drug Safety (MFDS), which has strict standards comparable to the FDA. Korean brands are known for innovation in gentle, effective formulations. Always check ingredient lists for personal allergens.' },
-        { q: 'Where can I buy authentic Korean beauty products?', a: 'Authentic K-beauty products can be purchased from Olive Young (Korea\'s largest beauty retailer), YesStyle, Stylevana, and Amazon (verified Korean seller stores). When visiting Korea, Olive Young stores in Myeongdong and Gangnam offer the widest selection.' },
-      ],
-      'Korea Travel': [
-        { q: 'What is the best time to visit South Korea?', a: 'Spring (April-May) and autumn (September-November) are the best seasons to visit Korea. Cherry blossoms in April and fall foliage in October-November are spectacular. Summer (June-August) is hot and humid with monsoon rains, while winter (December-February) is cold but great for skiing and festive events.' },
-        { q: 'How much does a trip to Korea cost?', a: 'A mid-range trip to Korea costs approximately $100-150 USD per day including accommodation, food, and transportation. Budget travelers can manage on $50-70/day using guesthouses and street food. Seoul is generally more expensive than other Korean cities.' },
-        { q: 'Do I need a visa to visit South Korea?', a: 'Citizens of 112 countries can enter Korea visa-free for tourism (typically 30-90 days depending on nationality). K-ETA (Korea Electronic Travel Authorization) is required for visa-exempt visitors from most countries. Check the Korean Immigration Service website for your specific country\'s requirements.' },
+        { q: 'How do I start getting into K-pop as a new fan?', a: 'The easiest entry point is finding a group whose sound or concept clicks with you. Start with playlist-style articles or "best songs to start with" guides for groups like BTS, BLACKPINK, aespa, IVE, or ENHYPEN. YouTube is essential — most K-pop MVs are free. Once you find a group you like, explore their discography, reality show content, and fan community on Weverse or Bubble.' },
+        { q: `Which K-pop groups should I follow in ${year}?`, a: `In ${year}, the standout groups span multiple generations: BTS (on hiatus/solo activities post-military service), BLACKPINK (solo eras), aespa and IVE (4th gen girl group leaders), ENHYPEN and RIIZE (strong 4th gen boy groups). For newer fans, ILLIT, BABYMONSTER, and TWS represent the newest wave. KISS OF LIFE stands out for retro R&B fans.` },
+        { q: 'What makes Korean dramas so popular globally?', a: `Korean dramas dominate global streaming due to high production quality, emotionally resonant storytelling, and tight episode counts (usually 16 episodes or fewer). Netflix has committed over $2.5 billion to Korean content, putting K-dramas in front of audiences in 190+ countries. In ${year}, webtoon-adapted dramas are the dominant trend — stories with built-in fanbases and cinematic source material.` },
+        { q: 'Where can I watch K-dramas legally online?', a: 'The main platforms for legal K-drama streaming are Netflix (largest global catalog), Disney+ (strong Korean originals), Viki by Rakuten (fan-subbed classics and newer shows), and Viu (Asia-focused). For real-time Korean broadcasts, KBS World and MBC Drama stream live. Most platforms offer free tiers with limited access or affordable monthly subscriptions.' },
+        { q: 'What are K-pop photocards and why are fans obsessed with them?', a: 'Photocards are small collectible trading cards (roughly credit card size) included randomly in K-pop album packaging. Each album release typically features different photocard sets with each member, making collection and trading a core part of fan culture. Rare versions (limited prints, pre-order exclusives) can sell for hundreds of dollars. Fan trading communities exist on platforms like KpopPR on Reddit and dedicated apps.' },
       ],
     };
 
@@ -715,25 +704,17 @@ ${recentPostsHtml || '<p style="' + S.p + '">Articles coming soon.</p>'}
     const allFaqs: Array<{ q: string; a: string; category: string }> = [];
 
     const nicheFaqs: Record<string, Array<{ q: string; a: string }>> = {
-      'Korean Tech': [
-        { q: 'Why is Korean technology important globally?', a: 'Korea produces over 60% of the world\'s memory chips. Samsung and SK Hynix supply critical components for AI, smartphones, and data centers worldwide.' },
-        { q: 'How can I invest in Korean tech companies?', a: 'Through Korean ETFs (EWY), ADRs on US exchanges, or direct Korean brokerage accounts that offer English services.' },
-      ],
-      'Korean Finance': [
-        { q: 'Can foreigners invest in Korean stocks?', a: 'Yes. Via Korean ETFs, ADRs, or direct brokerage accounts. Samsung Securities and Mirae Asset offer English services.' },
-        { q: 'What is the Korea Discount?', a: 'Korean stocks trade at lower valuations vs global peers due to governance concerns, geopolitical risk, and complex ownership structures.' },
-      ],
       'K-Beauty': [
-        { q: 'What is the Korean skincare routine?', a: 'A multi-step approach including cleansing, toning, essence, serum, moisturizer, and sunscreen. Modern K-beauty emphasizes 3-5 key products customized to your skin type.' },
-        { q: 'Where can I buy authentic K-beauty products?', a: 'Olive Young (Korea\'s largest beauty retailer), YesStyle, Stylevana, and verified Amazon sellers.' },
-      ],
-      'Korea Travel': [
-        { q: 'What is the best time to visit South Korea?', a: 'Spring (April-May) and autumn (September-November) offer the best weather. Cherry blossoms in April and fall foliage in October are highlights.' },
-        { q: 'Do I need a visa to visit Korea?', a: 'Citizens of 112 countries can enter visa-free (30-90 days). K-ETA is required for most visa-exempt visitors.' },
+        { q: 'What is the Korean skincare routine?', a: 'Korean skincare starts with double cleansing (oil cleanser + water cleanser), followed by toner, essence, serum, moisturizer, and sunscreen. Modern K-beauty favors 4-5 targeted products over the older 10-step approach.' },
+        { q: 'Which Korean skincare brands are best for beginners?', a: 'Start with COSRX, Beauty of Joseon, Anua, and SKIN1004 — all widely available on Amazon and YesStyle with strong track records for sensitive skin.' },
+        { q: 'Where can I buy authentic K-beauty products?', a: 'Olive Young (ships internationally), Amazon (Korean brand storefronts), Soko Glam, YesStyle, Stylevana, and Jolse. All offer genuine products with buyer protection.' },
+        { q: 'What K-beauty ingredients should I know about?', a: 'Key ingredients: snail mucin (repair and hydration), centella asiatica (calming and barrier support), tranexamic acid (brightening, top trend in 2025-2026), niacinamide (pore and oil control), and ceramides (barrier restoration).' },
       ],
       'K-Entertainment': [
-        { q: 'How does the K-pop industry make money?', a: 'Through album sales, concerts, merchandise, fan memberships, brand endorsements, IP licensing, and increasingly virtual content.' },
-        { q: 'Are K-entertainment stocks a good investment?', a: 'HYBE, SM, and JYP are publicly traded. They offer Hallyu exposure but can be volatile based on artist activities.' },
+        { q: 'How do I get into K-pop as a new fan?', a: 'Find a group whose sound appeals to you and start with a "best songs" guide. YouTube MVs are free. Top entry points: BTS, BLACKPINK, aespa, IVE, ENHYPEN. Once hooked, explore their discography and fan community on Weverse.' },
+        { q: 'Where can I watch K-dramas legally online?', a: 'Netflix has the largest global catalog. Disney+ offers strong Korean originals. Viki (Rakuten) has fan-subbed classics. Viu covers Asia-focused content. Most offer free tiers or affordable subscriptions.' },
+        { q: 'What are K-pop photocards?', a: 'Small collectible trading cards randomly included in K-pop album packaging. Each member has different versions, making collection and trading a major part of fan culture. Rare versions can be highly valuable.' },
+        { q: 'What is Weverse?', a: 'Weverse is HYBE\'s fan community platform where artists post directly, share live content, and interact with fans globally. Most major HYBE artists (BTS, ENHYPEN, LE SSERAFIM, etc.) plus artists from other labels use it as their main fan communication channel.' },
       ],
     };
 
@@ -763,7 +744,7 @@ ${recentPostsHtml || '<p style="' + S.p + '">Articles coming soon.</p>'}
     const content = `<script type="application/ld+json">${faqSchema}</script>
 <div style="${S.wrapper}">
 <h2 style="${S.h2}">Frequently Asked Questions</h2>
-<p style="${S.p}">Find answers to the most common questions about Korean technology, finance, beauty, travel, and entertainment.</p>
+<p style="${S.p}">Find answers to the most common questions about Korean skincare, K-beauty products, K-pop comebacks, and K-drama recommendations.</p>
 
 ${faqHtml}
 
