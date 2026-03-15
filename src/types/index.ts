@@ -35,6 +35,7 @@ export const KOREAN_SEASONAL_EVENTS: Array<{
   { name: 'K-pop Spring Comeback Season', startMonth: 2, startDay: 1, endMonth: 4, endDay: 30, leadTimeDays: 60, relevantNiches: ['K-Entertainment'], contentAngles: ['spring comeback preview K-pop 2026', 'best K-pop comebacks spring ranked', 'new K-pop releases to watch'] },
   { name: 'K-pop Summer Comeback Season', startMonth: 6, startDay: 1, endMonth: 8, endDay: 31, leadTimeDays: 60, relevantNiches: ['K-Entertainment'], contentAngles: ['summer comeback season K-pop 2026', 'best K-pop summer releases ranked', 'K-pop festival season guide'] },
   { name: 'BIFF (Busan Film Festival)', startMonth: 10, startDay: 1, endMonth: 10, endDay: 12, leadTimeDays: 45, relevantNiches: ['K-Entertainment'], contentAngles: ['BIFF highlights', 'Korean cinema spotlight', 'best Korean films at BIFF'] },
+  { name: 'Baeksang Arts Awards', startMonth: 4, startDay: 20, endMonth: 5, endDay: 10, leadTimeDays: 45, relevantNiches: ['K-Entertainment'], contentAngles: ['Baeksang Arts Awards predictions 2026', 'best K-drama nominees Baeksang guide', 'how to watch Baeksang 2026 international fans', 'Baeksang best actress actor winner predictions'] },
 ];
 
 /** 콘텐츠 유형 */

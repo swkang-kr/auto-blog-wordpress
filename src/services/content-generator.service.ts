@@ -894,7 +894,7 @@ LSI Keyword Integration Rules (CRITICAL for semantic SEO):
 - Do NOT force LSI keywords unnaturally — readability always wins over keyword density
 
 Include 2-4 internal links to relevant existing posts listed above, and 2-4 external source citations using <cite data-source="KEY" data-topic="TOPIC"> tags.
-${niche.category === 'K-Beauty' ? 'Preferred sources for K-Beauty: allure-korea, vogue-korea, harpers-bazaar-korea, inci-decoder, skinsort, olive-young. Use kocca or kotra only if covering K-Beauty global export trends.' : niche.category === 'K-Entertainment' ? 'Preferred sources for K-Entertainment: hanteo, circle-chart, gaon, billboard-korea, kocca, melon, mnet, weverse-magazine. Do NOT use bok, krx, dart, or kosis.' : 'Korean institutional sources preferred: bok, krx, dart, kosis.'}
+${niche.category === 'K-Beauty' ? 'Preferred sources for K-Beauty: allure-korea, vogue-korea, harpers-bazaar-korea, inci-decoder, skinsort, olive-young. Use kocca or kotra only if covering K-Beauty global export trends.' : niche.category === 'K-Entertainment' ? 'Preferred sources for K-Entertainment: hanteo, circle-chart, billboard-korea, kocca, melon, mnet, weverse-magazine. Do NOT use bok, krx, dart, kosis, or gaon (Gaon Charts rebranded to Circle Chart in 2023 — always cite as circle-chart).' : 'Korean institutional sources preferred: bok, krx, dart, kosis.'}
 MANDATORY: Include a "${getSignatureSection(niche.category, analysis.contentType, analysis.selectedKeyword)}" signature analysis section (as an H2 heading, 300-500 words of unique analytical value).
 ${['analysis', 'deep-dive', 'case-study'].includes(analysis.contentType) ? `
 ORIGINAL RESEARCH SIGNALS (for ${analysis.contentType} content):

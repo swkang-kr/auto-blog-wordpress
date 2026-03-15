@@ -63,6 +63,18 @@ const KOREAN_EVENTS: SeasonalEvent[] = [
     ],
   },
   {
+    name: 'Baeksang Arts Awards Season',
+    months: [4, 5],
+    days: [15, 31],
+    niches: ['K-Entertainment'],
+    suggestions: [
+      'Baeksang Arts Awards 2026 predictions who will win complete guide',
+      'Baeksang Arts Awards nominees 2026 K-drama film best actress actor',
+      'best K-dramas that won Baeksang awards all time ranked list',
+      'how to watch Baeksang Arts Awards 2026 livestream international fans',
+    ],
+  },
+  {
     name: 'K-pop Spring Comeback Season',
     months: [4, 5],
     days: [1, 31],

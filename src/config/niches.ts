@@ -23,6 +23,7 @@ export function getSeasonallyOrderedNiches(): NicheConfig[] {
     'Summer': ['K-Beauty'],
     'Chuseok': ['K-Entertainment'],
     'BIFF': ['K-Entertainment'],
+    'Baeksang': ['K-Entertainment'],
     'K-pop Spring Comeback': ['K-Entertainment'],
     'K-pop Summer Comeback': ['K-Entertainment'],
     'Suneung': ['K-Entertainment'],
@@ -197,6 +198,22 @@ export const NICHES: NicheConfig[] = [
       // K-Beauty Advent Calendar — 연말 어필리에이트 최고 수익 콘텐츠 (11-12월 한정)
       'best K-beauty advent calendar 2026 ranked what is inside',
       'Olive Young advent calendar 2026 review worth it or not',
+      // Skin flooding — TikTok 바이럴 2025-2026 (레이어링 수분 공법, 급성장 검색어)
+      'skin flooding Korean skincare method how to do it correctly guide',
+      'skin flooding vs 7 skin method Korean layering technique compared',
+      // Mushroom/Fungi skincare — 글로벌 최고 성장률 성분 카테고리 2025-2026
+      'best Korean mushroom skincare products reishi tremella ranked 2026',
+      'tremella mushroom K-beauty serum review vs hyaluronic acid',
+      // FWEE — 아이돌 메이크업 브랜드, 지수(BLACKPINK) 콜라보, 급성장
+      'FWEE Korean makeup brand Jisoo review best products 2026',
+      'FWEE vs rom&nd lip tint comparison review best shades',
+      // Aestura / Dr.G — 피부과 브랜드 메인스트림 진입, 민감·트러블 피부 세그먼트 강세
+      'Aestura AtoBarrier cream review sensitive skin barrier repair',
+      'Dr.G brightening peeling gel review gentle exfoliation guide',
+      // 50s+ 안티에이징 K-Beauty — 성장 중인 미개척 세그먼트
+      'best Korean anti-aging skincare for women over 50 ranked 2026',
+      'Korean skincare routine for mature skin 40s 50s guide 2026',
+      'best Korean retinol serum for mature skin anti-wrinkle 2026',
     ],
     contentTypes: ['product-review', 'best-x-for-y', 'x-vs-y', 'how-to', 'listicle', 'case-study', 'deep-dive', 'news-explainer'],
     adSenseRpm: 'high',
@@ -210,13 +227,14 @@ export const NICHES: NicheConfig[] = [
     category: 'K-Entertainment',
     broadTerm: 'K-pop 2026',
     seedKeywords: [
-      // BTS — 글로벌 최고 검색량
-      'BTS comeback 2026 date songs what to expect',
-      'BTS members solo activities ranked 2026',
-      'BTS Jungkook solo career 2026 update',
+      // BTS — 글로벌 최고 검색량 (2026년: 모든 멤버 전역 완료, 그룹 컴백 앵글 중심)
+      'BTS group comeback 2026 what fans need to know full guide',
+      'BTS reunion 2026 after military service what to expect',
+      'BTS members solo activities ranked 2026 update',
       // 4세대 주력 그룹 — 급상승 트래픽
-      // NOTE: NewJeans는 어도어 계약 분쟁/민희진 독립 사안 진행 중 — 콘텐츠 작성 시
-      //       법적 분쟁 관련 주장 포함 금지, 음악/팬덤 중심으로만 작성할 것
+      // NOTE: NewJeans — 멤버 5인이 어도어와의 계약을 종료하고 독립 활동 중 (2025-2026).
+      //       콘텐츠 작성 시: 법적 분쟁/소속사 갈등 주장 금지, 음악·팬덤 중심으로만 작성할 것.
+      //       그룹명 'NewJeans' 사용은 팬덤 관점에서 가능하나, 소속사 관련 주장은 일절 금지.
       'NewJeans best songs ranked guide for new fans',
       'aespa KWANGYA universe lore explained complete guide for new fans',
       'aespa Karina solo debut 2026 what fans need to know',
@@ -320,6 +338,21 @@ export const NICHES: NicheConfig[] = [
       // 글로벌 투어 확장 — 지역별 팬 검색
       'K-pop concerts in Europe 2026 schedule tour dates cities',
       'K-pop concerts Australia 2026 schedule tour dates guide',
+      // 8TURN — JYP 4세대 보이그룹 (2024 데뷔), 글로벌 팬덤 급성장
+      '8TURN JYP boy group songs ranked guide for new fans 2026',
+      '8TURN debut story JYP Entertainment members explained guide',
+      // UNIS (유니스) — FNC/WAKEONE 걸그룹 (2024 데뷔), Universe Ticket 출신
+      'UNIS girl group debut story Universe Ticket explained guide',
+      'UNIS songs ranked best tracks for new fans 2026',
+      // izna (이즈나) — Produce 101 시즌 2 계보 서바이벌 출신 걸그룹
+      'izna K-pop girl group debut story concept explained fans guide',
+      'izna best songs ranked guide for new fans 2026',
+      // Baeksang Arts Awards — 한국 최고권위 시상식, 고트래픽 이벤트 (5월)
+      'Baeksang Arts Awards 2026 predictions winners K-drama film guide',
+      'Baeksang Arts Awards 2026 nominees K-drama best actress actor',
+      // K-pop idol variety show — 팬 검색 높은 에버그린 카테고리
+      'best K-pop idol variety shows to watch ranked all time guide',
+      'funniest K-pop idol variety show moments compilation guide 2026',
     ],
     contentTypes: ['listicle', 'news-explainer', 'best-x-for-y', 'deep-dive', 'how-to', 'x-vs-y', 'case-study'],
     adSenseRpm: 'medium',
