@@ -1949,6 +1949,7 @@ ${ga4TrackingScript}`;
               '@type': 'Product',
               name: item.name,
               description: item.description,
+              ...(item.image ? { image: item.image } : {}),
               ...(item.brand ? { brand: { '@type': 'Brand', name: item.brand } } : {}),
               ...(item.rating ? {
                 aggregateRating: {
@@ -2599,8 +2600,9 @@ ${ga4TrackingScript}`;
     brand?: string;
     rating?: number;
     price?: string;
+    image?: string;
   }> {
-    const products: Array<{ name: string; description: string; brand?: string; rating?: number; price?: string }> = [];
+    const products: Array<{ name: string; description: string; brand?: string; rating?: number; price?: string; image?: string }> = [];
     // Match numbered headings that likely contain product names
     const regex = /<h[23][^>]*>(?:\d+[.):\s]+|#\d+[:\s]+)?(.*?)<\/h[23]>([\s\S]*?)(?=<h[23]|$)/gi;
     const knownBrands = [
@@ -2622,9 +2624,11 @@ ${ga4TrackingScript}`;
     while ((match = regex.exec(html)) !== null && products.length < 15) {
       const name = match[1].replace(/<[^>]+>/g, '').trim();
       const section = match[2];
-      // Skip structural headings
-      if (/FAQ|Table of Contents|Key Takeaways|Conclusion|How We|Bottom Line/i.test(name)) continue;
+      // Skip structural headings, honorable mentions, and question-style headings (FAQ-like)
+      if (/FAQ|Table of Contents|Key Takeaways|Conclusion|How We|Bottom Line|Honorable Mentions?|Final (?:Thoughts|Verdict|Words)|What (?:to|You)|Where |When |Which |Why |How (?:Do|Does|Can|To|Should|Is|Are)|Is It|Are There/i.test(name)) continue;
       if (name.length < 4 || name.length > 100) continue;
+      // Skip headings that end with '?' (question headings belong in FAQ, not Product schema)
+      if (name.endsWith('?')) continue;
 
       // Extract first paragraph as description
       const paraMatch = /<p[^>]*>([\s\S]*?)<\/p>/i.exec(section);
@@ -2650,7 +2654,11 @@ ${ga4TrackingScript}`;
       const priceMatch = section.match(/\$(\d+(?:\.\d{2})?)/);
       const price = priceMatch ? priceMatch[1] : undefined;
 
-      products.push({ name, description, brand, rating, price });
+      // Extract image from section (first <img> src)
+      const imgMatch = section.match(/<img[^>]+src=["']([^"']+)["']/i);
+      const image = imgMatch ? imgMatch[1] : undefined;
+
+      products.push({ name, description, brand, rating, price, image });
     }
     return products;
   }
