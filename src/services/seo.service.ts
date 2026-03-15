@@ -971,6 +971,19 @@ ${categoryItems}
         ]);
     }
 
+    // FAQ page
+    $faq = get_page_by_path('faq');
+    if ($faq) {
+        wp_update_nav_menu_item($menu_id, 0, [
+            'menu-item-title' => 'FAQ',
+            'menu-item-object-id' => $faq->ID,
+            'menu-item-object' => 'page',
+            'menu-item-status' => 'publish',
+            'menu-item-type' => 'post_type',
+            'menu-item-position' => $pos++,
+        ]);
+    }
+
     // Assign to primary location
     $locations = get_theme_mod('nav_menu_locations', []);
     $locations['primary'] = $menu_id;
