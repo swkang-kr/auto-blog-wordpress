@@ -37,7 +37,6 @@ export function getSeasonallyOrderedNiches(): NicheConfig[] {
     'New Year': ['K-Entertainment', 'K-Beauty'],
     'K-Beauty Awards': ['K-Beauty'],
     'Circle Chart': ['K-Entertainment'],
-    'Gaon': ['K-Entertainment'],
   };
 
   const boostedCategories = new Set<string>();
@@ -132,6 +131,17 @@ export const NICHES: NicheConfig[] = [
       'Korean skincare routine for beginners step by step 2026',
       'how to build a Korean glass skin routine on a budget',
       'skip-care Korean minimalist skincare routine guide 2026',
+      // Double cleanse — K-Beauty 아이콘 루틴, 에버그린 고트래픽
+      'Korean double cleansing method guide step by step for beginners',
+      'best Korean cleansing balm for waterproof makeup removal 2026',
+      'best Korean oil cleanser for sensitive acne-prone skin ranked',
+      // Centella asiatica — 에버그린 최강 성분 키워드
+      'best Korean centella asiatica skincare products ranked 2026',
+      'centella asiatica benefits for skin Korean products explained',
+      // Eye cream — 인기 K-Beauty 카테고리
+      'best Korean eye cream for dark circles puffiness 2026 ranked',
+      // Body care — 성장 중인 K-Beauty 세그먼트
+      'best Korean body lotion cream for glass skin body 2026',
       // Idol beauty crossover (K-Beauty ↔ K-Entertainment bridge)
       'K-pop idol skincare routine products they actually use',
       'BLACKPINK members skincare routine products revealed',
@@ -207,7 +217,7 @@ export const NICHES: NicheConfig[] = [
       // 시즌 이벤트 — 검색 스파이크
       'MAMA Awards 2026 winners predictions complete guide',
       'Melon Music Awards 2026 predictions ranked',
-      'Circle Chart Gaon year-end awards 2026 winners ranked',
+      'Circle Chart year-end awards 2026 K-pop winners ranked',
       'K-pop concerts in USA 2026 schedule tour dates',
       // 3-4세대 그룹 — 글로벌 팬덤 검색량
       'Stray Kids world tour 2026 setlist fan experience',
@@ -221,6 +231,17 @@ export const NICHES: NicheConfig[] = [
       // 아이돌 뷰티 — K-Beauty ↔ K-Entertainment 크로스 니치 교두보
       'K-pop idol no-makeup looks what products they use',
       'K-pop idol skincare routine favorite products 2026',
+      // BLACKPINK 멤버별 솔로 — 개인 검색량 폭발적
+      'Jennie solo career 2026 BLACKPINK comeback update fans',
+      'Lisa solo comeback 2026 what fans need to know',
+      // KCON — 글로벌 K팝 컨벤션, 연간 고트래픽 이벤트
+      'KCON 2026 USA lineup schedule how to get tickets guide',
+      'KCON 2026 what to expect first timer complete guide',
+      // K팝 포토카드 — Z세대 초고관심, 에버그린
+      'how to collect K-pop photocards guide beginners 2026',
+      'how to trade K-pop photocards online safely guide',
+      // K팝 스트리밍 — 팬 문화 에버그린
+      'how to stream K-pop music help your favorite artist chart',
       // 2023-2025 데뷔 그룹 — 급성장 글로벌 팬덤
       'RIIZE songs ranked best tracks for new fans guide',
       'RIIZE comeback 2026 what fans need to know',
