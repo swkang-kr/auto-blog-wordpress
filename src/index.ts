@@ -350,10 +350,7 @@ async function main(): Promise<void> {
     try {
       const adsenseApi = new AdSenseApiService(config.ADSENSE_ACCOUNT_ID, config.ADSENSE_SA_KEY);
       const categoryPatterns: Record<string, string> = {
-        'Korean Tech': 'korean-tech',
-        'Korean Finance': 'korean-finance',
         'K-Beauty': 'k-beauty',
-        'Korea Travel': 'korea-travel',
         'K-Entertainment': 'k-entertainment',
       };
       const rpmData = await adsenseApi.getRpmByCategory(categoryPatterns);
@@ -1304,12 +1301,8 @@ async function main(): Promise<void> {
         const categoryLabel = niche.category.replace(/&/g, '&amp;');
         // Use category-specific gradient colors for visual variety
         const gradients: Record<string, [string, string]> = {
-          'Korean Tech': ['#1a1a2e', '#16213e'],
+          'K-Beauty': ['#b5395a', '#e8758a'],
           'K-Entertainment': ['#2d1b69', '#6b21a8'],
-          'Korean Finance': ['#0c4a6e', '#0369a1'],
-          'Korean Food': ['#7c2d12', '#c2410c'],
-          'Korea Travel': ['#14532d', '#15803d'],
-          'Korean Language': ['#4a1d96', '#7c3aed'],
         };
         const [c1, c2] = gradients[niche.category] || ['#0052CC', '#0066FF'];
         // Split long keywords into two lines to prevent SVG text overflow
@@ -1455,39 +1448,20 @@ async function main(): Promise<void> {
         logger.debug(`Fact-check skipped: ${factError instanceof Error ? factError.message : factError}`);
       }
 
-      // B-3.95. Inject data visualization charts for Finance/Tech categories
-      // Inject data visualization charts for Finance/Tech categories
-      if (['Korean Finance', 'Korean Tech'].includes(niche.category)) {
-        try {
-          let chartSvg = '';
-          if (niche.category === 'Korean Finance') {
-            chartSvg = await dataVizService.generateKospiChart();
-          } else {
-            chartSvg = await dataVizService.generateExchangeRateChart();
+      // Inject infographic for data-rich K-Beauty/K-Entertainment content
+      try {
+        const dataPoints = extractDataPoints(content.html);
+        if (dataPoints.length >= 3) {
+          const infographicSvg = dataVizService.generateInfoGraphic(
+            content.title, dataPoints, niche.category,
+          );
+          if (infographicSvg) {
+            content.html = wpService.injectDataChart(content.html, infographicSvg, niche.category);
+            logger.info(`Infographic injected with ${dataPoints.length} data points`);
           }
-          if (chartSvg) {
-            content.html = wpService.injectDataChart(content.html, chartSvg, niche.category);
-            logger.info(`Data chart injected for ${niche.category} post`);
-          }
-        } catch (chartError) {
-          logger.debug(`Data chart injection skipped: ${chartError instanceof Error ? chartError.message : chartError}`);
         }
-
-        // Inject infographic for data-rich content
-        try {
-          const dataPoints = extractDataPoints(content.html);
-          if (dataPoints.length >= 3) {
-            const infographicSvg = dataVizService.generateInfoGraphic(
-              content.title, dataPoints, niche.category,
-            );
-            if (infographicSvg) {
-              content.html = wpService.injectDataChart(content.html, infographicSvg, niche.category);
-              logger.info(`Infographic injected with ${dataPoints.length} data points`);
-            }
-          }
-        } catch (infoErr) {
-          logger.debug(`Infographic skipped: ${infoErr instanceof Error ? infoErr.message : infoErr}`);
-        }
+      } catch (infoErr) {
+        logger.debug(`Infographic skipped: ${infoErr instanceof Error ? infoErr.message : infoErr}`);
       }
 
       // Engagement poll injection (if content generated a poll question)
@@ -1496,8 +1470,8 @@ async function main(): Promise<void> {
         logger.debug(`Engagement poll injected for "${researched.analysis.selectedKeyword}"`);
       }
 
-      // Interactive calculator injection (Finance/K-Beauty)
-      if (['Korean Finance', 'K-Beauty'].includes(niche.category)) {
+      // Interactive calculator injection (K-Beauty: skincare routine estimator)
+      if (['K-Beauty'].includes(niche.category)) {
         content.html = wpService.injectInteractiveCalculator(content.html, niche.category);
         logger.debug(`Interactive calculator injected for ${niche.category}`);
       }
@@ -1506,7 +1480,7 @@ async function main(): Promise<void> {
       // Always run for monetizable niches — PRODUCT_AFFILIATE_DB provides keyword matching
       // even when AFFILIATE_MAP env var is not set. productMentions gate removed so listicle,
       // x-vs-y, how-to etc. also get affiliate links, not just product-review/best-x-for-y.
-      if (['K-Beauty', 'K-Entertainment', 'Korean Finance', 'Korean Tech'].includes(niche.category)) {
+      if (['K-Beauty', 'K-Entertainment'].includes(niche.category)) {
         const affiliateMap = config.AFFILIATE_MAP ? (() => { try { return JSON.parse(config.AFFILIATE_MAP); } catch { return {}; } })() : {};
         content.html = wpService.injectContextualAffiliateLinks(content.html, niche.category, affiliateMap);
         logger.debug(`Affiliate link injection attempted for "${researched.analysis.selectedKeyword}" (${niche.category})`);

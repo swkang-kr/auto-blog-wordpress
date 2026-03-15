@@ -694,11 +694,8 @@ div[style*="background:#f8f9fa"]{background:#1e1e2e!important;border-color:#3b3b
    * Key = category, Values = related categories that share audience overlap.
    */
   private static readonly CROSS_NICHE_MAP: Record<string, string[]> = {
-    'Korean Tech': ['Korean Finance', 'K-Entertainment'],
-    'Korean Finance': ['Korean Tech', 'Korea Travel'],
-    'K-Beauty': ['Korea Travel', 'K-Entertainment'],
-    'Korea Travel': ['K-Beauty', 'K-Entertainment', 'Korean Finance'],
-    'K-Entertainment': ['K-Beauty', 'Korea Travel', 'Korean Tech'],
+    'K-Beauty': ['K-Entertainment'],
+    'K-Entertainment': ['K-Beauty'],
   };
 
   /**
@@ -882,40 +879,15 @@ div[style*="background:#f8f9fa"]{background:#1e1e2e!important;border-color:#3b3b
   private buildEngagementQuestionHtml(keyword: string, category: string): string {
     // Dynamic question patterns that incorporate the actual topic
     const dynamicPatterns: Record<string, Array<(kw: string) => string>> = {
-      'Korean Tech': [
-        (kw) => `What's your experience with ${kw}? Have you found better alternatives? Share below!`,
-        (kw) => `How do you think ${kw} compares to similar options outside Korea? We'd love to hear your take.`,
-        (kw) => `Are you currently using or considering ${kw}? What factors matter most to you?`,
-      ],
-      'K-Entertainment': [
-        (kw) => `What's your perspective on ${kw}? Has it changed how you view the Korean entertainment industry?`,
-        (kw) => `How has ${kw} influenced your interest in Korean culture? Share your story below.`,
-        (kw) => `What do you think the future holds for ${kw}? Drop your predictions in the comments.`,
-      ],
-      'Korean Finance': [
-        (kw) => `Are you factoring ${kw} into your investment strategy? What's your approach?`,
-        (kw) => `How do you evaluate ${kw} compared to similar opportunities in other markets?`,
-        (kw) => `What's the biggest risk or opportunity you see with ${kw}? Share your analysis below.`,
-      ],
-      'Korean Food': [
-        (kw) => `Have you tried ${kw}? What was your experience like? Share your tips below!`,
-        (kw) => `What's your go-to approach for ${kw}? Any local secrets you've discovered?`,
-        (kw) => `How does ${kw} compare to similar food experiences in your country? Tell us in the comments.`,
-      ],
-      'Korea Travel': [
-        (kw) => `Have you experienced ${kw} firsthand? What tips would you give first-timers?`,
-        (kw) => `What surprised you most about ${kw}? Share your travel stories below!`,
-        (kw) => `Planning to explore ${kw}? What questions do you have? Our community can help.`,
-      ],
       'K-Beauty': [
         (kw) => `What's your skin type, and has ${kw} worked for you? Drop your mini-review below — it helps other readers!`,
         (kw) => `How does ${kw} fit into your current skincare routine? Share your experience in the comments.`,
         (kw) => `Have you compared ${kw} with Western alternatives? We'd love to hear which you prefer and why.`,
       ],
-      'Korean Language': [
-        (kw) => `How's your progress with ${kw}? What study methods work best for you?`,
-        (kw) => `What's the trickiest part of ${kw} for you? Let's help each other in the comments.`,
-        (kw) => `Any resources for ${kw} that you'd recommend to fellow learners? Share below!`,
+      'K-Entertainment': [
+        (kw) => `What's your perspective on ${kw}? Has it changed how you view Korean entertainment? Share below!`,
+        (kw) => `How has ${kw} influenced your interest in Korean culture? Share your story below.`,
+        (kw) => `What do you think the future holds for ${kw}? Drop your predictions in the comments.`,
       ],
     };
 
@@ -985,7 +957,7 @@ ${socialHtml}
    * Inject SVG data chart into Finance category posts before the first H2.
    */
   injectDataChart(html: string, chartSvg: string, category: string): string {
-    if (!chartSvg || !['Korean Finance', 'Korean Tech'].includes(category)) return html;
+    if (!chartSvg || !['K-Beauty', 'K-Entertainment'].includes(category)) return html;
 
     const chartHtml = `<div class="ab-data-chart" style="margin:24px 0; text-align:center;">${chartSvg}</div>`;
     const firstH2 = html.indexOf('<h2');
@@ -1115,14 +1087,6 @@ ${rows}
    */
   /** Built-in product keyword → affiliate URL mappings for auto-matching */
   private static readonly PRODUCT_AFFILIATE_DB: Record<string, { keywords: string[]; defaultUrl: string }> = {
-    'Korean Tech': {
-      keywords: ['Samsung', 'Galaxy', 'SK Hynix', 'LG', 'Naver', 'Kakao', 'NVIDIA', 'MacBook', 'iPad', 'iPhone'],
-      defaultUrl: 'https://www.amazon.com/s?k=korean+tech&tag=trendhunt2007-20',
-    },
-    'Korean Finance': {
-      keywords: ['ETF', 'brokerage', 'trading platform', 'investing app', 'financial advisor'],
-      defaultUrl: 'https://www.amazon.com/s?k=investing+korean+market&tag=trendhunt2007-20',
-    },
     'K-Beauty': {
       keywords: [
         // Established brands
@@ -1141,10 +1105,6 @@ ${rows}
         'essence', 'sleeping mask', 'eye cream', 'SPF', 'collagen',
       ],
       defaultUrl: 'https://www.amazon.com/s?k=korean+skincare&tag=trendhunt2007-20',
-    },
-    'Korea Travel': {
-      keywords: ['T-money', 'SIM card', 'WiFi egg', 'travel adapter', 'luggage', 'backpack', 'guidebook'],
-      defaultUrl: 'https://www.amazon.com/s?k=korea+travel+essentials&tag=trendhunt2007-20',
     },
     'K-Entertainment': {
       keywords: [
@@ -1237,11 +1197,8 @@ ${rows}
    */
   private buildCommentEngagementCta(category: string, keyword?: string): string {
     const prompts: Record<string, string[]> = {
-      'Korean Tech': ['What Korean tech company do you think will lead AI innovation?', 'Have you used any Korean tech products? Share your experience!', 'What Samsung or SK Hynix news surprised you most recently?'],
-      'Korean Finance': ['Are you investing in Korean stocks? What\'s your strategy?', 'What do you think about the Korea Discount — will it close?', 'Share your experience with Korean brokerage accounts!'],
       'K-Beauty': ['What\'s your favorite K-beauty product? Drop your recommendation below!', 'Have you tried a Korean skincare routine? What results did you see?', 'What K-beauty brand should we review next?'],
-      'Korea Travel': ['What\'s your favorite spot in Korea? Share your tips!', 'Planning a trip to Korea? Ask your questions below!', 'What surprised you most about visiting Seoul?'],
-      'K-Entertainment': ['Who\'s your bias? Drop your K-pop opinions below!', 'What K-drama are you watching right now?', 'Which K-entertainment company do you think has the best strategy?'],
+      'K-Entertainment': ['Who\'s your bias? Drop your K-pop opinions below!', 'What K-drama are you watching right now?', 'Which comeback are you most excited about this year?'],
     };
     const categoryPrompts = prompts[category] || ['What are your thoughts on this topic? Share in the comments below!'];
     const prompt = categoryPrompts[Math.floor(Math.random() * categoryPrompts.length)];
@@ -1322,32 +1279,6 @@ ${ga4TrackingScript}`;
       'Mixsoon': 'https://www.amazon.com/s?k=Mixsoon&tag=trendhunt2007-20',
       'Haruharu Wonder': 'https://www.amazon.com/s?k=Haruharu+Wonder&tag=trendhunt2007-20',
       'Round Lab': 'https://www.amazon.com/s?k=Round+Lab+skincare&tag=trendhunt2007-20',
-    },
-    'Korea Travel': {
-      'Klook': 'https://www.klook.com/',
-      'KKday': 'https://www.kkday.com/',
-      'Agoda': 'https://www.agoda.com/',
-      'T-money': 'https://www.t-money.co.kr/eng/',
-      'Airalo': 'https://www.airalo.com/',
-    },
-    'Korean Food': {
-      'Maangchi': 'https://www.maangchi.com/',
-      'Korean grocery': '',
-      'gochugaru': '',
-    },
-    'Korean Finance': {
-      'Interactive Brokers': 'https://www.interactivebrokers.com/',
-      'Webull': 'https://www.webull.com/',
-      'Tiger Brokers': 'https://www.tigerbrokers.com/',
-    },
-    'Korean Tech': {
-      'Samsung Galaxy': 'https://www.samsung.com/global/galaxy/',
-      'LG OLED': 'https://www.lg.com/us/tvs/oled-tvs/',
-    },
-    'Korean Language': {
-      'Talk To Me In Korean': 'https://talktomeinkorean.com/',
-      'LingoDeer': 'https://www.lingodeer.com/',
-      'italki': 'https://www.italki.com/',
     },
     'K-Entertainment': {
       'BTS': 'https://www.amazon.com/s?k=BTS+album&tag=trendhunt2007-20',
@@ -1505,17 +1436,13 @@ ${ga4TrackingScript}`;
       : new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
     const bannerWordCount = htmlEn.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
     const bannerImageCount = (htmlEn.match(/<img\s/gi) || []).length;
-    // Category-specific WPM: technical/finance content reads slower, casual content reads faster
+    // Category-specific WPM: K-Beauty product reviews read slightly slower (ingredient terms), K-Entertainment faster (fan content)
     const categoryWpm: Record<string, number> = {
-      'Korean Tech': 200, 'Korean Finance': 200,
-      'K-Beauty': 238, 'K-Entertainment': 250, 'Korea Travel': 250,
+      'K-Beauty': 230, 'K-Entertainment': 250,
     };
     const wpm = categoryWpm[content.category] || 238;
     const readingTimeMin = Math.max(1, Math.ceil(bannerWordCount / wpm + bannerImageCount * 0.2));
-    // YMYL reviewer badge for Finance content
-    const reviewerBadge = content.category === 'Korean Finance' && this.siteOwner
-      ? ` <span style="margin-left:12px; padding:2px 8px; background:#15803d; color:#fff; border-radius:4px; font-size:11px; font-weight:700; vertical-align:middle;">REVIEWED</span><span style="margin-left:4px; font-weight:600;">by ${this.escapeHtml(this.siteOwner)}${this.authorCredentials ? `, ${this.escapeHtml(this.authorCredentials)}` : ''}</span>`
-      : '';
+    const reviewerBadge = '';
     const lastUpdatedBanner = `<div style="background:#f0f8ff; border-left:4px solid #0066FF; padding:12px 20px; margin:0 0 24px 0; border-radius:0 8px 8px 0; font-size:14px; color:#555; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;"><span><span style="display:inline-block; padding:2px 8px; background:#0066FF; color:#fff; border-radius:4px; font-size:11px; font-weight:700; margin-right:8px; vertical-align:middle;">UPDATED</span><strong>Last Updated:</strong> ${publishDate}${reviewerBadge}</span><span style="color:#0066FF; font-weight:600;">${readingTimeMin} min read</span></div>`;
     // Insert after the first heading or date div
     const firstH2 = htmlEn.indexOf('<h2');
@@ -1737,9 +1664,9 @@ ${ga4TrackingScript}`;
             '@type': 'Person',
             name: this.siteOwner,
             url: `${this.wpUrl}/about/`,
-            jobTitle: authorProfile?.title || 'Korea Market & Trends Analyst',
-            description: authorProfile?.bio || 'Korea Market & Trends Analyst covering Korean tech, entertainment, and financial markets for a global audience.',
-            knowsAbout: authorProfile?.expertise || ['Korean technology', 'K-pop industry', 'Korean stock market', 'KOSPI', 'South Korean economy'],
+            jobTitle: authorProfile?.title || 'K-Beauty & K-Entertainment Editor',
+            description: authorProfile?.bio || 'K-Beauty and K-Entertainment specialist covering Korean skincare trends, idol culture, and K-drama for a global audience.',
+            knowsAbout: authorProfile?.expertise || ['K-Beauty', 'Korean skincare', 'K-pop', 'K-drama', 'Korean beauty trends', 'Hallyu culture'],
             ...(sameAsLinks.length > 0 ? { sameAs: sameAsLinks } : {}),
             ...(this.authorCredentials ? { hasCredential: { '@type': 'EducationalOccupationalCredential', credentialCategory: this.authorCredentials } } : {}),
           },
@@ -1756,14 +1683,14 @@ ${ga4TrackingScript}`;
         ...(options?.featuredImageUrl ? { logo: { '@type': 'ImageObject', url: options.featuredImageUrl } } : {}),
       },
       mainEntityOfPage: { '@type': 'WebPage', '@id': content.slug ? `${this.wpUrl}/${content.slug}/` : this.wpUrl },
-      // YMYL reviewer metadata for Finance content (E-E-A-T compliance)
-      ...(content.category === 'Korean Finance' && this.siteOwner ? {
+      // Product reviewer metadata for K-Beauty (E-E-A-T compliance)
+      ...(content.category === 'K-Beauty' && this.siteOwner ? {
         reviewedBy: {
           '@type': 'Person',
           name: this.siteOwner,
           url: `${this.wpUrl}/about/`,
           ...(this.authorCredentials ? { hasCredential: { '@type': 'EducationalOccupationalCredential', credentialCategory: this.authorCredentials } } : {}),
-          knowsAbout: ['Korean stock market', 'KOSPI', 'Korean economy', 'Investment analysis'],
+          knowsAbout: ['Korean skincare', 'K-Beauty ingredients', 'Korean beauty trends', 'Olive Young', 'Product review'],
         },
       } : {}),
       // InteractionCounter for social proof signals (updated by GA4 data in refresh cycles)
@@ -2668,13 +2595,7 @@ ${ga4TrackingScript}`;
       'Klairs', 'Some By Mi', 'Banila Co', 'Tony Moly', 'Heimish', "I'm From", 'Anua',
       'Beauty of Joseon', 'SKIN1004', 'Purito', 'Benton', 'Pyunkang Yul', 'Needly',
       'Mediheal', 'Dr. Jart', 'Mamonde', 'Hera', 'The Face Shop', 'Nature Republic',
-      // Korean Tech
-      'Samsung', 'LG', 'SK Hynix', 'Naver', 'Kakao', 'Hyundai', 'Coupang',
-      // Korean Finance
-      'Interactive Brokers', 'Webull', 'Tiger Brokers', 'Kiwoom', 'Mirae Asset',
-      // Korea Travel
-      'Klook', 'KKday', 'Agoda', 'Korean Air', 'Asiana',
-      // K-Entertainment
+      // K-Entertainment agencies (appear in idol/drama content)
       'HYBE', 'SM Entertainment', 'JYP', 'YG Entertainment',
     ];
     let match;
@@ -2776,9 +2697,7 @@ ${ga4TrackingScript}`;
       'low': { maxAds: 3, minWordGap: 300 },
     };
     const categoryToRpm: Record<string, string> = {
-      'Korean Tech': 'high', 'Korean Finance': 'high',
-      'K-Beauty': 'medium', 'K-Entertainment': 'medium',
-      'Korea Travel': 'low',
+      'K-Beauty': 'high', 'K-Entertainment': 'medium',
     };
     const rpmTier = (category ? categoryToRpm[category] : undefined) || 'medium';
     let { maxAds, minWordGap } = RPM_CONFIG[rpmTier];
@@ -2991,8 +2910,8 @@ ${ga4TrackingScript}`;
     }
 
     // Sort by priority (exact > phrase > branded), then by term length (longer = more specific)
-    // Revenue-weighted: boost high-RPM posts to get more internal links
-    const HIGH_RPM_CATEGORIES = ['Korean Finance', 'Korean Tech'];
+    // Revenue-weighted: boost K-Beauty posts (Amazon affiliate high-RPM) for more internal links
+    const HIGH_RPM_CATEGORIES = ['K-Beauty'];
     linkCandidates.sort((a, b) => {
       // Boost high-RPM category posts (+2 priority)
       const aBoost = HIGH_RPM_CATEGORIES.some(c => a.url.includes(c.toLowerCase().replace(/\s+/g, '-'))) ? 2 : 0;
