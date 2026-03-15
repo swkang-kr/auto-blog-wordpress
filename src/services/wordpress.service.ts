@@ -1130,6 +1130,8 @@ ${rows}
         'SKIN1004', 'Anua', 'Torriden',
         // Emerging brands 2025-2026
         'MEDICUBE', 'Isntree', 'Haruharu Wonder', 'Round Lab', 'Mixsoon',
+        // Breakout brands 2025-2026 (TikTok viral + Amazon surge)
+        'Numbuzin', 'TIRTIR',
         // Makeup brands
         'rom&nd', 'Clio', 'Peripera', 'Etude House', 'Wakemake',
         // Hair care
@@ -1313,6 +1315,13 @@ ${ga4TrackingScript}`;
       'Torriden': 'https://www.amazon.com/s?k=Torriden&tag=trendhunt2007-20',
       'Etude': 'https://www.amazon.com/s?k=Etude+House&tag=trendhunt2007-20',
       'Olive Young': 'https://www.amazon.com/s?k=korean+skincare+best+seller&tag=trendhunt2007-20',
+      // Breakout brands 2025-2026
+      'MEDICUBE': 'https://www.amazon.com/s?k=MEDICUBE&tag=trendhunt2007-20',
+      'Numbuzin': 'https://www.amazon.com/s?k=Numbuzin&tag=trendhunt2007-20',
+      'TIRTIR': 'https://www.amazon.com/s?k=TIRTIR&tag=trendhunt2007-20',
+      'Mixsoon': 'https://www.amazon.com/s?k=Mixsoon&tag=trendhunt2007-20',
+      'Haruharu Wonder': 'https://www.amazon.com/s?k=Haruharu+Wonder&tag=trendhunt2007-20',
+      'Round Lab': 'https://www.amazon.com/s?k=Round+Lab+skincare&tag=trendhunt2007-20',
     },
     'Korea Travel': {
       'Klook': 'https://www.klook.com/',
@@ -1390,7 +1399,7 @@ ${ga4TrackingScript}`;
    * Also applies category-based default affiliate keywords when URLs are configured.
    * Example: {"coupang":"https://link.coupang.com/aff?id=xxx","Olive Young":"https://oliveyoung.com/aff?ref=xxx"}
    */
-  private injectAffiliateLinks(html: string, affiliateMap: Record<string, string>): string {
+  private injectAffiliateLinks(html: string, affiliateMap: Record<string, string>, maxLinks = 3): string {
     if (Object.keys(affiliateMap).length === 0) return html;
 
     let result = html;
@@ -1403,7 +1412,7 @@ ${ga4TrackingScript}`;
         'i',
       );
       const match = pattern.exec(result);
-      if (match && injectedCount < 3) { // Max 3 affiliate links per post
+      if (match && injectedCount < maxLinks) { // Max affiliate links per post
         const replacement = `<a href="${affiliateUrl}" target="_blank" rel="noopener noreferrer sponsored" data-affiliate="true" style="color:#0066FF; text-decoration:underline;">${match[1]}</a>`;
         result = result.slice(0, match.index) + replacement + result.slice(match.index + match[0].length);
         injectedCount++;
@@ -1639,7 +1648,9 @@ ${ga4TrackingScript}`;
     // Inject affiliate links for product/brand mentions (merged: user map + category defaults)
     const mergedAffiliateMap = this.getMergedAffiliateMap(options?.affiliateMap || {}, content.category);
     if (Object.keys(mergedAffiliateMap).length > 0) {
-      htmlEn = this.injectAffiliateLinks(htmlEn, mergedAffiliateMap);
+      // K-Beauty product-review posts feature multiple product comparisons — allow up to 5 affiliate links
+      const maxAffiliateLinks = (content.category === 'K-Beauty' && options?.contentType === 'product-review') ? 5 : 3;
+      htmlEn = this.injectAffiliateLinks(htmlEn, mergedAffiliateMap, maxAffiliateLinks);
     }
 
     // Inject inline internal links (anchor text in body paragraphs)

@@ -55,9 +55,9 @@ export const CONTENT_FRESHNESS_MAP: Record<ContentType, FreshnessClass> = {
 
 /** Recommended update intervals in days per freshness class */
 export const FRESHNESS_UPDATE_INTERVALS: Record<FreshnessClass, number> = {
-  'evergreen': 180,       // Semi-annual review (more aggressive freshness)
+  'evergreen': 180,       // Semi-annual review
   'seasonal': 60,         // Bi-monthly update
-  'time-sensitive': 180,  // Archive or update flag after 6 months
+  'time-sensitive': 60,   // K-Entertainment comeback news expires in 30-45 days; 60 is the safe max before archiving
 };
 
 /** Author profile for E-E-A-T credibility signals */

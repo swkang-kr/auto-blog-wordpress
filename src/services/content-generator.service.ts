@@ -171,18 +171,24 @@ const INTENT_MULTIPLIERS: Record<string, number> = {
   'navigational': 0.6,    // Shortest (direct answer + context)
 };
 
-function getWordCountTargets(contentType: string, searchIntent?: string) {
+function getWordCountTargets(contentType: string, searchIntent?: string, nicheCategory?: string) {
   const base = WORD_COUNT_TARGETS[contentType] || WORD_COUNT_TARGETS['analysis'];
   const multiplier = INTENT_MULTIPLIERS[searchIntent || 'informational'] || 1.0;
 
-  if (multiplier === 1.0) return base;
-
-  return {
+  let result = multiplier === 1.0 ? { ...base } : {
     min: Math.round(base.min * multiplier),
     target: Math.round(base.target * multiplier),
     continuation: Math.round(base.continuation * multiplier),
     rejection: Math.round(base.rejection * multiplier),
   };
+
+  // K-Entertainment news-explainer: fan comeback news is short-form content
+  // Fans expect scannable 4-5 min reads, not 8-min finance-style analysis
+  if (nicheCategory === 'K-Entertainment' && contentType === 'news-explainer') {
+    result = { min: 900, target: 1200, continuation: 900, rejection: 800 };
+  }
+
+  return result;
 }
 
 /** Common English stop words to remove from slugs for cleaner URLs.
@@ -237,12 +243,12 @@ You MUST write like an experienced human analyst, NOT like an AI:
 - Aim for a Gunning Fog Index of 10-12: prefer short sentences (15-20 words avg), limit complex words (3+ syllables) to technical terms only. This targets a college-educated general audience without oversimplifying.
 - EVERY paragraph must be 3-4 sentences MAX. Break long paragraphs ruthlessly.
 - First paragraph MUST open with a compelling hook. Choose from these patterns:
-  * Surprising statistic: "Korea's AI market grew 47% in..."
-  * Provocative question: "Why are global investors suddenly..."
-  * Bold claim: "Samsung just redefined what..."
-  * Anecdote/Scene-setting: "When Samsung's CEO walked into..."
-  * Contrast/Paradox: "Korea has the world's fastest internet, yet..."
-  * Direct address: "If you've been watching KOSPI this quarter..."
+  * Surprising statistic: "Korea's beauty market grew 47% in...", "The comeback MV hit 10 million views in..."
+  * Provocative question: "Why are global shoppers suddenly switching to...", "What makes Korean fans the most dedicated in the world?"
+  * Bold claim: "This ingredient changed everything about K-Beauty.", "No comeback in 2026 generated more fan discussion than..."
+  * Anecdote/Scene-setting: "When the Olive Young bestseller list refreshed last Tuesday...", "Three songs in, and it was clear this wasn't a typical comeback."
+  * Contrast/Paradox: "Korea has some of the world's most advanced skincare science, yet the best products cost under $20.", "The group debuted to silence, then hit number one."
+  * Direct address: "If you've been building a Korean skincare routine...", "If you've been trying to get into K-pop..."
   NEVER open with a generic topic introduction.
 - Use subheadings (H3) every 200-300 words to break up content
 - Mix paragraph lengths: alternate between 2-sentence punchy paragraphs and 3-4 sentence detailed ones
@@ -850,6 +856,8 @@ ${analysis.contentType === 'case-study' ? `K-BEAUTY CASE STUDY STRUCTURE: Focus 
       'K-Entertainment': `NICHE VOICE: Write as a passionate K-pop and K-drama fan who is deeply embedded in the community. Focus on fan experience, content rankings, idol news, and community culture. Use fan-friendly language (comeback, bias, stan, era, fandom). Include specific examples fans care about (song rankings, drama recommendations, award predictions, concert experiences). General label or agency context (e.g., "under HYBE", "SM Entertainment group", "aespa's label SM") is acceptable when naturally relevant to fans. Do NOT analyze stock prices, earnings reports, revenue breakdowns, or investment outlooks — this is fan content, not finance content.
 
 K-ENTERTAINMENT E-E-A-T SOURCES: Reference fan-trusted K-pop/K-drama sources — cite Hanteo Chart and Circle Chart (formerly Gaon) for album sales, Melon/Bugs for digital streaming, YouTube for MV view counts, Weverse for fan community activity, KOCCA (Korea Creative Content Agency) for industry statistics, and Billboard Korea. Do NOT cite KRX, BOK, DART, KOSIS, or financial/economic data sources — this is fan content.
+SCHEDULE ACCURACY: K-pop comeback dates and K-drama air dates change frequently. Always qualify schedule information with "as of [month] ${year}" and include: "Schedule subject to change — check the group's official Weverse or agency SNS for the latest updates." Never present an unconfirmed comeback date as fact.
+FAN TERMINOLOGY: Use light fandom vocabulary naturally (comeback, bias, era, stan, ult, fancam, fanchant) but define any term that new fans might not know, on first use, in a parenthetical (e.g., "bias (your favourite member)"). Do not overuse slang — aim for 1-2 terms per 400 words. Never misrepresent fan speculation or community theories as official information from the artist or agency.
 ${analysis.contentType === 'case-study' ? `K-ENTERTAINMENT CASE STUDY STRUCTURE: Focus on ONE idol group, K-drama, or fan cultural phenomenon as the subject. Structure: Origin & Debut Context → Breakthrough Moment (chart milestone, viral MV, award win) → Global Fandom Growth (YouTube views, Weverse members, tour scale) → Why Fans Connected → What This Means for Hallyu. Measure success in chart positions, MV views, concert sold-out speed, and fandom milestones — NOT revenue or stock performance.` : ''}`,
     };
     const nicheVoice = nicheDirectives[niche.category] || '';
@@ -904,10 +912,14 @@ Respond with pure JSON only.`;
       'deep-dive': 0.6, 'x-vs-y': 0.6,
       'how-to': 0.7, 'best-x-for-y': 0.7, 'listicle': 0.7,
     };
-    const temperature = temperatureMap[analysis.contentType] ?? 0.7;
+    let temperature = temperatureMap[analysis.contentType] ?? 0.7;
+    // K-Entertainment news-explainer: fan comeback news needs personality & energy, not academic precision
+    if (niche.category === 'K-Entertainment' && analysis.contentType === 'news-explainer') {
+      temperature = 0.65;
+    }
 
     const variant = getVariantForNiche(researched.niche.id);
-    const targets = getWordCountTargets(analysis.contentType, analysis.searchIntent);
+    const targets = getWordCountTargets(analysis.contentType, analysis.searchIntent, niche.category);
     const systemPrompt = buildSystemPrompt(variant).replace(/WORD_COUNT_TARGET/g, String(targets.target));
     logger.debug(`Using layout variant: ${variant} (niche: ${researched.niche.id}), word target: ${targets.target}`);
 

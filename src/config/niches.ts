@@ -209,6 +209,12 @@ export const NICHES: NicheConfig[] = [
       // 아이돌 뷰티 — K-Beauty ↔ K-Entertainment 크로스 니치 교두보
       'K-pop idol no-makeup looks what products they use',
       'K-pop idol skincare routine favorite products 2026',
+      // 2023-2025 데뷔 그룹 — 급성장 글로벌 팬덤
+      'RIIZE songs ranked best tracks for new fans guide',
+      'RIIZE comeback 2026 what fans need to know',
+      'BOYNEXTDOOR songs ranked guide for new fans 2026',
+      'ZeroBaseOne ZB1 songs ranked best tracks guide',
+      'ZeroBaseOne comeback 2026 what fans need to know',
       // 에버그린 — 시간 독립적 (트래픽 지속성 확보)
       'how K-pop training system works explained',
       'K-drama tropes explained for beginners complete guide',
