@@ -38,6 +38,9 @@ export function getSeasonallyOrderedNiches(): NicheConfig[] {
     'Christmas': ['K-Beauty', 'K-Entertainment'],
     'New Year': ['K-Entertainment', 'K-Beauty'],
     'K-Beauty Awards': ['K-Beauty'],
+    'Olive Young Spring Grand Sale': ['K-Beauty'],
+    'Olive Young Fall Grand Sale': ['K-Beauty'],
+    'BTS Debut Anniversary': ['K-Entertainment', 'K-Beauty'],
     'Circle Chart': ['K-Entertainment'],
     'Year-End K-Drama Awards': ['K-Entertainment'],
     'Gayo Daejun': ['K-Entertainment'],
@@ -265,6 +268,32 @@ export const NICHES: NicheConfig[] = [
       // Olive Young 앱·국제직구 가이드 — 에버그린 고수요 (Reddit r/AsianBeauty 상위 질문)
       'how to use Olive Young app in English international shopping guide 2026',
       'Olive Young membership rewards points guide for international shoppers 2026',
+      // I'm From (아임프롬) — 자연 원료 특화, 쌀·꿀·석류 라인, Amazon 급성장 인디 브랜드
+      'I\'m From rice toner review before after brightening results for sensitive skin',
+      'I\'m From honey mask review hydration glow results vs other sheet masks',
+      // Rovectin — 피부과 기반 민감성 전문, Reddit r/AsianBeauty 최상위 추천
+      'Rovectin skin essentials barrier repair cream review sensitive skin 2026',
+      'Rovectin vs COSRX which barrier cream is better for sensitive skin 2026',
+      // Cos De BAHA — 성분 집중 최저가 포지셔닝, Amazon K-Beauty 성분덕후 최애
+      'Cos De BAHA niacinamide serum review vs COSRX which is better 2026',
+      'Cos De BAHA vs The Ordinary which is better for K-Beauty ingredients 2026',
+      // Skin&Lab — 비타민C·레티놀 전문 브랜드, 글로벌 확장 중
+      'Skin&Lab Dr Color Effect vitamin C serum review brightening results 2026',
+      // Klavuu — 진주/마린 콜라겐 특화, 감성 패키징으로 SNS 강세
+      'Klavuu white pearlsation marine collagen cream review glass skin results',
+      // 스킨말리즘(Skinmalism) — 미니멀 스킨케어 + 자연 피부 표현 글로벌 트렌드
+      'skinmalism Korean skincare minimalist routine skin tint guide 2026',
+      'best Korean products for skinmalism no-makeup makeup look ranked 2026',
+      // 유리 입술(Glass Lip) — 글라스 스킨 다음 단계, 립 케어 루틴 급성장
+      'Korean glass lip trend how to get it routine products step by step 2026',
+      'best Korean lip balm sleeping mask for glass lip look ranked 2026',
+      // 한국 두피 케어 — 샴푸 넘어 두피 앰플·스케일러, Amazon 신규 카테고리 폭발
+      'best Korean scalp care serum ampoule for hair growth thinning 2026 ranked',
+      'Korean scalp scaler how to use guide for hair health oil buildup removal',
+      'best Korean scalp treatment for dandruff sebum control 2026 guide',
+      // 인캡슐레이티드 레티놀 — 자극 없는 캡슐형 레티놀, 한국 브랜드 기술 차별점
+      'encapsulated retinol Korean skincare guide best products for beginners 2026',
+      'Korean encapsulated retinol vs regular retinol which is gentler comparison 2026',
     ],
     contentTypes: ['product-review', 'best-x-for-y', 'x-vs-y', 'how-to', 'listicle', 'case-study', 'deep-dive', 'news-explainer'],
     adSenseRpm: 'high',
@@ -439,6 +468,40 @@ export const NICHES: NicheConfig[] = [
       'K-pop idols turned actors best drama performances ranked 2026',
       'best K-dramas starring K-pop idols 2026 who surprised fans',
       'K-pop idol acting debut guide what to watch ranked 2026',
+      // NCT 127 / NCT Dream — NCT 최대 유닛 두 개, 아시아 스트리밍 최강
+      'NCT 127 best songs ranked guide for new fans 2026',
+      'NCT Dream best songs ranked guide all eras new fans 2026',
+      'NCT 127 vs NCT Dream differences explained complete guide for new fans',
+      // Cha Eun-woo (차은우) — 아스트로 솔로 + K-Drama 주연, K-Beauty 앰배서더 교차 앵글
+      'Cha Eun-woo solo career 2026 dramas movies guide fans complete update',
+      // Chung Ha (청하) — K-팝 퀸 솔로, 글로벌 팬덤 안정적
+      'Chung Ha best songs ranked solo discography guide new fans 2026',
+      'Chung Ha comeback 2026 what fans need to know full update',
+      // MAMAMOO 솔로 — 화사·솔라·문별·휘인 개별 활동 고검색
+      'MAMAMOO members solo activities 2026 update complete guide fans',
+      'best MAMAMOO solo songs ranked all four members guide 2026',
+      // EXO — 멤버 전역 완료 (2024-2025), 팬덤 EXO-L 재결집 기대
+      // NOTE: 공개 확인된 그룹 일정 기준으로만 작성 — 미확인 컴백 앵글 헤지 필수
+      'EXO group comeback 2026 what fans need to know full update guide',
+      'EXO best songs ranked guide for new fans after military reunion 2026',
+      'EXO-L fandom guide how to stay updated 2026 lightstick fan culture',
+      // AMPERS&ONE — SM Entertainment 신규 걸그룹
+      'AMPERS&ONE SM Entertainment girl group debut concept explained guide fans 2026',
+      'AMPERS&ONE songs ranked best tracks for new fans guide 2026',
+      // NEXZ — JYP 일본 공식 그룹 (K-팝 훈련 방식), 일본 팬덤→K-팝 진입 앵글
+      'NEXZ JYP Japan group debut story concept explained guide new fans 2026',
+      // K-팝 아이돌 럭셔리 브랜드 앰배서더 — 패션·K-팝 크로스오버 고검색
+      // NOTE: 공식 확인된 대사 계약 관계 기준으로만 작성 — 미확인 루머 금지
+      'K-pop idols as luxury brand ambassadors complete list 2026 guide',
+      'why luxury brands choose K-pop idols as global ambassadors explained 2026',
+      'best K-pop idol luxury brand collaboration fashion moments ranked 2026',
+      // K-팝 군백기 / 전역 콘텐츠 — 팬 검색 지속적
+      'K-pop idols military service discharge schedule 2026 complete update guide',
+      'K-pop idols who completed military service comeback guide what fans expect',
+      // Viki (Rakuten Viki / 비키) — K-Drama 스트리밍, 다국어 자막 강점
+      'Viki vs Netflix which is better for watching K-dramas 2026 guide',
+      'best K-dramas on Viki 2026 exclusive multilingual subtitles ranked guide',
+      'how to use Viki to watch K-dramas free vs premium guide 2026',
     ],
     contentTypes: ['listicle', 'news-explainer', 'best-x-for-y', 'deep-dive', 'how-to', 'x-vs-y', 'case-study'],
     adSenseRpm: 'medium',
