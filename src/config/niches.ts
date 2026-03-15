@@ -138,6 +138,18 @@ export const NICHES: NicheConfig[] = [
       // K-Beauty 헤어 케어 — Amazon 어필리에이트 추가 기회
       'best Korean shampoo for hair loss thinning hair 2026',
       'Daeng Gi Meo Ri vs Ryo shampoo review comparison',
+      // Biodance — 2024-2026 최대 바이럴 K-Beauty 트렌드 (바이오셀룰로오스 콜라겐 패치)
+      'Biodance bio-cellulose collagen mask review before after results',
+      'Biodance vs other collagen patches which is worth it 2026',
+      // Some By Mi — Amazon 강세 브랜드 (AHA BHA PHA 라인)
+      'Some By Mi AHA BHA PHA toner review before after acne',
+      // ABIB — 컬트 팔로잉, 순한 스킨케어 전문
+      'ABIB mild acidic pH sheet mask review sensitive skin',
+      // 트라넥삼산 — 브라이트닝 세그먼트 최고 성장률 (2025-2026)
+      'best Korean tranexamic acid serum for dark spots hyperpigmentation 2026',
+      'tranexamic acid vs niacinamide Korean serum comparison for brightening',
+      // 마이크로바이옴 스킨케어 — 신흥 카테고리
+      'best Korean microbiome skincare probiotic toner serum 2026',
       // K-Beauty 메이크업 — 구매 의도 키워드
       'rom&nd blur fudge tint review best shades swatches',
       'best Korean cushion foundation for oily skin no oxidation 2026',
@@ -215,6 +227,12 @@ export const NICHES: NicheConfig[] = [
       'BOYNEXTDOOR songs ranked guide for new fans 2026',
       'ZeroBaseOne ZB1 songs ranked best tracks guide',
       'ZeroBaseOne comeback 2026 what fans need to know',
+      // ENHYPEN — 글로벌 팬덤 최상위권 4세대 (2020 데뷔, HYBE/Belift Lab)
+      'ENHYPEN comeback 2026 what fans need to know',
+      'ENHYPEN best songs ranked guide for new fans 2026',
+      // TXT (Tomorrow X Together) — 3.5세대 최강 글로벌 팬덤 (2019 데뷔, HYBE)
+      'Tomorrow X Together TXT comeback 2026 what fans need to know',
+      'TXT Tomorrow X Together best songs ranked guide for new fans',
       // 에버그린 — 시간 독립적 (트래픽 지속성 확보)
       'how K-pop training system works explained',
       'K-drama tropes explained for beginners complete guide',
