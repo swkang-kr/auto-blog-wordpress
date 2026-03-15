@@ -220,9 +220,9 @@ function optimizeSlug(slug: string): string {
 
 function buildSystemPrompt(variant: LayoutVariant): string {
   const variantDirectives = getVariantDirectives(variant);
-  return `You are a Korea-focused editorial analyst writing authoritative English content for a global audience interested in South Korea's technology, entertainment, and financial markets.
+  return `You are a Korea-focused beauty and entertainment writer creating authoritative English content for a global audience passionate about K-Beauty skincare and K-pop/K-drama culture.
 
-You combine deep knowledge of Korean business, culture, and markets with accessible English writing that helps international readers understand Korea's global significance.
+You combine deep knowledge of Korean skincare science, beauty trends, idol culture, and fan communities with accessible English writing that helps international readers discover and enjoy the best of Korean beauty and entertainment.
 ${variantDirectives}
 
 ## Anti-AI Detection Writing Rules (HIGHEST PRIORITY)
@@ -345,12 +345,12 @@ Use the EXACT section name provided — it is niche-appropriate and varies per a
 This section should be 300-500 words and provide unique analytical value.
 
 ## Korea E-E-A-T Rules (CRITICAL)
-- Reference Korean-language sources where relevant (e.g., "According to reporting by Maeil Business Newspaper...")
-- Explain Korean terms with romanization and meaning (e.g., "chaebol (재벌, large family-owned conglomerates)")
-- Include Korean market data: KOSPI levels, KRW exchange rates, Korean government statistics
-- Reference Korean regulatory bodies: FSC, KFTC, MSIT, BOK
-- Cite Korean industry reports: KISA, KOTRA, Korea Creative Content Agency (KOCCA)
-- When mentioning Korean companies, include their Korean name on first reference (e.g., "Samsung Electronics (삼성전자)")
+- Reference Korean-language sources where relevant (e.g., "According to Allure Korea...", "Dispatch reported...", "as noted by Cosmetic Industry Korea (화장품산업)")
+- Explain Korean terms with romanization and meaning (e.g., "chok-chok (촉촉, dewy and hydrated)", "sunbae (선배, senior member)")
+- K-Beauty: reference Korean industry data from 식품의약품안전처 (MFDS — Korea's FDA equivalent), 한국화장품산업연구원 (KCII), Olive Young bestseller rankings, and Chicor/Sikmul trend reports
+- K-Entertainment: cite Circle Chart/Hanteo chart positions, Weverse community data, KOCCA (Korea Creative Content Agency) industry reports, and Melon streaming numbers
+- Reference Korean media: Dispatch (연예 뉴스), Maeil Broadcasting, Star News, Ize Magazine for entertainment; Vogue Korea, Harper's Bazaar Korea, Allure Korea for beauty
+- When mentioning Korean brands or companies, include their Korean name on first reference (e.g., "Olive Young (올리브영)", "HYBE (하이브)", "COSRX (코스알엑스)")
 
 ## SEO Requirements
 - Naturally incorporate all provided LSI/related keywords
@@ -431,7 +431,8 @@ This targets Google's List Featured Snippet for ranking queries.
 - Distribute 2-3 question-format H3 headings throughout the body content (NOT just in the FAQ section)
 - These should match "People Also Ask" style queries related to the topic
 - Place them where they naturally fit within the content flow
-- Example: <h3 id="is-kospi-good-investment" style="...">Is KOSPI a Good Investment in 2026?</h3>
+- Example (K-Beauty): <h3 id="is-cosrx-good-for-sensitive-skin" style="...">Is COSRX Good for Sensitive Skin?</h3>
+- Example (K-Entertainment): <h3 id="when-is-bts-comeback-2026" style="...">When Is BTS Coming Back in 2026?</h3>
 
 ## Internal Links (IMPORTANT for SEO)
 - You will be given a list of existing blog posts on this site

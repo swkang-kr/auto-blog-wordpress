@@ -145,6 +145,9 @@ export const NICHES: NicheConfig[] = [
       // Idol beauty crossover (K-Beauty ↔ K-Entertainment bridge)
       'K-pop idol skincare routine products they actually use',
       'BLACKPINK members skincare routine products revealed',
+      'aespa Karina skincare routine products 2026 guide',
+      'IVE Wonyoung beauty routine skincare products revealed',
+      'NewJeans makeup looks how to recreate K-Beauty products',
       // K-Beauty 헤어 케어 — Amazon 어필리에이트 추가 기회
       'best Korean shampoo for hair loss thinning hair 2026',
       'Daeng Gi Meo Ri vs Ryo shampoo review comparison',
@@ -164,6 +167,19 @@ export const NICHES: NicheConfig[] = [
       'rom&nd blur fudge tint review best shades swatches',
       'best Korean cushion foundation for oily skin no oxidation 2026',
       'Clio kill cover foundation review vs MAC comparison',
+      // Olive Young 직구 — 2025-2026 폭발적 성장 트렌드
+      'how to buy from Olive Young internationally shipping guide 2026',
+      'Olive Young best sellers 2026 ranked what to buy',
+      'Olive Young vs YesStyle vs Soko Glam where to buy Korean beauty',
+      // K-Beauty Tools — 신흥 카테고리
+      'best Korean gua sha face tools for lifting 2026 guide',
+      'Korean facial massage tools ice roller gua sha guide beginner',
+      // 성분 집중 검색 — 고전환율
+      'niacinamide concentration guide best Korean serums ranked 2026',
+      'best Korean retinol alternative for beginners sensitive skin 2026',
+      // Body care 확장 — 급성장 세그먼트
+      'how to use Korean Italy towel exfoliation body scrub guide',
+      'Korean body glow routine products glass skin body 2026',
     ],
     contentTypes: ['product-review', 'best-x-for-y', 'x-vs-y', 'how-to', 'listicle', 'case-study', 'deep-dive', 'news-explainer'],
     adSenseRpm: 'high',
@@ -261,6 +277,21 @@ export const NICHES: NicheConfig[] = [
       'how to attend K-pop concerts in Korea as a foreigner',
       'K-pop fan culture guide bias stan fandom terms explained',
       'K-pop playlist for studying working out mood guide',
+      // 팬 멤버십 앱 — Z세대 팬 필수 정보 (에버그린 고수요)
+      'Weverse vs Bubble which K-pop fan subscription is worth it 2026',
+      'how to use Weverse complete guide for beginners K-pop fans',
+      'Weverse DM how to get message from your favorite idol guide',
+      // K-Drama by genre — 탐색 의도 키워드
+      'best Korean thriller dramas 2026 ranked must watch',
+      'best Korean historical dramas 2026 ranked for beginners',
+      'best Korean romance dramas Netflix 2026 ranked new fans',
+      // K-pop 굿즈 가이드 — 팬덤 구매 의도
+      'how to buy official K-pop merchandise online safely guide 2026',
+      'best K-pop light sticks ranked most popular fandoms 2026',
+      'K-pop official fan club membership guide how to join 2026',
+      // 글로벌 투어 확장 — 지역별 팬 검색
+      'K-pop concerts in Europe 2026 schedule tour dates cities',
+      'K-pop concerts Australia 2026 schedule tour dates guide',
     ],
     contentTypes: ['listicle', 'news-explainer', 'best-x-for-y', 'deep-dive', 'how-to', 'x-vs-y', 'case-study'],
     adSenseRpm: 'medium',
