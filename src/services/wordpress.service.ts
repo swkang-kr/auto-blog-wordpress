@@ -1124,7 +1124,20 @@ ${rows}
       defaultUrl: 'https://www.amazon.com/s?k=investing+korean+market&tag=trendhunt2007-20',
     },
     'K-Beauty': {
-      keywords: ['COSRX', 'Laneige', 'Innisfree', 'Sulwhasoo', 'Beauty of Joseon', 'Missha', 'Etude', 'SKIN1004', 'Anua', 'Torriden', 'sunscreen', 'serum', 'moisturizer', 'toner', 'cleanser', 'sheet mask'],
+      keywords: [
+        // Established brands
+        'COSRX', 'Laneige', 'Innisfree', 'Sulwhasoo', 'Beauty of Joseon', 'Missha', 'Etude',
+        'SKIN1004', 'Anua', 'Torriden',
+        // Emerging brands 2025-2026
+        'MEDICUBE', 'Isntree', 'Haruharu Wonder', 'Round Lab', 'Mixsoon',
+        // Makeup brands
+        'rom&nd', 'Clio', 'Peripera', 'Etude House', 'Wakemake',
+        // Hair care
+        'Daeng Gi Meo Ri', 'Ryo',
+        // Product categories (fallback matching)
+        'toner pad', 'sunscreen', 'serum', 'moisturizer', 'toner', 'cleanser', 'sheet mask',
+        'essence', 'sleeping mask', 'eye cream', 'SPF', 'collagen',
+      ],
       defaultUrl: 'https://www.amazon.com/s?k=korean+skincare&tag=trendhunt2007-20',
     },
     'Korea Travel': {
@@ -1132,7 +1145,17 @@ ${rows}
       defaultUrl: 'https://www.amazon.com/s?k=korea+travel+essentials&tag=trendhunt2007-20',
     },
     'K-Entertainment': {
-      keywords: ['album', 'lightstick', 'photocard', 'BTS', 'BLACKPINK', 'Stray Kids', 'SEVENTEEN', 'aespa', 'NewJeans'],
+      keywords: [
+        // Merch-friendly categories
+        'album', 'lightstick', 'photocard',
+        // 3rd gen groups
+        'BTS', 'BLACKPINK', 'Stray Kids', 'SEVENTEEN', 'TWICE', 'EXO', 'SHINee',
+        // 4th gen groups
+        'aespa', 'NewJeans', 'LE SSERAFIM', 'BABYMONSTER', 'ILLIT', 'KISS OF LIFE', 'TWS',
+        'ATEEZ', 'TXT', 'ENHYPEN', 'IVE', 'Kep1er',
+        // International
+        'XG',
+      ],
       defaultUrl: 'https://www.amazon.com/s?k=kpop+merchandise&tag=trendhunt2007-20',
     },
   };

@@ -1503,12 +1503,13 @@ async function main(): Promise<void> {
       }
 
       // Contextual affiliate link injection
-      if (content.productMentions && content.productMentions.length > 0) {
+      // Always run for monetizable niches — PRODUCT_AFFILIATE_DB provides keyword matching
+      // even when AFFILIATE_MAP env var is not set. productMentions gate removed so listicle,
+      // x-vs-y, how-to etc. also get affiliate links, not just product-review/best-x-for-y.
+      if (['K-Beauty', 'K-Entertainment', 'Korean Finance', 'Korean Tech'].includes(niche.category)) {
         const affiliateMap = config.AFFILIATE_MAP ? (() => { try { return JSON.parse(config.AFFILIATE_MAP); } catch { return {}; } })() : {};
-        if (Object.keys(affiliateMap).length > 0) {
-          content.html = wpService.injectContextualAffiliateLinks(content.html, niche.category, affiliateMap);
-          logger.debug(`Contextual affiliate links injected for "${researched.analysis.selectedKeyword}"`);
-        }
+        content.html = wpService.injectContextualAffiliateLinks(content.html, niche.category, affiliateMap);
+        logger.debug(`Affiliate link injection attempted for "${researched.analysis.selectedKeyword}" (${niche.category})`);
       }
 
       // YouTube video embed (search for relevant video and inject responsive embed)

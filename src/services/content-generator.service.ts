@@ -860,10 +860,10 @@ ORIGINAL RESEARCH SIGNALS (for ${analysis.contentType} content):
 - This qualifies the post as original research for E-E-A-T scoring` : ''}
 Also generate a relevant poll question for reader engagement. Include it in the JSON output as:
 "pollQuestion": { "question": "Your poll question here?", "options": ["Option A", "Option B", "Option C"] }
-${['product-review', 'best-x-for-y'].includes(analysis.contentType) ? `
-For product mentions, include structured product data in the JSON output as:
-"productMentions": [{ "name": "Product Name", "category": "product-category" }]
-Include up to 5 products mentioned in the article.` : ''}
+${(['product-review', 'best-x-for-y', 'x-vs-y', 'listicle', 'how-to'].includes(analysis.contentType) && ['K-Beauty', 'K-Entertainment'].includes(niche.category)) ? `
+For product/brand mentions, include structured product data in the JSON output as:
+"productMentions": [{ "name": "Brand or Product Name", "category": "product-category" }]
+Include up to 8 products or brands mentioned in the article. This enables automatic affiliate link injection.` : ''}
 Respond with pure JSON only.`;
 
     // Temperature varies by content type: analytical content needs precision, creative needs more variation
