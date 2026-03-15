@@ -2115,10 +2115,16 @@ ${ga4TrackingScript}`;
           }
         }
 
+        // For future/scheduled posts WordPress returns ?p=XXXXX — derive clean URL from slug instead
+        const resolvedSlug = response.data.slug || content.slug || '';
+        const resolvedUrl = (response.data.link?.includes('?p=') && resolvedSlug)
+          ? `${this.wpUrl}/${resolvedSlug}/`
+          : response.data.link;
+
         const post: PublishedPost = {
           postId: response.data.id,
-          url: response.data.link,
-          slug: response.data.slug || content.slug || undefined,
+          url: resolvedUrl,
+          slug: resolvedSlug || undefined,
           title: content.title,
           featuredImageId: featuredImageId ?? 0,
         };
