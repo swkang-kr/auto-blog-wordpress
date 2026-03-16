@@ -565,7 +565,7 @@ ${this.paaQuestions.length > 0 ? `\n## People Also Ask (PAA) Questions\nThese qu
      * best-x-for-y / x-vs-y: "[Number] Best [thing] for [audience] in [Year]" or "[X] vs [Y]: [insight]"
        e.g. "7 Best Korean Toner Pads for Sensitive Skin in 2026"
      * analysis / deep-dive / news-explainer: "[Korea topic]: [what the analysis reveals]"
-       e.g. "K-pop's Business Model: How Agencies Turn Fans Into Revenue"
+       e.g. "K-pop Training System: How Idols Are Made From Audition to Debut"
    - Target 50-65 characters total
    - NEVER use: "changing everything", "things you need to know", "the real reason X matters"
 5. Identify the search intent and competition level
@@ -580,7 +580,8 @@ CRITICAL keyword selection rules — follow in strict priority order:
 6. PREFER keywords with clear informational or commercial investigation intent
 7. MUST be different from already posted keywords
 8. AVOID head terms dominated by high-authority sites
-9. TARGET global English-speaking audience interested in Korea (investors, K-culture fans, tech watchers)
+9. TARGET global English-speaking audience interested in Korea (K-culture fans, K-beauty shoppers, K-drama viewers)
+10. EXCLUDED TOPICS — NEVER select keywords about: business models, revenue, profits, earnings, stock prices, investments, financial analysis, company valuations, money-making, economic forecasts, or any finance/economics angle. This blog focuses on CULTURE and PRODUCTS, not business/finance.
 
 7. Estimate keyword difficulty (0-100) based on:
    - SERP competition (are top results from high-DA sites like Wikipedia, Forbes?)
