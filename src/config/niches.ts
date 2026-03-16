@@ -535,6 +535,55 @@ export const NICHES: NicheConfig[] = [
       'niacinamide 10 percent vs 5 percent Korean serum which is better safe guide 2026',
       'Korean skincare ingredients to avoid mixing dangerous combinations guide 2026',
       'best Korean actives stacking guide which ingredients work together 2026',
+      // ── 전문가 감사 추가 (2026-03-16 batch 22): 복합성 피부·바디케어·연령대·트렌드 보완 ──
+      // 복합성 피부 (Combination Skin) — 완전 누락 세그먼트, Google Trends 12x 성장
+      'Korean skincare routine for combination skin oily T-zone dry cheeks guide 2026',
+      'best Korean toner for combination skin pore minimizing moisture balance 2026',
+      'Korean moisturizer for combination skin lightweight not greasy ranked 2026',
+      'combination skin Korean layering guide what order to apply products 2026',
+      'best Korean BHA toner for oily T-zone dry cheeks combination skin 2026',
+      // 바디 케어 심화 — 각질(KP)·체지방·딸기 다리·손발 (TikTok 급성장 세그먼트)
+      'Korean skincare for keratosis pilaris body bumps best products ranked 2026',
+      'how to treat keratosis pilaris Korean exfoliation AHA BHA body routine 2026',
+      'Korean body acne treatment back shoulder acne skincare routine 2026',
+      'strawberry legs Korean skincare routine how to get smooth legs 2026',
+      'Korean hand cream anti-aging for hands nail care ranked best 2026',
+      'anti-aging neck skincare Korean routine products what to use 2026',
+      'body hyperpigmentation dark spots Korean skincare treatment guide 2026',
+      // 메이크업 + 스킨케어 하이브리드 — 0개 누락 세그먼트
+      'best Korean BB cream with skincare benefits lightweight coverage 2026',
+      'Korean tinted moisturizer with SPF skincare hybrid makeup ranked 2026',
+      'Korean makeup primer with skincare ingredients barrier protection 2026',
+      'best Korean cushion foundation with hyaluronic acid skincare benefits 2026',
+      // 연령대별 세분화 — 20·30·60대 누락
+      'Korean skincare routine for your 20s acne prevention glow guide 2026',
+      'Korean skincare routine for 30s fine line prevention retinol guide 2026',
+      'best Korean skincare for 60s and above sensitive aging skin ranked 2026',
+      // 항공해·블루라이트 스킨케어 — 완전 누락 신흥 카테고리
+      'Korean skincare for air pollution PM2.5 protection barrier products 2026',
+      'Korean blue light protection skincare screen damage from phone laptop 2026',
+      // 레티노이드 래더 — K-Beauty 차별화 성분 사다리 가이드
+      'retinoid ladder Korean alternatives guide safest to strongest ranked 2026',
+      'Korean retinol vs bakuchiol vs retinal vs adenosine complete comparison 2026',
+      // 계절 전환 루틴 — 에버그린 반복 검색 (환절기 키워드)
+      'Korean skincare routine transition from winter to spring what to change 2026',
+      'summer to fall Korean skincare routine adjustment guide 2026',
+      // 예산별 스타터 키트 — 구매 의도 최고 (어필리에이트 번들)
+      'Korean skincare starter kit under 50 dollars best products beginner 2026',
+      'Korean skincare full routine under 100 dollars best value kit 2026',
+      'best affordable Korean skincare dupes under 25 dollars drugstore 2026',
+      // 브랜드 케이스 스터디 — E-E-A-T 권위 구축
+      'how COSRX became number one K-Beauty brand Amazon growth story explained',
+      'how Anua went viral TikTok Korean skincare brand story guide 2026',
+      // 선크림 포맷 혁신 심화 — 하이브리드·스프레이·파우더
+      'Korean sunscreen spray vs stick vs cushion which is best reapplication 2026',
+      'Korean mineral sunscreen powder compact SPF review ranked 2026',
+      // 오럴 콜라겐 비교 — YMYL 주의 (consult professional 면책 필수)
+      // NOTE: 효능 과장 금지, "not a substitute for professional advice" 고지 필수
+      'collagen drink vs hyaluronic acid supplement Korean comparison which works 2026',
+      // 선케어 상식 오해 교정 — 고 E-E-A-T 교육 콘텐츠
+      'Korean sunscreen myths debunked PA rating SPF explained facts 2026',
+      'why Korean sunscreens are better than US formulas explained UV filter guide',
     ],
     contentTypes: ['product-review', 'best-x-for-y', 'x-vs-y', 'how-to', 'listicle', 'case-study', 'deep-dive', 'news-explainer'],
     adSenseRpm: 'high',
@@ -856,6 +905,60 @@ export const NICHES: NicheConfig[] = [
       'best K-drama production companies studios ranked most successful 2026 guide',
       'Studio Dragon vs JTBC Studios vs SLL which makes best K-dramas comparison',
       'tvN vs JTBC vs Netflix Korea which platform produces best K-dramas 2026',
+      // ── 전문가 감사 추가 (2026-03-16 batch 22): 동남아 심화·아이돌 경력·팬덤·AI·크로스니치 ──
+      // 동남아 팬덤 심화 — 베트남·인도네시아 개별 심화 (기존 광역 키워드 보완)
+      'K-pop fandom in Vietnam largest Southeast Asia market explained 2026 guide',
+      'K-drama popularity in Indonesia why fans obsessed streaming habits 2026',
+      'Thai K-pop fans concert tourism Bangkok guide tickets travel 2026',
+      'K-pop concert tours Southeast Asia 2026 Bangkok Jakarta Manila schedule guide',
+      // 아이돌 커리어 전환 심화 — age-out·CEO·군 복귀
+      'K-pop idol career after 35 what happens retirement transition explained 2026',
+      'K-pop idol to actor transition success rate who made it best examples 2026',
+      'K-pop idol entrepreneur CEO beauty brand post-career business guide 2026',
+      'K-pop military service impact on career comeback strategy explained 2026',
+      // K-팝 인디 레이블 — Big 3 외 신흥 독립 레이블 (저경쟁 권위 구축)
+      'Korean indie K-pop labels vs Big 3 SM JYP YG HYBE comparison 2026 guide',
+      'best K-pop groups from small labels indie agencies 2026 hidden gems',
+      'THEBLACKLABEL Kakao M FNC vs Big 4 entertainment agencies compared 2026',
+      // AI·딥페이크 K-팝 — 2025-2026 Reddit 최상위 트렌드, 고참여 교육 콘텐츠
+      'AI deepfakes in K-pop music videos explained concerns fans should know 2026',
+      'AI-generated K-pop idols virtual vs real which is winning fans 2026 guide',
+      'how K-pop companies use AI for music production what fans need to know 2026',
+      // 콘서트 기술·메타버스 — 온라인 팬 참여 신흥 카테고리
+      'K-pop virtual concerts metaverse experiences how to join from abroad 2026 guide',
+      'best platforms to watch K-pop concert live streams beyond YouTube 2026',
+      'how to attend K-pop online concerts fan guide technology requirements 2026',
+      // K-Drama 심리·사회적 분석 — 고참여 팬 토론 유발 콘텐츠
+      'K-drama toxic relationship tropes explained criticism why fans love anyway 2026',
+      'K-drama vs Western TV storytelling differences format pace explained guide',
+      'K-pop vs Western pop music production difference what makes K-pop unique 2026',
+      // 팬덤 독성·사이상 교육 — 고관여 팬 서치, YMYL 세이프
+      // NOTE: 아이돌 개인 스토킹 사례 구체화 금지, 교육적 문화 분석 앵글만 허용
+      'saesang fan culture explained why it happens K-pop idol privacy guide 2026',
+      'toxic K-pop fandom behaviors how to avoid explained healthy fan guide 2026',
+      'K-pop fandom spending healthy limits finance guide how much is too much 2026',
+      // 크로스니치: 아이돌 뷰티 브랜드 협업 — K-Beauty ↔ K-Entertainment 최고 수익 브릿지
+      'K-pop idol beauty brand collaboration 2026 new launches which to buy guide',
+      'IU Laneige collaboration products what is worth buying review 2026',
+      'BLACKPINK Clio brand ambassador products complete buying guide 2026',
+      'best skincare products used by K-drama actors in dramas revealed 2026',
+      'K-drama character makeup look recreate products step by step guide 2026',
+      // K-Drama 헐리우드 리메이크 — 고관심 팬 서치
+      'which K-dramas are getting Hollywood remakes US adaptation 2026 list',
+      'K-drama vs Hollywood remake comparison which is better fans say 2026',
+      // K-Drama 사운드트랙 비즈니스 심화
+      'K-drama OST revenue model how artists profit from soundtracks explained 2026',
+      'best K-drama OST labels artists who specialize in soundtracks 2026 guide',
+      // BIGBANG 재결합 추측 — 팬덤 초고관심 투기적 콘텐츠 (헤지 필수)
+      // NOTE: 공식 발표 기준으로만 작성 — 미확인 컴백 추정 단정 금지
+      'BIGBANG reunion 2026 possibility what fans know update guide',
+      'G-Dragon TOP Taeyang Daesung BIGBANG solo vs group what is happening 2026',
+      // 2NE1 재결합 — 글로벌 고관심 이벤트
+      '2NE1 reunion concert 2026 what fans need to know complete guide',
+      // K-팝 글로벌 음악 시장 비교 분석 — 에버그린 권위 콘텐츠
+      'how K-pop idols are trained years debut timeline system explained guide',
+      'K-pop entertainment contracts explained what idols sign guide 2026',
+      'Korean entertainment Big 4 SM JYP YG HYBE training system compared 2026',
     ],
     contentTypes: ['listicle', 'news-explainer', 'best-x-for-y', 'deep-dive', 'how-to', 'x-vs-y', 'case-study'],
     adSenseRpm: 'medium',
