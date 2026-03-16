@@ -281,11 +281,28 @@ export class KeywordResearchService {
       }
 
       // 2b. Fall back to seed keyword scanning if still empty
+      //     Sample up to MAX_SEED_SAMPLE random seeds + apply time budget to avoid batch timeout
       if (topQueries.length === 0) {
-        logger.warn(`No rising queries for "${niche.name}", falling back to seed keywords`);
+        const MAX_SEED_SAMPLE = 20;
+        const SEED_TIME_BUDGET_MS = 3 * 60 * 1000; // 3 minutes per niche
+        const seedStart = Date.now();
+
+        // Fisher-Yates shuffle and take first MAX_SEED_SAMPLE
+        const shuffled = [...niche.seedKeywords];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        const sampled = shuffled.slice(0, MAX_SEED_SAMPLE);
+
+        logger.warn(`No rising queries for "${niche.name}", falling back to ${sampled.length}/${niche.seedKeywords.length} sampled seed keywords`);
         trendsSource = 'seed';
 
-        for (const seed of niche.seedKeywords) {
+        for (const seed of sampled) {
+          if (Date.now() - seedStart > SEED_TIME_BUDGET_MS) {
+            logger.warn(`Seed scanning time budget exceeded (${Math.round(SEED_TIME_BUDGET_MS / 1000)}s), stopping with ${trendsData.length} results`);
+            break;
+          }
           try {
             const data = await this.trendsService.fetchTrendsData(seed);
             trendsData.push(data);
