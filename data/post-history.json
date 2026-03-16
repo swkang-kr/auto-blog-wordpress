@@ -306,7 +306,7 @@
         }
       ],
       "lastPosition": 50,
-      "engagementScore": 32
+      "engagementScore": 46
     },
     {
       "keyword": "how to save money",
@@ -330,7 +330,7 @@
       "contentType": "best-x-for-y",
       "engagementScore": 60,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0.003
+      "estimatedRevenue": 0.006
     },
     {
       "keyword": "budgeting tips",
@@ -343,7 +343,7 @@
       "contentType": "how-to",
       "engagementScore": 31,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0
+      "estimatedRevenue": 0.003
     },
     {
       "keyword": "Best AI tools for writing",
@@ -369,7 +369,7 @@
       "contentType": "how-to",
       "engagementScore": 31,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0.003
+      "estimatedRevenue": 0.006
     },
     {
       "keyword": "how to save money on a low income",
@@ -393,9 +393,9 @@
       "publishedAt": "2026-02-26T10:50:14.048Z",
       "niche": "ai-tools-review",
       "contentType": "how-to",
-      "engagementScore": 2,
+      "engagementScore": 11,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0.003
+      "estimatedRevenue": 0.009000000000000001
     },
     {
       "keyword": "best way to save money",
@@ -421,7 +421,7 @@
       "contentType": "how-to",
       "engagementScore": 60,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0
+      "estimatedRevenue": 0.003
     },
     {
       "keyword": "Korean startup ecosystem trends and investment opportunities",
@@ -441,9 +441,9 @@
       "publishedAt": "2026-03-06T04:49:21.186Z",
       "niche": "k-entertainment",
       "contentType": "deep-dive",
-      "engagementScore": 28,
+      "engagementScore": 25,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0.009000000000000001
+      "estimatedRevenue": 0.015
     },
     {
       "keyword": "how to invest in Korean stocks as a foreigner",
@@ -473,9 +473,22 @@
           "position": 50,
           "clicks": 0,
           "impressions": 1
+        },
+        {
+          "date": "2026-03-16",
+          "position": 50,
+          "clicks": 0,
+          "impressions": 1
         }
       ],
-      "lastPosition": 50
+      "lastPosition": 50,
+      "engagementScore": 7,
+      "titleTestPhaseBStarted": true,
+      "titleTestPhaseBTitle": "Korean Spring Street Food Guide: 12 Festival Picks for 2026",
+      "titleTestWinner": "best Korean spring street foods to try",
+      "titleTestResolved": true,
+      "estimatedRpm": 3,
+      "estimatedRevenue": 0.012
     },
     {
       "keyword": "Samsung AI chip vs NVIDIA comparison 2026",
@@ -491,7 +504,10 @@
       "originalTitle": "Samsung AI Chip vs NVIDIA: Who Leads in 2026?",
       "searchIntent": "commercial-investigation",
       "seriesId": "samsung-semiconductor",
-      "seriesPart": 1
+      "seriesPart": 1,
+      "engagementScore": 7,
+      "estimatedRpm": 3,
+      "estimatedRevenue": 0.012
     },
     {
       "keyword": "Samsung Electronics Q1 earnings analysis investment outlook 2026",
@@ -524,8 +540,14 @@
       "searchIntent": "commercial-investigation",
       "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/best-korean-sunscreen-outdoor-activities-spring-2026-featured-2026.webp",
       "featuredImageMediaId": 15036,
-      "engagementScore": 61,
+      "engagementScore": 38,
       "rankingHistory": [
+        {
+          "date": "2026-03-16",
+          "position": 50,
+          "clicks": 0,
+          "impressions": 1
+        },
         {
           "date": "2026-03-16",
           "position": 50,
@@ -535,7 +557,7 @@
       ],
       "lastPosition": 50,
       "estimatedRpm": 8,
-      "estimatedRevenue": 0.016
+      "estimatedRevenue": 0.104
     },
     {
       "keyword": "best cherry blossom viewing spots in Korea ranked",
@@ -558,9 +580,18 @@
           "position": 50,
           "clicks": 0,
           "impressions": 1
+        },
+        {
+          "date": "2026-03-16",
+          "position": 50,
+          "clicks": 0,
+          "impressions": 1
         }
       ],
-      "lastPosition": 50
+      "lastPosition": 50,
+      "engagementScore": 1,
+      "estimatedRpm": 3,
+      "estimatedRevenue": 0.009000000000000001
     },
     {
       "keyword": "how K-pop idol agency contracts work for trainees",
@@ -577,7 +608,10 @@
       "searchIntent": "informational",
       "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/kpop-idol-agency-contracts-work-trainees-featured-2026.webp",
       "featuredImageMediaId": 15067,
-      "affiliateLinkCount": 0
+      "affiliateLinkCount": 0,
+      "engagementScore": 2,
+      "estimatedRpm": 4,
+      "estimatedRevenue": 0.008
     },
     {
       "keyword": "SK Hynix HBM revenue breakdown quarterly results 2026",
@@ -594,7 +628,10 @@
       "searchIntent": "commercial-investigation",
       "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/sk-hynix-hbm-revenue-breakdown-quarterly-results-2026-featured-2026.webp",
       "featuredImageMediaId": 15071,
-      "affiliateLinkCount": 0
+      "affiliateLinkCount": 0,
+      "engagementScore": 4,
+      "estimatedRpm": 3,
+      "estimatedRevenue": 0.015
     },
     {
       "keyword": "KOSPI Q1 earnings season Korean stock picks 2026",
@@ -628,7 +665,10 @@
       "searchIntent": "informational",
       "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/korean-skincare-ingredients-actually-work-explained-featured-2026.webp",
       "featuredImageMediaId": 16228,
-      "affiliateLinkCount": 0
+      "affiliateLinkCount": 0,
+      "engagementScore": 3,
+      "estimatedRpm": 8,
+      "estimatedRevenue": 0.064
     },
     {
       "keyword": "best K-pop albums 2026 ranked by sales and streaming",
@@ -645,7 +685,10 @@
       "searchIntent": "commercial-investigation",
       "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/best-kpop-albums-2026-ranked-sales-streaming-featured-2026.webp",
       "featuredImageMediaId": 16376,
-      "affiliateLinkCount": 0
+      "affiliateLinkCount": 0,
+      "engagementScore": 7,
+      "estimatedRpm": 4,
+      "estimatedRevenue": 0.02
     },
     {
       "keyword": "best Korean vitamin C serum ranked dermatologist tested",
@@ -669,9 +712,18 @@
           "position": 50,
           "clicks": 0,
           "impressions": 1
+        },
+        {
+          "date": "2026-03-16",
+          "position": 50,
+          "clicks": 0,
+          "impressions": 1
         }
       ],
-      "lastPosition": 50
+      "lastPosition": 50,
+      "engagementScore": 6,
+      "estimatedRpm": 8,
+      "estimatedRevenue": 0.032
     },
     {
       "keyword": "best K-pop concerts in USA 2026 schedule dates",
@@ -688,7 +740,10 @@
       "searchIntent": "commercial-investigation",
       "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/best-kpop-concerts-usa-2026-schedule-dates-featured-2026.webp",
       "featuredImageMediaId": 22876,
-      "affiliateLinkCount": 0
+      "affiliateLinkCount": 0,
+      "engagementScore": 10,
+      "estimatedRpm": 4,
+      "estimatedRevenue": 0.016
     },
     {
       "keyword": "Korean skincare routine for beginners step by step 2026",
@@ -707,7 +762,10 @@
       "featuredImageMediaId": 25624,
       "affiliateLinkCount": 0,
       "seriesId": "skincare-routine-guide",
-      "seriesPart": 1
+      "seriesPart": 1,
+      "engagementScore": 12,
+      "estimatedRpm": 8,
+      "estimatedRevenue": 0.064
     },
     {
       "keyword": "BTS members solo activities ranked 2026",
@@ -724,7 +782,10 @@
       "searchIntent": "informational",
       "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/bts-members-solo-activities-ranked-2026-featured-2026.webp",
       "featuredImageMediaId": 26128,
-      "affiliateLinkCount": 0
+      "affiliateLinkCount": 0,
+      "engagementScore": 10,
+      "estimatedRpm": 4,
+      "estimatedRevenue": 0.028
     },
     {
       "keyword": "best Korean moisturizer under 30 dollars Amazon 2026",
@@ -745,6 +806,12 @@
       "seriesId": "skincare-routine-guide",
       "seriesPart": 2,
       "rankingHistory": [
+        {
+          "date": "2026-03-16",
+          "position": 50,
+          "clicks": 0,
+          "impressions": 1
+        },
         {
           "date": "2026-03-16",
           "position": 50,
@@ -773,6 +840,12 @@
       "seriesId": "k-entertainment-business-best-korean-dramas-on-netflix-",
       "seriesPart": 3,
       "rankingHistory": [
+        {
+          "date": "2026-03-16",
+          "position": 50,
+          "clicks": 0,
+          "impressions": 1
+        },
         {
           "date": "2026-03-16",
           "position": 50,
@@ -911,6 +984,12 @@
       "seriesId": "skincare-routine-guide",
       "seriesPart": 4,
       "rankingHistory": [
+        {
+          "date": "2026-03-16",
+          "position": 50,
+          "clicks": 0,
+          "impressions": 1
+        },
         {
           "date": "2026-03-16",
           "position": 50,
@@ -1143,9 +1222,18 @@
           "position": 50,
           "clicks": 0,
           "impressions": 1
+        },
+        {
+          "date": "2026-03-16",
+          "position": 50,
+          "clicks": 0,
+          "impressions": 1
         }
       ],
-      "lastPosition": 50
+      "lastPosition": 50,
+      "engagementScore": 3,
+      "estimatedRpm": 4,
+      "estimatedRevenue": 0.012
     },
     {
       "keyword": "best Korean centella asiatica skincare products ranked 2026",
@@ -1171,19 +1259,77 @@
           "position": 50,
           "clicks": 0,
           "impressions": 1
+        },
+        {
+          "date": "2026-03-16",
+          "position": 50,
+          "clicks": 0,
+          "impressions": 1
+        }
+      ],
+      "lastPosition": 50,
+      "engagementScore": 1,
+      "estimatedRpm": 8,
+      "estimatedRevenue": 0.024
+    },
+    {
+      "keyword": "how K-pop charts work complete beginner guide",
+      "postId": 88478,
+      "postUrl": "https://trendhunt.net/how-kpop-charts-work-beginner-guide/",
+      "publishedAt": "2026-03-16T15:15:43.487Z",
+      "niche": "k-entertainment-business",
+      "contentType": "how-to",
+      "titleCandidates": [
+        "K-Pop Chart System Explained: Melon, Hanteo & More (2026)",
+        "What Is an All-Kill in K-Pop? Charts Explained for New Fans"
+      ],
+      "originalTitle": "How K-Pop Charts Work: A Beginner's Guide (2026)",
+      "searchIntent": "informational",
+      "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/kpop-charts-work-complete-beginner-guide-featured-2026.webp",
+      "featuredImageMediaId": 88474,
+      "affiliateLinkCount": 0,
+      "qualityScore": 80,
+      "seriesId": "k-entertainment-business-best-korean-dramas-on-netflix-",
+      "seriesPart": 6
+    },
+    {
+      "keyword": "best Korean toner pads 2026 Anua COSRX ranked",
+      "postId": 88490,
+      "postUrl": "https://trendhunt.net/best-korean-toner-pads-anua-cosrx/",
+      "publishedAt": "2026-03-16T15:17:46.317Z",
+      "niche": "k-beauty-skincare",
+      "contentType": "deep-dive",
+      "titleCandidates": [
+        "Korean Toner Pads 2026: Anua vs COSRX — Barrier Science Ranked",
+        "Anua Heartleaf vs COSRX Green Hero: Which Toner Pad Wins in 2026?"
+      ],
+      "originalTitle": "Best Korean Toner Pads 2026: Anua vs COSRX Ranked",
+      "searchIntent": "commercial-investigation",
+      "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/best-korean-toner-pads-2026-anua-cosrx-ranked-featured-2026.webp",
+      "featuredImageMediaId": 88486,
+      "affiliateLinkCount": 0,
+      "qualityScore": 76,
+      "seriesId": "skincare-routine-guide",
+      "seriesPart": 9,
+      "rankingHistory": [
+        {
+          "date": "2026-03-16",
+          "position": 50,
+          "clicks": 0,
+          "impressions": 1
         }
       ],
       "lastPosition": 50
     }
   ],
-  "lastRunAt": "2026-03-16T00:50:00.736Z",
-  "totalPosts": 50,
+  "lastRunAt": "2026-03-16T15:27:59.738Z",
+  "totalPosts": 52,
   "categoryLastPublished": {
     "korean-food-cooking": "2026-03-09T14:49:00.731Z",
     "korean-tech-ai": "2026-03-13T14:58:36.162Z",
     "korean-finance-stocks": "2026-03-13T14:59:25.920Z",
-    "k-beauty-skincare": "2026-03-16T00:43:08.380Z",
+    "k-beauty-skincare": "2026-03-16T15:17:46.315Z",
     "korea-travel-guide": "2026-03-12T15:04:37.207Z",
-    "k-entertainment-business": "2026-03-16T00:41:56.537Z"
+    "k-entertainment-business": "2026-03-16T15:15:43.486Z"
   }
 }
