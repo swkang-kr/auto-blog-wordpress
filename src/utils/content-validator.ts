@@ -931,7 +931,7 @@ export function validateContent(
     // 12a. BHA (Salicylic acid) concentration — Korea OTC limit is 0.5%, US allows 2%
     if (/(?:BHA|salicylic\s*acid)/i.test(plainText) && ['product-review', 'best-x-for-y', 'x-vs-y', 'deep-dive'].includes(contentType)) {
       // Check if 2% BHA is described as Korean OTC product (it's not — 2% is US OTC, Korea limits to 0.5%)
-      if (/(?:korean|K-?beauty).*2%\s*(?:BHA|salicylic)/i.test(plainText) || /2%\s*(?:BHA|salicylic).*(?:korean|K-?beauty|olive young)/i.test(plainText)) {
+      if (/(?:korean|K-?beauty|olive\s*young|hwahae|MFDS).*2%\s*(?:BHA|salicylic)/i.test(plainText) || /2%\s*(?:BHA|salicylic).*(?:korean|K-?beauty|olive\s*young|hwahae|MFDS)/i.test(plainText)) {
         const hasRegulatoryNote = /(?:Korea|MFDS|한국).*0\.5%|0\.5%.*(?:Korea|MFDS|한국)|US\s*(?:allows|OTC|FDA).*2%/i.test(plainText);
         if (!hasRegulatoryNote) {
           warnings.push({ category: 'niche-accuracy', message: 'BHA 2% described as Korean OTC product — Korea MFDS limits salicylic acid to 0.5% in OTC cosmetics (2% requires quasi-drug classification). Add regulatory context.', severity: 'warning' });
@@ -968,10 +968,34 @@ export function validateContent(
     }
 
     // 12e. Propolis allergy cross-reaction warning (bee product allergy)
-    if (/propolis/i.test(plainText) && ['product-review', 'best-x-for-y', 'how-to'].includes(contentType)) {
+    if (/propolis/i.test(plainText) && ['product-review', 'best-x-for-y', 'how-to', 'deep-dive'].includes(contentType)) {
       const hasAllergyWarning = /(?:bee|honey|pollen)\s*allerg|allerg.*(?:bee|propolis)|patch\s*test.*propolis|propolis.*patch\s*test|cross.?react/i.test(plainText);
       if (!hasAllergyWarning) {
         warnings.push({ category: 'niche-accuracy', message: 'Propolis product content missing allergy warning — propolis can cause cross-reactions in people with bee/pollen allergies. Add "patch test recommended; avoid if allergic to bee products."', severity: 'warning' });
+      }
+    }
+
+    // 12f. SPF 50+ is the maximum in Korea — SPF 100 is not available in Korean market
+    if (/SPF\s*(?:1[0-9]{2}|[2-9][0-9]{2})/i.test(plainText) && /(?:Korean|K-Beauty|K-beauty|Olive\s*Young|MFDS)/i.test(plainText)) {
+      warnings.push({ category: 'niche-accuracy', message: 'SPF 100+ referenced in K-Beauty context — Korea (MFDS) caps labeling at SPF 50+. SPF values above 50 are labeled "SPF 50+" in Korean products.', severity: 'warning' });
+      eeatScore -= 1;
+    }
+
+    // 12g. PDRN/salmon DNA — should note it is a dermatology-origin ingredient, not a traditional cosmetic
+    if (/PDRN|salmon\s*DNA/i.test(plainText) && ['product-review', 'best-x-for-y', 'deep-dive'].includes(contentType)) {
+      const hasDermaContext = /(?:dermatolog|aesthetic\s*clinic|피부과|injection|meso(?:therapy)?|topical\s*(?:formulation|version|form))/i.test(plainText);
+      if (!hasDermaContext) {
+        warnings.push({ category: 'niche-accuracy', message: 'PDRN/salmon DNA mentioned without noting its dermatology origin — PDRN originated as an injectable skin regeneration treatment (피부과 시술). Topical K-Beauty PDRN products are a consumer adaptation of this clinical ingredient. Add context for credibility.', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 12h. Barrier repair content should mention ceramide:cholesterol:fatty acid ratio
+    if (/barrier\s*(?:repair|recovery|restore|damage)/i.test(plainText) && ['product-review', 'best-x-for-y', 'how-to', 'deep-dive'].includes(contentType)) {
+      const hasCeramideRatio = /(?:ceramide|cholesterol|fatty\s*acid).*(?:ratio|1:1:1|3:1:1|proportion)/i.test(plainText) ||
+        /(?:ratio|proportion).*(?:ceramide|cholesterol|fatty\s*acid)/i.test(plainText);
+      if (!hasCeramideRatio && /ceramide/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'Barrier repair content with ceramide mention but missing the optimal lipid ratio context — skin barrier consists of ceramides, cholesterol, and fatty acids in roughly equal proportions. This is a key K-Beauty expertise signal.', severity: 'info' });
       }
     }
 
@@ -996,6 +1020,8 @@ export function validateContent(
       { pattern: /8TURN\b[^.]*\bJYP\b/i, correct: '8TURN is under MNH Entertainment, NOT JYP' },
       { pattern: /AMPERS.?ONE\b[^.]*\b(?:SM|HYBE)\b/i, correct: 'AMPERS&ONE is under FNC Entertainment, NOT SM/HYBE' },
       { pattern: /MEOVV\b[^.]*\b(?:HYBE|SM|JYP|YG)\b/i, correct: 'MEOVV is under THEBLACKLABEL, NOT a Big 4 label' },
+      { pattern: /tripleS\b[^.]*\b(?:SM|HYBE|JYP|YG)\b/i, correct: 'tripleS is under MODHAUS (모드하우스), NOT a Big 4 label' },
+      { pattern: /NEXZ\b[^.]*\b(?:SM|HYBE|YG)\b/i, correct: 'NEXZ is under JYP Entertainment (Japan-based group), NOT SM/HYBE/YG' },
     ];
     for (const check of labelErrors) {
       if (check.pattern.test(plainText)) {
@@ -1056,6 +1082,8 @@ export function validateContent(
       'BABYMONSTER': 'MONSTER', 'PLAVE': 'ASTERDOM', 'QWER': 'AUBE',
       'RIIZE': 'BRIIZE', 'BOYNEXTDOOR': 'ONEDOOR',
       'ILLIT': 'LLIT', 'KISS OF LIFE': 'KISSY',
+      'tripleS': 'LOVElution', 'WHIPLASH': 'WHIPPERS',
+      'NCT WISH': 'WISHING', 'KATSEYE': 'EMBERS',
     };
     for (const [group, fandom] of Object.entries(fandomMap)) {
       const groupRegex = new RegExp(`\\b${group.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
@@ -1084,6 +1112,44 @@ export function validateContent(
         warnings.push({ category: 'niche-accuracy', message: 'NewJeans/NJZ naming stated as settled fact — the group name trademark is still legally contested. Use hedged language.', severity: 'warning' });
         eeatScore -= 1;
       }
+    }
+
+    // 10. 초동 (first week sales) — important K-pop metric; must specify chart source when citing
+    if (/초동|first.?week\s*(?:album\s*)?sales/i.test(plainText)) {
+      const hasChartSource = /(?:Hanteo|Circle\s*Chart)/i.test(plainText);
+      if (!hasChartSource) {
+        warnings.push({ category: 'niche-accuracy', message: '초동 (first week sales) cited without specifying chart source — must note Hanteo (real-time physical) or Circle Chart (comprehensive). Hanteo is the standard 초동 benchmark.', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 11. OTT viewership metric conflation — broadcast ratings vs OTT metrics are not comparable
+    if (/(?:Netflix|TVING|Disney\+|Coupang\s*Play|Wavve)/i.test(plainText) && /(?:viewership\s*rat(?:e|ing)|시청률|%\s*(?:rating|viewership))/i.test(plainText)) {
+      const hasMetricDisclaimer = /(?:not\s*(?:directly\s*)?comparable|different\s*(?:metric|measurement|audience)|view\s*hours|completion\s*rate|household\s*rating)/i.test(plainText);
+      if (!hasMetricDisclaimer) {
+        warnings.push({ category: 'niche-accuracy', message: 'OTT platform metrics mentioned alongside broadcast ratings without noting they are not comparable — broadcast uses AGB Nielsen household %, OTT uses view hours/completion rate.', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 12. tripleS label accuracy — MODHAUS, not Big 4
+    if (/tripleS\b/i.test(plainText) && /\b(?:SM|HYBE|JYP|YG)\b/.test(plainText)) {
+      if (/tripleS\b[^.]*\b(?:SM|HYBE|JYP|YG)\s*(?:Entertainment|Records)?/i.test(plainText)) {
+        issues.push({ category: 'niche-accuracy', message: 'Label error: tripleS is under MODHAUS (모드하우스), NOT a Big 4 label', severity: 'error' });
+        eeatScore -= 3;
+      }
+    }
+
+    // 13. Music show win specificity — "won a music show" without naming which show signals non-fan content
+    if (/(?:won|winning)\s*(?:a|the)\s*music\s*show/i.test(plainText) && !/(?:Inkigayo|Music\s*Bank|M\s*Countdown|Show\s*Champion|Music\s*Core)/i.test(plainText)) {
+      warnings.push({ category: 'niche-accuracy', message: '"Won a music show" without naming the specific show (Inkigayo, Music Bank, M Countdown, Show Champion, Music Core) — signals non-fan content. Always specify which show.', severity: 'warning' });
+      eeatScore -= 1;
+    }
+
+    // 14. Spotify Korea context — growing but secondary to Melon for domestic streaming
+    if (/Spotify\s*Korea/i.test(plainText) && /(?:#1|number\s*one|dominant|leading|most\s*popular)\s*(?:streaming|platform)/i.test(plainText)) {
+      warnings.push({ category: 'niche-accuracy', message: 'Spotify Korea described as dominant/leading — Melon remains the #1 domestic streaming platform in Korea (~65% market share). Spotify Korea is growing but secondary for Korean-language music.', severity: 'warning' });
+      eeatScore -= 1;
     }
   }
 
@@ -1249,9 +1315,11 @@ export function validateContent(
     const whiteningMentions = (plainText.match(/\bwhitening\b/gi) || []).length;
     const brighteningMentions = (plainText.match(/\bbrightening\b/gi) || []).length;
     if (whiteningMentions > 0) {
-      // Allow "whitening" only when explaining the Korean regulatory term 미백
+      // Allow "whitening" when explaining the Korean regulatory term 미백 OR in official product names
       const hasRegulatoryContext = /미백|MFDS\s*(?:category|classification|term)|(?:Korean|Korea)\s*(?:regulatory|regulation).*whitening|whitening\s*\(.*미백/i.test(plainText);
-      if (!hasRegulatoryContext) {
+      // Exception: official product names that use "Whitening" (e.g., NACIFIC Phyto Niacin Whitening Essence)
+      const hasOfficialProductName = /NACIFIC\s*Phyto\s*Niacin\s*Whitening|(?:despite|official)\s*(?:the\s*)?(?:product\s*)?name.*whitening|whitening.*(?:official|brand)\s*name/i.test(plainText);
+      if (!hasRegulatoryContext && !hasOfficialProductName) {
         warnings.push({ category: 'niche-accuracy', message: `"Whitening" used ${whiteningMentions} time(s) without regulatory context — use "brightening" for English audiences. "Whitening" is culturally problematic and signals market unawareness. Only acceptable when explaining Korea's 미백 MFDS category.`, severity: 'warning' });
         eeatScore -= 2;
       }
@@ -1290,8 +1358,9 @@ export function validateContent(
     }
 
     // 27. "Natural = Safe" fallacy check — natural ingredients are not inherently safer
-    if (/(?:natural|plant.based|organic)\s*(?:so|therefore|means|thus|hence)\s*(?:safe|gentle|non.?toxic|harmless)/i.test(plainText) ||
-        /(?:safe|gentle)\s*because\s*(?:it.?s|it\s*is)\s*(?:natural|plant.based|organic)/i.test(plainText)) {
+    if (/(?:natural|plant.based|organic)\s*(?:so|therefore|means|thus|hence|making\s*it)\s*(?:safe|gentle|non.?toxic|harmless)/i.test(plainText) ||
+        /(?:safe|gentle)\s*(?:because|since)\s*(?:it.?s|it\s*is|they\s*are)\s*(?:natural|plant.based|organic)/i.test(plainText) ||
+        /(?:since|because)\s*(?:it.?s|it\s*is)\s*(?:natural|plant.based|organic).{0,20}(?:safe|gentle|harmless)/i.test(plainText)) {
       warnings.push({ category: 'niche-accuracy', message: '"Natural = safe" fallacy detected — natural ingredients can cause allergic reactions and irritation (e.g., essential oils, citrus extracts). Expert content should note that natural ≠ automatically gentle/safe.', severity: 'warning' });
       eeatScore -= 1;
     }
@@ -1311,6 +1380,37 @@ export function validateContent(
       if (!hasPaoMention) {
         warnings.push({ category: 'niche-accuracy', message: 'K-Beauty product review missing PAO (Period After Opening) or shelf life info — essential for vitamin C, retinol, and preservative-free products', severity: 'warning' });
         // No score deduction — informational, not critical
+      }
+    }
+
+    // 29. Olive Young Korea vs Olive Young Global price conflation
+    if (['product-review', 'best-x-for-y'].includes(contentType)) {
+      const citesKrwPrice = /₩[\d,]+|(?:\d{1,3},?\d{3})\s*(?:원|KRW|won)/i.test(plainText);
+      const linksGlobalStore = /global(?:store)?\.oliveyoung\.com/i.test(html);
+      if (citesKrwPrice && linksGlobalStore) {
+        const hasPriceDiffNote = /(?:global|international)\s*(?:store|site).*(?:higher|more expensive|differ|markup)|(?:20|30|40|50)%\s*(?:higher|more|markup)/i.test(plainText);
+        if (!hasPriceDiffNote) {
+          warnings.push({ category: 'niche-accuracy', message: 'KRW pricing cited with Olive Young Global link — Olive Young Global prices are 20-40% higher than domestic Olive Young Korea. Note the price difference to avoid reader trust issues.', severity: 'warning' });
+          eeatScore -= 1;
+        }
+      }
+    }
+
+    // 30. "Fragrance-free" vs "unscented" conflation — distinct terms in Korean cosmetics
+    if (/fragrance.free/i.test(plainText) && /unscented/i.test(plainText)) {
+      if (/fragrance.free\s*(?:=|is\s*(?:the\s*same|identical|equivalent)\s*(?:as|to))\s*unscented/i.test(plainText) ||
+          /unscented\s*(?:=|is\s*(?:the\s*same|identical|equivalent)\s*(?:as|to))\s*fragrance.free/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: '"Fragrance-free" (향료 무첨가) ≠ "Unscented" (무향) — unscented products can use masking fragrances, fragrance-free prohibits all fragrance ingredients. Critical distinction for sensitive skin recommendations.', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 31. Price disclaimer asymmetry fix — best-x-for-y also deducts score (like product-review Rule 18)
+    if (contentType === 'best-x-for-y') {
+      const hasPricing = /\$\d+|\₩[\d,]+|price|pricing|cost/i.test(plainText);
+      const hasPriceDisclaimer = /prices?\s*(?:verified|checked|as of)|prices?\s*vary\s*frequently/i.test(plainText);
+      if (hasPricing && !hasPriceDisclaimer) {
+        structureScore -= 1;
       }
     }
   }
