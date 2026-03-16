@@ -495,6 +495,46 @@ export const NICHES: NicheConfig[] = [
       // 한국 네일아트 — TikTok 바이럴 급성장 트렌드 (젤 스티커, press-on nails, 젤리 네일)
       'best Korean nail art stickers press on nails ranked easy gel manicure 2026 guide',
       'Korean nail art trends 2026 what is trending K-nail glass jelly chrome nail guide',
+      // ── 전문가 감사 추가 (2026-03-16 batch 21): 미국 대형 리테일 확장 + 시즌 세일 선행 키워드 ──
+      // Ulta K-Beauty — 2024-2026 Ulta 한국 뷰티 전용 섹션 런칭, 저경쟁 "where to buy" 폭발
+      'best Korean skincare at Ulta 2026 K-Beauty exclusive brands guide',
+      'Ulta K-beauty section what Korean brands are sold exclusive 2026',
+      'Ulta vs Sephora for Korean skincare which has better K-Beauty selection 2026',
+      'best Ulta K-beauty deals sales what to buy on discount guide 2026',
+      // Walmart K-Beauty — 2024-2026 월마트 K-Beauty 오프라인 최대 채널 확장
+      'best Korean skincare at Walmart what to buy affordable 2026 guide',
+      'Korean skincare brands sold at Walmart affordable K-Beauty budget options 2026',
+      'Walmart vs Target K-Beauty which store has better Korean skincare 2026',
+      // CVS / Walgreens K-Beauty — 미국 드러그스토어 K-Beauty 진출
+      'Korean skincare at CVS Walgreens which brands are available US guide 2026',
+      'best Korean skincare drugstore CVS Walgreens affordable picks 2026',
+      // ULTA Loyalty / Target Circle K-Beauty — 포인트 활용 어필리에이트 키워드
+      'how to save money on Korean skincare Ulta Loyalty Target Circle guide 2026',
+      // Olive Young 봄 그랜드 세일 — 현재 기준 60일 전 제작 적기 (2026-03-16 → 5월 초 세일)
+      // NOTE: contentAngles 이미 KOREAN_SEASONAL_EVENTS에 정의됨 — 시드 키워드로 명시적 보강
+      'Olive Young spring grand sale 2026 what to buy best deals complete guide',
+      'Olive Young spring sale 2026 haul best products ranked what to buy first',
+      'Olive Young spring grand sale shopping strategy 2026 K-Beauty deals guide',
+      'best Olive Young deals spring 2026 skincare makeup must buy list ranked',
+      'Olive Young spring 2026 discount coupon how to use app international buyers guide',
+      // Olive Young 추계 / 연말 세일 선행 — 9-11월 세일 선행 (연간 최대 수익 시즌)
+      'Olive Young mega sale fall 2026 best deals what to buy guide',
+      'Olive Young year-end sale 2026 best K-Beauty discounts complete guide',
+      // Chuseok / Seollal K-Beauty 선물 세트 — 시즌 어필리에이트 최고 수익 (60일 리드)
+      'best Korean skincare gift sets 2026 holiday Chuseok Seollal what to buy',
+      'Olive Young gift set guide 2026 best K-Beauty presents birthday holiday ranked',
+      'Korean beauty gift sets for mom wife girlfriend ranked 2026 guide',
+      // K-Beauty Haul Content 강화 — "haul" 키워드 구매 의도 최고
+      'Olive Young haul 2026 what I bought review skincare makeup',
+      'K-Beauty haul guide 2026 best products to try from Olive Young Amazon',
+      // 뷰티 디바이스 — 고가 어필리에이트 + 마이크로니들링 신규 카테고리
+      'best Korean at-home microneedling derma roller device 2026 guide ranked',
+      'Korean beauty devices worth buying 2026 LED microcurrent gua sha ranked',
+      'Korean facial steamer for skincare routine guide best picks 2026',
+      // 성분 비교 심화 — 고 E-E-A-T 성분덕후 타겟 (10% 이상 농도 비교)
+      'niacinamide 10 percent vs 5 percent Korean serum which is better safe guide 2026',
+      'Korean skincare ingredients to avoid mixing dangerous combinations guide 2026',
+      'best Korean actives stacking guide which ingredients work together 2026',
     ],
     contentTypes: ['product-review', 'best-x-for-y', 'x-vs-y', 'how-to', 'listicle', 'case-study', 'deep-dive', 'news-explainer'],
     adSenseRpm: 'high',
@@ -764,6 +804,58 @@ export const NICHES: NicheConfig[] = [
       // 5세대 그룹 (Gen 5) — 2024-2025 데뷔, 글로벌 팬덤 형성 중
       'WHIPLASH Kpop SM Entertainment boy group songs concept guide 2026',
       'TWS Kpop debut story members songs ranked guide for new fans 2026',
+      // ── 전문가 감사 추가 (2026-03-16 batch 21): 누락된 K-Entertainment 핵심 세그먼트 ──
+      // K-Drama 작가/감독 스포트라이트 — 저경쟁 권위 구축 (오토르 중심 콘텐츠)
+      'best Korean drama writers screenwriters who created top K-dramas explained 2026',
+      'top K-drama directors 2026 who made the best Korean shows guide',
+      'Kim Eun-sook best K-dramas ranked Goblin Crash Landing on You guide',
+      'Park Chan-wook K-drama film director style explained best works guide 2026',
+      'Park Hoon-jung best Korean thriller films dramas ranked guide 2026',
+      // K-Drama 제작 비하인드 — 고참여율 팬 딥다이브 콘텐츠
+      'how K-dramas are made production process explained behind the scenes 2026',
+      'Korean drama filming locations Seoul Jeju where to visit sets guide 2026',
+      'K-drama budget explained how much Korean dramas cost to produce guide',
+      'K-pop music video production behind the scenes how MVs are made guide 2026',
+      'K-pop producer spotlight Black Eyed Pilseung how they create hits explained',
+      // 글로벌 팬덤 지역 확장 — 동남아·중남미·중동 (영어권 미개척 세그먼트)
+      'K-pop fandom in Southeast Asia Philippines Indonesia Thailand why so huge 2026',
+      'K-drama popularity in Latin America why Spanish speakers love Korean shows 2026',
+      'K-pop in Middle East Saudi Arabia UAE how Hallyu spread to Arab fans explained',
+      'K-pop Latin America fan community how Mexican Brazilian fans fell in love guide',
+      'K-drama in India why Korean shows became popular Bollywood comparison 2026',
+      // K-팝 아이돌 웰니스/번아웃 — YMYL 세이프 앵글 (팬 지지 관점 전용)
+      // NOTE: 의학적 진단·처방 내용 일절 금지. "consult a professional" 면책 필수
+      'how fans can support idol mental health K-pop wellness culture 2026 guide',
+      'K-pop comeback schedule explained why idols have busy year how fans help support',
+      'K-pop idol burnout prevention how the industry is changing fan culture 2026',
+      'healthy K-pop fandom habits how to support idols without toxic fan culture guide',
+      // K-Drama 합법 무료 스트리밍 — YouTube CJ ENM 파트너십 활용 가이드
+      'how to watch K-dramas for free legally YouTube CJ ENM Viki 2026 guide',
+      'free K-drama streaming platforms no subscription legally watch guide 2026',
+      'best free K-drama apps legally available no subscription required 2026',
+      'KBS World YouTube free K-dramas guide how to watch legally guide',
+      // 아이돌 솔로 커리어 분석 — 팬덤 흥미 고관여 콘텐츠
+      'which K-pop idols succeeded with solo careers analysis best examples 2026',
+      'solo vs group career K-pop which format succeeds best explained 2026',
+      'K-pop idol solo debut what makes or breaks a solo career explained guide',
+      'BLACKPINK members solo success why Jennie Lisa Jisoo Rose all did well 2026',
+      // K-Drama 웹툰 원작 IP 트래킹 — 팬 기대감 + 비즈니스 앵글
+      'which webtoons are being adapted into K-dramas 2026 upcoming confirmed list',
+      'best webtoons that should become K-dramas 2026 fan wish list guide',
+      'Naver Webtoon vs Kakao Webtoon which has more K-drama adaptations 2026',
+      'K-drama based on novel vs webtoon which are better ranked comparison 2026',
+      // K-팝 서바이벌 쇼 트래킹 — 시즌 높은 트래픽
+      'best K-pop survival shows ranked all time Produce 101 Boys Planet guide',
+      'Boys Planet vs Girls Planet which survival show produced better groups 2026',
+      'upcoming K-pop survival audition shows 2026 schedule what to watch',
+      // K-팝 음악 차트 심화 교육 — 허브 페이지 앵커 (기존 1개에서 확장)
+      'how to vote on Melon chart explained international fans guide 2026',
+      'Hanteo vs Circle Chart physical sales vs streaming which counts more 2026',
+      'how K-pop charts work complete beginner guide Melon Genie Circle 2026',
+      // K-Drama 제작사/스튜디오 분석 — 권위 구축 에버그린
+      'best K-drama production companies studios ranked most successful 2026 guide',
+      'Studio Dragon vs JTBC Studios vs SLL which makes best K-dramas comparison',
+      'tvN vs JTBC vs Netflix Korea which platform produces best K-dramas 2026',
     ],
     contentTypes: ['listicle', 'news-explainer', 'best-x-for-y', 'deep-dive', 'how-to', 'x-vs-y', 'case-study'],
     adSenseRpm: 'medium',
