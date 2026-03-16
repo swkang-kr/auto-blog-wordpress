@@ -1034,6 +1034,41 @@ export function validateContent(
         warnings.push({ category: 'niche-accuracy', message: '"Hypoallergenic" has no legal or regulatory definition in Korea (MFDS) or the US (FDA). Content should note this is a marketing term, not a safety guarantee.', severity: 'warning' });
       }
     }
+
+    // 13. Glutathione oral supplement/drink must have medical disclaimer (distinct from topical serum)
+    if (/glutathione\s*(?:drink|supplement|oral|capsule|tablet)|oral\s*glutathione/i.test(plainText)) {
+      const hasMedicalDisclaimer = /not\s*a?\s*substitute|consult\s*(?:a|your)\s*(?:doctor|healthcare|physician|dermatologist)|medical\s*advice|healthcare\s*provider|건강기능식품/i.test(plainText);
+      if (!hasMedicalDisclaimer) {
+        issues.push({ category: 'niche-accuracy', message: 'Oral glutathione supplement/drink mentioned without medical disclaimer — MFDS classifies as "건강기능식품" (Health Functional Food), NOT cosmetic. Must include "not a substitute for medical advice" or "consult healthcare provider."', severity: 'error' });
+        eeatScore -= 2;
+      }
+    }
+
+    // 14. Snail mucin vs galactomyces/SK-II conflation (different categories entirely)
+    if (/(SK-?II|Pitera|galactomyces)/i.test(plainText) && /snail\s*(?:mucin|secretion)/i.test(plainText)) {
+      if (/(SK-?II|Pitera|galactomyces).*(?:like|similar\s*to|same\s*as).*snail|snail.*(?:like|similar\s*to|same\s*as).*(SK-?II|Pitera|galactomyces)/i.test(plainText)) {
+        issues.push({ category: 'niche-accuracy', message: 'SK-II Pitera (galactomyces ferment filtrate) and snail mucin incorrectly compared as similar — Pitera is fermented yeast, snail mucin is natural secretion. These are fundamentally different ingredient categories.', severity: 'error' });
+        eeatScore -= 2;
+      }
+    }
+
+    // 15. Bakuchiol in pregnancy context must include consultation disclaimer
+    if (/bakuchiol/i.test(plainText) && /pregnan/i.test(plainText)) {
+      const hasConsultNote = /consult\s*(?:your\s*)?(?:healthcare\s*provider|dermatologist|doctor)|medical\s*(?:advice|professional)/i.test(plainText);
+      if (!hasConsultNote) {
+        warnings.push({ category: 'niche-accuracy', message: 'Bakuchiol mentioned in pregnancy context without medical consultation disclaimer — while bakuchiol is NOT a retinoid, always add "Consult your healthcare provider before starting any new skincare during pregnancy."', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 16. SPF 60-99 on Amazon for Korean brands — needs market labeling clarification
+    if (/(?:amazon|us\s*market).*SPF\s*(?:[6-9][0-9])/i.test(plainText) && /(?:Korean|K-?Beauty|MFDS)/i.test(plainText)) {
+      const hasLabelingNote = /(?:US|Amazon)\s*(?:market|listing|label)|MFDS\s*(?:limits|caps|maximum)|SPF\s*50\+/i.test(plainText);
+      if (!hasLabelingNote) {
+        warnings.push({ category: 'niche-accuracy', message: 'SPF 60-99 on Amazon for Korean brand without labeling context — Korea MFDS caps at SPF 50+. Clarify: "While Amazon US shows SPF XX, Korea MFDS limits labeling to SPF 50+."', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
   }
 
   if (category === 'K-Entertainment') {

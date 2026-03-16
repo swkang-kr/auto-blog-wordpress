@@ -426,6 +426,29 @@ export const NICHES: NicheConfig[] = [
       'Korean skincare ingredients guide complete dictionary A to Z explained 2026',
       // "Brightening" vs "Whitening" — 글로벌 독자 교육 콘텐츠 (고 E-E-A-T)
       'Korean brightening skincare vs whitening what is the difference explained guide',
+      // ── 전문가 감사 추가 (2026-03-16 batch 12): 누락 트렌드·비교·가격 세그먼트 ──
+      // Glass Body — 글라스 스킨의 바디 케어 확장, 2026 최대 성장 트렌드
+      'glass body Korean skincare routine body brightening exfoliation 2026 guide',
+      'how to achieve glass body skin Italian towel Korean body products guide',
+      'best Korean body brightening products serum lotion for glass body 2026',
+      // Skinmalism 확장 — 2026 글로벌 미니멀 스킨케어 트렌드 추가 키워드
+      'K-beauty skinmalism vs 10-step routine which is trending 2026 guide',
+      'skinmalism Korean serums which actives do you actually need minimal routine 2026',
+      'how to transition from 10-step skincare to skinmalism minimal routine guide 2026',
+      // Dupes — 가격대 명시 키워드 (budget $30 이하 vs luxury $100+)
+      'budget Korean skincare dupes under 30 dollars for Tatcha La Mer Drunk Elephant 2026',
+      'affordable Korean skincare alternatives to luxury brands ranked by price 2026',
+      // Adenosine vs Retinol — MFDS 기능성 차별점 활용 비교
+      'adenosine vs retinol Korean anti-wrinkle serum which is better for beginners 2026',
+      // Niacinamide 농도별 비교 — 성분 덕후 타겟
+      'high concentration niacinamide Korean serums 5 to 10 percent comparison ranked 2026',
+      // Amazon vs Olive Young 가격 비교 — 어필리에이트 전환율 키워드
+      'Korean beauty products cheaper Olive Young vs Amazon price comparison 2026 guide',
+      'best K-beauty Amazon Prime Day deals COSRX Anua ranked 2026',
+      // Hyaluronic acid 분자량 — Torriden DIVE-IN 특화
+      'Korean hyaluronic acid five molecular weights Torriden DIVE-IN serum ranked 2026',
+      // PA 등급 교육 — 글로벌 독자 필수 정보
+      'Korean sunscreen PA rating explained PA+ to PA++++ what it means guide',
     ],
     contentTypes: ['product-review', 'best-x-for-y', 'x-vs-y', 'how-to', 'listicle', 'case-study', 'deep-dive', 'news-explainer'],
     adSenseRpm: 'high',
@@ -640,6 +663,21 @@ export const NICHES: NicheConfig[] = [
       // Coupang Play — 2025-2026 가장 빠르게 성장하는 K-Drama OTT 플랫폼
       'best K-dramas on Coupang Play 2026 exclusive originals ranked guide',
       'Coupang Play vs Netflix vs TVING which is best for K-dramas 2026 comparison',
+      // ── 전문가 감사 추가 (2026-03-16 batch 12): K-Entertainment 누락 세그먼트 ──
+      // Weverse 프리미엄 — 팬 멤버십 구독 모델
+      'Weverse membership how to get K-pop idol messages premium content guide 2026',
+      // Circle Chart vs Melon vs Hanteo — 차트 시스템 교육 (글로벌 팬 혼란 1위)
+      'Circle Chart vs Melon vs Hanteo Korean music charts explained which matters guide',
+      // K-Drama 장르 확장 — 힐링/컴포트, 액션/스파이, 직장 로코
+      'best Korean comfort healing dramas 2026 low stress feel good ranked guide',
+      'best Korean action spy thriller dramas Netflix 2026 high stakes ranked',
+      'best Korean workplace romance comedy dramas 2026 fan favorite guide',
+      // 예측형 K-pop 콘텐츠 — 팬 추측/토론 유도 (에버그린 댓글 트래픽)
+      'ENHYPEN 2026 comeback schedule predictions new era concept clues guide',
+      'TXT chapter concept lore predictions 2026 fan theories explained guide',
+      'K-pop 2026 comebacks schedule predictions what groups are coming back guide',
+      // 아이돌 뷰티 팁 — K-Beauty ↔ K-Entertainment 브릿지
+      'K-pop idol makeup artist tips professional techniques revealed guide 2026',
     ],
     contentTypes: ['listicle', 'news-explainer', 'best-x-for-y', 'deep-dive', 'how-to', 'x-vs-y', 'case-study'],
     adSenseRpm: 'medium',
