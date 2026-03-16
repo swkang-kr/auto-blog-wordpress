@@ -340,7 +340,7 @@ export const NICHES: NicheConfig[] = [
       'Benton centella propolis gel review sensitive acne skin guide',
       // AMPLE:N — 펩타이드 전문 브랜드, 가성비 안티에이징
       'AMPLE:N peptide shot ampoule review anti-aging results before after 2026',
-      // ILLIYOON (일리윤) — 아모레퍼시픽 더마 브랜드, Ato 세라마이드 크림 약국 베스트셀러
+      // ILLIYOON (일리윤) — 아모레퍼시픽 더마 브랜드, Ato 세라마이드 크림 올리브영 베스트셀러
       'Illiyoon ceramide ato concentrate cream review eczema sensitive skin 2026',
       'Illiyoon vs COSRX ceramide cream which is better for damaged skin barrier',
     ],

@@ -245,7 +245,7 @@ export class FactCheckService {
       seventeen: 2015, 'stray kids': 2018, ive: 2021, 'le sserafim': 2022,
       enhypen: 2020, txt: 2019, ateez: 2018,
       // K-Beauty brands (common AI dating errors)
-      cosrx: 2013, 'beauty of joseon': 2019, tirtir: 2019, laneige: 1994,
+      cosrx: 2013, 'beauty of joseon': 2010, tirtir: 2019, laneige: 1994,
       sulwhasoo: 1997, innisfree: 2000, missha: 2000, 'etude house': 1995,
       amorepacific: 1945,
       // Institutions

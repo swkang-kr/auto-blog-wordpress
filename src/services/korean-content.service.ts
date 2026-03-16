@@ -50,7 +50,7 @@ export class KoreanContentService {
 - Keep English brand names, technical terms, and proper nouns as-is
 - Korean SEO: include the keyword naturally in Korean context
 - Title: Create a compelling Korean title (not direct translation)
-- Excerpt: Korean meta description, 145-158 characters
+- Excerpt: Korean meta description, 80-100 characters (한글은 CJK 더블위드스 — Google SERP에서 영어 대비 2배 넓게 렌더링되므로 짧게)
 - Tags: 5-8 Korean tags related to the topic
 
 ## English Title: ${englishTitle}
