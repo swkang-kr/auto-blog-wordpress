@@ -790,11 +790,19 @@ export function validateContent(
 
   // ── Niche-specific content accuracy checks ──
   if (category === 'K-Beauty') {
-    // 1. Sunscreen content MUST explain PA rating system
+    // 1. Sunscreen content MUST explain PA rating system (presence + explanation)
     const isSunscreenContent = /sunscreen|spf|sun\s*protection|uv\s*(?:a|b)|sun\s*block/i.test(plainText);
     if (isSunscreenContent && !/PA\+/i.test(plainText)) {
       warnings.push({ category: 'niche-accuracy', message: 'K-Beauty sunscreen content missing PA rating explanation (PA+ to PA++++ — core K-Beauty differentiator)', severity: 'warning' });
       eeatScore -= 2;
+    }
+    // 1b. PA rating mentioned but not explained — must educate global readers
+    if (isSunscreenContent && /PA\+/i.test(plainText) && ['product-review', 'best-x-for-y', 'how-to', 'deep-dive'].includes(contentType)) {
+      const hasPaExplanation = /PA\s*rating\s*system|UVA\s*protection\s*(?:level|factor|rating)|PA\+\s*to\s*PA\+{4}|PA\+{4}\s*(?:means|highest|maximum)/i.test(plainText);
+      if (!hasPaExplanation) {
+        warnings.push({ category: 'niche-accuracy', message: 'PA rating mentioned but not explained — global readers need context: "PA++++ means highest UVA protection (16x+ protection factor), a rating system used in Korea/Japan." This is a core K-Beauty differentiator.', severity: 'warning' });
+        eeatScore -= 1;
+      }
     }
 
     // 2. Product review/best-x-for-y MUST include pricing or price comparison
@@ -1066,6 +1074,39 @@ export function validateContent(
       const hasLabelingNote = /(?:US|Amazon)\s*(?:market|listing|label)|MFDS\s*(?:limits|caps|maximum)|SPF\s*50\+/i.test(plainText);
       if (!hasLabelingNote) {
         warnings.push({ category: 'niche-accuracy', message: 'SPF 60-99 on Amazon for Korean brand without labeling context — Korea MFDS caps at SPF 50+. Clarify: "While Amazon US shows SPF XX, Korea MFDS limits labeling to SPF 50+."', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 17. MFDS functional cosmetic efficacy claims — non-functional products CANNOT make treatment claims
+    if (['product-review', 'best-x-for-y', 'deep-dive'].includes(contentType)) {
+      // Catch strong efficacy claims that require MFDS functional certification
+      const strongClaims = /(?:removes?|treats?|eliminates?|cures?|heals?|erases?)\s*(?:acne|wrinkles?|dark\s*spots?|hyperpigmentation|scars?|melasma|rosacea)/i;
+      if (strongClaims.test(plainText)) {
+        const hasFunctionalContext = /기능성\s*화장품|functional\s*cosmetic|MFDS.{0,30}(?:certif|approv)|may\s*help|known\s*for|supports?|promotes?/i.test(plainText);
+        if (!hasFunctionalContext) {
+          warnings.push({ category: 'niche-accuracy', message: 'Strong efficacy claim ("removes/treats/eliminates") without MFDS functional cosmetic context — only MFDS-certified 기능성 화장품 can make treatment claims. Use hedged language ("may help," "known for," "supports") for non-functional products.', severity: 'warning' });
+          eeatScore -= 2;
+        }
+      }
+    }
+
+    // 18. LED mask content — quasi-medical claims need disclaimer
+    if (/LED\s*(?:mask|device|light\s*therapy)/i.test(plainText) && ['product-review', 'best-x-for-y', 'deep-dive'].includes(contentType)) {
+      if (/(?:clinical|proven|guaranteed)\s*(?:results?|efficacy|improvement)/i.test(plainText)) {
+        const hasDeviceDisclaimer = /results?\s*(?:vary|may\s*differ)|consult\s*(?:a\s*)?dermatologist|not\s*(?:a\s*)?(?:medical|substitute)|complement.*not\s*replace/i.test(plainText);
+        if (!hasDeviceDisclaimer) {
+          warnings.push({ category: 'niche-accuracy', message: 'LED mask/device with clinical results claim but no disclaimer — add "Results vary by individual" or "LED devices complement but do not replace professional treatments. Consult a dermatologist."', severity: 'warning' });
+          eeatScore -= 1;
+        }
+      }
+    }
+
+    // 19. "Whitening" terminology in English-language K-Beauty content — prefer "brightening"
+    if (/\bwhitening\b/i.test(plainText) && !/미백|MFDS.*whitening|whitening.*MFDS|product\s*name|official\s*name|despite\s*the\s*(?:product\s*)?name/i.test(plainText)) {
+      const whitenCount = (plainText.match(/\bwhitening\b/gi) || []).length;
+      if (whitenCount >= 2) {
+        warnings.push({ category: 'niche-accuracy', message: '"Whitening" used multiple times without contextualizing as MFDS 미백 term — use "brightening" for English-language content (cultural sensitivity). Only use "whitening" when explaining the Korean regulatory term or reproducing an official product name.', severity: 'warning' });
         eeatScore -= 1;
       }
     }

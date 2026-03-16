@@ -158,8 +158,8 @@ export const NICHES: NicheConfig[] = [
       'BLACKPINK members skincare routine products revealed',
       'aespa Karina skincare routine products 2026 guide',
       'IVE Wonyoung beauty routine skincare products revealed',
-      // NOTE: NewJeans — 멤버 5인이 어도어와의 계약을 종료하고 독립 활동 중 (2025-2026).
-      //       콘텐츠 작성 시: 법적 분쟁/소속사 갈등 주장 금지, 뷰티 룩/제품 중심으로만 작성할 것.
+      // NOTE: NewJeans — 2025년 12월 어도어 독립 확정, 독립 아티스트로 활동 중 (2026).
+      //       콘텐츠 작성 시: 2025년 소속사 분쟁 내러티브 지양 (해결 완료), 독립 활동·뷰티 룩·제품 중심 작성.
       'NewJeans makeup looks how to recreate K-Beauty products',
       // K-Beauty 헤어 케어 — Amazon 어필리에이트 추가 기회
       'best Korean shampoo for hair loss thinning hair 2026',
@@ -468,8 +468,8 @@ export const NICHES: NicheConfig[] = [
       'BTS 2026 comeback latest what fans need to know full update',
       'BTS members solo activities ranked 2026 update',
       // 4세대 주력 그룹 — 급상승 트래픽
-      // NOTE: NewJeans — 멤버 5인이 어도어와의 계약을 종료하고 독립 활동 중 (2025-2026).
-      //       콘텐츠 작성 시: 법적 분쟁/소속사 갈등 주장 금지, 음악·팬덤 중심으로만 작성할 것.
+      // NOTE: NewJeans — 2025년 12월 어도어 독립 확정, 독립 아티스트 활동 중 (2026).
+      //       콘텐츠 작성 시: 2025년 소속사 분쟁 내러티브 지양 (해결 완료), 독립 전략·음악·팬덤 중심 작성.
       //       그룹명 'NewJeans' 사용은 팬덤 관점에서 가능하나, 소속사 관련 주장은 일절 금지.
       'NewJeans best songs ranked guide for new fans',
       'aespa KWANGYA universe lore explained complete guide for new fans',
