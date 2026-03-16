@@ -161,8 +161,8 @@ export const NICHES: NicheConfig[] = [
       'BLACKPINK members skincare routine products revealed',
       'aespa Karina skincare routine products 2026 guide',
       'IVE Wonyoung beauty routine skincare products revealed',
-      // NOTE: NewJeans — 2025년 12월 어도어 독립 확정, 독립 아티스트로 활동 중 (2026).
-      //       콘텐츠 작성 시: 2025년 소속사 분쟁 내러티브 지양 (해결 완료), 독립 활동·뷰티 룩·제품 중심 작성.
+      // NOTE: NewJeans — 2025년 12월 어도어 독립 활동 시작, 일부 법적 이슈 진행 중 (2026).
+      //       콘텐츠 작성 시: 소속사 분쟁 내러티브 지양, 독립 활동·뷰티 룩·제품 중심 작성. 법적 확정 사항은 단정 금지.
       'NewJeans makeup looks how to recreate K-Beauty products',
       // K-Beauty 헤어 케어 — Amazon 어필리에이트 추가 기회
       'best Korean shampoo for hair loss thinning hair 2026',
@@ -303,7 +303,7 @@ export const NICHES: NicheConfig[] = [
       // ── Tier 1 K-Beauty 브랜드 — 글로벌 인지도 최상위, 시드 키워드 누락 보완 ──
       // Innisfree (이니스프리) — 아모레퍼시픽, 제주 자연 원료, 그린티 라인 대표
       'Innisfree green tea seed serum review before after results 2026',
-      'Innisfree vs innisfree retinol cica best products ranked 2026',
+      'Innisfree retinol cica repair ampoule review best products ranked 2026',
       // Laneige (라네즈) — 아모레퍼시픽, 립 슬리핑 마스크 글로벌 베스트셀러
       'Laneige water sleeping mask review vs lip sleeping mask which is better',
       'Laneige lip sleeping mask all flavors ranked review 2026',
@@ -349,10 +349,15 @@ export const NICHES: NicheConfig[] = [
       // ILLIYOON (일리윤) — 아모레퍼시픽 더마 브랜드, Ato 세라마이드 크림 올리브영 베스트셀러
       'Illiyoon ceramide ato concentrate cream review eczema sensitive skin 2026',
       'Illiyoon vs COSRX ceramide cream which is better for damaged skin barrier',
+      // 아토피/습진 K-Beauty — Reddit r/AsianBeauty 급성장 세그먼트
+      'best Korean skincare for atopic eczema prone skin barrier repair complete routine 2026',
+      'Korean eczema cream vs Western brand comparison which is better sensitive skin 2026',
       // 한국 피부과 추천 제품 — Reddit/TikTok 최대 트렌드 (피부과 전문의 권위)
       'Korean dermatologist recommended skincare products 2026 ranked guide',
       'what Korean dermatologists actually use for their own skin routine 2026',
       'Korean dermatologist anti-aging skincare routine products guide 2026',
+      // 더마투어리즘 — 한국 피부과 원정 (YMYL 주의: "consult a professional" 면책 필수)
+      'Korean dermatology clinic guide for foreigners Seoul Gangnam what to expect 2026',
       // K-Beauty 구독 박스 — 어필리에이트 기회 + 입문자 허들 해소
       'best K-beauty subscription box 2026 FaceTory Bomibox compared ranked',
       'K-beauty subscription box review which is worth it for beginners 2026',
@@ -368,7 +373,7 @@ export const NICHES: NicheConfig[] = [
       'Sulwhasoo First Care Activating Serum review before after results 2026',
       'Sulwhasoo vs La Mer which luxury skincare brand is worth it comparison',
       'best Sulwhasoo products ranked for anti-aging Korean luxury skincare guide',
-      // History of Whoo (더 후) — LG생활건강 한방 궁중 화장품, 아시아 면세점 1위 뷰티 브랜드
+      // History of Whoo (더 후) — LG생활건강 한방 궁중 화장품, 과거 아시아 면세점 1위 뷰티 브랜드 (2023년 이후 중국 관광객 감소로 매출 하락)
       'History of Whoo review is Korean luxury skincare worth the price 2026',
       'History of Whoo vs Sulwhasoo which Korean luxury brand is better comparison',
       // AmorePacific (아모레퍼시픽 브랜드 라인) — 녹차 원료, 미니멀 럭셔리
@@ -472,11 +477,9 @@ export const NICHES: NicheConfig[] = [
       'Korean skincare routine for men beginners step by step guide 2026',
       'K-beauty for men complete skincare guide what products to use 2026',
       'Korean men grooming skincare essentials what to buy 2026 guide',
-      'Korean sunscreen for men no white cast lightweight best ranked 2026',
       'Korean toner for men best picks oily combination skin 2026 ranked',
-      // 아이돌 스킨케어 크로스오버 — K-Beauty ↔ K-Entertainment 브릿지 (추가 보강)
-      'K-pop idol skincare routine products they actually use revealed guide',
-      'aespa Karina skincare routine products 2026 complete guide',
+      // 아이돌 스킨케어 크로스오버 — K-Beauty ↔ K-Entertainment 브릿지 (추가 보강, 차별화된 앵글)
+      'K-pop idol glass skin secrets how to get the same look at home guide',
       'IVE Wonyoung skincare routine beauty secrets products revealed 2026',
       'NewJeans skincare routine K-Beauty products beauty looks guide 2026',
       // 가격 비교 — 어필리에이트 전환율 최고 (구매 의도)
@@ -489,6 +492,9 @@ export const NICHES: NicheConfig[] = [
       // Skintific — NOTE: 인도네시아 브랜드 (PT Skintific Global Indonesia), 한국 스타일 포뮬레이션 사용. 한국 브랜드가 아님.
       'Skintific skincare review Korean-inspired formulas best products barrier repair 2026',
       'Skintific vs COSRX which is better for sensitive skin comparison 2026',
+      // 한국 네일아트 — TikTok 바이럴 급성장 트렌드 (젤 스티커, press-on nails, 젤리 네일)
+      'best Korean nail art stickers press on nails ranked easy gel manicure 2026 guide',
+      'Korean nail art trends 2026 what is trending K-nail glass jelly chrome nail guide',
     ],
     contentTypes: ['product-review', 'best-x-for-y', 'x-vs-y', 'how-to', 'listicle', 'case-study', 'deep-dive', 'news-explainer'],
     adSenseRpm: 'high',
@@ -508,9 +514,9 @@ export const NICHES: NicheConfig[] = [
       'BTS 2026 comeback latest what fans need to know full update',
       'BTS members solo activities ranked 2026 update',
       // 4세대 주력 그룹 — 급상승 트래픽
-      // NOTE: NewJeans — 2025년 12월 어도어 독립 확정, 독립 아티스트 활동 중 (2026).
-      //       콘텐츠 작성 시: 2025년 소속사 분쟁 내러티브 지양 (해결 완료), 독립 전략·음악·팬덤 중심 작성.
-      //       그룹명 'NewJeans' 사용은 팬덤 관점에서 가능하나, 소속사 관련 주장은 일절 금지.
+      // NOTE: NewJeans — 2025년 12월 어도어 독립 활동 시작, 일부 법적 이슈 진행 중 (2026).
+      //       콘텐츠 작성 시: 소속사 분쟁 내러티브 지양, 독립 음악·팬덤 중심 작성. 법적 확정 사항은 단정 금지.
+      //       그룹명 'NewJeans' 사용은 팬덤 관점에서 가능하나, 소속사·계약·상표 관련 확정 주장은 일절 금지.
       'NewJeans best songs ranked guide for new fans',
       'aespa KWANGYA universe lore explained complete guide for new fans',
       'aespa Karina solo debut 2026 what fans need to know',
@@ -736,6 +742,12 @@ export const NICHES: NicheConfig[] = [
       'Korean variety shows on Netflix 2026 funniest shows ranked guide',
       'Running Man vs Knowing Bros which Korean variety show to watch first guide',
       'I Live Alone Korean variety show why it is so popular explained 2026',
+      // 버라이어티 게임 규칙 설명 — 에버그린 + 글로벌 팬 필수 정보
+      'Running Man games rules explained for international fans complete guide',
+      'Knowing Bros entrance test questions translated funniest moments explained guide',
+      // K-팝 댄스 커버 — YouTube/TikTok 검색량 최고 에버그린 카테고리
+      'how to learn K-pop dance for beginners best tutorials step by step guide 2026',
+      'best K-pop dance cover tutorials ranked easy to hard beginner to advanced 2026',
       // 한국 영화 — 봉준호/박찬욱 이후 글로벌 K-영화 팬 세그먼트
       'best Korean movies of all time ranked beginners guide 2026',
       'best Korean thriller movies on Netflix 2026 must watch ranked',

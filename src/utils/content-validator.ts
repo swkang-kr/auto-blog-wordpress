@@ -1124,6 +1124,9 @@ export function validateContent(
       { pattern: /MEOVV\b[^.]*\b(?:HYBE|SM|JYP|YG)\b/i, correct: 'MEOVV is under THEBLACKLABEL, NOT a Big 4 label' },
       { pattern: /tripleS\b[^.]*\b(?:SM|HYBE|JYP|YG)\b/i, correct: 'tripleS is under MODHAUS (모드하우스), NOT a Big 4 label' },
       { pattern: /NEXZ\b[^.]*\b(?:SM|HYBE|YG)\b/i, correct: 'NEXZ is under JYP Entertainment (Japan-based group), NOT SM/HYBE/YG' },
+      { pattern: /PLAVE\b[^.]*\b(?:SM|HYBE|JYP|YG)\b/i, correct: 'PLAVE is under VLAST (블라스트), NOT a Big 4 label' },
+      { pattern: /TWS\b[^.]*\b(?:SM|JYP|YG)\b/i, correct: 'TWS is under PLEDIS Entertainment (a HYBE sublabel), NOT SM/JYP/YG' },
+      { pattern: /ZeroBaseOne\b[^.]*\b(?:SM|HYBE|JYP|YG)\b/i, correct: 'ZeroBaseOne (ZB1) is under WAKEONE Entertainment, NOT a Big 4 label' },
     ];
     for (const check of labelErrors) {
       if (check.pattern.test(plainText)) {
@@ -1195,7 +1198,7 @@ export function validateContent(
       'aespa': 'MY', 'IVE': 'DIVE', 'LE SSERAFIM': 'FEARNOT',
       'BABYMONSTER': 'MONSTER', 'PLAVE': 'ASTERDOM', 'QWER': 'AUBE',
       'RIIZE': 'BRIIZE', 'BOYNEXTDOOR': 'ONEDOOR',
-      'ILLIT': 'LLIT', 'KISS OF LIFE': 'KISSY',
+      'ILLIT': 'GLLIT', 'KISS OF LIFE': 'KISSY',
       'tripleS': 'LOVElution', 'WHIPLASH': 'WHIPPERS',
       'NCT WISH': 'WISHING', 'KATSEYE': 'EMBERS',
       'ITZY': 'MIDZY', 'NMIXX': 'NSWer',
