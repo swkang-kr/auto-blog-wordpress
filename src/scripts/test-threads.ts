@@ -12,18 +12,18 @@ import { ThreadsService } from '../services/threads.service.js';
 import type { BlogContent, PublishedPost } from '../types/index.js';
 
 const TEST_CONTENT: BlogContent = {
-  title: 'Best Korean Skincare Routine for Glass Skin 2026',
+  title: 'BTS Comeback 2026: Everything Fans Need to Know',
   html: '',
-  excerpt: 'Discover the top K-Beauty products Korean dermatologists actually recommend for achieving that coveted glass skin look. From COSRX snail mucin to Anua heartleaf toner — here\'s your complete guide.',
-  tags: ['KBeauty', 'GlassSkin', 'KoreanSkincare'],
-  category: 'K-Beauty',
+  excerpt: 'BTS is back! All members have completed military service and the group is gearing up for their highly anticipated 2026 comeback. Here\'s everything ARMY needs to know about the reunion era.',
+  tags: ['BTS', 'KPop', 'KEntertainment'],
+  category: 'K-Entertainment',
   imagePrompts: [],
   imageCaptions: [],
 };
 
 const TEST_POST: PublishedPost = {
   postId: 99999,
-  url: 'https://trendhunt.site/best-korean-skincare-routine-glass-skin-2026/',
+  url: 'https://trendhunt.net/bts-comeback-2026/',
   title: TEST_CONTENT.title,
   featuredImageId: 0,
 };
