@@ -486,8 +486,8 @@ export const NICHES: NicheConfig[] = [
       // 선크림 비교 — UV 필터 교육 콘텐츠 고 E-E-A-T
       'Korean sunscreen vs American sunscreen UV filters difference PA vs SPF explained',
       'PA++++ sunscreen comparison best Korean SPF ranked by UV protection 2026',
-      // Skintific — 동남아 폭발적 성장 한국 포뮬레이션 브랜드
-      'Skintific Korean skincare review best products barrier repair 2026',
+      // Skintific — NOTE: 인도네시아 브랜드 (PT Skintific Global Indonesia), 한국 스타일 포뮬레이션 사용. 한국 브랜드가 아님.
+      'Skintific skincare review Korean-inspired formulas best products barrier repair 2026',
       'Skintific vs COSRX which is better for sensitive skin comparison 2026',
     ],
     contentTypes: ['product-review', 'best-x-for-y', 'x-vs-y', 'how-to', 'listicle', 'case-study', 'deep-dive', 'news-explainer'],
@@ -728,9 +728,9 @@ export const NICHES: NicheConfig[] = [
       'Stray Kids best songs ranked guide for new fans by era 2026',
       'Stray Kids self-produced music how 3RACHA works explained guide',
       'Stray Kids member profiles who is who complete guide new fans 2026',
-      // Wavve (웨이브) — KBS/MBC/SBS 합작 OTT, TVING/Coupang Play와 3강 체제
-      'Wavve vs TVING vs Coupang Play which Korean OTT is best 2026 comparison',
-      'best K-dramas on Wavve 2026 exclusive originals ranked guide',
+      // NOTE: Wavve was absorbed by TVING in 2025 — no longer a separate platform. Use TVING-focused keywords.
+      'TVING absorbed Wavve Korean OTT consolidation what it means for subscribers explained 2025',
+      'Korean OTT landscape 2026 TVING vs Coupang Play Netflix which is best guide',
       // 한국 예능 (비아이돌) — 글로벌 시청자 급증, Netflix 예능 구독 유입
       'best Korean variety shows for beginners 2026 ranked must watch',
       'Korean variety shows on Netflix 2026 funniest shows ranked guide',

@@ -1118,7 +1118,7 @@ export function validateContent(
       { pattern: /ILLIT\b[^.]*\bADOR\b/i, correct: 'ILLIT is under BELIFT LAB, NOT ADOR' },
       { pattern: /(?:SHINee|EXO|NCT|WHIPLASH|Red Velvet)\b[^.]*\bHYBE\b/i, correct: 'SM Entertainment groups incorrectly attributed to HYBE' },
       { pattern: /QWER\b[^.]*\b(?:JYP|SM|HYBE|YG)\b/i, correct: 'QWER is under Million Market (밀리언마켓), NOT a Big 4 label' },
-      { pattern: /\(G\)\s*I-?DLE\b[^.]*\b(?:JYP|SM|HYBE|YG)\b/i, correct: '(G)I-DLE is under Cube Entertainment, NOT a Big 4 label' },
+      { pattern: /(?:\(G\)\s*I-?DLE|GIDLE|\(G\)IDLE)\b[^.]*\b(?:JYP|SM|HYBE|YG)\b/i, correct: '(G)I-DLE is under Cube Entertainment, NOT a Big 4 label' },
       { pattern: /8TURN\b[^.]*\bJYP\b/i, correct: '8TURN is under MNH Entertainment, NOT JYP' },
       { pattern: /AMPERS.?ONE\b[^.]*\b(?:SM|HYBE)\b/i, correct: 'AMPERS&ONE is under FNC Entertainment, NOT SM/HYBE' },
       { pattern: /MEOVV\b[^.]*\b(?:HYBE|SM|JYP|YG)\b/i, correct: 'MEOVV is under THEBLACKLABEL, NOT a Big 4 label' },
@@ -1227,6 +1227,13 @@ export function validateContent(
         warnings.push({ category: 'niche-accuracy', message: 'NewJeans/NJZ naming stated as settled fact — the group name trademark is still legally contested. Use hedged language.', severity: 'warning' });
         eeatScore -= 1;
       }
+      // Check for definitive statements about ADOR/contract resolution (still legally contested as of 2026)
+      if (/NewJeans\s*(?:left|departed from|parted ways with|severed ties with|is no longer with|terminated.*contract)\s*ADOR/i.test(plainText) ||
+          /ADOR\s*(?:lost|no longer manages|released|terminated)\s*NewJeans/i.test(plainText) ||
+          /NewJeans.*(?:contract|trademark|group name)\s*(?:is|has been|was)\s*(?:settled|resolved|finalized|confirmed)/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'NewJeans ADOR/contract status stated as settled fact — legal situation (contract terms, trademark ownership) remains contested as of 2026. Use hedged language such as "reportedly" or "according to reports."', severity: 'warning' });
+        eeatScore -= 1;
+      }
     }
 
     // 10. 초동 (first week sales) — important K-pop metric; must specify chart source when citing
@@ -1315,9 +1322,9 @@ export function validateContent(
     const brandErrors: Array<{ pattern: RegExp; correct: string }> = [
       { pattern: /Goodal\b[^.]*\bglutathione/i, correct: 'Goodal is known for its Green Tangerine (vitamin C) line, NOT glutathione — do not conflate' },
       { pattern: /glutathione\b[^.]*\bGoodal\s*Green\s*Tangerine/i, correct: 'Goodal Green Tangerine is a vitamin C line, NOT glutathione — the Goodal glutathione product is "Youth Cream"' },
-      { pattern: /COSRX\b[^.]*\b(?:Amore\s*Pacific|AmorePacific|LG\s*H&H)/i, correct: 'COSRX was acquired by L\'Oréal in 2024, NOT Amorepacific or LG H&H' },
+      { pattern: /COSRX\b[^.]*\b(?:Amore\s*Pacific|AmorePacific|LG\s*H&H)/i, correct: 'COSRX was acquired by L\'Oréal (announced Dec 2023, completed 2024), NOT Amorepacific or LG H&H' },
       { pattern: /Dr\.?\s*Jart\+?\b[^.]*\b(?:Amore|LG\s*H&H|Korean\s*owned)/i, correct: 'Dr.Jart+ was acquired by Estée Lauder Companies in 2019 — it is now a global luxury portfolio brand' },
-      { pattern: /(?:Innisfree|Laneige|Etude|Sulwhasoo|ILLIYOON|Mamonde|IOPE)\b[^.]*\bLG\s*H&H/i, correct: 'These are Amorepacific brands, NOT LG H&H — LG H&H owns The Face Shop, Sum37, O HUI, belif' },
+      { pattern: /(?:Innisfree|Laneige|Etude|Sulwhasoo|ILLIYOON|Mamonde|IOPE|Hera|헤라)\b[^.]*\bLG\s*H&H/i, correct: 'These are Amorepacific brands, NOT LG H&H — LG H&H owns The Face Shop, Sum37, O HUI, belif' },
       { pattern: /(?:The\s*Face\s*Shop|belif|Sum\s*37|O\s*HUI|CNP)\b[^.]*\bAmore\s*Pacific/i, correct: 'These are LG H&H (LG생활건강) brands, NOT Amorepacific' },
     ];
     for (const check of brandErrors) {
