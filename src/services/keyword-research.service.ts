@@ -672,7 +672,7 @@ STRATEGY: Consider creating content that directly targets one of these content g
     return `\n## Competitor Content Gaps (Page 2 opportunities)\nThese queries have high impressions but we rank on page 2+. Creating dedicated, superior content can capture this traffic:\n${gapLines}\n`;
   }
 
-  private validateKoreaRelevance(analysis: KeywordAnalysis): KeywordAnalysis {
+  private validateKoreaRelevance(analysis: KeywordAnalysis, niche?: NicheConfig): KeywordAnalysis {
     const koreaTerms = [
       // Core Korea terms
       'korea', 'korean', 'seoul', 'samsung', 'hyundai', 'lg', 'sk', 'kospi', 'kosdaq',
@@ -697,6 +697,12 @@ STRATEGY: Consider creating content that directly targets one of these content g
       'heartleaf', 'propolis', 'snail mucin', 'rice water', 'rice toner',
       'essence review', 'cushion foundation', 'toner pad', 'skin barrier',
       'chok-chok', 'skip-care', 'slugging korean', 'pa++++',
+      // K-Beauty ingredient terms strongly associated with Korean skincare
+      'bakuchiol', 'tranexamic acid', 'adenosine', 'madecassoside',
+      'polyglutamic acid', 'pdrn', 'salmon dna', 'galactomyces', 'bifida',
+      'glass body', 'skin flooding', 'hanbang',
+      // K-Beauty brands (additional coverage)
+      'banila co', 'hince', 'vt cosmetics',
       // K-Entertainment groups — 3rd & 4th gen
       'twice', 'seventeen', 'stray kids', 'ateez', 'txt', 'enhypen',
       'le sserafim', 'ive', 'newjeans', 'aespa', 'babymonster',
@@ -742,8 +748,8 @@ STRATEGY: Consider creating content that directly targets one of these content g
       );
     }
 
-    // Post-parse finance keyword blocker for K-Entertainment/K-Beauty niches
-    // Prompt-level blocking alone is insufficient — Claude sometimes still selects finance topics
+    // Post-parse finance keyword blocker for K-Entertainment niches (strict)
+    // K-Beauty case-study/deep-dive may legitimately discuss brand market growth — allow with softer block
     const financeTerms = [
       'revenue', 'profit', 'earnings', 'stock price', 'valuation', 'investment',
       'financial', 'market cap', 'ipo', 'dividend', 'quarterly report', 'annual report',
@@ -751,10 +757,15 @@ STRATEGY: Consider creating content that directly targets one of these content g
     ];
     const hasFinanceTerm = financeTerms.some(t => keywordLower.includes(t));
     if (hasFinanceTerm) {
-      logger.warn(`REJECTED keyword "${analysis.selectedKeyword}" — finance/business topic blocked for K-Beauty/K-Entertainment niche`);
-      throw new KeywordResearchError(
-        `Keyword "${analysis.selectedKeyword}" contains finance/business terms. Select a fan-focused or product-focused keyword instead.`,
-      );
+      // K-Beauty case-study and deep-dive can discuss brand market performance
+      const isKBeautyAnalysis = niche?.category === 'K-Beauty' && ['case-study', 'deep-dive'].includes(analysis.contentType);
+      if (!isKBeautyAnalysis) {
+        logger.warn(`REJECTED keyword "${analysis.selectedKeyword}" — finance/business topic blocked for ${niche?.category ?? 'unknown'} niche`);
+        throw new KeywordResearchError(
+          `Keyword "${analysis.selectedKeyword}" contains finance/business terms. Select a fan-focused or product-focused keyword instead.`,
+        );
+      }
+      logger.info(`Allowed finance term in K-Beauty ${analysis.contentType}: "${analysis.selectedKeyword}" (brand market analysis permitted)`);
     }
 
     return analysis;
@@ -935,7 +946,7 @@ STRATEGY: Consider creating content that directly targets one of these content g
     let cleaned = text.replace(/```(?:json)?\s*/g, '').replace(/```\s*$/g, '').trim();
 
     try {
-      return this.validateKoreaRelevance(JSON.parse(cleaned) as KeywordAnalysis);
+      return this.validateKoreaRelevance(JSON.parse(cleaned) as KeywordAnalysis, niche);
     } catch {
       // continue
     }
@@ -968,7 +979,7 @@ STRATEGY: Consider creating content that directly targets one of these content g
 
     const jsonStr = cleaned.slice(startIdx, endIdx + 1);
     try {
-      return this.validateKoreaRelevance(JSON.parse(jsonStr) as KeywordAnalysis);
+      return this.validateKoreaRelevance(JSON.parse(jsonStr) as KeywordAnalysis, niche);
     } catch (e) {
       throw new KeywordResearchError(
         `Failed to parse analysis JSON for niche "${niche.name}": ${(e as Error).message}`,

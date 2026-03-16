@@ -55,6 +55,10 @@ const KBEAUTY_BRANDS: Record<string, string> = {
   'Aestura':          `https://www.amazon.com/s?k=Aestura&tag=${AFFILIATE_TAG}`,
   'Tony Moly':        `https://www.amazon.com/s?k=Tony+Moly&tag=${AFFILIATE_TAG}`,
   'Holika Holika':    `https://www.amazon.com/s?k=Holika+Holika&tag=${AFFILIATE_TAG}`,
+  // 2026 trending makeup/color brands
+  'BANILA CO':        `https://www.amazon.com/s?k=BANILA+CO&tag=${AFFILIATE_TAG}`,
+  'Hince':            `https://www.amazon.com/s?k=Hince+makeup&tag=${AFFILIATE_TAG}`,
+  'FWEE':             `https://www.amazon.com/s?k=FWEE+Korean+makeup&tag=${AFFILIATE_TAG}`,
 };
 
 const DISCLOSURE = `<p class="ab-affiliate-disclosure" style="margin:0 0 20px 0; padding:12px 16px; background:#fff8e1; border:1px solid #ffe082; border-radius:8px; font-size:12px; color:#666; line-height:1.5;"><strong>Disclosure:</strong> This article contains affiliate links. If you make a purchase through these links, we may earn a small commission at no extra cost to you. <a href="/privacy-policy/" style="color:#0066FF;">Learn more</a>.</p>`;
