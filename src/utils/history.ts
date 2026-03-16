@@ -49,7 +49,6 @@ export class PostHistory {
     recipe: ['recipes', 'cooking', 'cook', 'dish', 'meal'],
     chicken: ['poultry'],
     skincare: ['skin care', 'skin', 'complexion', 'facial'],
-    travel: ['trip', 'journey', 'tour', 'visiting', 'visit'],
     guide: ['tutorial', 'walkthrough', 'handbook'],
     tips: ['advice', 'tricks', 'hacks', 'strategies'],
     beginner: ['beginners', 'newbie', 'starter', 'start', 'getting started'],
@@ -321,10 +320,6 @@ export class PostHistory {
     'k-beauty-skincare': {
       'skincare-routine-guide': ['routine', 'skincare', 'glass skin', 'step', 'regimen'],
       'ingredient-deep-dive': ['ingredient', 'niacinamide', 'retinol', 'vitamin c', 'hyaluronic', 'centella'],
-    },
-    'korea-travel-guide': {
-      'seoul-travel-essentials': ['seoul', 'subway', 'transport', 'accommodation', 'hotel'],
-      'korea-food-guide': ['food', 'restaurant', 'street food', 'korean bbq', 'kimchi'],
     },
     'k-entertainment-business': {
       'kpop-business-analysis': ['kpop', 'k-pop', 'hybe', 'sm entertainment', 'jyp', 'yg'],

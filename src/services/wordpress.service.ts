@@ -1028,7 +1028,7 @@ ${socialHtml}
     category?: string,
   ): string {
     const question = pollQuestion?.question || `What aspect of ${keyword || 'this topic'} interests you most?`;
-    const options = pollQuestion?.options || ['Technology & Innovation', 'Investment Opportunities', 'Cultural Impact'];
+    const options = pollQuestion?.options || ['K-Beauty Skincare Trends', 'K-Pop Comeback Highlights', 'K-Drama Recommendations'];
 
     const optionsHtml = options.map((opt, i) => {
       const colors = ['#0066FF', '#00CC66', '#FF6B35', '#9B59B6'];

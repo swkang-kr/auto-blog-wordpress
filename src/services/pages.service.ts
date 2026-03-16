@@ -149,8 +149,8 @@ export class PagesService {
   private buildAboutPage(siteName: string, owner: string, authorLinks?: { linkedin?: string; twitter?: string }, authorBio?: string, authorCredentials?: string): string {
     // Build Person schema.org JSON-LD for author E-E-A-T
     const sameAs = [authorLinks?.linkedin, authorLinks?.twitter].filter(Boolean);
-    const credentials = authorCredentials || 'Korea Market & Trends Analyst';
-    const bio = authorBio || `${owner} is a Korea-focused analyst covering Korean technology, entertainment, and financial markets for an international audience.`;
+    const credentials = authorCredentials || 'K-Beauty & K-Entertainment Specialist';
+    const bio = authorBio || `${owner} is a Korea-focused writer covering K-Beauty skincare, K-Pop, K-Drama, and Hallyu culture for an international audience.`;
     const personJsonLd = JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'Person',

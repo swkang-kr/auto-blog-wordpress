@@ -47,7 +47,7 @@ export const ALL_SIGNATURE_SECTION_NAMES = [
     ),
   ),
   // Legacy names for backward compatibility
-  'Global Context', 'What This Means for Investors', 'Why the World Is Watching',
+  'Global Context', 'Global Hallyu Impact', 'Why the World Is Watching',
 ];
 
 /**
@@ -58,7 +58,7 @@ function getSignatureSection(category: string, contentType: string, keyword: str
   const nicheMap = NICHE_SIGNATURE_SECTIONS[category];
   const options = nicheMap
     ? (nicheMap[contentType] || nicheMap.default)
-    : ['Global Context', 'What This Means for Investors', 'Why the World Is Watching'];
+    : ['Global Context', 'Global Hallyu Impact', 'Why the World Is Watching'];
 
   let hash = 0;
   const key = `${category}:${contentType}:${keyword}`;
@@ -264,7 +264,7 @@ To reach WORD_COUNT_TARGET+ words WITHOUT padding:
 - NEVER pad content with generic statements, repetitive explanations, or filler transitions
 - Include real data points, Korean-language source references, and expert perspectives
 - Add a FAQ section (3-5 questions, ONLY questions readers would actually ask — NO filler Q&As)
-- Add a niche-appropriate signature section (e.g., "Technical Deep Dive", "Investment Outlook", "Insider Tips", "Industry Analysis", "Expert Skincare Insight")
+- Add a niche-appropriate signature section (e.g., "Expert Skincare Insight", "Global Hallyu Impact", "Insider Tips", "Industry Analysis", "K-Beauty Deep Dive")
 - If you run out of genuinely useful things to say, STOP — quality beats quantity
 
 ## Content Type Guidelines
@@ -1296,7 +1296,7 @@ Respond with pure JSON only.`;
         'K-Beauty': 'K-Beauty & Skincare Specialist | Evidence-based product analysis, ingredient science, and Korean beauty routines for global readers.',
         'K-Entertainment': 'K-Pop & K-Drama Culture Writer | Covering comebacks, idol news, drama recommendations, and Hallyu fan culture worldwide.',
       };
-      const bylineBio = NICHE_BYLINE_BIO[niche.category] || 'Korea Market & Trends Analyst | Covering Korean tech, entertainment, and financial markets for global readers.';
+      const bylineBio = NICHE_BYLINE_BIO[niche.category] || 'K-Beauty & K-Entertainment Specialist | Covering Korean beauty trends and Hallyu culture for global readers.';
 
       const byline =
         `<div style="margin:30px 0 0 0; padding:20px 24px; background:#f8f9fa; border-radius:8px; display:flex; align-items:center; gap:16px;">` +

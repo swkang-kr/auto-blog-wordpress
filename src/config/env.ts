@@ -65,14 +65,14 @@ const envSchema = z.object({
   // Auto-rewrite underperforming posts (0 = disabled)
   AUTO_REWRITE_COUNT: z.coerce.number().int().min(0).default(2),
   AUTO_REWRITE_MIN_AGE_DAYS: z.coerce.number().int().min(7).default(30),
-  // Pinterest - optional, enables auto-pinning for visual categories (Travel, Food, Beauty)
+  // Pinterest - optional, enables auto-pinning for visual categories (K-Beauty, K-Entertainment)
   PINTEREST_ACCESS_TOKEN: z.string().default(''),
   // Newsletter form URL (Mailchimp/ConvertKit) - optional, enables in-content email CTA
   NEWSLETTER_FORM_URL: z.string().default(''),
   // Affiliate settings - optional JSON mapping of category to affiliate program URLs
   AFFILIATE_MAP: z.string().default(''),
   // Niche focus mode: comma-separated niche IDs to concentrate on for topical authority
-  // e.g., "korean-tech-ai,korean-finance-stocks,k-beauty-skincare"
+  // e.g., "k-beauty-skincare,k-beauty-makeup,k-entertainment-business"
   // When set, only these niches are used (ignoring others). Clear after cluster is built.
   NICHE_FOCUS_IDS: z.string().default(''),
   // Korean content generation: enable hreflang Korean versions of published posts

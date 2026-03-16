@@ -80,11 +80,11 @@ function computeOriginalResearchBonus(plainText: string, html: string): number {
   if (hasMethodology) bonus += 2;
 
   // +2: Korean data source citations
-  // Finance/Tech: BOK, KOSIS, DART, KOTRA
+  // K-Beauty/K-Entertainment: Korean data sources for E-E-A-T credibility
   // K-Beauty: Allure Korea, Harpers Bazaar, Vogue Korea, INCI Decoder, Olive Young
   // K-Entertainment: KOCCA, Hanteo, Circle Chart, Billboard Korea, Weverse Magazine
   const koreanDataSources = [
-    // Finance & institution
+    // Korean government & statistics (general credibility)
     'bok', 'kosis', 'dart', 'kotra', 'kisa', 'bank of korea', 'korean statistical',
     // K-Beauty editorial & ingredient sources
     // NOTE: 'allure korea' (not plain 'allure') to avoid false-positive matches with US Allure
@@ -634,7 +634,7 @@ export function validateContent(
 
   // 1. Korean source citations
   const koreanSourcePatterns = [
-    // Finance & government
+    // Korean government & general credibility sources
     /Bank of Korea|BOK|한국은행/i,
     /Korea Exchange|KRX|한국거래소/i,
     /DART|dart\.fss/i,
@@ -750,8 +750,7 @@ export function validateContent(
     eeatScore -= unsourcedClaims;
   }
 
-  // 8. Stronger Korean source requirement for Finance/Tech niches (need 2+ citations)
-  // K-Beauty YMYL-adjacent: stricter Korean source requirement (need 2+ citations)
+  // 8. Stricter Korean source requirement for K-Beauty (YMYL-adjacent, need 2+ citations)
   if (category === 'K-Beauty') {
     if (koreanCitationCount === 1) {
       warnings.push({

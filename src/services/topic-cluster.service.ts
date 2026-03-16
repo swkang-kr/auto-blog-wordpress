@@ -66,13 +66,6 @@ const NICHE_SUBTOPICS: Record<string, Record<string, string[]>> = {
     'Industry & Market': ['market', 'industry', 'export', 'revenue', 'growth', 'trend', 'k-beauty market', 'olive young sales', 'amazon k-beauty'],
     'Trends & Innovations': ['trend', 'innovation', 'glass skin', 'clean beauty', 'sustainable', 'minimalist', 'skip care', 'cloud skin', 'pore care', 'babyface', 'dupe', 'budget'],
   },
-  'korea-travel': {
-    'Cities & Destinations': ['seoul', 'busan', 'jeju', 'gyeongju', 'incheon', 'daegu', 'city', 'destination'],
-    'Transportation': ['ktx', 'subway', 'bus', 'train', 'airport', 'transport', 't-money', 'taxi'],
-    'Food & Dining': ['food', 'restaurant', 'street food', 'cafe', 'bbq', 'kimchi', 'soju', 'dining'],
-    'Accommodation': ['hotel', 'hostel', 'airbnb', 'hanok', 'stay', 'accommodation', 'guesthouse'],
-    'Culture & Experiences': ['temple', 'palace', 'festival', 'tradition', 'hanbok', 'culture', 'museum'],
-  },
   'k-entertainment': {
     'K-Pop': [
       // 3rd gen
@@ -872,15 +865,8 @@ ${cluster.pillarUrl ? `<p style="margin:12px 0 0 0;"><a href="${cluster.pillarUr
   private identifyContentGaps(nicheId: string, coveredKeywords: string[]): string[] {
     // Common topic patterns that should exist per niche category
     const topicTemplates: Record<string, string[]> = {
-      'korean-tech': ['beginner guide', 'comparison', 'future trends', 'investment analysis', 'industry overview'],
       'k-entertainment': ['beginner guide', 'history', 'industry economics', 'global impact', 'fan culture'],
-      'korean-finance': ['beginner guide', 'market analysis', 'investment strategy', 'risk management', 'regulatory overview'],
-      'korean-food': ['beginner guide', 'regional specialties', 'health benefits', 'cooking techniques', 'restaurant guide'],
-      'korea-travel': ['beginner guide', 'budget tips', 'seasonal guide', 'hidden gems', 'transportation guide'],
-      'korean-language': ['beginner guide', 'grammar essentials', 'vocabulary building', 'pronunciation', 'cultural context'],
       'k-beauty': ['beginner guide', 'product comparison', 'ingredient analysis', 'skincare routine', 'market overview'],
-      'korean-crypto': ['beginner guide', 'exchange comparison', 'regulation overview', 'market analysis', 'investment strategy'],
-      'korean-auto': ['beginner guide', 'model comparison', 'EV technology', 'market analysis', 'investment overview'],
     };
 
     const nicheCategory = nicheId.split('-').slice(0, 2).join('-');
