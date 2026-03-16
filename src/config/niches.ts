@@ -360,6 +360,29 @@ export const NICHES: NicheConfig[] = [
       'best Korean skincare for teenagers teens acne gentle routine 2026',
       'Korean skincare routine for teens beginners gentle products guide 2026',
       'best Korean acne patches pimple patches for teens ranked 2026',
+      // ── 한방(Hanbang) & 프리미엄 K-Beauty — 고가 어필리에이트 + 럭셔리 세그먼트 ──
+      // Sulwhasoo (설화수) — 아모레퍼시픽 최고급 한방 브랜드, 글로벌 프레스티지 라인
+      'Sulwhasoo First Care Activating Serum review before after results 2026',
+      'Sulwhasoo vs La Mer which luxury skincare brand is worth it comparison',
+      'best Sulwhasoo products ranked for anti-aging Korean luxury skincare guide',
+      // History of Whoo (더 후) — LG생활건강 한방 궁중 화장품, 아시아 면세점 1위 뷰티 브랜드
+      'History of Whoo review is Korean luxury skincare worth the price 2026',
+      'History of Whoo vs Sulwhasoo which Korean luxury brand is better comparison',
+      // AmorePacific (아모레퍼시픽 브랜드 라인) — 녹차 원료, 미니멀 럭셔리
+      'AmorePacific Treatment Enzyme Peel review luxury Korean exfoliation guide',
+      // 한방(Hanbang) 스킨케어 — 전통 한의학 성분 기반, K-Beauty 고유 차별점
+      'what is Hanbang Korean herbal skincare traditional ingredients explained guide',
+      'best Korean Hanbang skincare products ginseng lotus herbal ranked 2026',
+      // OHUI (오휘) — LG생활건강 프리미엄 사이언스 라인, 글로벌 확장 중
+      'O HUI miracle moisture cream review Korean luxury moisturizer 2026',
+      // 시카(Cica) — 센텔라 마케팅 용어, K-Beauty에서 독립 카테고리화
+      'what is cica skincare Korean centella products explained guide 2026',
+      'best Korean cica cream for sensitive skin redness calming ranked 2026',
+      // PDRN — 2026 최대 신흥 성분, 살몬 DNA 넘어 리제너레이션 포커스
+      'best Korean PDRN serum cream for skin regeneration anti-aging ranked 2026',
+      'PDRN vs EGF vs peptide which Korean anti-aging ingredient is best comparison',
+      // 마데카소사이드 — 센텔라 파생 개별 성분, 기능성 화장품 고시 원료
+      'madecassoside vs centella asiatica Korean skincare which is better explained guide',
     ],
     contentTypes: ['product-review', 'best-x-for-y', 'x-vs-y', 'how-to', 'listicle', 'case-study', 'deep-dive', 'news-explainer'],
     adSenseRpm: 'high',

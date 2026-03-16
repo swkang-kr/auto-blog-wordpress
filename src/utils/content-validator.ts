@@ -1032,6 +1032,110 @@ export function validateContent(
       issues.push({ category: 'niche-accuracy', message: 'K-Beauty products are MFDS-approved (식품의약품안전처), NOT FDA-approved — these are separate regulatory bodies', severity: 'error' });
       eeatScore -= 2;
     }
+
+    // 13. Brand parent company accuracy checks (common AI errors)
+    const brandErrors: Array<{ pattern: RegExp; correct: string }> = [
+      { pattern: /Goodal\b[^.]*\bglutathione/i, correct: 'Goodal is known for its Green Tangerine (vitamin C) line, NOT glutathione — do not conflate' },
+      { pattern: /glutathione\b[^.]*\bGoodal\s*Green\s*Tangerine/i, correct: 'Goodal Green Tangerine is a vitamin C line, NOT glutathione — the Goodal glutathione product is "Youth Cream"' },
+      { pattern: /COSRX\b[^.]*\b(?:Amore\s*Pacific|AmorePacific|LG\s*H&H)/i, correct: 'COSRX is independently owned (acquired by The Boryung Group in 2022), NOT Amorepacific or LG H&H' },
+      { pattern: /Dr\.?\s*Jart\+?\b[^.]*\b(?:Amore|LG\s*H&H|Korean\s*owned)/i, correct: 'Dr.Jart+ was acquired by Estée Lauder Companies in 2019 — it is now a global luxury portfolio brand' },
+      { pattern: /(?:Innisfree|Laneige|Etude|Sulwhasoo|ILLIYOON|Mamonde|IOPE)\b[^.]*\bLG\s*H&H/i, correct: 'These are Amorepacific brands, NOT LG H&H — LG H&H owns The Face Shop, Sum37, O HUI, belif' },
+      { pattern: /(?:The\s*Face\s*Shop|belif|Sum\s*37|O\s*HUI|CNP)\b[^.]*\bAmore\s*Pacific/i, correct: 'These are LG H&H (LG생활건강) brands, NOT Amorepacific' },
+    ];
+    for (const check of brandErrors) {
+      if (check.pattern.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: `Brand error: ${check.correct}`, severity: 'warning' });
+        eeatScore -= 2;
+      }
+    }
+
+    // 14. Korean toner described as "astringent" or "pH-balancing" (Western toner conflation)
+    if (/korean\s*toner|K-?beauty\s*toner|토너/i.test(plainText)) {
+      if (/toner\b[^.]{0,50}(?:astringent|strip|pH.?balanc|pore.?tighten)/i.test(plainText) &&
+          !/(?:except|unless|unlike|not\s*an?\s*astringent|different\s*from\s*western)/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'Korean toner (수분 토너) described as astringent/pH-balancing — Korean toners are hydrating, NOT astringent. This is the most common Western ↔ Korean toner conflation.', severity: 'warning' });
+        eeatScore -= 2;
+      }
+    }
+
+    // 15. Skincare step ordering errors (incorrect order signals AI content)
+    const orderPatterns: Array<{ pattern: RegExp; correct: string }> = [
+      { pattern: /(?:cream|moisturizer)\b[^.]{0,30}(?:before|then)\s*(?:toner|essence|serum)/i, correct: 'Cream/moisturizer placed before toner/essence/serum — correct order: Toner → Essence → Serum → Cream' },
+      { pattern: /sunscreen\b[^.]{0,30}(?:before|then)\s*(?:moisturizer|cream|serum)/i, correct: 'Sunscreen placed before moisturizer/cream — sunscreen is the LAST step in AM routine' },
+      { pattern: /serum\b[^.]{0,30}(?:before|then)\s*(?:toner|클렌저)/i, correct: 'Serum placed before toner — correct order: Cleanser → Toner → Essence → Serum' },
+    ];
+    // Only check in how-to and product-review that discuss routines
+    if (/routine|step|order|layer/i.test(plainText) && ['how-to', 'product-review', 'best-x-for-y', 'listicle'].includes(contentType)) {
+      for (const check of orderPatterns) {
+        if (check.pattern.test(plainText)) {
+          warnings.push({ category: 'niche-accuracy', message: `Skincare step order error: ${check.correct}`, severity: 'warning' });
+          eeatScore -= 1;
+          break;
+        }
+      }
+    }
+
+    // 16. Skin type suitability check extended to best-x-for-y (not just product-review)
+    if (contentType === 'best-x-for-y') {
+      const hasSkinType = /(?:oily|dry|combination|sensitive|acne.prone)\s*skin/i.test(plainText);
+      if (!hasSkinType) {
+        warnings.push({ category: 'niche-accuracy', message: 'K-Beauty best-x-for-y content missing skin type suitability mentions (oily/dry/combination/sensitive/acne-prone)', severity: 'warning' });
+        structureScore -= 1;
+      }
+    }
+
+    // 17. x-vs-y content MUST include comparison table
+    if (contentType === 'x-vs-y') {
+      const hasComparisonTable = /<table[\s>]/i.test(plainText) || /comparison\s*table|head.to.head|side.by.side/i.test(plainText);
+      if (!hasComparisonTable) {
+        warnings.push({ category: 'niche-accuracy', message: 'K-Beauty x-vs-y content missing comparison table — readers expect structured head-to-head comparison', severity: 'warning' });
+        structureScore -= 2;
+      }
+    }
+
+    // 18. Price disclaimer severity upgrade for product-review (was warning, now deducts score)
+    if (contentType === 'product-review') {
+      const hasPricing = /\$\d+|\₩[\d,]+|price|pricing|cost/i.test(plainText);
+      const hasPriceDisclaimer = /prices?\s*(?:verified|checked|as of)|prices?\s*vary\s*frequently/i.test(plainText);
+      if (hasPricing && !hasPriceDisclaimer) {
+        structureScore -= 1; // Additional penalty beyond the warning already issued above
+      }
+    }
+
+    // 19. Pregnancy skincare content MUST include healthcare provider disclaimer
+    if (/pregnan/i.test(plainText)) {
+      const hasHealthcareDisclaimer = /consult\s*(?:a|your)\s*(?:doctor|healthcare|physician|ob.?gyn|dermatologist|provider)|medical\s*(?:advice|professional)/i.test(plainText);
+      if (!hasHealthcareDisclaimer) {
+        issues.push({ category: 'niche-accuracy', message: 'Pregnancy skincare content MISSING healthcare provider disclaimer — "Consult your healthcare provider" is mandatory for pregnancy-related skincare recommendations', severity: 'error' });
+        eeatScore -= 3;
+      }
+    }
+
+    // 20. Pitera™ vs generic galactomyces — must distinguish when both mentioned
+    if (/pitera/i.test(plainText) && /galactomyces/i.test(plainText)) {
+      if (/pitera\s*(?:=|is\s*(?:just|basically)?\s*(?:the\s*same|identical|equivalent)\s*(?:as|to))\s*galactomyces/i.test(plainText) ||
+          /galactomyces\s*(?:=|is\s*(?:just|basically)?\s*(?:the\s*same|identical|equivalent)\s*(?:as|to))\s*pitera/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'Pitera™ is SK-II\'s proprietary galactomyces strain — it is NOT identical to generic Galactomyces Ferment Filtrate used by other brands. Always distinguish when comparing.', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 21. "10-step routine" presented as current Korean norm
+    if (/10.step\s*(?:korean|K-?beauty)/i.test(plainText) && !contentType.includes('deep-dive')) {
+      const acknowledgesEvolution = /skip.care|간소화|minimalist|evolved|moved\s*(?:away|beyond|on)|contemporary|modern\s*Korean/i.test(plainText);
+      if (!acknowledgesEvolution) {
+        warnings.push({ category: 'niche-accuracy', message: '10-step K-Beauty routine presented without acknowledging skip-care evolution — modern Koreans use minimalist routines. Frame 10-step as historical foundation, not current norm.', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 22. Essence vs serum vs ampoule conflation check
+    if (/essence\s*(?:=|is\s*(?:the\s*same|identical|just)\s*(?:as|to))\s*serum/i.test(plainText) ||
+        /serum\s*(?:=|is\s*(?:the\s*same|identical|just)\s*(?:as|to))\s*(?:essence|ampoule)/i.test(plainText) ||
+        /ampoule\s*(?:=|is\s*(?:the\s*same|identical|just)\s*(?:as|to))\s*(?:serum|essence)/i.test(plainText)) {
+      warnings.push({ category: 'niche-accuracy', message: 'Essence ≠ Serum ≠ Ampoule — these are distinct K-Beauty product formats with different concentrations and textures. Do not treat as interchangeable.', severity: 'warning' });
+      eeatScore -= 1;
+    }
   }
 
   // Clamp scores to 0
