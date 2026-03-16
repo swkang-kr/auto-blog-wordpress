@@ -151,11 +151,20 @@ export class ImageGeneratorService {
     const isKEntertainment = /k-pop|idol|k-drama|concert|comeback|fandom|lightstick/i.test(promptLower);
 
     // K-Beauty sub-category differentiation for richer visual variety
-    const isKBeautyMakeup = isKBeauty && /makeup|foundation|cushion|lip\s*tint|blush|eyeshadow|mascara|eyeliner|rom.nd|clio|fwee/i.test(promptLower);
+    const isKBeautyMakeup = isKBeauty && /makeup|foundation|cushion|lip\s*tint|blush|eyeshadow|mascara|eyeliner|rom.nd|clio|fwee|hince/i.test(promptLower);
     const isKBeautyHairCare = isKBeauty && /hair|shampoo|scalp|daeng gi|ryo|masil/i.test(promptLower);
     const isKBeautyHanbang = isKBeauty && /sulwhasoo|whoo|hanbang|hanyul|ginseng|herbal|luxury\s*korean|premium\s*korean/i.test(promptLower);
+    const isKBeautyTools = isKBeauty && /led\s*mask|gua\s*sha|ice\s*roller|microcurrent|device|tool|facial\s*massage|cellreturn/i.test(promptLower);
+    const isKBeautyBodyCare = isKBeauty && /body\s*(?:care|lotion|cream|scrub|exfoli)|italy\s*towel|glass\s*body|spf\s*body/i.test(promptLower);
+    const isKBeautyTonerPad = isKBeauty && /toner\s*pad|sun\s*pad|exfoliat.*pad|선패드/i.test(promptLower);
 
-    const nicheSuffix = isKBeautyHanbang
+    const nicheSuffix = isKBeautyTools
+      ? ', Korean beauty device product photography, clean clinical aesthetic, soft white background, LED glow effect, modern bathroom counter, sleek technology meets skincare, minimalist composition'
+      : isKBeautyBodyCare
+        ? ', Korean body care editorial, bright bathroom setting, glass body aesthetic, body products flat lay, soft natural lighting, spa-like atmosphere, luxurious texture display'
+        : isKBeautyTonerPad
+          ? ', Korean toner pad close-up product photography, cotton round pad texture visible, clean glass jar packaging, soft pink and white tones, hydrating dewy aesthetic, minimal clean background'
+          : isKBeautyHanbang
       ? ', luxurious Korean Hanbang aesthetic, gold and deep burgundy accents, traditional Korean motifs, ornate packaging, dark wood vanity, warm ambient lighting, premium editorial beauty photography'
       : isKBeautyMakeup
         ? ', K-beauty makeup flat lay, vibrant coral and pink tones, mirror reflections, beauty editorial style, bright studio lighting, clean modern vanity, texture swatches visible'

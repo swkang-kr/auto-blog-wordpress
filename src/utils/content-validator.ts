@@ -1139,6 +1139,68 @@ export function validateContent(
       warnings.push({ category: 'niche-accuracy', message: 'Essence ≠ Serum ≠ Ampoule — these are distinct K-Beauty product formats with different concentrations and textures. Do not treat as interchangeable.', severity: 'warning' });
       eeatScore -= 1;
     }
+
+    // 23. "Whitening" vs "Brightening" terminology — critical cultural/regulatory distinction
+    // Korea's MFDS category is 미백 (literally "whitening") but English content must use "brightening"
+    // Using "whitening" in English is culturally insensitive and signals lack of global market awareness
+    const whiteningMentions = (plainText.match(/\bwhitening\b/gi) || []).length;
+    const brighteningMentions = (plainText.match(/\bbrightening\b/gi) || []).length;
+    if (whiteningMentions > 0) {
+      // Allow "whitening" only when explaining the Korean regulatory term 미백
+      const hasRegulatoryContext = /미백|MFDS\s*(?:category|classification|term)|(?:Korean|Korea)\s*(?:regulatory|regulation).*whitening|whitening\s*\(.*미백/i.test(plainText);
+      if (!hasRegulatoryContext) {
+        warnings.push({ category: 'niche-accuracy', message: `"Whitening" used ${whiteningMentions} time(s) without regulatory context — use "brightening" for English audiences. "Whitening" is culturally problematic and signals market unawareness. Only acceptable when explaining Korea's 미백 MFDS category.`, severity: 'warning' });
+        eeatScore -= 2;
+      }
+    }
+
+    // 24. pH range validation for acid products — pH is critical for efficacy
+    // AHA/BHA work at pH 3-4; if pH mentioned, it should be within realistic ranges
+    if (/(?:AHA|BHA|glycolic|salicylic|lactic|mandelic)\s*acid/i.test(plainText)) {
+      const phMentions = plainText.match(/pH\s*(?:of\s*)?([\d.]+)/gi) || [];
+      for (const phMatch of phMentions) {
+        const phValue = parseFloat(phMatch.replace(/pH\s*(?:of\s*)?/i, ''));
+        if (!isNaN(phValue) && (phValue < 1.0 || phValue > 7.0)) {
+          warnings.push({ category: 'niche-accuracy', message: `Unrealistic pH value ${phValue} for acid skincare product — AHA/BHA products typically range pH 3.0-4.0, toners pH 5.0-6.5`, severity: 'warning' });
+          eeatScore -= 1;
+          break;
+        }
+      }
+    }
+
+    // 25. SPF reapplication guidance — sunscreen content should mention reapplication
+    if (/sunscreen|spf|sun\s*protection/i.test(plainText) && ['product-review', 'best-x-for-y', 'how-to', 'deep-dive'].includes(contentType)) {
+      const hasReapplicationGuidance = /reappl|every\s*(?:2|two)\s*hours|retouch|sun\s*stick.*reappl|재도포/i.test(plainText);
+      if (!hasReapplicationGuidance) {
+        warnings.push({ category: 'niche-accuracy', message: 'K-Beauty sunscreen content missing reapplication guidance — "reapply every 2 hours" is fundamental sunscreen science and a core expert signal', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 26. EWG score misuse — EWG is not a regulatory body
+    if (/EWG\s*(?:score|rating|grade|rank|certified|approved|safe)/i.test(plainText)) {
+      const hasEwgDisclaimer = /EWG\s*(?:is\s*)?(?:not|isn.t)\s*(?:a\s*)?(?:regulatory|government|official)|advocacy\s*group|non.?profit|not\s*(?:a\s*)?(?:scientific|regulatory)\s*(?:body|authority|agency)/i.test(plainText);
+      if (!hasEwgDisclaimer) {
+        warnings.push({ category: 'niche-accuracy', message: 'EWG rating cited without noting EWG is an advocacy group, NOT a regulatory or scientific body — its methodology is debated by dermatologists and cosmetic chemists', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 27. "Natural = Safe" fallacy check — natural ingredients are not inherently safer
+    if (/(?:natural|plant.based|organic)\s*(?:so|therefore|means|thus|hence)\s*(?:safe|gentle|non.?toxic|harmless)/i.test(plainText) ||
+        /(?:safe|gentle)\s*because\s*(?:it.?s|it\s*is)\s*(?:natural|plant.based|organic)/i.test(plainText)) {
+      warnings.push({ category: 'niche-accuracy', message: '"Natural = safe" fallacy detected — natural ingredients can cause allergic reactions and irritation (e.g., essential oils, citrus extracts). Expert content should note that natural ≠ automatically gentle/safe.', severity: 'warning' });
+      eeatScore -= 1;
+    }
+
+    // 28. PAO (Period After Opening) mention for product reviews
+    if (contentType === 'product-review') {
+      const hasPaoMention = /(?:PAO|period\s*after\s*opening|shelf\s*life|expir(?:y|ation)|개봉\s*후|사용\s*기한|유통\s*기한|\d+M\s*(?:symbol|icon|after\s*opening))/i.test(plainText);
+      if (!hasPaoMention) {
+        warnings.push({ category: 'niche-accuracy', message: 'K-Beauty product review missing PAO (Period After Opening) or shelf life info — essential for vitamin C, retinol, and preservative-free products', severity: 'warning' });
+        // No score deduction — informational, not critical
+      }
+    }
   }
 
   // Clamp scores to 0

@@ -383,6 +383,28 @@ export const NICHES: NicheConfig[] = [
       'PDRN vs EGF vs peptide which Korean anti-aging ingredient is best comparison',
       // 마데카소사이드 — 센텔라 파생 개별 성분, 기능성 화장품 고시 원료
       'madecassoside vs centella asiatica Korean skincare which is better explained guide',
+      // ── 전문가 감사 추가 (2026-03-16): 누락된 트렌드 세그먼트 보완 ──
+      // LED 마스크 — 홈케어 뷰티 디바이스 최대 시장, 셀리턴/CurrentBody/CELLRETURN
+      'best Korean LED face mask device for anti-aging acne home treatment 2026',
+      'Korean LED mask vs professional treatment is it worth it comparison guide',
+      'CELLRETURN LED mask review vs CurrentBody which is better 2026',
+      // 레티날 (Retinaldehyde) — 레티놀보다 강력하지만 처방전 불필요, K-Beauty 차별화 성분
+      'best Korean retinal retinaldehyde serum products for anti-aging ranked 2026',
+      'retinal vs retinol Korean skincare which is better explained guide comparison',
+      // BANILA CO — 클렌징 밤 카테고리 리더, Clean It Zero 글로벌 베스트셀러
+      'BANILA CO Clean It Zero review best cleansing balm comparison 2026',
+      'BANILA CO vs Heimish cleansing balm which is better for double cleansing',
+      // Heimish (헤이미쉬) — 올리브영 클렌징 밤 강자, 자연주의 포지셔닝
+      'Heimish All Clean balm review sensitive skin double cleansing guide 2026',
+      // Hince (힌스) — 프리미엄 미니멀 K-Beauty 메이크업, 성수 팝업 강세
+      'Hince Korean makeup brand review best products lip cheek ranked 2026',
+      'Hince vs rom&nd Korean makeup comparison which brand is better 2026',
+      // 마이크로커런트 디바이스 — NuFACE/BEAR 대항마 한국 브랜드 등장
+      'best Korean microcurrent device for face lifting toning home use 2026',
+      // K-Beauty 성분 사전 — 에버그린 고트래픽 (성분 검색 허브 페이지)
+      'Korean skincare ingredients guide complete dictionary A to Z explained 2026',
+      // "Brightening" vs "Whitening" — 글로벌 독자 교육 콘텐츠 (고 E-E-A-T)
+      'Korean brightening skincare vs whitening what is the difference explained guide',
     ],
     contentTypes: ['product-review', 'best-x-for-y', 'x-vs-y', 'how-to', 'listicle', 'case-study', 'deep-dive', 'news-explainer'],
     adSenseRpm: 'high',
