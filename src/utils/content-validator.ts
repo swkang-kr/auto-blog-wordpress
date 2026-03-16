@@ -29,19 +29,13 @@ export interface ContentIssue {
  */
 /** Per-category Flesch-Kincaid readability targets (category → [min, max]) */
 const CATEGORY_READABILITY_TARGETS: Record<string, [number, number]> = {
-  'Korean Tech': [45, 60],       // Technical audience tolerates denser writing
-  'Korean Finance': [45, 60],    // Financial analysis requires precision
   'K-Entertainment': [60, 75],   // Casual audience expects easy reading
-  'Korea Travel': [60, 75],      // Travel guides should be easy to scan
   'K-Beauty': [55, 70],          // Consumer-friendly but some science
 };
 
 /** Per-category minimum quality scores — raised across the board for HCU compliance */
 const CATEGORY_MIN_QUALITY: Record<string, number> = {
-  'Korean Finance': 70,
-  'Korean Tech': 65,
   'K-Entertainment': 60,
-  'Korea Travel': 60,
   // K-Beauty product-review/best-x-for-y = purchase-intent (YMYL-adjacent) → stricter bar
   'K-Beauty': 65,
 };
@@ -757,11 +751,12 @@ export function validateContent(
   }
 
   // 8. Stronger Korean source requirement for Finance/Tech niches (need 2+ citations)
-  if (category && ['Korean Finance', 'Korean Tech'].includes(category)) {
+  // K-Beauty YMYL-adjacent: stricter Korean source requirement (need 2+ citations)
+  if (category === 'K-Beauty') {
     if (koreanCitationCount === 1) {
       warnings.push({
         category: 'eeat',
-        message: `Only 1 Korean institutional source for ${category} content (need 2+ for credibility)`,
+        message: `Only 1 Korean source for ${category} content (need 2+ for YMYL credibility)`,
         severity: 'warning',
       });
       eeatScore -= 2;
@@ -1121,6 +1116,7 @@ export function validateContent(
       { pattern: /ILLIT\b[^.]*\bADOR\b/i, correct: 'ILLIT is under BELIFT LAB, NOT ADOR' },
       { pattern: /(?:SHINee|EXO|NCT|WHIPLASH|Red Velvet)\b[^.]*\bHYBE\b/i, correct: 'SM Entertainment groups incorrectly attributed to HYBE' },
       { pattern: /QWER\b[^.]*\b(?:JYP|SM|HYBE|YG)\b/i, correct: 'QWER is under Million Market (밀리언마켓), NOT a Big 4 label' },
+      { pattern: /\(G\)\s*I-?DLE\b[^.]*\b(?:JYP|SM|HYBE|YG)\b/i, correct: '(G)I-DLE is under Cube Entertainment, NOT a Big 4 label' },
       { pattern: /8TURN\b[^.]*\bJYP\b/i, correct: '8TURN is under MNH Entertainment, NOT JYP' },
       { pattern: /AMPERS.?ONE\b[^.]*\b(?:SM|HYBE)\b/i, correct: 'AMPERS&ONE is under FNC Entertainment, NOT SM/HYBE' },
       { pattern: /MEOVV\b[^.]*\b(?:HYBE|SM|JYP|YG)\b/i, correct: 'MEOVV is under THEBLACKLABEL, NOT a Big 4 label' },
@@ -1305,7 +1301,7 @@ export function validateContent(
     const brandErrors: Array<{ pattern: RegExp; correct: string }> = [
       { pattern: /Goodal\b[^.]*\bglutathione/i, correct: 'Goodal is known for its Green Tangerine (vitamin C) line, NOT glutathione — do not conflate' },
       { pattern: /glutathione\b[^.]*\bGoodal\s*Green\s*Tangerine/i, correct: 'Goodal Green Tangerine is a vitamin C line, NOT glutathione — the Goodal glutathione product is "Youth Cream"' },
-      { pattern: /COSRX\b[^.]*\b(?:Amore\s*Pacific|AmorePacific|LG\s*H&H)/i, correct: 'COSRX is independently owned (acquired by The Boryung Group in 2022), NOT Amorepacific or LG H&H' },
+      { pattern: /COSRX\b[^.]*\b(?:Amore\s*Pacific|AmorePacific|LG\s*H&H)/i, correct: 'COSRX was acquired by L\'Oréal in 2024, NOT Amorepacific or LG H&H' },
       { pattern: /Dr\.?\s*Jart\+?\b[^.]*\b(?:Amore|LG\s*H&H|Korean\s*owned)/i, correct: 'Dr.Jart+ was acquired by Estée Lauder Companies in 2019 — it is now a global luxury portfolio brand' },
       { pattern: /(?:Innisfree|Laneige|Etude|Sulwhasoo|ILLIYOON|Mamonde|IOPE)\b[^.]*\bLG\s*H&H/i, correct: 'These are Amorepacific brands, NOT LG H&H — LG H&H owns The Face Shop, Sum37, O HUI, belif' },
       { pattern: /(?:The\s*Face\s*Shop|belif|Sum\s*37|O\s*HUI|CNP)\b[^.]*\bAmore\s*Pacific/i, correct: 'These are LG H&H (LG생활건강) brands, NOT Amorepacific' },
@@ -1328,7 +1324,7 @@ export function validateContent(
       { pattern: /\bNacific\b/, correct: 'NACIFIC (all caps — official brand name)' },
       { pattern: /\bAmple ?n\b/i, correct: 'AMPLE:N (all caps with colon — official)' },
       { pattern: /\bIsn ?tree\b/, correct: 'Isntree (lowercase t — official)' },
-      { pattern: /\bTirtir\b|\btirtir\b/, correct: 'TIRTIR (all caps — official; Korean: 띠르띠르)' },
+      { pattern: /\bTirtir\b|\btirtir\b/, correct: 'TIRTIR (all caps — official; Korean: 티르티르)' },
       { pattern: /\bNumbuzin\b/, correct: 'Numbuzin (lowercase — official); check if intended No.5 serum' },
       { pattern: /\bTorriden\b/, correct: 'Torriden (capital T, lowercase rest — official; Korean: 토리든)' },
       { pattern: /\bBio ?dance\b/, correct: 'Biodance (one word, capital B — official)' },

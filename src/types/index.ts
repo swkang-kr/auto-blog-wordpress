@@ -59,6 +59,12 @@ export const KOREAN_SEASONAL_EVENTS: Array<{
   { name: 'Dano (단오)', startMonth: 5, startDay: 25, endMonth: 6, endDay: 5, leadTimeDays: 30, relevantNiches: ['K-Beauty', 'K-Entertainment'], contentAngles: ['Korean Dano traditional beauty rituals mugwort iris guide', 'best Korean mugwort skincare products Dano beauty tradition', 'Dano Korean holiday explained cultural significance guide'] },
   // Korean Summer Sales (쿠팡·올리브영 여름 세일)
   { name: 'Korean Summer Sales', startMonth: 7, startDay: 1, endMonth: 7, endDay: 31, leadTimeDays: 30, relevantNiches: ['K-Beauty'], contentAngles: ['best K-beauty summer sale deals 2026 guide', 'Korean sunscreen summer deals ranked what to buy', 'lightweight Korean moisturizer summer sale picks 2026'] },
+  // WATERBOMB (워터밤) — K-pop 출연 워터 페스티벌, 6-7월 (서울·부산·대구)
+  { name: 'WATERBOMB', startMonth: 6, startDay: 20, endMonth: 7, endDay: 20, leadTimeDays: 45, relevantNiches: ['K-Entertainment', 'K-Beauty'], contentAngles: ['WATERBOMB festival lineup schedule how to attend guide', 'K-pop idols performing at WATERBOMB what to expect', 'WATERBOMB makeup K-beauty waterproof skincare festival look', 'best waterproof Korean sunscreen for outdoor festival summer'] },
+  // 서울뷰티위크 (Seoul Beauty Week) — K-Beauty 산업 축제 (6월)
+  { name: 'Seoul Beauty Week', startMonth: 6, startDay: 10, endMonth: 6, endDay: 15, leadTimeDays: 30, relevantNiches: ['K-Beauty'], contentAngles: ['Seoul Beauty Week new product launches trend preview', 'K-beauty trends revealed at Seoul Beauty Week guide', 'best new Korean skincare products Seoul Beauty Week'] },
+  // Olive Young Awards (올리브영 어워즈) — K-Beauty 최고 상품 시상 (12월 별도)
+  { name: 'Olive Young Awards', startMonth: 12, startDay: 10, endMonth: 12, endDay: 20, leadTimeDays: 30, relevantNiches: ['K-Beauty'], contentAngles: ['Olive Young Awards winners best products ranked guide', 'Olive Young award-winning skincare products what to buy', 'best K-beauty products of the year Olive Young Awards recap'] },
 ];
 
 /** 콘텐츠 유형 */
@@ -199,16 +205,12 @@ export interface NicheConfig {
 
 /** Per-category optimal publish timing (override GA4 when no data available) */
 export const CATEGORY_PUBLISH_TIMING: Record<string, { optimalHour: number; bestDays: number[] }> = {
-  'Korean Tech': { optimalHour: 8, bestDays: [1, 2, 3] },        // Mon-Wed morning (tech news cycle)
-  'Korean Finance': { optimalHour: 7, bestDays: [1, 2] },         // Mon-Tue early morning (market open)
   'K-Beauty': { optimalHour: 10, bestDays: [2, 3, 5, 6, 0] },     // Tue-Wed (informational/how-to) + Fri-Sun (shopping/reviews)
-  'Korea Travel': { optimalHour: 10, bestDays: [6, 0, 5] },       // Weekend + Friday (trip planning)
   'K-Entertainment': { optimalHour: 9, bestDays: [4, 5, 6] },     // Thu-Sat KST morning = Wed-Fri EST evening (global fan prime time)
 };
 
 /** Niche-specific disclaimer templates for legal compliance */
 export const NICHE_DISCLAIMERS: Record<string, string> = {
-  'Korean Finance': '<div class="ab-disclaimer-finance" style="margin:0 0 24px 0; padding:16px 20px; background:#fff8e1; border:1px solid #ffe082; border-radius:8px; font-size:13px; color:#666; line-height:1.6;"><strong>Financial Disclaimer:</strong> The information in this article is for educational and informational purposes only and should not be construed as financial, investment, or tax advice. Past performance does not guarantee future results. Investing in Korean securities involves risks, including currency exchange risk and potential loss of principal. Always consult a qualified financial advisor before making investment decisions. The author and TrendHunt are not licensed financial advisors.</div>',
   'K-Beauty': '<div class="ab-disclaimer-beauty" style="margin:0 0 24px 0; padding:16px 20px; background:#f0fff4; border:1px solid #c6f6d5; border-radius:8px; font-size:13px; color:#666; line-height:1.6;"><strong>Skincare Disclaimer:</strong> Product recommendations are based on research and editorial analysis. Individual results may vary. Always patch-test new products and consult a dermatologist for specific skin concerns. This content is not medical advice.</div>',
   'K-Entertainment': '<div class="ab-disclaimer-entertainment" style="margin:0 0 24px 0; padding:16px 20px; background:#f0f4ff; border:1px solid #c6d6f6; border-radius:8px; font-size:13px; color:#666; line-height:1.6;"><strong>Entertainment Disclaimer:</strong> Schedule, comeback, and project information is based on publicly available sources and may change without notice. This content represents editorial analysis and fan perspective, not official announcements from artists or agencies.</div>',
 };

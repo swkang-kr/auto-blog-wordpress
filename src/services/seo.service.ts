@@ -2207,10 +2207,7 @@ add_filter('comment_form_defaults', function(\$defaults) {
 
     // Category-specific comment prompts (more specific CTAs per niche)
     \$prompts = array(
-        'Korean Tech' => 'Which Korean tech brand do you use daily? Share your experience or ask a question about this analysis...',
-        'Korean Finance' => 'Are you investing in Korean markets? Share your portfolio strategy or ask about KOSPI/KOSDAQ...',
         'K-Beauty' => 'What\\'s your skin type and current routine? Tell us which K-beauty products transformed your skincare...',
-        'Korea Travel' => 'Planning a Korea trip or already been? Share your hidden gems, budget tips, or ask for recommendations...',
         'K-Entertainment' => 'Who\\'s your ult bias or current K-drama obsession? Drop your hot takes and recommendations...',
     );
 

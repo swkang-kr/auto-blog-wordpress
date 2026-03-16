@@ -40,6 +40,9 @@ export function getSeasonallyOrderedNiches(): NicheConfig[] {
     'Korean Summer Sales': ['K-Beauty'],
     'Christmas': ['K-Beauty', 'K-Entertainment'],
     'New Year': ['K-Entertainment', 'K-Beauty'],
+    'WATERBOMB': ['K-Entertainment', 'K-Beauty'],
+    'Seoul Beauty Week': ['K-Beauty'],
+    'Olive Young Awards': ['K-Beauty'],
     'K-Beauty Awards': ['K-Beauty'],
     'Olive Young Spring Grand Sale': ['K-Beauty'],
     'Olive Young Fall Grand Sale': ['K-Beauty'],
@@ -449,6 +452,22 @@ export const NICHES: NicheConfig[] = [
       'Korean hyaluronic acid five molecular weights Torriden DIVE-IN serum ranked 2026',
       // PA 등급 교육 — 글로벌 독자 필수 정보
       'Korean sunscreen PA rating explained PA+ to PA++++ what it means guide',
+      // ── 전문가 감사 추가 (2026-03-16 batch 14): 누락된 K-Beauty 세그먼트 ──
+      // Glow Recipe (글로우레시피) — 한국계 미국 브랜드, Sephora K-Beauty 검색 #1
+      'Glow Recipe best products ranked watermelon dew drops review 2026',
+      'Glow Recipe vs Korean skincare brands which is real K-Beauty comparison guide',
+      'is Glow Recipe actually Korean skincare explained brand origin guide',
+      // Azelaic acid (아젤라산) — 로사시아+여드름 겸용, 2025-2026 급성장 성분
+      'best Korean azelaic acid products for rosacea acne prone skin 2026',
+      'azelaic acid vs niacinamide Korean skincare which is better for redness 2026',
+      // 프로바이오틱스 클렌저 — 마이크로바이옴 카테고리 확장 (기존 토너/세럼만 커버)
+      'best Korean probiotic cleanser for sensitive microbiome skincare 2026',
+      'Korean microbiome cleanser vs regular cleanser what is the difference guide',
+      // K-Beauty 미국 대형 리테일 진출 — "where to buy" 검색 폭발
+      'best Korean skincare at Target what to buy K-Beauty guide 2026',
+      'Korean skincare at Costco best deals bulk K-Beauty products ranked 2026',
+      'K-Beauty at TJ Maxx Marshalls hidden deals what to look for guide 2026',
+      'where to buy Korean skincare in the US complete store guide 2026',
     ],
     contentTypes: ['product-review', 'best-x-for-y', 'x-vs-y', 'how-to', 'listicle', 'case-study', 'deep-dive', 'news-explainer'],
     adSenseRpm: 'high',
@@ -460,7 +479,7 @@ export const NICHES: NicheConfig[] = [
     id: 'k-entertainment-business',
     name: 'K-Pop & K-Drama',
     category: 'K-Entertainment',
-    broadTerm: 'K-pop 2026',
+    broadTerm: `K-pop ${new Date().getFullYear()}`,
     seedKeywords: [
       // BTS — 글로벌 최고 검색량 (2026년: 전원 전역 완료, 그룹 컴백 앵글 중심)
       // NOTE: 모든 멤버 2025년 중반까지 전역 완료 — "after military service" 앵글은 과거완료형으로 작성
@@ -678,6 +697,33 @@ export const NICHES: NicheConfig[] = [
       'K-pop 2026 comebacks schedule predictions what groups are coming back guide',
       // 아이돌 뷰티 팁 — K-Beauty ↔ K-Entertainment 브릿지
       'K-pop idol makeup artist tips professional techniques revealed guide 2026',
+      // ── 전문가 감사 추가 (2026-03-16 batch 14): 누락된 주요 아티스트/세그먼트 ──
+      // (G)I-DLE ((여자)아이들) — 4세대 최상위 걸그룹, 셀프 프로듀싱 차별점 (소연 작곡/프로듀싱)
+      '(G)I-DLE self-producing girl group concept discography explained guide fans',
+      '(G)I-DLE best songs ranked guide for new fans 2026',
+      '(G)I-DLE Soyeon producer songwriter how she creates music explained guide',
+      '(G)I-DLE comeback 2026 what fans need to know full update',
+      // Stray Kids 확장 — 키워드 1개(투어)에서 비기너 가이드/노래 랭킹 추가
+      'Stray Kids best songs ranked guide for new fans by era 2026',
+      'Stray Kids self-produced music how 3RACHA works explained guide',
+      'Stray Kids member profiles who is who complete guide new fans 2026',
+      // Wavve (웨이브) — KBS/MBC/SBS 합작 OTT, TVING/Coupang Play와 3강 체제
+      'Wavve vs TVING vs Coupang Play which Korean OTT is best 2026 comparison',
+      'best K-dramas on Wavve 2026 exclusive originals ranked guide',
+      // 한국 예능 (비아이돌) — 글로벌 시청자 급증, Netflix 예능 구독 유입
+      'best Korean variety shows for beginners 2026 ranked must watch',
+      'Korean variety shows on Netflix 2026 funniest shows ranked guide',
+      'Running Man vs Knowing Bros which Korean variety show to watch first guide',
+      'I Live Alone Korean variety show why it is so popular explained 2026',
+      // 한국 영화 — 봉준호/박찬욱 이후 글로벌 K-영화 팬 세그먼트
+      'best Korean movies of all time ranked beginners guide 2026',
+      'best Korean thriller movies on Netflix 2026 must watch ranked',
+      'Korean horror movies ranked scariest films guide 2026',
+      'Korean movies at Cannes 2026 which films to watch guide',
+      // K-Drama OST 아티스트 특화 — 팬 검색 높은 세그먼트
+      'best K-drama OST artists singers 2026 who sings the best soundtracks',
+      'IU best K-drama OST songs ranked all time guide',
+      'Baek Yerin K-drama OST songs ranked discography guide fans',
     ],
     contentTypes: ['listicle', 'news-explainer', 'best-x-for-y', 'deep-dive', 'how-to', 'x-vs-y', 'case-study'],
     adSenseRpm: 'medium',
