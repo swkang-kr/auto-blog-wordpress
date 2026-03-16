@@ -694,8 +694,9 @@ div[style*="background:#f8f9fa"]{background:#1e1e2e!important;border-color:#3b3b
    * Key = category, Values = related categories that share audience overlap.
    */
   private static readonly CROSS_NICHE_MAP: Record<string, string[]> = {
-    'K-Beauty': ['K-Entertainment'],
+    'K-Beauty': ['K-Entertainment', 'Korea Travel'],
     'K-Entertainment': ['K-Beauty'],
+    'Korea Travel': ['K-Beauty'],
   };
 
   /**
@@ -1035,11 +1036,11 @@ ${socialHtml}
 <p style="margin:0 0 12px 0; font-size:17px; font-weight:700; color:#222;">Routine Time Estimator</p>
 <div style="margin-bottom:12px;">
 <label style="font-size:13px; color:#666; display:block; margin-bottom:4px;">Number of Steps</label>
-<input type="range" id="ab-routine-steps" min="3" max="12" value="7" style="width:100%;" oninput="document.getElementById('ab-routine-time').textContent=Math.round(this.value*2.5)+' minutes';document.getElementById('ab-routine-count').textContent=this.value+' steps'">
+<input type="range" id="ab-routine-steps" min="3" max="12" value="7" style="width:100%;" oninput="document.getElementById('ab-routine-time').textContent=Math.round(this.value*1.5)+' minutes';document.getElementById('ab-routine-count').textContent=this.value+' steps'">
 <div style="display:flex; justify-content:space-between; font-size:12px; color:#888; margin-top:4px;"><span>3 steps</span><span>12 steps</span></div>
 </div>
-<p style="margin:0; font-size:15px; color:#333;">Your routine: <strong id="ab-routine-count" style="color:#22543d;">7 steps</strong> = <strong id="ab-routine-time" style="color:#22543d;">18 minutes</strong></p>
-<p style="margin:8px 0 0 0; font-size:11px; color:#999;">Average time per step: ~2.5 minutes (varies by product).</p>
+<p style="margin:0; font-size:15px; color:#333;">Your routine: <strong id="ab-routine-count" style="color:#22543d;">7 steps</strong> = <strong id="ab-routine-time" style="color:#22543d;">11 minutes</strong></p>
+<p style="margin:8px 0 0 0; font-size:11px; color:#999;">~1-2 min per step (sheet masks add 15-20 min extra).</p>
 </div>`;
     }
 
@@ -1279,6 +1280,13 @@ ${ga4TrackingScript}`;
       'Mixsoon': 'https://www.amazon.com/s?k=Mixsoon&tag=trendhunt2007-20',
       'Haruharu Wonder': 'https://www.amazon.com/s?k=Haruharu+Wonder&tag=trendhunt2007-20',
       'Round Lab': 'https://www.amazon.com/s?k=Round+Lab+skincare&tag=trendhunt2007-20',
+      'Biodance': 'https://www.amazon.com/s?k=Biodance&tag=trendhunt2007-20',
+      "d'Alba": 'https://www.amazon.com/s?k=d%27Alba&tag=trendhunt2007-20',
+      'ABIB': 'https://www.amazon.com/s?k=ABIB+skincare&tag=trendhunt2007-20',
+      'Some By Mi': 'https://www.amazon.com/s?k=Some+By+Mi&tag=trendhunt2007-20',
+      'Klairs': 'https://www.amazon.com/s?k=Dear+Klairs&tag=trendhunt2007-20',
+      'Isntree': 'https://www.amazon.com/s?k=Isntree&tag=trendhunt2007-20',
+      'PURITO': 'https://www.amazon.com/s?k=PURITO&tag=trendhunt2007-20',
     },
     'K-Entertainment': {
       'BTS': 'https://www.amazon.com/s?k=BTS+album&tag=trendhunt2007-20',

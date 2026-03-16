@@ -145,7 +145,7 @@ export class CostTracker {
   static readonly NICHE_RPM_ESTIMATES: Record<string, number> = {
     'Korean Tech': 8.50,       // Tech/software RPM
     'Korean Finance': 12.00,   // Finance RPM (highest)
-    'K-Beauty': 6.00,          // Beauty/lifestyle RPM
+    'K-Beauty': 8.50,          // Beauty/skincare RPM (product-review + affiliate intent)
     'Korea Travel': 5.50,      // Travel RPM
     'K-Entertainment': 4.00,   // Entertainment RPM (lowest)
   };
@@ -157,7 +157,7 @@ export class CostTracker {
   static readonly SEASONAL_RPM_MULTIPLIERS: Record<string, Record<number, number>> = {
     'Korea Travel': { 3: 1.5, 4: 2.0, 5: 2.5, 6: 3.0, 7: 3.0, 8: 2.5, 9: 2.0, 10: 1.5 }, // Spring-Summer peak
     'Korean Finance': { 1: 1.5, 3: 1.3, 6: 1.3, 10: 1.5, 11: 2.0, 12: 2.0 }, // Year-end + tax season
-    'K-Beauty': { 3: 1.3, 4: 1.5, 10: 1.5, 11: 2.0, 12: 1.8 }, // Spring routine + holiday gifting
+    'K-Beauty': { 3: 1.3, 4: 1.5, 7: 1.3, 8: 1.3, 10: 1.5, 11: 2.0, 12: 1.8 }, // Spring routine + summer sunscreen restock + holiday gifting
     'Korean Tech': { 1: 1.8, 2: 1.5, 8: 1.3, 9: 1.5 }, // CES + product launch season
     'K-Entertainment': { 11: 1.5, 12: 1.8 }, // Award season (MAMA, etc.)
   };

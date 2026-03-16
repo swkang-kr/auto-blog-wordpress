@@ -145,9 +145,20 @@ export class ImageGeneratorService {
     index: number,
     existingResults: Buffer[],
   ): Promise<Buffer | null> {
+    // Detect niche from prompt content for category-appropriate styling
+    const promptLower = prompt.toLowerCase();
+    const isKBeauty = /skincare|k-beauty|serum|moisturizer|sunscreen|toner|cleanser|glass skin|olive young/i.test(promptLower);
+    const isKEntertainment = /k-pop|idol|k-drama|concert|comeback|fandom|lightstick/i.test(promptLower);
+
+    const nicheSuffix = isKBeauty
+      ? ', soft pastel aesthetic, Korean beauty product photography, clean white or cream background, glass bottles, subtle gradient lighting, editorial K-beauty style, dewy skin texture'
+      : isKEntertainment
+        ? ', K-pop aesthetic, vibrant stage lighting, bold graphic design, dynamic composition, Seoul urban style'
+        : '';
+
     const styleSuffix = index === 0
-      ? ', digital illustration, wide composition for blog hero banner, vivid colors, high detail, 16:9 aspect ratio, professional editorial quality, absolutely no text, no letters, no words, no Korean characters, no watermark, no captions, text-free image only'
-      : ', digital illustration, clean composition, bright natural lighting, detailed and sharp, editorial blog style, absolutely no text, no letters, no words, no Korean characters, no watermark, no captions, text-free image only, 16:9 aspect ratio';
+      ? `, digital illustration, wide composition for blog hero banner, vivid colors, high detail, 16:9 aspect ratio, professional editorial quality, absolutely no text, no letters, no words, no Korean characters, no watermark, no captions, text-free image only${nicheSuffix}`
+      : `, digital illustration, clean composition, bright natural lighting, detailed and sharp, editorial blog style, absolutely no text, no letters, no words, no Korean characters, no watermark, no captions, text-free image only, 16:9 aspect ratio${nicheSuffix}`;
 
     const fullPrompt = prompt + styleSuffix;
 
@@ -237,6 +248,7 @@ export class ImageGeneratorService {
     const gradients: Record<string, [string, string]> = {
       'Korean Tech': ['#1a1a2e', '#16213e'],
       'K-Entertainment': ['#2d1b69', '#6b21a8'],
+      'K-Beauty': ['#831843', '#ec4899'],
       'Korean Finance': ['#0c4a6e', '#0369a1'],
       'Korean Food': ['#7c2d12', '#c2410c'],
       'Korea Travel': ['#14532d', '#15803d'],
@@ -272,6 +284,7 @@ export class ImageGeneratorService {
       'Korean Food': `<circle cx="130" cy="110" r="45" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="2"/><circle cx="130" cy="110" r="25" fill="rgba(255,255,255,0.04)"/><circle cx="1070" cy="530" r="35" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="2"/>`,
       'Korea Travel': `<path d="M80 140 Q200 60 320 140 Q440 60 560 140" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="2"/><circle cx="1050" cy="100" r="40" fill="rgba(255,255,255,0.05)"/>`,
       'Korean Language': `<text x="100" y="120" fill="rgba(255,255,255,0.06)" font-family="sans-serif" font-size="60">&#xD55C;</text><text x="1040" y="560" fill="rgba(255,255,255,0.06)" font-family="sans-serif" font-size="50">&#xAE00;</text>`,
+      'K-Beauty': `<circle cx="130" cy="110" r="40" fill="rgba(255,255,255,0.06)"/><circle cx="160" cy="130" r="20" fill="rgba(255,255,255,0.04)"/><ellipse cx="1060" cy="520" rx="50" ry="30" fill="rgba(255,255,255,0.05)"/><circle cx="100" cy="80" r="8" fill="rgba(255,255,255,0.1)"/>`,
     };
     const decoration = categoryDecorations[category] || `<circle cx="150" cy="120" r="60" fill="rgba(255,255,255,0.05)"/>`;
 

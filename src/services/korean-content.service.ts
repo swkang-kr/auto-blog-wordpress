@@ -50,8 +50,9 @@ export class KoreanContentService {
 - Keep English brand names, technical terms, and proper nouns as-is
 - Korean SEO: include the keyword naturally in Korean context
 - Title: Create a compelling Korean title (not direct translation)
-- Excerpt: Korean meta description, 80-100 characters (한글은 CJK 더블위드스 — Google SERP에서 영어 대비 2배 넓게 렌더링되므로 짧게)
+- Excerpt: Korean meta description, 60-80 characters (한글은 Google SERP에서 픽셀 너비 기준 ~920px 이내로 렌더링 — 영어보다 글자당 넓으므로 짧게)
 - Tags: 5-8 Korean tags related to the topic
+- K-Beauty specific: Replace Amazon USD pricing with Olive Young Korea KRW pricing. Korean readers buy at Olive Young (올리브영) directly, not Amazon. Replace "available at Sephora" with "올리브영에서 구매 가능". Reference 화해 (Hwahae app) review scores as social proof where applicable — it is Korea's #1 beauty review platform
 
 ## English Title: ${englishTitle}
 ## Category: ${category}

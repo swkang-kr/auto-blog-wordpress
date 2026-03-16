@@ -911,10 +911,12 @@ Return JSON only: {"title":"new title","metaDescription":"new meta description",
 NICHE-SPECIFIC RULES — K-Beauty:
 - Include active ingredient concentration (%) and pH where known (high E-E-A-T signal)
 - Add or update pricing table: Olive Young KRW / Amazon USD / YesStyle (if product review)
+- Update Olive Young bestseller ranking positions with "as of [Month Year]" qualifier — rankings change frequently
 - Note whether products are Olive Young exclusive or globally available (Amazon/YesStyle)
 - Add or update skin type suitability matrix (oily / dry / combination / sensitive)
 - Reference emerging 2025-2026 brands where relevant: MEDICUBE, Isntree, Haruharu Wonder
-- Cite editorial sources: Allure, Harper's Bazaar Korea, INCI Decoder for credibility` : isKEntertainment ? `
+- Cite editorial sources: Allure, Harper's Bazaar Korea, INCI Decoder for credibility
+- Check for discontinued or reformulated products — Korean brands iterate formulations frequently` : isKEntertainment ? `
 NICHE-SPECIFIC RULES — K-Entertainment:
 - Use fan-friendly language: comeback, era, stan, bias, ult, fandom
 - Include fan-relevant metrics where available: MV view counts (YouTube), Melon/Circle Chart positions

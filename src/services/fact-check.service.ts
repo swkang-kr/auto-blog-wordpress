@@ -131,7 +131,7 @@ export class FactCheckService {
       }
 
       // Check for ingredient percentage claims without sources
-      const ingredientPctRegex = /(\d+(?:\.\d+)?%)\s+(?:niacinamide|retinol|vitamin c|hyaluronic acid|salicylic acid|aha|bha|pha|centella|snail mucin)/gi;
+      const ingredientPctRegex = /(\d+(?:\.\d+)?%)\s+(?:niacinamide|retinol|retinal|vitamin c|ascorbic acid|hyaluronic acid|salicylic acid|aha|bha|pha|centella|snail mucin|tranexamic acid|glutathione|bakuchiol|polyglutamic acid|pga|madecassoside|asiaticoside|adenosine)/gi;
       const ingredientMatches = plainText.match(ingredientPctRegex) || [];
       for (const match of ingredientMatches) {
         const hasCitation = /(?:according to|per the|per manufacturer|official|clinically|dermatologist)/i.test(
@@ -247,7 +247,7 @@ export class FactCheckService {
       // K-Beauty brands (common AI dating errors)
       cosrx: 2013, 'beauty of joseon': 2010, tirtir: 2019, laneige: 1994,
       sulwhasoo: 1997, innisfree: 2000, missha: 2000, 'etude house': 1995,
-      amorepacific: 1945, numbuzin: 2020, biodance: 2018, "d'alba": 2013,
+      amorepacific: 1945, numbuzin: 2020, biodance: 2018, "d'alba": 2015,
       'round lab': 2018, isntree: 2009, 'haruharu wonder': 2018, mixsoon: 2019,
       'some by mi': 2016, abib: 2014, 'ma:nyo': 2012, nacific: 2015,
       illiyoon: 2006, aestura: 2003, purito: 2015, jumiso: 2018,
@@ -330,6 +330,20 @@ export class FactCheckService {
         const spfVal = parseInt(match.replace(/SPF\s*/i, ''));
         if (spfVal > 100) {
           flagged.push(`Unlikely SPF claim: "${match}" — SPF above 100 is not recognized by most regulators`);
+          unverified++;
+        }
+      }
+
+      // Olive Young ranking claims — flag if missing date qualifier
+      const oliveYoungRankRegex = /(?:olive young|올리브영)\s*(?:best\s*seller|#\d+|number\s*\d+|ranked?\s*#?\d+|top\s*\d+)/gi;
+      const oliveYoungMatches = plainText.match(oliveYoungRankRegex) || [];
+      for (const match of oliveYoungMatches) {
+        const surroundingText = plainText.slice(
+          Math.max(0, plainText.indexOf(match) - 80),
+          plainText.indexOf(match) + match.length + 80,
+        );
+        if (!/as of|updated|current|202\d|checked/i.test(surroundingText)) {
+          flagged.push(`Olive Young ranking claim without date qualifier: "${match}" — add "as of [Month Year]" since rankings change frequently`);
           unverified++;
         }
       }
