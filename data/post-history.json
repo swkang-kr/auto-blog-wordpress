@@ -143,9 +143,15 @@
           "position": 1,
           "clicks": 0,
           "impressions": 1
+        },
+        {
+          "date": "2026-03-16",
+          "position": 50,
+          "clicks": 0,
+          "impressions": 1
         }
       ],
-      "lastPosition": 1,
+      "lastPosition": 50,
       "engagementScore": 1
     },
     {
@@ -291,10 +297,16 @@
           "position": 1,
           "clicks": 0,
           "impressions": 1
+        },
+        {
+          "date": "2026-03-16",
+          "position": 50,
+          "clicks": 0,
+          "impressions": 1
         }
       ],
-      "lastPosition": 1,
-      "engagementScore": 0
+      "lastPosition": 50,
+      "engagementScore": 32
     },
     {
       "keyword": "how to save money",
@@ -318,7 +330,7 @@
       "contentType": "best-x-for-y",
       "engagementScore": 60,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0
+      "estimatedRevenue": 0.003
     },
     {
       "keyword": "budgeting tips",
@@ -357,7 +369,7 @@
       "contentType": "how-to",
       "engagementScore": 31,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0
+      "estimatedRevenue": 0.003
     },
     {
       "keyword": "how to save money on a low income",
@@ -368,9 +380,9 @@
       "publishedAt": "2026-02-26T10:46:17.497Z",
       "niche": "personal-finance",
       "contentType": "how-to",
-      "engagementScore": 1,
+      "engagementScore": 2,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0
+      "estimatedRevenue": 0.003
     },
     {
       "keyword": "how to use AI tools for SEO",
@@ -394,9 +406,9 @@
       "publishedAt": "2026-02-27T04:32:03.952Z",
       "niche": "personal-finance",
       "contentType": "best-x-for-y",
-      "engagementScore": 0,
+      "engagementScore": 1,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0.003
+      "estimatedRevenue": 0.006
     },
     {
       "keyword": "how to budget and save money",
@@ -407,7 +419,7 @@
       "publishedAt": "2026-02-27T06:13:55.574Z",
       "niche": "personal-finance",
       "contentType": "how-to",
-      "engagementScore": 30,
+      "engagementScore": 60,
       "estimatedRpm": 3,
       "estimatedRevenue": 0
     },
@@ -454,7 +466,16 @@
       "titleCandidates": [
         "Korean Spring Street Food Guide: 12 Festival Picks for 2026",
         "Best Korean Spring Street Foods by Festival Season (2026)"
-      ]
+      ],
+      "rankingHistory": [
+        {
+          "date": "2026-03-16",
+          "position": 50,
+          "clicks": 0,
+          "impressions": 1
+        }
+      ],
+      "lastPosition": 50
     },
     {
       "keyword": "Samsung AI chip vs NVIDIA comparison 2026",
@@ -502,7 +523,19 @@
       "originalTitle": "7 Best Korean Sunscreens for Outdoor Activities (2026)",
       "searchIntent": "commercial-investigation",
       "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/best-korean-sunscreen-outdoor-activities-spring-2026-featured-2026.webp",
-      "featuredImageMediaId": 15036
+      "featuredImageMediaId": 15036,
+      "engagementScore": 61,
+      "rankingHistory": [
+        {
+          "date": "2026-03-16",
+          "position": 50,
+          "clicks": 0,
+          "impressions": 1
+        }
+      ],
+      "lastPosition": 50,
+      "estimatedRpm": 8,
+      "estimatedRevenue": 0.016
     },
     {
       "keyword": "best cherry blossom viewing spots in Korea ranked",
@@ -518,7 +551,16 @@
       "originalTitle": "10 Best Cherry Blossom Spots in Korea Ranked (2026)",
       "searchIntent": "commercial-investigation",
       "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/best-cherry-blossom-viewing-spots-korea-ranked-featured-2026.webp",
-      "featuredImageMediaId": 15044
+      "featuredImageMediaId": 15044,
+      "rankingHistory": [
+        {
+          "date": "2026-03-16",
+          "position": 50,
+          "clicks": 0,
+          "impressions": 1
+        }
+      ],
+      "lastPosition": 50
     },
     {
       "keyword": "how K-pop idol agency contracts work for trainees",
@@ -620,7 +662,16 @@
       "searchIntent": "commercial-investigation",
       "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/best-korean-vitamin-c-serum-ranked-dermatologist-tested-featured-2026.webp",
       "featuredImageMediaId": 22399,
-      "affiliateLinkCount": 0
+      "affiliateLinkCount": 0,
+      "rankingHistory": [
+        {
+          "date": "2026-03-16",
+          "position": 50,
+          "clicks": 0,
+          "impressions": 1
+        }
+      ],
+      "lastPosition": 50
     },
     {
       "keyword": "best K-pop concerts in USA 2026 schedule dates",
@@ -692,7 +743,16 @@
       "featuredImageMediaId": 29706,
       "affiliateLinkCount": 0,
       "seriesId": "skincare-routine-guide",
-      "seriesPart": 2
+      "seriesPart": 2,
+      "rankingHistory": [
+        {
+          "date": "2026-03-16",
+          "position": 50,
+          "clicks": 0,
+          "impressions": 1
+        }
+      ],
+      "lastPosition": 50
     },
     {
       "keyword": "best Korean dramas on Netflix 2026 must watch",
@@ -711,7 +771,16 @@
       "featuredImageMediaId": 30451,
       "affiliateLinkCount": 0,
       "seriesId": "k-entertainment-business-best-korean-dramas-on-netflix-",
-      "seriesPart": 3
+      "seriesPart": 3,
+      "rankingHistory": [
+        {
+          "date": "2026-03-16",
+          "position": 50,
+          "clicks": 0,
+          "impressions": 1
+        }
+      ],
+      "lastPosition": 50
     },
     {
       "keyword": "COSRX vs CeraVe which is better for sensitive skin",
@@ -840,7 +909,16 @@
       "featuredImageMediaId": 44421,
       "affiliateLinkCount": 0,
       "seriesId": "skincare-routine-guide",
-      "seriesPart": 4
+      "seriesPart": 4,
+      "rankingHistory": [
+        {
+          "date": "2026-03-16",
+          "position": 50,
+          "clicks": 0,
+          "impressions": 1
+        }
+      ],
+      "lastPosition": 50
     },
     {
       "keyword": "spring K-pop festivals outdoor concerts Korea 2026",
@@ -1040,16 +1118,72 @@
       "affiliateLinkCount": 0,
       "seriesId": "skincare-routine-guide",
       "seriesPart": 7
+    },
+    {
+      "keyword": "best K-dramas on TVING 2026 exclusive Korean originals ranked",
+      "postId": 82423,
+      "postUrl": "https://trendhunt.net/best-k-dramas-tving-2026-korean/",
+      "publishedAt": "2026-03-16T00:41:56.539Z",
+      "niche": "k-entertainment-business",
+      "contentType": "best-x-for-y",
+      "titleCandidates": [
+        "TVING Korean Originals 2026: Top Exclusives Ranked for Fans",
+        "Top K-Dramas Only on TVING in 2026: Ranked & Reviewed"
+      ],
+      "originalTitle": "Best K-Dramas on TVING 2026: Top Korean Originals Ranked",
+      "searchIntent": "commercial-investigation",
+      "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/best-kdramas-tving-2026-exclusive-korean-originals-ranked-featured-2026.webp",
+      "featuredImageMediaId": 82253,
+      "affiliateLinkCount": 0,
+      "seriesId": "k-entertainment-business-best-korean-dramas-on-netflix-",
+      "seriesPart": 5,
+      "rankingHistory": [
+        {
+          "date": "2026-03-16",
+          "position": 50,
+          "clicks": 0,
+          "impressions": 1
+        }
+      ],
+      "lastPosition": 50
+    },
+    {
+      "keyword": "best Korean centella asiatica skincare products ranked 2026",
+      "postId": 82621,
+      "postUrl": "https://trendhunt.net/best-korean-centella-asiatica-skincare-products/",
+      "publishedAt": "2026-03-16T00:43:08.382Z",
+      "niche": "k-beauty-skincare",
+      "contentType": "best-x-for-y",
+      "titleCandidates": [
+        "Best Korean Cica Skincare 2026: Ranked by Science, Not Hype",
+        "Korean Centella Asiatica Skincare: 10 Best Products Ranked 2026"
+      ],
+      "originalTitle": "10 Best Korean Centella Asiatica Skincare Products (2026)",
+      "searchIntent": "commercial",
+      "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/best-korean-centella-asiatica-skincare-products-ranked-2026-featured-2026.webp",
+      "featuredImageMediaId": 82481,
+      "affiliateLinkCount": 0,
+      "seriesId": "skincare-routine-guide",
+      "seriesPart": 8,
+      "rankingHistory": [
+        {
+          "date": "2026-03-16",
+          "position": 50,
+          "clicks": 0,
+          "impressions": 1
+        }
+      ],
+      "lastPosition": 50
     }
   ],
-  "lastRunAt": "2026-03-14T12:02:41.481Z",
-  "totalPosts": 48,
+  "lastRunAt": "2026-03-16T00:50:00.736Z",
+  "totalPosts": 50,
   "categoryLastPublished": {
     "korean-food-cooking": "2026-03-09T14:49:00.731Z",
     "korean-tech-ai": "2026-03-13T14:58:36.162Z",
     "korean-finance-stocks": "2026-03-13T14:59:25.920Z",
-    "k-beauty-skincare": "2026-03-14T12:01:26.925Z",
+    "k-beauty-skincare": "2026-03-16T00:43:08.380Z",
     "korea-travel-guide": "2026-03-12T15:04:37.207Z",
-    "k-entertainment-business": "2026-03-14T11:11:12.485Z"
+    "k-entertainment-business": "2026-03-16T00:41:56.537Z"
   }
 }
