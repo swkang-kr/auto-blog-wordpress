@@ -110,9 +110,9 @@ export class FactCheckService {
         const numMatch = match.match(/([\d.]+)\s*million/i);
         if (numMatch) {
           const claimed = parseFloat(numMatch[1]);
-          // South Korea population is ~51.7M as of 2025
-          if (Math.abs(claimed - 51.7) > 2) {
-            flagged.push(`Population claim "${match}" may be outdated (current: ~51.7 million)`);
+          // South Korea population is ~51.3M as of 2026 (declining trend — KSS data)
+          if (Math.abs(claimed - 51.3) > 2) {
+            flagged.push(`Population claim "${match}" may be outdated (current: ~51.3 million as of 2026)`);
             unverified++;
           } else {
             verified++;
@@ -200,7 +200,7 @@ export class FactCheckService {
 
     if (category === 'K-Entertainment') {
       // Check for specific revenue/earnings claims
-      const revRegex = /(?:HYBE|SM|JYP|YG|CJ ENM|Kakao Entertainment)\s+(?:revenue|earnings|profit|sales|income)\s+(?:of|at|reached|hit|was)\s+(?:₩|KRW|USD|\$)?\s*([\d.,]+)\s*(?:billion|million|trillion)/gi;
+      const revRegex = /(?:HYBE|SM|JYP|YG|CJ ENM|Kakao Entertainment|THEBLACKLABEL|BELIFT LAB|Starship Entertainment|FNC Entertainment|MODHAUS|SOURCE MUSIC)\s+(?:revenue|earnings|profit|sales|income)\s+(?:of|at|reached|hit|was)\s+(?:₩|KRW|USD|\$)?\s*([\d.,]+)\s*(?:billion|million|trillion)/gi;
       const revMatches = plainText.match(revRegex) || [];
       for (const match of revMatches) {
         const hasSource = /(?:annual report|quarterly|fiscal|reported|DART|filing|earnings call)/i.test(
@@ -230,10 +230,27 @@ export class FactCheckService {
     const dateClaimRegex = /(?:founded|established|launched|started|opened|created|introduced)\s+in\s+(\d{4})/gi;
     const dateClaims = plainText.match(dateClaimRegex) || [];
     const knownDates: Record<string, number> = {
+      // Korean conglomerates
       samsung: 1938, 'sk hynix': 1983, hyundai: 1967, lg: 1958, naver: 1999, kakao: 2010,
-      coupang: 2010, hybe: 2005, 'sm entertainment': 1995, jyp: 1997, yg: 1996,
+      coupang: 2010,
+      // K-Entertainment labels (multiple key forms for matching)
+      hybe: 2005, 'big hit': 2005,
+      'sm entertainment': 1995, sm: 1995,
+      'jyp entertainment': 1997, jyp: 1997,
+      'yg entertainment': 1996, yg: 1996,
+      'belift lab': 2019, 'starship entertainment': 2008, 'fnc entertainment': 2006,
+      'source music': 2009, 'pledis entertainment': 2010,
+      // K-Entertainment groups
+      bts: 2013, blackpink: 2016, aespa: 2020, twice: 2015, exo: 2012,
+      seventeen: 2015, 'stray kids': 2018, ive: 2021, 'le sserafim': 2022,
+      enhypen: 2020, txt: 2019, ateez: 2018,
+      // K-Beauty brands (common AI dating errors)
+      cosrx: 2013, 'beauty of joseon': 2019, tirtir: 2019, laneige: 1994,
+      sulwhasoo: 1997, innisfree: 2000, missha: 2000, 'etude house': 1995,
+      amorepacific: 1945,
+      // Institutions
       'bank of korea': 1950, 'korea exchange': 2005, 'olive young': 1999,
-      bts: 2013, blackpink: 2016, aespa: 2020, 'korea tourism organization': 1962,
+      'korea tourism organization': 1962,
     };
     for (const match of dateClaims) {
       const yearMatch = match.match(/(\d{4})/);

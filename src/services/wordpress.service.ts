@@ -1947,14 +1947,8 @@ ${ga4TrackingScript}`;
                   worstRating: 1,
                 },
               },
-              ...(item.rating ? {
-                aggregateRating: {
-                  '@type': 'AggregateRating',
-                  ratingValue: item.rating,
-                  bestRating: 10,
-                  ratingCount: 1,
-                },
-              } : {}),
+              // NOTE: AggregateRating removed — single editorial review should use Review.reviewRating only.
+              // Google may suppress Product rich results with ratingCount: 1 (looks like a self-review).
               ...(item.price ? {
                 offers: {
                   '@type': 'AggregateOffer',
@@ -2538,7 +2532,22 @@ ${ga4TrackingScript}`;
     if (!productName || productName.length < 3) return null;
 
     // Extract brand from known Korean brands
-    const brands = ['Samsung', 'Hyundai', 'LG', 'SK', 'Kia', 'Naver', 'Kakao', 'Coupang', 'HYBE', 'Amorepacific', 'Innisfree', 'COSRX', 'Sulwhasoo', 'Laneige'];
+    const brands = [
+      // Korean conglomerates
+      'Samsung', 'Hyundai', 'LG', 'SK', 'Kia', 'Naver', 'Kakao', 'Coupang',
+      // K-Entertainment
+      'HYBE',
+      // K-Beauty — established
+      'Amorepacific', 'Innisfree', 'COSRX', 'Sulwhasoo', 'Laneige', 'MISSHA',
+      'Etude House', 'Tony Moly', 'Holika Holika', 'Dr.Jart+',
+      // K-Beauty — breakout 2024-2026
+      'TIRTIR', 'Anua', 'SKIN1004', 'Beauty of Joseon', 'Numbuzin', 'MEDICUBE',
+      'Torriden', 'Isntree', 'Round Lab', 'Mixsoon', 'Some By Mi', 'PURITO',
+      "rom&nd", 'Clio', 'Biodance', "d'Alba", 'Klairs', 'ABIB',
+      // K-Beauty — mid-tier growth
+      "ma:nyo", 'NACIFIC', 'Benton', "AMPLE:N", 'ILLIYOON', 'VT Cosmetics',
+      'Jumiso', 'FWEE', 'Aestura', 'Dr.G', 'Rovectin', "I'm From", 'Heimish',
+    ];
     const brand = brands.find(b => productName.toLowerCase().includes(b.toLowerCase()));
 
     // Extract rating if present (e.g., "8/10", "Rating: 4.5/5")

@@ -697,6 +697,12 @@ export function validateContent(
       'statista.com', 'worldbank.org', 'imf.org', 'mckinsey.com', 'techcrunch.com',
       'samsung.com', 'hyundai.com', 'lgcorp.com', 'koreaherald.com', 'mk.co.kr',
       'wikipedia.org', 'google.com', 'youtube.com',
+      // K-Entertainment trusted sources
+      'weverse.io', 'melon.com', 'hanteonews.com', 'circlechart.kr',
+      'soompi.com', 'billboard.com', 'sbs.co.kr', 'kbs.co.kr', 'mbc.co.kr',
+      // K-Beauty trusted sources
+      'oliveyoung.co.kr', 'oliveyoung.com', 'allure.co.kr',
+      'incidecoder.com', 'cosdna.com', 'skinsort.com',
     ];
     let nonTrustedCount = 0;
     for (const url of extLinkUrls) {
@@ -909,6 +915,7 @@ export function validateContent(
       'aespa': 'MY', 'IVE': 'DIVE', 'LE SSERAFIM': 'FEARNOT',
       'BABYMONSTER': 'MONSTER', 'PLAVE': 'ASTERDOM', 'QWER': 'AUBE',
       'RIIZE': 'BRIIZE', 'BOYNEXTDOOR': 'ONEDOOR',
+      'ILLIT': 'LLIT', 'KISS OF LIFE': 'KISSY',
     };
     for (const [group, fandom] of Object.entries(fandomMap)) {
       const groupRegex = new RegExp(`\\b${group.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
@@ -927,6 +934,25 @@ export function validateContent(
     const financeSources = /\b(?:BOK|Bank of Korea|KRX|DART|KOSIS|FSC)\b/i;
     if (financeSources.test(plainText)) {
       warnings.push({ category: 'niche-accuracy', message: 'K-Entertainment content cites financial/economic sources (BOK/KRX/DART) — should use entertainment sources (Hanteo, Circle Chart, KOCCA, Melon)', severity: 'warning' });
+      eeatScore -= 2;
+    }
+
+    // 9. NewJeans/NJZ post-2025 naming accuracy
+    if (/NewJeans/i.test(plainText)) {
+      // Check for definitively stating "NewJeans is now called NJZ" (legal situation still contested)
+      if (/NewJeans\s*(?:is|are|has been|was)\s*(?:now|officially)\s*(?:called|renamed|rebranded)\s*(?:to\s*)?NJZ/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'NewJeans/NJZ naming stated as settled fact — the group name trademark is still legally contested. Use hedged language.', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+  }
+
+  // ── Cross-niche K-Beauty accuracy checks ──
+  if (category === 'K-Beauty') {
+    // MFDS vs FDA conflation check — Korean sunscreens are MFDS-approved, NOT FDA-approved
+    if (/FDA.{0,30}(?:approv|certif|register).{0,30}(?:Korean|K-Beauty|K-beauty)/i.test(plainText) ||
+        /(?:Korean|K-Beauty|K-beauty).{0,30}FDA.{0,30}(?:approv|certif|register)/i.test(plainText)) {
+      issues.push({ category: 'niche-accuracy', message: 'K-Beauty products are MFDS-approved (식품의약품안전처), NOT FDA-approved — these are separate regulatory bodies', severity: 'error' });
       eeatScore -= 2;
     }
   }
@@ -1178,8 +1204,14 @@ function detectSuspiciousUrls(html: string): string[] {
     'samsung.com', 'hyundai.com', 'lgcorp.com', 'skhynix.com',
     'navercorp.com', 'kakaocorp.com', 'coupang.com',
     'koreaherald.com', 'mk.co.kr', 'hankyung.com',
-    'hybecorp.com', 'smentertainment.com', 'jype.com',
+    'hybecorp.com', 'smentertainment.com', 'jype.com', 'ygfamily.com',
     'cosmeticsdesign-asia.com', 'lonelyplanet.com',
+    // K-Entertainment trusted sources
+    'weverse.io', 'melon.com', 'hanteonews.com', 'circlechart.kr',
+    'soompi.com', 'billboard.com', 'sbs.co.kr', 'kbs.co.kr', 'mbc.co.kr', 'mnet.com',
+    // K-Beauty trusted sources
+    'oliveyoung.co.kr', 'oliveyoung.com', 'allure.co.kr',
+    'incidecoder.com', 'cosdna.com', 'skinsort.com', 'yesstyle.com', 'stylevana.com',
     'twitter.com', 'x.com', 'linkedin.com', 'facebook.com',
     'google.com', 'youtube.com', 'wikipedia.org',
   ];

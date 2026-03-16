@@ -692,6 +692,11 @@ STRATEGY: Consider creating content that directly targets one of these content g
       'iope', 'hanyul', 'o hui', 'whoo', 'su:m37', 'heimish', 'benton',
       'ma:nyo', 'illiyoon', 'aestura', 'ample:n', 'dr.g', 'no7 korea', 'nacific',
       'sun pad', 'lip oil',
+      // K-Beauty generic terms that are strongly Korea-associated
+      'centella', 'glass skin', 'mugwort', '10-step', '10 step',
+      'heartleaf', 'propolis', 'snail mucin', 'rice water', 'rice toner',
+      'essence review', 'cushion foundation', 'toner pad', 'skin barrier',
+      'chok-chok', 'skip-care', 'slugging korean', 'pa++++',
       // K-Entertainment groups — 3rd & 4th gen
       'twice', 'seventeen', 'stray kids', 'ateez', 'txt', 'enhypen',
       'le sserafim', 'ive', 'newjeans', 'aespa', 'babymonster',
@@ -729,6 +734,22 @@ STRATEGY: Consider creating content that directly targets one of these content g
         `Keyword "${analysis.selectedKeyword}" has no Korea relevance. Claude must select a Korea-focused keyword.`,
       );
     }
+
+    // Post-parse finance keyword blocker for K-Entertainment/K-Beauty niches
+    // Prompt-level blocking alone is insufficient — Claude sometimes still selects finance topics
+    const financeTerms = [
+      'revenue', 'profit', 'earnings', 'stock price', 'valuation', 'investment',
+      'financial', 'market cap', 'ipo', 'dividend', 'quarterly report', 'annual report',
+      'balance sheet', 'income statement', 'fiscal year', 'shareholder',
+    ];
+    const hasFinanceTerm = financeTerms.some(t => keywordLower.includes(t));
+    if (hasFinanceTerm) {
+      logger.warn(`REJECTED keyword "${analysis.selectedKeyword}" — finance/business topic blocked for K-Beauty/K-Entertainment niche`);
+      throw new KeywordResearchError(
+        `Keyword "${analysis.selectedKeyword}" contains finance/business terms. Select a fan-focused or product-focused keyword instead.`,
+      );
+    }
+
     return analysis;
   }
 
