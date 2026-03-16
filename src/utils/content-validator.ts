@@ -842,6 +842,83 @@ export function validateContent(
         structureScore -= 1;
       }
     }
+
+    // 7. Centella asiatica vs Madecassoside vs Asiaticoside conflation check
+    const mentionsCentella = /centella\s*asiatica/i.test(plainText);
+    const mentionsMadecassoside = /madecassoside/i.test(plainText);
+    const mentionsAsiaticoside = /asiaticoside/i.test(plainText);
+    if (mentionsCentella && (mentionsMadecassoside || mentionsAsiaticoside)) {
+      // Check if AI treats them as synonyms (e.g., "centella asiatica (madecassoside)")
+      if (/centella\s*asiatica\s*\(?(?:aka|also\s*known|=|is)\s*(?:madecassoside|asiaticoside)/i.test(plainText)) {
+        issues.push({ category: 'niche-accuracy', message: 'Centella asiatica extract ≠ Madecassoside/Asiaticoside — Madecassoside is ONE isolated compound from centella. Do not treat them as synonyms.', severity: 'error' });
+        eeatScore -= 2;
+      }
+    }
+
+    // 8. Retinol vs Retinal vs Retinoic acid conflation check
+    if (/retinol/i.test(plainText) && /retinoic\s*acid/i.test(plainText)) {
+      if (/retinol\s*\(?(?:also|aka|=)\s*retinoic/i.test(plainText) || /retinoic\s*acid\s*\(?(?:also|aka|=)\s*retinol/i.test(plainText)) {
+        issues.push({ category: 'niche-accuracy', message: 'Retinol ≠ Retinoic acid (tretinoin). Retinol must convert to retinoic acid in skin. Tretinoin is prescription-only. Do not conflate.', severity: 'error' });
+        eeatScore -= 2;
+      }
+    }
+    if (/retinal\b/i.test(plainText) && /\bretinol\b/i.test(plainText)) {
+      if (/retinal\s*\(?(?:also|aka|=)\s*retinol/i.test(plainText) || /retinol\s*\(?(?:also|aka|=)\s*retinal/i.test(plainText)) {
+        issues.push({ category: 'niche-accuracy', message: 'Retinal (retinaldehyde) ≠ Retinol — Retinal is one conversion step closer to retinoic acid, making it stronger. Do not conflate.', severity: 'error' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 9. Hyaluronic acid molecular weight — flag if mentioned without specifying weight
+    if (/hyaluronic\s*acid/i.test(plainText) && ['product-review', 'x-vs-y', 'deep-dive', 'best-x-for-y'].includes(contentType)) {
+      const hasWeightContext = /(?:low|high|micro|multi|different)\s*(?:molecular)?\s*weight/i.test(plainText) ||
+        /\b(?:LMW|HMW)\b/.test(plainText) || /\bDa\b|\bdalton/i.test(plainText) ||
+        /(?:penetrat|absorb|surface|deep)\s*(?:layer|skin)/i.test(plainText);
+      if (!hasWeightContext) {
+        warnings.push({ category: 'niche-accuracy', message: 'K-Beauty HA content should mention molecular weight variants (high MW = surface hydration, low MW = deeper penetration) — a core K-Beauty formulation differentiator', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 10. Cruelty-free / vegan claims — must note MFDS functional cosmetics exception
+    if (/cruelty.free|not\s*tested\s*on\s*animals/i.test(plainText)) {
+      const hasMfdsNote = /(?:MFDS|식품의약품안전처|functional\s*cosmetic|기능성\s*화장품)/i.test(plainText) ||
+        /(?:Korea|Korean)\s*(?:ban|banned|prohibit|law|regulation).*animal\s*test/i.test(plainText);
+      if (!hasMfdsNote) {
+        warnings.push({ category: 'niche-accuracy', message: 'Cruelty-free claim without MFDS context — Korea banned animal testing for general cosmetics (2018), but MFDS functional cosmetics (기능성화장품: brightening, anti-wrinkle, sunscreen) may still require it. Add regulatory context.', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 11. "Dermatologist recommended/tested/clinically proven" without source
+    const dermatologistClaims = plainText.match(/dermatologist\s*(?:recommended|approved|endorsed)/gi) || [];
+    if (dermatologistClaims.length > 0) {
+      // Check for nearby source/citation
+      for (const claim of dermatologistClaims) {
+        const claimIdx = plainText.indexOf(claim);
+        const surroundingText = plainText.slice(Math.max(0, claimIdx - 150), claimIdx + claim.length + 150);
+        if (!/(?:according\s*to|source|study|published|journal|cited|reference|Dr\.|dermatologist\s+\w+\s+\w+\s+(?:says|recommends|notes))/i.test(surroundingText)) {
+          warnings.push({ category: 'niche-accuracy', message: `"${claim}" used without naming the dermatologist or citing a source — risks FTC endorsement guideline violation. Use "dermatologist-tested" (verified claim) or cite the specific professional.`, severity: 'warning' });
+          eeatScore -= 1;
+          break; // One warning is enough
+        }
+      }
+    }
+    if (/clinically\s*proven/i.test(plainText)) {
+      const hasStudyCite = /(?:study|trial|published|journal|participants|subjects|double.blind|placebo|p\s*[<>=]|statistically)/i.test(plainText);
+      if (!hasStudyCite) {
+        warnings.push({ category: 'niche-accuracy', message: '"Clinically proven" used without referencing a specific clinical study — per FTC guidelines, this phrase requires substantiation. Use "clinically tested" or cite the study.', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 12. "Hypoallergenic" as unregulated marketing term
+    if (/hypoallergenic/i.test(plainText)) {
+      const hasDisclaimer = /no\s*(?:legal|regulatory|standard)\s*definition|marketing\s*term|not\s*(?:regulated|standardized)|does\s*not\s*guarantee/i.test(plainText);
+      if (!hasDisclaimer) {
+        warnings.push({ category: 'niche-accuracy', message: '"Hypoallergenic" has no legal or regulatory definition in Korea (MFDS) or the US (FDA). Content should note this is a marketing term, not a safety guarantee.', severity: 'warning' });
+      }
+    }
   }
 
   if (category === 'K-Entertainment') {

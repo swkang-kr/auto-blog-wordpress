@@ -721,6 +721,13 @@ STRATEGY: Consider creating content that directly targets one of these content g
       'biodance',         // 바이오셀룰로오스 콜라겐 패치 전문
       "d'alba", 'dalba',  // 달바 — Olive Young 글로벌 탑 5 (화이트 트러플)
       'fwee',             // 아이돌 메이크업 브랜드, 지수 콜라보
+      'rovectin',         // 피부과 기반 민감성 전문 브랜드
+      'cos de baha',      // 성분 집중 최저가 포지셔닝, Amazon K-Beauty
+      'skin&lab',         // 비타민C·레티놀 전문 브랜드
+      'klavuu',           // 진주/마린 콜라겐 특화
+      "ample:n",          // 펩타이드 전문, 가성비 안티에이징
+      'aestura',          // 아모레퍼시픽 더마 브랜드, AtoBarrier
+      'dr.g',             // 피부과 브랜드, 브라이트닝 필링젤
     ];
     const keywordLower = analysis.selectedKeyword.toLowerCase();
     const titleLower = analysis.suggestedTitle.toLowerCase();

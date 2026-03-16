@@ -23,6 +23,17 @@ const KBEAUTY_BRANDS: Record<string, string> = {
   'Etude House':      `https://www.amazon.com/s?k=Etude+House&tag=${AFFILIATE_TAG}`,
   'Olive Young':      `https://www.amazon.com/s?k=korean+skincare+best+seller&tag=${AFFILIATE_TAG}`,
   'sunscreen':        `https://www.amazon.com/s?k=korean+sunscreen&tag=${AFFILIATE_TAG}`,
+  // 2025-2026 Amazon 베스트셀러 K-Beauty 브랜드 추가
+  'Numbuzin':         `https://www.amazon.com/s?k=Numbuzin&tag=${AFFILIATE_TAG}`,
+  'TIRTIR':           `https://www.amazon.com/s?k=TIRTIR&tag=${AFFILIATE_TAG}`,
+  'Biodance':         `https://www.amazon.com/s?k=Biodance&tag=${AFFILIATE_TAG}`,
+  "d'Alba":           `https://www.amazon.com/s?k=d%27Alba&tag=${AFFILIATE_TAG}`,
+  'Isntree':          `https://www.amazon.com/s?k=Isntree&tag=${AFFILIATE_TAG}`,
+  'Round Lab':        `https://www.amazon.com/s?k=Round+Lab&tag=${AFFILIATE_TAG}`,
+  'MEDICUBE':         `https://www.amazon.com/s?k=MEDICUBE&tag=${AFFILIATE_TAG}`,
+  'Some By Mi':       `https://www.amazon.com/s?k=Some+By+Mi&tag=${AFFILIATE_TAG}`,
+  'PURITO':           `https://www.amazon.com/s?k=PURITO&tag=${AFFILIATE_TAG}`,
+  'Mixsoon':          `https://www.amazon.com/s?k=Mixsoon&tag=${AFFILIATE_TAG}`,
 };
 
 const DISCLOSURE = `<p class="ab-affiliate-disclosure" style="margin:0 0 20px 0; padding:12px 16px; background:#fff8e1; border:1px solid #ffe082; border-radius:8px; font-size:12px; color:#666; line-height:1.5;"><strong>Disclosure:</strong> This article contains affiliate links. If you make a purchase through these links, we may earn a small commission at no extra cost to you. <a href="/privacy-policy/" style="color:#0066FF;">Learn more</a>.</p>`;

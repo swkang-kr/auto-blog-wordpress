@@ -35,6 +35,9 @@ export function getSeasonallyOrderedNiches(): NicheConfig[] {
     'Mid-Year': ['K-Beauty'],
     'Black Friday': ['K-Beauty'],
     'Singles Day': ['K-Beauty'],
+    'Amazon Prime Day': ['K-Beauty'],
+    'Olive Young Mega Sale': ['K-Beauty'],
+    'Korean Summer Sales': ['K-Beauty'],
     'Christmas': ['K-Beauty', 'K-Entertainment'],
     'New Year': ['K-Entertainment', 'K-Beauty'],
     'K-Beauty Awards': ['K-Beauty'],
@@ -343,6 +346,20 @@ export const NICHES: NicheConfig[] = [
       // ILLIYOON (일리윤) — 아모레퍼시픽 더마 브랜드, Ato 세라마이드 크림 올리브영 베스트셀러
       'Illiyoon ceramide ato concentrate cream review eczema sensitive skin 2026',
       'Illiyoon vs COSRX ceramide cream which is better for damaged skin barrier',
+      // 한국 피부과 추천 제품 — Reddit/TikTok 최대 트렌드 (피부과 전문의 권위)
+      'Korean dermatologist recommended skincare products 2026 ranked guide',
+      'what Korean dermatologists actually use for their own skin routine 2026',
+      'Korean dermatologist anti-aging skincare routine products guide 2026',
+      // K-Beauty 구독 박스 — 어필리에이트 기회 + 입문자 허들 해소
+      'best K-beauty subscription box 2026 FaceTory Bomibox compared ranked',
+      'K-beauty subscription box review which is worth it for beginners 2026',
+      // 쿠팡 vs 올리브영 국제직구 비교 — 기존에 올리브영 vs YesStyle만 있었음
+      'Coupang vs Olive Young which is better for buying Korean skincare 2026',
+      'how to buy Korean skincare on Coupang internationally shipping guide',
+      // K-Beauty for Teens — 성장 세그먼트 (순한 성분, 여드름 관리)
+      'best Korean skincare for teenagers teens acne gentle routine 2026',
+      'Korean skincare routine for teens beginners gentle products guide 2026',
+      'best Korean acne patches pimple patches for teens ranked 2026',
     ],
     contentTypes: ['product-review', 'best-x-for-y', 'x-vs-y', 'how-to', 'listicle', 'case-study', 'deep-dive', 'news-explainer'],
     adSenseRpm: 'high',

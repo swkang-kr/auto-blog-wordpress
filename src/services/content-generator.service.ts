@@ -6,7 +6,7 @@ import { validateContent, autoFixContent, logContentScore } from '../utils/conte
 import { costTracker } from '../utils/cost-tracker.js';
 import { circuitBreakers } from '../utils/retry.js';
 import type { ResearchedKeyword, BlogContent, ExistingPost, AuthorProfile } from '../types/index.js';
-import { NICHE_AUTHOR_PERSONAS, CONTENT_TYPE_PERSONA_MAP } from '../types/index.js';
+import { NICHE_AUTHOR_PERSONAS, CONTENT_TYPE_PERSONA_MAP, KBEAUTY_TERTIARY_KEYWORDS } from '../types/index.js';
 
 /** Layout variant for content structure diversification (anti-AI detection) */
 type LayoutVariant = 'standard' | 'narrative' | 'compact' | 'journal' | 'opinion' | 'interview';
@@ -746,6 +746,16 @@ export class ContentGeneratorService {
     }
 
     const preferredVoice = CONTENT_TYPE_PERSONA_MAP[contentType] || 'primary';
+
+    // K-Beauty: only use Ella Park (tertiary, index 2) for explicitly makeup/hair content.
+    // All skincare product-review/x-vs-y/how-to should use Sophie Kim (primary) or Mia Cho (secondary).
+    if (category === 'K-Beauty' && personas.length >= 3 && keyword) {
+      const isMakeupHairContent = KBEAUTY_TERTIARY_KEYWORDS.test(keyword);
+      if (isMakeupHairContent && postCount % 3 !== 0) {
+        return personas[2]; // Ella Park — K-Beauty Hair & Makeup Specialist
+      }
+      // For skincare content, fall through to preferredVoice mapping (primary/secondary)
+    }
 
     // K-Entertainment: detect K-drama content for Sora Lee (index 2)
     if (category === 'K-Entertainment' && personas.length >= 3 && keyword) {

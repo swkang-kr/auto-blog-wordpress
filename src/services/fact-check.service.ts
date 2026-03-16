@@ -247,7 +247,12 @@ export class FactCheckService {
       // K-Beauty brands (common AI dating errors)
       cosrx: 2013, 'beauty of joseon': 2010, tirtir: 2019, laneige: 1994,
       sulwhasoo: 1997, innisfree: 2000, missha: 2000, 'etude house': 1995,
-      amorepacific: 1945,
+      amorepacific: 1945, numbuzin: 2020, biodance: 2018, "d'alba": 2013,
+      'round lab': 2018, isntree: 2009, 'haruharu wonder': 2018, mixsoon: 2019,
+      'some by mi': 2016, abib: 2014, 'ma:nyo': 2012, nacific: 2015,
+      illiyoon: 2006, aestura: 2003, purito: 2015, jumiso: 2018,
+      benton: 2011, 'vt cosmetics': 2018, fwee: 2020, rovectin: 2013,
+      "ample:n": 2016, 'dr.g': 2003, klavuu: 2015,
       // Institutions
       'bank of korea': 1950, 'korea exchange': 2005, 'olive young': 1999,
       'korea tourism organization': 1962,

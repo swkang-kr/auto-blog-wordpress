@@ -49,6 +49,14 @@ export const KOREAN_SEASONAL_EVENTS: Array<{
   { name: 'K-pop Summer Comeback Season', startMonth: 6, startDay: 1, endMonth: 8, endDay: 31, leadTimeDays: 60, relevantNiches: ['K-Entertainment'], contentAngles: ['summer comeback season K-pop 2026', 'best K-pop summer releases ranked', 'K-pop festival season guide'] },
   { name: 'BIFF (Busan Film Festival)', startMonth: 10, startDay: 1, endMonth: 10, endDay: 12, leadTimeDays: 45, relevantNiches: ['K-Entertainment'], contentAngles: ['BIFF highlights', 'Korean cinema spotlight', 'best Korean films at BIFF'] },
   { name: 'Baeksang Arts Awards', startMonth: 4, startDay: 20, endMonth: 5, endDay: 10, leadTimeDays: 45, relevantNiches: ['K-Entertainment'], contentAngles: ['Baeksang Arts Awards predictions 2026', 'best K-drama nominees Baeksang guide', 'how to watch Baeksang 2026 international fans', 'Baeksang best actress actor winner predictions'] },
+  // Amazon Prime Day — K-Beauty 국제 딜 폭발 시점 (7월 중순, 2일간)
+  { name: 'Amazon Prime Day K-Beauty Deals', startMonth: 7, startDay: 10, endMonth: 7, endDay: 17, leadTimeDays: 45, relevantNiches: ['K-Beauty'], contentAngles: ['best K-beauty deals Amazon Prime Day 2026 ranked', 'K-beauty skincare Prime Day steals under $20 guide', 'COSRX Anua Numbuzin Prime Day discounts what to buy', 'Amazon Prime Day K-beauty haul guide must-buy products 2026'] },
+  // Olive Young 메가세일 (2월) — 봄 그랜드세일과 별도, 연초 뷰티 쇼핑 시즌
+  { name: 'Olive Young Mega Sale', startMonth: 2, startDay: 1, endMonth: 2, endDay: 20, leadTimeDays: 30, relevantNiches: ['K-Beauty'], contentAngles: ['Olive Young mega sale 2026 best picks ranked', 'best K-beauty products Olive Young February sale guide', 'Olive Young winter sale skincare essentials what to stock up', 'how to shop Olive Young mega sale internationally 2026'] },
+  // Dano (단오, 음력 5월 5일) — 전통 뷰티 약초 앵글
+  { name: 'Dano (단오)', startMonth: 5, startDay: 25, endMonth: 6, endDay: 5, leadTimeDays: 30, relevantNiches: ['K-Beauty', 'K-Entertainment'], contentAngles: ['Korean Dano traditional beauty rituals mugwort iris guide', 'best Korean mugwort skincare products Dano beauty tradition', 'Dano Korean holiday explained cultural significance guide'] },
+  // Korean Summer Sales (쿠팡·올리브영 여름 세일)
+  { name: 'Korean Summer Sales', startMonth: 7, startDay: 1, endMonth: 7, endDay: 31, leadTimeDays: 30, relevantNiches: ['K-Beauty'], contentAngles: ['best K-beauty summer sale deals 2026 guide', 'Korean sunscreen summer deals ranked what to buy', 'lightweight Korean moisturizer summer sale picks 2026'] },
 ];
 
 /** 콘텐츠 유형 */
@@ -150,18 +158,24 @@ export const NICHE_AUTHOR_PERSONAS: Record<string, AuthorProfile[]> = {
   ],
 };
 
-/** Content-type to persona voice mapping for automatic rotation */
+/** Content-type to persona voice mapping for automatic rotation.
+ * K-Beauty override: skincare-focused content types use primary (Sophie Kim, ingredient science)
+ * instead of tertiary (Ella Park, makeup/hair). Tertiary only for explicitly makeup/hair content.
+ */
 export const CONTENT_TYPE_PERSONA_MAP: Record<string, 'primary' | 'secondary' | 'tertiary'> = {
   'deep-dive': 'primary',
   'analysis': 'primary',
   'case-study': 'primary',
   'news-explainer': 'primary',
-  'how-to': 'tertiary',       // K-Beauty: Ella Park (makeup/hair how-to); K-Entertainment: Sora Lee (drama how-to)
+  'how-to': 'secondary',      // K-Beauty: Mia Cho (hands-on routine how-to); K-Entertainment: Alex Han (fan how-to)
   'listicle': 'secondary',
-  'best-x-for-y': 'secondary',
-  'x-vs-y': 'tertiary',       // K-Beauty: Ella Park (product comparisons); K-Entertainment: Sora Lee (drama vs drama)
-  'product-review': 'tertiary', // K-Beauty: Ella Park (makeup/Amazon affiliate focus); K-Entertainment: Sora Lee (drama/OST review)
+  'best-x-for-y': 'primary',  // K-Beauty: Sophie Kim (ingredient-based product ranking); K-Entertainment: primary (data-driven ranking)
+  'x-vs-y': 'primary',        // K-Beauty: Sophie Kim (ingredient/formulation comparison); K-Entertainment: primary (group/drama analysis)
+  'product-review': 'secondary', // K-Beauty: Mia Cho (hands-on product testing); K-Entertainment: secondary (content review)
 };
+
+/** Niche-specific persona override: when keyword matches these patterns, force tertiary (Ella Park for K-Beauty makeup/hair) */
+export const KBEAUTY_TERTIARY_KEYWORDS = /\b(?:makeup|mascara|eyeliner|eyeshadow|foundation|cushion|lip\s*tint|blush|contour|hair\s*(?:loss|care|shampoo|dye)|scalp|wig)\b/i;
 
 /** 니치 설정 */
 export interface NicheConfig {
