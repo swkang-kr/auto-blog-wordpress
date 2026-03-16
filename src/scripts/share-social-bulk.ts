@@ -9,6 +9,7 @@ import 'dotenv/config';
 import axios from 'axios';
 import { FacebookService } from '../services/facebook.service.js';
 import { LinkedInService } from '../services/linkedin.service.js';
+import { PinterestService } from '../services/pinterest.service.js';
 import { buildUtmUrl, extractSlugFromUrl } from '../utils/utm.js';
 
 // ── Config ──
@@ -19,6 +20,7 @@ const FB_TOKEN = process.env.FB_ACCESS_TOKEN || '';
 const FB_PAGE_ID = process.env.FB_PAGE_ID || '';
 const LI_TOKEN = process.env.LINKEDIN_ACCESS_TOKEN || '';
 const LI_PERSON_ID = process.env.LINKEDIN_PERSON_ID || '';
+const PINTEREST_TOKEN = process.env.PINTEREST_ACCESS_TOKEN || '';
 
 const args = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
@@ -35,6 +37,7 @@ interface WpPost {
   excerpt: { rendered: string };
   date: string;
   featured_media: number;
+  categories?: number[];
   meta?: Record<string, unknown>;
 }
 
@@ -87,22 +90,23 @@ async function wasShared(postId: number, platform: string): Promise<boolean> {
 async function main() {
   console.log('═══════════════════════════════════════════════');
   console.log('  Social Media Bulk Share');
-  console.log(`  Facebook: ${FB_TOKEN ? '✅ configured' : '❌ missing FB_ACCESS_TOKEN'}`);
-  console.log(`  LinkedIn: ${LI_TOKEN ? '✅ configured' : '❌ missing LINKEDIN_ACCESS_TOKEN'}`);
+  console.log(`  Facebook:  ${FB_TOKEN ? '✅ configured' : '❌ missing FB_ACCESS_TOKEN'}`);
+  console.log(`  LinkedIn:  ${LI_TOKEN ? '✅ configured' : '❌ missing LINKEDIN_ACCESS_TOKEN'}`);
+  console.log(`  Pinterest: ${PINTEREST_TOKEN ? '✅ configured' : '❌ missing PINTEREST_ACCESS_TOKEN'}`);
   console.log(`  Mode: ${DRY_RUN ? '🔍 DRY RUN' : '🚀 LIVE'}`);
   console.log('═══════════════════════════════════════════════\n');
 
-  if (!FB_TOKEN && !LI_TOKEN) {
-    console.error('No social platform tokens configured. Set FB_ACCESS_TOKEN and/or LINKEDIN_ACCESS_TOKEN.');
+  if (!FB_TOKEN && !LI_TOKEN && !PINTEREST_TOKEN) {
+    console.error('No social platform tokens configured. Set FB_ACCESS_TOKEN, LINKEDIN_ACCESS_TOKEN, and/or PINTEREST_ACCESS_TOKEN.');
     process.exit(1);
   }
 
-  // Fetch all published posts
+  // Fetch all published posts (include categories for Pinterest eligibility check)
   const allPosts: WpPost[] = [];
   let page = 1;
   while (true) {
     const { data } = await axios.get<WpPost[]>(
-      `${WP_URL}/wp-json/wp/v2/posts?status=publish&per_page=100&page=${page}&orderby=date&order=desc&_fields=id,title,link,excerpt,date,featured_media`,
+      `${WP_URL}/wp-json/wp/v2/posts?status=publish&per_page=100&page=${page}&orderby=date&order=desc&_fields=id,title,link,excerpt,date,featured_media,categories`,
       { headers: wpHeaders },
     );
     allPosts.push(...data);
@@ -110,13 +114,30 @@ async function main() {
     page++;
   }
 
+  // Build category ID → name map for Pinterest eligibility
+  const categoryMap = new Map<number, string>();
+  try {
+    let catPage = 1;
+    while (true) {
+      const { data } = await axios.get<Array<{ id: number; name: string }>>(
+        `${WP_URL}/wp-json/wp/v2/categories?per_page=100&page=${catPage}&_fields=id,name`,
+        { headers: wpHeaders },
+      );
+      for (const cat of data) categoryMap.set(cat.id, cat.name);
+      if (data.length < 100) break;
+      catPage++;
+    }
+  } catch { /* category map optional */ }
+
   console.log(`Found ${allPosts.length} published posts. Limit: ${LIMIT}\n`);
 
   const fb = FB_TOKEN && FB_PAGE_ID ? new FacebookService(FB_TOKEN, FB_PAGE_ID) : null;
   const li = LI_TOKEN && LI_PERSON_ID ? new LinkedInService(LI_TOKEN, LI_PERSON_ID) : null;
+  const pin = PINTEREST_TOKEN ? new PinterestService(PINTEREST_TOKEN) : null;
 
   let fbCount = 0;
   let liCount = 0;
+  let pinCount = 0;
   let skipCount = 0;
 
   for (const post of allPosts.slice(0, LIMIT)) {
@@ -187,11 +208,60 @@ async function main() {
       }
     }
 
-    if (!fb && !li) skipCount++;
+    // Pinterest
+    if (pin) {
+      // Resolve category name for Pinterest eligibility check
+      const postCategoryIds = post.categories || [];
+      const postCategoryName = postCategoryIds.map(id => categoryMap.get(id)).find(Boolean) || '';
+      if (!PinterestService.isEligible(postCategoryName)) {
+        console.log(`   PIN: ⏭️ not eligible (category: ${postCategoryName || 'unknown'})`);
+      } else {
+        const alreadyShared = await wasShared(post.id, 'pinterest');
+        if (alreadyShared) {
+          console.log('   PIN: ⏭️ already shared');
+        } else if (DRY_RUN) {
+          console.log('   PIN: 🔍 would share (dry run)');
+          pinCount++;
+        } else {
+          try {
+            const imageUrl = await getFeaturedImageUrl(post.featured_media);
+            if (!imageUrl) {
+              console.log('   PIN: ⏭️ no featured image (required for pins)');
+            } else {
+              const blogContent = {
+                title,
+                excerpt,
+                category: postCategoryName,
+                tags: [] as string[],
+                html: '',
+                imagePrompts: [],
+                imageCaptions: [],
+                qualityScore: 0,
+                metaDescription: '',
+                slug: extractSlugFromUrl(url),
+              };
+              await pin.pinBlogPost(
+                blogContent as any,
+                { postId: post.id, url, title, featuredImageId: post.featured_media } as any,
+                imageUrl,
+              );
+              console.log(`   PIN: ✅ pinned`);
+              await markAsShared(post.id, 'pinterest');
+              pinCount++;
+            }
+          } catch (err) {
+            console.log(`   PIN: ❌ error: ${err instanceof Error ? err.message : err}`);
+          }
+          await sleep(DELAY_MS);
+        }
+      }
+    }
+
+    if (!fb && !li && !pin) skipCount++;
   }
 
   console.log('\n═══════════════════════════════════════════════');
-  console.log(`  Results: FB ${fbCount} | LI ${liCount} | Skipped ${skipCount}`);
+  console.log(`  Results: FB ${fbCount} | LI ${liCount} | PIN ${pinCount} | Skipped ${skipCount}`);
   console.log('═══════════════════════════════════════════════');
 }
 

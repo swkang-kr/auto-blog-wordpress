@@ -1795,6 +1795,8 @@ async function main(): Promise<void> {
       // B-8.5. Pinterest auto-pin (skip for scheduled posts — URL not live yet)
       if (pinterestService && PinterestService.isEligible(niche.category) && !scheduledDate) {
         await pinterestService.pinBlogPost(content, post, featuredMediaResult?.sourceUrl || '');
+      } else if (pinterestService) {
+        logger.debug(`Pinterest: Skipped — eligible=${PinterestService.isEligible(niche.category)}, scheduledDate=${!!scheduledDate}`);
       }
 
       // B-8.5b. Reddit auto-posting (skip for scheduled posts — URL not live yet)

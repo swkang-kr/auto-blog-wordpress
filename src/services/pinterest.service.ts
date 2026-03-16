@@ -55,7 +55,14 @@ export class PinterestService {
       return;
     }
 
+    // Image URL is required for Pinterest pins
+    if (!featuredImageUrl) {
+      logger.warn(`Pinterest: Skipping "${content.title}" — no featured image URL provided (required for pin creation)`);
+      return;
+    }
+
     try {
+      logger.info(`Pinterest: Creating pin for "${content.title}" (category: ${content.category})`);
       const boardName = CATEGORY_BOARD_MAP[content.category] || content.category;
       const boardId = await this.getOrCreateBoard(boardName);
       if (!boardId) {
@@ -67,6 +74,7 @@ export class PinterestService {
       const description = this.buildPinDescription(content);
 
       const utmUrl = buildUtmUrl(post.url, 'pinterest', 'social', extractSlugFromUrl(post.url));
+      logger.debug(`Pinterest: POST /v5/pins — board=${boardId}, image=${featuredImageUrl.substring(0, 80)}...`);
       await axios.post(
         'https://api.pinterest.com/v5/pins',
         {
