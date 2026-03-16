@@ -16,8 +16,8 @@ export class ThreadsService {
     private readonly userId: string,
   ) {}
 
-  /** Post blog article to Threads (text post with UTM link embedded). */
-  async promoteBlogPost(content: BlogContent, post: PublishedPost): Promise<string | null> {
+  /** Post blog article to Threads. Attaches image if imageUrl is provided. */
+  async promoteBlogPost(content: BlogContent, post: PublishedPost, imageUrl?: string): Promise<string | null> {
     const resolvedUrl = resolvePostUrl(post);
     const isUnresolved = resolvedUrl.includes('?p=') || resolvedUrl.includes('&p=');
     if (isUnresolved) {
@@ -37,39 +37,11 @@ export class ThreadsService {
     const text = this.buildThreadText(content, utmUrl);
 
     try {
-      // Step 1: Create media container
-      const createRes = await axios.post(
-        `${THREADS_API}/${this.userId}/threads`,
-        null,
-        {
-          params: {
-            media_type: 'TEXT',
-            text,
-            access_token: this.accessToken,
-          },
-          timeout: 15000,
-        },
-      );
-      const creationId: string = createRes.data?.id;
-      if (!creationId) {
-        logger.warn('Threads: container creation returned no ID');
-        return null;
-      }
+      const threadId = imageUrl
+        ? await this.publishImagePost(text, imageUrl)
+        : await this.publishTextPost(text);
 
-      // Step 2: Publish the container
-      const publishRes = await axios.post(
-        `${THREADS_API}/${this.userId}/threads_publish`,
-        null,
-        {
-          params: {
-            creation_id: creationId,
-            access_token: this.accessToken,
-          },
-          timeout: 15000,
-        },
-      );
-      const threadId: string = publishRes.data?.id;
-      logger.info(`Threads post published: ${threadId} — "${content.title}"`);
+      if (threadId) logger.info(`Threads post published: ${threadId} — "${content.title}"${imageUrl ? ' [with image]' : ''}`);
       return threadId;
     } catch (error) {
       const msg = axios.isAxiosError(error)
@@ -78,6 +50,80 @@ export class ThreadsService {
       logger.warn(`Threads post failed (non-critical): ${msg}`);
       return null;
     }
+  }
+
+  /** Create and publish a TEXT-only container. */
+  private async publishTextPost(text: string): Promise<string | null> {
+    const creationId = await this.createContainer({ media_type: 'TEXT', text });
+    return creationId ? this.publishContainer(creationId) : null;
+  }
+
+  /** Create and publish an IMAGE container (image_url must be publicly accessible). */
+  private async publishImagePost(text: string, imageUrl: string): Promise<string | null> {
+    const creationId = await this.createContainer({ media_type: 'IMAGE', image_url: imageUrl, text });
+    return creationId ? this.publishContainer(creationId) : null;
+  }
+
+  /** Step 1: Create a Threads media container. Returns creation_id. */
+  private async createContainer(params: Record<string, string>): Promise<string | null> {
+    const res = await axios.post(
+      `${THREADS_API}/${this.userId}/threads`,
+      null,
+      {
+        params: { ...params, access_token: this.accessToken },
+        timeout: 15000,
+      },
+    );
+    const creationId: string = res.data?.id;
+    if (!creationId) logger.warn('Threads: container creation returned no ID');
+    return creationId || null;
+  }
+
+  /**
+   * Step 1.5: Poll container status until FINISHED (required before publish).
+   * Threads API requires this especially for image/video, but also for text.
+   * Ref: https://developers.facebook.com/docs/threads/posts#step-3--check-the-status-of-the-threads-media-container
+   */
+  private async waitForContainer(creationId: string, maxWaitMs = 30000): Promise<boolean> {
+    const interval = 2000;
+    const start = Date.now();
+    while (Date.now() - start < maxWaitMs) {
+      await new Promise(r => setTimeout(r, interval));
+      try {
+        const res = await axios.get(`${THREADS_API}/${creationId}`, {
+          params: { fields: 'status,error_message', access_token: this.accessToken },
+          timeout: 10000,
+        });
+        const status: string = res.data?.status;
+        logger.debug(`Threads container ${creationId} status: ${status}`);
+        if (status === 'FINISHED') return true;
+        if (status === 'ERROR' || status === 'EXPIRED') {
+          logger.warn(`Threads container ${creationId} failed with status: ${status} — ${res.data?.error_message || ''}`);
+          return false;
+        }
+        // IN_PROGRESS → keep polling
+      } catch {
+        // ignore transient errors during polling
+      }
+    }
+    logger.warn(`Threads container ${creationId} did not finish within ${maxWaitMs}ms`);
+    return false;
+  }
+
+  /** Step 2: Publish a container by creation_id. Returns published thread ID. */
+  private async publishContainer(creationId: string): Promise<string | null> {
+    const ready = await this.waitForContainer(creationId);
+    if (!ready) return null;
+
+    const res = await axios.post(
+      `${THREADS_API}/${this.userId}/threads_publish`,
+      null,
+      {
+        params: { creation_id: creationId, access_token: this.accessToken },
+        timeout: 15000,
+      },
+    );
+    return res.data?.id || null;
   }
 
   /**
