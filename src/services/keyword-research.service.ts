@@ -690,7 +690,8 @@ STRATEGY: Consider creating content that directly targets one of these content g
       // Breakout 2025-2026 K-Beauty brands
       'tirtir', 'by wishtrend', 'tonymoly', 'holika holika', 'dr. jart',
       'iope', 'hanyul', 'o hui', 'whoo', 'su:m37', 'heimish', 'benton',
-      'ma:nyo', 'illiyoon', 'aestura', 'ample:n', 'dr.g', 'no7 korea',
+      'ma:nyo', 'illiyoon', 'aestura', 'ample:n', 'dr.g', 'no7 korea', 'nacific',
+      'sun pad', 'lip oil',
       // K-Entertainment groups — 3rd & 4th gen
       'twice', 'seventeen', 'stray kids', 'ateez', 'txt', 'enhypen',
       'le sserafim', 'ive', 'newjeans', 'aespa', 'babymonster',
@@ -704,9 +705,10 @@ STRATEGY: Consider creating content that directly targets one of these content g
       // 2024-2026 신규 그룹/아티스트 (seed keywords에 추가됨 — 검증 일관성 필수)
       'plave',            // 버추얼 아이돌, VLAST 소속 (팬덤명 ASTERDOM)
       'g-dragon', 'gdragon', 'kwon jiyong', // YG 솔로 아티스트, BIGBANG 멤버
-      'qwer',             // 밴드돌 걸그룹, YGKPLUS (팬덤명 AUBE)
+      'qwer',             // 밴드돌 걸그룹, Million Market/밀리언마켓 (팬덤명 AUBE)
       'whiplash',         // SM Entertainment 4세대 보이그룹 (2024 데뷔)
-      '8turn',            // JYP 4세대 보이그룹
+      '8turn',            // MNH Entertainment 4세대 보이그룹
+      'ampers&one', 'ampersone', // FNC Entertainment 걸그룹 (2023 데뷔)
       'katseye',          // HYBE/Geffen 글로벌 걸그룹
       'njz',              // NJZ (NewJeans 2025-2026 활동명)
       // K-Beauty 신규 브랜드 (seed keywords에 추가됨 — 검증 일관성 필수)

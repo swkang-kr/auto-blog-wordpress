@@ -638,6 +638,7 @@ export function validateContent(
 
   // 1. Korean source citations
   const koreanSourcePatterns = [
+    // Finance & government
     /Bank of Korea|BOK|한국은행/i,
     /Korea Exchange|KRX|한국거래소/i,
     /DART|dart\.fss/i,
@@ -649,6 +650,21 @@ export function validateContent(
     /KISA/i,
     /KOCCA/i,
     /Maeil Business|매일경제/i,
+    // K-Entertainment sources (prevent unfair -5 penalty for entertainment content)
+    /Hanteo/i,
+    /Circle\s*Chart/i,
+    /Melon\s*(?:Chart|streaming)?/i,
+    /Soompi/i,
+    /Dispatch|디스패치/i,
+    /Weverse\s*Magazine/i,
+    /Billboard\s*Korea/i,
+    // K-Beauty editorial sources (prevent unfair -5 penalty for beauty content)
+    /Allure\s*Korea/i,
+    /Vogue\s*Korea/i,
+    /Harper.?s?\s*Bazaar\s*Korea/i,
+    /Olive\s*Young|올리브영/i,
+    /Cosmorning|코스모닝/i,
+    /MFDS|식품의약품안전처/i,
   ];
   const koreanCitationCount = koreanSourcePatterns.filter(p => p.test(html)).length;
   if (koreanCitationCount === 0) {
@@ -830,7 +846,10 @@ export function validateContent(
       { pattern: /BABYMONSTER\b[^.]*\bHYBE\b/i, correct: 'BABYMONSTER is under YG Entertainment, NOT HYBE' },
       { pattern: /ILLIT\b[^.]*\bADOR\b/i, correct: 'ILLIT is under BELIFT LAB, NOT ADOR' },
       { pattern: /(?:SHINee|EXO|NCT|WHIPLASH|Red Velvet)\b[^.]*\bHYBE\b/i, correct: 'SM Entertainment groups incorrectly attributed to HYBE' },
-      { pattern: /QWER\b[^.]*\b(?:JYP|SM|HYBE|YG)\b/i, correct: 'QWER is under YGKPLUS (밀리언마켓), NOT a Big 4 label' },
+      { pattern: /QWER\b[^.]*\b(?:JYP|SM|HYBE|YG)\b/i, correct: 'QWER is under Million Market (밀리언마켓), NOT a Big 4 label' },
+      { pattern: /8TURN\b[^.]*\bJYP\b/i, correct: '8TURN is under MNH Entertainment, NOT JYP' },
+      { pattern: /AMPERS.?ONE\b[^.]*\b(?:SM|HYBE)\b/i, correct: 'AMPERS&ONE is under FNC Entertainment, NOT SM/HYBE' },
+      { pattern: /MEOVV\b[^.]*\b(?:HYBE|SM|JYP|YG)\b/i, correct: 'MEOVV is under THEBLACKLABEL, NOT a Big 4 label' },
     ];
     for (const check of labelErrors) {
       if (check.pattern.test(plainText)) {
@@ -888,6 +907,8 @@ export function validateContent(
       'BTS': 'ARMY', 'BLACKPINK': 'BLINK', 'TWICE': 'ONCE', 'SEVENTEEN': 'CARAT',
       'Stray Kids': 'STAY', 'ATEEZ': 'ATINY', 'ENHYPEN': 'ENGENE', 'TXT': 'MOA',
       'aespa': 'MY', 'IVE': 'DIVE', 'LE SSERAFIM': 'FEARNOT',
+      'BABYMONSTER': 'MONSTER', 'PLAVE': 'ASTERDOM', 'QWER': 'AUBE',
+      'RIIZE': 'BRIIZE', 'BOYNEXTDOOR': 'ONEDOOR',
     };
     for (const [group, fandom] of Object.entries(fandomMap)) {
       const groupRegex = new RegExp(`\\b${group.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');

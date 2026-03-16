@@ -323,6 +323,26 @@ export const NICHES: NicheConfig[] = [
       'waterless Korean skincare products concentrated formulas ranked 2026',
       // 업사이클 성분 — 지속가능성 K-Beauty 차별화
       'upcycled ingredient Korean skincare sustainable beauty trend 2026',
+      // 선패드 (Sun Pad) — 2025-2026 최대 신규 카테고리, 토너패드 형식 자외선 차단
+      'best Korean sunscreen pad sun pad SPF for reapplication ranked 2026',
+      'Korean sun pad vs sunscreen stick which is better for reapplication guide',
+      // 립 오일/세럼 — 글라스 립 이후 립 케어 급성장 세그먼트
+      'best Korean lip oil for glass lip look ranked 2026',
+      'best Korean lip serum treatment for dry cracked lips 2026 guide',
+      // ma:nyo (마녀공장) — 비피다 바이옴 라인 + 퓨어 클렌징 오일 베스트셀러
+      'ma:nyo bifida biome ampoule review before after results sensitive skin',
+      'ma:nyo pure cleansing oil review best Korean oil cleanser comparison 2026',
+      // NACIFIC (나시픽) — 파이토 나이아신 라인, Amazon K-Beauty 급성장 브랜드
+      'NACIFIC phyto niacin whitening essence review brightening results 2026',
+      'NACIFIC vs COSRX which niacinamide product is better comparison review',
+      // BENTON — 센텔라+프로폴리스 전문, 민감성 피부 커뮤니티 최상위 추천
+      'Benton snail bee high content essence review before after results 2026',
+      'Benton centella propolis gel review sensitive acne skin guide',
+      // AMPLE:N — 펩타이드 전문 브랜드, 가성비 안티에이징
+      'AMPLE:N peptide shot ampoule review anti-aging results before after 2026',
+      // ILLIYOON (일리윤) — 아모레퍼시픽 더마 브랜드, Ato 세라마이드 크림 약국 베스트셀러
+      'Illiyoon ceramide ato concentrate cream review eczema sensitive skin 2026',
+      'Illiyoon vs COSRX ceramide cream which is better for damaged skin barrier',
     ],
     contentTypes: ['product-review', 'best-x-for-y', 'x-vs-y', 'how-to', 'listicle', 'case-study', 'deep-dive', 'news-explainer'],
     adSenseRpm: 'high',
@@ -453,9 +473,9 @@ export const NICHES: NicheConfig[] = [
       // 글로벌 투어 확장 — 지역별 팬 검색
       'K-pop concerts in Europe 2026 schedule tour dates cities',
       'K-pop concerts Australia 2026 schedule tour dates guide',
-      // 8TURN — JYP 4세대 보이그룹 (2024 데뷔), 글로벌 팬덤 급성장
-      '8TURN JYP boy group songs ranked guide for new fans 2026',
-      '8TURN debut story JYP Entertainment members explained guide',
+      // 8TURN — MNH Entertainment 4세대 보이그룹 (2023 데뷔), 글로벌 팬덤 급성장
+      '8TURN MNH Entertainment boy group songs ranked guide for new fans 2026',
+      '8TURN debut story MNH Entertainment members explained guide',
       // UNIS (유니스) — FNC/WAKEONE 걸그룹 (2024 데뷔), Universe Ticket 출신
       'UNIS girl group debut story Universe Ticket explained guide',
       'UNIS songs ranked best tracks for new fans 2026',
@@ -514,8 +534,8 @@ export const NICHES: NicheConfig[] = [
       'EXO group comeback 2026 what fans need to know full update guide',
       'EXO best songs ranked guide for new fans after military reunion 2026',
       'EXO-L fandom guide how to stay updated 2026 lightstick fan culture',
-      // AMPERS&ONE — SM Entertainment 신규 걸그룹
-      'AMPERS&ONE SM Entertainment girl group debut concept explained guide fans 2026',
+      // AMPERS&ONE — FNC Entertainment 걸그룹 (2023 데뷔, My Teenage Girl 시즌2 출신)
+      'AMPERS&ONE FNC Entertainment girl group debut concept explained guide fans 2026',
       'AMPERS&ONE songs ranked best tracks for new fans guide 2026',
       // NEXZ — JYP 일본 공식 그룹 (K-팝 훈련 방식), 일본 팬덤→K-팝 진입 앵글
       'NEXZ JYP Japan group debut story concept explained guide new fans 2026',
@@ -531,6 +551,9 @@ export const NICHES: NicheConfig[] = [
       'Viki vs Netflix which is better for watching K-dramas 2026 guide',
       'best K-dramas on Viki 2026 exclusive multilingual subtitles ranked guide',
       'how to use Viki to watch K-dramas free vs premium guide 2026',
+      // MEOVV (미오브) — THEBLACKLABEL 걸그룹 (2024 데뷔), YG 계열 but 독립 레이블
+      'MEOVV THEBLACKLABEL girl group debut concept explained guide fans 2026',
+      'MEOVV songs ranked best tracks for new fans guide 2026',
     ],
     contentTypes: ['listicle', 'news-explainer', 'best-x-for-y', 'deep-dive', 'how-to', 'x-vs-y', 'case-study'],
     adSenseRpm: 'medium',
