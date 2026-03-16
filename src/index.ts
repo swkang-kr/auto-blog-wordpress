@@ -400,7 +400,7 @@ async function main(): Promise<void> {
   const pillarUrlMap: Record<string, string> = {};
   for (const niche of NICHES) {
     const pillarSlug = `guide-${niche.id}`;
-    pillarUrlMap[niche.id] = `${config.WP_URL}/${pillarSlug}/`;
+    pillarUrlMap[niche.id] = `${config.WP_URL.replace(/\/+$/, '')}/${pillarSlug}/`;
   }
 
   // 2.14. Build topic clusters for cluster-aware internal linking
@@ -1003,6 +1003,9 @@ async function main(): Promise<void> {
     }
 
     try {
+      // Start per-post cost tracking for ROI attribution
+      costTracker.startPostTracking(niche.name);
+
       // A-1. Keyword research with duplicate retry loop (up to 3 attempts)
       const MAX_KEYWORD_ATTEMPTS = 3;
       let researched: Awaited<ReturnType<typeof researchService.researchKeyword>> | null = null;
@@ -1065,6 +1068,9 @@ async function main(): Promise<void> {
         skippedCount++;
         continue;
       }
+
+      // Update cost tracking key to use actual selected keyword
+      costTracker.startPostTracking(researched.analysis.selectedKeyword);
 
       // A-3. Generate content — runs back-to-back across all niches for cache HITs
       const nichePosts = existingPosts
@@ -1198,9 +1204,6 @@ async function main(): Promise<void> {
     // Reset publish status per post (fact-check may have forced draft on previous post)
     effectivePublishStatus = config.PUBLISH_STATUS as 'publish' | 'draft';
     logger.info(`\n[Phase B] Niche: "${niche.name}"${fastTrack ? ' [FAST-TRACK]' : ''}`);
-
-    // Immediate publish — no scheduling to avoid future-status posts breaking internal links
-    const scheduledDate: string | undefined = undefined;
 
     try {
       // B-1. Generate images (Gemini)
@@ -1500,7 +1503,6 @@ async function main(): Promise<void> {
           ogImageUrl: featuredMediaResult?.sourceUrl || '',
           publishStatus: effectivePublishStatus,
           existingPosts,
-          scheduledDate,
           pillarPageUrl: pillarUrlMap[niche.id],
           subNiche: niche.id,
           skipInlineCss: postCssSnippetActive,
@@ -1547,10 +1549,8 @@ async function main(): Promise<void> {
 
       // B-4.5. Korean content generation removed — English-only publishing
 
-      // B-5. IndexNow + Bing Sitemap Ping (skip for scheduled/future posts — URL returns 404 until publish time)
-      if (!scheduledDate) {
-        await seoService.notifyIndexNow([post.url]);
-      }
+      // B-5. IndexNow + Bing Sitemap Ping
+      await seoService.notifyIndexNow([post.url]);
       await seoService.pingSitemap();
 
       // B-6. Multi-day social campaign: stagger platforms for sustained engagement
@@ -1563,21 +1563,15 @@ async function main(): Promise<void> {
       if (twitterService) socialPlatforms.push('twitter');
       if (linkedinService) socialPlatforms.push('linkedin');
 
-      // Facebook: post immediately only when published (not scheduled/future — URL not accessible yet)
-      if (facebookService && effectivePublishStatus === 'publish' && !scheduledDate) {
+      // Facebook: post immediately when published
+      if (facebookService && effectivePublishStatus === 'publish') {
         const fbPostId = await facebookService.promoteBlogPost(content, post);
         if (fbPostId) await wpService.updatePostMeta(post.postId, { _autoblog_fb_post_id: fbPostId }).catch(() => {});
-      } else if (facebookService && scheduledDate) {
-        // Defer Facebook posting: schedule 30 min after WordPress auto-publishes the scheduled post
-        const fbScheduleTime = new Date(new Date(scheduledDate).getTime() + 30 * 60 * 1000).toISOString();
-        await wpService.updatePostMeta(post.postId, { _autoblog_fb_scheduled: fbScheduleTime }).catch(() => {});
-        logger.info(`Facebook deferred: scheduled for ${fbScheduleTime} (30 min after publish)`);
       }
 
       if (socialPlatforms.length > 0) {
         try {
-          // For scheduled posts, base delay off publish time (not creation time)
-          const socialBaseTime = scheduledDate ? new Date(scheduledDate).getTime() : Date.now();
+          const socialBaseTime = Date.now();
           // Schedule Twitter at +2h from publish time
           if (twitterService) {
             await wpService.updatePostMeta(post.postId, {
@@ -1591,7 +1585,7 @@ async function main(): Promise<void> {
               _autoblog_linkedin_scheduled: new Date(socialBaseTime + LINKEDIN_DELAY_MS).toISOString(),
             });
           }
-          logger.info(`Multi-day campaign: Twitter +2h, LinkedIn +6h ${scheduledDate ? 'from scheduled publish time' : 'from now'} for "${content.title}"`);
+          logger.info(`Multi-day campaign: Twitter +2h, LinkedIn +6h from now for "${content.title}"`);
         } catch (socialMetaError) {
           logger.debug(`Social scheduling meta save failed: ${socialMetaError instanceof Error ? socialMetaError.message : socialMetaError}`);
           // Fallback: post immediately if meta save fails, save social IDs for tracking
@@ -1792,15 +1786,15 @@ async function main(): Promise<void> {
         logger.info(`Hashnode syndication: deferred 24h for canonical indexing (scheduled: ${syndicationScheduledAt})`);
       }
 
-      // B-8.5. Pinterest auto-pin (skip for scheduled posts — URL not live yet)
-      if (pinterestService && PinterestService.isEligible(niche.category) && !scheduledDate) {
+      // B-8.5. Pinterest auto-pin
+      if (pinterestService && PinterestService.isEligible(niche.category)) {
         await pinterestService.pinBlogPost(content, post, featuredMediaResult?.sourceUrl || '');
       } else if (pinterestService) {
-        logger.debug(`Pinterest: Skipped — eligible=${PinterestService.isEligible(niche.category)}, scheduledDate=${!!scheduledDate}`);
+        logger.debug(`Pinterest: Skipped — eligible=${PinterestService.isEligible(niche.category)}`);
       }
 
-      // B-8.5b. Reddit auto-posting (skip for scheduled posts — URL not live yet)
-      if (redditPostService && !scheduledDate) {
+      // B-8.5b. Reddit auto-posting
+      if (redditPostService) {
         try {
           const redditCount = await redditPostService.autoPost(niche.category, content.title, post.url);
           if (redditCount > 0) {
@@ -1837,21 +1831,17 @@ async function main(): Promise<void> {
         logger.info(`Naver Blog seeding: deferred 24h for canonical indexing (scheduled: ${syndicationScheduledAt})`);
       }
 
-      // B-9. Google Indexing API (skip for scheduled posts — URL returns 404 until publish time)
-      if (!scheduledDate) {
-        await seoService.requestIndexing(post.url);
-      }
+      // B-9. Google Indexing API
+      await seoService.requestIndexing(post.url);
 
-      // B-9.5. Reverse internal linking — skip for scheduled posts (URL is ?p=ID, would create 404 links)
-      if (!scheduledDate) {
-        try {
-          await wpService.insertReverseLinks(
-            post.url, content.title, researched.analysis.selectedKeyword,
-            niche.id, existingPosts, 5,
-          );
-        } catch (revLinkError) {
-          logger.debug(`Reverse linking failed: ${revLinkError instanceof Error ? revLinkError.message : revLinkError}`);
-        }
+      // B-9.5. Reverse internal linking
+      try {
+        await wpService.insertReverseLinks(
+          post.url, content.title, researched.analysis.selectedKeyword,
+          niche.id, existingPosts, 5,
+        );
+      } catch (revLinkError) {
+        logger.debug(`Reverse linking failed: ${revLinkError instanceof Error ? revLinkError.message : revLinkError}`);
       }
 
       // B-10. Record history + category publish timestamp (with series detection)
@@ -3195,7 +3185,7 @@ async function main(): Promise<void> {
     const slaFile = path.join(process.cwd(), 'data', 'batch-sla.json');
     let slaHistory: Array<{ date: string; durationMs: number; posts: number; costUsd: number }> = [];
     try { slaHistory = JSON.parse(await fs.readFile(slaFile, 'utf-8')); } catch { /* first run */ }
-    const totalCost = costTracker.getTotalCost?.() ?? 0;
+    const totalCost = costTracker.getTotalCost();
     slaHistory.push({
       date: new Date().toISOString().slice(0, 10),
       durationMs: batchDurationMs,

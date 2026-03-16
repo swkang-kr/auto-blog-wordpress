@@ -613,10 +613,11 @@ Respond with pure JSON only. No markdown code blocks.
       });
 
       const text = response.content[0].type === 'text' ? response.content[0].text : '';
-      costTracker.addClaudeCall(
+      costTracker.addClaudeCallForPhase(
         process.env.CLAUDE_MODEL || 'claude-sonnet-4-6',
         response.usage?.input_tokens || 0,
         response.usage?.output_tokens || 0,
+        'keywordResearch',
       );
       return this.parseAnalysis(text, niche);
     } catch (error) {

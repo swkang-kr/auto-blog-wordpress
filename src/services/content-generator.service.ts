@@ -1077,10 +1077,11 @@ Respond with pure JSON only.`;
       cache_creation_input_tokens?: number;
       cache_read_input_tokens?: number;
     };
-    costTracker.addClaudeCall(
+    costTracker.addClaudeCallForPhase(
       process.env.CLAUDE_MODEL || 'claude-sonnet-4-6',
       usage.input_tokens || 0,
       usage.output_tokens || 0,
+      'contentGeneration',
     );
     if (usage.cache_read_input_tokens) {
       logger.info(`Prompt cache HIT: ${usage.cache_read_input_tokens} tokens read from cache (saved ~$${((usage.cache_read_input_tokens / 1_000_000) * 2.7).toFixed(4)})`);
@@ -1397,10 +1398,11 @@ Return raw HTML only, no markdown code blocks or JSON wrapper.`;
       });
 
       const text = response.content[0].type === 'text' ? response.content[0].text.trim() : '';
-      costTracker.addClaudeCall(
+      costTracker.addClaudeCallForPhase(
         process.env.CLAUDE_MODEL || 'claude-sonnet-4-6',
         response.usage?.input_tokens || 0,
         response.usage?.output_tokens || 0,
+        'contentGeneration',
       );
 
       if (text.length >= 80 && text.length <= 200) {

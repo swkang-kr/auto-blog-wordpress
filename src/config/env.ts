@@ -80,7 +80,7 @@ const envSchema = z.object({
   ENABLE_KOREAN_CONTENT: z.string().default('false').transform(v => v === 'true' ? 'true' : 'false').pipe(z.enum(['true', 'false'])),
   // YouTube Data API key for finding relevant videos to embed in posts (optional)
   YOUTUBE_API_KEY: z.string().default(''),
-  // RPM overrides: JSON object of niche → actual RPM from AdSense (e.g., '{"Korean Finance":14.5}')
+  // RPM overrides: JSON object of niche → actual RPM from AdSense (e.g., '{"K-Beauty":8.5}')
   ADSENSE_RPM_OVERRIDES: z.string().default(''),
   // Reddit OAuth API credentials (optional — falls back to public JSON API if not set)
   REDDIT_CLIENT_ID: z.string().default(''),
