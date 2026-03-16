@@ -34,6 +34,27 @@ const KBEAUTY_BRANDS: Record<string, string> = {
   'Some By Mi':       `https://www.amazon.com/s?k=Some+By+Mi&tag=${AFFILIATE_TAG}`,
   'PURITO':           `https://www.amazon.com/s?k=PURITO&tag=${AFFILIATE_TAG}`,
   'Mixsoon':          `https://www.amazon.com/s?k=Mixsoon&tag=${AFFILIATE_TAG}`,
+  // Premium/Hanbang brands
+  'History of Whoo':  `https://www.amazon.com/s?k=History+of+Whoo&tag=${AFFILIATE_TAG}`,
+  'Hanyul':           `https://www.amazon.com/s?k=Hanyul&tag=${AFFILIATE_TAG}`,
+  'O HUI':            `https://www.amazon.com/s?k=OHUI+Korean+skincare&tag=${AFFILIATE_TAG}`,
+  // Indie/community-favorite brands
+  'Klairs':           `https://www.amazon.com/s?k=Klairs&tag=${AFFILIATE_TAG}`,
+  'Benton':           `https://www.amazon.com/s?k=Benton+skincare&tag=${AFFILIATE_TAG}`,
+  'Jumiso':           `https://www.amazon.com/s?k=Jumiso&tag=${AFFILIATE_TAG}`,
+  'Rovectin':         `https://www.amazon.com/s?k=Rovectin&tag=${AFFILIATE_TAG}`,
+  "I'm From":         `https://www.amazon.com/s?k=I%27m+From+skincare&tag=${AFFILIATE_TAG}`,
+  'ma:nyo':           `https://www.amazon.com/s?k=manyo+factory&tag=${AFFILIATE_TAG}`,
+  'NACIFIC':          `https://www.amazon.com/s?k=NACIFIC&tag=${AFFILIATE_TAG}`,
+  'AMPLE:N':          `https://www.amazon.com/s?k=AMPLE+N&tag=${AFFILIATE_TAG}`,
+  'ILLIYOON':         `https://www.amazon.com/s?k=ILLIYOON&tag=${AFFILIATE_TAG}`,
+  'VT Cosmetics':     `https://www.amazon.com/s?k=VT+Cosmetics&tag=${AFFILIATE_TAG}`,
+  'ABIB':             `https://www.amazon.com/s?k=ABIB&tag=${AFFILIATE_TAG}`,
+  'Dr.Jart+':         `https://www.amazon.com/s?k=Dr+Jart&tag=${AFFILIATE_TAG}`,
+  'Heimish':          `https://www.amazon.com/s?k=Heimish&tag=${AFFILIATE_TAG}`,
+  'Aestura':          `https://www.amazon.com/s?k=Aestura&tag=${AFFILIATE_TAG}`,
+  'Tony Moly':        `https://www.amazon.com/s?k=Tony+Moly&tag=${AFFILIATE_TAG}`,
+  'Holika Holika':    `https://www.amazon.com/s?k=Holika+Holika&tag=${AFFILIATE_TAG}`,
 };
 
 const DISCLOSURE = `<p class="ab-affiliate-disclosure" style="margin:0 0 20px 0; padding:12px 16px; background:#fff8e1; border:1px solid #ffe082; border-radius:8px; font-size:12px; color:#666; line-height:1.5;"><strong>Disclosure:</strong> This article contains affiliate links. If you make a purchase through these links, we may earn a small commission at no extra cost to you. <a href="/privacy-policy/" style="color:#0066FF;">Learn more</a>.</p>`;

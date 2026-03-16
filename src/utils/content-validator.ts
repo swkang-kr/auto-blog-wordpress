@@ -97,6 +97,8 @@ function computeOriginalResearchBonus(plainText: string, html: string): number {
     'allure korea', 'harpers bazaar korea', 'vogue korea', 'inci decoder', 'olive young', 'kocca',
     // Also accept abbreviated form that naturally occurs in K-Beauty writing
     'allure korea award', 'incidecoder', 'cosdna',
+    'hwahae',       // 화해 — Korea's #1 beauty review app (Korea-exclusive E-E-A-T signal)
+    'glowpick',     // 글로우픽 — Korea's #2 beauty review/ranking platform
     // K-Entertainment chart & industry sources
     'hanteo', 'circle chart', 'billboard korea', 'weverse magazine', 'melon chart',
     // system prompt에서 권장하나 validator에 미포함이었던 소스 (보너스 점수 일관성)
@@ -703,6 +705,7 @@ export function validateContent(
       // K-Beauty trusted sources
       'oliveyoung.co.kr', 'oliveyoung.com', 'allure.co.kr',
       'incidecoder.com', 'cosdna.com', 'skinsort.com',
+      'hwahae.co.kr', 'glowpick.com',
     ];
     let nonTrustedCount = 0;
     for (const url of extLinkUrls) {

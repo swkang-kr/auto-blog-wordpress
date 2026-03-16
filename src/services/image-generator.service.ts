@@ -150,11 +150,22 @@ export class ImageGeneratorService {
     const isKBeauty = /skincare|k-beauty|serum|moisturizer|sunscreen|toner|cleanser|glass skin|olive young/i.test(promptLower);
     const isKEntertainment = /k-pop|idol|k-drama|concert|comeback|fandom|lightstick/i.test(promptLower);
 
-    const nicheSuffix = isKBeauty
-      ? ', soft pastel aesthetic, Korean beauty product photography, clean white or cream background, glass bottles, subtle gradient lighting, editorial K-beauty style, dewy skin texture'
-      : isKEntertainment
-        ? ', K-pop aesthetic, vibrant stage lighting, bold graphic design, dynamic composition, Seoul urban style'
-        : '';
+    // K-Beauty sub-category differentiation for richer visual variety
+    const isKBeautyMakeup = isKBeauty && /makeup|foundation|cushion|lip\s*tint|blush|eyeshadow|mascara|eyeliner|rom.nd|clio|fwee/i.test(promptLower);
+    const isKBeautyHairCare = isKBeauty && /hair|shampoo|scalp|daeng gi|ryo|masil/i.test(promptLower);
+    const isKBeautyHanbang = isKBeauty && /sulwhasoo|whoo|hanbang|hanyul|ginseng|herbal|luxury\s*korean|premium\s*korean/i.test(promptLower);
+
+    const nicheSuffix = isKBeautyHanbang
+      ? ', luxurious Korean Hanbang aesthetic, gold and deep burgundy accents, traditional Korean motifs, ornate packaging, dark wood vanity, warm ambient lighting, premium editorial beauty photography'
+      : isKBeautyMakeup
+        ? ', K-beauty makeup flat lay, vibrant coral and pink tones, mirror reflections, beauty editorial style, bright studio lighting, clean modern vanity, texture swatches visible'
+        : isKBeautyHairCare
+          ? ', Korean hair care editorial, sleek flowing hair texture, salon-quality lighting, minimalist bathroom setting, amber and warm tones, scalp care products arranged neatly'
+          : isKBeauty
+            ? ', soft pastel aesthetic, Korean beauty product photography, clean white or cream background, glass bottles, subtle gradient lighting, editorial K-beauty style, dewy skin texture'
+            : isKEntertainment
+              ? ', K-pop aesthetic, vibrant stage lighting, bold graphic design, dynamic composition, Seoul urban style'
+              : '';
 
     const styleSuffix = index === 0
       ? `, digital illustration, wide composition for blog hero banner, vivid colors, high detail, 16:9 aspect ratio, professional editorial quality, absolutely no text, no letters, no words, no Korean characters, no watermark, no captions, text-free image only${nicheSuffix}`

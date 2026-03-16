@@ -313,6 +313,10 @@ export class WordPressService {
     'vogue-korea':         { domain: 'https://www.vogue.com', paths: { default: '/', beauty: '/beauty/', 'k-beauty': '/beauty/article/korean-beauty-products' }, label: 'Vogue' },
     'inci-decoder':        { domain: 'https://incidecoder.com', paths: { default: '/', ingredients: '/ingredients/' }, label: 'INCI Decoder' },
     'olive-young':         { domain: 'https://www.oliveyoung.co.kr', paths: { default: '/store/main/getMemberMain.do', ranking: '/store/main/getBestList.do' }, label: 'Olive Young' },
+    skinsort:              { domain: 'https://skinsort.com', paths: { default: '/', ingredients: '/ingredients/', products: '/products/' }, label: 'SkinSort' },
+    hwahae:                { domain: 'https://www.hwahae.co.kr', paths: { default: '/', ranking: '/rankings/', ingredients: '/ingredients/' }, label: 'Hwahae (화해)' },
+    glowpick:              { domain: 'https://www.glowpick.com', paths: { default: '/', ranking: '/ranking/' }, label: 'Glowpick (글로우픽)' },
+    cosmorning:            { domain: 'https://www.cosmorning.com', paths: { default: '/', industry: '/news/' }, label: 'Cosmorning (코스모닝)' },
     // General
     wikipedia: { domain: 'https://en.wikipedia.org', paths: { default: '/' }, label: 'Wikipedia' },
   };
@@ -1092,18 +1096,25 @@ ${rows}
       keywords: [
         // Established brands
         'COSRX', 'Laneige', 'Innisfree', 'Sulwhasoo', 'Beauty of Joseon', 'Missha', 'Etude',
-        'SKIN1004', 'Anua', 'Torriden',
+        'SKIN1004', 'Anua', 'Torriden', 'Dr.Jart+', 'Tony Moly', 'Holika Holika',
+        // Premium/Hanbang brands
+        'History of Whoo', 'O HUI', 'Hanyul', 'Su:m37',
         // Emerging brands 2025-2026
         'MEDICUBE', 'Isntree', 'Haruharu Wonder', 'Round Lab', 'Mixsoon',
+        'ILLIYOON', 'Aestura', 'Dr.G', 'VT Cosmetics',
         // Breakout brands 2025-2026 (TikTok viral + Amazon surge)
-        'Numbuzin', 'TIRTIR',
+        'Numbuzin', 'TIRTIR', 'Biodance', "d'Alba", 'Some By Mi', 'ABIB',
+        // Indie/community-favorite brands
+        'PURITO', 'Klairs', 'Benton', 'Jumiso', 'Rovectin', "I'm From",
+        'ma:nyo', 'NACIFIC', 'AMPLE:N', 'Cos De BAHA', 'Heimish',
+        'FWEE', 'Skin&Lab', 'Klavuu',
         // Makeup brands
         'rom&nd', 'Clio', 'Peripera', 'Etude House', 'Wakemake',
         // Hair care
-        'Daeng Gi Meo Ri', 'Ryo',
+        'Daeng Gi Meo Ri', 'Ryo', 'Masil',
         // Product categories (fallback matching)
-        'toner pad', 'sunscreen', 'serum', 'moisturizer', 'toner', 'cleanser', 'sheet mask',
-        'essence', 'sleeping mask', 'eye cream', 'SPF', 'collagen',
+        'toner pad', 'sun pad', 'sunscreen', 'serum', 'moisturizer', 'toner', 'cleanser', 'sheet mask',
+        'essence', 'ampoule', 'sleeping mask', 'eye cream', 'SPF', 'collagen', 'lip oil',
       ],
       defaultUrl: 'https://www.amazon.com/s?k=korean+skincare&tag=trendhunt2007-20',
     },
