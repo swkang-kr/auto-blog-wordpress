@@ -16,8 +16,21 @@ export class ThreadsService {
     private readonly userId: string,
   ) {}
 
-  /** Post blog article to Threads. Attaches image if imageUrl is provided. */
-  async promoteBlogPost(content: BlogContent, post: PublishedPost, imageUrl?: string): Promise<string | null> {
+  /**
+   * Post blog article to Threads.
+   *
+   * Always uses media_type=TEXT with the blog URL in the body.
+   * Threads automatically renders the URL as a clickable rich link preview card
+   * (pulling OG:image, title, description from the blog page).
+   * Clicking the preview image/card navigates to the blog post.
+   *
+   * Note: media_type=IMAGE posts do NOT support click-through links — the image
+   * is non-interactive. The link preview approach is the correct pattern for
+   * blog promotion on Threads.
+   *
+   * @param _imageUrl - ignored (kept for API compatibility; OG image is used automatically)
+   */
+  async promoteBlogPost(content: BlogContent, post: PublishedPost, _imageUrl?: string): Promise<string | null> {
     const resolvedUrl = resolvePostUrl(post);
     const isUnresolved = resolvedUrl.includes('?p=') || resolvedUrl.includes('&p=');
     if (isUnresolved) {
@@ -37,11 +50,8 @@ export class ThreadsService {
     const text = this.buildThreadText(content, utmUrl);
 
     try {
-      const threadId = imageUrl
-        ? await this.publishImagePost(text, imageUrl)
-        : await this.publishTextPost(text);
-
-      if (threadId) logger.info(`Threads post published: ${threadId} — "${content.title}"${imageUrl ? ' [with image]' : ''}`);
+      const threadId = await this.publishTextPost(text);
+      if (threadId) logger.info(`Threads post published: ${threadId} — "${content.title}" [link preview]`);
       return threadId;
     } catch (error) {
       const msg = axios.isAxiosError(error)
@@ -52,15 +62,9 @@ export class ThreadsService {
     }
   }
 
-  /** Create and publish a TEXT-only container. */
+  /** Publish a TEXT container. The URL in the text renders as a clickable link preview card. */
   private async publishTextPost(text: string): Promise<string | null> {
     const creationId = await this.createContainer({ media_type: 'TEXT', text });
-    return creationId ? this.publishContainer(creationId) : null;
-  }
-
-  /** Create and publish an IMAGE container (image_url must be publicly accessible). */
-  private async publishImagePost(text: string, imageUrl: string): Promise<string | null> {
-    const creationId = await this.createContainer({ media_type: 'IMAGE', image_url: imageUrl, text });
     return creationId ? this.publishContainer(creationId) : null;
   }
 
