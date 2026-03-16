@@ -346,7 +346,7 @@ add_action('wp_footer', function() {
     if (!is_singular('post')) return;
     echo '<div class="autoblog-anchor-ad" id="anchor-ad">
         <button class="autoblog-anchor-close" onclick="document.getElementById(\\'anchor-ad\\').style.display=\\'none\\'">&times;</button>
-        <ins class="adsbygoogle" style="display:inline-block;width:320;height:50" data-ad-format="auto"></ins>
+        <ins class="adsbygoogle" style="display:inline-block;width:320px;height:50px" data-ad-format="auto"></ins>
     </div>';
 });`.trim();
 

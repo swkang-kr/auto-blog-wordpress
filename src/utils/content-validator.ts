@@ -1100,7 +1100,10 @@ export function validateContent(
     // 19. "Whitening" terminology in English-language K-Beauty content — prefer "brightening"
     if (/\bwhitening\b/i.test(plainText) && !/미백|MFDS.*whitening|whitening.*MFDS|product\s*name|official\s*name|despite\s*the\s*(?:product\s*)?name/i.test(plainText)) {
       const whitenCount = (plainText.match(/\bwhitening\b/gi) || []).length;
-      if (whitenCount >= 2) {
+      if (whitenCount === 1) {
+        warnings.push({ category: 'niche-accuracy', message: 'Use \'brightening\' instead of \'whitening\' for K-Beauty content — "whitening" is culturally insensitive in English. Only acceptable when explaining Korea\'s 미백 MFDS category or reproducing an official product name.', severity: 'warning' });
+        eeatScore -= 1;
+      } else if (whitenCount >= 2) {
         warnings.push({ category: 'niche-accuracy', message: '"Whitening" used multiple times without contextualizing as MFDS 미백 term — use "brightening" for English-language content (cultural sensitivity). Only use "whitening" when explaining the Korean regulatory term or reproducing an official product name.', severity: 'warning' });
         eeatScore -= 1;
       }
@@ -1131,8 +1134,8 @@ export function validateContent(
     }
 
     // 2. Chart terminology: Gaon (deprecated) vs Circle Chart
-    if (/\bGaon\s*Chart\b/i.test(plainText) && !/formerly\s*Gaon|rebranded.*Circle/i.test(plainText)) {
-      warnings.push({ category: 'niche-accuracy', message: 'Uses deprecated "Gaon Chart" — rebranded to Circle Chart in 2023. Use "Circle Chart (formerly Gaon)" on first reference', severity: 'warning' });
+    if (/\bGaon\s*[Cc]hart\b/.test(plainText) && !/formerly\s*Gaon|rebranded.*Circle/i.test(plainText)) {
+      warnings.push({ category: 'niche-accuracy', message: 'Use \'Circle Chart\' instead of \'Gaon Chart\' (rebranded in 2023). Use "Circle Chart (formerly Gaon)" on first reference', severity: 'warning' });
       eeatScore -= 1;
     }
 
@@ -1144,6 +1147,18 @@ export function validateContent(
       if (/Hanteo.*Circle.*(?:same|interchangeable|identical)|Circle.*Hanteo.*(?:same|interchangeable|identical)/i.test(plainText)) {
         warnings.push({ category: 'niche-accuracy', message: 'Hanteo and Circle Chart incorrectly described as same/interchangeable — Hanteo tracks physical album sales (real-time), Circle is the comprehensive official chart', severity: 'warning' });
         eeatScore -= 2;
+      }
+    }
+    // Hanteo + digital streaming conflation: Hanteo is physical-only, not digital
+    if (citesHanteo) {
+      // Split into sentences and check each
+      const sentences = plainText.split(/[.!?]/);
+      for (const sentence of sentences) {
+        if (/Hanteo/i.test(sentence) && /digital\s*streaming|streaming\s*chart|Melon|Genie|Bugs|Spotify|Apple\s*Music/i.test(sentence)) {
+          warnings.push({ category: 'niche-accuracy', message: 'Hanteo Chart measures physical album sales (real-time), NOT digital streaming — do not associate Hanteo with streaming performance in the same sentence', severity: 'warning' });
+          eeatScore -= 2;
+          break;
+        }
       }
     }
 

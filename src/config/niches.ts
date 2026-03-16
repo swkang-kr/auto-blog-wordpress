@@ -468,6 +468,27 @@ export const NICHES: NicheConfig[] = [
       'Korean skincare at Costco best deals bulk K-Beauty products ranked 2026',
       'K-Beauty at TJ Maxx Marshalls hidden deals what to look for guide 2026',
       'where to buy Korean skincare in the US complete store guide 2026',
+      // 남성 K-Beauty — 성장 중인 서브니치 (기존 남성 키워드 보강)
+      'Korean skincare routine for men beginners step by step guide 2026',
+      'K-beauty for men complete skincare guide what products to use 2026',
+      'Korean men grooming skincare essentials what to buy 2026 guide',
+      'Korean sunscreen for men no white cast lightweight best ranked 2026',
+      'Korean toner for men best picks oily combination skin 2026 ranked',
+      // 아이돌 스킨케어 크로스오버 — K-Beauty ↔ K-Entertainment 브릿지 (추가 보강)
+      'K-pop idol skincare routine products they actually use revealed guide',
+      'aespa Karina skincare routine products 2026 complete guide',
+      'IVE Wonyoung skincare routine beauty secrets products revealed 2026',
+      'NewJeans skincare routine K-Beauty products beauty looks guide 2026',
+      // 가격 비교 — 어필리에이트 전환율 최고 (구매 의도)
+      'Olive Young vs Amazon K-beauty price comparison which is cheaper 2026',
+      'Korean skincare cheaper in Korea how much you save buying local guide',
+      'K-beauty dupes drugstore affordable alternatives ranked 2026 guide',
+      // 선크림 비교 — UV 필터 교육 콘텐츠 고 E-E-A-T
+      'Korean sunscreen vs American sunscreen UV filters difference PA vs SPF explained',
+      'PA++++ sunscreen comparison best Korean SPF ranked by UV protection 2026',
+      // Skintific — 동남아 폭발적 성장 한국 포뮬레이션 브랜드
+      'Skintific Korean skincare review best products barrier repair 2026',
+      'Skintific vs COSRX which is better for sensitive skin comparison 2026',
     ],
     contentTypes: ['product-review', 'best-x-for-y', 'x-vs-y', 'how-to', 'listicle', 'case-study', 'deep-dive', 'news-explainer'],
     adSenseRpm: 'high',
@@ -724,6 +745,13 @@ export const NICHES: NicheConfig[] = [
       'best K-drama OST artists singers 2026 who sings the best soundtracks',
       'IU best K-drama OST songs ranked all time guide',
       'Baek Yerin K-drama OST songs ranked discography guide fans',
+      // TVING 오리지널 / K-Drama 스트리밍 — 2026 OTT 트렌드
+      'best TVING original drama 2026 exclusive must watch ranked guide',
+      'K-drama Netflix 2026 best new shows ranked what to watch guide',
+      'Korean drama streaming platforms compared which is best 2026 guide',
+      // 5세대 그룹 (Gen 5) — 2024-2025 데뷔, 글로벌 팬덤 형성 중
+      'WHIPLASH Kpop SM Entertainment boy group songs concept guide 2026',
+      'TWS Kpop debut story members songs ranked guide for new fans 2026',
     ],
     contentTypes: ['listicle', 'news-explainer', 'best-x-for-y', 'deep-dive', 'how-to', 'x-vs-y', 'case-study'],
     adSenseRpm: 'medium',

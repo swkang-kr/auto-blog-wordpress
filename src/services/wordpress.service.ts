@@ -267,6 +267,45 @@ export class WordPressService {
     return { valid: true };
   }
 
+  /** K-Beauty affiliate platform configurations */
+  private static readonly KBEAUTY_AFFILIATE_PLATFORMS: Record<string, { baseUrl: string; tag: string; searchParam: string }> = {
+    amazon: {
+      baseUrl: 'https://www.amazon.com/s',
+      tag: 'kbeautyblog-20',
+      searchParam: 'k'
+    },
+    yesstyle: {
+      baseUrl: 'https://www.yesstyle.com/en/search.html',
+      tag: 'kbeauty',
+      searchParam: 'keyword'
+    },
+    oliveyoung: {
+      baseUrl: 'https://global.oliveyoung.com/search',
+      tag: '',
+      searchParam: 'query'
+    }
+  };
+
+  static buildKBeautyAffiliateUrl(productName: string, platform: 'amazon' | 'yesstyle' | 'oliveyoung'): string {
+    const config = WordPressService.KBEAUTY_AFFILIATE_PLATFORMS[platform];
+    const params = new URLSearchParams({ [config.searchParam]: productName });
+    if (config.tag) params.append('tag', config.tag);
+    return `${config.baseUrl}?${params.toString()}`;
+  }
+
+  static buildKEntertainmentAffiliateUrl(item: string, type: 'album' | 'merch' | 'ticket'): string {
+    if (type === 'album') {
+      const params = new URLSearchParams({ k: item, tag: 'kpopblog-20' });
+      return `https://www.amazon.com/s?${params.toString()}`;
+    }
+    if (type === 'merch') {
+      return `https://weverseshop.io/search?query=${encodeURIComponent(item)}`;
+    }
+    // ticket - Ticketmaster
+    const params = new URLSearchParams({ q: item });
+    return `https://www.ticketmaster.com/search?${params.toString()}`;
+  }
+
   /** Source registry: maps cite data-source keys to verified URLs */
   private static readonly SOURCE_REGISTRY: Record<string, { domain: string; paths: Record<string, string>; label: string }> = {
     // Korean institutions
@@ -308,7 +347,7 @@ export class WordPressService {
     melon:               { domain: 'https://www.melon.com', paths: { default: '/', chart: '/chart/index.htm' }, label: 'Melon Chart' },
     bugs:                { domain: 'https://music.bugs.co.kr', paths: { default: '/', chart: '/chart/rise' }, label: 'Bugs Music' },
     // K-Beauty editorial sources
-    'allure-korea':       { domain: 'https://www.allure.com', paths: { default: '/', 'skin-care': '/gallery/best-korean-skin-care-products', makeup: '/gallery/korean-beauty-makeup-products', beauty: '/topic/korean-beauty' }, label: 'Allure' },
+    'allure-korea':       { domain: 'https://www.allurekorea.com', paths: { default: '/', 'skin-care': '/category/beauty/', makeup: '/category/makeup/', beauty: '/category/beauty/' }, label: 'Allure Korea' },
     'harpers-bazaar-korea': { domain: 'https://www.harpersbazaar.com', paths: { default: '/', beauty: '/beauty/', 'k-beauty': '/beauty/skin-care/g35732121/best-korean-skin-care-products/' }, label: "Harper's Bazaar" },
     'vogue-korea':         { domain: 'https://www.vogue.com', paths: { default: '/', beauty: '/beauty/', 'k-beauty': '/beauty/article/korean-beauty-products' }, label: 'Vogue' },
     'inci-decoder':        { domain: 'https://incidecoder.com', paths: { default: '/', ingredients: '/ingredients/' }, label: 'INCI Decoder' },
@@ -317,6 +356,8 @@ export class WordPressService {
     hwahae:                { domain: 'https://www.hwahae.co.kr', paths: { default: '/', ranking: '/rankings/', ingredients: '/ingredients/' }, label: 'Hwahae (화해)' },
     glowpick:              { domain: 'https://www.glowpick.com', paths: { default: '/', ranking: '/ranking/' }, label: 'Glowpick (글로우픽)' },
     cosmorning:            { domain: 'https://www.cosmorning.com', paths: { default: '/', industry: '/news/' }, label: 'Cosmorning (코스모닝)' },
+    soompi:                { domain: 'https://www.soompi.com', paths: { default: '/', article: '/article/', news: '/news/' }, label: 'Soompi' },
+    weverse:               { domain: 'https://weverse.io', paths: { default: '/' }, label: 'Weverse' },
     // General
     wikipedia: { domain: 'https://en.wikipedia.org', paths: { default: '/' }, label: 'Wikipedia' },
   };
@@ -357,6 +398,11 @@ export class WordPressService {
     'cnbc.com', 'ft.com', 'wsj.com', 'techcrunch.com', 'imf.org', 'mckinsey.com',
     // Entertainment
     'hybecorp.com', 'smentertainment.com', 'jype.com',
+    // K-Entertainment fan/industry
+    'weverse.io', 'weverseshop.io', 'soompi.com', 'allkpop.com', 'koreaboo.com',
+    'theqoo.net', // 한국 커뮤니티
+    // K-Beauty ingredient/product databases
+    'incidecoder.com', 'cosdna.com', 'skinsort.com', 'hwahae.co.kr', 'glowpick.com',
     // Niche-specific
     'cosmeticsdesign-asia.com', 'lonelyplanet.com',
     // Affiliate
