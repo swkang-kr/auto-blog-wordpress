@@ -152,10 +152,7 @@ export class TwitterService {
   /** Build category-aware hashtags for better discoverability */
   private buildHashtags(tags: string[], category: string): string {
     const categoryHashtags: Record<string, string[]> = {
-      'Korean Tech': ['#KoreanTech', '#AI', '#Samsung'],
-      'Korean Finance': ['#KOSPI', '#KoreanStocks', '#Investing'],
       'K-Beauty': ['#KBeauty', '#Skincare', '#KoreanBeauty'],
-      'Korea Travel': ['#KoreaTravel', '#Seoul', '#VisitKorea'],
       'K-Entertainment': ['#KPop', '#KDrama', '#Hallyu'],
     };
     const catTags = categoryHashtags[category] || [];

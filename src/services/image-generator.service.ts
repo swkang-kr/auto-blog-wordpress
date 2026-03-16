@@ -275,13 +275,8 @@ export class ImageGeneratorService {
    */
   async generateOgImage(title: string, category: string): Promise<Buffer> {
     const gradients: Record<string, [string, string]> = {
-      'Korean Tech': ['#1a1a2e', '#16213e'],
-      'K-Entertainment': ['#2d1b69', '#6b21a8'],
       'K-Beauty': ['#831843', '#ec4899'],
-      'Korean Finance': ['#0c4a6e', '#0369a1'],
-      'Korean Food': ['#7c2d12', '#c2410c'],
-      'Korea Travel': ['#14532d', '#15803d'],
-      'Korean Language': ['#4a1d96', '#7c3aed'],
+      'K-Entertainment': ['#2d1b69', '#6b21a8'],
     };
     const [c1, c2] = gradients[category] || ['#0052CC', '#0066FF'];
 
@@ -307,13 +302,8 @@ export class ImageGeneratorService {
 
     // Category-specific decorative SVG elements for visual differentiation
     const categoryDecorations: Record<string, string> = {
-      'Korean Tech': `<circle cx="150" cy="120" r="60" fill="rgba(255,255,255,0.06)"/><circle cx="1050" cy="510" r="80" fill="rgba(255,255,255,0.05)"/><rect x="80" y="60" width="3" height="40" rx="1" fill="rgba(255,255,255,0.15)"/><rect x="95" y="50" width="3" height="50" rx="1" fill="rgba(255,255,255,0.1)"/><rect x="110" y="65" width="3" height="35" rx="1" fill="rgba(255,255,255,0.12)"/>`,
-      'K-Entertainment': `<circle cx="120" cy="100" r="50" fill="rgba(255,255,255,0.05)"/><circle cx="180" cy="130" r="30" fill="rgba(255,255,255,0.04)"/><circle cx="1080" cy="520" r="45" fill="rgba(255,255,255,0.05)"/><path d="M1030 80 L1050 50 L1070 80 Z" fill="rgba(255,255,255,0.08)"/>`,
-      'Korean Finance': `<polyline points="80,140 200,100 320,120 440,80 560,90" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/><circle cx="80" cy="140" r="4" fill="rgba(255,255,255,0.15)"/><circle cx="200" cy="100" r="4" fill="rgba(255,255,255,0.15)"/><circle cx="320" cy="120" r="4" fill="rgba(255,255,255,0.15)"/><circle cx="440" cy="80" r="4" fill="rgba(255,255,255,0.15)"/>`,
-      'Korean Food': `<circle cx="130" cy="110" r="45" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="2"/><circle cx="130" cy="110" r="25" fill="rgba(255,255,255,0.04)"/><circle cx="1070" cy="530" r="35" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="2"/>`,
-      'Korea Travel': `<path d="M80 140 Q200 60 320 140 Q440 60 560 140" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="2"/><circle cx="1050" cy="100" r="40" fill="rgba(255,255,255,0.05)"/>`,
-      'Korean Language': `<text x="100" y="120" fill="rgba(255,255,255,0.06)" font-family="sans-serif" font-size="60">&#xD55C;</text><text x="1040" y="560" fill="rgba(255,255,255,0.06)" font-family="sans-serif" font-size="50">&#xAE00;</text>`,
       'K-Beauty': `<circle cx="130" cy="110" r="40" fill="rgba(255,255,255,0.06)"/><circle cx="160" cy="130" r="20" fill="rgba(255,255,255,0.04)"/><ellipse cx="1060" cy="520" rx="50" ry="30" fill="rgba(255,255,255,0.05)"/><circle cx="100" cy="80" r="8" fill="rgba(255,255,255,0.1)"/>`,
+      'K-Entertainment': `<circle cx="120" cy="100" r="50" fill="rgba(255,255,255,0.05)"/><circle cx="180" cy="130" r="30" fill="rgba(255,255,255,0.04)"/><circle cx="1080" cy="520" r="45" fill="rgba(255,255,255,0.05)"/><path d="M1030 80 L1050 50 L1070 80 Z" fill="rgba(255,255,255,0.08)"/>`,
     };
     const decoration = categoryDecorations[category] || `<circle cx="150" cy="120" r="60" fill="rgba(255,255,255,0.05)"/>`;
 

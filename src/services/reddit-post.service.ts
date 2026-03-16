@@ -4,10 +4,7 @@ import { buildUtmUrl, extractSlugFromUrl } from '../utils/utm.js';
 
 /** Niche → subreddit mapping for auto-posting */
 const NICHE_SUBREDDITS: Record<string, string[]> = {
-  'Korean Tech': ['korea', 'technology', 'samsung', 'kpop'],
-  'Korean Finance': ['korea', 'investing', 'stocks'],
   'K-Beauty': ['AsianBeauty', 'SkincareAddiction', 'korea'],
-  'Korea Travel': ['korea', 'travel', 'solotravel'],
   'K-Entertainment': ['kpop', 'KDRAMA', 'korea'],
 };
 

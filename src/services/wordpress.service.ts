@@ -698,9 +698,8 @@ div[style*="background:#f8f9fa"]{background:#1e1e2e!important;border-color:#3b3b
    * Key = category, Values = related categories that share audience overlap.
    */
   private static readonly CROSS_NICHE_MAP: Record<string, string[]> = {
-    'K-Beauty': ['K-Entertainment', 'Korea Travel'],
+    'K-Beauty': ['K-Entertainment'],
     'K-Entertainment': ['K-Beauty'],
-    'Korea Travel': ['K-Beauty'],
   };
 
   /**
@@ -1023,19 +1022,7 @@ ${socialHtml}
   injectInteractiveCalculator(html: string, category: string): string {
     let calcHtml = '';
 
-    if (category === 'Korean Finance') {
-      calcHtml = `<div style="margin:24px 0; padding:20px 24px; background:#f8f9fa; border:1px solid #e5e7eb; border-radius:12px;">
-<p style="margin:0 0 12px 0; font-size:17px; font-weight:700; color:#222;">Quick ROI Calculator</p>
-<div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
-<div><label style="font-size:13px; color:#666; display:block; margin-bottom:4px;">Investment (USD)</label>
-<input type="number" id="ab-calc-invest" value="1000" style="width:100%; padding:8px 12px; border:1px solid #ddd; border-radius:6px; font-size:14px;" oninput="document.getElementById('ab-calc-result').textContent='$'+(this.value*(1+document.getElementById('ab-calc-rate').value/100)).toFixed(2)"></div>
-<div><label style="font-size:13px; color:#666; display:block; margin-bottom:4px;">Expected Return (%)</label>
-<input type="number" id="ab-calc-rate" value="8" style="width:100%; padding:8px 12px; border:1px solid #ddd; border-radius:6px; font-size:14px;" oninput="document.getElementById('ab-calc-result').textContent='$'+(document.getElementById('ab-calc-invest').value*(1+this.value/100)).toFixed(2)"></div>
-</div>
-<p style="margin:0; font-size:15px; color:#333;">Projected Value: <strong id="ab-calc-result" style="color:#0066FF; font-size:18px;">$1,080.00</strong></p>
-<p style="margin:8px 0 0 0; font-size:11px; color:#999;">For illustration only. Past returns do not guarantee future results.</p>
-</div>`;
-    } else if (category === 'K-Beauty') {
+    if (category === 'K-Beauty') {
       calcHtml = `<div style="margin:24px 0; padding:20px 24px; background:#f0fff4; border:1px solid #c6f6d5; border-radius:12px;">
 <p style="margin:0 0 12px 0; font-size:17px; font-weight:700; color:#222;">Routine Time Estimator</p>
 <div style="margin-bottom:12px;">

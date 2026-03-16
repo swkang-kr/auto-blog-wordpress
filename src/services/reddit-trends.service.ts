@@ -18,15 +18,8 @@ interface RedditTrend {
 
 /** Subreddits relevant to Korea-focused content */
 const KOREA_SUBREDDITS: Record<string, string[]> = {
-  'Korean Tech': ['korea', 'samsung', 'technology'],
-  'K-Entertainment': ['kpop', 'kdrama', 'korea'],
-  'Korean Finance': ['korea', 'investing', 'stocks'],
-  'Korean Food': ['KoreanFood', 'korea', 'cooking'],
-  'Korea Travel': ['korea', 'travel', 'solotravel'],
-  'Korean Language': ['Korean', 'languagelearning'],
   'K-Beauty': ['kbeauty', 'AsianBeauty', 'SkincareAddiction'],
-  'Korean Crypto': ['CryptoCurrency', 'korea'],
-  'Korean Automotive': ['electricvehicles', 'cars', 'korea'],
+  'K-Entertainment': ['kpop', 'kdrama', 'korea'],
 };
 
 /**

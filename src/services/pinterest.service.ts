@@ -5,26 +5,14 @@ import type { BlogContent, PublishedPost } from '../types/index.js';
 
 /** Pinterest-eligible categories for auto-pinning */
 const PINTEREST_CATEGORIES = new Set([
-  'Korea Travel',
-  'Korean Food',
   'K-Beauty',
   'K-Entertainment',
-  'Korean Language',
-  'Korean Automotive',
-  'Korean Tech',
-  'Korean Finance',
 ]);
 
 /** Map blog categories to Pinterest board names */
 const CATEGORY_BOARD_MAP: Record<string, string> = {
-  'Korea Travel': 'Korea Travel Tips',
-  'Korean Food': 'Korean Recipes & Food',
   'K-Beauty': 'K-Beauty & Skincare',
   'K-Entertainment': 'K-Pop & K-Drama',
-  'Korean Language': 'Learn Korean',
-  'Korean Automotive': 'Korean Cars & EVs',
-  'Korean Tech': 'Korean Tech & AI',
-  'Korean Finance': 'Korean Investment & Finance',
 };
 
 export class PinterestService {
@@ -134,14 +122,8 @@ export class PinterestService {
   private getCategoryHashtags(category: string): string[] {
     const base = ['#Korea', '#SouthKorea'];
     const categoryTags: Record<string, string[]> = {
-      'Korea Travel': ['#KoreaTravel', '#Seoul', '#TravelKorea', '#VisitKorea', '#KoreanTravel'],
-      'Korean Food': ['#KoreanFood', '#KoreanRecipe', '#KoreanCooking', '#Kimchi', '#KFood'],
       'K-Beauty': ['#KBeauty', '#KoreanSkincare', '#Skincare', '#KoreanBeauty', '#GlassSkin'],
       'K-Entertainment': ['#KPop', '#KDrama', '#Hallyu', '#KoreanDrama', '#KPopBusiness'],
-      'Korean Language': ['#LearnKorean', '#Korean', '#Hangul', '#TOPIK', '#KoreanLanguage'],
-      'Korean Automotive': ['#KoreanCars', '#Hyundai', '#Kia', '#ElectricVehicle', '#KoreanEV'],
-      'Korean Tech': ['#KoreanTech', '#Samsung', '#SKHynix', '#AI', '#Semiconductor', '#KoreaTech'],
-      'Korean Finance': ['#KOSPI', '#KoreanStocks', '#Investing', '#KoreanFinance', '#ETF', '#KoreaInvestment'],
     };
     return [...base, ...(categoryTags[category] || [])];
   }

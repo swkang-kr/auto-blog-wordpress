@@ -12,25 +12,10 @@ import { NICHES } from '../config/niches.js';
 import { logger } from '../utils/logger.js';
 
 const LEAD_MAGNET_PROMPTS: Record<string, { title: string; type: string; description: string }> = {
-  'Korean Tech': {
-    title: 'Korea AI & Tech Investment Starter Kit',
-    type: 'guide',
-    description: 'A comprehensive guide covering Korean AI companies, semiconductor investments, and tech startup ecosystem for international investors.',
-  },
-  'Korean Finance': {
-    title: 'Korea Stock Market Investing Checklist',
-    type: 'checklist',
-    description: 'Step-by-step checklist for opening a Korean brokerage account, selecting KOSPI/KOSDAQ stocks, and understanding Korean market regulations.',
-  },
   'K-Beauty': {
     title: 'Korean Skincare Routine Builder Workbook',
     type: 'workbook',
     description: 'A printable workbook for building a personalized Korean skincare routine, with ingredient guides, product recommendations, and tracking sheets.',
-  },
-  'Korea Travel': {
-    title: 'Korea Travel Planning Template',
-    type: 'template',
-    description: 'Complete trip planning template with daily itineraries, budget tracker, packing list, essential Korean phrases, and transit guide.',
   },
   'K-Entertainment': {
     title: 'K-Pop Business Analysis Toolkit',

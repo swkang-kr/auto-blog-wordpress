@@ -70,8 +70,6 @@ export class FacebookService {
     const map: Record<string, string> = {
       'K-Beauty': '✨',
       'K-Entertainment': '🎵',
-      'Korea Travel': '✈️',
-      'Korean Food': '🍜',
     };
     return map[category] || '📝';
   }

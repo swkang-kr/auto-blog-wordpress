@@ -8,8 +8,7 @@ const HASHNODE_GQL = 'https://gql.hashnode.com';
 
 /** Hashnode syndicates all content categories for maximum reach */
 const HASHNODE_ALLOWED_CATEGORIES = new Set([
-  'Korean Tech', 'Korean Finance', 'Korean Crypto', 'Korean Automotive',
-  'K-Beauty', 'Korea Travel', 'K-Entertainment',
+  'K-Beauty', 'K-Entertainment',
 ]);
 
 export class HashnodeService {

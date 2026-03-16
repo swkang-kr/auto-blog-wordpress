@@ -1,6 +1,6 @@
 /**
  * recategorize-posts.ts
- * 기존 포스트를 니치 카테고리(Korean Tech, K-Entertainment, Korean Finance)에 재분류합니다.
+ * 기존 포스트를 니치 카테고리(K-Beauty, K-Entertainment)에 재분류합니다.
  * 제목/태그/콘텐츠 키워드 기반으로 자동 매칭 후 카테고리를 업데이트합니다.
  *
  * Usage: npx tsx src/scripts/recategorize-posts.ts [--dry-run]
@@ -28,28 +28,22 @@ const api: AxiosInstance = axios.create({
 
 // Keyword patterns for each niche
 const NICHE_KEYWORDS: Record<string, string[]> = {
-  'Korean Tech': [
-    'samsung', 'naver', 'kakao', 'lg', 'sk hynix', 'hyundai', 'semiconductor', 'chip',
-    'startup', 'fintech', 'ai korea', 'tech', 'robot', 'battery', 'ev ', 'electric vehicle',
-    'software', 'app', 'platform', 'pangyo', '5g', '6g', 'telecom', 'internet',
-    'innovation', 'r&d', 'patent', 'developer', 'coding', 'blockchain', 'crypto',
-    'display', 'oled', 'memory', 'foundry', 'tsmc', 'intel',
+  'K-Beauty': [
+    'skincare', 'beauty', 'cosmetic', 'moisturizer', 'serum', 'sunscreen', 'spf',
+    'toner', 'cleanser', 'mask', 'essence', 'ampoule', 'k-beauty', 'kbeauty',
+    'cosrx', 'laneige', 'innisfree', 'sulwhasoo', 'missha', 'etude', 'tirtir',
+    'numbuzin', 'biodance', 'anua', 'torriden', 'skin1004', 'olive young',
+    'glass skin', 'korean skincare', 'routine', 'ingredient', 'niacinamide',
+    'retinol', 'snail mucin', 'centella', 'hyaluronic', 'collagen',
   ],
   'K-Entertainment': [
     'k-pop', 'kpop', 'k pop', 'k-drama', 'kdrama', 'k drama', 'bts', 'blackpink',
     'hallyu', 'korean wave', 'idol', 'entertainment', 'music', 'drama', 'movie', 'film',
-    'webtoon', 'manhwa', 'anime', 'netflix', 'streaming', 'concert', 'album',
+    'webtoon', 'manhwa', 'netflix', 'streaming', 'concert', 'album',
     'hybe', 'sm entertainment', 'jyp', 'yg', 'agency', 'debut', 'comeback',
     'variety show', 'reality', 'celebrity', 'fan', 'fandom', 'ost', 'soundtrack',
     'korean culture', 'squid game', 'oscar', 'award', 'box office',
-  ],
-  'Korean Finance': [
-    'kospi', 'kosdaq', 'stock', 'invest', 'market', 'finance', 'economy', 'economic',
-    'won', 'krw', 'exchange rate', 'currency', 'forex', 'trade', 'export', 'import',
-    'bank', 'interest rate', 'inflation', 'gdp', 'bok', 'bank of korea',
-    'etf', 'bond', 'real estate', 'property', 'housing', 'pension', 'insurance',
-    'chaebol', 'conglomerate', 'earnings', 'revenue', 'profit', 'dividend',
-    'ipo', 'regulation', 'tax', 'fiscal', 'monetary', 'policy',
+    'aespa', 'le sserafim', 'ive', 'newjeans', 'stray kids', '(g)i-dle',
   ],
 };
 

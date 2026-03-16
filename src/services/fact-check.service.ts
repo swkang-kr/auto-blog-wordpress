@@ -144,60 +144,6 @@ export class FactCheckService {
       }
     }
 
-    if (category === 'Korean Finance') {
-      // Check for specific stock price claims
-      const stockPriceRegex = /(?:Samsung|SK Hynix|HYBE|Hyundai|LG|Naver|Kakao)\s+(?:stock|share|shares)\s+(?:at|is|was|trading|traded|priced)\s+(?:at\s+)?(?:₩|KRW\s*)?([\d,]+)/gi;
-      const stockMatches = plainText.match(stockPriceRegex) || [];
-      for (const match of stockMatches) {
-        const hasTimeRef = /(?:as of|in (?:january|february|march|april|may|june|july|august|september|october|november|december)|recent|latest)/i.test(match);
-        if (!hasTimeRef) {
-          flagged.push(`Stock price without date reference: "${match.slice(0, 80)}" — add "as of [month/year]"`);
-          unverified++;
-        }
-      }
-
-      // Check for specific interest rate claims
-      const rateRegex = /(?:BOK|Bank of Korea|base rate|key rate)\s+(?:at|is|was|set|raised|cut)\s+(?:to\s+)?(\d+(?:\.\d+)?)\s*%/gi;
-      const rateMatches = plainText.match(rateRegex) || [];
-      for (const match of rateMatches) {
-        const hasHedge = /(?:approximately|around|recently|as of|current)/i.test(match);
-        if (!hasHedge) {
-          flagged.push(`Interest rate claim without hedging: "${match.slice(0, 80)}" — add temporal qualifier`);
-          unverified++;
-        }
-      }
-    }
-
-    if (category === 'Korean Tech') {
-      // Check for market share/ranking claims without sources
-      const marketShareRegex = /(?:market share|market leader|#\d|number one|world'?s? (?:largest|biggest|first))\s+[^.]{10,80}/gi;
-      const msMatches = plainText.match(marketShareRegex) || [];
-      for (const match of msMatches) {
-        const hasCitation = /(?:according to|per|source|reported|IDC|Gartner|Counterpoint|TrendForce|Omdia|Statista)/i.test(
-          plainText.slice(Math.max(0, plainText.indexOf(match) - 50), plainText.indexOf(match) + match.length + 100),
-        );
-        if (!hasCitation) {
-          flagged.push(`Market claim without source: "${match.slice(0, 80)}" — cite research firm (IDC, Gartner, etc.)`);
-          unverified++;
-        }
-      }
-
-      // Check for chip process node claims
-      const processNodeRegex = /(\d+)\s*(?:nm|nanometer)\s+(?:process|node|technology|chip)/gi;
-      const nodeMatches = plainText.match(processNodeRegex) || [];
-      for (const match of nodeMatches) {
-        const numMatch = match.match(/(\d+)\s*(?:nm|nanometer)/i);
-        if (numMatch) {
-          const nm = parseInt(numMatch[1]);
-          // Current leading-edge is 2-3nm, flag unlikely claims
-          if (nm < 2) {
-            flagged.push(`Unlikely process node: "${match}" — sub-2nm not yet in mass production`);
-            unverified++;
-          }
-        }
-      }
-    }
-
     if (category === 'K-Entertainment') {
       // Check for specific revenue/earnings claims
       const revRegex = /(?:HYBE|SM|JYP|YG|CJ ENM|Kakao Entertainment|THEBLACKLABEL|BELIFT LAB|Starship Entertainment|FNC Entertainment|MODHAUS|SOURCE MUSIC)\s+(?:revenue|earnings|profit|sales|income)\s+(?:of|at|reached|hit|was)\s+(?:₩|KRW|USD|\$)?\s*([\d.,]+)\s*(?:billion|million|trillion)/gi;
@@ -291,35 +237,7 @@ export class FactCheckService {
       }
     }
 
-    // 9. Korea Travel: Check visa/entry requirement claims
-    if (category === 'Korea Travel') {
-      const visaClaims = /(?:visa-free|visa free|no visa|visa waiver)\s+(?:for\s+)?(?:up to\s+)?(\d+)\s+(?:days|months)/gi;
-      const visaMatches = plainText.match(visaClaims) || [];
-      for (const match of visaMatches) {
-        const dayMatch = match.match(/(\d+)\s+days/i);
-        if (dayMatch) {
-          const days = parseInt(dayMatch[1]);
-          // Standard visa-free is 30, 60, or 90 days — flag unusual numbers
-          if (![30, 60, 90, 180].includes(days)) {
-            flagged.push(`Unusual visa-free period: "${match}" — verify against Korean Immigration Service`);
-            unverified++;
-          }
-        }
-      }
-
-      // Check T-money/transit fare claims
-      const fareRegex = /(?:t-money|subway|bus|ktx)\s+(?:fare|cost|ticket|price)\s+(?:is|costs?|around|approximately)?\s*(?:₩|KRW\s*)?([\d,]+)/gi;
-      const fareMatches = plainText.match(fareRegex) || [];
-      for (const match of fareMatches) {
-        const hasTimeRef = /(?:as of|in \d{4}|current|latest|recently|updated)/i.test(
-          plainText.slice(Math.max(0, plainText.indexOf(match) - 60), plainText.indexOf(match) + match.length + 60),
-        );
-        if (!hasTimeRef) {
-          flagged.push(`Transit fare without date context: "${match.slice(0, 60)}" — add "as of [year]" since fares change`);
-          unverified++;
-        }
-      }
-    }
+    // 9. (Reserved for future niche-specific checks)
 
     // 10. K-Beauty: Check for recalled or discontinued product claims
     if (category === 'K-Beauty') {

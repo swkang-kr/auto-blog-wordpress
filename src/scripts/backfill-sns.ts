@@ -37,12 +37,7 @@ for (const n of NICHES) {
 }
 // Legacy niche IDs from old config
 const LEGACY_NICHE_MAP: Record<string, string> = {
-  'personal-finance': 'Korean Finance',
-  'ai-tools-review': 'Korean Tech',
-  'korean-tech': 'Korean Tech',
-  'korean-finance': 'Korean Finance',
   'k-beauty': 'K-Beauty',
-  'korea-travel': 'Korea Travel',
   'k-entertainment': 'K-Entertainment',
 };
 
