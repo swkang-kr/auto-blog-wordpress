@@ -999,6 +999,34 @@ export function validateContent(
       }
     }
 
+    // 12i. "Clean beauty" — unregulated marketing term, no MFDS or FDA definition
+    if (/clean\s*beauty/i.test(plainText)) {
+      const hasDisclaimer = /no\s*(?:legal|regulatory|standard|universal)\s*definition|marketing\s*term|not\s*(?:regulated|standardized|defined)|varies\s*by\s*brand/i.test(plainText);
+      if (!hasDisclaimer) {
+        warnings.push({ category: 'niche-accuracy', message: '"Clean beauty" has no legal or regulatory definition in Korea (MFDS) or the US (FDA). Brands define it differently — some exclude parabens/sulfates, others focus on "natural" ingredients. Content should note this is a marketing category, not a safety standard.', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 12j. Galactomyces percentage — "95% galactomyces" means 95% of the formula is galactomyces filtrate, NOT 95% purity
+    if (/galactomyces\s*(?:ferment)?\s*(?:filtrate)?\s*\d+%/i.test(plainText) || /\d+%\s*galactomyces/i.test(plainText)) {
+      if (/(?:purity|pure|concentration)\s*(?:of\s*)?\d+%\s*galactomyces|galactomyces.*\d+%\s*(?:purity|pure|concentration)/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'Galactomyces percentage describes the proportion of galactomyces filtrate IN the formula (e.g., COSRX Galactomyces 95 = 95% of the formula is galactomyces filtrate), NOT the purity or concentration of the active. This is a common AI misinterpretation.', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 12k. Sheet mask daily use — Korean dermatologists recommend 1-2x/week, not daily
+    if (/sheet\s*mask/i.test(plainText) && ['how-to', 'product-review', 'best-x-for-y'].includes(contentType)) {
+      if (/(?:daily|every\s*day|every\s*night|each\s*day)\s*(?:sheet\s*mask|masking)/i.test(plainText)) {
+        const hasFrequencyNote = /(?:1.?2\s*times?\s*(?:a|per)\s*week|once\s*(?:a|per)\s*week|2.?3\s*times?\s*(?:a|per)\s*week|not\s*(?:for\s*)?daily|overuse|over.?mask)/i.test(plainText);
+        if (!hasFrequencyNote) {
+          warnings.push({ category: 'niche-accuracy', message: 'Sheet mask described as daily use without frequency guidance — Korean dermatologists recommend 1-2x/week maximum. Daily masking can over-hydrate and weaken the skin barrier (과수분). Note appropriate frequency.', severity: 'warning' });
+          eeatScore -= 1;
+        }
+      }
+    }
+
     // 12. "Hypoallergenic" as unregulated marketing term
     if (/hypoallergenic/i.test(plainText)) {
       const hasDisclaimer = /no\s*(?:legal|regulatory|standard)\s*definition|marketing\s*term|not\s*(?:regulated|standardized)|does\s*not\s*guarantee/i.test(plainText);
@@ -1084,6 +1112,7 @@ export function validateContent(
       'ILLIT': 'LLIT', 'KISS OF LIFE': 'KISSY',
       'tripleS': 'LOVElution', 'WHIPLASH': 'WHIPPERS',
       'NCT WISH': 'WISHING', 'KATSEYE': 'EMBERS',
+      'ITZY': 'MIDZY', 'NMIXX': 'NSWer',
     };
     for (const [group, fandom] of Object.entries(fandomMap)) {
       const groupRegex = new RegExp(`\\b${group.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
@@ -1169,7 +1198,17 @@ export function validateContent(
       }
     }
 
-    // 17. Coupang Play — growing K-drama OTT platform, should not be omitted in streaming comparisons
+    // 17. Chart all-kill (음원 올킬) vs music show all-kill (음방 올킬) conflation
+    if (/all.?kill|올킬/i.test(plainText)) {
+      // Check if "all-kill" is used without specifying chart or music show context
+      const hasChartContext = /(?:chart|streaming|Melon|Genie|music\s*show|Inkigayo|Music\s*Bank|M\s*Countdown|음방|음원)/i.test(plainText);
+      if (!hasChartContext) {
+        warnings.push({ category: 'niche-accuracy', message: '"All-kill" used without context — distinguish between 음원 올킬 (chart all-kill: #1 on all major streaming platforms simultaneously) and 음방 올킬 (music show all-kill: winning all 5 weekly music shows). PAK (Perfect All-Kill) = #1 on all real-time AND daily charts simultaneously — the highest digital achievement.', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 18. Coupang Play — growing K-drama OTT platform, should not be omitted in streaming comparisons
     if (/(?:streaming|OTT|platform)\s*(?:comparison|ranked|guide|which)/i.test(plainText) &&
         /Netflix|TVING|Disney\+/i.test(plainText) &&
         !/Coupang\s*Play/i.test(plainText)) {
