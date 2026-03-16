@@ -119,6 +119,11 @@ const envSchema = z.object({
   FB_PAGE_ID: z.string().default(''),
   FB_APP_ID: z.string().default(''),
   FB_APP_SECRET: z.string().default(''),
+  // Threads (Meta) — auto-posting to Threads profile
+  THREADS_ACCESS_TOKEN: z.string().default(''),
+  THREADS_APP_ID: z.string().default(''),
+  THREADS_APP_SECRET: z.string().default(''),
+  THREADS_USER_ID: z.string().default(''),
 });
 
 export type AppConfig = z.infer<typeof envSchema>;

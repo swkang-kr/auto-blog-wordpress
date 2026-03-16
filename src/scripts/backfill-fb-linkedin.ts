@@ -11,6 +11,7 @@ import axios from 'axios';
 import { loadConfig } from '../config/env.js';
 import { FacebookService } from '../services/facebook.service.js';
 import { LinkedInService } from '../services/linkedin.service.js';
+import { ThreadsService } from '../services/threads.service.js';
 import { PostHistory } from '../utils/history.js';
 import type { BlogContent, PublishedPost } from '../types/index.js';
 
@@ -46,12 +47,16 @@ async function main() {
   const liService = config.LINKEDIN_ACCESS_TOKEN && config.LINKEDIN_PERSON_ID
     ? new LinkedInService(config.LINKEDIN_ACCESS_TOKEN, config.LINKEDIN_PERSON_ID)
     : null;
+  const threadsService = config.THREADS_ACCESS_TOKEN && config.THREADS_USER_ID
+    ? new ThreadsService(config.THREADS_ACCESS_TOKEN, config.THREADS_USER_ID)
+    : null;
 
   console.log(`Facebook: ${fbService ? '✅ enabled' : '❌ disabled'}`);
   console.log(`LinkedIn: ${liService ? '✅ enabled' : '❌ disabled'}`);
+  console.log(`Threads:  ${threadsService ? '✅ enabled' : '❌ disabled'}`);
 
-  if (!fbService && !liService) {
-    console.log('\nNo platforms enabled. Set FB_ACCESS_TOKEN/FB_PAGE_ID and/or LINKEDIN_ACCESS_TOKEN/LINKEDIN_PERSON_ID.');
+  if (!fbService && !liService && !threadsService) {
+    console.log('\nNo platforms enabled. Set FB_ACCESS_TOKEN/FB_PAGE_ID, LINKEDIN_ACCESS_TOKEN/LINKEDIN_PERSON_ID, and/or THREADS_ACCESS_TOKEN/THREADS_USER_ID.');
     process.exit(0);
   }
 
@@ -63,7 +68,7 @@ async function main() {
 
   console.log(`\nPosts to process: ${entries.length} (niches: ${CURRENT_NICHES.join(', ')})\n`);
 
-  let fbSuccess = 0, fbFail = 0, liSuccess = 0, liFail = 0, skipped = 0;
+  let fbSuccess = 0, fbFail = 0, liSuccess = 0, liFail = 0, threadsSuccess = 0, threadsFail = 0, skipped = 0;
 
   for (let i = 0; i < entries.length; i++) {
     const entry = entries[i];
@@ -155,6 +160,24 @@ async function main() {
       await new Promise(r => setTimeout(r, 3000));
     }
 
+    // Threads
+    if (threadsService) {
+      try {
+        const threadsId = await threadsService.promoteBlogPost(blogContent, publishedPost);
+        if (threadsId) {
+          console.log(`  ✅ Threads: ${threadsId}`);
+          threadsSuccess++;
+        } else {
+          console.log(`  ⚠️ Threads: returned null`);
+          threadsFail++;
+        }
+      } catch (err) {
+        console.log(`  ❌ Threads: ${err instanceof Error ? err.message : err}`);
+        threadsFail++;
+      }
+      await new Promise(r => setTimeout(r, 3000));
+    }
+
     // Rate limit
     if (i < entries.length - 1) {
       console.log(`  ⏳ ${DELAY_MS / 1000}s delay...`);
@@ -167,6 +190,7 @@ async function main() {
   console.log(`Processed: ${entries.length - skipped} | Skipped: ${skipped}`);
   if (fbService) console.log(`Facebook: ${fbSuccess} success, ${fbFail} failed`);
   if (liService) console.log(`LinkedIn: ${liSuccess} success, ${liFail} failed`);
+  if (threadsService) console.log(`Threads:  ${threadsSuccess} success, ${threadsFail} failed`);
   console.log('='.repeat(50));
 }
 

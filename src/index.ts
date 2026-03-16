@@ -28,6 +28,7 @@ import { EmailAutomationService } from './services/email-automation.service.js';
 import { NaverBlogService } from './services/naver-blog.service.js';
 import { LinkedInService } from './services/linkedin.service.js';
 import { FacebookService } from './services/facebook.service.js';
+import { ThreadsService } from './services/threads.service.js';
 import { RedditPostService } from './services/reddit-post.service.js';
 import { AdSenseApiService } from './services/adsense-api.service.js';
 import type { PostResult, BatchResult, MediaUploadResult } from './types/index.js';
@@ -148,6 +149,16 @@ async function main(): Promise<void> {
     logger.info('Facebook Page promotion service enabled');
   } else {
     logger.info('FB_ACCESS_TOKEN not set, skipping Facebook promotion');
+  }
+
+  const threadsService =
+    config.THREADS_ACCESS_TOKEN && config.THREADS_USER_ID
+      ? new ThreadsService(config.THREADS_ACCESS_TOKEN, config.THREADS_USER_ID)
+      : null;
+  if (threadsService) {
+    logger.info('Threads promotion service enabled');
+  } else {
+    logger.info('THREADS_ACCESS_TOKEN not set, skipping Threads promotion');
   }
 
   const redditPostService =
@@ -1567,6 +1578,12 @@ async function main(): Promise<void> {
       if (facebookService && effectivePublishStatus === 'publish') {
         const fbPostId = await facebookService.promoteBlogPost(content, post);
         if (fbPostId) await wpService.updatePostMeta(post.postId, { _autoblog_fb_post_id: fbPostId }).catch(() => {});
+      }
+
+      // Threads: post immediately when published (Day 0, same cadence as Facebook)
+      if (threadsService && effectivePublishStatus === 'publish') {
+        const threadsPostId = await threadsService.promoteBlogPost(content, post);
+        if (threadsPostId) await wpService.updatePostMeta(post.postId, { _autoblog_threads_post_id: threadsPostId }).catch(() => {});
       }
 
       if (socialPlatforms.length > 0) {
