@@ -85,7 +85,7 @@ export class SeoService {
    * Set WordPress site title and tagline to reflect niche focus.
    */
   async ensureSiteTitle(siteName: string, categories: string[], taglineOverride?: string): Promise<void> {
-    const tagline = taglineOverride || `Your Source for ${categories.join(', ')} Insights`;
+    const tagline = taglineOverride || `Your Guide to ${categories.join(' & ')} Trends`;
     try {
       const { data: settings } = await this.api.get('/settings');
       const current = settings as Record<string, unknown>;
