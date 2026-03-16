@@ -199,7 +199,7 @@ export interface NicheConfig {
 export const CATEGORY_PUBLISH_TIMING: Record<string, { optimalHour: number; bestDays: number[] }> = {
   'Korean Tech': { optimalHour: 8, bestDays: [1, 2, 3] },        // Mon-Wed morning (tech news cycle)
   'Korean Finance': { optimalHour: 7, bestDays: [1, 2] },         // Mon-Tue early morning (market open)
-  'K-Beauty': { optimalHour: 10, bestDays: [5, 6, 0] },           // Weekend morning (lifestyle shopping)
+  'K-Beauty': { optimalHour: 10, bestDays: [2, 3, 5, 6, 0] },     // Tue-Wed (informational/how-to) + Fri-Sun (shopping/reviews)
   'Korea Travel': { optimalHour: 10, bestDays: [6, 0, 5] },       // Weekend + Friday (trip planning)
   'K-Entertainment': { optimalHour: 9, bestDays: [4, 5, 6] },     // Thu-Sat KST morning = Wed-Fri EST evening (global fan prime time)
 };

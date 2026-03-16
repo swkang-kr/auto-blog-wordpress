@@ -384,6 +384,27 @@ export const NICHES: NicheConfig[] = [
       // 마데카소사이드 — 센텔라 파생 개별 성분, 기능성 화장품 고시 원료
       'madecassoside vs centella asiatica Korean skincare which is better explained guide',
       // ── 전문가 감사 추가 (2026-03-16): 누락된 트렌드 세그먼트 보완 ──
+      // Barrier cream as primer — 시카/세라마이드 크림을 메이크업 프라이머로 사용하는 트렌드 (2025-2026 TikTok 바이럴)
+      'barrier cream as primer Korean skincare makeup base trend 2026 guide',
+      'best Korean barrier cream for makeup primer sensitive skin 2026',
+      // Peptide stacking — 다중 펩타이드 레이어링, 구리 펩타이드·마트릭실·아르지렐린 조합
+      'peptide stacking Korean skincare how to layer multiple peptides guide 2026',
+      'copper peptide vs matrixyl vs argireline Korean serum comparison 2026',
+      // Perioral dermatitis — K-Beauty 커뮤니티 급상승 검색어, 입주위 피부염 관리
+      'Korean skincare for perioral dermatitis gentle routine products 2026 guide',
+      'best Korean products safe for perioral dermatitis fungal acne 2026',
+      // Centella sun stick / cushion sunscreen — 2025-2026 선케어 포맷 혁신
+      'best Korean centella sun stick SPF for sensitive skin reapplication 2026',
+      'Korean cushion sunscreen compact SPF review best for on the go 2026',
+      'centella sun stick vs cushion sunscreen which Korean SPF format is better',
+      // Tone-up cream (톤업크림) — 한국 선크림 #1 검색어, 별도 키워드 보강
+      'best Korean tone up cream for bright skin no white cast ranked 2026',
+      'tone up sunscreen vs regular sunscreen Korean SPF difference explained guide',
+      // 피부과 시술 + 홈케어 조합 — K-Beauty 핵심 차별점 (YMYL 주의: 의료 조언 제공 금지)
+      // NOTE: 시술 자체를 추천하지 말 것. "시술 후 홈케어 루틴" 앵글로만 작성, "consult your dermatologist" 필수
+      'Korean skincare routine after laser treatment post-procedure homecare guide 2026',
+      'best Korean products after chemical peel gentle recovery skincare 2026',
+      'post-botox skincare routine Korean products what to use and avoid guide',
       // LED 마스크 — 홈케어 뷰티 디바이스 최대 시장, 셀리턴/CurrentBody/CELLRETURN
       'best Korean LED face mask device for anti-aging acne home treatment 2026',
       'Korean LED mask vs professional treatment is it worth it comparison guide',

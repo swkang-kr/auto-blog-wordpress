@@ -1956,6 +1956,7 @@ ${ga4TrackingScript}`;
               description: item.description,
               ...(item.image ? { image: item.image } : {}),
               ...(item.brand ? { brand: { '@type': 'Brand', name: item.brand } } : {}),
+              ...(content.category === 'K-Beauty' ? { category: 'Beauty > Skincare' } : {}),
               review: {
                 '@type': 'Review',
                 author: { '@type': 'Person', name: this.siteOwner || 'TrendHunt' },
@@ -2638,11 +2639,18 @@ ${ga4TrackingScript}`;
     // Match numbered headings that likely contain product names
     const regex = /<h[23][^>]*>(?:\d+[.):\s]+|#\d+[:\s]+)?(.*?)<\/h[23]>([\s\S]*?)(?=<h[23]|$)/gi;
     const knownBrands = [
-      // K-Beauty
+      // K-Beauty — established
       'COSRX', 'Innisfree', 'Sulwhasoo', 'Laneige', 'Amorepacific', 'Etude', 'Missha',
       'Klairs', 'Some By Mi', 'Banila Co', 'Tony Moly', 'Heimish', "I'm From", 'Anua',
       'Beauty of Joseon', 'SKIN1004', 'Purito', 'Benton', 'Pyunkang Yul', 'Needly',
       'Mediheal', 'Dr. Jart', 'Mamonde', 'Hera', 'The Face Shop', 'Nature Republic',
+      // K-Beauty — breakout 2025-2026
+      'Numbuzin', 'TIRTIR', 'Biodance', "d'Alba", 'MEDICUBE', 'Isntree', 'Round Lab',
+      'Mixsoon', 'Torriden', 'Haruharu Wonder', 'ABIB', 'Aestura', 'Dr.G',
+      'NACIFIC', 'AMPLE:N', 'ILLIYOON', 'VT Cosmetics', "ma:nyo", 'Jumiso', 'Rovectin',
+      'Cos De BAHA', "Skin&Lab", 'Klavuu', 'Holika Holika', 'FWEE', 'Hince',
+      // K-Beauty — premium/Hanbang
+      'History of Whoo', 'O HUI', 'Hanyul',
       // K-Entertainment agencies (appear in idol/drama content)
       'HYBE', 'SM Entertainment', 'JYP', 'YG Entertainment',
     ];

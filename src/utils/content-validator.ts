@@ -837,12 +837,25 @@ export function validateContent(
       eeatScore -= 2;
     }
 
-    // 6. Skin type suitability matrix for product reviews
+    // 6. Skin type suitability matrix for product reviews (expanded beyond basic 5 types)
     if (contentType === 'product-review') {
       const hasSkinType = /(?:oily|dry|combination|sensitive|acne.prone)\s*skin/i.test(plainText);
       if (!hasSkinType) {
         warnings.push({ category: 'niche-accuracy', message: 'K-Beauty product review missing skin type suitability (oily/dry/combination/sensitive/acne-prone)', severity: 'warning' });
         structureScore -= 1;
+      }
+      // Extended skin condition check for product reviews — these are high-value segments
+      const hasExtendedConditions = /(?:rosacea|eczema|atopic|mature|aging|dehydrat(?:ed|ion))\s*(?:skin|prone)/i.test(plainText);
+      if (hasSkinType && !hasExtendedConditions && wordCount > 1800) {
+        warnings.push({ category: 'niche-accuracy', message: 'K-Beauty product review could benefit from extended skin condition mentions (rosacea-prone, eczema/atopic, mature/aging, dehydrated) — these are high-conversion segments', severity: 'info' });
+      }
+      // Dehydrated vs dry distinction check — common conflation
+      if (/dehydrat/i.test(plainText) && /dry/i.test(plainText)) {
+        if (/dehydrat(?:ed|ion)\s*(?:=|is\s*(?:the\s*same|identical|just)\s*(?:as|to))\s*dry/i.test(plainText) ||
+            /dry\s*(?:=|is\s*(?:the\s*same|identical|just)\s*(?:as|to))\s*dehydrat/i.test(plainText)) {
+          warnings.push({ category: 'niche-accuracy', message: 'Dehydrated ≠ Dry skin — dehydrated skin lacks water (any skin type can be dehydrated), dry skin lacks oil (a skin type). This is a fundamental K-Beauty distinction.', severity: 'warning' });
+          eeatScore -= 1;
+        }
       }
     }
 
@@ -912,6 +925,53 @@ export function validateContent(
       if (!hasStudyCite) {
         warnings.push({ category: 'niche-accuracy', message: '"Clinically proven" used without referencing a specific clinical study — per FTC guidelines, this phrase requires substantiation. Use "clinically tested" or cite the study.', severity: 'warning' });
         eeatScore -= 1;
+      }
+    }
+
+    // 12a. BHA (Salicylic acid) concentration — Korea OTC limit is 0.5%, US allows 2%
+    if (/(?:BHA|salicylic\s*acid)/i.test(plainText) && ['product-review', 'best-x-for-y', 'x-vs-y', 'deep-dive'].includes(contentType)) {
+      // Check if 2% BHA is described as Korean OTC product (it's not — 2% is US OTC, Korea limits to 0.5%)
+      if (/(?:korean|K-?beauty).*2%\s*(?:BHA|salicylic)/i.test(plainText) || /2%\s*(?:BHA|salicylic).*(?:korean|K-?beauty|olive young)/i.test(plainText)) {
+        const hasRegulatoryNote = /(?:Korea|MFDS|한국).*0\.5%|0\.5%.*(?:Korea|MFDS|한국)|US\s*(?:allows|OTC|FDA).*2%/i.test(plainText);
+        if (!hasRegulatoryNote) {
+          warnings.push({ category: 'niche-accuracy', message: 'BHA 2% described as Korean OTC product — Korea MFDS limits salicylic acid to 0.5% in OTC cosmetics (2% requires quasi-drug classification). Add regulatory context.', severity: 'warning' });
+          eeatScore -= 1;
+        }
+      }
+    }
+
+    // 12b. Retinol content MUST warn about pregnancy contraindication
+    if (/\bretinol\b|\bretinal\b|\bretinoid/i.test(plainText) && ['product-review', 'best-x-for-y', 'how-to', 'deep-dive'].includes(contentType)) {
+      const hasPregnancyWarning = /pregnan.*(?:avoid|contraindic|not\s*(?:safe|recommended)|consult)|(?:avoid|contraindic|not\s*(?:safe|recommended)).*pregnan/i.test(plainText);
+      if (!hasPregnancyWarning) {
+        warnings.push({ category: 'niche-accuracy', message: 'Retinol/retinoid content missing pregnancy contraindication warning — retinoids are Category X teratogens. Must note "Avoid during pregnancy — consult your healthcare provider."', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 12c. AHA concentration warning — 10%+ is a weekly peel, not daily use
+    if (/(?:AHA|glycolic|lactic|mandelic)\s*acid/i.test(plainText) && /(?:1[0-9]|[2-9][0-9])%\s*(?:AHA|glycolic|lactic|mandelic)/i.test(plainText)) {
+      const hasDailyUseWarning = /(?:weekly|once\s*a\s*week|not\s*(?:for\s*)?daily|peel|exfoli.*frequency|patch\s*test)/i.test(plainText);
+      if (!hasDailyUseWarning) {
+        warnings.push({ category: 'niche-accuracy', message: 'AHA 10%+ concentration mentioned without frequency guidance — concentrations above 10% are weekly peels, NOT daily-use products. Add usage frequency warning.', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 12d. EGF (Epidermal Growth Factor) — popular in Korea but FDA has NOT approved for cosmetic use
+    if (/\bEGF\b|epidermal\s*growth\s*factor/i.test(plainText)) {
+      const hasFdaDisclaimer = /(?:FDA|US)\s*(?:has\s*)?not\s*(?:approved|cleared)|not\s*FDA|regulatory\s*(?:status|approval)|cosmetic\s*(?:ingredient|use)/i.test(plainText);
+      if (!hasFdaDisclaimer) {
+        warnings.push({ category: 'niche-accuracy', message: 'EGF (Epidermal Growth Factor) mentioned without regulatory context — FDA has NOT approved EGF for cosmetic use in the US. Note regulatory status for international readers.', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 12e. Propolis allergy cross-reaction warning (bee product allergy)
+    if (/propolis/i.test(plainText) && ['product-review', 'best-x-for-y', 'how-to'].includes(contentType)) {
+      const hasAllergyWarning = /(?:bee|honey|pollen)\s*allerg|allerg.*(?:bee|propolis)|patch\s*test.*propolis|propolis.*patch\s*test|cross.?react/i.test(plainText);
+      if (!hasAllergyWarning) {
+        warnings.push({ category: 'niche-accuracy', message: 'Propolis product content missing allergy warning — propolis can cause cross-reactions in people with bee/pollen allergies. Add "patch test recommended; avoid if allergic to bee products."', severity: 'warning' });
       }
     }
 
@@ -1049,6 +1109,49 @@ export function validateContent(
       if (check.pattern.test(plainText)) {
         warnings.push({ category: 'niche-accuracy', message: `Brand error: ${check.correct}`, severity: 'warning' });
         eeatScore -= 2;
+      }
+    }
+
+    // 13b. Brand name spelling consistency (common AI errors — exact brand names matter for SEO + trust)
+    const brandNameErrors: Array<{ pattern: RegExp; correct: string }> = [
+      { pattern: /\bCosrx\b|\bcosrx\b/, correct: 'COSRX (all caps — official brand name)' },
+      { pattern: /\bSkin ?1004\b(?!.*Madagascar)/i, correct: 'SKIN1004 (no space, all caps — brand name; full product line is "SKIN1004 Madagascar Centella")' },
+      { pattern: /\bBeauty of joseon\b/, correct: 'Beauty of Joseon (capitalize "Joseon")' },
+      { pattern: /\bDr\.?\s*jart\b/i, correct: 'Dr.Jart+ (include the +)' },
+      { pattern: /\bIlliyoon\b/, correct: 'ILLIYOON (all caps — Amorepacific official)' },
+      { pattern: /\bPurito\b/, correct: 'PURITO (all caps — official brand name)' },
+      { pattern: /\bNacific\b/, correct: 'NACIFIC (all caps — official brand name)' },
+      { pattern: /\bAmple ?n\b/i, correct: 'AMPLE:N (all caps with colon — official)' },
+      { pattern: /\bIsn ?tree\b/, correct: 'Isntree (lowercase t — official)' },
+      { pattern: /\bTirtir\b|\btirtir\b/, correct: 'TIRTIR (all caps — official; Korean: 띠르띠르)' },
+      { pattern: /\bNumbuzin\b/, correct: 'Numbuzin (lowercase — official); check if intended No.5 serum' },
+    ];
+    for (const check of brandNameErrors) {
+      if (check.pattern.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: `Brand name error: ${check.correct}`, severity: 'warning' });
+        // No score penalty — informational, but important for brand credibility
+        break; // Only warn about first instance to avoid flooding
+      }
+    }
+
+    // 13c. Olive Young link check for pricing content — if pricing mentioned, should link to OY
+    if (['product-review', 'best-x-for-y'].includes(contentType)) {
+      const mentionsOliveYoungPrice = /olive\s*young.*(?:₩|\$|price|won)/i.test(plainText) || /(?:₩|\$|price|won).*olive\s*young/i.test(plainText);
+      if (mentionsOliveYoungPrice) {
+        const hasOliveYoungLink = /oliveyoung\.co\.kr|oliveyoung\.com/i.test(html);
+        if (!hasOliveYoungLink) {
+          warnings.push({ category: 'niche-accuracy', message: 'Olive Young pricing mentioned without linking to oliveyoung.co.kr or oliveyoung.com — add source link for price verification', severity: 'warning' });
+        }
+      }
+    }
+
+    // 13d. Post-procedure skincare content MUST have dermatologist disclaimer
+    if (/(?:laser|chemical\s*peel|botox|filler|microneedl|dermapen|IPL|RF\s*(?:lifting|treatment))\s*(?:after|post|recovery|homecare)/i.test(plainText) ||
+        /(?:after|post)\s*(?:laser|chemical\s*peel|botox|filler|microneedl)/i.test(plainText)) {
+      const hasDermDisclaimer = /consult\s*(?:a|your)\s*(?:dermatologist|doctor|physician|healthcare)|professional\s*(?:guidance|advice)|medical\s*advice/i.test(plainText);
+      if (!hasDermDisclaimer) {
+        issues.push({ category: 'niche-accuracy', message: 'Post-procedure skincare content MISSING dermatologist disclaimer — "Consult your dermatologist for personalized post-treatment care" is mandatory for procedure-related content', severity: 'error' });
+        eeatScore -= 3;
       }
     }
 
@@ -1191,6 +1294,15 @@ export function validateContent(
         /(?:safe|gentle)\s*because\s*(?:it.?s|it\s*is)\s*(?:natural|plant.based|organic)/i.test(plainText)) {
       warnings.push({ category: 'niche-accuracy', message: '"Natural = safe" fallacy detected — natural ingredients can cause allergic reactions and irritation (e.g., essential oils, citrus extracts). Expert content should note that natural ≠ automatically gentle/safe.', severity: 'warning' });
       eeatScore -= 1;
+    }
+
+    // 27b. Before/after imagery — AI-generated before/after images are FTC violations
+    if (/before\s*(?:and|&|\/)\s*after/i.test(plainText) && /\bAI\b|generated|illustration/i.test(html)) {
+      const hasBeforeAfterImg = /<img[^>]*(?:before|after)[^>]*>/i.test(html);
+      if (hasBeforeAfterImg) {
+        warnings.push({ category: 'niche-accuracy', message: 'Possible AI-generated before/after image detected — AI-generated before/after images violate FTC guidelines on deceptive advertising. Only use real user photos with consent.', severity: 'warning' });
+        eeatScore -= 2;
+      }
     }
 
     // 28. PAO (Period After Opening) mention for product reviews

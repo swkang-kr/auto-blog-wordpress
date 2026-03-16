@@ -157,6 +157,8 @@ export class ImageGeneratorService {
     const isKBeautyTools = isKBeauty && /led\s*mask|gua\s*sha|ice\s*roller|microcurrent|device|tool|facial\s*massage|cellreturn/i.test(promptLower);
     const isKBeautyBodyCare = isKBeauty && /body\s*(?:care|lotion|cream|scrub|exfoli)|italy\s*towel|glass\s*body|spf\s*body/i.test(promptLower);
     const isKBeautyTonerPad = isKBeauty && /toner\s*pad|sun\s*pad|exfoliat.*pad|선패드/i.test(promptLower);
+    const isKBeautyAmpoule = isKBeauty && /ampoule|앰플|concentrated\s*(?:serum|essence)/i.test(promptLower);
+    const isKBeautyTexture = isKBeauty && /texture|발림성|swatch|consistency|application/i.test(promptLower);
 
     const nicheSuffix = isKBeautyTools
       ? ', Korean beauty device product photography, clean clinical aesthetic, soft white background, LED glow effect, modern bathroom counter, sleek technology meets skincare, minimalist composition'
@@ -164,7 +166,11 @@ export class ImageGeneratorService {
         ? ', Korean body care editorial, bright bathroom setting, glass body aesthetic, body products flat lay, soft natural lighting, spa-like atmosphere, luxurious texture display'
         : isKBeautyTonerPad
           ? ', Korean toner pad close-up product photography, cotton round pad texture visible, clean glass jar packaging, soft pink and white tones, hydrating dewy aesthetic, minimal clean background'
-          : isKBeautyHanbang
+          : isKBeautyAmpoule
+            ? ', Korean ampoule product photography, small glass dropper bottle close-up, golden serum droplet on dropper tip, clean minimal background, concentrated formula aesthetic, luxury skincare editorial, warm amber lighting'
+            : isKBeautyTexture
+              ? ', Korean skincare texture swatch photography, product spread on glass surface, creamy gel texture close-up, dewy translucent consistency, finger swatch application, clean white marble background, macro lens detail'
+              : isKBeautyHanbang
       ? ', luxurious Korean Hanbang aesthetic, gold and deep burgundy accents, traditional Korean motifs, ornate packaging, dark wood vanity, warm ambient lighting, premium editorial beauty photography'
       : isKBeautyMakeup
         ? ', K-beauty makeup flat lay, vibrant coral and pink tones, mirror reflections, beauty editorial style, bright studio lighting, clean modern vanity, texture swatches visible'
