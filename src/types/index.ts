@@ -40,6 +40,8 @@ export const KOREAN_SEASONAL_EVENTS: Array<{
   // NOTE: K-Drama 시상식 3사 — K-드라마 팬이 연말에 가장 많이 검색하는 이벤트 (Baeksang과 별도)
   { name: 'Year-End K-Drama Awards (KBS/MBC/SBS)', startMonth: 12, startDay: 20, endMonth: 12, endDay: 31, leadTimeDays: 30, relevantNiches: ['K-Entertainment'], contentAngles: ['KBS Drama Awards 2026 predictions winners daesang who will win', 'SBS Drama Awards 2026 nominees best actress actor predictions guide', 'MBC Drama Awards 2026 winners recap highlights K-drama fans', 'K-drama year-end awards 2026 complete guide all three networks', 'how to watch KBS SBS MBC drama awards 2026 livestream international fans'] },
   { name: 'Golden Disc Awards (골든디스크)', startMonth: 1, startDay: 1, endMonth: 1, endDay: 15, leadTimeDays: 45, relevantNiches: ['K-Entertainment'], contentAngles: ['Golden Disc Awards 2027 predictions winners K-pop guide', 'Golden Disc Awards nominees 2027 best album song ranked', 'how to watch Golden Disc Awards 2027 livestream guide international fans', 'K-pop year-end awards recap Golden Disc MAMA MMA winners 2026'] },
+  // 서울가요대상 — 1990년 창설, 한국 3대 음악 시상식 (GDA·SMA·MMA), 1월 개최
+  { name: 'Seoul Music Awards (서울가요대상/SMA)', startMonth: 1, startDay: 15, endMonth: 1, endDay: 31, leadTimeDays: 45, relevantNiches: ['K-Entertainment'], contentAngles: ['Seoul Music Awards 2027 predictions daesang winners K-pop guide', 'Seoul Music Awards nominees 2027 best album song ranked', 'how to watch Seoul Music Awards 2027 livestream international fans guide', 'Seoul Music Awards vs Golden Disc Awards difference explained K-pop fans'] },
   { name: 'KCON Japan', startMonth: 4, startDay: 1, endMonth: 4, endDay: 30, leadTimeDays: 45, relevantNiches: ['K-Entertainment'], contentAngles: ['KCON Japan 2026 lineup schedule guide', 'how to attend KCON Japan as a foreigner', 'KCON Japan artists performing 2026', 'K-pop fan events Japan 2026 guide'] },
   { name: 'KCON USA', startMonth: 6, startDay: 15, endMonth: 7, endDay: 31, leadTimeDays: 45, relevantNiches: ['K-Entertainment'], contentAngles: ['KCON USA 2026 lineup schedule how to get tickets', 'KCON USA what to expect first timer guide', 'K-pop concerts USA 2026 summer schedule', 'best K-pop fan events in USA 2026'] },
   { name: 'KCON Europe', startMonth: 9, startDay: 1, endMonth: 10, endDay: 15, leadTimeDays: 45, relevantNiches: ['K-Entertainment'], contentAngles: ['KCON Europe 2026 lineup schedule guide', 'K-pop concerts Europe 2026 tour dates cities', 'how to attend KCON Europe tips guide'] },
@@ -91,16 +93,16 @@ export const NICHE_AUTHOR_PROFILES: Record<string, AuthorProfile> = {
   'K-Beauty': {
     name: 'Sophie Kim',
     title: 'K-Beauty & Skincare Specialist',
-    bio: 'Researching Korean skincare innovations, ingredient science, and beauty industry trends. Providing evidence-based product analysis and routine recommendations backed by dermatological research and Korean cosmetic formulation expertise.',
-    expertise: ['Korean skincare formulations', 'K-beauty ingredient analysis', 'Olive Young product reviews', 'Korean sunscreen technology', 'Glass skin routines'],
+    bio: 'Seoul-based skincare researcher who has personally tested 500+ Korean beauty products and tracked MFDS functional cosmetic certifications since 2020. Analyzes Olive Young bestseller data, ingredient concentrations (active % and pH levels), and Korean dermatological research papers to provide evidence-based product recommendations.',
+    expertise: ['Korean skincare formulations', 'K-beauty ingredient analysis', 'Olive Young product reviews', 'Korean sunscreen technology', 'Glass skin routines', 'MFDS functional cosmetic regulations'],
     credentials: ['Cosmetic Science Researcher', 'Korean Beauty Industry Analyst'],
     yearsExperience: 6,
   },
   'K-Entertainment': {
     name: 'Jamie Yoon',
     title: 'K-Pop & K-Drama Culture Writer',
-    bio: 'Deeply embedded in the global K-pop and K-drama fan community. Covering comeback seasons, idol news, drama recommendations, award show predictions, and the fan experiences that define Hallyu culture worldwide.',
-    expertise: ['K-pop fandom culture', 'K-drama recommendations & rankings', 'Idol comeback news', 'Award show predictions', 'Fan community & Hallyu culture'],
+    bio: 'Seoul-based Hallyu culture writer tracking Circle Chart, Hanteo, and Melon data daily. Has covered 30+ comeback seasons, attended MAMA and Melon Music Awards, and actively participates in fan communities on Weverse and X. Provides chart-backed analysis, award predictions, and fan-first content grounded in real community culture.',
+    expertise: ['K-pop fandom culture', 'K-drama recommendations & rankings', 'Idol comeback news', 'Award show predictions (MAMA/MMA/GDA/SMA)', 'Circle Chart & Hanteo data analysis', 'Fan community & Hallyu culture'],
     credentials: ['Hallyu Culture Researcher', 'K-Entertainment Content Writer'],
     yearsExperience: 7,
   },

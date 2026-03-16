@@ -294,6 +294,35 @@ export const NICHES: NicheConfig[] = [
       // 인캡슐레이티드 레티놀 — 자극 없는 캡슐형 레티놀, 한국 브랜드 기술 차별점
       'encapsulated retinol Korean skincare guide best products for beginners 2026',
       'Korean encapsulated retinol vs regular retinol which is gentler comparison 2026',
+      // ── Tier 1 K-Beauty 브랜드 — 글로벌 인지도 최상위, 시드 키워드 누락 보완 ──
+      // Innisfree (이니스프리) — 아모레퍼시픽, 제주 자연 원료, 그린티 라인 대표
+      'Innisfree green tea seed serum review before after results 2026',
+      'Innisfree vs innisfree retinol cica best products ranked 2026',
+      // Laneige (라네즈) — 아모레퍼시픽, 립 슬리핑 마스크 글로벌 베스트셀러
+      'Laneige water sleeping mask review vs lip sleeping mask which is better',
+      'Laneige lip sleeping mask all flavors ranked review 2026',
+      // MISSHA (미샤) — BB 크림 원조, 가성비 한류 뷰티 대표
+      'MISSHA M Perfect Cover BB cream review shades comparison 2026',
+      'MISSHA Time Revolution essence review vs SK-II dupe comparison',
+      // Etude House (에뛰드하우스) — 아모레퍼시픽, 메이크업 특화, Z세대 타겟
+      'Etude House best products ranked makeup skincare 2026 guide',
+      'Etude House fixing tint review best lip shades swatches 2026',
+      // Tony Moly (토니모리) — 캐릭터 패키징, Banana Hand Milk 상징
+      'Tony Moly best products ranked skincare 2026 what to buy',
+      'Tony Moly vs Innisfree which K-beauty brand is better for beginners',
+      // Holika Holika (홀리카 홀리카) — 자연주의 + 캐릭터, Aloe 라인 강세
+      'Holika Holika aloe soothing gel review best products ranked 2026',
+      // ── 2025-2026 신흥 K-Beauty 트렌드 키워드 ──
+      // 살몬 DNA 크림 — PDRN/연어 DNA 성분, 재생·안티에이징 한국 트렌드 폭발
+      'Korean salmon DNA PDRN cream serum review best products ranked 2026',
+      'PDRN skincare Korean trend explained what is salmon DNA cream guide',
+      // 비건 K-Beauty — 글로벌 수요 급증, Z세대 핵심 구매 동인
+      'best vegan Korean skincare products cruelty-free ranked 2026',
+      'vegan K-beauty brands certified guide what to look for 2026',
+      // 워터리스 포뮬레이션 — 농축 활성 성분, 친환경 트렌드
+      'waterless Korean skincare products concentrated formulas ranked 2026',
+      // 업사이클 성분 — 지속가능성 K-Beauty 차별화
+      'upcycled ingredient Korean skincare sustainable beauty trend 2026',
     ],
     contentTypes: ['product-review', 'best-x-for-y', 'x-vs-y', 'how-to', 'listicle', 'case-study', 'deep-dive', 'news-explainer'],
     adSenseRpm: 'high',
@@ -365,8 +394,8 @@ export const NICHES: NicheConfig[] = [
       // LE SSERAFIM — HYBE, "fearless" 브랜드 아이덴티티 + 스포츠 콜라보 특화
       'LE SSERAFIM fearless concept brand identity explained guide fans',
       'ATEEZ comeback 2026 what fans need to know',
-      // TWICE — 9년 차 K-pop 그룹 롱런 비결이 독보적 앵글
-      'TWICE how they became K-pop longest-running girl group explained',
+      // TWICE — 2015년 데뷔, 2026년 기준 11년 차 K-pop 걸그룹 롱런 비결이 독보적 앵글
+      'TWICE 10 years K-pop longest-running girl group legacy explained 2026',
       // K-Drama 배우/OST — 팬 검색 의도
       'best K-drama OST songs ranked all time',
       'top K-drama actors to watch 2026 breakout performances',
