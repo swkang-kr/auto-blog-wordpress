@@ -1717,7 +1717,9 @@ async function main(): Promise<void> {
               continue;
             }
             try {
-              const deferredLiId = await linkedinService.promoteBlogPost(pending.title, pending.excerpt, liResolvedUrl);
+              // Resolve featured image URL from post history for LinkedIn thumbnail
+              const liHistoryEntry = history.getAllEntries().find(e => e.postId === pending.postId);
+              const deferredLiId = await linkedinService.promoteBlogPost(pending.title, pending.excerpt, liResolvedUrl, liHistoryEntry?.featuredImageUrl || undefined);
               if (deferredLiId) await wpService.updatePostMeta(pending.postId, { _autoblog_linkedin_post_id: deferredLiId }).catch(() => {});
               logger.info(`Deferred LinkedIn post executed for "${pending.title}"`);
               await wpService.updatePostMeta(pending.postId, { _autoblog_linkedin_scheduled: '' });

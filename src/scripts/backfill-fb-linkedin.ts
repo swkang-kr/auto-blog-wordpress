@@ -127,10 +127,20 @@ async function main() {
     //   await new Promise(r => setTimeout(r, 3000));
     // }
 
-    // LinkedIn
+    // LinkedIn (with featured image upload)
     if (liService) {
       try {
-        const liId = await liService.promoteBlogPost(wpPost.title, excerpt, url);
+        // Resolve featured image URL for LinkedIn thumbnail
+        let featuredImgUrl: string | undefined;
+        try {
+          const { data: imgData } = await wpApi.get('/posts/' + entry.postId, { params: { _fields: 'featured_media' } });
+          const mediaId = (imgData as any).featured_media;
+          if (mediaId) {
+            const { data: media } = await wpApi.get('/media/' + mediaId, { params: { _fields: 'source_url' } });
+            featuredImgUrl = (media as any).source_url;
+          }
+        } catch { /* ignore */ }
+        const liId = await liService.promoteBlogPost(wpPost.title, excerpt, url, featuredImgUrl);
         if (liId) {
           console.log(`  ✅ LinkedIn: ${liId}`);
           liSuccess++;
