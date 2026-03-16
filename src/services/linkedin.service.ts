@@ -33,7 +33,8 @@ export class LinkedInService {
           source: utmUrl,
           title,
           description: excerpt.split('.')[0].trim(),
-          ...(imageUrl ? { thumbnail: imageUrl } : {}),
+          // Note: thumbnail requires urn:li:image format (pre-uploaded via Assets API), not a URL.
+          // LinkedIn auto-generates preview from the article source URL instead.
         },
       },
       lifecycleState: 'PUBLISHED',
