@@ -1199,77 +1199,8 @@ async function main(): Promise<void> {
     effectivePublishStatus = config.PUBLISH_STATUS as 'publish' | 'draft';
     logger.info(`\n[Phase B] Niche: "${niche.name}"${fastTrack ? ' [FAST-TRACK]' : ''}`);
 
-    // Calculate scheduled date: niche-specific timing > GA4-driven > config fallback
-    // Fast-track breakout trends bypass scheduling (publish immediately)
-    let scheduledDate: string | undefined;
-    if (fastTrack) {
-      scheduledDate = undefined; // Immediate publish
-      logger.info(`Fast-track: Bypassing scheduling for breakout trend "${researched.analysis.selectedKeyword}"`);
-    } else {
-      const now = new Date();
-      // Use niche-specific timing if no GA4 data, otherwise GA4 takes priority
-      const nicheTiming = CATEGORY_PUBLISH_TIMING[niche.category];
-      const optimalHour = ga4OptimalHour ?? nicheTiming?.optimalHour ?? config.PUBLISH_OPTIMAL_HOUR;
-      const optimalDay = ga4OptimalDay ?? nicheTiming?.bestDays?.[0] ?? null;
-      const timingSource = ga4OptimalHour !== null ? 'GA4' : nicheTiming ? `niche:${niche.category}` : 'config';
-
-      // Build a target date at optimal hour in the configured timezone
-      const tzFormatter = new Intl.DateTimeFormat('en-US', {
-        timeZone: publishTz,
-        year: 'numeric', month: '2-digit', day: '2-digit',
-        hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false,
-      });
-      const tzParts = tzFormatter.formatToParts(now);
-      const getPart = (type: string) => tzParts.find(p => p.type === type)?.value || '0';
-      const tzYear = parseInt(getPart('year'));
-      const tzMonth = parseInt(getPart('month')) - 1;
-      const tzDay = parseInt(getPart('day'));
-      const tzHour = parseInt(getPart('hour'));
-      // Build target date in the configured timezone
-      const targetDate = new Date(now);
-      const tzOffset = now.getTime() - new Date(tzYear, tzMonth, tzDay, tzHour, parseInt(getPart('minute')), parseInt(getPart('second'))).getTime();
-      targetDate.setTime(new Date(tzYear, tzMonth, tzDay, optimalHour, 0, 0).getTime() + tzOffset);
-      // If target time has passed today, schedule for tomorrow
-      if (targetDate.getTime() <= now.getTime()) {
-        targetDate.setDate(targetDate.getDate() + 1);
-      }
-      // If optimal day is detected, shift to the next occurrence of that day
-      if (optimalDay !== null) {
-        const currentDay = targetDate.getDay();
-        const daysUntilOptimal = (optimalDay - currentDay + 7) % 7;
-        if (daysUntilOptimal > 0) {
-          targetDate.setDate(targetDate.getDate() + daysUntilOptimal);
-          logger.debug(`Scheduling shifted to ${dayNames[optimalDay]} (${daysUntilOptimal} day(s) ahead) [${timingSource}]`);
-        }
-      }
-      // Add interval offset per post
-      const scheduleTime = new Date(targetDate.getTime() + gi * publishInterval * 60 * 1000);
-
-      // Prevent same-day same-category publishing to avoid keyword cannibalization
-      const category = niche.category;
-      const scheduleDateStr = scheduleTime.toISOString().slice(0, 10); // YYYY-MM-DD
-      const existingDates = categoryDateMap.get(category) ?? new Set<string>();
-      if (existingDates.has(scheduleDateStr)) {
-        // Shift to the next day at the same hour
-        scheduleTime.setDate(scheduleTime.getDate() + 1);
-        logger.info(`Same-day collision for "${category}" on ${scheduleDateStr}, shifted to ${scheduleTime.toISOString().slice(0, 10)}`);
-      }
-      const finalDateStr = scheduleTime.toISOString().slice(0, 10);
-      existingDates.add(finalDateStr);
-      categoryDateMap.set(category, existingDates);
-
-      scheduledDate = scheduleTime.toISOString();
-      logger.info(`Scheduling "${niche.category}" for: ${scheduleTime.toLocaleString('en-US', { timeZone: publishTz })} (${publishTz}) [${timingSource}]`);
-    }
-
-    // Manual Review Mode: ensure scheduled date is at least 24h out for review window
-    if (manualReviewDelayMs > 0) {
-      const minPublishTime = new Date(Date.now() + manualReviewDelayMs);
-      if (!scheduledDate || new Date(scheduledDate).getTime() < minPublishTime.getTime()) {
-        scheduledDate = minPublishTime.toISOString();
-        logger.info(`Manual Review: auto-publish scheduled for ${minPublishTime.toLocaleString('en-US', { timeZone: publishTz })} (24h review window)`);
-      }
-    }
+    // Immediate publish — no scheduling to avoid future-status posts breaking internal links
+    const scheduledDate: string | undefined = undefined;
 
     try {
       // B-1. Generate images (Gemini)
