@@ -1151,6 +1151,30 @@ export function validateContent(
       warnings.push({ category: 'niche-accuracy', message: 'Spotify Korea described as dominant/leading — Melon remains the #1 domestic streaming platform in Korea (~65% market share). Spotify Korea is growing but secondary for Korean-language music.', severity: 'warning' });
       eeatScore -= 1;
     }
+
+    // 15. TVING-Wavve merger (2025) — should not describe as separate competing platforms
+    if (/TVING/i.test(plainText) && /Wavve/i.test(plainText)) {
+      if (/TVING\s*(?:vs|versus|or|compared\s*to|against)\s*Wavve|Wavve\s*(?:vs|versus|or|compared\s*to|against)\s*TVING/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'TVING and Wavve described as separate competing platforms — they completed a merger in 2025 (TVING absorbed Wavve). Platform integration is still ongoing as of 2026 but they are the same entity. Use "TVING (which merged with Wavve in 2025)" on first reference.', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 16. Sasaeng (사생) content — must not normalize or sensationalize stalking behavior
+    if (/sasaeng|사생|stalking\s*(?:fan|idol)|(?:fan|idol)\s*stalking/i.test(plainText)) {
+      const hasDisapprovalContext = /(?:illegal|harmful|invasion\s*of\s*privacy|violat|unacceptable|problem|danger|concern|condemn|wrong|serious\s*issue|criminal)/i.test(plainText);
+      if (!hasDisapprovalContext) {
+        issues.push({ category: 'niche-accuracy', message: 'Sasaeng (사생) content without clear condemnation — sasaeng behavior is illegal stalking/invasion of privacy. Content MUST explicitly frame it as harmful and unacceptable. Never normalize or sensationalize.', severity: 'error' });
+        eeatScore -= 3;
+      }
+    }
+
+    // 17. Coupang Play — growing K-drama OTT platform, should not be omitted in streaming comparisons
+    if (/(?:streaming|OTT|platform)\s*(?:comparison|ranked|guide|which)/i.test(plainText) &&
+        /Netflix|TVING|Disney\+/i.test(plainText) &&
+        !/Coupang\s*Play/i.test(plainText)) {
+      warnings.push({ category: 'niche-accuracy', message: 'K-drama streaming comparison missing Coupang Play (쿠팡플레이) — Korea\'s fastest-growing OTT platform (backed by Coupang, exclusive originals). Should be included in 2026 K-drama platform comparisons.', severity: 'info' });
+    }
   }
 
   // ── Cross-niche K-Beauty accuracy checks ──
@@ -1191,6 +1215,12 @@ export function validateContent(
       { pattern: /\bIsn ?tree\b/, correct: 'Isntree (lowercase t — official)' },
       { pattern: /\bTirtir\b|\btirtir\b/, correct: 'TIRTIR (all caps — official; Korean: 띠르띠르)' },
       { pattern: /\bNumbuzin\b/, correct: 'Numbuzin (lowercase — official); check if intended No.5 serum' },
+      { pattern: /\bTorriden\b/, correct: 'Torriden (capital T, lowercase rest — official; Korean: 토리든)' },
+      { pattern: /\bBio ?dance\b/, correct: 'Biodance (one word, capital B — official)' },
+      { pattern: /\bD'alba\b|\bd'Alba\b/, correct: "d'Alba (lowercase d, capital A — official; Korean: 달바)" },
+      { pattern: /\bRound ?lab\b/, correct: 'Round Lab (two words, both capitalized — official; Korean: 라운드랩)' },
+      { pattern: /\bMix ?soon\b/, correct: 'Mixsoon (one word, capital M — official; Korean: 믹순)' },
+      { pattern: /\bharuharu\b/, correct: 'Haruharu Wonder (full brand name; Korean: 하루하루원더)' },
     ];
     for (const check of brandNameErrors) {
       if (check.pattern.test(plainText)) {

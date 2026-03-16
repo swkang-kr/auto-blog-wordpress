@@ -637,6 +637,9 @@ export const NICHES: NicheConfig[] = [
       // MEOVV (미오브) — THEBLACKLABEL 걸그룹 (2024 데뷔), YG 계열 but 독립 레이블
       'MEOVV THEBLACKLABEL girl group debut concept explained guide fans 2026',
       'MEOVV songs ranked best tracks for new fans guide 2026',
+      // Coupang Play — 2025-2026 가장 빠르게 성장하는 K-Drama OTT 플랫폼
+      'best K-dramas on Coupang Play 2026 exclusive originals ranked guide',
+      'Coupang Play vs Netflix vs TVING which is best for K-dramas 2026 comparison',
     ],
     contentTypes: ['listicle', 'news-explainer', 'best-x-for-y', 'deep-dive', 'how-to', 'x-vs-y', 'case-study'],
     adSenseRpm: 'medium',
