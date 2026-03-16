@@ -763,6 +763,153 @@ export function validateContent(
   // ── Experience signal validation (max 7 bonus points) ──
   const experienceScore = computeExperienceScore(plainText);
 
+  // ── Niche-specific content accuracy checks ──
+  if (category === 'K-Beauty') {
+    // 1. Sunscreen content MUST explain PA rating system
+    const isSunscreenContent = /sunscreen|spf|sun\s*protection|uv\s*(?:a|b)|sun\s*block/i.test(plainText);
+    if (isSunscreenContent && !/PA\+/i.test(plainText)) {
+      warnings.push({ category: 'niche-accuracy', message: 'K-Beauty sunscreen content missing PA rating explanation (PA+ to PA++++ — core K-Beauty differentiator)', severity: 'warning' });
+      eeatScore -= 2;
+    }
+
+    // 2. Product review/best-x-for-y MUST include pricing or price comparison
+    if (['product-review', 'best-x-for-y'].includes(contentType)) {
+      const hasPricing = /\$\d+|\₩[\d,]+|price|pricing|cost|(?:olive young|amazon|yesstyle)\s*(?:price|cost|\$)/i.test(plainText);
+      if (!hasPricing) {
+        warnings.push({ category: 'niche-accuracy', message: 'K-Beauty product content missing pricing information (Olive Young KRW / Amazon USD comparison expected)', severity: 'warning' });
+        structureScore -= 2;
+      }
+      // Price disclaimer check
+      const hasPriceDisclaimer = /prices?\s*(?:verified|checked|as of)|prices?\s*vary\s*frequently/i.test(plainText);
+      if (hasPricing && !hasPriceDisclaimer) {
+        warnings.push({ category: 'niche-accuracy', message: 'K-Beauty pricing without date/platform disclaimer ("Prices verified as of...")', severity: 'warning' });
+      }
+    }
+
+    // 3. Ingredient content should include concentration % where relevant
+    const ingredientKeywords = /niacinamide|retinol|vitamin\s*c|hyaluronic|salicylic|glycolic|centella|tranexamic|peptide|adenosine|glutathione/i;
+    if (ingredientKeywords.test(plainText) && ['product-review', 'best-x-for-y', 'x-vs-y', 'deep-dive'].includes(contentType)) {
+      const hasConcentration = /\d+(?:\.\d+)?%\s*(?:niacinamide|retinol|vitamin|ascorbic|hyaluronic|salicylic|glycolic|centella|madecassoside|tranexamic|peptide|adenosine)/i.test(plainText);
+      if (!hasConcentration) {
+        warnings.push({ category: 'niche-accuracy', message: 'K-Beauty ingredient content missing concentration % (high-trust signal for ingredient-savvy readers)', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 4. Supplement/ingestible content MUST have safety disclaimer
+    const isSupplementContent = /supplement|collagen\s*drink|oral\s*(?:collagen|glutathione)|ingest|drink|capsule|tablet/i.test(plainText);
+    if (isSupplementContent) {
+      const hasSafetyDisclaimer = /not\s*a?\s*substitute|consult\s*(?:a|your)\s*(?:doctor|healthcare|physician|dermatologist)|medical\s*advice|healthcare\s*provider/i.test(plainText);
+      if (!hasSafetyDisclaimer) {
+        issues.push({ category: 'niche-accuracy', message: 'K-Beauty supplement content MISSING safety disclaimer ("not a substitute for medical advice" / "consult healthcare provider")', severity: 'error' });
+        eeatScore -= 3;
+      }
+    }
+
+    // 5. Snail mucin must NOT be described as fermented
+    if (/snail\s*(?:mucin|secretion|filtrate)/i.test(plainText) && /ferment(?:ed|ation)\s*(?:snail|mucin)/i.test(plainText)) {
+      issues.push({ category: 'niche-accuracy', message: 'Snail Secretion Filtrate incorrectly described as fermented — it is a natural secretion, NOT a fermented ingredient', severity: 'error' });
+      eeatScore -= 2;
+    }
+
+    // 6. Skin type suitability matrix for product reviews
+    if (contentType === 'product-review') {
+      const hasSkinType = /(?:oily|dry|combination|sensitive|acne.prone)\s*skin/i.test(plainText);
+      if (!hasSkinType) {
+        warnings.push({ category: 'niche-accuracy', message: 'K-Beauty product review missing skin type suitability (oily/dry/combination/sensitive/acne-prone)', severity: 'warning' });
+        structureScore -= 1;
+      }
+    }
+  }
+
+  if (category === 'K-Entertainment') {
+    // 1. Group label accuracy checks (common AI errors)
+    const labelErrors: Array<{ pattern: RegExp; correct: string }> = [
+      { pattern: /IVE\b[^.]*\bHYBE\b/i, correct: 'IVE is under Starship Entertainment, NOT HYBE' },
+      { pattern: /aespa\b[^.]*\bHYBE\b/i, correct: 'aespa is under SM Entertainment, NOT HYBE' },
+      { pattern: /BABYMONSTER\b[^.]*\bHYBE\b/i, correct: 'BABYMONSTER is under YG Entertainment, NOT HYBE' },
+      { pattern: /ILLIT\b[^.]*\bADOR\b/i, correct: 'ILLIT is under BELIFT LAB, NOT ADOR' },
+      { pattern: /(?:SHINee|EXO|NCT|WHIPLASH|Red Velvet)\b[^.]*\bHYBE\b/i, correct: 'SM Entertainment groups incorrectly attributed to HYBE' },
+      { pattern: /QWER\b[^.]*\b(?:JYP|SM|HYBE|YG)\b/i, correct: 'QWER is under YGKPLUS (밀리언마켓), NOT a Big 4 label' },
+    ];
+    for (const check of labelErrors) {
+      if (check.pattern.test(plainText)) {
+        issues.push({ category: 'niche-accuracy', message: `Label error: ${check.correct}`, severity: 'error' });
+        eeatScore -= 3;
+      }
+    }
+
+    // 2. Chart terminology: Gaon (deprecated) vs Circle Chart
+    if (/\bGaon\s*Chart\b/i.test(plainText) && !/formerly\s*Gaon|rebranded.*Circle/i.test(plainText)) {
+      warnings.push({ category: 'niche-accuracy', message: 'Uses deprecated "Gaon Chart" — rebranded to Circle Chart in 2023. Use "Circle Chart (formerly Gaon)" on first reference', severity: 'warning' });
+      eeatScore -= 1;
+    }
+
+    // 3. Hanteo vs Circle Chart distinction
+    const citesHanteo = /Hanteo/i.test(plainText);
+    const citesCircle = /Circle\s*Chart/i.test(plainText);
+    if (citesHanteo && citesCircle) {
+      // Good — both cited. Check if they're conflated
+      if (/Hanteo.*Circle.*(?:same|interchangeable|identical)|Circle.*Hanteo.*(?:same|interchangeable|identical)/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'Hanteo and Circle Chart incorrectly described as same/interchangeable — Hanteo tracks physical album sales (real-time), Circle is the comprehensive official chart', severity: 'warning' });
+        eeatScore -= 2;
+      }
+    }
+
+    // 4. BTS military status freshness (2026: all completed)
+    if (/BTS/i.test(plainText)) {
+      const btsMilitaryStale = /BTS\b[^.]*(?:currently\s*serving|still\s*in\s*military|military\s*service\s*(?:is|are)\s*ongoing|awaiting\s*(?:discharge|return))/i.test(plainText);
+      if (btsMilitaryStale) {
+        issues.push({ category: 'niche-accuracy', message: 'BTS military status outdated — all 7 members completed service by mid-2025. Frame as active comeback era in 2026', severity: 'error' });
+        eeatScore -= 3;
+      }
+    }
+
+    // 5. Award terminology: Daesang vs Bonsang
+    if (/daesang|대상/i.test(plainText)) {
+      // Check if Daesang is used too loosely (e.g., for every award)
+      const daesangCount = (plainText.match(/daesang|대상/gi) || []).length;
+      const bonsangCount = (plainText.match(/bonsang|본상/gi) || []).length;
+      if (daesangCount > 3 && bonsangCount === 0) {
+        warnings.push({ category: 'niche-accuracy', message: 'Multiple Daesang references without distinguishing Bonsang — verify award tier accuracy (Daesang = Grand Prize, only 3-5 per show)', severity: 'warning' });
+      }
+    }
+
+    // 6. Album format terminology check
+    if (/mini\s*album|full\s*album|single\s*album|repackage/i.test(plainText)) {
+      // Check for common error: calling a mini album a "full album"
+      if (/(?:EP|4|5|6|7)\s*(?:track|song)s?\s*(?:full|studio)\s*album/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'Possible album format error — EP/4-7 tracks is typically a Mini Album (미니앨범), not a full/studio album', severity: 'warning' });
+      }
+    }
+
+    // 7. Fandom name usage check — should use official fandom name at least once
+    const fandomMap: Record<string, string> = {
+      'BTS': 'ARMY', 'BLACKPINK': 'BLINK', 'TWICE': 'ONCE', 'SEVENTEEN': 'CARAT',
+      'Stray Kids': 'STAY', 'ATEEZ': 'ATINY', 'ENHYPEN': 'ENGENE', 'TXT': 'MOA',
+      'aespa': 'MY', 'IVE': 'DIVE', 'LE SSERAFIM': 'FEARNOT',
+    };
+    for (const [group, fandom] of Object.entries(fandomMap)) {
+      const groupRegex = new RegExp(`\\b${group.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
+      const groupMentions = (plainText.match(groupRegex) || []).length;
+      if (groupMentions >= 5) {
+        const fandomRegex = new RegExp(`\\b${fandom}\\b`, 'i');
+        if (!fandomRegex.test(plainText)) {
+          warnings.push({ category: 'niche-accuracy', message: `${group} mentioned ${groupMentions} times without using official fandom name "${fandom}" — signals unfamiliarity with fan culture`, severity: 'warning' });
+          eeatScore -= 1;
+          break; // Only warn about one group to avoid flooding
+        }
+      }
+    }
+
+    // 8. K-Entertainment E-E-A-T: should cite entertainment sources, NOT financial sources
+    const financeSources = /\b(?:BOK|Bank of Korea|KRX|DART|KOSIS|FSC)\b/i;
+    if (financeSources.test(plainText)) {
+      warnings.push({ category: 'niche-accuracy', message: 'K-Entertainment content cites financial/economic sources (BOK/KRX/DART) — should use entertainment sources (Hanteo, Circle Chart, KOCCA, Melon)', severity: 'warning' });
+      eeatScore -= 2;
+    }
+  }
+
   // Clamp scores to 0
   titleScore = Math.max(0, titleScore);
   excerptScore = Math.max(0, excerptScore);

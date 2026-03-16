@@ -1957,6 +1957,7 @@ async function main(): Promise<void> {
         featuredImageUrl: featuredMediaResult?.sourceUrl,
         featuredImageMediaId: featuredMediaResult?.mediaId,
         affiliateLinkCount: content.affiliateLinksCount || 0,
+        qualityScore: content.qualityScore || undefined,
         ...(seriesId ? { seriesId, seriesPart } : {}),
       });
 

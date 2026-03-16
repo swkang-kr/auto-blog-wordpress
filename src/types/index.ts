@@ -398,6 +398,8 @@ export interface PostHistoryEntry {
   featuredImageUrl?: string;
   /** Featured image WordPress media ID */
   featuredImageMediaId?: number;
+  /** Content quality score from validator (0-100+) */
+  qualityScore?: number;
 }
 
 /** Ranking milestone event for Telegram alerts */

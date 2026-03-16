@@ -1779,6 +1779,16 @@ ${ga4TrackingScript}`;
             '@type': 'Product',
             name: reviewData.productName,
             ...(reviewData.brand ? { brand: { '@type': 'Brand', name: reviewData.brand } } : {}),
+            review: {
+              '@type': 'Review',
+              author: { '@type': 'Person', name: this.siteOwner || 'TrendHunt' },
+              reviewRating: {
+                '@type': 'Rating',
+                ratingValue: reviewData.rating || 8,
+                bestRating: 10,
+                worstRating: 1,
+              },
+            },
           },
           ...(reviewData.rating ? {
             reviewRating: {
@@ -1927,6 +1937,16 @@ ${ga4TrackingScript}`;
               description: item.description,
               ...(item.image ? { image: item.image } : {}),
               ...(item.brand ? { brand: { '@type': 'Brand', name: item.brand } } : {}),
+              review: {
+                '@type': 'Review',
+                author: { '@type': 'Person', name: this.siteOwner || 'TrendHunt' },
+                reviewRating: {
+                  '@type': 'Rating',
+                  ratingValue: item.rating || 8,
+                  bestRating: 10,
+                  worstRating: 1,
+                },
+              },
               ...(item.rating ? {
                 aggregateRating: {
                   '@type': 'AggregateRating',
