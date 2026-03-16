@@ -67,7 +67,7 @@ const envSchema = z.object({
   AUTO_REWRITE_MIN_AGE_DAYS: z.coerce.number().int().min(7).default(30),
   // Pinterest - optional, enables auto-pinning for visual categories (Travel, Food, Beauty)
   PINTEREST_ACCESS_TOKEN: z.string().default(''),
-  // Newsletter form URL (Mailchimp/ConvertKit/Substack) - optional, enables in-content email CTA
+  // Newsletter form URL (Mailchimp/ConvertKit) - optional, enables in-content email CTA
   NEWSLETTER_FORM_URL: z.string().default(''),
   // Affiliate settings - optional JSON mapping of category to affiliate program URLs
   AFFILIATE_MAP: z.string().default(''),
