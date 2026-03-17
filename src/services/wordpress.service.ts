@@ -1170,6 +1170,8 @@ ${rows}
         // 4th gen groups
         'aespa', 'NewJeans', 'LE SSERAFIM', 'BABYMONSTER', 'ILLIT', 'KISS OF LIFE', 'TWS',
         'ATEEZ', 'TXT', 'ENHYPEN', 'IVE', 'Kep1er',
+        'NMIXX', 'ITZY', 'xikers', 'VCHA', 'n.SSign',
+        'RIIZE', 'BOYNEXTDOOR', 'ZeroBaseOne', 'QWER', 'PLAVE', 'WHIPLASH', 'KATSEYE',
         // International
         'XG',
         // K-Hip-Hop / K-R&B artists (non-idol K-Music)

@@ -616,6 +616,36 @@ export const NICHES: NicheConfig[] = [
       'are Korean beauty products safe ingredients tested guide for beginners 2026',
       // INCI 성분 교육 — 전문성 차별화
       'how to read Korean skincare ingredient list INCI label explained guide 2026',
+      // ── 전문가 감사 추가 (2026-03-17 batch 5): 누락된 핵심 세그먼트 보완 ──
+      // Lip Oil / Lip Serum — 2025-2026 K-Beauty 최대 성장 메이크업 카테고리 (TikTok 바이럴)
+      'best Korean lip oil for hydration glass lips ranked 2026 guide',
+      'Korean lip serum vs lip oil vs lip balm which is better comparison guide 2026',
+      'best Korean lip tint with skincare benefits hydrating formula ranked 2026',
+      'rom&nd vs Peripera vs FWEE lip oil comparison which Korean brand is best 2026',
+      // Cica balm / Cica pad / Cica stick — 시카 제형 다양화 (밤·패드·스틱)
+      'best Korean cica balm for irritated skin barrier repair ranked 2026',
+      'Korean cica pad vs cica cream which format works better for sensitive skin 2026',
+      'best Korean cica stick for spot treatment redness on the go 2026 guide',
+      // Refillable / 리필 패키지 — ESG + 비용 절감 트렌드, 이니스프리·라네즈 리더
+      'Korean skincare refillable packaging brands eco-friendly sustainable guide 2026',
+      'best Korean refill skincare products save money reduce waste ranked 2026',
+      'Innisfree vs Laneige refillable packaging which brand is more sustainable 2026',
+      // J-Beauty vs K-Beauty — 비교 검색량 높음 (Hada Labo, Biore, Shiseido 등)
+      'Korean skincare vs Japanese skincare which is better key differences explained 2026',
+      'K-Beauty vs J-Beauty sunscreen comparison Korean SPF vs Japanese SPF 2026',
+      'Hada Labo vs Korean hyaluronic acid toner which is better comparison 2026',
+      'Biore UV vs Korean sunscreen which has better protection no white cast 2026',
+      'Shiseido vs Sulwhasoo luxury Asian skincare comparison which to buy 2026',
+      // C-Beauty vs K-Beauty — 영어권 검색 증가 (Florasis, Zeesea 등)
+      'K-Beauty vs C-Beauty Chinese skincare comparison what is the difference 2026',
+      'Florasis makeup vs Korean makeup brands comparison which is better guide 2026',
+      // Olive Young 온라인 전용 / 글로벌 앱 독점 — 해외 구매자 핵심 정보
+      'Olive Young online exclusive products you cannot buy in store guide 2026',
+      'Olive Young Global app exclusive discounts how to save international buyers 2026',
+      // Azelaic acid 확장 — 로사시아+여드름+색소 겸용 성분, K-Beauty 공식 진입
+      'azelaic acid Korean skincare products complete guide benefits how to use 2026',
+      'best Korean azelaic acid serum cream for dark spots hyperpigmentation 2026',
+      'azelaic acid vs tranexamic acid Korean skincare which is better for dark spots 2026',
       // Case Study / Deep-Dive 비율 보강 — 현재 ~5% → 목표 15%
       'how COSRX became number one K-beauty brand on Amazon L\'Oreal acquisition story 2026',
       'how Anua heartleaf toner went viral TikTok Korean skincare brand growth story 2026',
@@ -776,6 +806,46 @@ export const NICHES: NicheConfig[] = [
       // izna (이즈나) — Produce 101 시즌 2 계보 서바이벌 출신 걸그룹
       'izna K-pop girl group debut story concept explained fans guide',
       'izna best songs ranked guide for new fans 2026',
+      // ── 전문가 감사 추가 (2026-03-17 batch 5): 누락 그룹 + 키워드 보완 ──
+      // NMIXX (엔믹스) — JYP Entertainment 4세대 대표 걸그룹 (2022 데뷔), MIXXPOP 장르 창시, 전문가 감사에서 완전 누락 발견
+      'NMIXX JYP girl group songs ranked MIXXPOP concept explained guide 2026',
+      'NMIXX members profile guide for new fans 2026',
+      'NMIXX comeback 2026 album review concept explained fans guide',
+      'NMIXX MIXXPOP genre explained what is it vs regular K-pop difference guide',
+      'NMIXX vs aespa vs IVE vs NewJeans 4th gen girl group comparison guide 2026',
+      // xikers (싸이커스) — KQ Entertainment (ATEEZ 후배), 해외 팬덤 급성장 2025-2026
+      'xikers KQ Entertainment debut story concept explained guide new fans 2026',
+      'xikers songs ranked best tracks for new fans guide 2026',
+      'xikers vs ATEEZ KQ Entertainment how two boy groups differ comparison guide',
+      // VCHA (비차) — JYP x Republic Records 글로벌 걸그룹, A2K 서바이벌 출신
+      'VCHA JYP global girl group debut story A2K survival show explained guide',
+      'VCHA songs ranked best tracks for new fans guide 2026',
+      'VCHA vs KATSEYE global K-pop girl groups compared 2026 guide',
+      // n.SSign (엔싸인) — n.CH Entertainment, Boys Be Brave 서바이벌 출신
+      'n.SSign debut story Boys Be Brave survival show explained guide new fans',
+      'n.SSign songs ranked best tracks for new fans guide 2026',
+      // BL 드라마 (Boys Love) — 2024-2025 한국 BL 드라마 시장 급성장, 글로벌 팬덤 폭발
+      'best Korean BL dramas ranked must watch boys love series 2026 guide',
+      'Korean BL drama vs Thai BL drama which to watch comparison guide 2026',
+      'Korean BL drama where to watch streaming platforms international guide 2026',
+      'best Korean BL drama actors rising stars ranked 2026 guide',
+      // K-웹드라마 — YouTube/TikTok 기반 웹드라마 (Playlist Global, 틱톡 숏폼 드라마)
+      'best Korean web dramas YouTube 2026 short episodes must watch ranked',
+      'Korean web drama vs TV drama differences explained which to watch guide',
+      'best Korean short form drama TikTok YouTube Playlist Global ranked 2026',
+      // 팬 투어 / 성지순례 — K-pop agency tour, 아이돌 맛집·카페, 촬영지
+      'K-pop agency tour Seoul HYBE Insight SM Artium JYP complete guide 2026',
+      'K-pop idol favorite restaurants cafes Seoul pilgrimage guide fans 2026',
+      'K-drama filming locations tour Seoul Jeju how to visit guide 2026',
+      'Hallyu pilgrimage Seoul complete fan tour guide K-pop K-drama spots 2026',
+      // 포카 그레이딩 / 수집가용 — PSA grading, mint condition, trading tips
+      'K-pop photocard grading guide PSA condition how to grade value 2026',
+      'K-pop photocard price guide most expensive rare cards how to value 2026',
+      'how to sell K-pop photocards safely online best platforms trading guide 2026',
+      // Weverse DM vs Bubble 실사용 비교 — 비용, 빈도, 콘텐츠 질
+      'Weverse DM vs Bubble detailed comparison which K-pop subscription is worth it 2026',
+      'Bubble app for K-pop fans cost content frequency honest review guide 2026',
+      'is Weverse premium membership worth it what you get honest review 2026',
       // Baeksang Arts Awards — 한국 최고권위 시상식, 고트래픽 이벤트 (5월)
       'Baeksang Arts Awards 2026 predictions winners K-drama film guide',
       'Baeksang Arts Awards 2026 nominees K-drama best actress actor',

@@ -45,6 +45,8 @@ const NICHE_SUBTOPICS: Record<string, Record<string, string[]>> = {
       'glutathione', 'tranexamic acid', 'bakuchiol', 'polyglutamic acid', 'pga', 'adenosine',
       'mugwort', 'artemisia', 'mushroom', 'tremella', 'bio-cellulose', 'microbiome', 'probiotic',
       'postbiotic', 'galactomyces', 'bifida', 'saccharomyces',
+      // 5차 감사 추가: 누락 성분
+      'azelaic acid', 'azelaic', 'retinal', 'retinaldehyde', 'exosome', 'pdrn', 'salmon dna',
     ],
     'Brands & Products': [
       // Established brands
@@ -58,7 +60,11 @@ const NICHE_SUBTOPICS: Record<string, Record<string, string[]>> = {
       'brand', 'product', 'olive young', 'review',
     ],
     'Toner Pads & Exfoliation': ['toner pad', 'exfoliating pad', 'cotton pad', 'gauze pad', 'exfoliation', 'aha pad', 'bha pad', 'pore', 'texture'],
-    'K-Beauty Makeup': ['makeup', 'foundation', 'cushion', 'tint', 'lip', 'blush', 'contour', 'eyeshadow', 'mascara', 'rom&nd', 'clio', 'peripera', 'wakemake', 'eyeliner', 'bb cream', 'cc cream'],
+    'K-Beauty Makeup': ['makeup', 'foundation', 'cushion', 'tint', 'lip', 'lip oil', 'lip serum', 'blush', 'contour', 'eyeshadow', 'mascara', 'rom&nd', 'clio', 'peripera', 'wakemake', 'eyeliner', 'bb cream', 'cc cream'],
+    'Lip Care & Lip Oil': ['lip oil', 'lip serum', 'lip balm', 'lip mask', 'lip tint', 'lip combo', 'glass lips', 'lip treatment', 'lip plump'],
+    'Cica & Barrier Repair': ['cica', 'cica balm', 'cica pad', 'cica stick', 'barrier repair', 'barrier cream', 'centella balm', 'sensitive repair'],
+    'Sustainable K-Beauty': ['refill', 'refillable', 'sustainable', 'eco-friendly', 'clean beauty', 'vegan', 'green packaging'],
+    'J-Beauty vs K-Beauty': ['j-beauty', 'japanese skincare', 'hada labo', 'biore', 'shiseido', 'k-beauty vs j-beauty', 'korean vs japanese'],
     'Hair & Scalp Care': ['shampoo', 'hair loss', 'scalp', 'hair care', 'conditioner', 'hair mask', 'thinning', 'daeng gi meo ri', 'ryo', 'hair serum'],
     'Men\'s K-Beauty': ['men', 'male', 'men\'s skincare', 'men\'s grooming', 'men\'s moisturizer', 'men\'s sunscreen', 'gender neutral'],
     'Inclusive Beauty': ['dark skin', 'deeper skin', 'melanin', 'dark tones', 'hyperpigmentation skin tone', 'no white cast dark', 'dark complexion'],
@@ -76,10 +82,15 @@ const NICHE_SUBTOPICS: Record<string, Record<string, string[]>> = {
       // 4th gen newer debuts (2023-2025)
       'riize', 'boynextdoor', 'zerobaseone', 'zb1', '8turn', 'unis', 'izna', 'nct wish', 'katseye', 'whiplash', 'qwer',
       'plave', 'g-dragon', 'gdragon',
+      // 5차 감사 추가: 누락 그룹
+      'nmixx', 'xikers', 'vcha', 'n.ssign', 'itzy',
       // General
       'kpop', 'k-pop', 'idol', 'comeback', 'album', 'concert', 'music', 'mv', 'music video',
     ],
-    'K-Drama': ['kdrama', 'k-drama', 'drama', 'netflix', 'disney plus', 'series', 'actor', 'actress', 'ratings', 'ost', 'ending explained', 'where to watch', 'streaming'],
+    'K-Drama': ['kdrama', 'k-drama', 'drama', 'netflix', 'disney plus', 'series', 'actor', 'actress', 'ratings', 'ost', 'ending explained', 'where to watch', 'streaming', 'bl drama', 'boys love', 'web drama', 'short drama', 'coupang play', 'tving'],
+    'BL Drama': ['bl', 'boys love', 'bl drama', 'korean bl', 'bl series', 'bl actor'],
+    'Web Drama & Short Form': ['web drama', 'short drama', 'youtube drama', 'playlist global', 'tiktok drama', 'short form'],
+    'Fan Tours & Pilgrimages': ['fan tour', 'pilgrimage', 'filming location', 'hybe insight', 'agency tour', 'idol cafe', 'idol restaurant', 'hallyu tour'],
     'Fan Culture & Community': [
       'fan', 'fandom', 'stan', 'bias', 'ult', 'fansite', 'merch', 'fan meet', 'sasaeng', 'fan war',
       // Fan platforms (2025-2026 핵심) — NOTE: V Live(VLIVE) 2023년 12월 서비스 종료 → Weverse 통합. 역사적 참조용으로만 유지.
@@ -138,6 +149,14 @@ const NICHE_TOPICAL_MAP: Record<string, string[]> = {
     'Korean galactomyces essence review ranked',
     'Korean nail art gel sticker manicure guide',
     'Korean nail art ohora Dashing Diva ranked',
+    // 5차 감사 추가: 누락 세그먼트
+    'Korean lip oil serum ranked best 2026',
+    'Korean cica balm pad stick barrier repair',
+    'Korean refillable skincare sustainable packaging',
+    'K-Beauty vs J-Beauty comparison guide',
+    'K-Beauty vs C-Beauty Chinese skincare comparison',
+    'Korean azelaic acid products rosacea guide',
+    'Olive Young Global exclusive discounts guide',
   ],
   'k-entertainment': [
     // K-Pop fan content
@@ -177,6 +196,16 @@ const NICHE_TOPICAL_MAP: Record<string, string[]> = {
     'best Korean legal courtroom dramas ranked',
     'K-pop group lore universe explained comparison',
     'K-drama OST playlist Spotify Apple Music',
+    // 5차 감사 추가: 누락 그룹 + 세그먼트
+    'NMIXX JYP MIXXPOP songs ranked guide',
+    'xikers KQ Entertainment songs ranked guide',
+    'VCHA JYP global girl group debut guide',
+    'best Korean BL dramas ranked guide',
+    'Korean web drama YouTube short form guide',
+    'K-pop agency tour Seoul HYBE Insight guide',
+    'K-pop fan pilgrimage Seoul locations guide',
+    'K-pop photocard grading value PSA guide',
+    'Weverse DM vs Bubble detailed comparison',
   ],
 };
 

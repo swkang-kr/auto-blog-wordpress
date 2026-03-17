@@ -992,6 +992,28 @@ export function validateContent(
       }
     }
 
+    // 12g-2. Azelaic acid — prescription vs OTC distinction, common AI confusion
+    if (/azelaic\s*acid/i.test(plainText) && ['product-review', 'best-x-for-y', 'how-to', 'deep-dive'].includes(contentType)) {
+      // Check for claiming azelaic acid is prescription-only (it's available OTC at lower concentrations)
+      if (/azelaic\s*acid\b[^.]*\bprescription[- ]only/i.test(plainText) && !/(?:10|15|20)%\s*(?:is|are)\s*prescription/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'Azelaic acid described as prescription-only — azelaic acid 10% is available OTC (e.g., The Ordinary). Higher concentrations (15-20%) like Finacea/Skinoren are prescription. Clarify concentration-dependent availability.', severity: 'warning' });
+        eeatScore -= 1;
+      }
+      // Check that content specifies what azelaic acid treats
+      const hasBenefitContext = /(?:rosacea|acne|hyperpigmentation|dark\s*spot|melasma|inflammation|brightening|anti-?bacterial)/i.test(plainText);
+      if (!hasBenefitContext) {
+        warnings.push({ category: 'niche-accuracy', message: 'Azelaic acid content missing key benefit context — azelaic acid is effective for rosacea, acne, and hyperpigmentation. Specify which condition(s) it addresses.', severity: 'info' });
+      }
+    }
+
+    // 12g-3. Retinoid hierarchy — retinal (retinaldehyde) is NOT the same as retinoic acid (tretinoin/prescription)
+    if (/retinal(?:dehyde)?\b/i.test(plainText) && /retinoic\s*acid|tretinoin/i.test(plainText)) {
+      if (/retinal(?:dehyde)?\s*(?:is|=|also\s*(?:called|known))\s*(?:retinoic\s*acid|tretinoin)/i.test(plainText)) {
+        issues.push({ category: 'niche-accuracy', message: 'Retinal (retinaldehyde) conflated with retinoic acid (tretinoin) — the retinoid hierarchy is: retinol → retinal (retinaldehyde) → retinoic acid (tretinoin/prescription). Retinal is one step before retinoic acid, making it OTC but stronger than retinol.', severity: 'error' });
+        eeatScore -= 3;
+      }
+    }
+
     // 12h. Barrier repair content should mention ceramide:cholesterol:fatty acid ratio
     if (/barrier\s*(?:repair|recovery|restore|damage)/i.test(plainText) && ['product-review', 'best-x-for-y', 'how-to', 'deep-dive'].includes(contentType)) {
       const hasCeramideRatio = /(?:ceramide|cholesterol|fatty\s*acid).*(?:ratio|1:1:1|3:1:1|proportion)/i.test(plainText) ||
@@ -1127,6 +1149,10 @@ export function validateContent(
       { pattern: /PLAVE\b[^.]*\b(?:SM|HYBE|JYP|YG)\b/i, correct: 'PLAVE is under VLAST (블라스트), NOT a Big 4 label' },
       { pattern: /TWS\b[^.]*\b(?:SM|JYP|YG)\b/i, correct: 'TWS is under PLEDIS Entertainment (a HYBE sublabel), NOT SM/JYP/YG' },
       { pattern: /ZeroBaseOne\b[^.]*\b(?:SM|HYBE|JYP|YG)\b/i, correct: 'ZeroBaseOne (ZB1) is under WAKEONE Entertainment, NOT a Big 4 label' },
+      { pattern: /NMIXX\b[^.]*\b(?:SM|HYBE|YG)\b/i, correct: 'NMIXX is under JYP Entertainment, NOT SM/HYBE/YG' },
+      { pattern: /xikers\b[^.]*\b(?:SM|HYBE|JYP|YG)\b/i, correct: 'xikers is under KQ Entertainment (ATEEZ\'s label), NOT a Big 4 label' },
+      { pattern: /VCHA\b[^.]*\b(?:SM|HYBE|YG)\b/i, correct: 'VCHA is a JYP x Republic Records global girl group, NOT SM/HYBE/YG' },
+      { pattern: /n\.SSign\b[^.]*\b(?:SM|HYBE|JYP|YG)\b/i, correct: 'n.SSign is under n.CH Entertainment, NOT a Big 4 label' },
     ];
     for (const check of labelErrors) {
       if (check.pattern.test(plainText)) {
@@ -1201,7 +1227,8 @@ export function validateContent(
       'ILLIT': 'GLLIT', 'KISS OF LIFE': 'KISSY',
       'tripleS': 'LOVElution', 'WHIPLASH': 'WHIPPERS',
       'NCT WISH': 'WISHING', 'KATSEYE': 'EMBERS',
-      'ITZY': 'MIDZY', 'NMIXX': 'NSWer',
+      'ITZY': 'MIDZY', 'NMIXX': 'NSWer', 'xikers': 'ROADYKES',
+      'VCHA': 'VCHINGU',
     };
     for (const [group, fandom] of Object.entries(fandomMap)) {
       const groupRegex = new RegExp(`\\b${group.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
@@ -1309,6 +1336,37 @@ export function validateContent(
         /Netflix|TVING|Disney\+/i.test(plainText) &&
         !/Coupang\s*Play/i.test(plainText)) {
       warnings.push({ category: 'niche-accuracy', message: 'K-drama streaming comparison missing Coupang Play (쿠팡플레이) — Korea\'s fastest-growing OTT platform (backed by Coupang, exclusive originals). Should be included in 2026 K-drama platform comparisons.', severity: 'info' });
+    }
+
+    // 19. aespa MY (ai) members — ae-Karina, ae-Winter, ae-Giselle, ae-Ningning are VIRTUAL AI counterparts, NOT real members
+    if (/aespa/i.test(plainText)) {
+      // Check for treating MY/ae- members as real physical members
+      if (/ae-(?:Karina|Winter|Giselle|Ningning)\b[^.]*\b(?:perform|danc|sing|appear|attend|interview|variety\s*show)/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'aespa ae- members (ae-Karina, ae-Winter, ae-Giselle, ae-Ningning) are virtual AI counterparts in the KWANGYA universe — they do NOT physically perform, attend events, or give interviews. Only the 4 real members do.', severity: 'warning' });
+        eeatScore -= 2;
+      }
+      // Check for listing ae- members as if counting to 8 members total
+      if (/aespa\b[^.]*\b(?:8|eight)\s*member/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'aespa has 4 real members (Karina, Winter, Giselle, Ningning) + 4 virtual ae- counterparts. They are a 4-member group, NOT 8 members.', severity: 'error' });
+        eeatScore -= 3;
+      }
+    }
+
+    // 20. NMIXX MIXXPOP genre — should not be described as standard K-pop when discussing their concept
+    if (/NMIXX/i.test(plainText)) {
+      if (/NMIXX\b[^.]*\b(?:6|six)\s*member/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'NMIXX has 7 members (Lily, Haewon, Sullyoon, Jinni departed, Bae, Jiwoo, Kyujin) — verify current member count. Jinni departed in Dec 2022, leaving 6 active members as of 2026.', severity: 'info' });
+      }
+    }
+
+    // 21. Produce series / I-LAND season confusion — common AI error mixing up survival show seasons
+    if (/Produce\s*101/i.test(plainText)) {
+      // Check for confusion between Produce 101 seasons and groups
+      if (/Produce\s*101\b[^.]*\bI\.?O\.?I\b[^.]*\bseason\s*2/i.test(plainText) ||
+          /Produce\s*101\s*Season\s*2\b[^.]*\bI\.?O\.?I/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'Produce 101 season confusion — I.O.I debuted from Season 1 (2016), Wanna One from Season 2 (2017), IZ*ONE from Season 3/Produce 48 (2018), X1 from Season 4/Produce X 101 (2019).', severity: 'warning' });
+        eeatScore -= 2;
+      }
     }
   }
 
