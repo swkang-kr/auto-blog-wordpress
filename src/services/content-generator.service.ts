@@ -6,7 +6,7 @@ import { validateContent, autoFixContent, logContentScore } from '../utils/conte
 import { costTracker } from '../utils/cost-tracker.js';
 import { circuitBreakers } from '../utils/retry.js';
 import type { ResearchedKeyword, BlogContent, ExistingPost, AuthorProfile } from '../types/index.js';
-import { NICHE_AUTHOR_PERSONAS, CONTENT_TYPE_PERSONA_MAP, KBEAUTY_TERTIARY_KEYWORDS } from '../types/index.js';
+import { NICHE_AUTHOR_PERSONAS, CONTENT_TYPE_PERSONA_MAP, KBEAUTY_TERTIARY_KEYWORDS, KENTERTAINMENT_TERTIARY_KEYWORDS } from '../types/index.js';
 
 /** Layout variant for content structure diversification (anti-AI detection) */
 type LayoutVariant = 'standard' | 'narrative' | 'compact' | 'journal' | 'opinion' | 'interview';
@@ -800,7 +800,8 @@ export class ContentGeneratorService {
         kw.includes('streaming') || kw.includes('watch') || kw.includes('actor') ||
         kw.includes('actress') || kw.includes('manhwa') ||
         kw.includes('movie') || kw.includes('film') || kw.includes('cinema') ||
-        kw.includes('musical') || kw.includes('cannes') || kw.includes('biff');
+        kw.includes('musical') || kw.includes('cannes') || kw.includes('biff') ||
+        KENTERTAINMENT_TERTIARY_KEYWORDS.test(keyword);
       if (isDramaFilmContent) {
         return personas[2]; // Sora Lee — K-Drama & Korean Cinema Critic (also covers musicals & films)
       }

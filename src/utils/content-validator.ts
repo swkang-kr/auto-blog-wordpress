@@ -1071,6 +1071,14 @@ export function validateContent(
       }
     }
 
+    // 12k-4. Chicor/Sikmul cited as authoritative trend sources — they are retail/content platforms, NOT research sources
+    if (/\b(?:Chicor|시코르|Sikmul|식물나라|Sikmulnara)\b/i.test(plainText)) {
+      if (/(?:according\s*to|research\s*(?:by|from)|studies?\s*(?:by|from)|data\s*(?:by|from))\s*(?:Chicor|시코르|Sikmul|식물나라)/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'Chicor (시코르, CJ Olive Young\'s premium retail) or Sikmul (식물나라) cited as research/data source — they are retail/content platforms. Use MFDS, KCA, or peer-reviewed dermatology journals for authoritative claims.', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
     // 12. "Hypoallergenic" as unregulated marketing term
     if (/hypoallergenic/i.test(plainText)) {
       const hasDisclaimer = /no\s*(?:legal|regulatory|standard)\s*definition|marketing\s*term|not\s*(?:regulated|standardized)|does\s*not\s*guarantee/i.test(plainText);
@@ -1252,6 +1260,10 @@ export function validateContent(
       'NCT WISH': 'WISHING', 'KATSEYE': 'EMBERS',
       'ITZY': 'MIDZY', 'NMIXX': 'NSWer', 'xikers': 'ROADYKES',
       'VCHA': 'VCHINGU', 'Dreamcatcher': 'InSomnia', 'fromis_9': 'flover',
+      // 7차 감사 추가: 레거시 그룹 팬덤명
+      '(G)I-DLE': 'Neverland', 'EXO': 'EXO-L', 'SHINee': 'Shawol',
+      'MAMAMOO': 'MooMoo', 'Red Velvet': 'ReVeluv', 'GOT7': 'IGOT7',
+      'NCT': 'NCTzen',
     };
     for (const [group, fandom] of Object.entries(fandomMap)) {
       const groupRegex = new RegExp(`\\b${group.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');

@@ -226,6 +226,12 @@ const NICHE_TOPICAL_MAP: Record<string, string[]> = {
     'fromis_9 PLEDIS songs ranked guide',
     'Dreamcatcher rock metal K-pop guide',
     'Kep1er members after disbandment guide',
+    // 7차 감사 추가
+    '(G)I-DLE Soyeon self-producing discography guide',
+    '(G)I-DLE best songs ranked guide new fans',
+    'Blue Dragon Film Awards Korean cinema predictions',
+    'Grand Bell Awards Korean film winners guide',
+    'Korean film awards comparison Blue Dragon Baeksang Grand Bell',
   ],
 };
 

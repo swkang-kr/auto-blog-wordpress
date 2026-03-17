@@ -50,6 +50,10 @@ export const KOREAN_SEASONAL_EVENTS: Array<{
   { name: 'K-pop Spring Comeback Season', startMonth: 2, startDay: 1, endMonth: 4, endDay: 30, leadTimeDays: 60, relevantNiches: ['K-Entertainment'], contentAngles: ['spring comeback preview K-pop 2026', 'best K-pop comebacks spring ranked', 'new K-pop releases to watch'] },
   { name: 'K-pop Summer Comeback Season', startMonth: 6, startDay: 1, endMonth: 8, endDay: 31, leadTimeDays: 60, relevantNiches: ['K-Entertainment'], contentAngles: ['summer comeback season K-pop 2026', 'best K-pop summer releases ranked', 'K-pop festival season guide'] },
   { name: 'BIFF (Busan Film Festival)', startMonth: 10, startDay: 1, endMonth: 10, endDay: 12, leadTimeDays: 45, relevantNiches: ['K-Entertainment'], contentAngles: ['BIFF highlights', 'Korean cinema spotlight', 'best Korean films at BIFF'] },
+  // 청룡영화상 (Blue Dragon Film Awards) — 한국 3대 영화 시상식, 매년 11월 말~12월 초
+  { name: 'Blue Dragon Film Awards (청룡영화상)', startMonth: 11, startDay: 20, endMonth: 12, endDay: 5, leadTimeDays: 45, relevantNiches: ['K-Entertainment'], contentAngles: ['Blue Dragon Film Awards predictions best Korean film 2026', 'Blue Dragon Awards nominees best actress actor guide', 'Blue Dragon vs Baeksang vs Grand Bell Korean film awards comparison', 'how to watch Blue Dragon Film Awards 2026 international fans'] },
+  // 대종상 (Grand Bell Awards) — 한국 최초 영화 시상식 (1962년 창설), 매년 10-11월
+  { name: 'Grand Bell Awards (대종상)', startMonth: 10, startDay: 15, endMonth: 11, endDay: 15, leadTimeDays: 45, relevantNiches: ['K-Entertainment'], contentAngles: ['Grand Bell Awards Korean film nominations 2026 guide', 'Grand Bell Awards history oldest Korean film award explained', 'best Korean films Grand Bell Awards winners ranked'] },
   { name: 'Baeksang Arts Awards (TV)', startMonth: 4, startDay: 20, endMonth: 5, endDay: 10, leadTimeDays: 45, relevantNiches: ['K-Entertainment'], contentAngles: ['Baeksang Arts Awards TV category predictions 2026 K-drama', 'best K-drama nominees Baeksang 2026 guide', 'Baeksang best actress actor winner predictions K-drama 2026', 'how to watch Baeksang 2026 international fans'] },
   { name: 'Baeksang Arts Awards (Film)', startMonth: 4, startDay: 20, endMonth: 5, endDay: 10, leadTimeDays: 45, relevantNiches: ['K-Entertainment'], contentAngles: ['Baeksang Arts Awards film category predictions 2026 Korean movies', 'best Korean film nominees Baeksang 2026 guide', 'Baeksang best director film predictions 2026', 'Korean film awards Baeksang vs Blue Dragon vs Grand Bell comparison guide'] },
   // Amazon Prime Day — K-Beauty 국제 딜 폭발 시점 (7월 중순, 2일간)
@@ -189,6 +193,9 @@ export const CONTENT_TYPE_PERSONA_MAP: Record<string, 'primary' | 'secondary' | 
 
 /** Niche-specific persona override: when keyword matches these patterns, force tertiary (Ella Park for K-Beauty makeup/hair) */
 export const KBEAUTY_TERTIARY_KEYWORDS = /\b(?:makeup|mascara|eyeliner|eyeshadow|foundation|cushion|lip\s*tint|blush|contour|hair\s*(?:loss|care|shampoo|dye)|scalp|wig|nail\s*(?:art|gel|sticker|polish)|press[- ]on\s*nail|manicure)\b/i;
+
+/** K-Entertainment tertiary persona override: force Sora Lee (cinema/film persona) for film/cinema keywords */
+export const KENTERTAINMENT_TERTIARY_KEYWORDS = /\b(?:korean\s*(?:film|movie|cinema)|blue\s*dragon|cheongryong|grand\s*bell|daejong|busan\s*film|biff|cannes|venice|oscar|director|cinematograph|screenplay|box\s*office|film\s*festival|korean\s*horror\s*film|noir|thriller\s*film)\b/i;
 
 /** 니치 설정 */
 export interface NicheConfig {

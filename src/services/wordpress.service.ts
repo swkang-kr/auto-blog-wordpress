@@ -1177,7 +1177,7 @@ ${rows}
         'ATEEZ', 'TXT', 'ENHYPEN', 'IVE', 'Kep1er',
         'NMIXX', 'ITZY', 'xikers', 'VCHA', 'n.SSign',
         'RIIZE', 'BOYNEXTDOOR', 'ZeroBaseOne', 'QWER', 'PLAVE', 'WHIPLASH', 'KATSEYE',
-        'fromis_9', 'Dreamcatcher',
+        'fromis_9', 'Dreamcatcher', '(G)I-DLE',
         // International
         'XG',
         // K-Hip-Hop / K-R&B / K-Ballad / Trot artists (non-idol K-Music)
@@ -1361,6 +1361,8 @@ ${ga4TrackingScript}`;
       // Nail art brands
       'ohora': 'https://www.amazon.com/s?k=ohora+gel+nail&tag=trendhunt2007-20',
       'Dashing Diva': 'https://www.amazon.com/s?k=Dashing+Diva+nail&tag=trendhunt2007-20',
+      // 7차 감사: Stylevana 어필리에이트 추가
+      'Stylevana': 'https://www.amazon.com/s?k=korean+skincare+best+seller&tag=trendhunt2007-20',
     },
     'K-Entertainment': {
       'BTS': 'https://www.amazon.com/s?k=BTS+album&tag=trendhunt2007-20',
@@ -1376,6 +1378,15 @@ ${ga4TrackingScript}`;
       'DEAN': 'https://www.amazon.com/s?k=DEAN+krnb&tag=trendhunt2007-20',
       // OST / Soundtrack
       'K-drama OST': 'https://www.amazon.com/s?k=korean+drama+ost&tag=trendhunt2007-20',
+      // 7차 감사: 주요 4세대 그룹 개별 어필리에이트 링크 추가
+      'ENHYPEN': 'https://www.amazon.com/s?k=ENHYPEN+album&tag=trendhunt2007-20',
+      'TXT': 'https://www.amazon.com/s?k=TXT+kpop+album&tag=trendhunt2007-20',
+      'LE SSERAFIM': 'https://www.amazon.com/s?k=LE+SSERAFIM+album&tag=trendhunt2007-20',
+      'ATEEZ': 'https://www.amazon.com/s?k=ATEEZ+album&tag=trendhunt2007-20',
+      'IVE': 'https://www.amazon.com/s?k=IVE+kpop+album&tag=trendhunt2007-20',
+      'TWICE': 'https://www.amazon.com/s?k=TWICE+album&tag=trendhunt2007-20',
+      'ITZY': 'https://www.amazon.com/s?k=ITZY+album&tag=trendhunt2007-20',
+      '(G)I-DLE': 'https://www.amazon.com/s?k=G+I-DLE+album&tag=trendhunt2007-20',
     },
   };
 
