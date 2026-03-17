@@ -2892,9 +2892,11 @@ ${ga4TrackingScript}`;
       }
     }
 
+    // Sort by position ascending so reverse-order iteration processes highest positions first
+    insertPoints.sort((a, b) => a.pos - b.pos);
     const finalInserts = insertPoints.slice(0, maxAds);
 
-    // Insert in reverse order to preserve positions
+    // Insert in reverse position order to preserve earlier positions
     let result = html;
     for (let i = finalInserts.length - 1; i >= 0; i--) {
       const { pos, type, format } = finalInserts[i];
