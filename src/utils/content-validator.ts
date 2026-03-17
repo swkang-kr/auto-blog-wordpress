@@ -1512,6 +1512,23 @@ export function validateContent(
         eeatScore -= 3;
       }
     }
+    // 25. DAY6 band vs idol terminology — DAY6 is a BAND, not an idol group
+    if (/DAY6/i.test(plainText)) {
+      const idolTermsInDAY6Context = /DAY6\b[^.]{0,80}\b(?:comeback|bias|stan|era\b|fancam|fanchant)/i.test(plainText) ||
+        /(?:comeback|bias|stan|era\b|fancam)\b[^.]{0,80}\bDAY6/i.test(plainText);
+      if (idolTermsInDAY6Context) {
+        warnings.push({ category: 'niche-accuracy', message: 'DAY6 is a BAND (instruments, live performance), not a standard idol group. Use music industry language ("release", "concert", "discography") instead of idol terminology ("comeback", "bias", "era"). The "밴드돌" (band idol) distinction is core to their identity.', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 26. GOT7 framing accuracy — NOT disbanded, self-managed independent group
+    if (/GOT7/i.test(plainText)) {
+      if (/GOT7\b[^.]*\b(?:disbanded|former|ex-|broke\s*up|no\s*longer\s*(?:together|active))/i.test(plainText)) {
+        issues.push({ category: 'niche-accuracy', message: 'GOT7 is NOT disbanded — all 7 members left JYP in 2021 but maintained the group under self-management. They continue to release group music. Frame as "independent self-managed group."', severity: 'error' });
+        eeatScore -= 3;
+      }
+    }
   }
 
   // ── Cross-niche K-Beauty accuracy checks ──
@@ -1772,7 +1789,50 @@ export function validateContent(
       }
     }
 
-    // 31. Price disclaimer asymmetry fix — best-x-for-y also deducts score (like product-review Rule 18)
+    // 31. K-Beauty 메이크업 검증 — 색조 화장품 기능성 주장 불가
+    if (/makeup|foundation|tint|blush|eyeshadow|mascara|eyeliner|cushion.*foundation/i.test(plainText)) {
+      const functionalMakeupClaims = /(?:reduces?|minimizes?|eliminates?|treats?|corrects?)\s+(?:oil|shine|acne|redness|pores|wrinkles)/i;
+      if (functionalMakeupClaims.test(plainText) && !/may\s*help|temporarily|appears?\s*to/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'K-Beauty makeup content makes functional skincare claims (reduces/minimizes oil/acne/wrinkles) — color cosmetics cannot make treatment claims under MFDS without functional cosmetic certification. Use hedged language: "temporarily minimizes appearance of" or "creates the look of."', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 32. K-Beauty 네일아트 검증 — 네일 제품 기능성 주장 불가
+    if (/nail\s*(?:art|polish|gel|sticker|diva|ohora|press[- ]on)/i.test(plainText)) {
+      const functionalNailClaims = /(?:strengthen|harden|prevents?\s*breakage|nail\s*growth|repair\s*damage)/i;
+      if (functionalNailClaims.test(plainText) && !/may\s*help|supports?|known\s*for/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'K-Beauty nail product makes treatment claims (strengthen/harden/repair) — nail cosmetics cannot make these claims without functional cosmetic certification. Use hedged language.', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 33. K-Beauty 향수 검증 — 농도 타입 구분 필수
+    if (/fragrance|perfume|cologne|eau\s*de/i.test(plainText) && /(?:Tamburins|nonfiction|granhand|K-fragrance|Korean\s*(?:perfume|fragrance))/i.test(plainText)) {
+      const hasConcentrationContext = /eau\s*de\s*(?:toilette|parfum|cologne)|(?:EDT|EDP)|body\s*mist|concentration|(?:5|10|15|20|30)%/i.test(plainText);
+      if (!hasConcentrationContext) {
+        warnings.push({ category: 'niche-accuracy', message: 'K-Fragrance content without specifying fragrance concentration type — EDT (~5-15%), EDP (~15-20%), Parfum (~20-30%), Body Mist (~1-3%). Include concentration context for reader trust.', severity: 'info' });
+      }
+    }
+
+    // 34. K-Beauty 디바이스 검증 — LED 마스크/미세전류 효능 면책 필수
+    if (/LED\s*mask|microcurrent|gua\s*sha|dermapen|derma\s*roller|facial\s*device/i.test(plainText)) {
+      const hasDeviceDisclaimer = /(?:not\s*a\s*substitute|consult|results\s*(?:may\s*)?vary|individual\s*results|device\s*classification|MFDS|FDA)/i.test(plainText);
+      if (!hasDeviceDisclaimer) {
+        warnings.push({ category: 'niche-accuracy', message: 'K-Beauty device content (LED mask/microcurrent/dermapen) without efficacy disclaimer — home devices have limited clinical evidence vs professional treatments. Add "results may vary" or regulatory classification note.', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 35. Hada Labo 한국 브랜드 오인 방지 — 일본 브랜드임
+    if (/hada\s*labo/i.test(plainText)) {
+      const hasJapaneseContext = /japanese|japan|MHLW|not\s*korean|rohto/i.test(plainText);
+      if (!hasJapaneseContext) {
+        warnings.push({ category: 'niche-accuracy', message: 'Hada Labo mentioned in K-Beauty context without noting it is Japanese (Rohto Pharmaceutical, MHLW regulated). Add "Japanese brand often compared in K-Beauty discussions" for clarity.', severity: 'warning' });
+      }
+    }
+
+    // 36. Price disclaimer asymmetry fix — best-x-for-y also deducts score (like product-review Rule 18)
     if (contentType === 'best-x-for-y') {
       const hasPricing = /\$\d+|\₩[\d,]+|price|pricing|cost/i.test(plainText);
       const hasPriceDisclaimer = /prices?\s*(?:verified|checked|as of)|prices?\s*vary\s*frequently/i.test(plainText);

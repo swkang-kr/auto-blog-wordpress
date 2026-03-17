@@ -1391,6 +1391,16 @@ ${ga4TrackingScript}`;
       'TWICE': 'https://www.amazon.com/s?k=TWICE+album&tag=trendhunt2007-20',
       'ITZY': 'https://www.amazon.com/s?k=ITZY+album&tag=trendhunt2007-20',
       '(G)I-DLE': 'https://www.amazon.com/s?k=G+I-DLE+album&tag=trendhunt2007-20',
+      // 10차 감사: 3세대 + 레거시 그룹 개별 어필리에이트 (generic fallback → 개별 전환율 향상)
+      'SHINee': 'https://www.amazon.com/s?k=SHINee+album&tag=trendhunt2007-20',
+      'Red Velvet': 'https://www.amazon.com/s?k=Red+Velvet+kpop+album&tag=trendhunt2007-20',
+      'GOT7': 'https://www.amazon.com/s?k=GOT7+album&tag=trendhunt2007-20',
+      'MAMAMOO': 'https://www.amazon.com/s?k=MAMAMOO+album&tag=trendhunt2007-20',
+      'EXO': 'https://www.amazon.com/s?k=EXO+album&tag=trendhunt2007-20',
+      'DAY6': 'https://www.amazon.com/s?k=DAY6+album&tag=trendhunt2007-20',
+      'THE BOYZ': 'https://www.amazon.com/s?k=THE+BOYZ+kpop+album&tag=trendhunt2007-20',
+      'TREASURE': 'https://www.amazon.com/s?k=TREASURE+kpop+album&tag=trendhunt2007-20',
+      'BTOB': 'https://www.amazon.com/s?k=BTOB+album&tag=trendhunt2007-20',
     },
   };
 

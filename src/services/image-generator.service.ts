@@ -158,7 +158,9 @@ export class ImageGeneratorService {
     const isKBeautyMakeup = isKBeauty && /makeup|foundation|cushion|lip\s*tint|blush|eyeshadow|mascara|eyeliner|rom.nd|clio|fwee|hince/i.test(promptLower);
     const isKBeautyHairCare = isKBeauty && /hair|shampoo|scalp|daeng gi|ryo|masil/i.test(promptLower);
     const isKBeautyHanbang = isKBeauty && /sulwhasoo|whoo|hanbang|hanyul|ginseng|herbal|luxury\s*korean|premium\s*korean/i.test(promptLower);
-    const isKBeautyTools = isKBeauty && /led\s*mask|gua\s*sha|ice\s*roller|microcurrent|device|tool|facial\s*massage|cellreturn/i.test(promptLower);
+    const isKBeautyLedMask = isKBeauty && /led\s*mask|cellreturn|lg\s*pra\.?l|light\s*therapy\s*mask/i.test(promptLower);
+    const isKBeautyTools = isKBeauty && /gua\s*sha|ice\s*roller|microcurrent|device|tool|facial\s*massage|derma\s*roller/i.test(promptLower);
+    const isKBeautyBarrierRepair = isKBeauty && /barrier\s*(?:repair|cream|restore)|ceramide|damaged\s*barrier|skin\s*barrier/i.test(promptLower);
     const isKBeautyBodyCare = isKBeauty && /body\s*(?:care|lotion|cream|scrub|exfoli)|italy\s*towel|glass\s*body|spf\s*body/i.test(promptLower);
     const isKBeautyTonerPad = isKBeauty && /toner\s*pad|sun\s*pad|exfoliat.*pad|선패드/i.test(promptLower);
     const isKBeautyAmpoule = isKBeauty && /ampoule|앰플|concentrated\s*(?:serum|essence)/i.test(promptLower);
@@ -178,9 +180,12 @@ export class ImageGeneratorService {
     const isKBeautyBaby = isKBeauty && /baby|infant|newborn|kids?\s*(?:skincare|sunscreen|lotion)|child(?:ren)?\s*(?:skincare|cosmetic)/i.test(promptLower);
     const isKMovie = isKEntertainment && /korean\s*(?:film|movie|cinema)|blue\s*dragon|grand\s*bell|biff|film\s*festival|(?:bong|hwang|yeon|park\s*chan)\s*(?:joon|dong|sang|wook)/i.test(promptLower);
     const isKSurvivalShow = isKEntertainment && /survival\s*show|audition|i-?land|produce\s*101|r\s*u\s*next|boys?\s*planet|girls?\s*planet/i.test(promptLower);
+    // 10차 감사 추가
+    const isKBandIdol = isKEntertainment && /day6|band\s*idol|밴드돌|live\s*(?:band|instrument)|qwer.*band/i.test(promptLower);
+    const isKIdolFashion = isKEntertainment && /airport\s*fashion|idol\s*fashion|best\s*dressed|luxury\s*(?:brand|outfit)/i.test(promptLower);
 
     const nicheSuffix = isKBeautyNailArt
-      ? ', Korean nail art close-up photography, trendy gel nail designs, cat eye magnet nail effect, pastel and chrome finish, elegant hand pose, salon-quality detail, soft pink and lavender tones, clean minimal background, macro lens beauty editorial'
+      ? ', Korean nail art close-up photography, trendy gel nail designs, cat eye magnet nail aurora gradient mirror chrome finish, 3D embedded nail art details, elegant hand pose, salon-quality macro detail, soft pink and lavender tones, clean minimal background, beauty editorial'
       : isKMusical
       ? ', Korean musical theater stage aesthetic, dramatic spotlight on performer, rich red curtain backdrop, warm golden stage lighting, Broadway-style grandeur with Korean sensibility, emotional theatrical atmosphere, cinematic wide shot composition'
       : isKBeautyGiftSet
@@ -193,8 +198,12 @@ export class ImageGeneratorService {
       ? ', baby skincare product photography, soft pastel pink and mint, gentle safe ingredients, plush cotton texture, warm nursery setting, clean minimal composition, soft natural daylight'
       : isKBeautyPregnancy
       ? ', gentle motherhood skincare aesthetic, soft cream and sage green tones, natural organic ingredients flat lay, warm morning light, calm serene composition, botanical elements, safe gentle products on wooden tray'
+      : isKBeautyLedMask
+      ? ', Korean LED light therapy mask close-up, red and blue LED wavelength illumination visible, neon glow effect on skin, modern clinical aesthetic, futuristic skincare technology, dark ambient background with LED light reflections, home beauty device editorial'
+      : isKBeautyBarrierRepair
+      ? ', Korean barrier repair skincare editorial, cream and ceramide product close-up, dewy hydrated skin texture, soft warm tones, glass bottle with rich cream consistency, clean minimal composition, soothing calming aesthetic'
       : isKBeautyTools
-      ? ', Korean beauty device product photography, clean clinical aesthetic, soft white background, LED glow effect, modern bathroom counter, sleek technology meets skincare, minimalist composition'
+      ? ', Korean beauty tool product photography, clean clinical aesthetic, soft white background, modern bathroom counter, sleek gua sha ice roller flat lay, wellness spa minimalist composition'
       : isKBeautyBodyCare
         ? ', Korean body care editorial, bright bathroom setting, glass body aesthetic, body products flat lay, soft natural lighting, spa-like atmosphere, luxurious texture display'
         : isKBeautyTonerPad
@@ -204,7 +213,7 @@ export class ImageGeneratorService {
             : isKBeautyTexture
               ? ', Korean skincare texture swatch photography, product spread on glass surface, creamy gel texture close-up, dewy translucent consistency, finger swatch application, clean white marble background, macro lens detail'
               : isKBeautyHanbang
-      ? ', luxurious Korean Hanbang aesthetic, gold and deep burgundy accents, traditional Korean motifs, ornate packaging, dark wood vanity, warm ambient lighting, premium editorial beauty photography'
+      ? ', luxurious Korean Hanbang aesthetic, gold and deep burgundy accents, traditional Korean botanical motifs, ginseng root and mugwort leaf elements, porcelain bottle packaging, heritage luxury cosmetic editorial, dark wood vanity, warm amber ambient lighting'
       : isKBeautyMakeup
         ? ', K-beauty makeup flat lay, vibrant coral and pink tones, mirror reflections, beauty editorial style, bright studio lighting, clean modern vanity, texture swatches visible'
         : isKBeautyHairCare
@@ -225,7 +234,11 @@ export class ImageGeneratorService {
                 ? ', Korean drama OST aesthetic, piano keys with soft warm lighting, headphones on cozy desk, emotional cinematic mood, warm golden hour tones, vinyl record and coffee, intimate listening atmosphere'
                 : isKVarietyShow
                   ? ', Korean variety show set aesthetic, bright colorful studio background, fun playful atmosphere, game show props, vibrant lighting, energetic cheerful composition, entertainment studio setting'
-                  : isKHipHopRnB
+                  : isKBandIdol
+                    ? ', Korean band performance aesthetic, live instruments on stage, guitar bass drums keyboard, intimate concert hall lighting, warm amber spotlights, raw live music atmosphere, indie band editorial composition'
+                    : isKIdolFashion
+                    ? ', K-pop idol airport fashion editorial, sleek streetwear luxury outfit, modern terminal architecture background, paparazzi flash aesthetic, high fashion meets casual, clean composition, runway-to-airport style'
+                    : isKHipHopRnB
                     ? ', Korean hip-hop and R&B aesthetic, moody urban studio setting, grayscale with neon accent lighting, DJ turntable or recording studio mic, streetwear fashion, Seoul Itaewon nightlife atmosphere, artistic and edgy composition'
                     : isKDrama
                       ? ', Korean drama cinematic aesthetic, warm emotional lighting, indoor intimate scene, romantic or dramatic atmosphere, soft bokeh background, Seoul cityscape through window, cozy living room or cafe setting'
