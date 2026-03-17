@@ -66,6 +66,8 @@ export const KOREAN_SEASONAL_EVENTS: Array<{
   { name: 'Seoul Beauty Week', startMonth: 6, startDay: 10, endMonth: 6, endDay: 15, leadTimeDays: 30, relevantNiches: ['K-Beauty'], contentAngles: ['Seoul Beauty Week new product launches trend preview', 'K-beauty trends revealed at Seoul Beauty Week guide', 'best new Korean skincare products Seoul Beauty Week'] },
   // Olive Young Awards (올리브영 어워즈) — K-Beauty 최고 상품 시상 (12월 별도)
   { name: 'Olive Young Awards', startMonth: 12, startDay: 10, endMonth: 12, endDay: 20, leadTimeDays: 30, relevantNiches: ['K-Beauty'], contentAngles: ['Olive Young Awards winners best products ranked guide', 'Olive Young award-winning skincare products what to buy', 'best K-beauty products of the year Olive Young Awards recap'] },
+  // Korea Sale Festa (코리아세일페스타) — 산업통상자원부 주관, 매년 10-11월 한국판 블랙프라이데이
+  { name: 'Korea Sale Festa', startMonth: 10, startDay: 25, endMonth: 11, endDay: 15, leadTimeDays: 45, relevantNiches: ['K-Beauty'], contentAngles: ['Korea Sale Festa best K-beauty deals what to buy 2026 guide', 'Olive Young Korea Sale Festa discounts skincare must-buy list 2026', 'how to shop Korea Sale Festa internationally K-Beauty deals guide', 'Korea Sale Festa vs Black Friday which has better K-beauty deals comparison'] },
 ];
 
 /** 콘텐츠 유형 */

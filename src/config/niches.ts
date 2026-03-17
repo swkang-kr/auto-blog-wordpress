@@ -46,6 +46,7 @@ export function getSeasonallyOrderedNiches(): NicheConfig[] {
     'K-Beauty Awards': ['K-Beauty'],
     'Olive Young Spring Grand Sale': ['K-Beauty'],
     'Olive Young Fall Grand Sale': ['K-Beauty'],
+    'Korea Sale Festa': ['K-Beauty'],
     'BTS Debut Anniversary': ['K-Entertainment', 'K-Beauty'],
     'Circle Chart': ['K-Entertainment'],
     'Year-End K-Drama Awards': ['K-Entertainment'],
@@ -475,8 +476,10 @@ export const NICHES: NicheConfig[] = [
       'Korean men grooming skincare essentials what to buy 2026 guide',
       'Korean toner for men best picks oily combination skin 2026 ranked',
       // 아이돌 스킨케어 크로스오버 — K-Beauty ↔ K-Entertainment 브릿지 (추가 보강, 차별화된 앵글)
-      'K-pop idol glass skin secrets how to get the same look at home guide',
-      'NewJeans skincare routine K-Beauty products beauty looks guide 2026',
+      // NOTE: K-Entertainment에는 "idol visual culture" 앵글, 여기서는 "제품 + 루틴 재현" 앵글로 차별화
+      'K-pop idol glass skin routine recreate at home step by step products guide',
+      // NOTE: K-Entertainment에 NewJeans 뷰티 "looks" 키워드 있으므로, 여기서는 제품·성분 앵글로 차별화
+      'NewJeans members favorite skincare products ingredient breakdown K-Beauty guide 2026',
       // 가격 비교 — 어필리에이트 전환율 최고 (구매 의도)
       'Korean skincare cheaper in Korea how much you save buying local guide',
       'K-beauty dupes drugstore affordable alternatives ranked 2026 guide',
@@ -574,6 +577,19 @@ export const NICHES: NicheConfig[] = [
       // 선케어 상식 오해 교정 — 고 E-E-A-T 교육 콘텐츠
       'Korean sunscreen myths debunked PA rating SPF explained facts 2026',
       // ── 전문가 감사 추가 (2026-03-17): 누락된 2026 핵심 트렌드 ──
+      // Postbiotics (사균체) — 프리바이오틱스→프로바이오틱스→포스트바이오틱스 진화, 2026 최대 마이크로바이옴 세분화 트렌드
+      'best Korean postbiotic skincare serum cream for sensitive skin barrier 2026',
+      'postbiotics vs probiotics vs prebiotics Korean skincare what is the difference guide 2026',
+      'Korean postbiotic moisturizer for sensitive redness prone skin ranked 2026',
+      // Galactomyces 단독 키워드 — clarification NOTE 있지만 시드 키워드 없었음
+      'best Korean galactomyces ferment essence serum ranked 2026 guide',
+      'COSRX galactomyces 95 essence review vs SK-II Pitera dupe comparison 2026',
+      'galactomyces ferment filtrate skincare benefits explained what it does for skin guide',
+      // 한국 네일아트 확장 — 기존 2개에서 세분화 (매그넷·캣아이·젤리·오로라 네일)
+      'best Korean magnet cat eye nail gel polish ranked trending 2026 guide',
+      'Korean aurora nail jelly nail trend how to do at home guide 2026',
+      'Korean nail art vs Japanese nail art differences style comparison guide 2026',
+      'best Korean gel nail sticker brands ohora Dashing Diva ranked 2026 guide',
       // Skin Longevity / Pro-Aging — 2025-2026 글로벌 최대 뷰티 패러다임 전환
       'skin longevity Korean skincare pro-aging routine how to age well guide 2026',
       'Korean anti-aging vs pro-aging skincare which approach is better explained 2026',
@@ -618,6 +634,7 @@ export const NICHES: NicheConfig[] = [
       'Best Korean Sunscreens: Ultimate SPF Guide',                    // 선크림 허브 — PA/UV필터/톤업/포맷 키워드 앵커
       'Where to Buy Korean Skincare: Complete Shopping Guide',          // 쇼핑 허브 — Olive Young/Amazon/리테일 키워드 앵커
       'Korean Skincare for Every Skin Type: Personalized Guide',        // 피부타입 허브 — 건성/지성/복합/민감 키워드 앵커
+      'Korean Skincare by Age: Your 20s, 30s, 40s, 50s+ Complete Guide', // 연령대 허브 — 연령별 루틴/제품 키워드 앵커
     ],
   },
 
@@ -692,8 +709,9 @@ export const NICHES: NicheConfig[] = [
       'best K-drama OST songs ranked all time',
       'top K-drama actors to watch 2026 breakout performances',
       // 아이돌 뷰티 — K-Beauty ↔ K-Entertainment 크로스 니치 교두보
-      // NOTE: 'K-pop idol skincare routine' 계열 키워드는 K-Beauty 섹션에 이미 있음 (cannibalization 방지)
-      'K-pop idol no-makeup looks natural beauty secrets revealed',
+      // NOTE: 'K-pop idol skincare routine/products' 계열 키워드는 K-Beauty 섹션에 이미 있음 (cannibalization 방지)
+      // 여기서는 "비주얼 분석/스타일링 문화" 앵글로 차별화 — 제품 추천 X, 팬 문화 O
+      'K-pop idol no-makeup visual how idols maintain visuals explained fan culture guide',
       // IU(아이유) — Laneige 글로벌 앰배서더, 한국 최고 스킨케어 아이콘, 검색량 폭발적
       'IU skincare routine products Laneige ambassador what she uses',
       // BLACKPINK 멤버별 솔로 — 개인 검색량 폭발적
@@ -1027,6 +1045,29 @@ export const NICHES: NicheConfig[] = [
       'K-pop TikTok viral moments 2026 best clips that broke the internet ranked',
       // 팬덤명 교육 — 글로벌 팬 필수 콘텐츠
       'K-pop fandom names complete list every group official fan name guide 2026',
+      // ── 전문가 감사 추가 (2026-03-17 batch 2): 누락된 K-Entertainment 핵심 세그먼트 ──
+      // 한국 뮤지컬 — 완전 누락 세그먼트 (뮤지컬 한류 급성장)
+      'best Korean musicals to watch ranked complete guide 2026',
+      'Korean musical actors singers best performers ranked guide 2026',
+      'how to watch Korean musicals internationally tickets streaming guide 2026',
+      'Korean musical vs Broadway comparison what makes K-musical unique explained',
+      'K-pop idols in musicals best performances Doyoung Kyuhyun ranked 2026',
+      // K-pop 세계관(lore) 종합 비교 허브 — aespa만 있고 그룹별 비교 없었음
+      'K-pop group universes lore explained aespa ENHYPEN TXT tripleS comparison guide 2026',
+      'best K-pop lore universes ranked most complex storylines explained guide',
+      'how K-pop worldbuilding works KWANGYA Cosmo explained beginner guide 2026',
+      // K-Drama OST 플레이리스트 — Spotify/Apple Music 검색 의도 키워드 누락
+      'best K-drama OST playlist Spotify Apple Music 2026 complete guide',
+      'K-drama sad OST songs playlist ranked best emotional soundtracks guide',
+      'K-drama romantic OST songs playlist best love theme songs ranked 2026',
+      // 한국 웹예능/YouTube 예능 — 피식대학, 숏박스, 워크맨 등 완전 누락
+      'best Korean YouTube variety shows web entertainment 2026 ranked guide',
+      'Korean web variety shows explained Workman Psick University Short Box guide fans',
+      'Korean YouTube variety vs TV variety shows comparison which to watch guide 2026',
+      // K-pop 포토카드 트레이딩 플랫폼 비교 — "how to trade" 1개뿐, 플랫폼 비교 누락
+      'best K-pop photocard trading apps platforms compared 2026 where to buy sell guide',
+      'K-pop photocard market price guide how to value rare photocards 2026',
+      'K-pop photocard collecting for beginners complete buying trading guide 2026',
       // Case Study / Deep-Dive 비율 보강
       'how BTS became the biggest boy band in history growth timeline explained deep dive',
       'how BLACKPINK conquered global music fashion industry case study analysis 2026',
@@ -1035,7 +1076,7 @@ export const NICHES: NicheConfig[] = [
       'how aespa KWANGYA universe changed K-pop storytelling deep dive concept analysis',
       'HYBE vs SM vs JYP vs YG business model comparison K-pop Big 4 deep dive 2026',
     ],
-    contentTypes: ['listicle', 'news-explainer', 'best-x-for-y', 'deep-dive', 'how-to', 'x-vs-y', 'case-study'],
+    contentTypes: ['news-explainer', 'listicle', 'best-x-for-y', 'deep-dive', 'how-to', 'x-vs-y', 'case-study'],
     adSenseRpm: 'medium',
     pillarTopics: [
       'Complete Guide to K-Pop for Beginners: Everything You Need to Know',   // 입문 허브 — 팬 문화/용어/차트 키워드 앵커
@@ -1043,6 +1084,7 @@ export const NICHES: NicheConfig[] = [
       'K-Pop Chart System Explained: Circle, Melon, Hanteo Complete Guide',   // 차트 허브 — 올킬/PAK/음방 키워드 앵커
       'K-Pop Concert & Fan Event Guide: Tickets, Tours, KCON',               // 콘서트 허브 — 투어/티켓팅/KCON 키워드 앵커
       'K-Pop Groups by Generation: Complete Guide from 1st to 5th Gen',       // 세대 허브 — 그룹별 가이드/비교 키워드 앵커
+      'Korean Entertainment Beyond K-Pop: Musicals, Movies, and Variety Shows Guide', // 비아이돌 허브 — 뮤지컬/영화/예능/K-R&B 키워드 앵커
     ],
   },
 ];
