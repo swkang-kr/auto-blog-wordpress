@@ -2275,15 +2275,15 @@ ${ga4TrackingScript}`;
                   worstRating: 1,
                 },
               },
-              // 14차 감사: AggregateRating from Hwahae/Glowpick community data (K-Beauty only)
+              // Community rating from Hwahae/Glowpick (K-Beauty only)
+              // ratingCount/reviewCount omitted — hardcoded fake counts violate Google structured data policy.
+              // Only ratingValue is emitted since actual review counts are not available from HTML extraction.
               ...(item.communityRating && item.communityRating >= 1 && item.communityRating <= 5 ? {
                 aggregateRating: {
                   '@type': 'AggregateRating',
                   ratingValue: item.communityRating,
                   bestRating: 5,
                   worstRating: 1,
-                  ratingCount: 1000, // Hwahae/Glowpick products typically have 1000+ reviews
-                  reviewCount: 500,
                 },
               } : {}),
               // Offers: USD price + optional KRW for K-Beauty

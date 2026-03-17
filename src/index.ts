@@ -1198,17 +1198,63 @@ async function main(): Promise<void> {
   // ── Phase B: Images + Publish ──────────────────────────────────────────
   logger.info('\n=== Phase B: Images + Publish ===');
   // Ensure minimum 30-minute interval between posts (even if config is 0) to avoid spam
-  const publishInterval = Math.max(config.PUBLISH_INTERVAL_MINUTES, 30);
-  logger.info(`Publish scheduling: ${publishInterval}-minute intervals between posts${config.PUBLISH_INTERVAL_MINUTES < 30 ? ' (enforced minimum 30 min)' : ''}`);
+  const publishIntervalMs = Math.max(config.PUBLISH_INTERVAL_MINUTES, 30) * 60 * 1000;
+  logger.info(`Publish scheduling: ${Math.round(publishIntervalMs / 60000)}-minute intervals between posts${config.PUBLISH_INTERVAL_MINUTES < 30 ? ' (enforced minimum 30 min)' : ''}`);
 
   // Optimal publish time calculation (#14) — GA4-driven > niche-specific > config fallback
   const publishTz = config.PUBLISH_TIMEZONE;
   const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  logger.info(`Base publish hour: ${ga4OptimalHour ?? config.PUBLISH_OPTIMAL_HOUR}:00 ${publishTz}${ga4OptimalHour !== null ? ' (GA4-detected)' : ' (config default)'}${ga4OptimalDay !== null ? ` | Best day: ${dayNames[ga4OptimalDay]}` : ''}`);
+  const baseOptimalHour = ga4OptimalHour ?? config.PUBLISH_OPTIMAL_HOUR;
+  logger.info(`Base publish hour: ${baseOptimalHour}:00 ${publishTz}${ga4OptimalHour !== null ? ' (GA4-detected)' : ' (config default)'}${ga4OptimalDay !== null ? ` | Best day: ${dayNames[ga4OptimalDay]}` : ''}`);
   logger.info(`Per-niche timing enabled: ${Object.keys(CATEGORY_PUBLISH_TIMING).length} categories configured`);
 
   // Track which categories are scheduled on which dates to prevent same-day same-category publishing
   const categoryDateMap = new Map<string, Set<string>>(); // category → Set of date strings (YYYY-MM-DD)
+
+  /**
+   * Calculate scheduled publish time for a post.
+   * Priority: fast-track (immediate) > manual review delay > niche-specific timing > GA4 optimal > config default
+   * Posts are staggered by publishIntervalMs to avoid spam detection.
+   */
+  function calculateScheduledDate(gi: number, category: string, isFastTrack: boolean): string | undefined {
+    // Fast-track breakout trends: publish immediately (no scheduling)
+    if (isFastTrack) return undefined;
+
+    // Manual review mode: delay 24h for new publishers
+    if (manualReviewDelayMs > 0) {
+      const futureDate = new Date(Date.now() + manualReviewDelayMs + gi * publishIntervalMs);
+      return futureDate.toISOString();
+    }
+
+    // Calculate optimal hour for this category
+    const nicheTiming = CATEGORY_PUBLISH_TIMING[category];
+    const optimalHour = nicheTiming?.optimalHour ?? baseOptimalHour;
+
+    // Build target date: today or tomorrow if optimal hour already passed
+    const now = new Date();
+    const target = new Date(now.toLocaleString('en-US', { timeZone: publishTz }));
+    target.setHours(optimalHour, 0, 0, 0);
+    // Add stagger offset for multiple posts
+    target.setTime(target.getTime() + gi * publishIntervalMs);
+
+    // If target is in the past, move to next day
+    if (target.getTime() <= now.getTime()) {
+      target.setDate(target.getDate() + 1);
+    }
+
+    // Check same-day same-category conflict
+    const dateKey = target.toISOString().slice(0, 10);
+    const catDates = categoryDateMap.get(category) || new Set();
+    if (catDates.has(dateKey)) {
+      // Push to next day to avoid same-day same-category publishing
+      target.setDate(target.getDate() + 1);
+    }
+    const finalDateKey = target.toISOString().slice(0, 10);
+    catDates.add(finalDateKey);
+    categoryDateMap.set(category, catDates);
+
+    return target.toISOString();
+  }
 
   for (let gi = 0; gi < generated.length; gi++) {
     const { niche, postStart, researched, content, fastTrack, selectedPersona } = generated[gi];
@@ -1503,6 +1549,11 @@ async function main(): Promise<void> {
       const clusterRelatedPosts = topicClusterService.getRelatedPostsByCluster(
         niche.id, researched.analysis.selectedKeyword, existingPosts, 4,
       );
+      // Calculate scheduled publish time (staggered, niche-aware, GA4-optimized)
+      const scheduledDate = calculateScheduledDate(gi, niche.category, !!fastTrack);
+      if (scheduledDate) {
+        logger.info(`Scheduled publish: ${new Date(scheduledDate).toLocaleString('en-US', { timeZone: publishTz })} ${publishTz}`);
+      }
       const post = await wpService.createPost(
         content,
         featuredMediaResult?.mediaId || 0,
@@ -1514,6 +1565,7 @@ async function main(): Promise<void> {
           ogImageUrl: featuredMediaResult?.sourceUrl || '',
           publishStatus: effectivePublishStatus,
           existingPosts,
+          scheduledDate,
           pillarPageUrl: pillarUrlMap[niche.id],
           subNiche: niche.id,
           skipInlineCss: postCssSnippetActive,
@@ -1565,40 +1617,50 @@ async function main(): Promise<void> {
       await seoService.pingSitemap();
 
       // B-6. Social media promotion: post immediately to all platforms
-      // All platforms post at publish time (deferred scheduling doesn't work in CI batch runs)
+      // Skip social posting for scheduled/future posts — they'll be handled by deferred execution on next batch
+      const isImmediatePublish = effectivePublishStatus === 'publish' && !scheduledDate;
       const TWITTER_DELAY_MS = 2 * 60 * 60 * 1000; // 2 hours
 
-      // Facebook: post immediately when published
-      if (facebookService && effectivePublishStatus === 'publish') {
+      // Facebook: post immediately when published (not scheduled)
+      if (facebookService && isImmediatePublish) {
         const fbPostId = await facebookService.promoteBlogPost(content, post);
         if (fbPostId) await wpService.updatePostMeta(post.postId, { _autoblog_fb_post_id: fbPostId }).catch(() => {});
       }
 
-      // Threads: post immediately when published
-      if (threadsService && effectivePublishStatus === 'publish') {
+      // Threads: post immediately when published (not scheduled)
+      if (threadsService && isImmediatePublish) {
         const threadsPostId = await threadsService.promoteBlogPost(content, post);
         if (threadsPostId) await wpService.updatePostMeta(post.postId, { _autoblog_threads_post_id: threadsPostId }).catch(() => {});
       }
 
-      // LinkedIn: post immediately when published
-      if (linkedinService && effectivePublishStatus === 'publish') {
+      // LinkedIn: post immediately when published (not scheduled)
+      if (linkedinService && isImmediatePublish) {
         const linkedinPostId = await linkedinService.promoteBlogPost(content.title, content.excerpt, resolvePostUrl(post), featuredMediaResult?.sourceUrl || undefined);
         if (linkedinPostId) await wpService.updatePostMeta(post.postId, { _autoblog_linkedin_post_id: linkedinPostId }).catch(() => {});
       }
 
-      // Twitter: still deferred +2h (runs within batch window)
+      // Twitter: deferred +2h from publish time (not batch time for scheduled posts)
       if (twitterService) {
         try {
-          const socialBaseTime = Date.now();
+          // For scheduled posts, defer social from the scheduled publish time; for immediate, from now
+          const socialBaseTime = scheduledDate ? new Date(scheduledDate).getTime() : Date.now();
+          const allScheduledPlatforms = [
+            'twitter',
+            ...(facebookService && !isImmediatePublish ? ['facebook'] : []),
+            ...(threadsService && !isImmediatePublish ? ['threads'] : []),
+            ...(linkedinService && !isImmediatePublish ? ['linkedin'] : []),
+          ];
           await wpService.updatePostMeta(post.postId, {
             _autoblog_social_scheduled: new Date(socialBaseTime + TWITTER_DELAY_MS).toISOString(),
-            _autoblog_social_platforms: 'twitter',
+            _autoblog_social_platforms: allScheduledPlatforms.join(','),
           });
-          logger.info(`Twitter scheduled +2h from now for "${content.title}"`);
+          logger.info(`Social media scheduled for ${new Date(socialBaseTime + TWITTER_DELAY_MS).toISOString()} (${allScheduledPlatforms.join(', ')}) for "${content.title}"`);
         } catch (socialMetaError) {
-          logger.debug(`Twitter scheduling meta save failed: ${socialMetaError instanceof Error ? socialMetaError.message : socialMetaError}`);
-          const tweetId = await twitterService.promoteBlogPost(content, post);
-          if (tweetId) await wpService.updatePostMeta(post.postId, { _autoblog_tweet_id: tweetId }).catch(() => {});
+          logger.debug(`Social scheduling meta save failed: ${socialMetaError instanceof Error ? socialMetaError.message : socialMetaError}`);
+          if (isImmediatePublish) {
+            const tweetId = await twitterService.promoteBlogPost(content, post);
+            if (tweetId) await wpService.updatePostMeta(post.postId, { _autoblog_tweet_id: tweetId }).catch(() => {});
+          }
         }
       }
 
@@ -1616,15 +1678,29 @@ async function main(): Promise<void> {
             continue;
           }
 
-          const platforms = (pending.meta._autoblog_social_platforms || '').split(',');
+          const platforms = (pending.meta._autoblog_social_platforms || '').split(',').filter(Boolean);
+          const minimalContent = { title: pending.title, html: '', excerpt: pending.excerpt, tags: [], category: '', imagePrompts: [], imageCaptions: [], qualityScore: 0, metaDescription: '', slug: pending.slug } as any;
+          const minimalPost = { url: pending.url, postId: pending.postId, slug: pending.slug } as any;
           try {
             if (platforms.includes('twitter') && twitterService) {
-              const deferredTweetId = await twitterService.promoteBlogPost(
-                { title: pending.title, html: '', excerpt: pending.excerpt, tags: [], category: '', imagePrompts: [], imageCaptions: [], qualityScore: 0, metaDescription: '', slug: pending.slug } as any,
-                { url: pending.url, postId: pending.postId, slug: pending.slug } as any,
-              );
+              const deferredTweetId = await twitterService.promoteBlogPost(minimalContent, minimalPost);
               if (deferredTweetId) await wpService.updatePostMeta(pending.postId, { _autoblog_tweet_id: deferredTweetId }).catch(() => {});
               logger.info(`Deferred Twitter post executed for "${pending.title}"`);
+            }
+            if (platforms.includes('facebook') && facebookService) {
+              const deferredFbId = await facebookService.promoteBlogPost(minimalContent, minimalPost);
+              if (deferredFbId) await wpService.updatePostMeta(pending.postId, { _autoblog_fb_post_id: deferredFbId }).catch(() => {});
+              logger.info(`Deferred Facebook post executed for "${pending.title}"`);
+            }
+            if (platforms.includes('threads') && threadsService) {
+              const deferredThreadsId = await threadsService.promoteBlogPost(minimalContent, minimalPost);
+              if (deferredThreadsId) await wpService.updatePostMeta(pending.postId, { _autoblog_threads_post_id: deferredThreadsId }).catch(() => {});
+              logger.info(`Deferred Threads post executed for "${pending.title}"`);
+            }
+            if (platforms.includes('linkedin') && linkedinService) {
+              const deferredLinkedinId = await linkedinService.promoteBlogPost(pending.title, pending.excerpt, resolvePostUrl(pending));
+              if (deferredLinkedinId) await wpService.updatePostMeta(pending.postId, { _autoblog_linkedin_post_id: deferredLinkedinId }).catch(() => {});
+              logger.info(`Deferred LinkedIn post executed for "${pending.title}"`);
             }
             await wpService.updatePostMeta(pending.postId, { _autoblog_social_scheduled: '', _autoblog_social_platforms: '' });
           } catch (deferredSocialErr) {
