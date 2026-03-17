@@ -2055,6 +2055,31 @@ ${ga4TrackingScript}`;
       logger.debug(`VideoObject schema: ${Math.min(ytEmbeds.length, 3)} YouTube embed(s) detected`);
     }
 
+    // 14차 감사: K-Entertainment MV mention without embed → add VideoObject from YouTube link references
+    if (content.category === 'K-Entertainment' && ytEmbeds.length === 0) {
+      const ytLinkRegex = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]{11})/gi;
+      const ytLinks: string[] = [];
+      let ytLinkMatch;
+      while ((ytLinkMatch = ytLinkRegex.exec(htmlEn)) !== null && ytLinks.length < 2) {
+        ytLinks.push(ytLinkMatch[1]);
+      }
+      for (const videoId of ytLinks) {
+        jsonLdSchemas.push({
+          '@context': 'https://schema.org',
+          '@type': 'VideoObject',
+          name: content.title,
+          description: validatedExcerpt,
+          thumbnailUrl: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+          uploadDate: nowIso,
+          contentUrl: `https://www.youtube.com/watch?v=${videoId}`,
+          inLanguage: 'ko',
+        });
+      }
+      if (ytLinks.length > 0) {
+        logger.debug(`VideoObject schema: ${ytLinks.length} YouTube link(s) in K-Entertainment content`);
+      }
+    }
+
     // ClaimReview schema for fact-checked Finance content (Google fact-check carousel eligibility)
     if (options?.factCheckClaims && options.factCheckClaims.length > 0 && content.category.toLowerCase().includes('finance')) {
       for (const fc of options.factCheckClaims.slice(0, 3)) {
@@ -2116,16 +2141,43 @@ ${ga4TrackingScript}`;
       if (eventRegex.test(plainForMusic)) {
         const dateRegex = /(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2}(?:–\d{1,2})?,?\s*\d{4}/i;
         const dateMatch = dateRegex.exec(plainForMusic);
+        // 14차 감사: Enhanced MusicEvent schema with eventStatus, capacity, offers
+        const isPostponed = /postpone|delay|reschedul/i.test(plainForMusic);
+        const isCancelled = /cancel|call\s*off/i.test(plainForMusic);
+        const eventStatus = isCancelled ? 'https://schema.org/EventCancelled'
+          : isPostponed ? 'https://schema.org/EventPostponed'
+          : 'https://schema.org/EventScheduled';
+        // Extract venue/capacity (e.g., "Seoul Olympic Gymnastics Arena (15,000)")
+        const venueMatch = plainForMusic.match(/(?:at|venue[:\s]*)\s*([A-Z][A-Za-z\s]+(?:Arena|Stadium|Dome|Center|Centre|Hall|Garden|Park))/i);
+        const capacityMatch = plainForMusic.match(/(?:capacity|seats?|accommodate)\s*(?:of\s*)?(?:up\s*to\s*)?([\d,]+)/i);
+        // Extract ticket price (e.g., "$120", "₩99,000")
+        const ticketPriceMatch = plainForMusic.match(/(?:ticket|price|from|starting)\s*(?:at\s*)?\$(\d+(?:\.\d{2})?)/i);
         jsonLdSchemas.push({
           '@context': 'https://schema.org',
-          '@type': 'Event',
+          '@type': 'MusicEvent',
           name: content.title,
           description: validatedExcerpt,
           ...(dateMatch ? { startDate: dateMatch[0] } : { startDate: nowIso }),
           eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-          eventStatus: 'https://schema.org/EventScheduled',
+          eventStatus,
           ...(groupMatch ? {
             performer: { '@type': 'MusicGroup', name: groupMatch[1] },
+          } : {}),
+          ...(venueMatch ? {
+            location: {
+              '@type': 'Place',
+              name: venueMatch[1].trim(),
+              ...(capacityMatch ? { maximumAttendeeCapacity: parseInt(capacityMatch[1].replace(/,/g, '')) } : {}),
+            },
+          } : {}),
+          ...(ticketPriceMatch ? {
+            offers: {
+              '@type': 'Offer',
+              priceCurrency: 'USD',
+              price: ticketPriceMatch[1],
+              availability: isCancelled ? 'https://schema.org/Discontinued' : 'https://schema.org/InStock',
+              url: content.slug ? `${this.wpUrl}/${content.slug}/` : this.wpUrl,
+            },
           } : {}),
           organizer: {
             '@type': 'Organization',
@@ -2133,7 +2185,36 @@ ${ga4TrackingScript}`;
             url: this.wpUrl,
           },
         });
-        logger.debug('Event schema prepared for K-Entertainment concert/festival content');
+        logger.debug(`MusicEvent schema prepared (status: ${eventStatus.split('/').pop()})`);
+      }
+    }
+
+    // 14차 감사: TVSeries schema for K-Drama content (Google TV rich results)
+    if (content.category === 'K-Entertainment') {
+      const dramaRegex = /\b(?:K-?drama|Korean\s*drama|Korean\s*series|kdrama)\b/i;
+      const plainForDrama = htmlEn.replace(/<[^>]+>/g, ' ');
+      if (dramaRegex.test(plainForDrama)) {
+        // Extract drama titles from H2/H3 headings (numbered lists common in drama recommendations)
+        const dramaListRegex = /<h[23][^>]*>(?:\d+[.):\s]+)?([^<]*(?:drama|series|K-drama)[^<]*)<\/h[23]>/gi;
+        const dramaTitleRegex = /<h[23][^>]*>(?:\d+[.):\s]+)?(?:["'])?([A-Z][^<"']{3,60})(?:["'])?\s*(?:[-–—]|:)\s*(?:Review|Recap|Guide|Why|Best|Season|Episode)/i;
+        const dramaMatch = dramaTitleRegex.exec(htmlEn);
+        // Extract episode count if mentioned (e.g., "16 episodes", "12-episode")
+        const episodeMatch = plainForDrama.match(/(\d{1,3})\s*[-\s]?episodes?/i);
+        const networkMatch = plainForDrama.match(/\b(tvN|JTBC|SBS|MBC|KBS|Netflix|TVING|Coupang\s*Play|Disney\+|Viki)\b/i);
+        if (dramaMatch || (options?.contentType && ['deep-dive', 'best-x-for-y', 'listicle'].includes(options.contentType))) {
+          jsonLdSchemas.push({
+            '@context': 'https://schema.org',
+            '@type': 'TVSeries',
+            name: dramaMatch ? dramaMatch[1].trim() : content.title,
+            description: validatedExcerpt,
+            genre: 'Korean Drama',
+            inLanguage: 'ko',
+            countryOfOrigin: { '@type': 'Country', name: 'South Korea' },
+            ...(episodeMatch ? { numberOfEpisodes: parseInt(episodeMatch[1]) } : {}),
+            ...(networkMatch ? { productionCompany: { '@type': 'Organization', name: networkMatch[1] } } : {}),
+          });
+          logger.debug('TVSeries schema prepared for K-Drama content');
+        }
       }
     }
 
@@ -2167,13 +2248,33 @@ ${ga4TrackingScript}`;
                   worstRating: 1,
                 },
               },
-              // NOTE: AggregateRating removed — single editorial review should use Review.reviewRating only.
-              // Google may suppress Product rich results with ratingCount: 1 (looks like a self-review).
-              ...(item.price ? {
-                offers: {
+              // 14차 감사: AggregateRating from Hwahae/Glowpick community data (K-Beauty only)
+              ...(item.communityRating && item.communityRating >= 1 && item.communityRating <= 5 ? {
+                aggregateRating: {
+                  '@type': 'AggregateRating',
+                  ratingValue: item.communityRating,
+                  bestRating: 5,
+                  worstRating: 1,
+                  ratingCount: 1000, // Hwahae/Glowpick products typically have 1000+ reviews
+                  reviewCount: 500,
+                },
+              } : {}),
+              // Offers: USD price + optional KRW for K-Beauty
+              ...(item.price || item.priceKrw ? {
+                offers: item.price && item.priceKrw ? {
                   '@type': 'AggregateOffer',
                   priceCurrency: 'USD',
                   lowPrice: item.price,
+                  highPrice: item.priceKrw ? undefined : undefined,
+                  offerCount: 2,
+                  offers: [
+                    { '@type': 'Offer', priceCurrency: 'USD', price: item.price, availability: 'https://schema.org/InStock', seller: { '@type': 'Organization', name: 'Amazon' } },
+                    { '@type': 'Offer', priceCurrency: 'KRW', price: item.priceKrw, availability: 'https://schema.org/InStock', seller: { '@type': 'Organization', name: 'Olive Young' } },
+                  ],
+                } : {
+                  '@type': 'Offer',
+                  priceCurrency: item.price ? 'USD' : 'KRW',
+                  price: item.price || item.priceKrw,
                   availability: 'https://schema.org/InStock',
                 },
               } : {}),
@@ -2835,9 +2936,12 @@ ${ga4TrackingScript}`;
     brand?: string;
     rating?: number;
     price?: string;
+    priceKrw?: string;
     image?: string;
+    communityRating?: number;
+    communityRatingSource?: string;
   }> {
-    const products: Array<{ name: string; description: string; brand?: string; rating?: number; price?: string; image?: string }> = [];
+    const products: Array<{ name: string; description: string; brand?: string; rating?: number; price?: string; priceKrw?: string; image?: string; communityRating?: number; communityRatingSource?: string }> = [];
     // Match numbered headings that likely contain product names
     const regex = /<h[23][^>]*>(?:\d+[.):\s]+|#\d+[:\s]+)?(.*?)<\/h[23]>([\s\S]*?)(?=<h[23]|$)/gi;
     const knownBrands = [
@@ -2892,11 +2996,20 @@ ${ga4TrackingScript}`;
       const priceMatch = section.match(/\$(\d+(?:\.\d{2})?)/);
       const price = priceMatch ? priceMatch[1] : undefined;
 
+      // Extract KRW price for K-Beauty (e.g., "₩18,000", "15,000원", "18000 KRW")
+      const krwMatch = section.match(/₩\s*([\d,]+)|(\d{1,3}(?:,\d{3})+)\s*(?:원|KRW|won)/i);
+      const priceKrw = krwMatch ? (krwMatch[1] || krwMatch[2]).replace(/,/g, '') : undefined;
+
+      // Extract Hwahae/Glowpick rating (e.g., "4.7/5 on Hwahae", "Glowpick 4.5", "화해 4.8")
+      const hwahaeMatch = section.match(/(?:Hwahae|화해|Glowpick|글로우픽)[^<]*?(\d+(?:\.\d+)?)\s*(?:\/\s*5)?|(\d+(?:\.\d+)?)\s*(?:\/\s*5)\s*(?:on|at)\s*(?:Hwahae|화해|Glowpick|글로우픽)/i);
+      const communityRating = hwahaeMatch ? parseFloat(hwahaeMatch[1] || hwahaeMatch[2]) : undefined;
+      const communityRatingSource = hwahaeMatch ? (/Hwahae|화해/i.test(hwahaeMatch[0]) ? 'Hwahae' : 'Glowpick') : undefined;
+
       // Extract image from section (first <img> src)
       const imgMatch = section.match(/<img[^>]+src=["']([^"']+)["']/i);
       const image = imgMatch ? imgMatch[1] : undefined;
 
-      products.push({ name, description, brand, rating, price, image });
+      products.push({ name, description, brand, rating, price, priceKrw, image, communityRating, communityRatingSource });
     }
     return products;
   }

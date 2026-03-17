@@ -908,6 +908,15 @@ export function validateContent(
       }
     }
 
+    // 14차 감사: 10b. Vegan certification body specificity — must name the certifying organization
+    if (/\bvegan\b/i.test(plainText) && ['product-review', 'best-x-for-y', 'x-vs-y', 'deep-dive'].includes(contentType)) {
+      const hasVeganCertBody = /(?:Korean\s*Vegan\s*Certification|KVS|한국비건인증원|Leaping\s*Bunny|PETA|V-?Label|EVE\s*VEGAN|Vegan\s*Society|KSVS|비건\s*인증)/i.test(plainText);
+      if (!hasVeganCertBody) {
+        warnings.push({ category: 'niche-accuracy', message: '"Vegan" claimed without specifying certification body — name the certifier: KVS (한국비건인증원), Leaping Bunny, PETA, V-Label, or EVE VEGAN. "Vegan" without certification has no legal meaning in Korean cosmetics.', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
     // 11. "Dermatologist recommended/tested/clinically proven" without source
     const dermatologistClaims = plainText.match(/dermatologist\s*(?:recommended|approved|endorsed)/gi) || [];
     if (dermatologistClaims.length > 0) {
@@ -1522,11 +1531,141 @@ export function validateContent(
       }
     }
 
+    // 14차 감사 — 27. Group member count database + validator
+    const groupMemberCounts: Record<string, { count: number; note?: string }> = {
+      'BTS': { count: 7 },
+      'BLACKPINK': { count: 4 },
+      'TWICE': { count: 9 },
+      'SEVENTEEN': { count: 13 },
+      'Stray Kids': { count: 8 },
+      'ATEEZ': { count: 8 },
+      'ENHYPEN': { count: 7 },
+      'TXT': { count: 5 },
+      'aespa': { count: 4, note: '4 real members + 4 virtual ae- counterparts — do NOT count as 8' },
+      'IVE': { count: 6 },
+      'LE SSERAFIM': { count: 4, note: 'Kim Garam left Aug 2022, Sakura/Kazuha/Yunjin/Eunchae — 4 active since then' },
+      'NewJeans': { count: 5 },
+      'BABYMONSTER': { count: 7 },
+      'ILLIT': { count: 5 },
+      'NMIXX': { count: 6, note: 'Jinni departed Dec 2022 — 6 active members' },
+      'RIIZE': { count: 7 },
+      'BOYNEXTDOOR': { count: 6 },
+      'ZeroBaseOne': { count: 9 },
+      'KISS OF LIFE': { count: 4 },
+      'TWS': { count: 6 },
+      'QWER': { count: 4 },
+      'PLAVE': { count: 5, note: 'All 5 are virtual 3D avatar members' },
+      'EXO': { count: 9, note: '9 members total (some in military/solo activities); group remains 9-member' },
+      'SHINee': { count: 4, note: '4 active members — Jonghyun passed away Dec 2017' },
+      'Red Velvet': { count: 5 },
+      'GOT7': { count: 7 },
+      'MAMAMOO': { count: 4 },
+      'DAY6': { count: 5 },
+      'BTOB': { count: 4, note: '4 active members as of 2026 (Ilhoon left, Hyunsik/Peniel status varies)' },
+      'THE BOYZ': { count: 11 },
+      'TREASURE': { count: 10, note: 'Mashiho and Bang Yedam left in 2023 — 10 active members' },
+      'ITZY': { count: 5 },
+      '(G)I-DLE': { count: 5, note: 'Soojin left Aug 2021 — 5 active members' },
+      'NCT 127': { count: 10 },
+      'NCT Dream': { count: 7 },
+      'NCT WISH': { count: 6 },
+      'WHIPLASH': { count: 5 },
+      'KATSEYE': { count: 6 },
+      'tripleS': { count: 24, note: '24-member collective under MODHAUS' },
+      'YOUNG POSSE': { count: 5 },
+      'xikers': { count: 8 },
+      '8TURN': { count: 8 },
+      'fromis_9': { count: 9 },
+      'Dreamcatcher': { count: 7 },
+      'n.SSign': { count: 7 },
+    };
+    for (const [group, info] of Object.entries(groupMemberCounts)) {
+      const groupEscaped = group.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      // Match patterns like "BTS 8 members", "BTS has 6 members", "BTS (8 members)"
+      const memberCountRegex = new RegExp(`${groupEscaped}\\b[^.]{0,40}\\b(\\d{1,2})\\s*[-\\s]?members?`, 'i');
+      const match = memberCountRegex.exec(plainText);
+      if (match) {
+        const claimedCount = parseInt(match[1]);
+        if (claimedCount !== info.count) {
+          const noteStr = info.note ? ` (${info.note})` : '';
+          issues.push({ category: 'niche-accuracy', message: `${group} member count error: claimed ${claimedCount}, correct is ${info.count}${noteStr}`, severity: 'error' });
+          eeatScore -= 3;
+        }
+      }
+    }
+
+    // 14차 감사 — 28. Music show win count source requirement
+    if (/(\d+)\s*(?:music\s*show\s*wins?|(?:관왕|crown))/i.test(plainText)) {
+      const hasWinSource = /(?:THE\s*SHOW|Show\s*Champion|M\s*Countdown|Music\s*Bank|Music\s*Core|Inkigayo|더쇼)\s*(?:win|crown)/i.test(plainText) ||
+        /(?:as\s*of|since|during|in)\s*\d{4}/i.test(plainText);
+      if (!hasWinSource) {
+        warnings.push({ category: 'niche-accuracy', message: 'Music show win count cited without specifying which shows or time period — always specify shows and date range for verifiability', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 14차 감사 — 29. K-pop generation classification accuracy
+    const genClassifications: Array<{ pattern: RegExp; correct: string }> = [
+      { pattern: /IVE\b[^.]*\b(?:3rd|third)\s*gen/i, correct: 'IVE debuted 2021 — classified as 4th generation, NOT 3rd' },
+      { pattern: /aespa\b[^.]*\b(?:3rd|third)\s*gen/i, correct: 'aespa debuted 2020 — classified as 4th generation, NOT 3rd' },
+      { pattern: /LE\s*SSERAFIM\b[^.]*\b(?:3rd|third)\s*gen/i, correct: 'LE SSERAFIM debuted 2022 — classified as 4th generation, NOT 3rd' },
+      { pattern: /NewJeans\b[^.]*\b(?:3rd|third)\s*gen/i, correct: 'NewJeans debuted 2022 — classified as 4th generation, NOT 3rd' },
+      { pattern: /Stray\s*Kids\b[^.]*\b(?:3rd|third)\s*gen/i, correct: 'Stray Kids debuted 2018 — classified as 4th generation (early 4th), NOT 3rd' },
+      { pattern: /ATEEZ\b[^.]*\b(?:3rd|third)\s*gen/i, correct: 'ATEEZ debuted 2018 — classified as 4th generation (early 4th), NOT 3rd' },
+      { pattern: /BTS\b[^.]*\b(?:4th|fourth|5th|fifth)\s*gen/i, correct: 'BTS debuted 2013 — classified as 3rd generation, NOT 4th/5th' },
+      { pattern: /EXO\b[^.]*\b(?:4th|fourth|5th|fifth)\s*gen/i, correct: 'EXO debuted 2012 — classified as 3rd generation, NOT 4th/5th' },
+      { pattern: /TWICE\b[^.]*\b(?:4th|fourth|5th|fifth)\s*gen/i, correct: 'TWICE debuted 2015 — classified as 3rd generation, NOT 4th/5th' },
+    ];
+    for (const check of genClassifications) {
+      if (check.pattern.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: `Generation classification error: ${check.correct}`, severity: 'warning' });
+        eeatScore -= 2;
+      }
+    }
+
     // 26. GOT7 framing accuracy — NOT disbanded, self-managed independent group
     if (/GOT7/i.test(plainText)) {
       if (/GOT7\b[^.]*\b(?:disbanded|former|ex-|broke\s*up|no\s*longer\s*(?:together|active))/i.test(plainText)) {
         issues.push({ category: 'niche-accuracy', message: 'GOT7 is NOT disbanded — all 7 members left JYP in 2021 but maintained the group under self-management. They continue to release group music. Frame as "independent self-managed group."', severity: 'error' });
         eeatScore -= 3;
+      }
+    }
+
+    // 14차 감사 — 30. K-Drama OST artist-drama matching accuracy
+    const ostDramaMap: Record<string, string[]> = {
+      'Goblin': ['Chanyeol', 'Punch', 'Crush', 'Ailee'],
+      'Crash Landing on You': ['IU', 'Yoon Mi-rae', 'Davichi'],
+      'Itaewon Class': ['Gaho', 'Kim Feel'],
+      'Vincenzo': ['Jeon Mi-do', 'Ailee'],
+      'Squid Game': ['Jung Jae-il', '23'],
+      'My Love from the Star': ['Lyn', 'Kim Soo-hyun'],
+      'Descendants of the Sun': ['Yoon Mi-rae', 'Gummy', 'CHEN', 'Davichi'],
+      'Hotel Del Luna': ['IU', 'Punch', 'Heize', '10cm'],
+      'Mr. Sunshine': ['Elaine'],
+      'Reply 1988': ['Lee Juck', 'O.When'],
+      'Guardian': ['Chanyeol', 'Punch'],
+    };
+    for (const [drama, artists] of Object.entries(ostDramaMap)) {
+      const dramaEscaped = drama.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const ostClaimRegex = new RegExp(`${dramaEscaped}\\b[^.]{0,60}\\bOST\\b[^.]{0,40}\\b(\\w[\\w\\s-]{2,20})\\b`, 'i');
+      const ostMatch = ostClaimRegex.exec(plainText);
+      if (ostMatch) {
+        const claimedArtist = ostMatch[1].trim();
+        // Only flag if there's a definitive mismatch (artist claimed who definitely did NOT sing for this drama)
+        const isKnown = artists.some(a => claimedArtist.toLowerCase().includes(a.toLowerCase()));
+        // We only warn if a very different artist is claimed — avoid false positives
+        if (!isKnown && claimedArtist.length > 3) {
+          warnings.push({ category: 'niche-accuracy', message: `Verify: "${claimedArtist}" claimed as ${drama} OST artist — known OST artists: ${artists.join(', ')}. May be a lesser-known contribution, but verify.`, severity: 'info' });
+        }
+      }
+    }
+
+    // 14차 감사 — 31. Photocard/merch price claims require source
+    if (/photocard\b[^.]{0,40}\$\d+|₩[\d,]+[^.]{0,40}photocard/i.test(plainText)) {
+      const hasPriceSource = /(?:average|median|market|resale|as\s*of|trading\s*platform|according\s*to)/i.test(plainText);
+      if (!hasPriceSource) {
+        warnings.push({ category: 'niche-accuracy', message: 'Photocard pricing cited without source context — resale prices vary widely. Add source (trading platform, market average, date) for verifiability.', severity: 'warning' });
+        eeatScore -= 1;
       }
     }
   }
@@ -1706,6 +1845,26 @@ export function validateContent(
       if (!hasRegulatoryContext && !hasOfficialProductName) {
         warnings.push({ category: 'niche-accuracy', message: `"Whitening" used ${whiteningMentions} time(s) without regulatory context — use "brightening" for English audiences. "Whitening" is culturally problematic and signals market unawareness. Only acceptable when explaining Korea's 미백 MFDS category.`, severity: 'warning' });
         eeatScore -= 2;
+      }
+    }
+
+    // 14차 감사 — 23b. MFDS 미백 기능성 인증 검증 강화
+    // "brightening" 제품이 실제 MFDS 기능성 인증을 받았는지 구분 필요
+    if (/brightening/i.test(plainText) && ['product-review', 'best-x-for-y', 'x-vs-y'].includes(contentType)) {
+      const makesFunctionalClaim = /(?:proven|certified|registered)\s*(?:to\s*)?brighten|(?:MFDS|기능성)\s*(?:certified|registered|approved)\s*brightening|미백\s*기능성/i.test(plainText);
+      const hasUncertifiedClaim = /(?:brightens?|lighten|even\s*out)\s*(?:skin\s*tone|dark\s*spots?|hyperpigmentation|complexion)/i.test(plainText) &&
+        !/may\s*help|helps?\s*to|appears?\s*to|designed\s*to|aims?\s*to/i.test(plainText);
+      if (hasUncertifiedClaim && !makesFunctionalClaim) {
+        warnings.push({ category: 'niche-accuracy', message: 'Brightening efficacy claimed without hedging or MFDS 미백 기능성 certification context — only MFDS-certified 기능성화장품 (functional cosmetics) can make proven brightening claims. Use "helps brighten" or "designed to brighten" for non-certified products.', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 14차 감사 — 23c. 제조일자 표기 의무 (2020년 개정 화장품법)
+    if (contentType === 'product-review' && /expir|shelf\s*life|유통\s*기한/i.test(plainText)) {
+      const hasMfgDateContext = /(?:manufacturing|production)\s*date|제조일자|제조\s*연월|manufactured\s*on/i.test(plainText);
+      if (!hasMfgDateContext) {
+        warnings.push({ category: 'niche-accuracy', message: 'Shelf life/expiry discussed without mentioning manufacturing date — Korean cosmetics law (2020 revision) requires manufacturing date on packaging. Note this for reader awareness.', severity: 'info' });
       }
     }
 
@@ -1939,12 +2098,97 @@ export function validateContent(
       }
     }
 
+    // 14차 감사 — 45. K-pop idol brand ambassador accuracy (cross-niche K-Beauty ↔ K-Entertainment)
+    const ambassadorDb: Record<string, string[]> = {
+      // Format: idol/group → [brand ambassadorships as of 2026]
+      'Jisoo': ['Dior', 'Cartier', 'Self-Portrait'],
+      'Jennie': ['Chanel', 'Calvin Klein', 'Tamburins'],
+      'Rosé': ['Saint Laurent', 'Tiffany & Co'],
+      'Lisa': ['Celine', 'Bulgari', 'MAC'],
+      'Karina': ['Lancôme', 'Prada'],
+      'Winter': ['Miu Miu'],
+      'Giselle': ['Givenchy'],
+      'Wonyoung': ['Miu Miu', 'FRED'],
+      'Yujin': ['Versace'],
+      'Eunchae': ['Louis Vuitton'],
+      'Kazuha': ['Dior'],
+      'Sakura': ['Valentino'],
+      'Minji': ['Chanel', 'Guerlain'],
+      'Hanni': ['Gucci', 'Armani Beauty'],
+      'Danielle': ['Burberry', 'YSL Beauty'],
+      'Haerin': ['Dior'],
+      'Hyein': ['Louis Vuitton'],
+      'V': ['Celine', 'Cartier'],
+      'Jimin': ['Dior', 'Tiffany & Co'],
+      'Jungkook': ['Calvin Klein'],
+      'IU': ['Gucci', 'J.ESTINA', 'New Balance'],
+      'Suzy': ['Dior', 'Lancôme'],
+      'Song Hye-kyo': ['Fendi', 'Sulwhasoo'],
+      'Han So-hee': ['Dior', 'Charles & Keith'],
+      'Kim Yoo-jung': ['Laneige'],
+      'Cha Eun-woo': ['Dior', 'Burberry'],
+      'G-Dragon': ['Chanel'],
+    };
+    for (const [idol, brands] of Object.entries(ambassadorDb)) {
+      const idolEscaped = idol.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const idolRegex = new RegExp(`\\b${idolEscaped}\\b`, 'i');
+      if (idolRegex.test(plainText)) {
+        // Check for ambassador/endorsement claims with incorrect brands
+        const ambassadorClaimRegex = new RegExp(`${idolEscaped}\\b[^.]{0,60}(?:ambassador|endorses?|face\\s*of|model\\s*for|represents?)\\s+([A-Z][\\w&.' ]{2,30})`, 'i');
+        const claimMatch = ambassadorClaimRegex.exec(plainText);
+        if (claimMatch) {
+          const claimedBrand = claimMatch[1].trim();
+          const isCorrect = brands.some(b => claimedBrand.toLowerCase().includes(b.toLowerCase()));
+          if (!isCorrect) {
+            warnings.push({ category: 'niche-accuracy', message: `${idol} ambassador claim may be incorrect — "${claimedBrand}" not in known ambassadorships: ${brands.join(', ')}. Verify before publishing.`, severity: 'warning' });
+            eeatScore -= 2;
+          }
+        }
+      }
+    }
+
     // 44. Price disclaimer asymmetry fix — best-x-for-y also deducts score (like product-review Rule 18)
     if (contentType === 'best-x-for-y') {
       const hasPricing = /\$\d+|\₩[\d,]+|price|pricing|cost/i.test(plainText);
       const hasPriceDisclaimer = /prices?\s*(?:verified|checked|as of)|prices?\s*vary\s*frequently/i.test(plainText);
       if (hasPricing && !hasPriceDisclaimer) {
         structureScore -= 1;
+      }
+    }
+
+    // 14차 감사 — 46. Microbiome skincare accuracy — prebiotics/probiotics/postbiotics distinction
+    if (/microbiome|마이크로바이옴/i.test(plainText)) {
+      const hasDistinction = /(?:prebiotic|probiotic|postbiotic)/i.test(plainText);
+      if (!hasDistinction) {
+        warnings.push({ category: 'niche-accuracy', message: 'Microbiome skincare discussed without distinguishing prebiotics (feed bacteria) vs probiotics (live bacteria) vs postbiotics (metabolites). Expert content should clarify the type used in products.', severity: 'info' });
+      }
+      // Check for live bacteria claim in cosmetics (probiotics in skincare are typically lysates/filtrates, NOT live)
+      if (/live\s*(?:bacteria|probiotic|culture)/i.test(plainText) && !/ferment\s*(?:lysate|filtrate)|heat[- ]killed|inactivated/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'Skincare probiotics are typically heat-killed lysates or ferment filtrates, NOT live bacteria — live microorganisms in cosmetics pose stability/safety challenges. Clarify formulation type.', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 14차 감사 — 47. Toner/essence pH range validation (beyond acid products)
+    if (/(?:toner|essence|serum)\s*pH|pH\s*(?:of\s*)?(?:toner|essence|serum)/i.test(plainText)) {
+      const tonerPhMatches = plainText.match(/pH\s*(?:of\s*)?([\d.]+)/gi) || [];
+      for (const phMatch of tonerPhMatches) {
+        const phValue = parseFloat(phMatch.replace(/pH\s*(?:of\s*)?/i, ''));
+        if (!isNaN(phValue) && phValue >= 4.0 && phValue <= 6.0) {
+          // Normal range for non-acid toners — no warning needed
+        } else if (!isNaN(phValue) && phValue > 6.5 && !/acid|AHA|BHA|vitamin\s*c/i.test(plainText)) {
+          warnings.push({ category: 'niche-accuracy', message: `Toner/essence pH ${phValue} is above optimal range — K-Beauty hydrating toners should be pH 4.5-6.0 for skin barrier compatibility`, severity: 'warning' });
+          eeatScore -= 1;
+          break;
+        }
+      }
+    }
+
+    // 14차 감사 — 48. Cooling/ice skincare claims — efficacy disclaimer
+    if (/(?:ice|cryo|cooling|cold)\s*(?:therapy|treatment|facial|globes?|roller)/i.test(plainText)) {
+      const hasEfficacyNote = /(?:temporary|short[- ]term|anecdotal|limited\s*evidence|not\s*clinically\s*proven|results\s*may\s*vary)/i.test(plainText);
+      if (!hasEfficacyNote) {
+        warnings.push({ category: 'niche-accuracy', message: 'Ice/cryotherapy skincare described without efficacy disclaimer — cryotherapy benefits (pore minimizing, de-puffing) are temporary and not clinically proven for long-term results. Add "temporary" or "results may vary."', severity: 'info' });
       }
     }
   }

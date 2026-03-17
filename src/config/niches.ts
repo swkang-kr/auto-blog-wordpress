@@ -227,9 +227,16 @@ export const NICHES: NicheConfig[] = [
       // FWEE — 아이돌 메이크업 브랜드, 지수(BLACKPINK) 콜라보, 급성장
       'FWEE Korean makeup brand Jisoo review best products 2026',
       'FWEE vs rom&nd lip tint comparison review best shades',
-      // Aestura / Dr.G — 피부과 브랜드 메인스트림 진입, 민감·트러블 피부 세그먼트 강세
+      // Aestura / Dr.G / CNP — 피부과 브랜드 메인스트림 진입, 민감·트러블 피부 세그먼트 강세
       'Aestura AtoBarrier cream review sensitive skin barrier repair',
       'Dr.G brightening peeling gel review gentle exfoliation guide',
+      // 14차 감사: 더마코스메틱 카테고리 확장 — 올리브영 더마 카테고리 1위 세그먼트
+      'best Korean dermacosmetic brands ranked Aestura Dr.G CNP guide 2026',
+      'CNP Laboratory propolis ampule review acne sensitive skin 2026',
+      'Aestura vs ILLIYOON vs CNP best Korean derma brand comparison 2026',
+      'Korean dermatologist recommended brands what Korean 피부과 doctors use',
+      'best Korean cica cream ranked centella barrier repair derma brands 2026',
+      'Korean dermacosmetic vs French pharmacy skincare La Roche-Posay comparison',
       // 50s+ 안티에이징 K-Beauty — 성장 중인 미개척 세그먼트
       'best Korean anti-aging skincare for women over 50 ranked 2026',
       'Korean skincare routine for mature skin 40s 50s guide 2026',
@@ -375,6 +382,15 @@ export const NICHES: NicheConfig[] = [
       'best Korean skincare for teenagers teens acne gentle routine 2026',
       'Korean skincare routine for teens beginners gentle products guide 2026',
       'best Korean acne patches pimple patches for teens ranked 2026',
+      // 14차 감사: 쿨링/아이스 스킨케어 — 2025-2026 한국 여름 트렌드
+      'best Korean cooling skincare products ice toner pad summer routine 2026',
+      'Korean ice globes face roller cryotherapy skincare trend how to use guide',
+      // 14차 감사: 립 틴트-세럼 하이브리드 — 립케어+컬러 동시 카테고리 급성장
+      'best Korean lip tint serum hybrid products ranked care and color 2026',
+      'rom&nd vs Peripera vs FWEE lip tint serum comparison which is best 2026',
+      // 14차 감사: 남성 K-Beauty 젠더리스 확장 — Laka, FWEE 중성 라인
+      'best Korean genderless makeup brands Laka FWEE for men guide 2026',
+      'Korean skincare for men beginners guide affordable products ranked 2026',
       // ── 한방(Hanbang) & 프리미엄 K-Beauty — 고가 어필리에이트 + 럭셔리 세그먼트 ──
       // Sulwhasoo (설화수) — 아모레퍼시픽 최고급 한방 브랜드, 글로벌 프레스티지 라인
       'Sulwhasoo First Care Activating Serum review before after results 2026',
@@ -728,6 +744,7 @@ export const NICHES: NicheConfig[] = [
       'K-Beauty for Men: Complete Skincare Guide from Basics to Advanced', // 12차 감사: 남성 K-Beauty 허브 — 군대 컨텍스트 + 제품 앵커
       'K-Beauty Anti-Aging Routine: Prevention to Treatment Complete Guide', // 12차 감사: 안티에이징 허브 — 콜라겐 뱅킹, 주름개선 앵커
       'Korean Acne Skincare: Step-by-Step Guide for Every Age and Skin Type', // 12차 감사: 여드름 허브 — 활성여드름/색소/흉터 앵커
+      'K-Beauty Dermacosmetics Guide: Aestura, Dr.G, CNP and Clinical Skincare', // 14차 감사: 더마코스메틱 허브 — 더마브랜드/병원급 제품 앵커
     ],
   },
 
@@ -1203,6 +1220,10 @@ export const NICHES: NicheConfig[] = [
       'best K-drama OST playlist Spotify Apple Music 2026 complete guide',
       'K-drama sad OST songs playlist ranked best emotional soundtracks guide',
       'K-drama romantic OST songs playlist best love theme songs ranked 2026',
+      // 14차 감사: OST 허브 보강 — 아티스트 크로스오버 + 스트리밍 가이드
+      'how K-drama OST songs are made behind the scenes production process explained',
+      'K-drama OST vs K-pop comeback which generates more streams data comparison 2026',
+      'best K-drama OST duets couple songs romantic soundtracks ranked guide 2026',
       // 한국 웹예능/YouTube 예능 — 피식대학, 숏박스, 워크맨 등 완전 누락
       'best Korean YouTube variety shows web entertainment 2026 ranked guide',
       'Korean web variety shows explained Workman Psick University Short Box guide fans',
@@ -1313,6 +1334,7 @@ export const NICHES: NicheConfig[] = [
       'Korean Entertainment Beyond K-Pop: Musicals, Movies, and Variety Shows Guide', // 비아이돌 허브 — 뮤지컬/영화/예능/K-R&B 키워드 앵커
       'K-Drama Genre Guide: Sageuk, Romance, Thriller, BL and More', // 12차 감사: K-드라마 장르 허브 — 사극/로맨스/스릴러/BL 앵커
       'K-Pop Fandom Culture Explained: Lightsticks, Photocards, Fan Events', // 12차 감사: 팬덤 문화 허브 — 포토카드/팬싸/응원봉 앵커
+      'Best K-Drama OST Songs: Complete Guide to Korean Drama Soundtracks', // 14차 감사: OST 허브 — K-Drama OST/아티스트/스트리밍 앵커
     ],
   },
 ];
