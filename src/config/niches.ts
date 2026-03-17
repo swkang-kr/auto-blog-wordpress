@@ -756,6 +756,10 @@ export const NICHES: NicheConfig[] = [
       'best Korean thriller dramas 2026 ranked must watch',
       'best Korean historical dramas 2026 ranked for beginners',
       'best Korean romance dramas Netflix 2026 ranked new fans',
+      // K-Drama 장르 확장 — SF/판타지, 좀비, 법정 (누락 세그먼트)
+      'best Korean sci-fi fantasy dramas 2026 ranked must watch supernatural',
+      'best Korean zombie dramas ranked Kingdom All of Us Are Dead 2026 guide',
+      'best Korean legal courtroom dramas 2026 ranked lawyer judge shows guide',
       // K-pop 굿즈 가이드 — 팬덤 구매 의도
       'how to buy official K-pop merchandise online safely guide 2026',
       'best K-pop light sticks ranked most popular fandoms 2026',

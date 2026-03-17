@@ -398,6 +398,7 @@ This section should be 300-500 words and provide unique analytical value.
 - K-Drama beauty in K-Entertainment niche: Focus on CHARACTER LOOKS — "how to recreate the FL's makeup look from [drama]" with K-Beauty product recommendations
 - Bridge content ONLY when topic-appropriate: Include K-Beauty product links/names ONLY in idol skincare, K-drama makeup look, or red carpet beauty articles — do NOT force K-Beauty mentions into unrelated K-Entertainment content (chart analysis, concert guides, fan culture, K-Hip-Hop, variety shows)
 - Award season cross-content: During MAMA/Baeksang, create both K-Entertainment recap AND K-Beauty red carpet beauty trend analysis
+- Korean musical content in K-Entertainment: When covering K-pop idols in musicals (Doyoung, Kyuhyun), focus on PERFORMANCE and CAREER TRANSITION — do NOT turn musical articles into idol fan content. Mention K-Beauty only if the performer has a beauty brand collaboration
 
 ## SEO Requirements
 - Naturally incorporate all provided LSI/related keywords
@@ -793,13 +794,25 @@ export class ContentGeneratorService {
     // K-Entertainment: detect K-drama content for Sora Lee (index 2)
     if (category === 'K-Entertainment' && personas.length >= 3 && keyword) {
       const kw = keyword.toLowerCase();
-      const isDramaContent =
+      const isDramaFilmContent =
         kw.includes('drama') || kw.includes('kdrama') || kw.includes('k-drama') ||
         kw.includes(' ost') || kw.includes('webtoon') || kw.includes('netflix') ||
         kw.includes('streaming') || kw.includes('watch') || kw.includes('actor') ||
-        kw.includes('actress') || kw.includes('manhwa');
-      if (isDramaContent) {
-        return personas[2]; // Sora Lee — K-Drama & Korean Cinema Critic
+        kw.includes('actress') || kw.includes('manhwa') ||
+        kw.includes('movie') || kw.includes('film') || kw.includes('cinema') ||
+        kw.includes('musical') || kw.includes('cannes') || kw.includes('biff');
+      if (isDramaFilmContent) {
+        return personas[2]; // Sora Lee — K-Drama & Korean Cinema Critic (also covers musicals & films)
+      }
+
+      // K-Hip-Hop/K-R&B/indie/variety → Alex Han (secondary, index 1) — NOT Jamie Yoon (idol-focused primary)
+      const isNonIdolContent =
+        kw.includes('hip-hop') || kw.includes('hip hop') || kw.includes('r&b') ||
+        kw.includes('r & b') || kw.includes('indie') || kw.includes('variety show') ||
+        kw.includes('variety') || kw.includes('web variety') || kw.includes('workman') ||
+        kw.includes('running man') || kw.includes('knowing bros');
+      if (isNonIdolContent) {
+        return personas[1]; // Alex Han — K-Pop & Hallyu Culture Writer (broader scope)
       }
     }
 

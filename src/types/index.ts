@@ -66,6 +66,8 @@ export const KOREAN_SEASONAL_EVENTS: Array<{
   { name: 'Seoul Beauty Week', startMonth: 6, startDay: 10, endMonth: 6, endDay: 15, leadTimeDays: 30, relevantNiches: ['K-Beauty'], contentAngles: ['Seoul Beauty Week new product launches trend preview', 'K-beauty trends revealed at Seoul Beauty Week guide', 'best new Korean skincare products Seoul Beauty Week'] },
   // Olive Young Awards (올리브영 어워즈) — K-Beauty 최고 상품 시상 (12월 별도)
   { name: 'Olive Young Awards', startMonth: 12, startDay: 10, endMonth: 12, endDay: 20, leadTimeDays: 30, relevantNiches: ['K-Beauty'], contentAngles: ['Olive Young Awards winners best products ranked guide', 'Olive Young award-winning skincare products what to buy', 'best K-beauty products of the year Olive Young Awards recap'] },
+  // 수능 (대학수학능력시험, CSAT) — 매년 11월 셋째 목요일, K-Entertainment 트래픽 스파이크 (아이돌 수능 응원·수능 후 K-Drama 몰아보기)
+  { name: 'Suneung (Korean CSAT)', startMonth: 11, startDay: 13, endMonth: 11, endDay: 14, leadTimeDays: 30, relevantNiches: ['K-Entertainment'], contentAngles: ['K-pop idols Suneung encouragement messages fans guide 2026', 'best K-dramas to binge after Suneung exam stress relief ranked', 'K-pop idols who took Suneung while training exam stories explained', 'Suneung Korean college entrance exam explained for international fans guide'] },
   // Korea Sale Festa (코리아세일페스타) — 산업통상자원부 주관, 매년 10-11월 한국판 블랙프라이데이
   { name: 'Korea Sale Festa', startMonth: 10, startDay: 25, endMonth: 11, endDay: 15, leadTimeDays: 45, relevantNiches: ['K-Beauty'], contentAngles: ['Korea Sale Festa best K-beauty deals what to buy 2026 guide', 'Olive Young Korea Sale Festa discounts skincare must-buy list 2026', 'how to shop Korea Sale Festa internationally K-Beauty deals guide', 'Korea Sale Festa vs Black Friday which has better K-beauty deals comparison'] },
 ];
@@ -143,7 +145,7 @@ export const NICHE_AUTHOR_PERSONAS: Record<string, AuthorProfile[]> = {
       name: 'Ella Park',
       title: 'K-Beauty Hair & Makeup Specialist',
       bio: 'Covering the full spectrum of Korean beauty — from viral makeup looks and K-pop idol beauty trends to hair loss treatments and scalp care innovations. Focused on products available on Amazon and Olive Young.',
-      expertise: ['Korean makeup brands', 'K-pop idol makeup looks', 'Korean hair loss treatments', 'Scalp care', 'Korean cosmetics on Amazon'],
+      expertise: ['Korean makeup brands', 'K-pop idol makeup looks', 'Korean hair loss treatments', 'Scalp care', 'Korean nail art & gel stickers', 'Korean cosmetics on Amazon'],
       credentials: ['Korean Beauty Content Specialist', 'Makeup & Haircare Product Reviewer'],
       yearsExperience: 4,
     },
@@ -162,7 +164,7 @@ export const NICHE_AUTHOR_PERSONAS: Record<string, AuthorProfile[]> = {
       name: 'Sora Lee',
       title: 'K-Drama & Korean Cinema Critic',
       bio: 'Dedicated to Korean drama and film criticism for international audiences. Specializing in webtoon-to-screen adaptations, streaming platform guides, OST rankings, and breakout actor spotlights. Translating the nuances of Korean storytelling for global fans.',
-      expertise: ['K-drama reviews & rankings', 'Webtoon adaptation analysis', 'K-drama OST rankings', 'Netflix & streaming platform guides', 'Korean film & cinema'],
+      expertise: ['K-drama reviews & rankings', 'Webtoon adaptation analysis', 'K-drama OST rankings', 'Netflix & streaming platform guides', 'Korean film & cinema', 'Korean musical theater'],
       credentials: ['Korean Media Studies Researcher', 'K-Drama Content Specialist'],
       yearsExperience: 6,
     },
@@ -186,7 +188,7 @@ export const CONTENT_TYPE_PERSONA_MAP: Record<string, 'primary' | 'secondary' | 
 };
 
 /** Niche-specific persona override: when keyword matches these patterns, force tertiary (Ella Park for K-Beauty makeup/hair) */
-export const KBEAUTY_TERTIARY_KEYWORDS = /\b(?:makeup|mascara|eyeliner|eyeshadow|foundation|cushion|lip\s*tint|blush|contour|hair\s*(?:loss|care|shampoo|dye)|scalp|wig)\b/i;
+export const KBEAUTY_TERTIARY_KEYWORDS = /\b(?:makeup|mascara|eyeliner|eyeshadow|foundation|cushion|lip\s*tint|blush|contour|hair\s*(?:loss|care|shampoo|dye)|scalp|wig|nail\s*(?:art|gel|sticker|polish)|press[- ]on\s*nail|manicure)\b/i;
 
 /** 니치 설정 */
 export interface NicheConfig {
