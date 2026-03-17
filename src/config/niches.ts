@@ -748,6 +748,50 @@ export const NICHES: NicheConfig[] = [
       'iHerb vs Amazon vs Olive Young where to buy Korean skincare price comparison 2026',
       // 수유 중 K-Beauty
       'Korean skincare safe while breastfeeding nursing mother skincare guide 2026',
+      // ── 전문가 감사 추가 (2026-03-17 batch 17): 누락 브랜드·카테고리·트렌드 ──
+      // rom&nd (롬앤) — 글로벌 K-Beauty 색조 1위 브랜드, Amazon/Olive Young 립틴트 판매 1위, 시드 키워드 완전 누락
+      'rom&nd best lip tints ranked shades swatches review guide 2026',
+      'rom&nd Juicy Lasting Tint vs Glasting Water Tint comparison which to buy 2026',
+      'rom&nd cushion foundation review shade range comparison K-Beauty 2026',
+      'rom&nd vs TIRTIR vs Peripera Korean lip tint comparison which brand is best 2026',
+      // K-Beauty 립 카테고리 — Amazon K-Beauty 검색 Top 5, 필라 토픽 없었음
+      'best Korean lip tints 2026 ranked long-lasting shades beginners guide',
+      'best Korean lip oils 2026 hydrating glossy ranked review guide',
+      'Korean lip tint vs lip oil vs lip gloss which to choose difference explained guide',
+      'best Korean lip products for dry lips moisturizing tints balms ranked 2026',
+      'Korean gradient lip tutorial how to do Korean ombre lips step by step guide',
+      // Sunscreen stick — Amazon K-Beauty 최고 성장 서브카테고리
+      'best Korean sunscreen sticks 2026 ranked portable SPF reapply guide',
+      'Korean sunscreen stick vs cream vs gel which format is best comparison 2026',
+      'best Korean sunscreen for reapplication over makeup stick cushion spray ranked 2026',
+      // Skin flooding — slugging 후속 트렌드
+      'skin flooding Korean skincare trend explained how to do step by step guide 2026',
+      'skin flooding vs slugging vs skin cycling which Korean trend is best comparison guide',
+      // K-Beauty body care — 성장 세그먼트
+      'best Korean body sunscreen 2026 SPF body lotion ranked review guide',
+      'best Korean body scrub exfoliator ranked smooth skin guide 2026',
+      'Korean body care routine complete guide body lotion scrub sunscreen 2026',
+      'best Korean body lotion for dry skin winter moisturizer ranked 2026',
+      // K-Beauty vs J-Beauty — 검색량 높은 비교
+      'K-Beauty vs J-Beauty skincare comparison which is better difference explained 2026',
+      'Korean skincare vs Japanese skincare routine comparison guide beginners 2026',
+      // VT Cosmetics — CICA 라인 글로벌 인기, 리들샷 바이럴
+      'VT Cosmetics Reedle Shot review before after results microneedle serum guide 2026',
+      'VT Cosmetics CICA products ranked best for sensitive skin review 2026',
+      // Laka — 젠더뉴트럴 K-Beauty 선구 브랜드
+      'Laka Korean gender neutral beauty brand review best products ranked 2026',
+      // JUNG SAEM MOOL (정샘물) — 프로 메이크업 아티스트 브랜드
+      'JUNG SAEM MOOL Korean makeup artist brand best products review guide 2026',
+      'JUNG SAEM MOOL Essential Skin Nuder cushion review vs other Korean cushions 2026',
+      // Holika Holika — 버짓 K-Beauty 대표
+      'best Holika Holika products ranked affordable K-Beauty guide 2026',
+      'best budget Korean skincare under $15 affordable K-Beauty ranked guide 2026',
+      // K-Drama 캐릭터 스킨케어 — 크로스니치 브릿지 (K-Entertainment → K-Beauty)
+      'K-drama character skincare routine recreate products step by step guide 2026',
+      'K-drama actress skincare secrets what products Korean celebrities actually use guide 2026',
+      // K-Beauty dupes — 고검색량 키워드
+      'best Korean skincare dupes affordable alternatives to luxury products ranked 2026',
+      'Korean dupes for Drunk Elephant La Mer affordable K-Beauty alternatives guide 2026',
     ],
     contentTypes: ['product-review', 'best-x-for-y', 'x-vs-y', 'how-to', 'listicle', 'case-study', 'deep-dive', 'news-explainer'],
     adSenseRpm: 'high',
@@ -762,6 +806,7 @@ export const NICHES: NicheConfig[] = [
       'K-Beauty Anti-Aging Routine: Prevention to Treatment Complete Guide', // 12차 감사: 안티에이징 허브 — 콜라겐 뱅킹, 주름개선 앵커
       'Korean Acne Skincare: Step-by-Step Guide for Every Age and Skin Type', // 12차 감사: 여드름 허브 — 활성여드름/색소/흉터 앵커
       'K-Beauty Dermacosmetics Guide: Aestura, Dr.G, CNP and Clinical Skincare', // 14차 감사: 더마코스메틱 허브 — 더마브랜드/병원급 제품 앵커
+      'K-Beauty Lip Products Guide: Best Korean Lip Tints, Oils, and Glosses', // 17차 감사: 립 허브 — rom&nd/Peripera/립틴트/립오일 앵커
     ],
   },
 
@@ -1360,6 +1405,38 @@ export const NICHES: NicheConfig[] = [
       // Hallyu Tourism 종합
       'Seoul Hallyu travel guide K-pop K-drama fan pilgrimage complete itinerary 2026',
       'K-pop fan trip Seoul budget travel guide where to go what to see 2026',
+      // ── 전문가 감사 추가 (2026-03-17 batch 17): 누락 그룹 확장·어필리에이트·문화 ──
+      // KISS OF LIFE — 키워드 1개(곡 랭킹)뿐, 멤버 프로필/비기너 가이드/컨셉 설명 누락
+      'KISS OF LIFE member profiles who is who complete guide new fans 2026',
+      'KISS OF LIFE retro concept discography explained guide beginners 2026',
+      'KISS OF LIFE comeback 2026 what fans need to know full update',
+      // TWS — PLEDIS/HYBE 몬스터 루키, 키워드 1개(곡 랭킹)뿐
+      'TWS member profiles PLEDIS HYBE debut guide for new fans 2026',
+      'TWS concept storytelling explained how their music connects guide fans',
+      'TWS comeback 2026 what fans need to know full update',
+      // Xdinary Heroes — JYP 밴드, DAY6/QWER 있는데 누락
+      'Xdinary Heroes JYP band members instruments concept explained guide new fans 2026',
+      'Xdinary Heroes best songs ranked rock K-pop guide for new fans 2026',
+      'Xdinary Heroes vs DAY6 vs QWER Korean band idol comparison which to listen 2026',
+      // PURPLE KISS — RBW (MAMAMOO 후배), 독자적 팬덤
+      'PURPLE KISS RBW girl group concept songs ranked guide new fans 2026',
+      'PURPLE KISS comeback 2026 what fans need to know update guide',
+      // H1-KEY — 글로벌 걸그룹, 다국적 멤버 앵글
+      'H1-KEY global girl group multilingual members concept explained guide 2026',
+      'H1-KEY songs ranked best tracks for new fans guide 2026',
+      // FIFTY FIFTY — 바이럴 후 해체·재편 드라마, 교훈적 케이스 스터디
+      // NOTE: 법적 분쟁 관련 확정 판결만 기술, 미확인 주장 단정 금지
+      'FIFTY FIFTY rise and fall story what happened to the viral K-pop group explained 2026',
+      // K-pop 앨범 구매 어필리에이트 — RPM 개선
+      'where to buy K-pop albums online cheapest options Amazon Target guide 2026',
+      'best websites to buy K-pop albums with photocards cheapest shipping guide 2026',
+      'K-pop album pre-order guide how to pre-order get benefits photocards 2026',
+      // 콘서트 티켓 어필리에이트
+      'how to buy K-pop concert tickets resale StubHub Vivid Seats safe guide 2026',
+      'K-pop concert ticket resale prices are they worth it how to find deals guide 2026',
+      // 스트리밍 구독 어필리에이트
+      'best streaming apps for K-pop music Spotify Apple Music YouTube Music compared 2026',
+      'Melon app for international fans how to subscribe use guide 2026',
     ],
     contentTypes: ['news-explainer', 'listicle', 'best-x-for-y', 'deep-dive', 'how-to', 'x-vs-y', 'case-study'],
     adSenseRpm: 'medium',
@@ -1373,6 +1450,8 @@ export const NICHES: NicheConfig[] = [
       'K-Drama Genre Guide: Sageuk, Romance, Thriller, BL and More', // 12차 감사: K-드라마 장르 허브 — 사극/로맨스/스릴러/BL 앵커
       'K-Pop Fandom Culture Explained: Lightsticks, Photocards, Fan Events', // 12차 감사: 팬덤 문화 허브 — 포토카드/팬싸/응원봉 앵커
       'Best K-Drama OST Songs: Complete Guide to Korean Drama Soundtracks', // 14차 감사: OST 허브 — K-Drama OST/아티스트/스트리밍 앵커
+      'Korean Webtoons Guide: Best Manhwa to Read and Where to Find Them', // 17차 감사: 웹툰 허브 — 네이버/카카오/LEZHIN/영어 번역 앵커
+      'Best Korean Movies Guide: Thrillers, Horror, and Award Winners', // 17차 감사: 영화 허브 — 봉준호/박찬욱/넷플릭스/칸 앵커
     ],
   },
 ];

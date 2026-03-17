@@ -63,7 +63,8 @@ ${category === 'K-Beauty' ? `Use these standardized Korean beauty terms consiste
 - retinol → 레티놀, hyaluronic acid → 히알루론산, AHA/BHA → AHA/BHA (영문 유지)
 - Olive Young → 올리브영, Hwahae → 화해, Glowpick → 글로우픽` : ''}${category === 'K-Entertainment' ? `Use these standardized K-entertainment terms consistently:
 - comeback → 컴백, photocard → 포토카드, fandom → 팬덤, lightstick → 응원봉
-- bias → 최애/최애돌, stan → 덕질, all-kill → 올킬, first-week sales → 초동
+- bias → 최애/최애돌, stan → 덕질하다/덕질 (명사: "덕질", 동사: "덕질하다", 강한 팬 활동 맥락: "입덕"), all-kill → 올킬, first-week sales → 초동
+- fancam → 직캠, era → 활동기/시대, ult (ultimate bias) → 원픽/최최애, comeback stage → 컴백 무대
 - Circle Chart → 써클차트, Hanteo → 한터차트, Melon → 멜론, Weverse → 위버스
 - Daesang → 대상, Bonsang → 본상, music show win → 음방 1위
 - fansign → 팬사인회, fan meeting → 팬미팅, debut → 데뷔` : ''}

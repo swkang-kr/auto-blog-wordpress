@@ -1456,6 +1456,33 @@ ${ga4TrackingScript}`;
       'THE BOYZ': 'https://www.amazon.com/s?k=THE+BOYZ+kpop+album&tag=trendhunt2007-20',
       'TREASURE': 'https://www.amazon.com/s?k=TREASURE+kpop+album&tag=trendhunt2007-20',
       'BTOB': 'https://www.amazon.com/s?k=BTOB+album&tag=trendhunt2007-20',
+      // 17차 감사: 누락 그룹 + 어필리에이트 카테고리 확장
+      'NMIXX': 'https://www.amazon.com/s?k=NMIXX+album&tag=trendhunt2007-20',
+      'PLAVE': 'https://www.amazon.com/s?k=PLAVE+album&tag=trendhunt2007-20',
+      'RIIZE': 'https://www.amazon.com/s?k=RIIZE+album&tag=trendhunt2007-20',
+      'BOYNEXTDOOR': 'https://www.amazon.com/s?k=BOYNEXTDOOR+album&tag=trendhunt2007-20',
+      'KISS OF LIFE': 'https://www.amazon.com/s?k=KISS+OF+LIFE+kpop+album&tag=trendhunt2007-20',
+      'BABYMONSTER': 'https://www.amazon.com/s?k=BABYMONSTER+album&tag=trendhunt2007-20',
+      'ZeroBaseOne': 'https://www.amazon.com/s?k=ZeroBaseOne+album&tag=trendhunt2007-20',
+      'Dreamcatcher': 'https://www.amazon.com/s?k=Dreamcatcher+kpop+album&tag=trendhunt2007-20',
+      'fromis_9': 'https://www.amazon.com/s?k=fromis_9+album&tag=trendhunt2007-20',
+      'QWER': 'https://www.amazon.com/s?k=QWER+kpop+album&tag=trendhunt2007-20',
+      'G-Dragon': 'https://www.amazon.com/s?k=G-Dragon+album&tag=trendhunt2007-20',
+      // 어필리에이트 카테고리: 콘서트 티켓, 스트리밍, 포토카드
+      'photocard': 'https://www.amazon.com/s?k=kpop+photocard+binder&tag=trendhunt2007-20',
+      'K-pop album': 'https://www.amazon.com/s?k=kpop+album+2026&tag=trendhunt2007-20',
+      'concert merchandise': 'https://www.amazon.com/s?k=kpop+concert+merch&tag=trendhunt2007-20',
+      'K-drama OST album': 'https://www.amazon.com/s?k=korean+drama+ost+album&tag=trendhunt2007-20',
+      // K-Beauty 17차 감사: 누락 브랜드 (rom&nd, Laka, VT, Holika Holika, JUNG SAEM MOOL)
+      "rom&nd": 'https://www.amazon.com/s?k=romand+lip+tint&tag=trendhunt2007-20',
+      'Laka': 'https://www.amazon.com/s?k=Laka+Korean+beauty&tag=trendhunt2007-20',
+      'VT Cosmetics': 'https://www.amazon.com/s?k=VT+Cosmetics&tag=trendhunt2007-20',
+      'JUNG SAEM MOOL': 'https://www.amazon.com/s?k=JUNG+SAEM+MOOL&tag=trendhunt2007-20',
+      'Peripera': 'https://www.amazon.com/s?k=Peripera+lip+tint&tag=trendhunt2007-20',
+      'lip tint': 'https://www.amazon.com/s?k=korean+lip+tint&tag=trendhunt2007-20',
+      'lip oil': 'https://www.amazon.com/s?k=korean+lip+oil&tag=trendhunt2007-20',
+      'sunscreen stick': 'https://www.amazon.com/s?k=korean+sunscreen+stick&tag=trendhunt2007-20',
+      'body sunscreen': 'https://www.amazon.com/s?k=korean+body+sunscreen&tag=trendhunt2007-20',
     },
   };
 

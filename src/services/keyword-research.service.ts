@@ -770,6 +770,21 @@ STRATEGY: Consider creating content that directly targets one of these content g
       'dermacosmetic',    // 한국 더마코스메틱 카테고리 용어
       'nexz',             // JYP Japan 보이그룹
       'nct wish',         // SM 2024 데뷔 유닛
+      // 17차 감사: 누락 브랜드·그룹·용어 추가
+      'jung saem mool',   // 프로 메이크업 아티스트 브랜드
+      'skin flooding',    // 2026 K-Beauty 트렌드 (slugging 후속)
+      'lip tint',         // K-Beauty 립 카테고리 핵심
+      'lip oil',          // K-Beauty 립오일 카테고리
+      'sunscreen stick',  // K-Beauty 선스틱 카테고리
+      'body sunscreen',   // K-Beauty 바디 선크림
+      'k-beauty body',    // K-Beauty 바디케어
+      'j-beauty',         // K-Beauty vs J-Beauty 비교
+      'xdinary heroes',   // JYP 밴드 보이그룹
+      'purple kiss',      // RBW 걸그룹 (MAMAMOO 후배)
+      'h1-key',           // 글로벌 걸그룹
+      'fifty fifty',      // 바이럴 걸그룹 케이스 스터디
+      'lim young-woong', 'youngwoong', // 트로트 #1 아티스트
+      'lee mujin',        // K-Ballad 신예
     ];
     const keywordLower = analysis.selectedKeyword.toLowerCase();
     const titleLower = analysis.suggestedTitle.toLowerCase();

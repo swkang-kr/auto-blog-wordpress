@@ -1202,6 +1202,38 @@ export function validateContent(
         eeatScore -= 1;
       }
     }
+
+    // 20. Japanese brand misidentification — AI frequently labels J-Beauty as K-Beauty
+    const japaneseBrands = /\b(?:Hada\s*Labo|CANMAKE|Shiseido|SK-?II|Biore|Rohto|Kose|Muji|DHC|Tatcha|FANCL|Shu\s*Uemura|Sofina|Kao|Mandom|Ettusais|KATE|Cezanne|Dejavu|Heroine\s*Make|Senka|Anessa|Curel)\b/i;
+    if (japaneseBrands.test(plainText)) {
+      const match = plainText.match(japaneseBrands);
+      const brandName = match ? match[0] : 'Unknown';
+      if (/(?:Korean|K-?Beauty|한국)\s*(?:brand|product|skincare)?[^.]*\b(?:Hada\s*Labo|CANMAKE|Shiseido|SK-?II|Biore|Rohto|Kose|Muji|DHC|Tatcha|FANCL|Shu\s*Uemura|Sofina|Kao|Mandom|Ettusais|KATE|Cezanne|Dejavu|Heroine\s*Make|Senka|Anessa|Curel)\b/i.test(plainText) ||
+          /\b(?:Hada\s*Labo|CANMAKE|Shiseido|SK-?II|Biore|Rohto|Kose|Muji|DHC|Tatcha|FANCL|Shu\s*Uemura|Sofina|Kao|Mandom|Ettusais|KATE|Cezanne|Dejavu|Heroine\s*Make|Senka|Anessa|Curel)\b[^.]*(?:Korean|K-?Beauty|한국)\s*(?:brand|product)/i.test(plainText)) {
+        issues.push({ category: 'niche-accuracy', message: `${brandName} is a Japanese brand (J-Beauty), NOT Korean (K-Beauty). Do not include Japanese products in K-Beauty content unless explicitly comparing K-Beauty vs J-Beauty.`, severity: 'error' });
+        eeatScore -= 3;
+      }
+    }
+
+    // 21. Cleanser pH context — K-Beauty hallmark differentiator
+    if (/cleanser|클렌저|foam.*wash|face\s*wash|cleansing\s*(?:gel|foam|milk)/i.test(plainText) && ['product-review', 'best-x-for-y', 'how-to'].includes(contentType)) {
+      const hasPhContext = /pH\s*\d|pH\s*level|pH\s*balanced|low\s*pH|acidic\s*pH|pH\s*5\.5/i.test(plainText);
+      if (!hasPhContext) {
+        warnings.push({ category: 'niche-accuracy', message: 'K-Beauty cleanser content missing pH context — low pH (5.5) cleansing is a core K-Beauty differentiator. Mention pH level or pH-balanced formulation for expert authority.', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 22. Lip product color safety — lip tints/stains must note color additive safety
+    if (/lip\s*(?:tint|stain|color|product)/i.test(plainText) && ['product-review', 'best-x-for-y'].includes(contentType)) {
+      if (/(?:eat|ingest|swallow|safe\s*to\s*eat|edible)/i.test(plainText)) {
+        const hasSafetyNote = /(?:not\s*(?:meant\s*)?(?:for|to\s*be)\s*(?:eating|ingestion|consumed)|cosmetic\s*use\s*only|color\s*additives?\s*(?:are\s*)?approved|MFDS|FDA)/i.test(plainText);
+        if (!hasSafetyNote) {
+          warnings.push({ category: 'niche-accuracy', message: 'Lip product described with ingestion context without safety note — lip tints are cosmetic products, NOT food-grade. Note: "Color additives in Korean lip tints are MFDS-approved for cosmetic use."', severity: 'warning' });
+          eeatScore -= 1;
+        }
+      }
+    }
   }
 
   if (category === 'K-Entertainment') {
@@ -1666,6 +1698,50 @@ export function validateContent(
       if (!hasPriceSource) {
         warnings.push({ category: 'niche-accuracy', message: 'Photocard pricing cited without source context — resale prices vary widely. Add source (trading platform, market average, date) for verifiability.', severity: 'warning' });
         eeatScore -= 1;
+      }
+    }
+
+    // 17차 감사 — 32. Group debut year accuracy (common AI hallucination)
+    const debutYears: Record<string, number> = {
+      'BTS': 2013, 'EXO': 2012, 'BLACKPINK': 2016, 'TWICE': 2015, 'SEVENTEEN': 2015,
+      'Stray Kids': 2018, 'ATEEZ': 2018, 'ENHYPEN': 2020, 'TXT': 2019, 'aespa': 2020,
+      'IVE': 2021, 'LE SSERAFIM': 2022, 'NewJeans': 2022, 'BABYMONSTER': 2024,
+      'ILLIT': 2024, 'NMIXX': 2022, 'RIIZE': 2023, 'BOYNEXTDOOR': 2023,
+      'ZeroBaseOne': 2023, 'KISS OF LIFE': 2023, 'TWS': 2024, 'QWER': 2023,
+      'PLAVE': 2023, 'ITZY': 2019, '(G)I-DLE': 2018, 'SHINee': 2008,
+      'Red Velvet': 2014, 'GOT7': 2014, 'MAMAMOO': 2014, 'DAY6': 2015,
+      'BTOB': 2012, 'THE BOYZ': 2017, 'TREASURE': 2020, 'NCT 127': 2016,
+      'NCT Dream': 2016, 'Dreamcatcher': 2017, 'fromis_9': 2018,
+      'WHIPLASH': 2024, 'KATSEYE': 2024, 'tripleS': 2023, 'xikers': 2023,
+      'YOUNG POSSE': 2023, 'H1-KEY': 2022, 'PURPLE KISS': 2021,
+      'Xdinary Heroes': 2021, 'VCHA': 2023, 'n.SSign': 2023, '8TURN': 2023,
+    };
+    for (const [group, year] of Object.entries(debutYears)) {
+      const groupEscaped = group.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const debutRegex = new RegExp(`${groupEscaped}\\b[^.]{0,50}\\bdebut(?:ed)?\\s*(?:in\\s*)?(\\d{4})`, 'i');
+      const match = debutRegex.exec(plainText);
+      if (match) {
+        const claimedYear = parseInt(match[1]);
+        if (claimedYear !== year) {
+          issues.push({ category: 'niche-accuracy', message: `${group} debut year error: claimed ${claimedYear}, correct is ${year}`, severity: 'error' });
+          eeatScore -= 3;
+        }
+      }
+    }
+
+    // 17차 감사 — 33. Music show broadcast day accuracy
+    const musicShowDays: Array<{ pattern: RegExp; correct: string }> = [
+      { pattern: /THE\s*SHOW\b[^.]*\b(?:Monday|Wednesday|Thursday|Friday|Saturday|Sunday|월|수|목|금|토|일)/i, correct: 'THE SHOW (더쇼) airs on TUESDAY (화요일), SBS MTV' },
+      { pattern: /Show\s*Champion\b[^.]*\b(?:Monday|Tuesday|Thursday|Friday|Saturday|Sunday|월|화|목|금|토|일)/i, correct: 'Show Champion airs on WEDNESDAY (수요일), MBC M' },
+      { pattern: /M\s*Countdown\b[^.]*\b(?:Monday|Tuesday|Wednesday|Friday|Saturday|Sunday|월|화|수|금|토|일)/i, correct: 'M Countdown airs on THURSDAY (목요일), Mnet' },
+      { pattern: /Music\s*Bank\b[^.]*\b(?:Monday|Tuesday|Wednesday|Thursday|Saturday|Sunday|월|화|수|목|토|일)/i, correct: 'Music Bank airs on FRIDAY (금요일), KBS' },
+      { pattern: /Music\s*Core\b[^.]*\b(?:Monday|Tuesday|Wednesday|Thursday|Friday|Sunday|월|화|수|목|금|일)/i, correct: 'Music Core (음악중심) airs on SATURDAY (토요일), MBC' },
+      { pattern: /Inkigayo\b[^.]*\b(?:Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|월|화|수|목|금|토)/i, correct: 'Inkigayo (인기가요) airs on SUNDAY (일요일), SBS' },
+    ];
+    for (const check of musicShowDays) {
+      if (check.pattern.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: `Music show day error: ${check.correct}`, severity: 'warning' });
+        eeatScore -= 2;
       }
     }
   }
