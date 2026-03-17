@@ -1150,6 +1150,11 @@ ${rows}
         'FWEE', 'Skin&Lab', 'Klavuu',
         // Makeup brands
         'rom&nd', 'Clio', 'Peripera', 'Etude House', 'Wakemake',
+        '3CE', 'espoir', 'AMUSE', 'Laka', 'Peach C',
+        // K-Fragrance brands
+        'Tamburins', 'nonfiction', 'granhand',
+        // Korean-American brands
+        'Peach & Lily', 'Krave Beauty',
         // Hair care
         'Daeng Gi Meo Ri', 'Ryo', 'Masil',
         // Nail art brands
@@ -1172,10 +1177,14 @@ ${rows}
         'ATEEZ', 'TXT', 'ENHYPEN', 'IVE', 'Kep1er',
         'NMIXX', 'ITZY', 'xikers', 'VCHA', 'n.SSign',
         'RIIZE', 'BOYNEXTDOOR', 'ZeroBaseOne', 'QWER', 'PLAVE', 'WHIPLASH', 'KATSEYE',
+        'fromis_9', 'Dreamcatcher',
         // International
         'XG',
-        // K-Hip-Hop / K-R&B artists (non-idol K-Music)
+        // K-Hip-Hop / K-R&B / K-Ballad / Trot artists (non-idol K-Music)
         'Jay Park', 'Crush', 'DEAN', 'Zion.T', 'DPR LIVE', 'Heize', 'Lee Hi',
+        'Paul Kim', 'Lee Mujin', '10cm', 'Lim Young-woong',
+        // Street dance
+        'Street Woman Fighter', 'SWF', 'Street Man Fighter',
         // OST / soundtrack
         'OST', 'soundtrack',
         // Korean musical theater

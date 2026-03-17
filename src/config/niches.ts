@@ -646,6 +646,34 @@ export const NICHES: NicheConfig[] = [
       'azelaic acid Korean skincare products complete guide benefits how to use 2026',
       'best Korean azelaic acid serum cream for dark spots hyperpigmentation 2026',
       'azelaic acid vs tranexamic acid Korean skincare which is better for dark spots 2026',
+      // ── 전문가 감사 추가 (2026-03-17 batch 6): K-Fragrance, 메이크업 브랜드, 한미 브릿지 ──
+      // K-Fragrance (한국 향수) — 2025-2026 K-Beauty 최대 성장 수출 카테고리 (Tamburins·nonfiction TikTok 바이럴)
+      'best Korean perfume fragrance brands ranked Tamburins nonfiction granhand 2026',
+      'Tamburins perfume review Jennie BLACKPINK collaboration best scents ranked 2026',
+      'nonfiction Korean fragrance brand review Amorepacific clean scents ranked 2026',
+      'granhand Korean niche perfume review Seoul boutique fragrance guide 2026',
+      'Korean perfume vs French perfume which is better comparison guide 2026',
+      'best Korean body mist affordable fragrance layering guide 2026',
+      'K-fragrance trend explained why Korean perfume is going viral TikTok 2026',
+      // 누락 메이크업 브랜드 — Olive Young/Amazon 베스트셀러급 브랜드 독립 키워드
+      // 3CE (3 Concept Eyes) — Stylenanda 산하, 한국 메이크업 Top 3
+      '3CE best products ranked lip tint eyeshadow palette review 2026',
+      '3CE vs rom&nd Korean makeup comparison which brand is better 2026',
+      // espoir — 아모레퍼시픽 프로페셔널 메이크업, 올리브영 베스트셀러
+      'espoir Korean makeup brand review best cushion foundation lip tint 2026',
+      // AMUSE — 비건 메이크업, Sephora Korea 베스트셀러
+      'AMUSE vegan Korean makeup brand review best products lip tint 2026',
+      // Laka — 젠더 뉴트럴 메이크업, 독특한 포지셔닝
+      'Laka Korean gender neutral makeup brand review best products 2026',
+      // Peach C — 틱톡 바이럴 쿠션, 버짓 메이크업
+      'Peach C cushion foundation review affordable Korean makeup best coverage 2026',
+      // Wakemake — 올리브영 자체 브랜드
+      'Wakemake Korean makeup brand review best sellers eye palette Olive Young 2026',
+      // Korean-American K-Beauty 브릿지 브랜드 — Sephora/Ulta K-Beauty 검색 트래픽
+      // NOTE: Peach & Lily/Krave Beauty = 한국계 미국 브랜드, Glow Recipe와 동일 취급 (한국 브랜드 아님 고지 필수)
+      'Peach and Lily Glass Skin Refining Serum review Ulta K-Beauty guide 2026',
+      'Krave Beauty Liah Yoo minimalist Korean skincare review best products 2026',
+      'Peach and Lily vs Glow Recipe vs Krave Beauty Korean-American skincare comparison 2026',
       // Case Study / Deep-Dive 비율 보강 — 현재 ~5% → 목표 15%
       'how COSRX became number one K-beauty brand on Amazon L\'Oreal acquisition story 2026',
       'how Anua heartleaf toner went viral TikTok Korean skincare brand growth story 2026',
@@ -1142,6 +1170,42 @@ export const NICHES: NicheConfig[] = [
       'best K-pop photocard trading apps platforms compared 2026 where to buy sell guide',
       'K-pop photocard market price guide how to value rare photocards 2026',
       'K-pop photocard collecting for beginners complete buying trading guide 2026',
+      // ── 전문가 감사 추가 (2026-03-17 batch 6): 누락 그룹·장르·문화현상 ──
+      // ITZY (있지) — JYP 4세대 대표 걸그룹 (2019 데뷔), 글로벌 투어 활발, 시드 키워드 완전 누락
+      'ITZY best songs ranked complete discography guide for new fans 2026',
+      'ITZY comeback 2026 album review concept analysis guide fans',
+      'ITZY member profiles guide ages facts for new fans 2026',
+      'ITZY vs aespa vs IVE 4th gen girl group comparison which to stan guide 2026',
+      // Street Dance Shows — SWF/SMF/SDGF, Mnet 최고시청률 리얼리티
+      'Street Woman Fighter SWF best dance crews ranked complete guide 2026',
+      'Street Man Fighter SMF best dance crews ranked 2026 guide',
+      'Korean street dance competition shows SWF SMF explained for beginners guide',
+      'best Korean dance crews to follow after Street Woman Fighter ranked 2026',
+      // Trot (트로트) — 한국 국내 콘서트 매출 #1 음악 장르, 완전 누락
+      // NOTE: 타겟 독자가 30-60대 한국인 + 해외 한국 문화 팬이므로 영어 키워드도 유효
+      'Korean trot music explained what is trot genre history guide for beginners',
+      'Lim Young-woong best songs ranked Korean trot singer guide 2026',
+      'best Korean trot singers ranked Mr Trot Miss Trot stars guide 2026',
+      'Mr Trot Miss Trot TV show explained Korean singing competition guide',
+      // K-Ballad 독립 아티스트 — Melon 일간 차트 상위 고정, 아이돌과 다른 음악 세그먼트
+      'best Korean ballad singers 2026 Paul Kim 10cm Lee Mujin ranked guide',
+      'best Korean ballad songs playlist emotional all time classics ranked guide',
+      'Lee Mujin best songs ranked Korean ballad singer guide 2026',
+      // Manhwa-to-Anime 파이프라인 — Solo Leveling, Tower of God, 2025-2026 최대 한국 IP 수출
+      // NOTE: webtoon-to-K-drama와 구분 (다른 미디어 파이프라인)
+      'best Korean manhwa webtoon anime adaptations 2026 Solo Leveling Tower of God ranked',
+      'Korean webtoon to anime vs webtoon to K-drama which adaptations are better guide',
+      'Solo Leveling anime vs manhwa differences comparison guide what changed 2026',
+      // fromis_9 (프로미스나인) — PLEDIS/HYBE 걸그룹, 2024-2026 활발 컴백
+      'fromis_9 best songs ranked guide for new fans 2026',
+      'fromis_9 member profiles PLEDIS HYBE group guide 2026',
+      // Dreamcatcher (드림캐쳐) — 록/메탈 컨셉 걸그룹, 서양 팬덤 최대급
+      'Dreamcatcher best songs ranked rock metal K-pop guide new fans 2026',
+      'Dreamcatcher unique concept explained why they are different from other K-pop groups',
+      // Kep1er (케플러) — Girls Planet 999 출신, 2025년 3월 해체 (프로젝트 그룹)
+      // NOTE: 해체 후 멤버 활동 앵글로 작성 — 그룹 컴백은 없음
+      'Kep1er members after disbandment where are they now solo activities 2026 guide',
+      'Kep1er best songs ranked Girls Planet 999 legacy complete guide',
       // Case Study / Deep-Dive 비율 보강
       'how BTS became the biggest boy band in history growth timeline explained deep dive',
       'how BLACKPINK conquered global music fashion industry case study analysis 2026',

@@ -72,6 +72,7 @@ const NICHE_SUBTOPICS: Record<string, Record<string, string[]>> = {
     'Nail Art & K-Nails': ['nail', 'nail art', 'gel nail', 'press-on', 'manicure', 'nail sticker', 'ohora', 'dashing diva', 'cat eye nail', 'magnet nail', 'aurora nail', 'jelly nail', 'chrome nail'],
     'Industry & Market': ['market', 'industry', 'export', 'revenue', 'growth', 'trend', 'k-beauty market', 'olive young sales', 'amazon k-beauty'],
     'Trends & Innovations': ['trend', 'innovation', 'glass skin', 'clean beauty', 'sustainable', 'minimalist', 'skip care', 'cloud skin', 'pore care', 'babyface', 'dupe', 'budget'],
+    'K-Fragrance': ['fragrance', 'perfume', 'body mist', 'eau de', 'scent', 'tamburins', 'nonfiction', 'granhand', 'k-fragrance', 'korean perfume'],
   },
   'k-entertainment': {
     'K-Pop': [
@@ -84,6 +85,8 @@ const NICHE_SUBTOPICS: Record<string, Record<string, string[]>> = {
       'plave', 'g-dragon', 'gdragon',
       // 5차 감사 추가: 누락 그룹
       'nmixx', 'xikers', 'vcha', 'n.ssign', 'itzy',
+      // 6차 감사 추가
+      'fromis_9', 'dreamcatcher', 'kep1er',
       // General
       'kpop', 'k-pop', 'idol', 'comeback', 'album', 'concert', 'music', 'mv', 'music video',
     ],
@@ -107,6 +110,9 @@ const NICHE_SUBTOPICS: Record<string, Record<string, string[]>> = {
     'Korean Musical & Theater': ['musical', 'theater', 'theatre', 'broadway', 'interpark ticket', 'musical actor', 'doyoung musical', 'kyuhyun musical', 'k-musical'],
     'K-Hip-Hop & K-R&B': ['hip-hop', 'hip hop', 'k-hip-hop', 'k-r&b', 'r&b', 'rnb', 'dean', 'crush', 'zion.t', 'jay park', 'ph-1', 'dpr live', 'heize', 'colde', 'lee hi', 'aomg', 'h1ghr', 'show me the money', 'indie music', 'indie artist'],
     'Korean Movies & Film': ['movie', 'film', 'cinema', 'cannes', 'biff', 'busan film', 'thriller movie', 'horror movie', 'director', 'park chan-wook', 'bong joon-ho'],
+    'Street Dance & Dance Shows': ['street woman fighter', 'swf', 'street man fighter', 'smf', 'dance crew', 'street dance', 'dance competition'],
+    'Trot & K-Ballad': ['trot', '트로트', 'mr trot', 'miss trot', 'lim young-woong', 'ballad', 'paul kim', '10cm', 'lee mujin', 'melomance'],
+    'Manhwa & Anime Adaptations': ['manhwa', 'anime', 'solo leveling', 'tower of god', 'webtoon anime', 'manhwa adaptation'],
     'Web Variety & YouTube': ['web variety', 'youtube variety', 'workman', 'psick', 'short box', '워크맨', '피식', '숏박스', 'variety show', 'running man', 'knowing bros', 'i live alone'],
   },
 };
@@ -157,6 +163,11 @@ const NICHE_TOPICAL_MAP: Record<string, string[]> = {
     'K-Beauty vs C-Beauty Chinese skincare comparison',
     'Korean azelaic acid products rosacea guide',
     'Olive Young Global exclusive discounts guide',
+    // 6차 감사 추가
+    'Korean fragrance perfume Tamburins nonfiction guide',
+    '3CE espoir AMUSE Korean makeup brands guide',
+    'Peach and Lily Krave Beauty Korean-American brands',
+    'Korean exosome stem cell skincare guide',
   ],
   'k-entertainment': [
     // K-Pop fan content
@@ -206,6 +217,15 @@ const NICHE_TOPICAL_MAP: Record<string, string[]> = {
     'K-pop fan pilgrimage Seoul locations guide',
     'K-pop photocard grading value PSA guide',
     'Weverse DM vs Bubble detailed comparison',
+    // 6차 감사 추가
+    'ITZY best songs ranked JYP guide 2026',
+    'Street Woman Fighter dance crews guide',
+    'Korean trot music Lim Young-woong guide',
+    'Korean ballad singers Paul Kim Lee Mujin',
+    'Korean manhwa anime adaptations Solo Leveling',
+    'fromis_9 PLEDIS songs ranked guide',
+    'Dreamcatcher rock metal K-pop guide',
+    'Kep1er members after disbandment guide',
   ],
 };
 

@@ -168,9 +168,12 @@ export class ImageGeneratorService {
     const isKBeautyGiftSet = isKBeauty && /gift\s*set|advent\s*calendar|subscription\s*box|holiday\s*set|선물\s*세트|기프트/i.test(promptLower);
     const isKBeautyMens = isKBeauty && /\bmen(?:'?s)?\b|male\s*skincare|grooming/i.test(promptLower);
     const isKBeautyPregnancy = isKBeauty && /pregnan|prenatal|baby\s*safe|expecting\s*mom/i.test(promptLower);
+    const isKBeautyFragrance = isKBeauty && /fragrance|perfume|body\s*mist|tamburins|nonfiction|granhand|eau\s*de|cologne|scent/i.test(promptLower);
     const isKPopFanCulture = isKEntertainment && /photocard|lightstick|light\s*stick|unboxing|album\s*(?:haul|collection)|fan\s*(?:merch|merchandise|collect)/i.test(promptLower);
     const isKDramaOST = isKEntertainment && /(?:drama|kdrama).*ost|ost.*(?:drama|kdrama)|soundtrack.*(?:korean|k-drama)/i.test(promptLower);
     const isKVarietyShow = isKEntertainment && /variety\s*show|running\s*man|knowing\s*bros|web\s*(?:variety|entertainment)|youtube\s*variety/i.test(promptLower);
+    const isKVirtualIdol = isKEntertainment && /virtual\s*idol|plave|metaverse.*idol|ai\s*idol|virtual\s*avatar|3d\s*idol/i.test(promptLower);
+    const isKStreetDance = isKEntertainment && /street\s*(?:woman|man|dance)\s*fighter|swf|smf|dance\s*crew|street\s*dance/i.test(promptLower);
 
     const nicheSuffix = isKBeautyNailArt
       ? ', Korean nail art close-up photography, trendy gel nail designs, cat eye magnet nail effect, pastel and chrome finish, elegant hand pose, salon-quality detail, soft pink and lavender tones, clean minimal background, macro lens beauty editorial'
@@ -178,6 +181,8 @@ export class ImageGeneratorService {
       ? ', Korean musical theater stage aesthetic, dramatic spotlight on performer, rich red curtain backdrop, warm golden stage lighting, Broadway-style grandeur with Korean sensibility, emotional theatrical atmosphere, cinematic wide shot composition'
       : isKBeautyGiftSet
       ? ', Korean beauty gift set flat lay photography, beautifully wrapped boxes with ribbon, pastel and gold packaging, holiday aesthetic, curated skincare collection, festive warm lighting, premium unboxing experience, elegant arrangement on marble surface'
+      : isKBeautyFragrance
+      ? ', Korean niche perfume bottle photography, amber and frosted glass bottles, botanical ingredients arrangement, warm diffused golden lighting, luxury minimalist shelf display, clean composition, soft bokeh background'
       : isKBeautyMens
       ? ', men grooming product photography, dark tones with navy and charcoal accents, minimalist modern bathroom, clean geometric composition, masculine skincare bottles, matte finish products, subtle warm lighting'
       : isKBeautyPregnancy
@@ -200,9 +205,13 @@ export class ImageGeneratorService {
           ? ', Korean hair care editorial, sleek flowing hair texture, salon-quality lighting, minimalist bathroom setting, amber and warm tones, scalp care products arranged neatly'
           : isKBeauty
             ? ', soft pastel aesthetic, Korean beauty product photography, clean white or cream background, glass bottles, subtle gradient lighting, editorial K-beauty style, dewy skin texture'
-            : isKPopFanCulture
-              ? ', K-pop photocard collection flat lay, colorful album packaging, lightstick glow, fan merchandise arrangement, pastel and holographic accents, cozy desk setup, warm ambient lighting, aesthetic fan collection display'
-              : isKDramaOST
+            : isKVirtualIdol
+              ? ', futuristic virtual idol aesthetic, holographic 3D character, neon cyan and purple glow, digital matrix background, metaverse stage, ethereal translucent effects, sci-fi concert atmosphere'
+              : isKStreetDance
+                ? ', Korean street dance aesthetic, dynamic dance crew formation, urban warehouse setting, dramatic spotlights, graffiti backdrop, powerful movement freeze frame, hip-hop street fashion, high energy composition'
+                : isKPopFanCulture
+                  ? ', K-pop photocard collection flat lay, colorful album packaging, lightstick glow, fan merchandise arrangement, pastel and holographic accents, cozy desk setup, warm ambient lighting, aesthetic fan collection display'
+                  : isKDramaOST
                 ? ', Korean drama OST aesthetic, piano keys with soft warm lighting, headphones on cozy desk, emotional cinematic mood, warm golden hour tones, vinyl record and coffee, intimate listening atmosphere'
                 : isKVarietyShow
                   ? ', Korean variety show set aesthetic, bright colorful studio background, fun playful atmosphere, game show props, vibrant lighting, energetic cheerful composition, entertainment studio setting'

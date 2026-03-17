@@ -1051,6 +1051,26 @@ export function validateContent(
       }
     }
 
+    // 12k-2. AHA/BHA toner pad daily use — acid toner pads should NOT be used daily
+    if (/(?:toner\s*pad|exfoliat.*pad|aha\s*pad|bha\s*pad|pimple\s*clear\s*pad)/i.test(plainText) && ['how-to', 'product-review', 'best-x-for-y'].includes(contentType)) {
+      if (/(?:daily|every\s*day|every\s*night|each\s*day)\s*(?:toner\s*pad|exfoliat.*pad|aha|bha)/i.test(plainText)) {
+        const hasFrequencyNote = /(?:2.?3\s*times?\s*(?:a|per)\s*week|not\s*(?:for\s*)?daily|overuse|start\s*(?:with|slow)|alternate|every\s*other\s*day)/i.test(plainText);
+        if (!hasFrequencyNote) {
+          warnings.push({ category: 'niche-accuracy', message: 'AHA/BHA toner pad described as daily use without frequency guidance — acid-based toner pads (like COSRX One Step Pimple Clear Pad) should be used 2-3x/week for beginners. Daily use of chemical exfoliants can damage the skin barrier. Note appropriate frequency.', severity: 'warning' });
+          eeatScore -= 1;
+        }
+      }
+    }
+
+    // 12k-3. Exosome / stem cell cosmetic claims — must distinguish clinical injection vs topical product
+    if (/\bexosome\b|stem\s*cell\s*(?:serum|cream|skincare)/i.test(plainText) && ['product-review', 'best-x-for-y', 'deep-dive'].includes(contentType)) {
+      const hasClinicalDistinction = /(?:clinic|injection|topical|cosmetic\s*(?:version|form|adaptation))|(?:not\s*(?:the\s*)?same\s*as|different\s*from)\s*(?:clinical|injection|medical)/i.test(plainText);
+      if (!hasClinicalDistinction) {
+        warnings.push({ category: 'niche-accuracy', message: 'Exosome/stem cell skincare mentioned without clinical vs. topical distinction — cosmetic exosome products are a consumer adaptation of clinical injectable treatments. Efficacy differs significantly. Note "topical cosmetic exosome products differ from clinical exosome injections" for accuracy.', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
     // 12. "Hypoallergenic" as unregulated marketing term
     if (/hypoallergenic/i.test(plainText)) {
       const hasDisclaimer = /no\s*(?:legal|regulatory|standard)\s*definition|marketing\s*term|not\s*(?:regulated|standardized)|does\s*not\s*guarantee/i.test(plainText);
@@ -1150,6 +1170,9 @@ export function validateContent(
       { pattern: /TWS\b[^.]*\b(?:SM|JYP|YG)\b/i, correct: 'TWS is under PLEDIS Entertainment (a HYBE sublabel), NOT SM/JYP/YG' },
       { pattern: /ZeroBaseOne\b[^.]*\b(?:SM|HYBE|JYP|YG)\b/i, correct: 'ZeroBaseOne (ZB1) is under WAKEONE Entertainment, NOT a Big 4 label' },
       { pattern: /NMIXX\b[^.]*\b(?:SM|HYBE|YG)\b/i, correct: 'NMIXX is under JYP Entertainment, NOT SM/HYBE/YG' },
+      { pattern: /ITZY\b[^.]*\b(?:SM|HYBE|YG)\b/i, correct: 'ITZY is under JYP Entertainment, NOT SM/HYBE/YG' },
+      { pattern: /fromis.?9\b[^.]*\b(?:SM|JYP|YG)\b/i, correct: 'fromis_9 is under PLEDIS Entertainment (HYBE sublabel), NOT SM/JYP/YG' },
+      { pattern: /Dreamcatcher\b[^.]*\b(?:SM|HYBE|JYP|YG)\b/i, correct: 'Dreamcatcher is under Dreamcatcher Company (HFE), NOT a Big 4 label' },
       { pattern: /xikers\b[^.]*\b(?:SM|HYBE|JYP|YG)\b/i, correct: 'xikers is under KQ Entertainment (ATEEZ\'s label), NOT a Big 4 label' },
       { pattern: /VCHA\b[^.]*\b(?:SM|HYBE|YG)\b/i, correct: 'VCHA is a JYP x Republic Records global girl group, NOT SM/HYBE/YG' },
       { pattern: /n\.SSign\b[^.]*\b(?:SM|HYBE|JYP|YG)\b/i, correct: 'n.SSign is under n.CH Entertainment, NOT a Big 4 label' },
@@ -1228,7 +1251,7 @@ export function validateContent(
       'tripleS': 'LOVElution', 'WHIPLASH': 'WHIPPERS',
       'NCT WISH': 'WISHING', 'KATSEYE': 'EMBERS',
       'ITZY': 'MIDZY', 'NMIXX': 'NSWer', 'xikers': 'ROADYKES',
-      'VCHA': 'VCHINGU',
+      'VCHA': 'VCHINGU', 'Dreamcatcher': 'InSomnia', 'fromis_9': 'flover',
     };
     for (const [group, fandom] of Object.entries(fandomMap)) {
       const groupRegex = new RegExp(`\\b${group.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
@@ -1352,10 +1375,35 @@ export function validateContent(
       }
     }
 
-    // 20. NMIXX MIXXPOP genre — should not be described as standard K-pop when discussing their concept
+    // 20. NMIXX member count — Jinni departed Dec 2022, 6 active members as of 2026
     if (/NMIXX/i.test(plainText)) {
-      if (/NMIXX\b[^.]*\b(?:6|six)\s*member/i.test(plainText)) {
-        warnings.push({ category: 'niche-accuracy', message: 'NMIXX has 7 members (Lily, Haewon, Sullyoon, Jinni departed, Bae, Jiwoo, Kyujin) — verify current member count. Jinni departed in Dec 2022, leaving 6 active members as of 2026.', severity: 'info' });
+      if (/NMIXX\b[^.]*\b(?:7|seven)\s*member/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'NMIXX currently has 6 active members (Lily, Haewon, Sullyoon, Bae, Jiwoo, Kyujin) — Jinni departed in Dec 2022. Do not count 7 members.', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 20b. PLAVE virtual idol accuracy — all 5 members are virtual 3D avatars, NOT real people
+    if (/PLAVE/i.test(plainText)) {
+      if (/PLAVE\b[^.]*\b(?:attend|visit|appear.*in\s*person|fan\s*sign.*in\s*person|perform.*live\s*on\s*stage|spotted|airport)/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'PLAVE members described as physically appearing — all 5 PLAVE members are virtual 3D avatars (버추얼 아이돌). They do NOT attend events in person, appear at airports, or do in-person fan signs. They interact via virtual live streams and 3D concert technology.', severity: 'warning' });
+        eeatScore -= 2;
+      }
+    }
+
+    // 20c. Kep1er disbandment status — officially disbanded March 2025
+    if (/Kep1er/i.test(plainText)) {
+      if (/Kep1er\b[^.]*\b(?:comeback|new\s*album|world\s*tour|upcoming\s*release)\s*2026/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'Kep1er officially disbanded on March 10, 2025 (project group from Girls Planet 999). Do not reference group comebacks or releases in 2026 — only cover member solo/individual activities.', severity: 'error' });
+        eeatScore -= 3;
+      }
+    }
+
+    // 20d. fromis_9 label accuracy — transferred to PLEDIS/HYBE in 2022
+    if (/fromis.?9/i.test(plainText)) {
+      if (/fromis.?9\b[^.]*\b(?:Off\s*The\s*Record|Stone\s*Music|CJ\s*ENM)/i.test(plainText) && !/(?:formerly|previously|transferred|moved)/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'fromis_9 transferred from Off The Record (Stone Music/CJ ENM) to PLEDIS Entertainment (HYBE) in 2022. If referencing their previous label, use "formerly under" for accuracy.', severity: 'warning' });
+        eeatScore -= 1;
       }
     }
 

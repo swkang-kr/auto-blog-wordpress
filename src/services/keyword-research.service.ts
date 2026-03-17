@@ -705,6 +705,11 @@ STRATEGY: Consider creating content that directly targets one of these content g
       // 5차 감사 추가
       'azelaic acid', 'cica balm', 'cica pad', 'refillable', 'j-beauty', 'lip serum',
       'retinal', 'retinaldehyde', 'exosome', 'nmixx', 'xikers', 'vcha', 'bl drama',
+      // 6차 감사 추가
+      'tamburins', 'nonfiction perfume', 'granhand', 'k-fragrance', 'korean perfume',
+      '3ce', 'espoir', 'amuse', 'laka', 'peach c', 'wakemake',
+      'peach & lily', 'peach and lily', 'krave beauty',
+      'itzy', 'dreamcatcher', 'fromis_9', 'street woman fighter', 'trot', 'manhwa anime',
       // K-Beauty brands (additional coverage)
       'banila co', 'hince', 'vt cosmetics',
       // K-Entertainment groups — 2nd gen: SNSD/Big Bang/SHINee
