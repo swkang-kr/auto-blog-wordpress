@@ -360,6 +360,7 @@ export class WordPressService {
     skinsort:              { domain: 'https://skinsort.com', paths: { default: '/', ingredients: '/ingredients/', products: '/products/' }, label: 'SkinSort' },
     hwahae:                { domain: 'https://www.hwahae.co.kr', paths: { default: '/', ranking: '/rankings/', ingredients: '/ingredients/' }, label: 'Hwahae (화해)' },
     glowpick:              { domain: 'https://www.glowpick.com', paths: { default: '/', ranking: '/ranking/' }, label: 'Glowpick (글로우픽)' },
+    'atcosme':               { domain: 'https://www.cosme.net', paths: { default: '/', ranking: '/bestcosme/' }, label: '@cosme (Japan)' },
     cosmorning:            { domain: 'https://www.cosmorning.com', paths: { default: '/', industry: '/news/' }, label: 'Cosmorning (코스모닝)' },
     soompi:                { domain: 'https://www.soompi.com', paths: { default: '/', article: '/article/', news: '/news/' }, label: 'Soompi' },
     weverse:               { domain: 'https://weverse.io', paths: { default: '/' }, label: 'Weverse' },
@@ -407,7 +408,7 @@ export class WordPressService {
     'weverse.io', 'weverseshop.io', 'soompi.com', 'allkpop.com', 'koreaboo.com',
     'theqoo.net', // 한국 커뮤니티
     // K-Beauty ingredient/product databases
-    'incidecoder.com', 'cosdna.com', 'skinsort.com', 'hwahae.co.kr', 'glowpick.com',
+    'incidecoder.com', 'cosdna.com', 'skinsort.com', 'hwahae.co.kr', 'glowpick.com', 'cosme.net',
     // Niche-specific
     'cosmeticsdesign-asia.com', 'lonelyplanet.com',
     // Affiliate

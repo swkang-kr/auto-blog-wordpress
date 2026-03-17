@@ -73,6 +73,10 @@ const NICHE_SUBTOPICS: Record<string, Record<string, string[]>> = {
     'Industry & Market': ['market', 'industry', 'export', 'revenue', 'growth', 'trend', 'k-beauty market', 'olive young sales', 'amazon k-beauty'],
     'Trends & Innovations': ['trend', 'innovation', 'glass skin', 'clean beauty', 'sustainable', 'minimalist', 'skip care', 'cloud skin', 'pore care', 'babyface', 'dupe', 'budget'],
     'K-Fragrance': ['fragrance', 'perfume', 'body mist', 'eau de', 'scent', 'tamburins', 'nonfiction', 'granhand', 'k-fragrance', 'korean perfume'],
+    // 8차 감사 추가
+    'Baby & Kids K-Beauty': ['baby', 'infant', 'newborn', 'kids', 'children', 'baby skincare', 'baby sunscreen', 'green finger', 'goongbe', 'ato'],
+    'Intimate & Feminine Care': ['intimate wash', 'feminine care', 'ph balanced', 'intimate hygiene', 'vaginal health', 'feminine wash'],
+    'K-Beauty Devices & Tools': ['led mask', 'beauty device', 'cellreturn', 'lg pra.l', 'skin analyzer', 'face massager', 'galvanic', 'micro-current', 'dermaroller'],
   },
   'k-entertainment': {
     'K-Pop': [
@@ -109,7 +113,8 @@ const NICHE_SUBTOPICS: Record<string, Record<string, string[]>> = {
     'Idol Beauty & Style': ['skincare', 'makeup look', 'beauty routine', 'fashion', 'outfit', 'idol style', 'no-makeup', 'beauty secret', 'iu', 'brand ambassador', 'ambassador', 'laneige ambassador', 'karina skincare', 'wonyoung beauty', 'idol product'],
     'Korean Musical & Theater': ['musical', 'theater', 'theatre', 'broadway', 'interpark ticket', 'musical actor', 'doyoung musical', 'kyuhyun musical', 'k-musical'],
     'K-Hip-Hop & K-R&B': ['hip-hop', 'hip hop', 'k-hip-hop', 'k-r&b', 'r&b', 'rnb', 'dean', 'crush', 'zion.t', 'jay park', 'ph-1', 'dpr live', 'heize', 'colde', 'lee hi', 'aomg', 'h1ghr', 'show me the money', 'indie music', 'indie artist'],
-    'Korean Movies & Film': ['movie', 'film', 'cinema', 'cannes', 'biff', 'busan film', 'thriller movie', 'horror movie', 'director', 'park chan-wook', 'bong joon-ho'],
+    'Korean Movies & Film': ['movie', 'film', 'cinema', 'cannes', 'biff', 'busan film', 'thriller movie', 'horror movie', 'director', 'park chan-wook', 'bong joon-ho', 'hwang dong-hyuk', 'yeon sang-ho', 'na hong-jin', 'ryoo seung-wan', 'blue dragon', 'grand bell', 'daejong'],
+    'Audition & Survival Shows': ['survival show', 'audition', 'i-land', 'produce 101', 'r u next', 'boys planet', 'girls planet', 'debut group'],
     'Street Dance & Dance Shows': ['street woman fighter', 'swf', 'street man fighter', 'smf', 'dance crew', 'street dance', 'dance competition'],
     'Trot & K-Ballad': ['trot', '트로트', 'mr trot', 'miss trot', 'lim young-woong', 'ballad', 'paul kim', '10cm', 'lee mujin', 'melomance'],
     'Manhwa & Anime Adaptations': ['manhwa', 'anime', 'solo leveling', 'tower of god', 'webtoon anime', 'manhwa adaptation'],
@@ -168,6 +173,12 @@ const NICHE_TOPICAL_MAP: Record<string, string[]> = {
     '3CE espoir AMUSE Korean makeup brands guide',
     'Peach and Lily Krave Beauty Korean-American brands',
     'Korean exosome stem cell skincare guide',
+    // 8차 감사 추가
+    'best Korean baby skincare products safe gentle guide',
+    'Korean intimate feminine wash pH balanced ranked',
+    'Korean LED mask beauty device comparison guide',
+    'copper peptide GHK-Cu Korean serum anti-aging guide',
+    'alpha-arbutin Korean brightening serum ranked guide',
   ],
   'k-entertainment': [
     // K-Pop fan content
@@ -232,6 +243,10 @@ const NICHE_TOPICAL_MAP: Record<string, string[]> = {
     'Blue Dragon Film Awards Korean cinema predictions',
     'Grand Bell Awards Korean film winners guide',
     'Korean film awards comparison Blue Dragon Baeksang Grand Bell',
+    'Bong Joon-ho complete filmography Parasite guide',
+    'Hwang Dong-hyuk Squid Game directing style analysis',
+    'best Korean survival audition shows I-LAND Produce guide',
+    'K-drama Netflix Original vs licensed difference explained',
   ],
 };
 

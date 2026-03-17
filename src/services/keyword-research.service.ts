@@ -714,6 +714,11 @@ STRATEGY: Consider creating content that directly targets one of these content g
       '(g)i-dle', 'gidle', 'idle', 'stylevana', 'neverdie',
       'enhypen', 'txt', 'le sserafim', 'ateez', 'ive',
       'blue dragon', 'cheongryong', 'grand bell', 'daejong',
+      // 8차 감사 추가
+      'copper peptide', 'ghk-cu', 'matrixyl', 'argireline', 'alpha-arbutin', 'arbutin',
+      'the show', 'bong joon-ho', 'hwang dong-hyuk', 'squid game', 'train to busan',
+      'baby k-beauty', 'green finger', 'goongbe', 'intimate wash',
+      '@cosme', 'cosme ranking', 'glowpick',
       // K-Beauty brands (additional coverage)
       'banila co', 'hince', 'vt cosmetics',
       // K-Entertainment groups — 2nd gen: SNSD/Big Bang/SHINee

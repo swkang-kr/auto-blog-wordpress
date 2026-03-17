@@ -699,7 +699,7 @@ export function validateContent(
       // K-Beauty trusted sources
       'oliveyoung.co.kr', 'oliveyoung.com', 'allure.co.kr',
       'incidecoder.com', 'cosdna.com', 'skinsort.com',
-      'hwahae.co.kr', 'glowpick.com',
+      'hwahae.co.kr', 'glowpick.com', 'cosme.net',
     ];
     let nonTrustedCount = 0;
     for (const url of extLinkUrls) {
@@ -1014,6 +1014,42 @@ export function validateContent(
       }
     }
 
+    // 12g-2. Ceramide subtype conflation — NP, AP, EOP serve different functions
+    if (/ceramide\s*(?:NP|AP|EOP|NS|AS)/i.test(plainText)) {
+      if (/(?:interchangeabl|same\s*(?:as|thing)|identical|no\s*difference)\b[^.]*ceramide/i.test(plainText) ||
+          /ceramide\b[^.]*(?:interchangeabl|same\s*(?:as|thing)|identical|no\s*difference)/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'Ceramide NP, AP, and EOP serve different roles — NP (most common in K-beauty) primarily aids moisture retention; AP and EOP focus on barrier structure. Do not present them as interchangeable.', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 12g-3. Copper peptide (GHK-Cu) + L-ascorbic acid conflict
+    if (/copper\s*peptide|GHK[- ]?Cu/i.test(plainText) && /(?:vitamin\s*C|L[- ]?ascorbic\s*acid|ascorbic)/i.test(plainText)) {
+      const hasSeparationNote = /(?:separate|different\s*(?:routine|step)|AM.*PM|PM.*AM|alternate|not\s*(?:in\s*)?(?:the\s*)?same\s*(?:routine|step))/i.test(plainText);
+      if (!hasSeparationNote) {
+        warnings.push({ category: 'niche-accuracy', message: 'Copper peptide (GHK-Cu) mentioned with vitamin C (L-ascorbic acid) without separation guidance — low pH (<3.5) degrades peptides. Recommend separating into AM/PM routines.', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 12g-4. Alpha-arbutin vs beta-arbutin vs hydroquinone distinction
+    if (/arbutin/i.test(plainText) && ['product-review', 'best-x-for-y', 'deep-dive'].includes(contentType)) {
+      if (/arbutin\b[^.]*\bhydroquinone\b[^.]*\b(?:same|identical|equivalent)/i.test(plainText) ||
+          /hydroquinone\b[^.]*\barbutin\b[^.]*\b(?:same|identical|equivalent)/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'Alpha-arbutin is NOT the same as hydroquinone — arbutin is a glycosylated derivative that releases hydroquinone slowly at the melanocyte level. Hydroquinone is prescription-only in Korea (MFDS regulated). Do not conflate.', severity: 'warning' });
+        eeatScore -= 2;
+      }
+    }
+
+    // 12g-5. Baby/Kids cosmetic safety — must note MFDS children's cosmetic certification
+    if (/\b(?:baby|infant|newborn|kids?|child(?:ren)?)\b[^.]*\b(?:skincare|sunscreen|lotion|cream|moisturiz)/i.test(plainText)) {
+      const hasSafetyNote = /(?:MFDS|pediatric|dermatologist\s*tested|hypoallergenic|fragrance[- ]free|patch\s*test|consult.*pediatrician)/i.test(plainText);
+      if (!hasSafetyNote) {
+        warnings.push({ category: 'niche-accuracy', message: 'Baby/kids skincare content without safety guidance — always note: choose MFDS-certified children\'s cosmetics (어린이 화장품), fragrance-free, and dermatologist-tested. Recommend patch testing.', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
     // 12h. Barrier repair content should mention ceramide:cholesterol:fatty acid ratio
     if (/barrier\s*(?:repair|recovery|restore|damage)/i.test(plainText) && ['product-review', 'best-x-for-y', 'how-to', 'deep-dive'].includes(contentType)) {
       const hasCeramideRatio = /(?:ceramide|cholesterol|fatty\s*acid).*(?:ratio|1:1:1|3:1:1|proportion)/i.test(plainText) ||
@@ -1184,6 +1220,11 @@ export function validateContent(
       { pattern: /xikers\b[^.]*\b(?:SM|HYBE|JYP|YG)\b/i, correct: 'xikers is under KQ Entertainment (ATEEZ\'s label), NOT a Big 4 label' },
       { pattern: /VCHA\b[^.]*\b(?:SM|HYBE|YG)\b/i, correct: 'VCHA is a JYP x Republic Records global girl group, NOT SM/HYBE/YG' },
       { pattern: /n\.SSign\b[^.]*\b(?:SM|HYBE|JYP|YG)\b/i, correct: 'n.SSign is under n.CH Entertainment, NOT a Big 4 label' },
+      // 8차 감사 추가
+      { pattern: /UNIS\b[^.]*\b(?:SM|HYBE|JYP|YG)\b/i, correct: 'UNIS is under WAKEONE Entertainment (formerly under F&F), NOT a Big 4 label' },
+      { pattern: /izna\b[^.]*\b(?:SM|JYP|YG)\b/i, correct: 'izna debuted via I-LAND2: N/a — under WAKEONE (CJ ENM) + HYBE partnership, NOT SM/JYP/YG' },
+      { pattern: /Hearts2Hearts\b[^.]*\b(?:SM|HYBE|JYP|YG)\b/i, correct: 'Hearts2Hearts is under IST Entertainment, NOT a Big 4 label' },
+      { pattern: /YOUNG\s*POSSE\b[^.]*\b(?:SM|HYBE|JYP|YG)\b/i, correct: 'YOUNG POSSE is under DSP Media, NOT a Big 4 label' },
     ];
     for (const check of labelErrors) {
       if (check.pattern.test(plainText)) {
@@ -1264,6 +1305,9 @@ export function validateContent(
       '(G)I-DLE': 'Neverland', 'EXO': 'EXO-L', 'SHINee': 'Shawol',
       'MAMAMOO': 'MooMoo', 'Red Velvet': 'ReVeluv', 'GOT7': 'IGOT7',
       'NCT': 'NCTzen',
+      // 8차 감사 추가: 2024-2025 신규 그룹 팬덤명
+      'n.SSign': 'NOVANS', 'ZeroBaseOne': 'ZEROSE',
+      'YOUNG POSSE': 'YOPPIE',
     };
     for (const [group, fandom] of Object.entries(fandomMap)) {
       const groupRegex = new RegExp(`\\b${group.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
@@ -1328,8 +1372,8 @@ export function validateContent(
     }
 
     // 13. Music show win specificity — "won a music show" without naming which show signals non-fan content
-    if (/(?:won|winning)\s*(?:a|the)\s*music\s*show/i.test(plainText) && !/(?:Inkigayo|Music\s*Bank|M\s*Countdown|Show\s*Champion|Music\s*Core)/i.test(plainText)) {
-      warnings.push({ category: 'niche-accuracy', message: '"Won a music show" without naming the specific show (Inkigayo, Music Bank, M Countdown, Show Champion, Music Core) — signals non-fan content. Always specify which show.', severity: 'warning' });
+    if (/(?:won|winning)\s*(?:a|the)\s*music\s*show/i.test(plainText) && !/(?:Inkigayo|Music\s*Bank|M\s*Countdown|Show\s*Champion|Music\s*Core|THE\s*SHOW|더쇼)/i.test(plainText)) {
+      warnings.push({ category: 'niche-accuracy', message: '"Won a music show" without naming the specific show (THE SHOW, Show Champion, M Countdown, Music Bank, Music Core, Inkigayo) — signals non-fan content. Always specify which show.', severity: 'warning' });
       eeatScore -= 1;
     }
 
@@ -1426,6 +1470,35 @@ export function validateContent(
           /Produce\s*101\s*Season\s*2\b[^.]*\bI\.?O\.?I/i.test(plainText)) {
         warnings.push({ category: 'niche-accuracy', message: 'Produce 101 season confusion — I.O.I debuted from Season 1 (2016), Wanna One from Season 2 (2017), IZ*ONE from Season 3/Produce 48 (2018), X1 from Season 4/Produce X 101 (2019).', severity: 'warning' });
         eeatScore -= 2;
+      }
+    }
+
+    // 22. I-LAND / R U Next? survival show confusion — AI often mixes up HYBE-associated audition shows
+    if (/I-?LAND/i.test(plainText)) {
+      if (/I-?LAND\s*(?:2|Season\s*2)\b[^.]*\bENHYPEN/i.test(plainText) || /ENHYPEN\b[^.]*\bI-?LAND\s*(?:2|Season\s*2)/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'ENHYPEN debuted from I-LAND Season 1 (2020), NOT I-LAND2. I-LAND2: N/a (2024) produced izna.', severity: 'warning' });
+        eeatScore -= 2;
+      }
+    }
+    if (/R\s*U\s*Next/i.test(plainText) && /Produce/i.test(plainText)) {
+      warnings.push({ category: 'niche-accuracy', message: 'R U Next? is a HYBE/Belift audition show (produced ILLIT), NOT part of the Produce 101 franchise (CJ ENM). Do not conflate.', severity: 'warning' });
+      eeatScore -= 1;
+    }
+
+    // 23. K-drama OTT platform attribution — "Netflix Original" vs Netflix-licensed
+    if (/Netflix\s*Original/i.test(plainText) && /(?:tvN|JTBC|SBS|MBC|KBS)/i.test(plainText)) {
+      if (/(?:tvN|JTBC|SBS|MBC|KBS)\s*(?:drama|show|series)\b[^.]*Netflix\s*Original/i.test(plainText) ||
+          /Netflix\s*Original\b[^.]*(?:tvN|JTBC|SBS|MBC|KBS)/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'A drama airing on tvN/JTBC/SBS/MBC/KBS with Netflix international distribution is NOT a "Netflix Original" — it is a Korean network drama available on Netflix. Only dramas produced by Netflix Korea Studios are Netflix Originals (e.g., Squid Game, D.P.).', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 24. Hwang Dong-hyuk (director) vs Hwang In-ho (character) confusion
+    if (/Hwang\s*(?:Dong[- ]?hyuk|In[- ]?ho)/i.test(plainText)) {
+      if (/Hwang\s*In[- ]?ho\b[^.]*\bdirect/i.test(plainText) || /direct\b[^.]*\bHwang\s*In[- ]?ho/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'Hwang In-ho is a fictional CHARACTER in Squid Game (the Front Man) — the DIRECTOR is Hwang Dong-hyuk. Do not confuse.', severity: 'error' });
+        eeatScore -= 3;
       }
     }
   }

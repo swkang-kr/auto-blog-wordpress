@@ -53,6 +53,7 @@ export class KoreanContentService {
 - Excerpt: Korean meta description, 60-80 characters (한글은 Google SERP에서 픽셀 너비 기준 ~920px 이내로 렌더링 — 영어보다 글자당 넓으므로 짧게)
 - Tags: 5-8 Korean tags related to the topic
 - K-Beauty specific: Replace Amazon USD pricing with Olive Young Korea KRW pricing. Korean readers buy at Olive Young (올리브영) directly, not Amazon. Replace "available at Sephora" with "올리브영에서 구매 가능". Reference 화해 (Hwahae app) review scores as social proof where applicable — it is Korea's #1 beauty review platform
+- K-Entertainment specific: Replace Spotify chart references with 멜론(Melon)/지니(Genie)/벅스(Bugs) for Korean domestic streaming charts. Replace Ticketmaster with 인터파크 티켓/YES24 티켓 for concert ticketing. Use 한터차트/써클차트 instead of "Hanteo Chart/Circle Chart". Replace "Billboard Korea" with 멜론 차트/지니 차트. Korean fans use Weverse/Bubble natively — no need to explain these platforms
 
 ## English Title: ${englishTitle}
 ## Category: ${category}

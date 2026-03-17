@@ -195,6 +195,15 @@ export const NICHES: NicheConfig[] = [
       'best Korean retinol alternative for beginners sensitive skin 2026',
       // Body care 확장 — 급성장 세그먼트
       'how to use Korean Italy towel exfoliation body scrub guide',
+      'best Korean body scrub exfoliator for smooth skin ranked 2026',
+      'Korean body sunscreen lotion SPF lightweight non-greasy ranked 2026',
+      'Korean perfumed body care lotion mist best smelling ranked 2026',
+      // Baby K-Beauty — 고의도 저경쟁 키워드 세그먼트 (Green Finger, 궁비, ato)
+      'best Korean baby skincare products safe gentle for newborn 2026',
+      'Korean kids sunscreen for sensitive skin EWG safe guide 2026',
+      'Green Finger vs Goongbe Korean baby skincare brand comparison 2026',
+      // Intimate care — pH 밸런스 이너 워시, K-Beauty 수출 성장 카테고리
+      'Korean intimate wash feminine care pH balanced best products 2026',
       // Peptide 스킨케어 — 글로벌 2위 성장 세그먼트 (2025-2026)
       'best Korean peptide serum for anti-aging firming skin 2026',
       'peptide skincare Korean brands MEDICUBE Isntree ranked guide',
@@ -1009,6 +1018,12 @@ export const NICHES: NicheConfig[] = [
       'Kim Eun-sook best K-dramas ranked Goblin Crash Landing on You guide',
       'Park Chan-wook K-drama film director style explained best works guide 2026',
       'Park Hoon-jung best Korean thriller films dramas ranked guide 2026',
+      // 8차 감사: K-Movie 감독 확장 — 봉준호, 황동혁, 연상호 등 누락
+      'Bong Joon-ho complete filmography ranked Parasite Mickey 17 guide 2026',
+      'Hwang Dong-hyuk directing style Squid Game what makes him unique explained',
+      'Yeon Sang-ho films ranked Train to Busan Hellbound guide 2026',
+      'Korean movie directors who won international film festivals complete list guide',
+      'best Korean thriller film directors Na Hong-jin Ryoo Seung-wan ranked guide',
       // K-Drama 제작 비하인드 — 고참여율 팬 딥다이브 콘텐츠
       'how K-dramas are made production process explained behind the scenes 2026',
       'Korean drama filming locations Seoul Jeju where to visit sets guide 2026',

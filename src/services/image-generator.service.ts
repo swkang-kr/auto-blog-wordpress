@@ -174,6 +174,10 @@ export class ImageGeneratorService {
     const isKVarietyShow = isKEntertainment && /variety\s*show|running\s*man|knowing\s*bros|web\s*(?:variety|entertainment)|youtube\s*variety/i.test(promptLower);
     const isKVirtualIdol = isKEntertainment && /virtual\s*idol|plave|metaverse.*idol|ai\s*idol|virtual\s*avatar|3d\s*idol/i.test(promptLower);
     const isKStreetDance = isKEntertainment && /street\s*(?:woman|man|dance)\s*fighter|swf|smf|dance\s*crew|street\s*dance/i.test(promptLower);
+    // 8차 감사 추가
+    const isKBeautyBaby = isKBeauty && /baby|infant|newborn|kids?\s*(?:skincare|sunscreen|lotion)|child(?:ren)?\s*(?:skincare|cosmetic)/i.test(promptLower);
+    const isKMovie = isKEntertainment && /korean\s*(?:film|movie|cinema)|blue\s*dragon|grand\s*bell|biff|film\s*festival|(?:bong|hwang|yeon|park\s*chan)\s*(?:joon|dong|sang|wook)/i.test(promptLower);
+    const isKSurvivalShow = isKEntertainment && /survival\s*show|audition|i-?land|produce\s*101|r\s*u\s*next|boys?\s*planet|girls?\s*planet/i.test(promptLower);
 
     const nicheSuffix = isKBeautyNailArt
       ? ', Korean nail art close-up photography, trendy gel nail designs, cat eye magnet nail effect, pastel and chrome finish, elegant hand pose, salon-quality detail, soft pink and lavender tones, clean minimal background, macro lens beauty editorial'
@@ -185,6 +189,8 @@ export class ImageGeneratorService {
       ? ', Korean niche perfume bottle photography, amber and frosted glass bottles, botanical ingredients arrangement, warm diffused golden lighting, luxury minimalist shelf display, clean composition, soft bokeh background'
       : isKBeautyMens
       ? ', men grooming product photography, dark tones with navy and charcoal accents, minimalist modern bathroom, clean geometric composition, masculine skincare bottles, matte finish products, subtle warm lighting'
+      : isKBeautyBaby
+      ? ', baby skincare product photography, soft pastel pink and mint, gentle safe ingredients, plush cotton texture, warm nursery setting, clean minimal composition, soft natural daylight'
       : isKBeautyPregnancy
       ? ', gentle motherhood skincare aesthetic, soft cream and sage green tones, natural organic ingredients flat lay, warm morning light, calm serene composition, botanical elements, safe gentle products on wooden tray'
       : isKBeautyTools
@@ -207,7 +213,11 @@ export class ImageGeneratorService {
             ? ', soft pastel aesthetic, Korean beauty product photography, clean white or cream background, glass bottles, subtle gradient lighting, editorial K-beauty style, dewy skin texture'
             : isKVirtualIdol
               ? ', futuristic virtual idol aesthetic, holographic 3D character, neon cyan and purple glow, digital matrix background, metaverse stage, ethereal translucent effects, sci-fi concert atmosphere'
-              : isKStreetDance
+              : isKMovie
+                ? ', Korean cinema aesthetic, dark moody noir lighting, film reel and clapperboard, red carpet atmosphere, cinematic widescreen composition, prestigious film festival ambiance, dramatic shadows'
+                : isKSurvivalShow
+                  ? ', K-pop survival audition show stage, dramatic spotlight from above, nervous contestants in formation, large LED screen background, tension-filled atmosphere, competition stage design, broadcast studio setting'
+                  : isKStreetDance
                 ? ', Korean street dance aesthetic, dynamic dance crew formation, urban warehouse setting, dramatic spotlights, graffiti backdrop, powerful movement freeze frame, hip-hop street fashion, high energy composition'
                 : isKPopFanCulture
                   ? ', K-pop photocard collection flat lay, colorful album packaging, lightstick glow, fan merchandise arrangement, pastel and holographic accents, cozy desk setup, warm ambient lighting, aesthetic fan collection display'
