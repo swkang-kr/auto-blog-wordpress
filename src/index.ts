@@ -1964,10 +1964,27 @@ async function main(): Promise<void> {
           while ((m = re.exec(html)) !== null) {
             if (!m[1].includes('youtube.com') && !m[1].includes('schema.org')) extLinks.push(m[1]);
           }
+          // Skip domains known to block HEAD requests from bots (false positives)
+          const BOT_BLOCKED_DOMAINS = ['amazon.com', 'amazon.co', 'kocca.kr', 'instagram.com', 'facebook.com', 'tiktok.com'];
           for (const link of [...new Set(extLinks)].slice(0, 5)) {
             try {
-              const resp = await axios.head(link, { timeout: 8000, maxRedirects: 5, validateStatus: () => true });
-              if (resp.status >= 400) brokenLinks.push({ postTitle: p.title, linkUrl: link, status: resp.status });
+              const linkHost = new URL(link).hostname;
+              if (BOT_BLOCKED_DOMAINS.some(d => linkHost.includes(d))) continue;
+              const resp = await axios.head(link, {
+                timeout: 8000, maxRedirects: 5, validateStatus: () => true,
+                headers: { 'User-Agent': 'Mozilla/5.0 (compatible; TrendHuntBot/1.0; +https://trendhunt.net)' },
+              });
+              // Retry with GET if HEAD returns 403/405/503 (some servers block HEAD)
+              if ([403, 405, 503].includes(resp.status)) {
+                const retryResp = await axios.get(link, {
+                  timeout: 8000, maxRedirects: 5, validateStatus: () => true,
+                  headers: { 'User-Agent': 'Mozilla/5.0 (compatible; TrendHuntBot/1.0; +https://trendhunt.net)' },
+                  maxContentLength: 50000,
+                });
+                if (retryResp.status >= 400) brokenLinks.push({ postTitle: p.title, linkUrl: link, status: retryResp.status });
+              } else if (resp.status >= 400) {
+                brokenLinks.push({ postTitle: p.title, linkUrl: link, status: resp.status });
+              }
             } catch { brokenLinks.push({ postTitle: p.title, linkUrl: link, status: 0 }); }
           }
         } catch { /* skip individual post errors */ }

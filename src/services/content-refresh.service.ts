@@ -1507,18 +1507,37 @@ Return pure JSON only.`;
         let updatedContent = content;
         let postFixed = false;
 
+        // Domains that block bot HEAD/GET requests (false positives)
+        const BOT_BLOCKED_DOMAINS = ['amazon.com', 'amazon.co', 'kocca.kr', 'instagram.com', 'facebook.com', 'tiktok.com'];
         for (const link of links) {
           checked++;
           try {
-            await axios.head(link.url, { timeout: 5000, maxRedirects: 3 });
-          } catch (err) {
-            if (axios.isAxiosError(err) && err.response && err.response.status >= 400) {
-              // Confirmed broken — remove link, keep text
+            const linkHost = new URL(link.url).hostname;
+            if (BOT_BLOCKED_DOMAINS.some(d => linkHost.includes(d))) continue;
+            const headResp = await axios.head(link.url, {
+              timeout: 5000, maxRedirects: 3, validateStatus: () => true,
+              headers: { 'User-Agent': 'Mozilla/5.0 (compatible; TrendHuntBot/1.0; +https://trendhunt.net)' },
+            });
+            // Retry with GET for HEAD-blocking servers (403/405/503)
+            if ([403, 405, 503].includes(headResp.status)) {
+              const getResp = await axios.get(link.url, {
+                timeout: 5000, maxRedirects: 3, validateStatus: () => true,
+                headers: { 'User-Agent': 'Mozilla/5.0 (compatible; TrendHuntBot/1.0; +https://trendhunt.net)' },
+                maxContentLength: 50000,
+              });
+              if (getResp.status >= 400 && ![403, 503].includes(getResp.status)) {
+                updatedContent = updatedContent.replace(link.full, link.text);
+                broken++;
+                postFixed = true;
+                logger.warn(`Broken link removed from "${post.title.rendered.slice(0, 40)}...": ${link.url} (${getResp.status})`);
+              }
+            } else if (headResp.status >= 400) {
               updatedContent = updatedContent.replace(link.full, link.text);
               broken++;
               postFixed = true;
-              logger.warn(`Broken link removed from "${post.title.rendered.slice(0, 40)}...": ${link.url} (${err.response.status})`);
+              logger.warn(`Broken link removed from "${post.title.rendered.slice(0, 40)}...": ${link.url} (${headResp.status})`);
             }
+          } catch {
             // Timeout/network errors = likely valid, skip
           }
         }
