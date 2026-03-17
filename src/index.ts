@@ -1564,15 +1564,9 @@ async function main(): Promise<void> {
       await seoService.notifyIndexNow([post.url]);
       await seoService.pingSitemap();
 
-      // B-6. Multi-day social campaign: stagger platforms for sustained engagement
-      // Day 0 (immediate): Pinterest + Reddit + Facebook (freshness-sensitive)
-      // Day 0 +2h: Twitter thread (engagement window)
-      // Day 0 +6h: LinkedIn (professional audience, different timezone peak)
+      // B-6. Social media promotion: post immediately to all platforms
+      // All platforms post at publish time (deferred scheduling doesn't work in CI batch runs)
       const TWITTER_DELAY_MS = 2 * 60 * 60 * 1000; // 2 hours
-      const LINKEDIN_DELAY_MS = 6 * 60 * 60 * 1000; // 6 hours
-      const socialPlatforms: string[] = [];
-      if (twitterService) socialPlatforms.push('twitter');
-      if (linkedinService) socialPlatforms.push('linkedin');
 
       // Facebook: post immediately when published
       if (facebookService && effectivePublishStatus === 'publish') {
@@ -1580,40 +1574,31 @@ async function main(): Promise<void> {
         if (fbPostId) await wpService.updatePostMeta(post.postId, { _autoblog_fb_post_id: fbPostId }).catch(() => {});
       }
 
-      // Threads: post immediately when published (Day 0, same cadence as Facebook)
+      // Threads: post immediately when published
       if (threadsService && effectivePublishStatus === 'publish') {
         const threadsPostId = await threadsService.promoteBlogPost(content, post);
         if (threadsPostId) await wpService.updatePostMeta(post.postId, { _autoblog_threads_post_id: threadsPostId }).catch(() => {});
       }
 
-      if (socialPlatforms.length > 0) {
+      // LinkedIn: post immediately when published
+      if (linkedinService && effectivePublishStatus === 'publish') {
+        const linkedinPostId = await linkedinService.promoteBlogPost(content.title, content.excerpt, resolvePostUrl(post), featuredMediaResult?.sourceUrl || undefined);
+        if (linkedinPostId) await wpService.updatePostMeta(post.postId, { _autoblog_linkedin_post_id: linkedinPostId }).catch(() => {});
+      }
+
+      // Twitter: still deferred +2h (runs within batch window)
+      if (twitterService) {
         try {
           const socialBaseTime = Date.now();
-          // Schedule Twitter at +2h from publish time
-          if (twitterService) {
-            await wpService.updatePostMeta(post.postId, {
-              _autoblog_social_scheduled: new Date(socialBaseTime + TWITTER_DELAY_MS).toISOString(),
-              _autoblog_social_platforms: 'twitter',
-            });
-          }
-          // Schedule LinkedIn at +6h from publish time (separate meta key for staggering)
-          if (linkedinService) {
-            await wpService.updatePostMeta(post.postId, {
-              _autoblog_linkedin_scheduled: new Date(socialBaseTime + LINKEDIN_DELAY_MS).toISOString(),
-            });
-          }
-          logger.info(`Multi-day campaign: Twitter +2h, LinkedIn +6h from now for "${content.title}"`);
+          await wpService.updatePostMeta(post.postId, {
+            _autoblog_social_scheduled: new Date(socialBaseTime + TWITTER_DELAY_MS).toISOString(),
+            _autoblog_social_platforms: 'twitter',
+          });
+          logger.info(`Twitter scheduled +2h from now for "${content.title}"`);
         } catch (socialMetaError) {
-          logger.debug(`Social scheduling meta save failed: ${socialMetaError instanceof Error ? socialMetaError.message : socialMetaError}`);
-          // Fallback: post immediately if meta save fails, save social IDs for tracking
-          if (twitterService) {
-            const tweetId = await twitterService.promoteBlogPost(content, post);
-            if (tweetId) await wpService.updatePostMeta(post.postId, { _autoblog_tweet_id: tweetId }).catch(() => {});
-          }
-          if (linkedinService) {
-            const linkedinPostId = await linkedinService.promoteBlogPost(content.title, content.excerpt, resolvePostUrl(post), featuredMediaResult?.sourceUrl || undefined);
-            if (linkedinPostId) await wpService.updatePostMeta(post.postId, { _autoblog_linkedin_post_id: linkedinPostId }).catch(() => {});
-          }
+          logger.debug(`Twitter scheduling meta save failed: ${socialMetaError instanceof Error ? socialMetaError.message : socialMetaError}`);
+          const tweetId = await twitterService.promoteBlogPost(content, post);
+          if (tweetId) await wpService.updatePostMeta(post.postId, { _autoblog_tweet_id: tweetId }).catch(() => {});
         }
       }
 
@@ -1646,30 +1631,7 @@ async function main(): Promise<void> {
             logger.debug(`Deferred social post failed: ${deferredSocialErr instanceof Error ? deferredSocialErr.message : deferredSocialErr}`);
           }
         }
-        // LinkedIn execution (staggered separately)
-        if (linkedinService) {
-          const pendingLinkedin = await wpService.getPostsByMeta('_autoblog_linkedin_scheduled', 10, 'publish,future');
-          for (const pending of pendingLinkedin.slice(0, 3)) {
-            const scheduledAt = pending.meta._autoblog_linkedin_scheduled;
-            if (!scheduledAt || new Date(scheduledAt).getTime() > Date.now()) continue;
-            // Skip if post URL is still ?p=ID (WordPress hasn't auto-published yet)
-            const liResolvedUrl = resolvePostUrl(pending);
-            if (liResolvedUrl.includes('?p=') || liResolvedUrl.includes('&p=')) {
-              logger.debug(`Deferred LinkedIn skip: post ${pending.postId} not yet published (future status)`);
-              continue;
-            }
-            try {
-              // Resolve featured image URL from post history for LinkedIn thumbnail
-              const liHistoryEntry = history.getAllEntries().find(e => e.postId === pending.postId);
-              const deferredLiId = await linkedinService.promoteBlogPost(pending.title, pending.excerpt, liResolvedUrl, liHistoryEntry?.featuredImageUrl || undefined);
-              if (deferredLiId) await wpService.updatePostMeta(pending.postId, { _autoblog_linkedin_post_id: deferredLiId }).catch(() => {});
-              logger.info(`Deferred LinkedIn post executed for "${pending.title}"`);
-              await wpService.updatePostMeta(pending.postId, { _autoblog_linkedin_scheduled: '' });
-            } catch (liErr) {
-              logger.debug(`Deferred LinkedIn post failed: ${liErr instanceof Error ? liErr.message : liErr}`);
-            }
-          }
-        }
+        // LinkedIn: now posts immediately (deferred scheduling removed)
         // Facebook deferred execution (for scheduled posts)
         if (facebookService) {
           const pendingFb = await wpService.getPostsByMeta('_autoblog_fb_scheduled', 10, 'publish,future');

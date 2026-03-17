@@ -147,6 +147,10 @@ jobs:
           FB_APP_ID: ${{ secrets.FB_APP_ID }}
           FB_APP_SECRET: ${{ secrets.FB_APP_SECRET }}
 
+          # Threads auto-posting
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+          THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
+
       - name: Commit post history and cache
         run: |
           git config user.name "github-actions[bot]"
