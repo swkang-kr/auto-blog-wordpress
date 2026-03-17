@@ -123,7 +123,7 @@ export class PinterestService {
     const base = ['#Korea', '#SouthKorea'];
     const categoryTags: Record<string, string[]> = {
       'K-Beauty': ['#KBeauty', '#KoreanSkincare', '#Skincare', '#KoreanBeauty', '#GlassSkin'],
-      'K-Entertainment': ['#KPop', '#KDrama', '#Hallyu', '#KoreanDrama', '#KPopBusiness'],
+      'K-Entertainment': ['#KPop', '#KDrama', '#Hallyu', '#KoreanDrama', '#KHipHop', '#KRnB'],
     };
     return [...base, ...(categoryTags[category] || [])];
   }

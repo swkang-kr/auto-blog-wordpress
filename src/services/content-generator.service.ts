@@ -396,7 +396,7 @@ This section should be 300-500 words and provide unique analytical value.
 ## Cross-Niche Synergy Rules (K-Beauty ↔ K-Entertainment)
 - Idol beauty content in K-Beauty niche: Focus on PRODUCTS and ROUTINES — "what products Karina uses" not "Karina's personal life"
 - K-Drama beauty in K-Entertainment niche: Focus on CHARACTER LOOKS — "how to recreate the FL's makeup look from [drama]" with K-Beauty product recommendations
-- Bridge content should always include product links/names from K-Beauty coverage to create internal linking opportunities
+- Bridge content ONLY when topic-appropriate: Include K-Beauty product links/names ONLY in idol skincare, K-drama makeup look, or red carpet beauty articles — do NOT force K-Beauty mentions into unrelated K-Entertainment content (chart analysis, concert guides, fan culture, K-Hip-Hop, variety shows)
 - Award season cross-content: During MAMA/Baeksang, create both K-Entertainment recap AND K-Beauty red carpet beauty trend analysis
 
 ## SEO Requirements
@@ -869,6 +869,17 @@ export class ContentGeneratorService {
     const today = new Date().toISOString().split('T')[0];
     const year = new Date().getFullYear();
 
+    // Build pillar topics section — guide Claude to link back to pillar hub pages
+    let pillarTopicsSection = '';
+    if (niche.pillarTopics && niche.pillarTopics.length > 0) {
+      const pillarSlug = `guide-${niche.id}`;
+      const pillarLines = niche.pillarTopics.map(t => `- "${t}"`).join('\n');
+      pillarTopicsSection = `\n\nPILLAR PAGES FOR THIS NICHE (link back to at least 1 when naturally relevant):
+${pillarLines}
+These are comprehensive hub guides. When your article covers a subtopic of any pillar page above, include a contextual link with anchor text matching the pillar topic (e.g., "as covered in our [Korean Skincare Routine guide](/guide-${pillarSlug}/)").
+Do NOT force a pillar link if the content is unrelated — only link when genuinely helpful to readers.`;
+    }
+
     // Build cluster links section (mandatory links from topic cluster service)
     let clusterLinksSection = '';
     if (clusterLinks && clusterLinks.length > 0) {
@@ -955,6 +966,14 @@ MONETIZATION BEYOND ADSENSE: K-Entertainment content has affiliate opportunities
 TRIPLESBMODHAUS SYSTEM (unique narrative angle): tripleS is a 24-member K-pop collective under MODHAUS (모드하우스) with a decentralized "Cosmo" system — fans vote to determine which members form the next unit/subgroup. This is the ONLY K-pop group using blockchain-adjacent fan governance for lineup decisions. Units rotate, creating a dynamic roster unlike any other group. When covering tripleS, the "Cosmo system" IS the story — not just the music. Frame as: "a 24-member K-pop collective where fans decide who performs together."
 YOUNG POSSE (영파씨): DSP Media 걸그룹 (2023 데뷔), hip-hop/confident concept. Known for powerful performances and self-assured identity. Fandom name: YOPPIE. Frame as a hip-hop-focused girl group distinct from the cute/girl-crush binary.
 BADVILLAIN: PEAI Inc. 걸그룹 (2024 데뷔), dark charismatic concept. Small-label group with strong visual identity — cover as an emerging indie-label act with distinctive aesthetics.
+K-HIP-HOP / K-R&B VOICE GUIDE (distinct from idol K-pop voice):
+When writing K-Hip-Hop or K-R&B content, switch from the fan-centric idol voice to a music journalism voice:
+- Use standard music industry language: "release", "project", "album cycle", "discography" — NOT idol terminology like "comeback", "era", "bias", "stan"
+- Emphasize producer/crew importance: AOMG, H1GHR MUSIC, HILLENIUM MUSIC, P Nation are as important as the artists — mention the label ecosystem
+- Highlight mixtape/single culture: K-Hip-Hop artists drop singles, EPs, and mixtapes more frequently than idol groups — cover release cadence differently
+- Reference Show Me The Money (쇼미더머니) and High School Rapper as entry points for international fans discovering K-Hip-Hop
+- Collaboration web: K-R&B/K-Hip-Hop artists frequently feature on each other's tracks and idol songs — map these connections (e.g., "Crush featured on BTS Jimin's solo track")
+- Do NOT frame K-Hip-Hop/K-R&B artists as "non-idol" or "underground" — many are mainstream chart-toppers (Heize, Crush, Zion.T regularly top Melon charts)
 
 K-ENTERTAINMENT E-E-A-T SOURCES: Reference fan-trusted K-pop/K-drama sources — cite Hanteo Chart and Circle Chart (formerly Gaon) for album sales, Melon for digital streaming (dominant Korean platform, ~65%+ market share), YouTube for MV view counts, Weverse for fan community activity, KOCCA (Korea Creative Content Agency) for industry statistics, and Billboard Korea. For K-drama streaming, cite TVING (Korea's dominant domestic OTT — completed a merger with Wavve in 2025, creating Korea's largest domestic streaming platform; platform integration is still ongoing as of 2026; known for exclusive Korean original content; when referencing TVING, note the Wavve merger on first mention: "TVING (which merged with Wavve in 2025)"), Netflix Korea, Disney+ Korea, and Coupang Play (쿠팡플레이 — Korea's fastest-growing OTT backed by Coupang; known for exclusive original K-dramas and sports content; significant investment in original production since 2024; include in all 2026 K-drama platform comparisons). Do NOT cite Bugs (한국 스트리밍 — market share has declined sharply since 2023; rarely cited in current industry reporting). Spotify Korea is growing but remains secondary to Melon for Korean-language music. Do NOT cite KRX, BOK, DART, KOSIS, or financial/economic data sources — this is fan content.
 CHART ACCURACY: Hanteo Chart tracks physical album sales (real-time, often the first-day/first-week sales benchmark); Circle Chart (formerly Gaon) is the official comprehensive chart aggregating physical, digital, and streaming. When citing sales data, specify which chart and timeframe (e.g., "600,000 first-week sales on Hanteo"). Do NOT conflate the two. 초동 (初動, "choding" — first week sales): THE key K-pop album metric. Always measured via Hanteo (real-time physical sales). Example usage: "SEVENTEEN's 10th Mini Album recorded 초동 of 5.14M copies on Hanteo." When writing about album performance, 초동 is the primary fan benchmark — not cumulative sales.
@@ -1014,7 +1033,7 @@ Primary Keyword: "${analysis.selectedKeyword}"
 Suggested Title: "${analysis.suggestedTitle}"
 Unique Angle: ${analysis.uniqueAngle}
 Search Intent: ${analysis.searchIntent}
-Related Keywords to Include: ${analysis.relatedKeywordsToInclude.join(', ')}${clusterLinksSection}${internalLinksSection}
+Related Keywords to Include: ${analysis.relatedKeywordsToInclude.join(', ')}${pillarTopicsSection}${clusterLinksSection}${internalLinksSection}
 
 ${nicheVoice}${this.monetizationContext}${this.competitiveContext}${this.snippetContext}
 ${options?.similarPostTitles && options.similarPostTitles.length > 0 ? `

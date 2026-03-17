@@ -860,7 +860,7 @@ async function main(): Promise<void> {
     }
 
     // Pillar→satellite content sequencing advice
-    const sequenceAdvice = topicClusterService.getPillarSequencingAdvice(niche.id, existingPosts, pillarUrlMap);
+    const sequenceAdvice = topicClusterService.getPillarSequencingAdvice(niche.id, existingPosts, pillarUrlMap, niche.pillarTopics);
     if (sequenceAdvice) {
       logger.info(`Sequencing [${niche.id}]: ${sequenceAdvice.advice} (${sequenceAdvice.satelliteCount} satellites)`);
       if (sequenceAdvice.shouldCreatePillar) {
@@ -2932,6 +2932,26 @@ async function main(): Promise<void> {
     const infoRatio = (intentCounts['informational'] || 0) / total;
     if (infoRatio > 0.8 && total >= 3) {
       logger.warn(`Intent imbalance: ${(infoRatio * 100).toFixed(0)}% informational — consider more transactional/commercial content for better monetization`);
+    }
+  }
+
+  // Content type distribution report
+  const contentTypeCounts: Record<string, number> = {};
+  for (const g of generated) {
+    const ct = g.researched.analysis.contentType || 'unknown';
+    contentTypeCounts[ct] = (contentTypeCounts[ct] || 0) + 1;
+  }
+  if (Object.keys(contentTypeCounts).length > 0) {
+    const ctStr = Object.entries(contentTypeCounts)
+      .sort((a, b) => b[1] - a[1])
+      .map(([type, count]) => `${type}: ${count}`)
+      .join(', ');
+    logger.info(`Content Type Distribution: ${ctStr}`);
+    // Warn if case-study + deep-dive < 10% (E-E-A-T authority gap)
+    const ctTotal = Object.values(contentTypeCounts).reduce((a, b) => a + b, 0);
+    const authorityCount = (contentTypeCounts['case-study'] || 0) + (contentTypeCounts['deep-dive'] || 0);
+    if (ctTotal >= 5 && authorityCount / ctTotal < 0.1) {
+      logger.warn(`Content type imbalance: case-study + deep-dive = ${authorityCount}/${ctTotal} (${(authorityCount / ctTotal * 100).toFixed(0)}%) — target ≥10% for E-E-A-T authority`);
     }
   }
 

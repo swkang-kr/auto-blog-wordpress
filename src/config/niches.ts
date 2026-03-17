@@ -109,7 +109,6 @@ export const NICHES: NicheConfig[] = [
       'best Korean exfoliating pads for sensitive skin 2026',
       // Glass skin — biggest K-Beauty search category globally
       'glass skin routine Korean products step by step 2026',
-      'how to get glass skin Korean skincare method explained',
       'best Korean products for glass skin ranked 2026',
       // Skin barrier repair — high conversion intent
       'skin barrier repair Korean skincare ceramide products ranked',
@@ -195,7 +194,6 @@ export const NICHES: NicheConfig[] = [
       'best Korean retinol alternative for beginners sensitive skin 2026',
       // Body care 확장 — 급성장 세그먼트
       'how to use Korean Italy towel exfoliation body scrub guide',
-      'Korean body glow routine products glass skin body 2026',
       // Peptide 스킨케어 — 글로벌 2위 성장 세그먼트 (2025-2026)
       'best Korean peptide serum for anti-aging firming skin 2026',
       'peptide skincare Korean brands MEDICUBE Isntree ranked guide',
@@ -269,7 +267,6 @@ export const NICHES: NicheConfig[] = [
       // NOTE: 피부색 표현 시 중립적·존중적 언어 사용 필수 (예: "deeper skin tones", "melanin-rich skin")
       'K-beauty skincare routine for dark skin tones guide 2026 what actually works',
       'best Korean brightening products for dark skin hyperpigmentation 2026',
-      'Korean sunscreen for dark skin tones no white cast ranked 2026',
       'best Korean vitamin C serum for dark skin hyperpigmentation before after',
       // Olive Young 앱·국제직구 가이드 — 에버그린 고수요 (Reddit r/AsianBeauty 상위 질문)
       'how to use Olive Young app in English international shopping guide 2026',
@@ -474,20 +471,16 @@ export const NICHES: NicheConfig[] = [
       'K-Beauty at TJ Maxx Marshalls hidden deals what to look for guide 2026',
       'where to buy Korean skincare in the US complete store guide 2026',
       // 남성 K-Beauty — 성장 중인 서브니치 (기존 남성 키워드 보강)
-      'Korean skincare routine for men beginners step by step guide 2026',
       'K-beauty for men complete skincare guide what products to use 2026',
       'Korean men grooming skincare essentials what to buy 2026 guide',
       'Korean toner for men best picks oily combination skin 2026 ranked',
       // 아이돌 스킨케어 크로스오버 — K-Beauty ↔ K-Entertainment 브릿지 (추가 보강, 차별화된 앵글)
       'K-pop idol glass skin secrets how to get the same look at home guide',
-      'IVE Wonyoung skincare routine beauty secrets products revealed 2026',
       'NewJeans skincare routine K-Beauty products beauty looks guide 2026',
       // 가격 비교 — 어필리에이트 전환율 최고 (구매 의도)
-      'Olive Young vs Amazon K-beauty price comparison which is cheaper 2026',
       'Korean skincare cheaper in Korea how much you save buying local guide',
       'K-beauty dupes drugstore affordable alternatives ranked 2026 guide',
       // 선크림 비교 — UV 필터 교육 콘텐츠 고 E-E-A-T
-      'Korean sunscreen vs American sunscreen UV filters difference PA vs SPF explained',
       'PA++++ sunscreen comparison best Korean SPF ranked by UV protection 2026',
       // Skintific — NOTE: 인도네시아 브랜드 (PT Skintific Global Indonesia), 한국 스타일 포뮬레이션 사용. 한국 브랜드가 아님.
       'Skintific skincare review Korean-inspired formulas best products barrier repair 2026',
@@ -572,9 +565,6 @@ export const NICHES: NicheConfig[] = [
       'Korean skincare starter kit under 50 dollars best products beginner 2026',
       'Korean skincare full routine under 100 dollars best value kit 2026',
       'best affordable Korean skincare dupes under 25 dollars drugstore 2026',
-      // 브랜드 케이스 스터디 — E-E-A-T 권위 구축
-      'how COSRX became number one K-Beauty brand Amazon growth story explained',
-      'how Anua went viral TikTok Korean skincare brand story guide 2026',
       // 선크림 포맷 혁신 심화 — 하이브리드·스프레이·파우더
       'Korean sunscreen spray vs stick vs cushion which is best reapplication 2026',
       'Korean mineral sunscreen powder compact SPF review ranked 2026',
@@ -583,7 +573,6 @@ export const NICHES: NicheConfig[] = [
       'collagen drink vs hyaluronic acid supplement Korean comparison which works 2026',
       // 선케어 상식 오해 교정 — 고 E-E-A-T 교육 콘텐츠
       'Korean sunscreen myths debunked PA rating SPF explained facts 2026',
-      'why Korean sunscreens are better than US formulas explained UV filter guide',
       // ── 전문가 감사 추가 (2026-03-17): 누락된 2026 핵심 트렌드 ──
       // Skin Longevity / Pro-Aging — 2025-2026 글로벌 최대 뷰티 패러다임 전환
       'skin longevity Korean skincare pro-aging routine how to age well guide 2026',
@@ -643,7 +632,6 @@ export const NICHES: NicheConfig[] = [
       // BTS — 글로벌 최고 검색량 (2026년: 전원 전역 완료, 그룹 컴백 앵글 중심)
       // NOTE: 모든 멤버 2025년 중반까지 전역 완료 — "after military service" 앵글은 과거완료형으로 작성
       'BTS group comeback 2026 what fans need to know full guide',
-      'BTS 2026 comeback latest what fans need to know full update',
       'BTS members solo activities ranked 2026 update',
       // 4세대 주력 그룹 — 급상승 트래픽
       // NOTE: NewJeans — 2025년 12월 어도어 독립 활동 시작, 일부 법적 이슈 진행 중 (2026).
@@ -893,9 +881,7 @@ export const NICHES: NicheConfig[] = [
       'best TVING original drama 2026 exclusive must watch ranked guide',
       'K-drama Netflix 2026 best new shows ranked what to watch guide',
       'Korean drama streaming platforms compared which is best 2026 guide',
-      // 5세대 그룹 (Gen 5) — 2024-2025 데뷔, 글로벌 팬덤 형성 중
-      'WHIPLASH Kpop SM Entertainment boy group songs concept guide 2026',
-      'TWS Kpop debut story members songs ranked guide for new fans 2026',
+      // 5세대 그룹 (Gen 5) — WHIPLASH, TWS 키워드는 상단에 이미 존재 (cannibalization 방지)
       // ── 전문가 감사 추가 (2026-03-16 batch 21): 누락된 K-Entertainment 핵심 세그먼트 ──
       // K-Drama 작가/감독 스포트라이트 — 저경쟁 권위 구축 (오토르 중심 콘텐츠)
       'best Korean drama writers screenwriters who created top K-dramas explained 2026',
