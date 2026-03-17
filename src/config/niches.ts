@@ -731,6 +731,23 @@ export const NICHES: NicheConfig[] = [
       // 한국 치아미백/구강케어 — 뷰티 카테고리 진입, Olive Young 구강케어 급성장
       'best Korean whitening toothpaste oral care products ranked 2026 guide',
       'Korean oral care routine teeth whitening products Olive Young ranked 2026',
+      // ── 전문가 감사 추가 (2026-03-17 batch 16): 누락된 K-Beauty 세그먼트 ──
+      // 남성 메이크업 (기존 남성 스킨케어와 별개)
+      'best Korean BB cream for men natural coverage no makeup look 2026',
+      'Korean men concealer dark circles blemish coverage natural finish 2026',
+      'Korean men eyebrow pencil grooming products best ranked 2026',
+      // Skin Cycling 상세화
+      'skin cycling night routine Korean products step by step exfoliation retinoid recovery 2026',
+      'skin cycling schedule Korean skincare which products for each night guide 2026',
+      // 2026 신흥 성분 (Ectoin, Squalane, Panthenol)
+      'ectoin Korean skincare products anti-pollution stress protection ranked 2026',
+      'best Korean squalane oil serum lightweight moisturizer ranked 2026',
+      'panthenol Korean skincare products vitamin B5 soothing barrier repair 2026',
+      // iHerb K-Beauty
+      'best Korean skincare on iHerb what to buy ranked 2026 guide',
+      'iHerb vs Amazon vs Olive Young where to buy Korean skincare price comparison 2026',
+      // 수유 중 K-Beauty
+      'Korean skincare safe while breastfeeding nursing mother skincare guide 2026',
     ],
     contentTypes: ['product-review', 'best-x-for-y', 'x-vs-y', 'how-to', 'listicle', 'case-study', 'deep-dive', 'news-explainer'],
     adSenseRpm: 'high',
@@ -1322,6 +1339,27 @@ export const NICHES: NicheConfig[] = [
       // 아이돌 유튜브 채널 / 콘텐츠 크리에이터 — 성장 세그먼트
       'best K-pop idol YouTube channels to subscribe 2026 vlogs behind scenes ranked',
       'K-pop idols as content creators YouTube channels worth watching guide 2026',
+      // ── 전문가 감사 추가 (2026-03-17 batch 16): 누락된 K-Entertainment 세그먼트 ──
+      // 음악방송 (Music Show) 가이드
+      'Korean music shows explained M Countdown Music Bank Inkigayo complete guide 2026',
+      'how to vote on Korean music shows Inkigayo Music Bank guide international fans 2026',
+      'how K-pop music show wins work criteria explained M Countdown THE SHOW guide',
+      'K-pop music show wins record most wins all time ranked 2026 guide',
+      // 컴백 쇼케이스
+      'what is K-pop comeback showcase explained how it works fan guide 2026',
+      'how to watch K-pop comeback showcase live online international fans guide 2026',
+      // 한국 웹툰 (독립 세그먼트)
+      'best Korean webtoons to read 2026 ranked for beginners English translated guide',
+      'Naver Webtoon vs Kakao Webtoon vs LEZHIN which platform is best comparison 2026',
+      'how to read Korean webtoons in English best apps platforms guide 2026',
+      'best completed Korean webtoons manhwa to binge read ranked all time guide',
+      // 팬캠 (Fancam) 문화
+      'K-pop fancam culture explained why fans film individual members guide 2026',
+      'best K-pop fancams of all time most viewed ranked guide',
+      'how to film K-pop fancam tips equipment guide concert etiquette 2026',
+      // Hallyu Tourism 종합
+      'Seoul Hallyu travel guide K-pop K-drama fan pilgrimage complete itinerary 2026',
+      'K-pop fan trip Seoul budget travel guide where to go what to see 2026',
     ],
     contentTypes: ['news-explainer', 'listicle', 'best-x-for-y', 'deep-dive', 'how-to', 'x-vs-y', 'case-study'],
     adSenseRpm: 'medium',

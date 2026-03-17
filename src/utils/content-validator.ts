@@ -1543,7 +1543,7 @@ export function validateContent(
       'TXT': { count: 5 },
       'aespa': { count: 4, note: '4 real members + 4 virtual ae- counterparts — do NOT count as 8' },
       'IVE': { count: 6 },
-      'LE SSERAFIM': { count: 4, note: 'Kim Garam left Aug 2022, Sakura/Kazuha/Yunjin/Eunchae — 4 active since then' },
+      'LE SSERAFIM': { count: 5, note: 'Kim Garam left Jul 2022, Hong Eunchae joined pre-debut — 5 active: Sakura, Chaewon, Yunjin, Kazuha, Eunchae' },
       'NewJeans': { count: 5 },
       'BABYMONSTER': { count: 7 },
       'ILLIT': { count: 5 },
@@ -1561,7 +1561,7 @@ export function validateContent(
       'GOT7': { count: 7 },
       'MAMAMOO': { count: 4 },
       'DAY6': { count: 5 },
-      'BTOB': { count: 4, note: '4 active members as of 2026 (Ilhoon left, Hyunsik/Peniel status varies)' },
+      'BTOB': { count: 6, note: 'Ilhoon left 2021 — 6 remaining: Eunkwang, Minhyuk, Changsub, Hyunsik, Peniel, Sungjae' },
       'THE BOYZ': { count: 11 },
       'TREASURE': { count: 10, note: 'Mashiho and Bang Yedam left in 2023 — 10 active members' },
       'ITZY': { count: 5 },
@@ -2184,12 +2184,34 @@ export function validateContent(
       }
     }
 
+    // 16차 감사 — 50. AHA/BHA optimal pH range validation (pH 3.0-4.0)
+    if (category === 'K-Beauty' && /\b(?:AHA|BHA|glycolic|salicylic|lactic)\b/i.test(plainText) && /\bpH\b/i.test(plainText)) {
+      const acidPhMatches = plainText.match(/\bpH\s*(?:of\s*)?([\d.]+)/gi) || [];
+      for (const phMatch of acidPhMatches) {
+        const phValue = parseFloat(phMatch.replace(/pH\s*(?:of\s*)?/i, ''));
+        if (!isNaN(phValue) && (phValue < 2.5 || phValue > 4.5)) {
+          warnings.push({ category: 'niche-accuracy', message: `AHA/BHA product pH ${phValue} is outside optimal efficacy range — AHA/BHA products should be pH 3.0-4.0 for effective exfoliation without excessive irritation`, severity: 'warning' });
+          eeatScore -= 1;
+          break;
+        }
+      }
+    }
+
     // 14차 감사 — 48. Cooling/ice skincare claims — efficacy disclaimer
     if (/(?:ice|cryo|cooling|cold)\s*(?:therapy|treatment|facial|globes?|roller)/i.test(plainText)) {
       const hasEfficacyNote = /(?:temporary|short[- ]term|anecdotal|limited\s*evidence|not\s*clinically\s*proven|results\s*may\s*vary)/i.test(plainText);
       if (!hasEfficacyNote) {
         warnings.push({ category: 'niche-accuracy', message: 'Ice/cryotherapy skincare described without efficacy disclaimer — cryotherapy benefits (pore minimizing, de-puffing) are temporary and not clinically proven for long-term results. Add "temporary" or "results may vary."', severity: 'info' });
       }
+    }
+  }
+
+  // 16차 감사 — 49. Cross-niche cannibalization detection (K-Entertainment idol skincare → K-Beauty 영역 침범 방지)
+  if (category === 'K-Entertainment' && /(?:idol|k-?pop)\s*(?:skincare|skin\s*care|beauty\s*routine)/i.test(plainText)) {
+    const productRecommendations = (plainText.match(/(?:recommend|best|buy|purchase|apply|use)\s+(?:this|the|a)\s+(?:serum|cream|toner|moisturizer|sunscreen|cleanser|essence|ampoule)/gi) || []).length;
+    if (productRecommendations >= 4) {
+      warnings.push({ category: 'niche-accuracy', message: `K-Entertainment article contains ${productRecommendations} product purchase recommendations — this may cannibalize K-Beauty content. Idol skincare articles should focus on routine descriptions and brand mentions, not detailed product reviews.`, severity: 'warning' });
+      eeatScore -= 2;
     }
   }
 
