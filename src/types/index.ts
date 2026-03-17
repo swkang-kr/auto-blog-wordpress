@@ -201,6 +201,8 @@ export interface NicheConfig {
   dynamicRpmValue?: number;
   /** Whether this niche is enabled (default true) */
   enabled?: boolean;
+  /** Pillar topics for internal link hub structure — each topic becomes a comprehensive guide page */
+  pillarTopics?: string[];
 }
 
 /** Per-category optimal publish timing (override GA4 when no data available) */

@@ -704,7 +704,9 @@ STRATEGY: Consider creating content that directly targets one of these content g
       'glass body', 'skin flooding', 'hanbang',
       // K-Beauty brands (additional coverage)
       'banila co', 'hince', 'vt cosmetics',
-      // K-Entertainment groups — 3rd & 4th gen
+      // K-Entertainment groups — 2nd gen: SNSD/Big Bang/SHINee
+      // 3rd gen (2012-2017 debuts): EXO, BTS, BLACKPINK, TWICE, SEVENTEEN, GOT7, MAMAMOO, Red Velvet
+      // 3.5/4th gen (2018+ debuts): Stray Kids, ATEEZ, TXT, ENHYPEN, ITZY, aespa, IVE, LE SSERAFIM etc.
       'twice', 'seventeen', 'stray kids', 'ateez', 'txt', 'enhypen',
       'le sserafim', 'ive', 'newjeans', 'aespa', 'babymonster',
       'illit', 'kiss of life', 'tws', 'xg', 'kep1er',
@@ -714,6 +716,12 @@ STRATEGY: Consider creating content that directly targets one of these content g
       'riize', 'boynextdoor', 'boy next door', 'zerobaseone', 'zb1',
       'meovv', 'triples', 'tripless', 'hearts2hearts', 'izna', 'ciipher',
       'drippin', 'cravity', 'the boyz',
+      // K-Hip-Hop / K-R&B 아티스트 — 아이돌 외 K-Music 커버리지 확장
+      'dean', 'crush', 'zion.t', 'ph-1', 'jay park', 'epik high',
+      'dpr live', 'offonoff', 'colde', 'heize', 'lee hi',
+      'k-rnb', 'k-hiphop', 'korean rnb', 'korean hip hop',
+      // 2024-2025 신규 걸그룹 (누락 보완)
+      'young posse', 'badvillain', 'unis',
       // 2024-2026 신규 그룹/아티스트 (seed keywords에 추가됨 — 검증 일관성 필수)
       'plave',            // 버추얼 아이돌, VLAST 소속 (팬덤명 ASTERDOM)
       'g-dragon', 'gdragon', 'kwon jiyong', // YG 솔로 아티스트, BIGBANG 멤버

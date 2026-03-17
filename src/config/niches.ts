@@ -584,9 +584,52 @@ export const NICHES: NicheConfig[] = [
       // 선케어 상식 오해 교정 — 고 E-E-A-T 교육 콘텐츠
       'Korean sunscreen myths debunked PA rating SPF explained facts 2026',
       'why Korean sunscreens are better than US formulas explained UV filter guide',
+      // ── 전문가 감사 추가 (2026-03-17): 누락된 2026 핵심 트렌드 ──
+      // Skin Longevity / Pro-Aging — 2025-2026 글로벌 최대 뷰티 패러다임 전환
+      'skin longevity Korean skincare pro-aging routine how to age well guide 2026',
+      'Korean anti-aging vs pro-aging skincare which approach is better explained 2026',
+      'best Korean skincare for skin longevity long term results not quick fix guide 2026',
+      // Exosome skincare — PDRN 다음 단계 바이오테크 성분, 한국 클리닉→화장품 전환
+      'Korean exosome skincare serum what is it explained science guide 2026',
+      'best Korean exosome serum cream products ranked anti-aging 2026',
+      'exosome vs PDRN vs stem cell Korean skincare which biotech ingredient is best 2026',
+      // Ceramide NP vs AP vs EOP — 세라마이드 심화 비교 누락
+      'ceramide types NP AP EOP explained which Korean product has best ceramide guide',
+      'ILLIYOON vs COSRX vs Dr.Jart+ ceramide cream comparison which has most ceramides 2026',
+      // UV 카메라 선크림 검증 — TikTok 바이럴 2025-2026 교육 콘텐츠
+      'UV camera sunscreen test Korean SPF actually works visual proof guide 2026',
+      'how much Korean sunscreen to apply UV camera reveals correct amount guide',
+      // 마이크로니들 패치 진화 — 하이드로콜로이드 → 마이크로니들 (ZitSticka 경쟁)
+      'best Korean microneedle acne patch vs hydrocolloid which works better 2026',
+      'Korean acne patch evolution hydrocolloid to microneedle complete guide 2026',
+      'COSRX vs Mighty Patch vs Korean microneedle patches ranked comparison 2026',
+      // 립 콤보 (Lip Combo) — 한국식 립 레이어링 TikTok 바이럴 (라이너+틴트+글로스)
+      'Korean lip combo technique liner tint gloss layering how to guide 2026',
+      'best Korean products for lip combo look step by step tutorial ranked 2026',
+      // K-Beauty FAQ 허브 — E-E-A-T YMYL 허브 페이지
+      'is Korean skincare better than American explained facts comparison guide 2026',
+      'are Korean beauty products safe ingredients tested guide for beginners 2026',
+      // INCI 성분 교육 — 전문성 차별화
+      'how to read Korean skincare ingredient list INCI label explained guide 2026',
+      // Case Study / Deep-Dive 비율 보강 — 현재 ~5% → 목표 15%
+      'how COSRX became number one K-beauty brand on Amazon L\'Oreal acquisition story 2026',
+      'how Anua heartleaf toner went viral TikTok Korean skincare brand growth story 2026',
+      'how Olive Young became the global K-Beauty destination growth strategy explained 2026',
+      'Beauty of Joseon brand story how a traditional Korean brand conquered global skincare 2026',
+      'TIRTIR cushion foundation TikTok viral journey from Korean brand to global bestseller story',
+      'Korean sunscreen revolution how K-Beauty changed global SPF standards deep dive 2026',
+      'the science behind Korean glass skin why it works dermatology explained deep dive 2026',
+      'Korean skincare industry size growth 2026 market data trends deep dive analysis',
     ],
     contentTypes: ['product-review', 'best-x-for-y', 'x-vs-y', 'how-to', 'listicle', 'case-study', 'deep-dive', 'news-explainer'],
     adSenseRpm: 'high',
+    pillarTopics: [
+      'Korean Skincare Routine: Complete Step-by-Step Guide',           // 루틴 허브 — 모든 how-to/beginner 키워드의 앵커
+      'K-Beauty Ingredients Dictionary: Every Active Explained A-Z',    // 성분 허브 — 성분 비교/심화 키워드 앵커
+      'Best Korean Sunscreens: Ultimate SPF Guide',                    // 선크림 허브 — PA/UV필터/톤업/포맷 키워드 앵커
+      'Where to Buy Korean Skincare: Complete Shopping Guide',          // 쇼핑 허브 — Olive Young/Amazon/리테일 키워드 앵커
+      'Korean Skincare for Every Skin Type: Personalized Guide',        // 피부타입 허브 — 건성/지성/복합/민감 키워드 앵커
+    ],
   },
 
   // ── K-Entertainment: AdSense 트래픽 중심 ──
@@ -959,9 +1002,62 @@ export const NICHES: NicheConfig[] = [
       'how K-pop idols are trained years debut timeline system explained guide',
       'K-pop entertainment contracts explained what idols sign guide 2026',
       'Korean entertainment Big 4 SM JYP YG HYBE training system compared 2026',
+      // ── 전문가 감사 추가 (2026-03-17): 누락된 K-Entertainment 핵심 세그먼트 ──
+      // tripleS 시스템 딥다이브 — 24멤버 로테이션 유닛 (K-pop 유일무이 구조)
+      'tripleS MODHAUS 24 member system Cosmo voting units explained complete guide 2026',
+      'tripleS all units explained which subunit to follow guide new fans 2026',
+      // ILLIT 2026 — 뉴진스 유사성 논란 이후 독자적 정체성 확립 앵글
+      'ILLIT 2026 musical identity what makes them different explained guide fans',
+      // YOUNG POSSE / BADVILLAIN — 2024-2025 데뷔 걸그룹 누락
+      'YOUNG POSSE girl group songs concept explained guide new fans 2026',
+      'BADVILLAIN debut concept songs ranked guide for new fans 2026',
+      // K-Hip-Hop / K-R&B — 완전 누락 세그먼트 (아이돌 외 K-music)
+      'best K-R&B artists 2026 DEAN Crush Zion.T ranked guide for new listeners',
+      'K-hip-hop artists ranked 2026 Jay Park pH-1 who to listen to guide',
+      'K-R&B vs K-pop what is the difference explained genre guide 2026',
+      'best Korean indie music artists bands 2026 beyond K-pop guide',
+      // K-Drama 웹소설 원작 — 웹툰만 커버, 웹소설(카카오페이지/네이버시리즈) 누락
+      'K-drama based on web novel Kakao Page Naver Series which to watch 2026',
+      'best web novel K-dramas 2026 ranked adapted from Korean online fiction guide',
+      'webtoon vs web novel K-drama adaptations which are better comparison 2026',
+      // Netflix K-Drama 글로벌 Top 10 분석 — 매주 갱신 에버그린 반복 콘텐츠
+      'Netflix top 10 K-dramas this week worldwide rankings explained 2026',
+      'most popular K-dramas on Netflix 2026 global viewership hours ranked analysis',
+      'why Korean dramas dominate Netflix global top 10 explained analysis 2026',
+      // K-Drama 굿즈/어필리에이트 — AdSense-only 수익 다각화
+      'best K-drama merchandise where to buy official OST albums goods guide 2026',
+      'K-pop album buying guide which version to buy photocards explained 2026',
+      'best K-drama streaming subscription comparison Netflix TVING Viki which to buy 2026',
+      // K-Pop 티켓팅 가이드 — 전환율 높은 콘텐츠
+      'how to buy K-pop concert tickets guide Ticketmaster Interpark tips 2026',
+      'K-pop concert ticketing tips how to secure tickets fast fan guide 2026',
+      // 이벤트 결과 자동 트리거 키워드
+      'MAMA Awards 2026 winners complete list results recap guide',
+      'Baeksang Arts Awards 2026 winners complete list best drama best actor results',
+      'Golden Disc Awards 2026 winners complete results K-pop album recap',
+      'Melon Music Awards 2026 winners complete list results analysis',
+      // 숏폼 콘텐츠 — YouTube Shorts/TikTok 검색 의도 키워드
+      'best K-pop dance challenges 2026 trending TikTok easy to learn guide',
+      'K-pop TikTok viral moments 2026 best clips that broke the internet ranked',
+      // 팬덤명 교육 — 글로벌 팬 필수 콘텐츠
+      'K-pop fandom names complete list every group official fan name guide 2026',
+      // Case Study / Deep-Dive 비율 보강
+      'how BTS became the biggest boy band in history growth timeline explained deep dive',
+      'how BLACKPINK conquered global music fashion industry case study analysis 2026',
+      'how Netflix changed K-drama industry global distribution model case study explained',
+      'the economics of K-pop photocard collecting why fans buy multiple albums explained',
+      'how aespa KWANGYA universe changed K-pop storytelling deep dive concept analysis',
+      'HYBE vs SM vs JYP vs YG business model comparison K-pop Big 4 deep dive 2026',
     ],
     contentTypes: ['listicle', 'news-explainer', 'best-x-for-y', 'deep-dive', 'how-to', 'x-vs-y', 'case-study'],
     adSenseRpm: 'medium',
+    pillarTopics: [
+      'Complete Guide to K-Pop for Beginners: Everything You Need to Know',   // 입문 허브 — 팬 문화/용어/차트 키워드 앵커
+      'K-Drama Streaming Guide: Where and What to Watch',                     // 스트리밍 허브 — Netflix/TVING/Viki/장르 키워드 앵커
+      'K-Pop Chart System Explained: Circle, Melon, Hanteo Complete Guide',   // 차트 허브 — 올킬/PAK/음방 키워드 앵커
+      'K-Pop Concert & Fan Event Guide: Tickets, Tours, KCON',               // 콘서트 허브 — 투어/티켓팅/KCON 키워드 앵커
+      'K-Pop Groups by Generation: Complete Guide from 1st to 5th Gen',       // 세대 허브 — 그룹별 가이드/비교 키워드 앵커
+    ],
   },
 ];
 
