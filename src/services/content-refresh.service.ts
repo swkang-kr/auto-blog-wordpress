@@ -925,7 +925,12 @@ NICHE-SPECIFIC RULES — K-Entertainment:
 - Update group/member status to ${currentYear} (comebacks, hiatuses, military enlistment)
 - Cover 4th-gen groups if relevant: ILLIT, KISS OF LIFE, TWS, ATEEZ, LE SSERAFIM
 - Reference Weverse, photocard culture, or fan community dynamics for depth
-- Cite industry sources: Hanteo Chart, Circle Chart, Billboard Korea` : '';
+- Cite industry sources: Hanteo Chart, Circle Chart, Billboard Korea
+- 12차 감사: COMEBACK CYCLE CHECK — K-pop groups release every 6-8 months; if post is about a group's discography/best songs and a new album has likely dropped since publishing, refresh with latest comeback data
+- 12차 감사: CONTRACT CYCLE CHECK — Korean entertainment contracts are typically 7 years from debut. If a group is near 7-year mark, note contract renewal status or independent activities. Groups at 7-year mark: GOT7 (independent 2021), MAMAMOO (independent 2023), Red Velvet (renewed 2021), BTOB (renewed 2019). Newer groups approaching: SEVENTEEN (2022 renewed early), Stray Kids (2025 area), ATEEZ (2025 area)
+- 12차 감사: AWARD SHOW FRESHNESS — prediction posts should be updated to recap after ceremony airs; check if award results have been announced since original publish date
+- 12차 감사: CHART DATA STALENESS — any chart position cited (Hanteo, Circle, Melon) older than 4 weeks should be refreshed or hedged with "as of [date]"` : '';
+
 
     const prompt = `You are rewriting an underperforming blog post to improve reader engagement and reduce bounce rate. The post exists at ${post.link} and must keep its URL/slug unchanged.
 

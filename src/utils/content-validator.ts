@@ -1864,7 +1864,82 @@ export function validateContent(
       }
     }
 
-    // 39. Price disclaimer asymmetry fix — best-x-for-y also deducts score (like product-review Rule 18)
+    // 39. 12차 감사: pH 검증 확장 — 클렌저/비타민C/토너 pH 범위 확인
+    if (/vitamin\s*c|l-ascorbic\s*acid|ascorbic/i.test(plainText) && /pH\s*(?:of\s*)?([\d.]+)/i.test(plainText)) {
+      const vcPhMatches = plainText.match(/pH\s*(?:of\s*)?([\d.]+)/gi) || [];
+      for (const phMatch of vcPhMatches) {
+        const phValue = parseFloat(phMatch.replace(/pH\s*(?:of\s*)?/i, ''));
+        if (!isNaN(phValue) && phValue > 3.5) {
+          warnings.push({ category: 'niche-accuracy', message: `Vitamin C serum pH ${phValue} — L-ascorbic acid requires pH <3.5 for stability and efficacy. pH >3.5 means the vitamin C is likely oxidized/ineffective.`, severity: 'warning' });
+          eeatScore -= 1;
+        }
+      }
+    }
+    if (/cleanser|cleansing|face\s*wash/i.test(plainText) && /pH\s*(?:of\s*)?([\d.]+)/i.test(plainText)) {
+      const cleanserPhMatches = plainText.match(/pH\s*(?:of\s*)?([\d.]+)/gi) || [];
+      for (const phMatch of cleanserPhMatches) {
+        const phValue = parseFloat(phMatch.replace(/pH\s*(?:of\s*)?/i, ''));
+        if (!isNaN(phValue) && phValue > 7.0) {
+          warnings.push({ category: 'niche-accuracy', message: `Cleanser pH ${phValue} is too high — K-Beauty cleansers should be pH 4.5-6.5 to maintain skin barrier. pH >7 disrupts acid mantle.`, severity: 'warning' });
+          eeatScore -= 1;
+        }
+      }
+    }
+
+    // 40. 12차 감사: K-Beauty 트렌드 용어 정확성 — glass skin, honey skin, cloudless skin
+    if (/glass\s*skin/i.test(plainText)) {
+      if (/glass\s*skin[^.]{0,80}(?:texture|pores?\s*(?:visible|prominent|large)|bumpy|rough)/i.test(plainText) ||
+          /(?:texture|visible\s*pores?|bumpy)[^.]{0,80}glass\s*skin/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: '"Glass skin" = poreless, luminous, reflective appearance — cannot coexist with visible texture/pores. Revise wording to avoid contradiction.', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+    if (/honey\s*skin/i.test(plainText)) {
+      if (!/warm|glow|golden|dewy/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: '"Honey skin" should emphasize WARM golden glow with dewy finish — distinct from cool, luminous "glass skin" aesthetic. Add warmth descriptors.', severity: 'info' });
+      }
+    }
+    if (/cloudless\s*skin/i.test(plainText)) {
+      if (!/clear|even\s*tone|no\s*red|redness|smooth/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: '"Cloudless skin" = even tone, clear complexion with no visible redness — include clarity/evenness descriptors for accuracy.', severity: 'info' });
+      }
+    }
+
+    // 41. 12차 감사: K-Entertainment 차트 혼동 방지 — 초동(Hanteo) vs 누적(Circle) 비교 금지
+    if (/초동|first.?week\s*sales?|hanteo/i.test(plainText) && /circle\s*chart|gaon/i.test(plainText)) {
+      const conflatesCharts = /hanteo[^.]{0,60}circle|circle[^.]{0,60}hanteo/i.test(plainText);
+      if (conflatesCharts && !/(?:differ|distinct|respectively|whereas|vs\.?|hanteo\s*(?:tracks?|measures?)\s*(?:physical|real))/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'Hanteo (real-time physical sales) and Circle Chart (comprehensive aggregate) mentioned together without distinction — always specify which chart when citing sales data. 초동 is measured via Hanteo only.', severity: 'warning' });
+        eeatScore -= 2;
+      }
+    }
+
+    // 42. 12차 감사: K-Entertainment 어워드 명칭 정확성 — MAMA / GDA / SMA 혼동 방지
+    if (/MAMA/i.test(plainText) && !/MAMA\s*Awards?|Mnet\s*Asian\s*Music\s*Awards?/i.test(plainText)) {
+      if (/MAMA\s*(?:ceremony|show|event|winners?|nominees?)/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'MAMA referenced without full name — specify "MAMA Awards (Mnet Asian Music Awards)" on first mention for SEO and accuracy.', severity: 'info' });
+      }
+    }
+    if (/golden\s*disc/i.test(plainText) && /seoul\s*music/i.test(plainText)) {
+      if (!/(?:separate|differ|distinct|respectively)/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'Golden Disc Awards and Seoul Music Awards mentioned together without distinction — they are separate ceremonies held in the same month (January). Specify which when citing winners.', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 43. 12차 감사: 스킨케어 루틴 스텝 수 현실 체크 — 10+ 스텝 일반 대상 콘텐츠 경고
+    if (/korean.*routine|K-beauty.*routine/i.test(plainText) && ['how-to', 'product-review', 'listicle'].includes(contentType)) {
+      const stepsMatch = plainText.match(/(\d+)[-\s]*step/i);
+      if (stepsMatch && parseInt(stepsMatch[1]) > 10) {
+        const isForBeginners = /beginner|start|introduction|new\s*to/i.test(plainText);
+        if (isForBeginners) {
+          warnings.push({ category: 'niche-accuracy', message: `${stepsMatch[1]}-step routine for beginners is unrealistic — typical Korean routine is 3-7 steps. Reframe as "advanced/optional" or reduce step count.`, severity: 'warning' });
+          eeatScore -= 1;
+        }
+      }
+    }
+
+    // 44. Price disclaimer asymmetry fix — best-x-for-y also deducts score (like product-review Rule 18)
     if (contentType === 'best-x-for-y') {
       const hasPricing = /\$\d+|\₩[\d,]+|price|pricing|cost/i.test(plainText);
       const hasPriceDisclaimer = /prices?\s*(?:verified|checked|as of)|prices?\s*vary\s*frequently/i.test(plainText);

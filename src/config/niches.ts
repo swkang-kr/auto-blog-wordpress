@@ -21,7 +21,7 @@ export function getSeasonallyOrderedNiches(): NicheConfig[] {
     'KCON': ['K-Entertainment'],
     'Children': ['K-Entertainment'],
     'Summer': ['K-Beauty'],
-    'Chuseok': ['K-Entertainment'],
+    'Chuseok': ['K-Entertainment', 'K-Beauty'],
     'BIFF': ['K-Entertainment'],
     'Baeksang': ['K-Entertainment'],
     'K-pop Spring Comeback': ['K-Entertainment'],
@@ -725,6 +725,9 @@ export const NICHES: NicheConfig[] = [
       'Where to Buy Korean Skincare: Complete Shopping Guide',          // 쇼핑 허브 — Olive Young/Amazon/리테일 키워드 앵커
       'Korean Skincare for Every Skin Type: Personalized Guide',        // 피부타입 허브 — 건성/지성/복합/민감 키워드 앵커
       'Korean Skincare by Age: Your 20s, 30s, 40s, 50s+ Complete Guide', // 연령대 허브 — 연령별 루틴/제품 키워드 앵커
+      'K-Beauty for Men: Complete Skincare Guide from Basics to Advanced', // 12차 감사: 남성 K-Beauty 허브 — 군대 컨텍스트 + 제품 앵커
+      'K-Beauty Anti-Aging Routine: Prevention to Treatment Complete Guide', // 12차 감사: 안티에이징 허브 — 콜라겐 뱅킹, 주름개선 앵커
+      'Korean Acne Skincare: Step-by-Step Guide for Every Age and Skin Type', // 12차 감사: 여드름 허브 — 활성여드름/색소/흉터 앵커
     ],
   },
 
@@ -1308,6 +1311,8 @@ export const NICHES: NicheConfig[] = [
       'K-Pop Concert & Fan Event Guide: Tickets, Tours, KCON',               // 콘서트 허브 — 투어/티켓팅/KCON 키워드 앵커
       'K-Pop Groups by Generation: Complete Guide from 1st to 5th Gen',       // 세대 허브 — 그룹별 가이드/비교 키워드 앵커
       'Korean Entertainment Beyond K-Pop: Musicals, Movies, and Variety Shows Guide', // 비아이돌 허브 — 뮤지컬/영화/예능/K-R&B 키워드 앵커
+      'K-Drama Genre Guide: Sageuk, Romance, Thriller, BL and More', // 12차 감사: K-드라마 장르 허브 — 사극/로맨스/스릴러/BL 앵커
+      'K-Pop Fandom Culture Explained: Lightsticks, Photocards, Fan Events', // 12차 감사: 팬덤 문화 허브 — 포토카드/팬싸/응원봉 앵커
     ],
   },
 ];
