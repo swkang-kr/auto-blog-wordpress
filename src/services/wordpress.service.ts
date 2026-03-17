@@ -346,6 +346,11 @@ export class WordPressService {
     'weverse-magazine':  { domain: 'https://weversemagazine.com', paths: { default: '/', artists: '/artists/' }, label: 'Weverse Magazine' },
     melon:               { domain: 'https://www.melon.com', paths: { default: '/', chart: '/chart/index.htm' }, label: 'Melon Chart' },
     bugs:                { domain: 'https://music.bugs.co.kr', paths: { default: '/', chart: '/chart/rise' }, label: 'Bugs Music' },
+    // K-Film / K-Musical sources
+    kofic:               { domain: 'https://www.kobis.or.kr', paths: { default: '/', boxoffice: '/kobis/business/stat/boxs/findFormerBoxOfficeList.do' }, label: 'KOFIC (영진위)' },
+    kmdb:                { domain: 'https://www.kmdb.or.kr', paths: { default: '/', search: '/db/kor/detail/movie.jsp' }, label: 'KMDb' },
+    'interpark-ticket':  { domain: 'https://tickets.interpark.com', paths: { default: '/', musical: '/contents/genre/musical' }, label: 'Interpark Ticket' },
+    cgv:                 { domain: 'https://www.cgv.co.kr', paths: { default: '/', movies: '/movies/' }, label: 'CGV' },
     // K-Beauty editorial sources
     'allure-korea':       { domain: 'https://www.allurekorea.com', paths: { default: '/', 'skin-care': '/category/beauty/', makeup: '/category/makeup/', beauty: '/category/beauty/' }, label: 'Allure Korea' },
     'harpers-bazaar-korea': { domain: 'https://www.harpersbazaar.com', paths: { default: '/', beauty: '/beauty/', 'k-beauty': '/beauty/skin-care/g35732121/best-korean-skin-care-products/' }, label: "Harper's Bazaar" },
@@ -938,6 +943,8 @@ div[style*="background:#f8f9fa"]{background:#1e1e2e!important;border-color:#3b3b
         (kw) => `What's your perspective on ${kw}? Has it changed how you view Korean entertainment? Share below!`,
         (kw) => `How has ${kw} influenced your interest in Korean culture? Share your story below.`,
         (kw) => `What do you think the future holds for ${kw}? Drop your predictions in the comments.`,
+        (kw) => `Have you seen any Korean musicals or indie films related to ${kw}? Share your recommendations!`,
+        (kw) => `Beyond K-pop, what aspect of ${kw} in Korean entertainment excites you most — dramas, movies, musicals, or hip-hop?`,
       ],
     };
 
@@ -1145,9 +1152,12 @@ ${rows}
         'rom&nd', 'Clio', 'Peripera', 'Etude House', 'Wakemake',
         // Hair care
         'Daeng Gi Meo Ri', 'Ryo', 'Masil',
+        // Nail art brands
+        'ohora', 'Dashing Diva', 'Gelato Factory',
         // Product categories (fallback matching)
         'toner pad', 'sun pad', 'sunscreen', 'serum', 'moisturizer', 'toner', 'cleanser', 'sheet mask',
         'essence', 'ampoule', 'sleeping mask', 'eye cream', 'SPF', 'collagen', 'lip oil',
+        'gel nail', 'press-on nail', 'nail sticker',
       ],
       defaultUrl: 'https://www.amazon.com/s?k=korean+skincare&tag=trendhunt2007-20',
     },
@@ -1162,6 +1172,12 @@ ${rows}
         'ATEEZ', 'TXT', 'ENHYPEN', 'IVE', 'Kep1er',
         // International
         'XG',
+        // K-Hip-Hop / K-R&B artists (non-idol K-Music)
+        'Jay Park', 'Crush', 'DEAN', 'Zion.T', 'DPR LIVE', 'Heize', 'Lee Hi',
+        // OST / soundtrack
+        'OST', 'soundtrack',
+        // Korean musical theater
+        'musical ticket', 'Interpark ticket',
       ],
       defaultUrl: 'https://www.amazon.com/s?k=kpop+merchandise&tag=trendhunt2007-20',
     },
@@ -1242,8 +1258,8 @@ ${rows}
    */
   private buildCommentEngagementCta(category: string, keyword?: string): string {
     const prompts: Record<string, string[]> = {
-      'K-Beauty': ['What\'s your favorite K-beauty product? Drop your recommendation below!', 'Have you tried a Korean skincare routine? What results did you see?', 'What K-beauty brand should we review next?'],
-      'K-Entertainment': ['Who\'s your bias? Drop your K-pop opinions below!', 'What K-drama are you watching right now?', 'Which comeback are you most excited about this year?'],
+      'K-Beauty': ['What\'s your favorite K-beauty product? Drop your recommendation below!', 'Have you tried a Korean skincare routine? What results did you see?', 'What K-beauty brand should we review next?', 'Have you tried K-nail art (ohora, Dashing Diva)? Share your designs!'],
+      'K-Entertainment': ['Who\'s your bias? Drop your K-pop opinions below!', 'What K-drama are you watching right now?', 'Which comeback are you most excited about this year?', 'Seen any Korean musicals or indie films lately? Share your review!', 'What K-Hip-Hop or K-R&B track is on repeat for you?'],
     };
     const categoryPrompts = prompts[category] || ['What are your thoughts on this topic? Share in the comments below!'];
     const prompt = categoryPrompts[Math.floor(Math.random() * categoryPrompts.length)];
@@ -1331,6 +1347,9 @@ ${ga4TrackingScript}`;
       'Klairs': 'https://www.amazon.com/s?k=Dear+Klairs&tag=trendhunt2007-20',
       'Isntree': 'https://www.amazon.com/s?k=Isntree&tag=trendhunt2007-20',
       'PURITO': 'https://www.amazon.com/s?k=PURITO&tag=trendhunt2007-20',
+      // Nail art brands
+      'ohora': 'https://www.amazon.com/s?k=ohora+gel+nail&tag=trendhunt2007-20',
+      'Dashing Diva': 'https://www.amazon.com/s?k=Dashing+Diva+nail&tag=trendhunt2007-20',
     },
     'K-Entertainment': {
       'BTS': 'https://www.amazon.com/s?k=BTS+album&tag=trendhunt2007-20',
@@ -1340,6 +1359,12 @@ ${ga4TrackingScript}`;
       'SEVENTEEN': 'https://www.amazon.com/s?k=SEVENTEEN+kpop&tag=trendhunt2007-20',
       'aespa': 'https://www.amazon.com/s?k=aespa+album&tag=trendhunt2007-20',
       'lightstick': 'https://www.amazon.com/s?k=kpop+lightstick&tag=trendhunt2007-20',
+      // K-Hip-Hop / K-R&B artists
+      'Jay Park': 'https://www.amazon.com/s?k=Jay+Park+album&tag=trendhunt2007-20',
+      'Crush': 'https://www.amazon.com/s?k=Crush+krnb+album&tag=trendhunt2007-20',
+      'DEAN': 'https://www.amazon.com/s?k=DEAN+krnb&tag=trendhunt2007-20',
+      // OST / Soundtrack
+      'K-drama OST': 'https://www.amazon.com/s?k=korean+drama+ost&tag=trendhunt2007-20',
     },
   };
 
@@ -2600,6 +2625,8 @@ ${ga4TrackingScript}`;
       // K-Beauty — mid-tier growth
       "ma:nyo", 'NACIFIC', 'Benton', "AMPLE:N", 'ILLIYOON', 'VT Cosmetics',
       'Jumiso', 'FWEE', 'Aestura', 'Dr.G', 'Rovectin', "I'm From", 'Heimish',
+      // K-Beauty — nail art
+      'ohora', 'Dashing Diva', 'Gelato Factory',
     ];
     const brand = brands.find(b => productName.toLowerCase().includes(b.toLowerCase()));
 
@@ -2684,6 +2711,8 @@ ${ga4TrackingScript}`;
       'Cos De BAHA', "Skin&Lab", 'Klavuu', 'Holika Holika', 'FWEE', 'Hince',
       // K-Beauty — premium/Hanbang
       'History of Whoo', 'O HUI', 'Hanyul',
+      // K-Beauty — nail art
+      'ohora', 'Dashing Diva', 'Gelato Factory',
       // K-Entertainment agencies (appear in idol/drama content)
       'HYBE', 'SM Entertainment', 'JYP', 'YG Entertainment',
     ];
