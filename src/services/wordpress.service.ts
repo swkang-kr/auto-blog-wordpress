@@ -170,7 +170,7 @@ export class WordPressService {
    * Generate SEO-optimized alt text for images.
    * Combines caption with keyword context for image search discoverability.
    */
-  private generateSeoAltText(caption: string, keyword?: string, imageIndex?: number): string {
+  private generateSeoAltText(caption: string, keyword?: string, imageIndex?: number, category?: string): string {
     const captionLower = caption.toLowerCase();
     const kw = keyword?.toLowerCase() || '';
     const kwWords = kw.split(/\s+/).filter(w => w.length > 3);
@@ -178,6 +178,30 @@ export class WordPressService {
     // If caption already contains keyword fragments, use it as-is
     if (kwWords.length > 0 && kwWords.some(w => captionLower.includes(w))) {
       return caption;
+    }
+
+    // 13차 감사: K-Beauty/K-Entertainment 카테고리별 alt 텍스트 최적화
+    if (keyword && category === 'K-Beauty') {
+      const kbSuffixes = [
+        ` — ${keyword} Korean skincare product`,
+        ` — K-Beauty ingredient texture and application`,
+        ` — Korean beauty routine step`,
+        ` — K-Beauty product comparison`,
+      ];
+      const suffix = kbSuffixes[Math.min(imageIndex || 0, kbSuffixes.length - 1)];
+      const combined = caption + suffix;
+      return combined.length > 125 ? caption.slice(0, 122) + '...' : combined;
+    }
+    if (keyword && category === 'K-Entertainment') {
+      const keSuffixes = [
+        ` — ${keyword} K-pop and Korean entertainment`,
+        ` — Korean music and drama culture`,
+        ` — K-Entertainment fan community`,
+        ` — Korean pop culture overview`,
+      ];
+      const suffix = keSuffixes[Math.min(imageIndex || 0, keSuffixes.length - 1)];
+      const combined = caption + suffix;
+      return combined.length > 125 ? caption.slice(0, 122) + '...' : combined;
     }
 
     // Add contextual keyword suffix based on image position
@@ -207,7 +231,7 @@ export class WordPressService {
         const placeholder = `<!--IMAGE_PLACEHOLDER_${i + 1}-->`;
         // SEO-optimized alt text: keyword-enriched captions for image search
         const baseCaption = inlineImages[i].caption;
-        const altText = this.escapeHtml(this.generateSeoAltText(baseCaption, options?.keyword, i));
+        const altText = this.escapeHtml(this.generateSeoAltText(baseCaption, options?.keyword, i, options?.category));
         // First inline image uses eager loading for LCP; rest use lazy loading
         const loadingAttr = i === 0 ? 'eager' : 'lazy';
         const fetchPriority = i === 0 ? ' fetchpriority="high"' : '';
@@ -1275,8 +1299,29 @@ ${rows}
    */
   private buildCommentEngagementCta(category: string, keyword?: string): string {
     const prompts: Record<string, string[]> = {
-      'K-Beauty': ['What\'s your favorite K-beauty product? Drop your recommendation below!', 'Have you tried a Korean skincare routine? What results did you see?', 'What K-beauty brand should we review next?', 'Have you tried K-nail art (ohora, Dashing Diva)? Share your designs!'],
-      'K-Entertainment': ['Who\'s your bias? Drop your K-pop opinions below!', 'What K-drama are you watching right now?', 'Which comeback are you most excited about this year?', 'Seen any Korean musicals or indie films lately? Share your review!', 'What K-Hip-Hop or K-R&B track is on repeat for you?'],
+      'K-Beauty': [
+        'What\'s your favorite K-beauty product? Drop your recommendation below!',
+        'Have you tried a Korean skincare routine? What results did you see?',
+        'What K-beauty brand should we review next?',
+        'Have you tried K-nail art (ohora, Dashing Diva)? Share your designs!',
+        // 13차 감사: 루틴/가격/피부타입 참여 유도 프롬프트 추가
+        'What does your morning vs evening K-beauty routine look like?',
+        'Best K-beauty product under $20? Share your budget find!',
+        'What\'s your skin type and which Korean product changed your routine?',
+        'Have you tried any hanbang (traditional Korean herbal) skincare? How was it?',
+      ],
+      'K-Entertainment': [
+        'Who\'s your bias? Drop your K-pop opinions below!',
+        'What K-drama are you watching right now?',
+        'Which comeback are you most excited about this year?',
+        'Seen any Korean musicals or indie films lately? Share your review!',
+        'What K-Hip-Hop or K-R&B track is on repeat for you?',
+        // 13차 감사: 팬 경제/어워드 예측/웹툰 원작 참여 유도 프롬프트 추가
+        'What\'s in your K-pop photocard collection? Show us your pulls!',
+        'Who do you think will win Daesang at this year\'s awards? Drop your prediction!',
+        'Which webtoon-to-screen adaptation are you most excited about?',
+        'What was your best K-pop concert or fan event experience?',
+      ],
     };
     const categoryPrompts = prompts[category] || ['What are your thoughts on this topic? Share in the comments below!'];
     const prompt = categoryPrompts[Math.floor(Math.random() * categoryPrompts.length)];
@@ -1289,15 +1334,23 @@ ${rows}
 </div>`;
   }
 
-  private buildShareCtaHtml(postUrl: string, title: string): string {
+  private buildShareCtaHtml(postUrl: string, title: string, category?: string): string {
     const encodedUrl = encodeURIComponent(postUrl);
     const encodedTitle = encodeURIComponent(title);
+    // 13차 감사: Pinterest for K-Beauty (65% of K-Beauty discovery happens on Pinterest)
+    const pinterestBtn = category === 'K-Beauty'
+      ? `\n<a href="https://pinterest.com/pin/create/button/?url=${encodedUrl}&description=${encodedTitle}" target="_blank" rel="noopener noreferrer" class="ab-share-btn" style="background:#E60023;">Pinterest</a>`
+      : '';
+    // 13차 감사: Reddit for K-Entertainment (r/kpop, r/kdrama communities)
+    const redditBtn = category === 'K-Entertainment'
+      ? `\n<a href="https://reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}" target="_blank" rel="noopener noreferrer" class="ab-share-btn" style="background:#FF4500;">Reddit</a>`
+      : '';
     return `<div class="ab-cta-share">
 <p style="margin:0 0 12px 0; font-size:16px; font-weight:700; color:#333;">Found this useful? Share it!</p>
 <div>
 <a href="https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}" target="_blank" rel="noopener noreferrer" class="ab-share-btn" style="background:#1DA1F2;">X / Twitter</a>
 <a href="https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}" target="_blank" rel="noopener noreferrer" class="ab-share-btn" style="background:#0077B5;">LinkedIn</a>
-<a href="https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}" target="_blank" rel="noopener noreferrer" class="ab-share-btn" style="background:#4267B2;">Facebook</a>
+<a href="https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}" target="_blank" rel="noopener noreferrer" class="ab-share-btn" style="background:#4267B2;">Facebook</a>${pinterestBtn}${redditBtn}
 </div>
 <div style="margin:16px 0 0 0; padding:12px 16px; background:#f8f9fa; border-radius:8px; text-align:center;">
 <p style="margin:0 0 8px 0; font-size:14px; color:#555;">Was this helpful?</p>
@@ -2315,7 +2368,7 @@ ${ga4TrackingScript}`;
         // Post-publish updates: JSON-LD URLs, share CTA, cite box, canonical fix
         try {
           // Inject share CTA + Cite This Article (with actual post URL) before tags section
-          const shareCta = this.buildShareCtaHtml(post.url, content.title);
+          const shareCta = this.buildShareCtaHtml(post.url, content.title, content.category);
           const citeBox = this.buildCiteThisArticleHtml(post.url, content.title, content.category);
           const commentCta = this.buildCommentEngagementCta(content.category, options?.keyword);
           let updatedHtml = html.replace(

@@ -105,6 +105,18 @@ export class PagesService {
         title: 'Terms of Service',
         content: this.buildTermsOfServicePage(siteName, emailDisplay),
       },
+      // 13차 감사: FTC 어필리에이트 공시 전용 페이지 (FTC Best Practices 준수)
+      {
+        slug: 'affiliate-disclosure',
+        title: 'Affiliate Disclosure',
+        content: this.buildAffiliateDisclosurePage(siteName, emailDisplay),
+      },
+      // 13차 감사: AI 콘텐츠 투명성 전용 페이지 (EU AI Act / FTC 준수)
+      {
+        slug: 'ai-content-policy',
+        title: 'AI Content & Editorial Policy',
+        content: this.buildAiContentPolicyPage(siteName),
+      },
     ];
   }
 
@@ -858,6 +870,89 @@ ${postsHtml}
 <p style="${S.p}">All content on this Site is protected by copyright law. Unauthorized reproduction, distribution, or modification is prohibited. Please credit the source when quoting.</p>
 
 <p style="${S.footer}">Effective date: ${effectiveDate}</p>
+</div>`;
+  }
+
+  // 13차 감사: FTC 어필리에이트 공시 전용 페이지
+  private buildAffiliateDisclosurePage(siteName: string, email: string): string {
+    const year = new Date().getFullYear();
+    return `<div style="${S.wrapper}">
+<h2 style="${S.h2}">Affiliate Disclosure & Partnerships</h2>
+<p style="${S.p}">${siteName} participates in various affiliate programs. When you click a link and make a purchase, we may earn a small commission at no additional cost to you. This helps support our content creation and keeps the site running.</p>
+
+<h3 style="${S.h3}">K-Beauty Affiliate Partners</h3>
+<ul style="${S.ul}">
+<li>Amazon Associates Program (product links, skincare recommendations)</li>
+<li>YesStyle (K-beauty retailer)</li>
+<li>Olive Young Global (Korean beauty marketplace)</li>
+<li>Stylevana (K-beauty products)</li>
+</ul>
+
+<h3 style="${S.h3}">K-Entertainment Affiliate Partners</h3>
+<ul style="${S.ul}">
+<li>Amazon Associates (K-pop albums, lightsticks, merchandise)</li>
+<li>Interpark Ticket (Korean concert and musical tickets)</li>
+<li>Streaming service links (Netflix, TVING, Viki, Coupang Play)</li>
+</ul>
+
+<h3 style="${S.h3}">How Affiliate Links Work</h3>
+<p style="${S.p}">Affiliate links are marked with <code>rel="sponsored"</code> in our HTML. When you click these links and make a purchase within the merchant's cookie window, we receive a percentage of the sale. The price you pay remains exactly the same whether you use our link or go directly to the merchant.</p>
+
+<h3 style="${S.h3}">Our Editorial Independence</h3>
+<p style="${S.p}">Affiliate relationships do NOT influence our editorial decisions. We recommend products based on research, testing, and community feedback — not commission rates. Products that pay higher commissions are not given favorable reviews. If we dislike a product, we say so regardless of affiliate status.</p>
+
+<h3 style="${S.h3}">FTC Compliance</h3>
+<p style="${S.p}">This disclosure is made in accordance with the Federal Trade Commission's (FTC) Guides Concerning the Use of Endorsements and Testimonials in Advertising (16 CFR Part 255).</p>
+
+<p style="${S.footer}">Last updated: ${year}. Questions? Contact us at ${email}.</p>
+</div>`;
+  }
+
+  // 13차 감사: AI 콘텐츠 투명성 전용 페이지 (EU AI Act / FTC)
+  private buildAiContentPolicyPage(siteName: string): string {
+    const year = new Date().getFullYear();
+    return `<div style="${S.wrapper}">
+<h2 style="${S.h2}">AI Content & Editorial Policy</h2>
+<p style="${S.p}">${siteName} uses artificial intelligence tools to assist in content creation. We believe in full transparency about our process.</p>
+
+<h3 style="${S.h3}">Our Content Creation Process</h3>
+<ol style="${S.ul}">
+<li><strong>Research:</strong> AI-powered keyword research and trend analysis using Google Trends API and industry data sources</li>
+<li><strong>Drafting:</strong> AI-assisted content generation using Claude API (Anthropic) for text and Gemini API (Google) for images</li>
+<li><strong>Fact-Checking:</strong> Automated verification against known databases (founding dates, chart positions, ingredient data)</li>
+<li><strong>Quality Scoring:</strong> Multi-factor quality assessment including E-E-A-T compliance, niche accuracy, and content structure</li>
+<li><strong>Publication:</strong> Automated publishing with SEO optimization and structured data markup</li>
+</ol>
+
+<h3 style="${S.h3}">AI Tools We Use</h3>
+<ul style="${S.ul}">
+<li><strong>Claude API (Anthropic):</strong> Content generation, Korean localization, and editorial assistance</li>
+<li><strong>Gemini API (Google):</strong> Featured image and inline image generation</li>
+<li><strong>Google Trends API:</strong> Keyword research and trend identification</li>
+</ul>
+
+<h3 style="${S.h3}">K-Beauty Content Verification</h3>
+<p style="${S.p}">For skincare and beauty product content, our system verifies:</p>
+<ul style="${S.ul}">
+<li>Ingredient data against INCI standards and CosDNA/INCIDecoder databases</li>
+<li>MFDS (Korea FDA) functional cosmetic certification claims</li>
+<li>Product pricing against Olive Young and Amazon listings</li>
+<li>Brand founding dates and ownership accuracy</li>
+</ul>
+
+<h3 style="${S.h3}">K-Entertainment Content Verification</h3>
+<p style="${S.p}">For K-pop, K-drama, and entertainment content, our system verifies:</p>
+<ul style="${S.ul}">
+<li>Group member counts, label affiliations, and debut dates</li>
+<li>Chart data against Hanteo Chart and Circle Chart official records</li>
+<li>Streaming platform availability and attribution accuracy</li>
+<li>Award show names, categories, and results</li>
+</ul>
+
+<h3 style="${S.h3}">Limitations</h3>
+<p style="${S.p}">AI-generated content may occasionally contain inaccuracies despite our verification systems. If you notice an error, please contact us so we can correct it promptly. AI-generated images are clearly labeled and do not depict real individuals.</p>
+
+<p style="${S.footer}">This policy complies with the EU AI Act transparency requirements and FTC guidance on AI-generated content. Last updated: ${year}.</p>
 </div>`;
   }
 }

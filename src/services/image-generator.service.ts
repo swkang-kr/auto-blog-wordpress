@@ -153,6 +153,10 @@ export class ImageGeneratorService {
     // K-Entertainment sub-category differentiation
     const isKHipHopRnB = isKEntertainment && /hip\s*hop|rapper|k-r&?b|k-rnb|r&b|dean|crush|zion\.?t|jay\s*park|ph-1|epik\s*high|dpr\s*live|heize|colde|lee\s*hi|aomg|h1ghr/i.test(promptLower);
     const isKDrama = isKEntertainment && /k-drama|korean\s*drama|netflix.*drama|streaming.*drama|kdrama|sageuk|webtoon.*adapt/i.test(promptLower);
+    // 13차 감사: K-드라마 장르별 비주얼 차별화
+    const isKDramaRomance = isKDrama && /romance|love|wedding|relationship|dating|rom-com/i.test(promptLower);
+    const isKDramaThriller = isKDrama && /thriller|mystery|crime|investigat|murder|suspense|detective/i.test(promptLower);
+    const isKDramaSageuk = isKDrama && /sageuk|historical|joseon|goryeo|hanbok|period\s*drama/i.test(promptLower);
 
     // K-Beauty sub-category differentiation for richer visual variety
     const isKBeautyMakeup = isKBeauty && /makeup|foundation|cushion|lip\s*tint|blush|eyeshadow|mascara|eyeliner|rom.nd|clio|fwee|hince/i.test(promptLower);
@@ -240,6 +244,13 @@ export class ImageGeneratorService {
                     ? ', K-pop idol airport fashion editorial, sleek streetwear luxury outfit, modern terminal architecture background, paparazzi flash aesthetic, high fashion meets casual, clean composition, runway-to-airport style'
                     : isKHipHopRnB
                     ? ', Korean hip-hop and R&B aesthetic, moody urban studio setting, grayscale with neon accent lighting, DJ turntable or recording studio mic, streetwear fashion, Seoul Itaewon nightlife atmosphere, artistic and edgy composition'
+                    // 13차 감사: K-드라마 장르별 비주얼 차별화
+                    : isKDramaSageuk
+                    ? ', Korean historical drama sageuk aesthetic, rich sepia and gold tones, traditional Korean architecture and courtyards, hanbok costume details, period-authentic props, elegant palace or temple setting, warm candlelight atmosphere'
+                    : isKDramaThriller
+                    ? ', Korean thriller drama aesthetic, dramatic noir lighting, cool blue-tinted color grading, suspenseful moody atmosphere, sharp contrast shadows, Seoul urban nighttime setting, tense cinematic composition'
+                    : isKDramaRomance
+                    ? ', Korean romance drama aesthetic, warm soft-focus lighting, pastel color palette, intimate emotional scene, cherry blossom or cafe setting, gentle bokeh background, cozy Seoul atmosphere'
                     : isKDrama
                       ? ', Korean drama cinematic aesthetic, warm emotional lighting, indoor intimate scene, romantic or dramatic atmosphere, soft bokeh background, Seoul cityscape through window, cozy living room or cafe setting'
                       : isKEntertainment
