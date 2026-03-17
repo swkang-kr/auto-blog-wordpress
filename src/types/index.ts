@@ -49,6 +49,15 @@ export const KOREAN_SEASONAL_EVENTS: Array<{
   { name: 'KCON Europe', startMonth: 9, startDay: 1, endMonth: 10, endDay: 15, leadTimeDays: 45, relevantNiches: ['K-Entertainment'], contentAngles: ['KCON Europe 2026 lineup schedule guide', 'K-pop concerts Europe 2026 tour dates cities', 'how to attend KCON Europe tips guide'] },
   { name: 'K-pop Spring Comeback Season', startMonth: 2, startDay: 1, endMonth: 4, endDay: 30, leadTimeDays: 60, relevantNiches: ['K-Entertainment'], contentAngles: ['spring comeback preview K-pop 2026', 'best K-pop comebacks spring ranked', 'new K-pop releases to watch'] },
   { name: 'K-pop Summer Comeback Season', startMonth: 6, startDay: 1, endMonth: 8, endDay: 31, leadTimeDays: 60, relevantNiches: ['K-Entertainment'], contentAngles: ['summer comeback season K-pop 2026', 'best K-pop summer releases ranked', 'K-pop festival season guide'] },
+  // K-pop Fall Comeback Season (9-11월) — 연말 시상식 타겟 컴백, 대형 그룹 연말 전략 발매
+  { name: 'K-pop Fall Comeback Season', startMonth: 9, startDay: 1, endMonth: 11, endDay: 30, leadTimeDays: 60, relevantNiches: ['K-Entertainment'], contentAngles: ['fall comeback preview K-pop 2026 ranked', 'best K-pop fall comebacks year-end award contenders', 'K-pop year-end rush which groups are coming back fall 2026'] },
+  // K-pop Winter Comeback Season (12-1월) — 연말 감성 + 시상식 수상 후 여세몰아 발매
+  { name: 'K-pop Winter Comeback Season', startMonth: 12, startDay: 1, endMonth: 1, endDay: 31, leadTimeDays: 45, relevantNiches: ['K-Entertainment'], contentAngles: ['K-pop winter releases 2026 new albums ranked', 'best K-pop winter songs new releases', 'K-pop January comeback schedule 2027 preview'] },
+  // K-Drama Pilot Season (1-2월, 7-8월) — 편성 확정 직후 검색 급등 시기
+  { name: 'K-Drama Pilot Season (Winter-Spring)', startMonth: 1, startDay: 10, endMonth: 2, endDay: 28, leadTimeDays: 45, relevantNiches: ['K-Entertainment'], contentAngles: ['new K-dramas January February 2026 what to watch', 'best upcoming K-dramas winter spring 2026 guide', 'K-drama premiere schedule January 2026 complete list'] },
+  { name: 'K-Drama Pilot Season (Summer-Fall)', startMonth: 7, startDay: 1, endMonth: 8, endDay: 31, leadTimeDays: 45, relevantNiches: ['K-Entertainment'], contentAngles: ['new K-dramas summer 2026 what to watch', 'best upcoming K-dramas July August 2026 guide', 'K-drama premiere schedule summer 2026 complete list'] },
+  // 어린이날 (Children's Day, 5월 5일) — 가족 콘텐츠 + K-Beauty 키즈/선크림 어필리에이트
+  { name: 'Children\'s Day (어린이날)', startMonth: 5, startDay: 5, endMonth: 5, endDay: 5, leadTimeDays: 30, relevantNiches: ['K-Beauty', 'K-Entertainment'], contentAngles: ['best Korean sunscreen for kids children gentle SPF guide', 'K-pop idols with kids fan interaction cute moments ranked', 'family-friendly K-dramas to watch with kids guide', 'Korean children skincare gentle K-Beauty products for kids'] },
   { name: 'BIFF (Busan Film Festival)', startMonth: 10, startDay: 1, endMonth: 10, endDay: 12, leadTimeDays: 45, relevantNiches: ['K-Entertainment'], contentAngles: ['BIFF highlights', 'Korean cinema spotlight', 'best Korean films at BIFF'] },
   // 청룡영화상 (Blue Dragon Film Awards) — 한국 3대 영화 시상식, 매년 11월 말~12월 초
   { name: 'Blue Dragon Film Awards (청룡영화상)', startMonth: 11, startDay: 20, endMonth: 12, endDay: 5, leadTimeDays: 45, relevantNiches: ['K-Entertainment'], contentAngles: ['Blue Dragon Film Awards predictions best Korean film 2026', 'Blue Dragon Awards nominees best actress actor guide', 'Blue Dragon vs Baeksang vs Grand Bell Korean film awards comparison', 'how to watch Blue Dragon Film Awards 2026 international fans'] },
@@ -66,8 +75,9 @@ export const KOREAN_SEASONAL_EVENTS: Array<{
   { name: 'Korean Summer Sales', startMonth: 7, startDay: 1, endMonth: 7, endDay: 31, leadTimeDays: 30, relevantNiches: ['K-Beauty'], contentAngles: ['best K-beauty summer sale deals 2026 guide', 'Korean sunscreen summer deals ranked what to buy', 'lightweight Korean moisturizer summer sale picks 2026'] },
   // WATERBOMB (워터밤) — K-pop 출연 워터 페스티벌, 6-7월 (서울·부산·대구)
   { name: 'WATERBOMB', startMonth: 6, startDay: 20, endMonth: 7, endDay: 20, leadTimeDays: 45, relevantNiches: ['K-Entertainment', 'K-Beauty'], contentAngles: ['WATERBOMB festival lineup schedule how to attend guide', 'K-pop idols performing at WATERBOMB what to expect', 'WATERBOMB makeup K-beauty waterproof skincare festival look', 'best waterproof Korean sunscreen for outdoor festival summer'] },
-  // 서울뷰티위크 (Seoul Beauty Week) — K-Beauty 산업 축제 (6월)
-  { name: 'Seoul Beauty Week', startMonth: 6, startDay: 10, endMonth: 6, endDay: 15, leadTimeDays: 30, relevantNiches: ['K-Beauty'], contentAngles: ['Seoul Beauty Week new product launches trend preview', 'K-beauty trends revealed at Seoul Beauty Week guide', 'best new Korean skincare products Seoul Beauty Week'] },
+  // 서울뷰티위크 (Seoul Beauty Week) — K-Beauty 산업 축제 (보통 6월, 연도별 일정 변동)
+  // TODO: 매년 공식 일정 발표 후 startDay/endDay 업데이트 필요 (현재: 과거 패턴 기반 추정)
+  { name: 'Seoul Beauty Week', startMonth: 6, startDay: 1, endMonth: 6, endDay: 30, leadTimeDays: 45, relevantNiches: ['K-Beauty'], contentAngles: ['Seoul Beauty Week new product launches trend preview', 'K-beauty trends revealed at Seoul Beauty Week guide', 'best new Korean skincare products Seoul Beauty Week'] },
   // Olive Young Awards (올리브영 어워즈) — K-Beauty 최고 상품 시상 (12월 별도)
   { name: 'Olive Young Awards', startMonth: 12, startDay: 10, endMonth: 12, endDay: 20, leadTimeDays: 30, relevantNiches: ['K-Beauty'], contentAngles: ['Olive Young Awards winners best products ranked guide', 'Olive Young award-winning skincare products what to buy', 'best K-beauty products of the year Olive Young Awards recap'] },
   // 수능 (대학수학능력시험, CSAT) — 매년 11월 셋째 목요일, K-Entertainment 트래픽 스파이크 (아이돌 수능 응원·수능 후 K-Drama 몰아보기)
@@ -118,7 +128,7 @@ export const NICHE_AUTHOR_PROFILES: Record<string, AuthorProfile> = {
   'K-Beauty': {
     name: 'Sophie Kim',
     title: 'K-Beauty & Skincare Specialist',
-    bio: 'Seoul-based skincare researcher who has personally tested 500+ Korean beauty products and tracked MFDS functional cosmetic certifications since 2020. Analyzes Olive Young bestseller data, ingredient concentrations (active % and pH levels), and Korean dermatological research papers to provide evidence-based product recommendations.',
+    bio: 'Seoul-based skincare researcher who has personally tested 500+ Korean beauty products and tracked MFDS functional cosmetic certifications for over 6 years. Analyzes Olive Young bestseller data, ingredient concentrations (active % and pH levels), and Korean dermatological research papers to provide evidence-based product recommendations.',
     expertise: ['Korean skincare formulations', 'K-beauty ingredient analysis', 'Olive Young product reviews', 'Korean sunscreen technology', 'Glass skin routines', 'MFDS functional cosmetic regulations'],
     credentials: ['Cosmetic Science Researcher', 'Korean Beauty Industry Analyst'],
     yearsExperience: 6,
@@ -194,8 +204,10 @@ export const CONTENT_TYPE_PERSONA_MAP: Record<string, 'primary' | 'secondary' | 
 /** Niche-specific persona override: when keyword matches these patterns, force tertiary (Ella Park for K-Beauty makeup/hair) */
 export const KBEAUTY_TERTIARY_KEYWORDS = /\b(?:makeup|mascara|eyeliner|eyeshadow|foundation|cushion|lip\s*tint|blush|contour|hair\s*(?:loss|care|shampoo|dye)|scalp|wig|nail\s*(?:art|gel|sticker|polish)|press[- ]on\s*nail|manicure)\b/i;
 
-/** K-Entertainment tertiary persona override: force Sora Lee (cinema/film persona) for film/cinema keywords */
-export const KENTERTAINMENT_TERTIARY_KEYWORDS = /\b(?:korean\s*(?:film|movie|cinema)|blue\s*dragon|cheongryong|grand\s*bell|daejong|busan\s*film|biff|cannes|venice|oscar|director|cinematograph|screenplay|box\s*office|film\s*festival|korean\s*horror\s*film|noir|thriller\s*film)\b/i;
+/** K-Entertainment tertiary persona override: force Sora Lee (cinema/film/drama-criticism persona) for film/cinema/award keywords.
+ * Includes TV award shows (Baeksang, KBS/MBC/SBS Drama Awards) because Sora Lee's drama critic voice
+ * is more authoritative than Jamie Yoon's fan voice for award analysis and predictions. */
+export const KENTERTAINMENT_TERTIARY_KEYWORDS = /\b(?:korean\s*(?:film|movie|cinema)|blue\s*dragon|cheongryong|grand\s*bell|daejong|busan\s*film|biff|cannes|venice|oscar|director|cinematograph|screenplay|box\s*office|film\s*festival|korean\s*horror\s*film|noir|thriller\s*film|baeksang|백상|drama\s*award|kbs\s*drama\s*award|mbc\s*drama\s*award|sbs\s*drama\s*award|best\s*(?:actress|actor)\s*(?:award|winner|nominee)|daesang\s*(?:drama|film))\b/i;
 
 /** 니치 설정 */
 export interface NicheConfig {

@@ -167,6 +167,14 @@ export class FactCheckService {
         'vitamin c': { min: 5, max: 20, label: 'vitamin C / ascorbic acid (typical 5-20%)' },
         'ascorbic acid': { min: 5, max: 20, label: 'ascorbic acid (typical 5-20%)' },
         'salicylic acid': { min: 0.5, max: 2, label: 'salicylic acid (typical 0.5-2%)' },
+        // 15차 감사: 누락 성분 농도 범위
+        retinal: { min: 0.005, max: 0.1, label: 'retinal/retinaldehyde (cosmetic 0.005-0.1% — ~11x more potent than retinol)' },
+        retinaldehyde: { min: 0.005, max: 0.1, label: 'retinaldehyde (cosmetic 0.005-0.1%)' },
+        'glycolic acid': { min: 3, max: 10, label: 'glycolic acid (cosmetic leave-on 3-10%; 10%+ = peel, not daily use)' },
+        'lactic acid': { min: 5, max: 12, label: 'lactic acid (cosmetic 5-12%)' },
+        'mandelic acid': { min: 2, max: 10, label: 'mandelic acid (cosmetic 2-10%)' },
+        madecassoside: { min: 0.1, max: 5, label: 'madecassoside (cosmetic 0.1-5%)' },
+        adenosine: { min: 0.04, max: 0.2, label: 'adenosine (MFDS functional cosmetic min 0.04%, typical 0.04-0.1%)' },
       };
       for (const [ingredient, range] of Object.entries(concentrationRanges)) {
         const concRegex = new RegExp(`(\\d+(?:\\.\\d+)?)%\\s*${ingredient.replace(/\s+/g, '\\s*')}`, 'gi');
@@ -224,6 +232,54 @@ export class FactCheckService {
           unverified++;
         }
       }
+
+      // 15차 감사: OTT vs broadcast rating format validation
+      const ratingPctRegex = /(\d{1,2}(?:\.\d+)?)\s*%\s*(?:rating|viewership|시청률)/gi;
+      const ratingMatches = plainText.match(ratingPctRegex) || [];
+      for (const match of ratingMatches) {
+        const nearbyText = plainText.slice(
+          Math.max(0, plainText.indexOf(match) - 80),
+          plainText.indexOf(match) + match.length + 80,
+        );
+        const isOttContext = /Netflix|TVING|Disney\+|Coupang\s*Play|Wavve|Viki|Apple\s*TV/i.test(nearbyText);
+        if (isOttContext) {
+          flagged.push(
+            `OTT platform paired with percentage rating: "${match.slice(0, 40)}" — OTT platforms use view hours/completion rate, NOT household %. ` +
+            `Percentage ratings apply only to broadcast networks (AGB Nielsen). Revise metric or note it is a broadcast-only measurement.`,
+          );
+          unverified++;
+        }
+      }
+
+      // 15차 감사: Wavve-as-standalone-platform flag (merged with TVING in 2025)
+      if (/\bWavve\b/.test(plainText)) {
+        const wavveContext = plainText.slice(
+          Math.max(0, plainText.indexOf('Wavve') - 100),
+          plainText.indexOf('Wavve') + 200,
+        );
+        const treatsAsActive = /Wavve\s+(?:offers|has|features|provides|original|exclusive|new|subscribers|users)/i.test(wavveContext);
+        const hasMergerNote = /merge|absorbed|TVING.*Wavve|Wavve.*TVING.*(?:merge|combined|integrated)/i.test(wavveContext);
+        if (treatsAsActive && !hasMergerNote) {
+          flagged.push(
+            `Wavve referenced as active standalone platform — Wavve merged with TVING in 2025. Use "TVING (which absorbed Wavve in 2025)" on first reference.`,
+          );
+          unverified++;
+        }
+      }
+
+      // 15차 감사: K-drama episode count validation for Netflix Originals
+      const netflixEpRegex = /Netflix\s*Original[^.]{0,60}(\d{2,3})\s*episode/i;
+      const netflixEpMatch = netflixEpRegex.exec(plainText);
+      if (netflixEpMatch) {
+        const epCount = parseInt(netflixEpMatch[1]);
+        if (epCount > 16) {
+          flagged.push(
+            `Netflix Korea Original claimed as ${epCount} episodes — Netflix Korea originals are nearly exclusively 8-12 episodes (max 16). ` +
+            `Verify: a ${epCount}-episode drama is likely a Korean network drama with Netflix distribution rights, NOT a Netflix Original.`,
+          );
+          unverified++;
+        }
+      }
     }
 
     // 7. Cross-category: Check historical date claims
@@ -250,6 +306,11 @@ export class FactCheckService {
       itzy: 2019, '(g)i-dle': 2018, nmixx: 2022, 'kiss of life': 2023,
       'newjeans': 2022, 'babymonster': 2023, riize: 2023, illit: 2024,
       qwer: 2023, plave: 2023,
+      // 15차 감사: 2023-2025 데뷔 그룹 추가
+      zerobaseone: 2023, zb1: 2023, boynextdoor: 2023, xikers: 2023,
+      'n.ssign': 2023, 'young posse': 2023, '8turn': 2023, 'ampers&one': 2023,
+      tws: 2024, 'nct wish': 2024, meovv: 2024, whiplash: 2024,
+      katseye: 2024, unis: 2024,
       // K-Beauty brands (common AI dating errors)
       cosrx: 2013, 'beauty of joseon': 2010, tirtir: 2019, laneige: 1994,
       sulwhasoo: 1997, innisfree: 2000, missha: 2000, 'etude house': 1995,
@@ -264,6 +325,11 @@ export class FactCheckService {
       'dashing diva': 2001, ohora: 2018, 'gelato factory': 2019,
       tamburins: 2017, nonfiction: 2019, granhand: 2015,
       'daeng gi meo ri': 1970, ryo: 2008, masil: 2019,
+      // 15차 감사: 누락 K-Beauty 브랜드 추가
+      anua: 2019, torriden: 2021, skin1004: 2013, klairs: 2010,
+      medicube: 2014, 'axis-y': 2019, 'by wishtrend': 2014,
+      "i'm from": 2012, hince: 2019, 'skin&lab': 2016, cnp: 2000,
+      heimish: 2015, 'cos de baha': 2017,
       // Institutions
       'bank of korea': 1950, 'korea exchange': 2005, 'olive young': 1999,
       'korea tourism organization': 1962,

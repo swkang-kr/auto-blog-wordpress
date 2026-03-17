@@ -760,6 +760,16 @@ STRATEGY: Consider creating content that directly targets one of these content g
       "ample:n",          // 펩타이드 전문, 가성비 안티에이징
       'aestura',          // 아모레퍼시픽 더마 브랜드, AtoBarrier
       'dr.g',             // 피부과 브랜드, 브라이트닝 필링젤
+      // 15차 감사: 누락 브랜드/용어 추가
+      "i'm from",         // 라이스 토너로 유명한 자연 원료 브랜드
+      'cnp',              // CHA 의료원 연계 더마코스메틱
+      'pyunkang yul',     // 한방 기반 미니멀 스킨케어
+      'ohora',            // K-Beauty 네일 브랜드
+      'dashing diva',     // 네일 스티커 전문 브랜드
+      'collagen banking', // 2025-2026 K-Beauty 트렌드 용어
+      'dermacosmetic',    // 한국 더마코스메틱 카테고리 용어
+      'nexz',             // JYP Japan 보이그룹
+      'nct wish',         // SM 2024 데뷔 유닛
     ];
     const keywordLower = analysis.selectedKeyword.toLowerCase();
     const titleLower = analysis.suggestedTitle.toLowerCase();
@@ -785,13 +795,17 @@ STRATEGY: Consider creating content that directly targets one of these content g
     if (hasFinanceTerm) {
       // K-Beauty case-study and deep-dive can discuss brand market performance
       const isKBeautyAnalysis = niche?.category === 'K-Beauty' && ['case-study', 'deep-dive'].includes(analysis.contentType);
-      if (!isKBeautyAnalysis) {
+      // K-Entertainment album sales / chart comparison is fan-focused, not finance advice
+      const isAlbumSalesComparison = niche?.category === 'K-Entertainment' &&
+        /\b(?:album\s*sales?|first\s*week\s*sales?|million\s*seller|chart\s*(?:record|position|ranking)|hanteo|circle\s*chart|gaon|sales\s*record|shipment|pre-?order)\b/i.test(analysis.selectedKeyword);
+      if (!isKBeautyAnalysis && !isAlbumSalesComparison) {
         logger.warn(`REJECTED keyword "${analysis.selectedKeyword}" — finance/business topic blocked for ${niche?.category ?? 'unknown'} niche`);
         throw new KeywordResearchError(
           `Keyword "${analysis.selectedKeyword}" contains finance/business terms. Select a fan-focused or product-focused keyword instead.`,
         );
       }
-      logger.info(`Allowed finance term in K-Beauty ${analysis.contentType}: "${analysis.selectedKeyword}" (brand market analysis permitted)`);
+      const reason = isKBeautyAnalysis ? 'brand market analysis' : 'album sales/chart comparison (fan-focused)';
+      logger.info(`Allowed finance term in ${niche?.category} ${analysis.contentType}: "${analysis.selectedKeyword}" (${reason} permitted)`);
     }
 
     return analysis;
