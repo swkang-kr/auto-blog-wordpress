@@ -1173,6 +1173,9 @@ ${rows}
         'album', 'lightstick', 'photocard',
         // 3rd gen groups
         'BTS', 'BLACKPINK', 'Stray Kids', 'SEVENTEEN', 'TWICE', 'EXO', 'SHINee',
+        'Red Velvet', 'GOT7', 'MAMAMOO',
+        // 3.5 gen groups
+        'DAY6', 'BTOB', 'THE BOYZ', 'TREASURE',
         // 4th gen groups
         'aespa', 'NewJeans', 'LE SSERAFIM', 'BABYMONSTER', 'ILLIT', 'KISS OF LIFE', 'TWS',
         'ATEEZ', 'TXT', 'ENHYPEN', 'IVE', 'Kep1er',

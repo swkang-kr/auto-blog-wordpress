@@ -1225,6 +1225,14 @@ export function validateContent(
       { pattern: /izna\b[^.]*\b(?:SM|JYP|YG)\b/i, correct: 'izna debuted via I-LAND2: N/a — under WAKEONE (CJ ENM) + HYBE partnership, NOT SM/JYP/YG' },
       { pattern: /Hearts2Hearts\b[^.]*\b(?:SM|HYBE|JYP|YG)\b/i, correct: 'Hearts2Hearts is under IST Entertainment, NOT a Big 4 label' },
       { pattern: /YOUNG\s*POSSE\b[^.]*\b(?:SM|HYBE|JYP|YG)\b/i, correct: 'YOUNG POSSE is under DSP Media, NOT a Big 4 label' },
+      // 9차 감사 추가: 3세대 + 누락 보이그룹 레이블 검증
+      { pattern: /(?:THE\s*)?BOYZ\b[^.]*\b(?:SM|HYBE|JYP|YG)\b/i, correct: 'THE BOYZ is under IST Entertainment (formerly Cre.ker), NOT a Big 4 label' },
+      { pattern: /TREASURE\b[^.]*\b(?:SM|HYBE|JYP)\b/i, correct: 'TREASURE is under YG Entertainment, NOT SM/HYBE/JYP' },
+      { pattern: /DAY6\b[^.]*\b(?:SM|HYBE|YG)\b/i, correct: 'DAY6 is under JYP Entertainment, NOT SM/HYBE/YG' },
+      { pattern: /BTOB\b[^.]*\b(?:SM|HYBE|JYP|YG)\b/i, correct: 'BTOB is under Cube Entertainment, NOT a Big 4 label' },
+      { pattern: /GOT7\b[^.]*\b(?:SM|HYBE|YG)\b/i, correct: 'GOT7 is self-managed (independent group, members left JYP in 2021), NOT under any Big 4 label' },
+      { pattern: /Red\s*Velvet\b[^.]*\b(?:HYBE|JYP|YG)\b/i, correct: 'Red Velvet is under SM Entertainment, NOT HYBE/JYP/YG' },
+      { pattern: /SHINee\b[^.]*\b(?:HYBE|JYP|YG)\b/i, correct: 'SHINee is under SM Entertainment, NOT HYBE/JYP/YG' },
     ];
     for (const check of labelErrors) {
       if (check.pattern.test(plainText)) {
@@ -1308,6 +1316,9 @@ export function validateContent(
       // 8차 감사 추가: 2024-2025 신규 그룹 팬덤명
       'n.SSign': 'NOVANS', 'ZeroBaseOne': 'ZEROSE',
       'YOUNG POSSE': 'YOPPIE',
+      // 9차 감사 추가: 누락 보이그룹 팬덤명 (SHINee/Red Velvet/GOT7 이미 7차에 추가됨)
+      'THE BOYZ': 'THE B', 'TREASURE': 'TEUME', 'DAY6': 'My Day',
+      'BTOB': 'Melody',
     };
     for (const [group, fandom] of Object.entries(fandomMap)) {
       const groupRegex = new RegExp(`\\b${group.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');

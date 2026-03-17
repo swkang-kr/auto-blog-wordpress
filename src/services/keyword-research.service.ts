@@ -732,7 +732,7 @@ STRATEGY: Consider creating content that directly targets one of these content g
       // 2023-2025 debut groups gaining global search traffic
       'riize', 'boynextdoor', 'boy next door', 'zerobaseone', 'zb1',
       'meovv', 'triples', 'tripless', 'hearts2hearts', 'izna', 'ciipher',
-      'drippin', 'cravity', 'the boyz',
+      'drippin', 'cravity', 'the boyz', 'treasure', 'day6', 'btob',
       // K-Hip-Hop / K-R&B 아티스트 — 아이돌 외 K-Music 커버리지 확장
       'dean', 'crush', 'zion.t', 'ph-1', 'jay park', 'epik high',
       'dpr live', 'offonoff', 'colde', 'heize', 'lee hi',

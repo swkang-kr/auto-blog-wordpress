@@ -692,6 +692,29 @@ export const NICHES: NicheConfig[] = [
       'Korean sunscreen revolution how K-Beauty changed global SPF standards deep dive 2026',
       'the science behind Korean glass skin why it works dermatology explained deep dive 2026',
       'Korean skincare industry size growth 2026 market data trends deep dive analysis',
+      // ── 전문가 감사 추가 (2026-03-17 batch 9): 누락된 핵심 세그먼트 ──
+      // 헤어 스타일링 (Hair Styling) — 샴푸/두피만 있고 스타일링 완전 누락, TikTok Korean perm 바이럴 대형 트렌드
+      'best Korean hair wax pomade for men natural hold 2026 ranked guide',
+      'Korean perm C-curl S-curl what is it how to maintain at home guide 2026',
+      'best Korean hair styling products volume setting spray mousse ranked 2026',
+      'Korean men hair styling routine products step by step guide 2026',
+      'Korean see-through bangs how to style products for wispy fringe guide 2026',
+      'best Korean heat protectant spray for curling iron straightener 2026',
+      // 아이 패치 / 언더아이 마스크 — Biodance만 1개, 독립 카테고리 누락
+      'best Korean eye patches for dark circles puffy eyes collagen ranked 2026',
+      'Korean under eye mask vs eye cream which is better comparison guide 2026',
+      'best Korean hydrogel eye patches for wrinkles fine lines ranked 2026',
+      // 콜라겐 뱅킹 (Collagen Banking) — 2025-2026 글로벌 메가 트렌드
+      'collagen banking Korean skincare trend what is it how to start guide 2026',
+      'best Korean products for collagen banking prevention anti-aging routine 2026',
+      'collagen banking skincare routine Korean products 20s 30s prevention guide 2026',
+      // 화해(Hwahae) 앱 국제 가이드 — Reddit r/AsianBeauty 상위 질문, Olive Young 앱은 있지만 화해 누락
+      'Hwahae Korean beauty app guide how to use in English review ratings 2026',
+      'Hwahae app vs Olive Young app which Korean beauty app is better guide 2026',
+      'how to find best Korean skincare products using Hwahae ratings guide 2026',
+      // 한국 치아미백/구강케어 — 뷰티 카테고리 진입, Olive Young 구강케어 급성장
+      'best Korean whitening toothpaste oral care products ranked 2026 guide',
+      'Korean oral care routine teeth whitening products Olive Young ranked 2026',
     ],
     contentTypes: ['product-review', 'best-x-for-y', 'x-vs-y', 'how-to', 'listicle', 'case-study', 'deep-dive', 'news-explainer'],
     adSenseRpm: 'high',
@@ -1228,6 +1251,53 @@ export const NICHES: NicheConfig[] = [
       'the economics of K-pop photocard collecting why fans buy multiple albums explained',
       'how aespa KWANGYA universe changed K-pop storytelling deep dive concept analysis',
       'HYBE vs SM vs JYP vs YG business model comparison K-pop Big 4 deep dive 2026',
+      // ── 전문가 감사 추가 (2026-03-17 batch 9): 3세대 핵심 그룹 + 누락 보이그룹 + 문화 세그먼트 ──
+      // SHINee (샤이니) — SM 3세대 레전드, 2025-2026 솔로+그룹 활발, 시드 키워드 완전 누락
+      'SHINee best songs ranked complete discography guide for new fans 2026',
+      'SHINee members solo activities 2026 Taemin Key Minho Onew update guide',
+      'SHINee legacy explained how they shaped K-pop history guide 2026',
+      // Red Velvet (레드벨벳) — SM 3세대 걸그룹, 듀얼 컨셉(Red+Velvet), 시드 키워드 완전 누락
+      'Red Velvet best songs ranked Red vs Velvet concept guide new fans 2026',
+      'Red Velvet comeback 2026 what fans need to know update guide',
+      'Red Velvet members solo activities Wendy Joy Irene Seulgi Yeri 2026 guide',
+      // GOT7 (갓세븐) — 자체 레이블 독립, 7인 전원 JYP 떠남 후 그룹 유지 유일무이 사례
+      'GOT7 independent group story how they left JYP and stayed together guide',
+      'GOT7 best songs ranked complete discography guide for new fans 2026',
+      'GOT7 members solo activities 2026 Jay B Jackson Bambam Mark update guide',
+      // DAY6 (데이식스) — JYP 밴드, 2024-2025 역대급 역주행 Melon 장기 1위, QWER 있는데 DAY6 없음
+      'DAY6 best songs ranked complete discography guide for new fans 2026',
+      'DAY6 comeback 2026 band resurgence why they went viral again explained',
+      'DAY6 vs QWER Korean band idol comparison which to listen to guide 2026',
+      'DAY6 concert tour 2026 what fans need to know setlist fan experience',
+      // THE BOYZ (더보이즈) — IST 소속, Road to Kingdom 우승, 퍼포먼스 특화 보이그룹
+      'THE BOYZ best songs ranked performance guide for new fans 2026',
+      'THE BOYZ Road to Kingdom story how they won explained guide',
+      'THE BOYZ member profiles who is who complete guide new fans 2026',
+      // TREASURE (트레저) — YG 보이그룹, 동남아 팬덤 최강, YG 유일 보이그룹
+      'TREASURE YG boy group best songs ranked guide for new fans 2026',
+      'TREASURE comeback 2026 what fans need to know update guide',
+      'TREASURE vs BABYMONSTER YG groups compared boy group vs girl group 2026',
+      // BTOB (비투비) — 3.5세대, 예능 킹, 보컬 최강 보이그룹, 충성 팬덤 Melody
+      'BTOB best songs ranked vocal kings of K-pop guide new fans 2026',
+      'BTOB variety show best moments why they are funniest K-pop group guide',
+      'BTOB members solo activities 2026 Peniel Changsub Hyunsik Eunkwang update',
+      // K-pop 공항패션 / 아이돌 패션 — 검색량 매우 높은 에버그린 카테고리, 완전 누락
+      'K-pop idol airport fashion best outfits 2026 style guide who wears what',
+      'best dressed K-pop idols 2026 fashion icons ranked style guide',
+      'K-pop idol luxury brand outfits airport fashion analysis where to buy 2026',
+      'K-pop idol fashion trends 2026 what styles are popular streetwear guide',
+      // 팬 크리에이티브 문화 — 팬에디트, 팬아트, 팬픽 글로벌 팬덤 핵심 활동
+      'K-pop fan edit how to make guide best apps tutorials beginners 2026',
+      'K-pop fan art culture explained digital art traditional what fans create guide',
+      'K-pop fan fiction culture AO3 Wattpad explained guide for new fans 2026',
+      'best K-pop fan content platforms where fans create share art edits 2026',
+      // K-pop 커버 댄스 대회 — 글로벌 현상, KCON 연계, 대형 커뮤니티
+      'K-pop cover dance competition how to enter win guide beginners 2026',
+      'best K-pop cover dance teams worldwide ranked global competition 2026',
+      'KCON cover dance competition how to apply tips what judges look for guide',
+      // 아이돌 유튜브 채널 / 콘텐츠 크리에이터 — 성장 세그먼트
+      'best K-pop idol YouTube channels to subscribe 2026 vlogs behind scenes ranked',
+      'K-pop idols as content creators YouTube channels worth watching guide 2026',
     ],
     contentTypes: ['news-explainer', 'listicle', 'best-x-for-y', 'deep-dive', 'how-to', 'x-vs-y', 'case-study'],
     adSenseRpm: 'medium',

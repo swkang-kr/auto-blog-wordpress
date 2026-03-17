@@ -905,7 +905,9 @@ Return JSON only: {"title":"new title","metaDescription":"new meta description",
       'moisturizer', 'olive young', 'beauty of joseon', 'torriden', 'rom&nd', 'clio'].some(t => titleAndContent.includes(t));
     const isKEntertainment = ['kpop', 'k-pop', 'k-drama', 'kdrama', 'idol', 'comeback', 'bts',
       'blackpink', 'twice', 'aespa', 'illit', 'newjeans', 'le sserafim', 'ateez', 'stray kids',
-      'seventeen', 'drama', 'netflix korea', 'hallyu', 'weverse', 'hanteo'].some(t => titleAndContent.includes(t));
+      'seventeen', 'drama', 'netflix korea', 'hallyu', 'weverse', 'hanteo',
+      'shinee', 'red velvet', 'got7', 'day6', 'the boyz', 'treasure', 'btob',
+      'ive', 'nmixx', 'itzy', 'enhypen', 'txt', 'babymonster', 'plave'].some(t => titleAndContent.includes(t));
 
     const nicheRewriteRules = isKBeauty ? `
 NICHE-SPECIFIC RULES — K-Beauty:

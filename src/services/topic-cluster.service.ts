@@ -91,6 +91,8 @@ const NICHE_SUBTOPICS: Record<string, Record<string, string[]>> = {
       'nmixx', 'xikers', 'vcha', 'n.ssign', 'itzy',
       // 6차 감사 추가
       'fromis_9', 'dreamcatcher', 'kep1er',
+      // 9차 감사 추가: 3.5세대 누락
+      'the boyz', 'treasure', 'day6', 'btob',
       // General
       'kpop', 'k-pop', 'idol', 'comeback', 'album', 'concert', 'music', 'mv', 'music video',
     ],
@@ -110,7 +112,8 @@ const NICHE_SUBTOPICS: Record<string, Record<string, string[]>> = {
     'Idol News & Updates': ['comeback', 'debut', 'disbandment', 'hiatus', 'solo', 'collab', 'scandal', 'news', 'update', 'military', 'enlistment', 'world tour', 'concert tickets'],
     'Streaming & Charts': ['chart', 'melon', 'circle chart', 'hanteo', 'billboard', 'spotify', 'youtube views', 'streaming', 'ranking', 'number one'],
     'Awards & Global Impact': ['award', 'grammy', 'mama', 'mma', 'gda', 'golden disc', 'global', 'hallyu', 'worldwide', 'daesang'],
-    'Idol Beauty & Style': ['skincare', 'makeup look', 'beauty routine', 'fashion', 'outfit', 'idol style', 'no-makeup', 'beauty secret', 'iu', 'brand ambassador', 'ambassador', 'laneige ambassador', 'karina skincare', 'wonyoung beauty', 'idol product'],
+    'Idol Beauty & Style': ['skincare', 'makeup look', 'beauty routine', 'fashion', 'outfit', 'idol style', 'no-makeup', 'beauty secret', 'iu', 'brand ambassador', 'ambassador', 'laneige ambassador', 'karina skincare', 'wonyoung beauty', 'idol product', 'airport fashion', 'best dressed', 'luxury brand', 'streetwear'],
+    'Fan Creative Culture': ['fan edit', 'fan art', 'fan fiction', 'fanfic', 'ao3', 'wattpad', 'fan content', 'cover dance', 'dance cover', 'dance competition', 'fan video', 'idol youtube channel'],
     'Korean Musical & Theater': ['musical', 'theater', 'theatre', 'broadway', 'interpark ticket', 'musical actor', 'doyoung musical', 'kyuhyun musical', 'k-musical'],
     'K-Hip-Hop & K-R&B': ['hip-hop', 'hip hop', 'k-hip-hop', 'k-r&b', 'r&b', 'rnb', 'dean', 'crush', 'zion.t', 'jay park', 'ph-1', 'dpr live', 'heize', 'colde', 'lee hi', 'aomg', 'h1ghr', 'show me the money', 'indie music', 'indie artist'],
     'Korean Movies & Film': ['movie', 'film', 'cinema', 'cannes', 'biff', 'busan film', 'thriller movie', 'horror movie', 'director', 'park chan-wook', 'bong joon-ho', 'hwang dong-hyuk', 'yeon sang-ho', 'na hong-jin', 'ryoo seung-wan', 'blue dragon', 'grand bell', 'daejong'],
