@@ -63,6 +63,7 @@ const NICHE_SUBTOPICS: Record<string, Record<string, string[]>> = {
     'Men\'s K-Beauty': ['men', 'male', 'men\'s skincare', 'men\'s grooming', 'men\'s moisturizer', 'men\'s sunscreen', 'gender neutral'],
     'Inclusive Beauty': ['dark skin', 'deeper skin', 'melanin', 'dark tones', 'hyperpigmentation skin tone', 'no white cast dark', 'dark complexion'],
     'Pregnancy & Safe Skin': ['pregnancy', 'pregnant', 'prenatal', 'pregnancy safe', 'pregnancy-safe', 'safe for pregnancy', 'safe during pregnancy'],
+    'Nail Art & K-Nails': ['nail', 'nail art', 'gel nail', 'press-on', 'manicure', 'nail sticker', 'ohora', 'dashing diva', 'cat eye nail', 'magnet nail', 'aurora nail', 'jelly nail', 'chrome nail'],
     'Industry & Market': ['market', 'industry', 'export', 'revenue', 'growth', 'trend', 'k-beauty market', 'olive young sales', 'amazon k-beauty'],
     'Trends & Innovations': ['trend', 'innovation', 'glass skin', 'clean beauty', 'sustainable', 'minimalist', 'skip care', 'cloud skin', 'pore care', 'babyface', 'dupe', 'budget'],
   },
@@ -92,6 +93,10 @@ const NICHE_SUBTOPICS: Record<string, Record<string, string[]>> = {
     'Streaming & Charts': ['chart', 'melon', 'circle chart', 'hanteo', 'billboard', 'spotify', 'youtube views', 'streaming', 'ranking', 'number one'],
     'Awards & Global Impact': ['award', 'grammy', 'mama', 'mma', 'gda', 'golden disc', 'global', 'hallyu', 'worldwide', 'daesang'],
     'Idol Beauty & Style': ['skincare', 'makeup look', 'beauty routine', 'fashion', 'outfit', 'idol style', 'no-makeup', 'beauty secret', 'iu', 'brand ambassador', 'ambassador', 'laneige ambassador', 'karina skincare', 'wonyoung beauty', 'idol product'],
+    'Korean Musical & Theater': ['musical', 'theater', 'theatre', 'broadway', 'interpark ticket', 'musical actor', 'doyoung musical', 'kyuhyun musical', 'k-musical'],
+    'K-Hip-Hop & K-R&B': ['hip-hop', 'hip hop', 'k-hip-hop', 'k-r&b', 'r&b', 'rnb', 'dean', 'crush', 'zion.t', 'jay park', 'ph-1', 'dpr live', 'heize', 'colde', 'lee hi', 'aomg', 'h1ghr', 'show me the money', 'indie music', 'indie artist'],
+    'Korean Movies & Film': ['movie', 'film', 'cinema', 'cannes', 'biff', 'busan film', 'thriller movie', 'horror movie', 'director', 'park chan-wook', 'bong joon-ho'],
+    'Web Variety & YouTube': ['web variety', 'youtube variety', 'workman', 'psick', 'short box', '워크맨', '피식', '숏박스', 'variety show', 'running man', 'knowing bros', 'i live alone'],
   },
 };
 
@@ -128,6 +133,11 @@ const NICHE_TOPICAL_MAP: Record<string, string[]> = {
     'Olive Young app international shopping guide foreigners',
     'PURITO sunscreen centella review guide',
     'Jumiso vitamin C serum brightening review',
+    // 3차 감사 추가: 신규 세그먼트 갭 탐지
+    'Korean postbiotic skincare serum barrier 2026',
+    'Korean galactomyces essence review ranked',
+    'Korean nail art gel sticker manicure guide',
+    'Korean nail art ohora Dashing Diva ranked',
   ],
   'k-entertainment': [
     // K-Pop fan content
@@ -156,6 +166,17 @@ const NICHE_TOPICAL_MAP: Record<string, string[]> = {
     'G-Dragon solo comeback 2025 2026 guide',
     'K-pop idols turned actors drama roles guide',
     'KBS SBS MBC year-end drama awards guide',
+    // 3차 감사 추가: 신규 세그먼트 갭 탐지
+    'Korean musical theater guide ranked 2026',
+    'K-pop idols in musicals best performances',
+    'K-hip-hop K-R&B artists guide DEAN Crush ranked',
+    'Korean web variety YouTube shows guide 2026',
+    'K-pop photocard trading apps platforms compared',
+    'best Korean sci-fi fantasy dramas ranked',
+    'best Korean zombie dramas Kingdom ranked',
+    'best Korean legal courtroom dramas ranked',
+    'K-pop group lore universe explained comparison',
+    'K-drama OST playlist Spotify Apple Music',
   ],
 };
 
@@ -974,6 +995,7 @@ ${cluster.pillarUrl ? `<p style="margin:12px 0 0 0;"><a href="${cluster.pillarUr
     nicheId: string,
     existingPosts: ExistingPost[],
     pillarUrlMap: Record<string, string>,
+    pillarTopics?: string[],
   ): { shouldCreatePillar: boolean; pillarExists: boolean; satelliteCount: number; advice: string } {
     const cluster = this.clusters.get(nicheId);
     const nichePosts = cluster?.posts || [];
@@ -988,11 +1010,12 @@ ${cluster.pillarUrl ? `<p style="margin:12px 0 0 0;"><a href="${cluster.pillarUr
 
     // Strategy: Pillar first, then satellites
     if (!pillarExists && satelliteCount >= 3) {
+      const topicHint = pillarTopics?.length ? ` — suggested pillar topics: ${pillarTopics.slice(0, 2).join(', ')}` : '';
       return {
         shouldCreatePillar: true,
         pillarExists: false,
         satelliteCount,
-        advice: `Create pillar page for ${nicheId} — ${satelliteCount} satellite posts exist without a hub page`,
+        advice: `Create pillar page for ${nicheId} — ${satelliteCount} satellite posts exist without a hub page${topicHint}`,
       };
     }
 

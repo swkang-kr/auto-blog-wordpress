@@ -148,7 +148,11 @@ export class ImageGeneratorService {
     // Detect niche from prompt content for category-appropriate styling
     const promptLower = prompt.toLowerCase();
     const isKBeauty = /skincare|k-beauty|serum|moisturizer|sunscreen|toner|cleanser|glass skin|olive young/i.test(promptLower);
-    const isKEntertainment = /k-pop|idol|k-drama|concert|comeback|fandom|lightstick/i.test(promptLower);
+    const isKEntertainment = /k-pop|idol|k-drama|concert|comeback|fandom|lightstick|k-hip-?hop|k-r&?b|rapper|hip\s*hop/i.test(promptLower);
+
+    // K-Entertainment sub-category differentiation
+    const isKHipHopRnB = isKEntertainment && /hip\s*hop|rapper|k-r&?b|k-rnb|r&b|dean|crush|zion\.?t|jay\s*park|ph-1|epik\s*high|dpr\s*live|heize|colde|lee\s*hi|aomg|h1ghr/i.test(promptLower);
+    const isKDrama = isKEntertainment && /k-drama|korean\s*drama|netflix.*drama|streaming.*drama|kdrama|sageuk|webtoon.*adapt/i.test(promptLower);
 
     // K-Beauty sub-category differentiation for richer visual variety
     const isKBeautyMakeup = isKBeauty && /makeup|foundation|cushion|lip\s*tint|blush|eyeshadow|mascara|eyeliner|rom.nd|clio|fwee|hince/i.test(promptLower);
@@ -159,9 +163,15 @@ export class ImageGeneratorService {
     const isKBeautyTonerPad = isKBeauty && /toner\s*pad|sun\s*pad|exfoliat.*pad|선패드/i.test(promptLower);
     const isKBeautyAmpoule = isKBeauty && /ampoule|앰플|concentrated\s*(?:serum|essence)/i.test(promptLower);
     const isKBeautyTexture = isKBeauty && /texture|발림성|swatch|consistency|application/i.test(promptLower);
+    const isKBeautyNailArt = isKBeauty && /nail\s*art|gel\s*nail|press[- ]on\s*nail|manicure|nail\s*sticker|ohora|dashing\s*diva|cat\s*eye\s*nail|magnet\s*nail|aurora\s*nail/i.test(promptLower);
+    const isKMusical = isKEntertainment && /musical|theater|theatre|broadway|k-musical/i.test(promptLower);
     const isKBeautyGiftSet = isKBeauty && /gift\s*set|advent\s*calendar|subscription\s*box|holiday\s*set|선물\s*세트|기프트/i.test(promptLower);
 
-    const nicheSuffix = isKBeautyGiftSet
+    const nicheSuffix = isKBeautyNailArt
+      ? ', Korean nail art close-up photography, trendy gel nail designs, cat eye magnet nail effect, pastel and chrome finish, elegant hand pose, salon-quality detail, soft pink and lavender tones, clean minimal background, macro lens beauty editorial'
+      : isKMusical
+      ? ', Korean musical theater stage aesthetic, dramatic spotlight on performer, rich red curtain backdrop, warm golden stage lighting, Broadway-style grandeur with Korean sensibility, emotional theatrical atmosphere, cinematic wide shot composition'
+      : isKBeautyGiftSet
       ? ', Korean beauty gift set flat lay photography, beautifully wrapped boxes with ribbon, pastel and gold packaging, holiday aesthetic, curated skincare collection, festive warm lighting, premium unboxing experience, elegant arrangement on marble surface'
       : isKBeautyTools
       ? ', Korean beauty device product photography, clean clinical aesthetic, soft white background, LED glow effect, modern bathroom counter, sleek technology meets skincare, minimalist composition'
@@ -181,9 +191,13 @@ export class ImageGeneratorService {
           ? ', Korean hair care editorial, sleek flowing hair texture, salon-quality lighting, minimalist bathroom setting, amber and warm tones, scalp care products arranged neatly'
           : isKBeauty
             ? ', soft pastel aesthetic, Korean beauty product photography, clean white or cream background, glass bottles, subtle gradient lighting, editorial K-beauty style, dewy skin texture'
-            : isKEntertainment
-              ? ', K-pop aesthetic, vibrant stage lighting, bold graphic design, dynamic composition, Seoul urban style'
-              : '';
+            : isKHipHopRnB
+              ? ', Korean hip-hop and R&B aesthetic, moody urban studio setting, grayscale with neon accent lighting, DJ turntable or recording studio mic, streetwear fashion, Seoul Itaewon nightlife atmosphere, artistic and edgy composition'
+              : isKDrama
+                ? ', Korean drama cinematic aesthetic, warm emotional lighting, indoor intimate scene, romantic or dramatic atmosphere, soft bokeh background, Seoul cityscape through window, cozy living room or cafe setting'
+                : isKEntertainment
+                  ? ', K-pop aesthetic, vibrant stage lighting, bold graphic design, dynamic composition, Seoul urban style'
+                  : '';
 
     const styleSuffix = index === 0
       ? `, digital illustration, wide composition for blog hero banner, vivid colors, high detail, 16:9 aspect ratio, professional editorial quality, absolutely no text, no letters, no words, no Korean characters, no watermark, no captions, text-free image only${nicheSuffix}`
