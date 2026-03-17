@@ -32,7 +32,8 @@ import { ThreadsService } from './services/threads.service.js';
 import { RedditPostService } from './services/reddit-post.service.js';
 import { AdSenseApiService } from './services/adsense-api.service.js';
 import type { PostResult, BatchResult, MediaUploadResult } from './types/index.js';
-import { CATEGORY_PUBLISH_TIMING } from './types/index.js';
+// CATEGORY_PUBLISH_TIMING available for future use (niche-specific timing)
+// import { CATEGORY_PUBLISH_TIMING } from './types/index.js';
 import { resolvePostUrl } from './utils/utm.js';
 
 function extractDataPoints(html: string): Array<{ label: string; value: string }> {
@@ -1197,63 +1198,16 @@ async function main(): Promise<void> {
 
   // ── Phase B: Images + Publish ──────────────────────────────────────────
   logger.info('\n=== Phase B: Images + Publish ===');
-  // Ensure minimum 30-minute interval between posts (even if config is 0) to avoid spam
-  const publishIntervalMs = Math.max(config.PUBLISH_INTERVAL_MINUTES, 30) * 60 * 1000;
-  logger.info(`Publish scheduling: ${Math.round(publishIntervalMs / 60000)}-minute intervals between posts${config.PUBLISH_INTERVAL_MINUTES < 30 ? ' (enforced minimum 30 min)' : ''}`);
+  // Immediate publish mode: 2 posts/day does not require staggered scheduling
+  logger.info(`Publish mode: immediate (POST_COUNT=${config.POST_COUNT})`);
 
-  // Optimal publish time calculation (#14) — GA4-driven > niche-specific > config fallback
-  const publishTz = config.PUBLISH_TIMEZONE;
-  const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  const baseOptimalHour = ga4OptimalHour ?? config.PUBLISH_OPTIMAL_HOUR;
-  logger.info(`Base publish hour: ${baseOptimalHour}:00 ${publishTz}${ga4OptimalHour !== null ? ' (GA4-detected)' : ' (config default)'}${ga4OptimalDay !== null ? ` | Best day: ${dayNames[ga4OptimalDay]}` : ''}`);
-  logger.info(`Per-niche timing enabled: ${Object.keys(CATEGORY_PUBLISH_TIMING).length} categories configured`);
-
-  // Track which categories are scheduled on which dates to prevent same-day same-category publishing
-  const categoryDateMap = new Map<string, Set<string>>(); // category → Set of date strings (YYYY-MM-DD)
-
-  /**
-   * Calculate scheduled publish time for a post.
-   * Priority: fast-track (immediate) > manual review delay > niche-specific timing > GA4 optimal > config default
-   * Posts are staggered by publishIntervalMs to avoid spam detection.
-   */
-  function calculateScheduledDate(gi: number, category: string, isFastTrack: boolean): string | undefined {
-    // Fast-track breakout trends: publish immediately (no scheduling)
-    if (isFastTrack) return undefined;
-
-    // Manual review mode: delay 24h for new publishers
+  // Manual review mode: only case where scheduling is needed (24h delay for new publishers)
+  function calculateScheduledDate(gi: number): string | undefined {
     if (manualReviewDelayMs > 0) {
-      const futureDate = new Date(Date.now() + manualReviewDelayMs + gi * publishIntervalMs);
+      const futureDate = new Date(Date.now() + manualReviewDelayMs);
       return futureDate.toISOString();
     }
-
-    // Calculate optimal hour for this category
-    const nicheTiming = CATEGORY_PUBLISH_TIMING[category];
-    const optimalHour = nicheTiming?.optimalHour ?? baseOptimalHour;
-
-    // Build target date: today or tomorrow if optimal hour already passed
-    const now = new Date();
-    const target = new Date(now.toLocaleString('en-US', { timeZone: publishTz }));
-    target.setHours(optimalHour, 0, 0, 0);
-    // Add stagger offset for multiple posts
-    target.setTime(target.getTime() + gi * publishIntervalMs);
-
-    // If target is in the past, move to next day
-    if (target.getTime() <= now.getTime()) {
-      target.setDate(target.getDate() + 1);
-    }
-
-    // Check same-day same-category conflict
-    const dateKey = target.toISOString().slice(0, 10);
-    const catDates = categoryDateMap.get(category) || new Set();
-    if (catDates.has(dateKey)) {
-      // Push to next day to avoid same-day same-category publishing
-      target.setDate(target.getDate() + 1);
-    }
-    const finalDateKey = target.toISOString().slice(0, 10);
-    catDates.add(finalDateKey);
-    categoryDateMap.set(category, catDates);
-
-    return target.toISOString();
+    return undefined; // immediate publish
   }
 
   for (let gi = 0; gi < generated.length; gi++) {
@@ -1549,10 +1503,10 @@ async function main(): Promise<void> {
       const clusterRelatedPosts = topicClusterService.getRelatedPostsByCluster(
         niche.id, researched.analysis.selectedKeyword, existingPosts, 4,
       );
-      // Calculate scheduled publish time (staggered, niche-aware, GA4-optimized)
-      const scheduledDate = calculateScheduledDate(gi, niche.category, !!fastTrack);
+      // Immediate publish (manual review mode only uses scheduling for new publishers)
+      const scheduledDate = calculateScheduledDate(gi);
       if (scheduledDate) {
-        logger.info(`Scheduled publish: ${new Date(scheduledDate).toLocaleString('en-US', { timeZone: publishTz })} ${publishTz}`);
+        logger.info(`Manual review mode: scheduled publish at ${new Date(scheduledDate).toISOString()}`);
       }
       const post = await wpService.createPost(
         content,
