@@ -142,6 +142,60 @@ export class FactCheckService {
           unverified++;
         }
       }
+
+      // 11차 감사: MFDS 기능성 화장품 인증 없이 치료 주장 감지
+      const treatmentClaims = /(?:removes?|eliminates?|erases?|treats?|corrects?)\s+(?:wrinkles?|aging|fine\s*lines|dark\s*spots|hyperpigmentation|acne|breakouts?|melasma|blemish)/gi;
+      const treatmentMatches = plainText.match(treatmentClaims) || [];
+      for (const tm of treatmentMatches) {
+        const tmIdx = plainText.indexOf(tm);
+        const tmContext = plainText.slice(Math.max(0, tmIdx - 150), tmIdx + tm.length + 150);
+        const isFunctionalMarked = /(?:MFDS|기능성\s*화장품|functional\s*cosmetic).{0,50}(?:certif|approv|register)/i.test(tmContext);
+        if (!isFunctionalMarked) {
+          flagged.push(
+            `Treatment claim without MFDS functional cosmetic certification: "${tm}" — ` +
+            `only MFDS-certified 기능성 화장품 (brightening/anti-wrinkle/sunscreen) can make treatment claims. ` +
+            `Use hedged language ("helps reduce", "may improve").`,
+          );
+          unverified++;
+        }
+      }
+
+      // 11차 감사: 성분 농도 범위 이상치 감지 (niacinamide 2-10%, retinol 0.025-1.0%, vitamin C 5-20%)
+      const concentrationRanges: Record<string, { min: number; max: number; label: string }> = {
+        niacinamide: { min: 2, max: 10, label: 'niacinamide (typical 2-10%)' },
+        retinol: { min: 0.01, max: 1.0, label: 'retinol (typical 0.01-1.0%)' },
+        'vitamin c': { min: 5, max: 20, label: 'vitamin C / ascorbic acid (typical 5-20%)' },
+        'ascorbic acid': { min: 5, max: 20, label: 'ascorbic acid (typical 5-20%)' },
+        'salicylic acid': { min: 0.5, max: 2, label: 'salicylic acid (typical 0.5-2%)' },
+      };
+      for (const [ingredient, range] of Object.entries(concentrationRanges)) {
+        const concRegex = new RegExp(`(\\d+(?:\\.\\d+)?)%\\s*${ingredient.replace(/\s+/g, '\\s*')}`, 'gi');
+        const concMatches = plainText.match(concRegex) || [];
+        for (const cm of concMatches) {
+          const pctMatch = cm.match(/(\d+(?:\.\d+)?)%/);
+          if (pctMatch) {
+            const pctVal = parseFloat(pctMatch[1]);
+            if (pctVal < range.min || pctVal > range.max) {
+              flagged.push(
+                `Unusual ${range.label} concentration: ${pctVal}% — ` +
+                `typical cosmetic range is ${range.min}-${range.max}%. Verify with manufacturer data.`,
+              );
+              unverified++;
+            }
+          }
+        }
+      }
+
+      // 11차 감사: 의약품/의약외품 경계 — 피부과 질환 치료 주장 감지
+      const medicalClaimsRegex = /(?:heals?|cures?|treats?|relieves?|alleviates?|eliminates?)\s+(?:eczema|dermatitis|acne\s*vulgaris|rosacea|psoriasis|fungal|infection|inflammation|wound)/gi;
+      const medicalMatches = plainText.match(medicalClaimsRegex) || [];
+      for (const mm of medicalMatches) {
+        flagged.push(
+          `Medical claim detected: "${mm}" — MFDS classifies this as a medicine/quasi-drug (의약품/의약외품), ` +
+          `not a cosmetic. Revise to "supports skin health" or "may help calm" instead.`,
+        );
+        unverified++;
+      }
     }
 
     if (category === 'K-Entertainment') {
@@ -190,6 +244,12 @@ export class FactCheckService {
       bts: 2013, blackpink: 2016, aespa: 2020, twice: 2015, exo: 2012,
       seventeen: 2015, 'stray kids': 2018, ive: 2021, 'le sserafim': 2022,
       enhypen: 2020, txt: 2019, ateez: 2018,
+      // 11차 감사: 레거시/3세대/3.5세대 그룹 데뷔 연도 추가
+      shinee: 2008, 'red velvet': 2014, got7: 2014, mamamoo: 2014,
+      day6: 2015, btob: 2012, 'the boyz': 2017, treasure: 2020,
+      itzy: 2019, '(g)i-dle': 2018, nmixx: 2022, 'kiss of life': 2023,
+      'newjeans': 2022, 'babymonster': 2023, riize: 2023, illit: 2024,
+      qwer: 2023, plave: 2023,
       // K-Beauty brands (common AI dating errors)
       cosrx: 2013, 'beauty of joseon': 2010, tirtir: 2019, laneige: 1994,
       sulwhasoo: 1997, innisfree: 2000, missha: 2000, 'etude house': 1995,
@@ -199,6 +259,11 @@ export class FactCheckService {
       illiyoon: 2006, aestura: 2003, purito: 2015, jumiso: 2018,
       benton: 2011, 'vt cosmetics': 2018, fwee: 2020, rovectin: 2013,
       "ample:n": 2016, 'dr.g': 2003, klavuu: 2015,
+      // 11차 감사: 누락 K-Beauty 브랜드 창립 연도 추가 (rovectin/benton/jumiso는 위에 이미 있음)
+      'pyunkang yul': 2010, acwell: 2005, apieu: 2014,
+      'dashing diva': 2001, ohora: 2018, 'gelato factory': 2019,
+      tamburins: 2017, nonfiction: 2019, granhand: 2015,
+      'daeng gi meo ri': 1970, ryo: 2008, masil: 2019,
       // Institutions
       'bank of korea': 1950, 'korea exchange': 2005, 'olive young': 1999,
       'korea tourism organization': 1962,
@@ -241,13 +306,19 @@ export class FactCheckService {
 
     // 10. K-Beauty: Check for recalled or discontinued product claims
     if (category === 'K-Beauty') {
-      // Check sunscreen SPF claims
+      // Check sunscreen SPF claims — MFDS caps Korean sunscreen at SPF 50+
       const spfRegex = /SPF\s*(\d+)/gi;
       const spfMatches = plainText.match(spfRegex) || [];
       for (const match of spfMatches) {
         const spfVal = parseInt(match.replace(/SPF\s*/i, ''));
         if (spfVal > 100) {
-          flagged.push(`Unlikely SPF claim: "${match}" — SPF above 100 is not recognized by most regulators`);
+          flagged.push(`Unlikely SPF claim: "${match}" — SPF above 100 is not recognized by MFDS or FDA`);
+          unverified++;
+        } else if (spfVal > 50 && /(?:korean|k-beauty|MFDS|olive\s*young|amorepacific|innisfree|beauty\s*of\s*joseon|cosrx|isntree|round\s*lab)/i.test(plainText)) {
+          flagged.push(
+            `SPF ${spfVal} stated for Korean product — MFDS caps sunscreen labeling at SPF 50+ (최대 표시). ` +
+            `Korean-market products must display as "SPF 50+" regardless of actual protection level.`,
+          );
           unverified++;
         }
       }

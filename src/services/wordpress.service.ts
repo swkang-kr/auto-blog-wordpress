@@ -1156,6 +1156,8 @@ ${rows}
         'Tamburins', 'nonfiction', 'granhand',
         // Korean-American brands
         'Peach & Lily', 'Krave Beauty',
+        // 11차 감사: 누락 브랜드 추가
+        'Pyunkang Yul', 'Acwell', 'APIEU', 'Rovectin', 'Benton', 'Jumiso',
         // Hair care
         'Daeng Gi Meo Ri', 'Ryo', 'Masil',
         // Nail art brands
@@ -2029,6 +2031,57 @@ ${ga4TrackingScript}`;
         });
       }
       logger.debug(`ClaimReview schema: ${Math.min(options.factCheckClaims.length, 3)} fact-checked claim(s)`);
+    }
+
+    // 11차 감사: MusicAlbum schema for K-Entertainment album content (Google Music rich results)
+    if (content.category === 'K-Entertainment') {
+      const albumRegex = /(?:best\s+)?(?:album|discography|comeback|mini\s*album|full\s*album|EP)\b/i;
+      const groupRegex = /\b(BTS|BLACKPINK|Stray Kids|SEVENTEEN|TWICE|EXO|SHINee|Red Velvet|GOT7|MAMAMOO|DAY6|BTOB|THE BOYZ|TREASURE|aespa|NewJeans|LE SSERAFIM|ENHYPEN|TXT|ATEEZ|IVE|ITZY|NMIXX|\(G\)I-DLE|RIIZE|QWER|PLAVE)\b/i;
+      const plainForMusic = htmlEn.replace(/<[^>]+>/g, ' ');
+      const albumMatch = albumRegex.test(plainForMusic);
+      const groupMatch = groupRegex.exec(plainForMusic);
+      if (albumMatch && groupMatch) {
+        jsonLdSchemas.push({
+          '@context': 'https://schema.org',
+          '@type': 'MusicAlbum',
+          name: content.title,
+          description: validatedExcerpt,
+          byArtist: {
+            '@type': 'MusicGroup',
+            name: groupMatch[1],
+            genre: 'K-Pop',
+          },
+          albumProductionType: 'https://schema.org/StudioAlbum',
+          datePublished: nowIso,
+          inLanguage: 'ko',
+        });
+        logger.debug(`MusicAlbum schema prepared for K-Entertainment album content (artist: ${groupMatch[1]})`);
+      }
+
+      // Event schema for K-Entertainment concerts/festivals/premieres
+      const eventRegex = /\b(?:concert|tour\b|festival|KCON|fan\s*meeting|world\s*tour|premiere|fan\s*meet)\b/i;
+      if (eventRegex.test(plainForMusic)) {
+        const dateRegex = /(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2}(?:–\d{1,2})?,?\s*\d{4}/i;
+        const dateMatch = dateRegex.exec(plainForMusic);
+        jsonLdSchemas.push({
+          '@context': 'https://schema.org',
+          '@type': 'Event',
+          name: content.title,
+          description: validatedExcerpt,
+          ...(dateMatch ? { startDate: dateMatch[0] } : { startDate: nowIso }),
+          eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+          eventStatus: 'https://schema.org/EventScheduled',
+          ...(groupMatch ? {
+            performer: { '@type': 'MusicGroup', name: groupMatch[1] },
+          } : {}),
+          organizer: {
+            '@type': 'Organization',
+            name: this.siteOwner || 'TrendHunt',
+            url: this.wpUrl,
+          },
+        });
+        logger.debug('Event schema prepared for K-Entertainment concert/festival content');
+      }
     }
 
     // Product schema for best-x-for-y and product-review content (rich results for product searches)
@@ -3194,6 +3247,9 @@ ${ga4TrackingScript}`;
       'BreadcrumbList': ['itemListElement'],
       'ImageObject': ['contentUrl'],
       'Product': ['name'],
+      // 11차 감사: K-Entertainment 스키마 유효성 검사
+      'MusicAlbum': ['name', 'byArtist'],
+      'Event': ['name', 'startDate'],
     };
 
     for (const schema of schemas) {

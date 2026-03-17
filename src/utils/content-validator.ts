@@ -1832,7 +1832,39 @@ export function validateContent(
       }
     }
 
-    // 36. Price disclaimer asymmetry fix — best-x-for-y also deducts score (like product-review Rule 18)
+    // 36. 11차 감사: 기미(melasma) 전문 검증 — OTC 화장품 vs 전문 시술 구분 필수
+    if (/melasma|기미|chloasma/i.test(plainText)) {
+      const hasProDisclaimer = /(?:dermatologist|피부과|prescription|hydroquinone|laser|professional\s*treatment|consult)/i.test(plainText);
+      if (!hasProDisclaimer) {
+        warnings.push({ category: 'niche-accuracy', message: 'Melasma (기미) content without professional treatment context — melasma is a chronic condition requiring dermatologist-guided treatment (hydroquinone, laser, prescription retinoids). OTC skincare alone is insufficient. Add dermatologist consultation recommendation.', severity: 'warning' });
+        eeatScore -= 2;
+      }
+      // Melasma + "cure" language
+      if (/(?:cures?|eliminates?|permanently\s*removes?|gets?\s*rid\s*of)\s*(?:melasma|기미)/i.test(plainText)) {
+        issues.push({ category: 'niche-accuracy', message: 'Melasma cannot be "cured" or "permanently removed" — it is a chronic, recurring condition managed through ongoing treatment. Revise to "helps manage" or "may reduce appearance."', severity: 'error' });
+        eeatScore -= 3;
+      }
+    }
+
+    // 37. 11차 감사: 시술 후 스킨케어 타이밍 검증 — 레이저/필링 후 제품 사용 시점
+    if (/(?:after|post).{0,20}(?:laser|peel|microneedling|dermapen|derma\s*roller|botox|filler|chemical\s*peel|IPL)/i.test(plainText)) {
+      const hasTimingContext = /(?:\d+\s*(?:hours?|days?|weeks?)\s*(?:after|later|post)|wait\s*(?:at\s*least|until)|healing\s*(?:period|time)|recovery|downtime|avoid\s*(?:for|until))/i.test(plainText);
+      if (!hasTimingContext) {
+        warnings.push({ category: 'niche-accuracy', message: 'Post-procedure skincare content without timing guidance — specify when products can be safely applied (e.g., "wait 24-48 hours after laser" or "avoid actives for 1 week post-peel"). Premature active ingredient use can cause irritation or PIH.', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 38. 11차 감사: 민감성 피부 vs 아토피 피부염 혼동 방지
+    if (/sensitive\s*skin|민감성/i.test(plainText) && /atopic|아토피|eczema/i.test(plainText)) {
+      const hasDistinction = /(?:differ|distinct|unlike|not\s*the\s*same|whereas|compared\s*to|vs\.?|versus)/i.test(plainText);
+      if (!hasDistinction) {
+        warnings.push({ category: 'niche-accuracy', message: 'Content mentions both "sensitive skin" and "atopic dermatitis/eczema" without distinguishing them — sensitive skin is a self-reported condition (irritation-prone), while atopic dermatitis is a medical diagnosis (immune-mediated chronic inflammation). Clearly distinguish the two for reader trust.', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 39. Price disclaimer asymmetry fix — best-x-for-y also deducts score (like product-review Rule 18)
     if (contentType === 'best-x-for-y') {
       const hasPricing = /\$\d+|\₩[\d,]+|price|pricing|cost/i.test(plainText);
       const hasPriceDisclaimer = /prices?\s*(?:verified|checked|as of)|prices?\s*vary\s*frequently/i.test(plainText);
