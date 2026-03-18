@@ -2141,7 +2141,7 @@ ${ga4TrackingScript}`;
     // 11차 감사: MusicAlbum schema for K-Entertainment album content (Google Music rich results)
     if (content.category === 'K-Entertainment') {
       const albumRegex = /(?:best\s+)?(?:album|discography|comeback|mini\s*album|full\s*album|EP)\b/i;
-      const groupRegex = /\b(BTS|BLACKPINK|Stray Kids|SEVENTEEN|TWICE|EXO|SHINee|Red Velvet|GOT7|MAMAMOO|DAY6|BTOB|THE BOYZ|TREASURE|aespa|NewJeans|LE SSERAFIM|ENHYPEN|TXT|ATEEZ|IVE|ITZY|NMIXX|\(G\)I-DLE|RIIZE|QWER|PLAVE)\b/i;
+      const groupRegex = /\b(BTS|BLACKPINK|Stray Kids|SEVENTEEN|TWICE|EXO|SHINee|Red Velvet|GOT7|MAMAMOO|DAY6|BTOB|THE BOYZ|TREASURE|aespa|NewJeans|NJZ|LE SSERAFIM|ENHYPEN|TXT|ATEEZ|IVE|ITZY|NMIXX|\(G\)I-DLE|RIIZE|QWER|PLAVE|WHIPLASH|izna|UNIS|BABYMONSTER|BOYNEXTDOOR|KISS OF LIFE|Dreamcatcher|YOUNG POSSE|tripleS)\b/i;
       const plainForMusic = htmlEn.replace(/<[^>]+>/g, ' ');
       const albumMatch = albumRegex.test(plainForMusic);
       const groupMatch = groupRegex.exec(plainForMusic);
@@ -2213,6 +2213,31 @@ ${ga4TrackingScript}`;
           },
         });
         logger.debug(`MusicEvent schema prepared (status: ${eventStatus.split('/').pop()})`);
+      }
+
+      // 18차 감사: MusicGroup schema for K-pop group profile/guide content
+      const profileRegex = /\b(?:members?\s*profile|complete\s*guide|group\s*guide|debut|discography|all\s*(?:you\s*need|about))\b/i;
+      if (profileRegex.test(plainForMusic) && groupMatch && !albumMatch) {
+        // Only add MusicGroup when it's a group profile/guide, not album content (MusicAlbum already nests MusicGroup)
+        const genreMap: Record<string, string> = {
+          'DAY6': 'K-Rock', 'QWER': 'K-Rock', 'Dreamcatcher': 'K-Rock',
+        };
+        const memberCountMap: Record<string, number> = {
+          'BTS': 7, 'BLACKPINK': 4, 'aespa': 4, 'IVE': 6, 'LE SSERAFIM': 5,
+          'ENHYPEN': 7, 'SEVENTEEN': 13, 'TWICE': 9, 'ITZY': 5, 'NMIXX': 6,
+          'BABYMONSTER': 7, 'WHIPLASH': 5, 'RIIZE': 7, 'Stray Kids': 8,
+        };
+        const groupName = groupMatch[1];
+        jsonLdSchemas.push({
+          '@context': 'https://schema.org',
+          '@type': 'MusicGroup',
+          name: groupName,
+          genre: genreMap[groupName] || 'K-Pop',
+          description: validatedExcerpt,
+          ...(memberCountMap[groupName] ? { numberOfEmployees: memberCountMap[groupName] } : {}),
+          url: content.slug ? `${this.wpUrl}/${content.slug}/` : this.wpUrl,
+        });
+        logger.debug(`MusicGroup schema prepared for "${groupName}" profile content`);
       }
     }
 
@@ -3442,6 +3467,7 @@ ${ga4TrackingScript}`;
       'Product': ['name'],
       // 11차 감사: K-Entertainment 스키마 유효성 검사
       'MusicAlbum': ['name', 'byArtist'],
+      'MusicGroup': ['name', 'genre'],
       'Event': ['name', 'startDate'],
     };
 

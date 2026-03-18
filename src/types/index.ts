@@ -216,6 +216,8 @@ export interface NicheConfig {
   category: string;
   /** Broad 1-2 word term used for Google Trends rising query discovery */
   broadTerm: string;
+  /** Additional broad terms for multi-topic niches (e.g., K-Entertainment covers K-pop + K-drama + K-movie) */
+  broadTermsExtra?: string[];
   /** Fallback seed keywords used when Trends API returns no rising queries */
   seedKeywords: string[];
   contentTypes: ContentType[];

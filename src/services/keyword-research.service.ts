@@ -9,6 +9,57 @@ import type { NicheConfig, TrendsData, RisingQuery, KeywordAnalysis, ResearchedK
 import { CONTENT_FRESHNESS_MAP, INTENT_CONTENT_TYPE_MAP, type ContentType, type FreshnessClass } from '../types/index.js';
 import type { GSCQueryData } from './gsc-analytics.service.js';
 
+/**
+ * Stratified seed keyword sampling: clusters seeds by leading topic word,
+ * then picks evenly across clusters so minor categories get representation.
+ */
+function stratifiedSample(seeds: string[], maxSample: number): string[] {
+  if (seeds.length <= maxSample) return [...seeds];
+
+  // Cluster by first meaningful word (skip common prefixes like "best", "how", "top", "korean")
+  const SKIP_WORDS = new Set(['best', 'how', 'top', 'korean', 'k-pop', 'k-beauty', 'k-drama', 'the', 'a', 'what', 'why', 'where', 'when', 'complete', 'guide', 'ultimate']);
+  const clusters = new Map<string, string[]>();
+
+  for (const seed of seeds) {
+    const words = seed.toLowerCase().split(/\s+/);
+    const key = words.find(w => w.length > 2 && !SKIP_WORDS.has(w)) || words[0] || 'other';
+    if (!clusters.has(key)) clusters.set(key, []);
+    clusters.get(key)!.push(seed);
+  }
+
+  // Shuffle within each cluster
+  for (const arr of clusters.values()) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+  }
+
+  // Round-robin pick from clusters
+  const result: string[] = [];
+  const clusterArrays = [...clusters.values()];
+  // Shuffle cluster order too
+  for (let i = clusterArrays.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [clusterArrays[i], clusterArrays[j]] = [clusterArrays[j], clusterArrays[i]];
+  }
+
+  let idx = 0;
+  while (result.length < maxSample) {
+    let added = false;
+    for (const cluster of clusterArrays) {
+      if (idx < cluster.length && result.length < maxSample) {
+        result.push(cluster[idx]);
+        added = true;
+      }
+    }
+    if (!added) break;
+    idx++;
+  }
+
+  return result;
+}
+
 /** SERP competition analysis result */
 interface SerpAnalysis {
   strikingDistanceKeywords: GSCQueryData[];
@@ -262,6 +313,39 @@ export class KeywordResearchService {
       logger.warn(`Rising trends fetch failed for "${niche.name}": ${error instanceof Error ? error.message : error}`);
     }
 
+    // 1b. Fetch extra broad terms (e.g., K-drama, Korean movie) to capture non-primary topics
+    if (niche.broadTermsExtra?.length) {
+      for (const extraTerm of niche.broadTermsExtra) {
+        try {
+          const extra = await this.trendsService.fetchRisingQueries(extraTerm);
+          if (extra.rising.length > 0) {
+            risingQueries.push(...extra.rising);
+            logger.info(`Extra broad term "${extraTerm}" added ${extra.rising.length} rising queries`);
+          }
+          if (extra.top.length > 0) {
+            topQueries.push(...extra.top);
+          }
+        } catch (error) {
+          logger.debug(`Extra broad term "${extraTerm}" fetch failed: ${error instanceof Error ? error.message : error}`);
+        }
+      }
+      // Deduplicate by query text (case-insensitive)
+      const seen = new Set<string>();
+      risingQueries = risingQueries.filter(q => {
+        const key = q.query.toLowerCase();
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+      const seenTop = new Set<string>();
+      topQueries = topQueries.filter(q => {
+        const key = q.query.toLowerCase();
+        if (seenTop.has(key)) return false;
+        seenTop.add(key);
+        return true;
+      });
+    }
+
     // 2. Fall back to Reddit trends, then seed keywords if no rising queries found
     const trendsData: TrendsData[] = [];
     if (risingQueries.length === 0 && topQueries.length === 0) {
@@ -287,13 +371,8 @@ export class KeywordResearchService {
         const SEED_TIME_BUDGET_MS = 3 * 60 * 1000; // 3 minutes per niche
         const seedStart = Date.now();
 
-        // Fisher-Yates shuffle and take first MAX_SEED_SAMPLE
-        const shuffled = [...niche.seedKeywords];
-        for (let i = shuffled.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-        }
-        const sampled = shuffled.slice(0, MAX_SEED_SAMPLE);
+        // Stratified sampling: cluster seeds by first significant word, then sample evenly across clusters
+        const sampled = stratifiedSample(niche.seedKeywords, MAX_SEED_SAMPLE);
 
         logger.warn(`No rising queries for "${niche.name}", falling back to ${sampled.length}/${niche.seedKeywords.length} sampled seed keywords`);
         trendsSource = 'seed';
@@ -486,7 +565,8 @@ export class KeywordResearchService {
             .join('\n')
         : '  (none found)';
 
-      trendsContext = `## Google Trends Data for broad term: "${niche.broadTerm}" (last 3 months)
+      const allBroadTerms = [niche.broadTerm, ...(niche.broadTermsExtra || [])].join(', ');
+      trendsContext = `## Google Trends Data for broad terms: "${allBroadTerms}" (last 3 months)
 - Overall interest: avg=${risingData.averageInterest}, direction=${risingData.trendDirection}
 
 ### RISING Queries (growing fast — PRIORITISE THESE):

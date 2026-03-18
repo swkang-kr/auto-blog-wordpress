@@ -792,6 +792,25 @@ export const NICHES: NicheConfig[] = [
       // K-Beauty dupes — 고검색량 키워드
       'best Korean skincare dupes affordable alternatives to luxury products ranked 2026',
       'Korean dupes for Drunk Elephant La Mer affordable K-Beauty alternatives guide 2026',
+      // 18차 감사 — 2026 글로벌 급성장 브랜드 추가
+      // SKIN1004: 마다가스카르 센텔라 라인, 글로벌 센텔라 카테고리 1위급 성장
+      'SKIN1004 Madagascar Centella ampoule review sensitive skin before after results',
+      'SKIN1004 vs COSRX centella products which centella line is better comparison guide',
+      // roundlab (라운드랩): 독도 토너 Amazon K-Beauty 상위, 저자극 미니멀 스킨케어
+      'round lab dokdo toner review oily combination skin before after hydration test',
+      'round lab birch juice moisturizing best products for dry skin complete guide',
+      // Torriden: 히알루론산 다이브인 세럼 Amazon #1 K-Beauty serum
+      'Torriden dive in serum review hyaluronic acid best for dehydrated skin guide',
+      'Torriden low molecular hyaluronic acid vs ordinary hyaluronic acid comparison guide',
+      // GLP-1/Ozempic skin — 2025-2026 급부상 키워드 (약물 후 피부 변화 관리)
+      'Ozempic face skincare routine how to care for skin after GLP-1 weight loss Korean products',
+      'GLP-1 skin changes collagen loss sagging Korean skincare solutions guide 2026',
+      // K-Beauty 더마 vs 유럽 더마 비교 — 검색 의도 높은 비교 앵글
+      'Korean dermacosmetics vs European La Roche Posay CeraVe which is better for sensitive skin',
+      'Aestura vs CeraVe for eczema atopic skin Korean vs Western dermacosmetics comparison',
+      // 2026 K-Beauty 신기술/포맷 트렌드
+      'Korean skincare device LED mask microcurrent at home best products guide 2026',
+      'K-Beauty probiotic skincare best products for microbiome balance guide 2026',
     ],
     contentTypes: ['product-review', 'best-x-for-y', 'x-vs-y', 'how-to', 'listicle', 'case-study', 'deep-dive', 'news-explainer'],
     adSenseRpm: 'high',
@@ -817,6 +836,11 @@ export const NICHES: NicheConfig[] = [
     name: 'K-Pop & K-Drama',
     category: 'K-Entertainment',
     broadTerm: `K-pop ${new Date().getFullYear()}`,
+    broadTermsExtra: [
+      `K-drama ${new Date().getFullYear()}`,
+      `Korean movie ${new Date().getFullYear()}`,
+      'Korean webtoon',
+    ],
     seedKeywords: [
       // BTS — 글로벌 최고 검색량 (2026년: 전원 전역 완료, 그룹 컴백 앵글 중심)
       // NOTE: 모든 멤버 2025년 중반까지 전역 완료 — "after military service" 앵글은 과거완료형으로 작성
@@ -1437,6 +1461,32 @@ export const NICHES: NicheConfig[] = [
       // 스트리밍 구독 어필리에이트
       'best streaming apps for K-pop music Spotify Apple Music YouTube Music compared 2026',
       'Melon app for international fans how to subscribe use guide 2026',
+      // 18차 감사 — 2026 K-Entertainment 누락/강화 키워드
+      // BTS 2026 완전체 컴백 — K-pop 최대 이벤트
+      'BTS 2026 group comeback confirmed schedule what to expect complete guide',
+      'BTS reunion album 2026 predictions tracklist members update everything we know',
+      'BTS world tour 2026 cities dates how to get tickets international fan guide',
+      // Squid Game Season 3 — K-Drama 최대 글로벌 이벤트
+      'Squid Game season 3 Netflix release date cast plot predictions complete guide',
+      'Squid Game season 3 vs season 2 what changed review analysis guide',
+      // WHIPLASH — SM 신인 보이그룹 (2024 데뷔)
+      'WHIPLASH members profile SM Entertainment new boy group complete guide 2026',
+      'WHIPLASH debut album review SM new generation boy group analysis',
+      // izna — I-LAND 2 프로젝트 그룹
+      'izna members profile I-LAND 2 debut complete guide for new fans 2026',
+      'izna debut album review songs ranked guide 2026',
+      // UNIS — Universe Ticket 프로젝트 그룹
+      'UNIS members profile Universe Ticket debut group complete guide 2026',
+      // 2026 K-Drama 주요작
+      'best Korean dramas 2026 must watch new releases Netflix TVING ranked guide',
+      'upcoming K-dramas 2026 release schedule Netflix TVING Disney Plus complete list',
+      'best Korean thriller dramas 2026 dark mystery suspense ranked guide',
+      // K-Movie 글로벌 흥행작
+      'best Korean movies 2026 must watch new releases theater streaming guide',
+      'Korean movies at Cannes BIFF 2026 award winners predictions guide',
+      // K-pop 5세대 심화
+      'fifth generation K-pop groups 2025 2026 debut complete guide rookies to watch',
+      'K-pop rookies 2026 best new groups debut ranked potential guide',
     ],
     contentTypes: ['news-explainer', 'listicle', 'best-x-for-y', 'deep-dive', 'how-to', 'x-vs-y', 'case-study'],
     adSenseRpm: 'medium',

@@ -53,6 +53,14 @@ const CONTENT_TYPE_MIN_WORDS: Record<string, number> = {
   'listicle': 1400,
 };
 
+/** Per-category overrides for content type word counts (category → contentType → minWords) */
+const CATEGORY_CONTENT_TYPE_MIN_WORDS: Record<string, Record<string, number>> = {
+  'K-Entertainment': {
+    'news-explainer': 1200, // Fan comeback news needs personality, not academic depth
+    'listicle': 1200,       // Fan listicles are snackable format
+  },
+};
+
 /** Get minimum quality score for a category (defaults to global MIN_QUALITY_SCORE or 65) */
 export function getMinQualityScore(category?: string, globalMinScore?: number): number {
   return (category ? CATEGORY_MIN_QUALITY[category] : undefined) ?? globalMinScore ?? 65;
@@ -216,8 +224,9 @@ export function validateContent(
   const plainText = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
   const wordCount = plainText.split(/\s+/).length;
 
-  // Content type-aware minimum word count
-  const typeMinWords = CONTENT_TYPE_MIN_WORDS[contentType] ?? 1800;
+  // Content type-aware minimum word count (category-specific overrides take priority)
+  const categoryOverride = category ? CATEGORY_CONTENT_TYPE_MIN_WORDS[category]?.[contentType] : undefined;
+  const typeMinWords: number = categoryOverride ?? CONTENT_TYPE_MIN_WORDS[contentType] ?? 1800;
   if (wordCount < typeMinWords) {
     issues.push({ category: 'length', message: `Content too short: ${wordCount} words (minimum ${typeMinWords} for ${contentType})`, severity: 'error' });
   }

@@ -1059,6 +1059,20 @@ async function main(): Promise<void> {
           continue;
         }
 
+        // Cross-niche topic similarity: prevent K-Beauty and K-Entertainment from covering same topic in one batch
+        const candidateWords = new Set(candidate.analysis.selectedKeyword.toLowerCase().split(/\s+/).filter(w => w.length > 3));
+        const crossNicheDup = batchKeywords.find(bk => {
+          const bkWords = new Set(bk.toLowerCase().split(/\s+/).filter(w => w.length > 3));
+          const overlap = [...candidateWords].filter(w => bkWords.has(w)).length;
+          const minSize = Math.min(candidateWords.size, bkWords.size);
+          return minSize > 0 && overlap / minSize >= 0.5; // 50%+ word overlap = topically similar
+        });
+        if (crossNicheDup) {
+          logger.warn(`Attempt ${kwAttempt}/${MAX_KEYWORD_ATTEMPTS}: Cross-niche topic overlap — "${candidate.analysis.selectedKeyword}" too similar to batch keyword "${crossNicheDup}". Retrying...`);
+          rejectedDupKeywords.push(candidate.analysis.selectedKeyword);
+          continue;
+        }
+
         // Pre-generation title similarity check: reject keyword if too similar to any existing post title
         // This prevents wasting API calls on content that will be rejected after generation
         const postedTitles = history.getPostedTitlesForNiche(niche.id);
