@@ -311,9 +311,13 @@ export class FactCheckService {
       'n.ssign': 2023, 'young posse': 2023, '8turn': 2023, 'ampers&one': 2023,
       tws: 2024, 'nct wish': 2024, meovv: 2024, whiplash: 2024,
       katseye: 2024, unis: 2024,
+      // 19차 감사: 인디밴드 데뷔 연도 + 플랫폼 설립 연도
+      'wave to earth': 2019, hyukoh: 2014, 'the rose': 2017, lucy: 2020,
+      'silica gel': 2012, 'lim young-woong': 2020, // 미스터트롯 우승 데뷔 기준
       // K-Beauty brands (common AI dating errors)
       cosrx: 2013, 'beauty of joseon': 2010, tirtir: 2019, laneige: 1994,
       sulwhasoo: 1997, innisfree: 2000, missha: 2000, 'etude house': 1995,
+      etude: 1995, // 리브랜딩: Etude House → Etude (2024)
       amorepacific: 1945, numbuzin: 2020, biodance: 2018, "d'alba": 2015,
       'round lab': 2018, isntree: 2009, 'haruharu wonder': 2018, mixsoon: 2019,
       'some by mi': 2016, abib: 2014, 'ma:nyo': 2012, nacific: 2015,
@@ -329,7 +333,8 @@ export class FactCheckService {
       anua: 2019, torriden: 2021, skin1004: 2013, klairs: 2010,
       medicube: 2014, 'axis-y': 2019, 'by wishtrend': 2014,
       "i'm from": 2012, hince: 2019, 'skin&lab': 2016, cnp: 2000,
-      heimish: 2015, 'cos de baha': 2017,
+      heimish: 2015, 'cos de baha': 2017, goodal: 2012, skinfood: 2004,
+      'peach c': 2019, wakemake: 2019, 'jung saem mool': 2015,
       // Institutions
       'bank of korea': 1950, 'korea exchange': 2005, 'olive young': 1999,
       'korea tourism organization': 1962,

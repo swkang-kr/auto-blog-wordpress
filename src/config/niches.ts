@@ -324,9 +324,10 @@ export const NICHES: NicheConfig[] = [
       // MISSHA (미샤) — BB 크림 원조, 가성비 한류 뷰티 대표
       'MISSHA M Perfect Cover BB cream review shades comparison 2026',
       'MISSHA Time Revolution essence review vs SK-II dupe comparison',
-      // Etude House (에뛰드하우스) — 아모레퍼시픽, 메이크업 특화, Z세대 타겟
-      'Etude House best products ranked makeup skincare 2026 guide',
-      'Etude House fixing tint review best lip shades swatches 2026',
+      // Etude (에뛰드) — 2024년 리브랜딩 (구 Etude House), 아모레퍼시픽, 메이크업 특화, Z세대 타겟
+      // NOTE: 'Etude House' 아닌 'Etude' 사용 필수 (공식 리브랜딩 완료)
+      'Etude best products ranked makeup skincare 2026 guide',
+      'Etude fixing tint review best lip shades swatches 2026',
       // Tony Moly (토니모리) — 캐릭터 패키징, Banana Hand Milk 상징
       'Tony Moly best products ranked skincare 2026 what to buy',
       'Tony Moly vs Innisfree which K-beauty brand is better for beginners',
@@ -811,6 +812,33 @@ export const NICHES: NicheConfig[] = [
       // 2026 K-Beauty 신기술/포맷 트렌드
       'Korean skincare device LED mask microcurrent at home best products guide 2026',
       'K-Beauty probiotic skincare best products for microbiome balance guide 2026',
+      // ── 전문가 감사 추가 (2026-03-18 batch 19): 누락 트렌드·브랜드·플랫폼 보완 ──
+      // Olive Young Global 미국 직접 판매 — 2025 공식 론칭, Amazon 대항마
+      'Olive Young Global vs Amazon which is better for buying Korean skincare 2026',
+      'Olive Young Global app how to buy Korean skincare shipped to USA guide 2026',
+      'Olive Young Global US shipping review how fast delivery cost 2026 guide',
+      'Olive Young Global exclusive products not on Amazon what to buy 2026',
+      // Copper peptide — 2025-2026 최대 펩타이드 세부 성분 트렌드, 기존 "peptide" 키워드와 세분화
+      'best Korean copper peptide serum for anti-aging skin firming ranked 2026',
+      'copper peptide Korean skincare benefits explained how it works for wrinkles guide',
+      'copper peptide vs regular peptide vs retinol Korean anti-aging comparison 2026',
+      // Short-form skincare (TikTok/YouTube Shorts) — 콘텐츠 포맷 키워드 누락
+      'Korean 3-step skincare routine TikTok short routine guide quick easy 2026',
+      'K-Beauty 60-second skincare routine morning evening quick guide 2026',
+      'viral Korean skincare TikTok products that actually work ranked 2026',
+      'Korean skincare shorts routine minimalist 5 products only guide 2026',
+      // goodal (구달) — Olive Young 글로벌 Top 3 브랜드, 비타민C 세럼 베스트셀러, 시드 키워드 완전 누락
+      'goodal vitamin C serum review before after dark spots brightening 2026',
+      'goodal green tangerine vita C serum vs other Korean vitamin C comparison 2026',
+      'goodal best products ranked Olive Young bestseller guide 2026',
+      // skinfood (스킨푸드) — 2025 리뉴얼 재런칭, 자연 식물 성분 브랜드 부활
+      'skinfood brand relaunch 2025 best products ranked what changed review 2026',
+      'skinfood Royal Honey propolis enrich essence review moisturizing 2026',
+      // K-Beauty at Costco — 대량 구매 세그먼트, 구매 의도 최고
+      'best Korean skincare at Costco deals what to buy K-Beauty 2026 ranked',
+      // Sephora K-Beauty 독점 — 글로벌 프레스티지 채널
+      'best Korean skincare at Sephora exclusive K-Beauty brands ranked 2026',
+      'Sephora vs Ulta for Korean skincare which has better K-Beauty selection 2026',
     ],
     contentTypes: ['product-review', 'best-x-for-y', 'x-vs-y', 'how-to', 'listicle', 'case-study', 'deep-dive', 'news-explainer'],
     adSenseRpm: 'high',
@@ -826,6 +854,7 @@ export const NICHES: NicheConfig[] = [
       'Korean Acne Skincare: Step-by-Step Guide for Every Age and Skin Type', // 12차 감사: 여드름 허브 — 활성여드름/색소/흉터 앵커
       'K-Beauty Dermacosmetics Guide: Aestura, Dr.G, CNP and Clinical Skincare', // 14차 감사: 더마코스메틱 허브 — 더마브랜드/병원급 제품 앵커
       'K-Beauty Lip Products Guide: Best Korean Lip Tints, Oils, and Glosses', // 17차 감사: 립 허브 — rom&nd/Peripera/립틴트/립오일 앵커
+      'Olive Young Global Shopping Guide: How to Buy Korean Skincare Shipped Worldwide', // 19차 감사: 올리브영 글로벌 허브 — 직구/배송/가격비교 앵커
     ],
   },
 
@@ -1487,6 +1516,55 @@ export const NICHES: NicheConfig[] = [
       // K-pop 5세대 심화
       'fifth generation K-pop groups 2025 2026 debut complete guide rookies to watch',
       'K-pop rookies 2026 best new groups debut ranked potential guide',
+      // ── 전문가 감사 추가 (2026-03-18 batch 19): 누락 카테고리 대형 보완 ──
+      // Korean Short Drama / 웹드라마 — 2025-2026 폭발적 성장, YouTube 숏폼 드라마 + Naver NOW
+      'best Korean short dramas 2026 YouTube web drama must watch ranked guide',
+      'Korean short drama vs regular K-drama what is the difference format explained 2026',
+      'best Korean web dramas free to watch on YouTube 2026 ranked guide',
+      'Korean short drama TikTok viral clips best romantic comedy action 2026',
+      'Naver NOW Korean short drama best shows how to watch guide 2026',
+      // Trot (트로트) — 국내 시청률 1위 장르, 미스터트롯/미스트롯 시리즈
+      'what is trot Korean traditional pop music genre explained guide for new fans',
+      'best trot songs ranked all time Korean trot music guide beginners 2026',
+      'Mr Trot Miss Trot show explained contestants winners where to watch guide 2026',
+      'Lim Young-woong trot singer why he is Korea number one artist explained fans 2026',
+      'trot vs K-pop what is the difference Korean music genre comparison guide',
+      // Korean Indie Bands — HYUKOH, Wave to Earth, The Rose, LUCY, Silica Gel (실리카겔)
+      // NOTE: 아이돌이 아닌 자체 작곡/연주 밴드, K-pop과 구분 필수
+      'best Korean indie bands 2026 beyond K-pop must listen Wave to Earth HYUKOH guide',
+      'Wave to Earth discography ranked best songs Korean indie band guide 2026',
+      'HYUKOH 혁오 best songs ranked Korean indie rock band guide for new listeners',
+      'The Rose Korean band best songs comeback guide for new fans 2026',
+      'LUCY Korean band best songs ranked indie orchestra concept guide 2026',
+      'Silica Gel Korean indie band psychedelic experimental best songs guide 2026',
+      'Korean indie music vs K-pop what is the difference genre comparison guide 2026',
+      'best Korean indie music playlists Spotify Apple Music where to find guide 2026',
+      // KATSEYE — HYBE x Geffen Records 글로벌 걸그룹 (The Debut: Dream Academy 출신)
+      'KATSEYE HYBE global girl group debut story Dream Academy explained guide fans',
+      'KATSEYE best songs ranked guide for new fans 2026',
+      'KATSEYE vs XG vs VCHA global K-pop girl group comparison who to follow guide 2026',
+      // YouTube Music / Spotify Korea — 스트리밍 플랫폼 차트 교육 (기존 Melon/Genie만 커버)
+      'YouTube Music Korea chart how it works explained K-pop streaming guide 2026',
+      'Spotify Korea K-pop chart how it differs from Melon Circle explained guide 2026',
+      'best platforms to stream K-pop music Spotify vs Apple Music vs YouTube Music 2026',
+      'K-pop streaming charts compared Melon Genie YouTube Music Spotify which matters most 2026',
+      // Chzzk (치지직) — 네이버 라이브 스트리밍, K-pop 아이돌 라이브 + 팬소통
+      'what is Chzzk Korean live streaming platform explained Naver guide fans 2026',
+      'K-pop idols on Chzzk live streams how to watch international fans guide 2026',
+      'Chzzk vs Weverse Live which is better for watching K-pop idol live streams 2026',
+      // 한국 웹예능 (Web Variety) — 워크맨, 피식대학, 숏박스 등 YouTube 예능 급성장
+      'best Korean YouTube variety shows 2026 Workman Short Box ranked guide',
+      'Korean web variety shows explained Workman Psick University Short Box guide fans',
+      'Korean YouTube variety vs TV variety shows comparison which to watch guide 2026',
+      // Seoul Music Awards (서울가요대상) — 시즌 이벤트 보강
+      'Seoul Music Awards 2026 winners nominees K-pop complete guide',
+      'Melon Music Awards 2026 winners predictions complete K-pop guide',
+      // K-pop idol luxury brand ambassador — 팬 검색 폭발
+      'K-pop idols as luxury brand ambassadors 2026 complete list guide',
+      'why luxury brands choose K-pop idols as global ambassadors explained 2026',
+      // BL 드라마 — 2024-2025 한국 BL 폭발적 성장
+      'best Korean BL dramas 2026 ranked must watch boys love series guide',
+      'Korean BL drama vs Thai BL which is better comparison guide 2026',
     ],
     contentTypes: ['news-explainer', 'listicle', 'best-x-for-y', 'deep-dive', 'how-to', 'x-vs-y', 'case-study'],
     adSenseRpm: 'medium',
@@ -1502,6 +1580,8 @@ export const NICHES: NicheConfig[] = [
       'Best K-Drama OST Songs: Complete Guide to Korean Drama Soundtracks', // 14차 감사: OST 허브 — K-Drama OST/아티스트/스트리밍 앵커
       'Korean Webtoons Guide: Best Manhwa to Read and Where to Find Them', // 17차 감사: 웹툰 허브 — 네이버/카카오/LEZHIN/영어 번역 앵커
       'Best Korean Movies Guide: Thrillers, Horror, and Award Winners', // 17차 감사: 영화 허브 — 봉준호/박찬욱/넷플릭스/칸 앵커
+      'Korean Short Drama Guide: Best Web Dramas on YouTube and Streaming Platforms', // 19차 감사: 웹드라마 허브 — YouTube 숏폼/Naver NOW 앵커
+      'Korean Indie Music Guide: Best Bands Beyond K-Pop You Need to Hear', // 19차 감사: 인디밴드 허브 — HYUKOH/Wave to Earth/The Rose 앵커
     ],
   },
 ];

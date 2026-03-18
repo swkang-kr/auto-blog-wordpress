@@ -20,7 +20,7 @@ const KBEAUTY_BRANDS: Record<string, string> = {
   'Sulwhasoo':        `https://www.amazon.com/s?k=Sulwhasoo&tag=${AFFILIATE_TAG}`,
   'Missha':           `https://www.amazon.com/s?k=Missha&tag=${AFFILIATE_TAG}`,
   'SKIN1004':         `https://www.amazon.com/s?k=SKIN1004&tag=${AFFILIATE_TAG}`,
-  'Etude House':      `https://www.amazon.com/s?k=Etude+House&tag=${AFFILIATE_TAG}`,
+  'Etude':            `https://www.amazon.com/s?k=Etude+Korean+makeup&tag=${AFFILIATE_TAG}`,
   'Olive Young':      `https://www.amazon.com/s?k=korean+skincare+best+seller&tag=${AFFILIATE_TAG}`,
   'sunscreen':        `https://www.amazon.com/s?k=korean+sunscreen&tag=${AFFILIATE_TAG}`,
   // 2025-2026 Amazon 베스트셀러 K-Beauty 브랜드 추가
@@ -59,6 +59,20 @@ const KBEAUTY_BRANDS: Record<string, string> = {
   'BANILA CO':        `https://www.amazon.com/s?k=BANILA+CO&tag=${AFFILIATE_TAG}`,
   'Hince':            `https://www.amazon.com/s?k=Hince+makeup&tag=${AFFILIATE_TAG}`,
   'FWEE':             `https://www.amazon.com/s?k=FWEE+Korean+makeup&tag=${AFFILIATE_TAG}`,
+  // 19차 감사: 누락 어필리에이트 브랜드 추가
+  'goodal':           `https://www.amazon.com/s?k=goodal+Korean+skincare&tag=${AFFILIATE_TAG}`,
+  'skinfood':         `https://www.amazon.com/s?k=SKINFOOD+Korean&tag=${AFFILIATE_TAG}`,
+  'Peripera':         `https://www.amazon.com/s?k=Peripera&tag=${AFFILIATE_TAG}`,
+  '3CE':              `https://www.amazon.com/s?k=3CE+Korean+makeup&tag=${AFFILIATE_TAG}`,
+  'espoir':           `https://www.amazon.com/s?k=espoir+Korean+makeup&tag=${AFFILIATE_TAG}`,
+  'AMUSE':            `https://www.amazon.com/s?k=AMUSE+vegan+Korean+makeup&tag=${AFFILIATE_TAG}`,
+  'Wakemake':         `https://www.amazon.com/s?k=Wakemake+Korean+makeup&tag=${AFFILIATE_TAG}`,
+  'JUNG SAEM MOOL':   `https://www.amazon.com/s?k=JUNG+SAEM+MOOL&tag=${AFFILIATE_TAG}`,
+  'Peach C':          `https://www.amazon.com/s?k=Peach+C+Korean+makeup&tag=${AFFILIATE_TAG}`,
+  'Laka':             `https://www.amazon.com/s?k=Laka+Korean+makeup&tag=${AFFILIATE_TAG}`,
+  'rom&nd':           `https://www.amazon.com/s?k=romand+lip+tint&tag=${AFFILIATE_TAG}`,
+  'Glow Recipe':      `https://www.amazon.com/s?k=Glow+Recipe&tag=${AFFILIATE_TAG}`,
+  'Tamburins':        `https://www.amazon.com/s?k=Tamburins+perfume&tag=${AFFILIATE_TAG}`,
 };
 
 const DISCLOSURE = `<p class="ab-affiliate-disclosure" style="margin:0 0 20px 0; padding:12px 16px; background:#fff8e1; border:1px solid #ffe082; border-radius:8px; font-size:12px; color:#666; line-height:1.5;"><strong>Disclosure:</strong> This article contains affiliate links. If you make a purchase through these links, we may earn a small commission at no extra cost to you. <a href="/privacy-policy/" style="color:#0066FF;">Learn more</a>.</p>`;

@@ -1174,7 +1174,7 @@ ${rows}
         'ma:nyo', 'NACIFIC', 'AMPLE:N', 'Cos De BAHA', 'Heimish',
         'FWEE', 'Skin&Lab', 'Klavuu',
         // Makeup brands
-        'rom&nd', 'Clio', 'Peripera', 'Etude House', 'Wakemake',
+        'rom&nd', 'Clio', 'Peripera', 'Etude', 'Wakemake',
         '3CE', 'espoir', 'AMUSE', 'Laka', 'Peach C',
         // K-Fragrance brands
         'Tamburins', 'nonfiction', 'granhand',
@@ -2912,7 +2912,7 @@ ${ga4TrackingScript}`;
       'HYBE',
       // K-Beauty — established
       'Amorepacific', 'Innisfree', 'COSRX', 'Sulwhasoo', 'Laneige', 'MISSHA',
-      'Etude House', 'Tony Moly', 'Holika Holika', 'Dr.Jart+',
+      'Etude', 'Tony Moly', 'Holika Holika', 'Dr.Jart+',
       // K-Beauty — breakout 2024-2026
       'TIRTIR', 'Anua', 'SKIN1004', 'Beauty of Joseon', 'Numbuzin', 'MEDICUBE',
       'Torriden', 'Isntree', 'Round Lab', 'Mixsoon', 'Some By Mi', 'PURITO',

@@ -103,6 +103,9 @@ function computeOriginalResearchBonus(plainText: string, html: string): number {
     'glowpick',     // 글로우픽 — Korea's #2 beauty review/ranking platform
     // K-Entertainment chart & industry sources
     'hanteo', 'circle chart', 'billboard korea', 'weverse magazine', 'melon chart',
+    'youtube music chart', // 19차 감사: YouTube Music 한국 차트 영향력 급성장
+    'spotify korea',       // 19차 감사: Spotify Korea 2025-2026 차트 인용 증가
+    'genie chart',         // 19차 감사: 지니뮤직 차트 — Melon 다음 국내 2위 스트리밍
     // system prompt에서 권장하나 validator에 미포함이었던 소스 (보너스 점수 일관성)
     'soompi',       // K-Entertainment 최대 영문 뉴스 아웃렛
     'dispatch',     // 디스패치 — K-Entertainment 주요 취재 매체
@@ -1569,6 +1572,31 @@ export function validateContent(
       if (idolTermsInDAY6Context) {
         warnings.push({ category: 'niche-accuracy', message: 'DAY6 is a BAND (instruments, live performance), not a standard idol group. Use music industry language ("release", "concert", "discography") instead of idol terminology ("comeback", "bias", "era"). The "밴드돌" (band idol) distinction is core to their identity.', severity: 'warning' });
         eeatScore -= 1;
+      }
+    }
+
+    // 19차 감사 — 26. Trot genre terminology — do NOT use idol K-pop terminology for trot artists
+    if (/(?:trot|트로트|미스터트롯|미스트롯|Mr\.?\s*Trot|Miss\s*Trot|Lim\s*Young[- ]?woong|임영웅)/i.test(plainText)) {
+      // Check for incorrect K-pop idol framing of trot artists
+      if (/(?:Lim\s*Young[- ]?woong|임영웅|Young\s*Tak|송가인)\b[^.]{0,80}\b(?:idol|K-?pop|bias|stan|fancam|comeback\s*(?:stage|show)|music\s*show\s*win)/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'Trot artists (Lim Young-woong, Young Tak, Song Ga-in) are NOT K-pop idols. Use trot industry terminology: "trot singer", "trot artist", "TV Chosun show". Trot is a distinct Korean traditional pop genre with a different audience (40s+), production style, and distribution model.', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 19차 감사 — 26b. Korean indie band terminology — distinguish from idol K-pop
+    if (/(?:HYUKOH|혁오|Wave\s*to\s*Earth|The\s*Rose|LUCY|Silica\s*Gel|실리카겔)/i.test(plainText)) {
+      if (/(?:HYUKOH|Wave\s*to\s*Earth|The\s*Rose|LUCY|Silica\s*Gel)\b[^.]{0,80}\b(?:idol|debut\s*(?:stage|show)|comeback\s*stage|fancam|lightstick|bias)/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'Korean indie bands (HYUKOH, Wave to Earth, The Rose, LUCY, Silica Gel) are self-formed musician groups, NOT agency-trained idol acts. Use indie music terminology: "band", "musicians", "album release" (not "comeback"), "indie venue" (not "music show").', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
+    // 19차 감사 — 26c. Korean streaming platform completeness — YouTube Music/Spotify Korea inclusion check
+    if (/(?:streaming|chart)\s*(?:comparison|guide|ranked|explained)/i.test(plainText) &&
+        /(?:Melon|Circle\s*Chart|Hanteo)/i.test(plainText)) {
+      if (!/(?:YouTube\s*Music|Spotify|Genie)/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'K-pop streaming chart comparison missing YouTube Music, Spotify Korea, or Genie — these platforms have significant 2025-2026 market share growth. Include alongside Melon/Circle/Hanteo for comprehensive coverage.', severity: 'info' });
       }
     }
 
