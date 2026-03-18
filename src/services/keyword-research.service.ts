@@ -374,19 +374,37 @@ export class KeywordResearchService {
         // Stratified sampling: cluster seeds by first significant word, then sample evenly across clusters
         const sampled = stratifiedSample(niche.seedKeywords, MAX_SEED_SAMPLE);
 
-        logger.warn(`No rising queries for "${niche.name}", falling back to ${sampled.length}/${niche.seedKeywords.length} sampled seed keywords`);
         trendsSource = 'seed';
 
-        for (const seed of sampled) {
-          if (Date.now() - seedStart > SEED_TIME_BUDGET_MS) {
-            logger.warn(`Seed scanning time budget exceeded (${Math.round(SEED_TIME_BUDGET_MS / 1000)}s), stopping with ${trendsData.length} results`);
-            break;
+        // If Trends API is circuit-broken, skip per-seed Trends calls entirely (seed-only mode)
+        if (this.trendsService.isTrendsDown) {
+          logger.warn(`No rising queries for "${niche.name}" + Trends API is down — using SEED-ONLY mode (${sampled.length}/${niche.seedKeywords.length} seeds, NO Trends data)`);
+          // Create minimal TrendsData entries from seeds so AI can pick from them
+          for (const seed of sampled) {
+            trendsData.push({
+              keyword: seed,
+              interestOverTime: [],
+              relatedTopics: [],
+              relatedQueries: [],
+              averageInterest: 0,
+              trendDirection: 'stable',
+              hasBreakout: false,
+            });
           }
-          try {
-            const data = await this.trendsService.fetchTrendsData(seed);
-            trendsData.push(data);
-          } catch (error) {
-            logger.warn(`Trends data failed for seed "${seed}": ${error instanceof Error ? error.message : error}`);
+        } else {
+          logger.warn(`No rising queries for "${niche.name}", falling back to ${sampled.length}/${niche.seedKeywords.length} sampled seed keywords`);
+
+          for (const seed of sampled) {
+            if (Date.now() - seedStart > SEED_TIME_BUDGET_MS) {
+              logger.warn(`Seed scanning time budget exceeded (${Math.round(SEED_TIME_BUDGET_MS / 1000)}s), stopping with ${trendsData.length} results`);
+              break;
+            }
+            try {
+              const data = await this.trendsService.fetchTrendsData(seed);
+              trendsData.push(data);
+            } catch (error) {
+              logger.warn(`Trends data failed for seed "${seed}": ${error instanceof Error ? error.message : error}`);
+            }
           }
         }
       }
@@ -582,13 +600,21 @@ Use them as your primary source for keyword selection. You may:
 3. Combine a rising topic with a top query for a unique angle`;
     } else {
       // Fallback: use seed keyword trends data
-      trendsContext = fallbackTrendsData.length > 0
-        ? `## Google Trends Data (seed keyword analysis)\n` +
+      const hasTrendsSignal = fallbackTrendsData.some(t => t.averageInterest > 0 || t.relatedQueries.length > 0);
+      if (fallbackTrendsData.length > 0 && hasTrendsSignal) {
+        trendsContext = `## Google Trends Data (seed keyword analysis)\n` +
           fallbackTrendsData.map((t) =>
             `- "${t.keyword}": avg interest=${t.averageInterest}, trend=${t.trendDirection}, ` +
             `breakout=${t.hasBreakout}, related queries=[${t.relatedQueries.slice(0, 5).join(', ')}]`,
-          ).join('\n')
-        : 'No trends data available. Use your knowledge to select the best keyword from the seed keywords.';
+          ).join('\n');
+      } else if (fallbackTrendsData.length > 0) {
+        // SEED-ONLY mode: Trends API was down, provide seed keywords directly
+        trendsContext = `## SEED-ONLY MODE (Google Trends API unavailable)\nSelect the best keyword from these curated seed topics. Use your SEO expertise to pick the one with highest likely search demand and lowest competition:\n` +
+          fallbackTrendsData.map((t) => `- "${t.keyword}"`).join('\n') +
+          `\n\nIMPORTANT: Since Trends data is unavailable, prioritize EVERGREEN topics (how-to, guides, comparisons) over time-sensitive news. Choose keywords that are likely to have consistent search volume.`;
+      } else {
+        trendsContext = 'No trends data available. Use your knowledge to select the best keyword from the seed keywords.';
+      }
     }
 
     const prompt = `You are an SEO keyword research expert specializing in Korea-focused English content for global readers. Analyze the following data for the "${niche.name}" niche and select the BEST keyword and content type for a blog post.

@@ -15,9 +15,42 @@ export class GoogleTrendsService {
   private lastCallTime = 0;
   private serpApiKey: string;
 
+  /** Circuit breaker: consecutive HTML/error responses from Google Trends */
+  private consecutiveFailures = 0;
+  private static readonly CIRCUIT_BREAKER_THRESHOLD = 3;
+  private circuitOpen = false;
+
   constructor(geo = 'US', serpApiKey = '') {
     this.geo = geo;
     this.serpApiKey = serpApiKey;
+  }
+
+  /** Check if Trends API is in circuit-broken state (too many consecutive failures) */
+  get isTrendsDown(): boolean {
+    return this.circuitOpen;
+  }
+
+  /** Record a successful Trends call — resets circuit breaker */
+  private recordSuccess(): void {
+    this.consecutiveFailures = 0;
+    if (this.circuitOpen) {
+      logger.info('Google Trends circuit breaker CLOSED — API recovered');
+      this.circuitOpen = false;
+    }
+  }
+
+  /** Record a Trends failure — trips circuit breaker after threshold */
+  private recordFailure(error: unknown): void {
+    this.consecutiveFailures++;
+    // Detect HTML response (rate limit / captcha)
+    const msg = error instanceof Error ? error.message : String(error);
+    const isHtmlResponse = msg.includes('Unexpected token') && msg.includes('<');
+    if (isHtmlResponse || this.consecutiveFailures >= GoogleTrendsService.CIRCUIT_BREAKER_THRESHOLD) {
+      if (!this.circuitOpen) {
+        logger.warn(`🔴 Google Trends circuit breaker OPEN — ${this.consecutiveFailures} consecutive failures${isHtmlResponse ? ' (HTML response detected — likely rate-limited/captcha)' : ''}. Skipping all Trends calls for this batch.`);
+        this.circuitOpen = true;
+      }
+    }
   }
 
   private async rateLimit(): Promise<void> {
@@ -29,6 +62,20 @@ export class GoogleTrendsService {
   }
 
   async fetchTrendsData(keyword: string): Promise<TrendsData> {
+    // Circuit breaker: skip if Trends API is down
+    if (this.circuitOpen) {
+      logger.debug(`Trends circuit open — skipping fetchTrendsData for "${keyword}"`);
+      return {
+        keyword,
+        interestOverTime: [],
+        relatedTopics: [],
+        relatedQueries: [],
+        averageInterest: 0,
+        trendDirection: 'stable',
+        hasBreakout: false,
+      };
+    }
+
     logger.info(`Fetching Google Trends data for: "${keyword}"`);
 
     const endTime = new Date();
@@ -55,8 +102,11 @@ export class GoogleTrendsService {
           (d: { value: number[] }) => d.value[0] ?? 0,
         );
       }
+      this.recordSuccess();
     } catch (error) {
+      this.recordFailure(error);
       logger.warn(`interestOverTime failed for "${keyword}": ${error instanceof Error ? error.message : error}`);
+      if (this.circuitOpen) return { keyword, interestOverTime: [], relatedTopics: [], relatedQueries: [], averageInterest: 0, trendDirection: 'stable', hasBreakout: false };
     }
 
     // Fetch related topics
@@ -79,7 +129,9 @@ export class GoogleTrendsService {
         .slice(0, 10)
         .map((item: { topic: { title: string } }) => item.topic?.title)
         .filter(Boolean);
+      this.recordSuccess();
     } catch (error) {
+      this.recordFailure(error);
       logger.warn(`relatedTopics failed for "${keyword}": ${error instanceof Error ? error.message : error}`);
     }
 
@@ -112,7 +164,9 @@ export class GoogleTrendsService {
           item.formattedValue === 'Breakout' ||
           parseInt(item.formattedValue) >= 5000,
       );
+      this.recordSuccess();
     } catch (error) {
+      this.recordFailure(error);
       logger.warn(`relatedQueries failed for "${keyword}": ${error instanceof Error ? error.message : error}`);
     }
 
@@ -161,6 +215,12 @@ export class GoogleTrendsService {
     averageInterest: number;
     trendDirection: TrendsData['trendDirection'];
   }> {
+    // Circuit breaker: skip if Trends API is down
+    if (this.circuitOpen) {
+      logger.debug(`Trends circuit open — skipping fetchRisingQueries for "${broadTerm}"`);
+      return { rising: [], top: [], averageInterest: 0, trendDirection: 'stable' };
+    }
+
     logger.info(`Fetching rising queries for broad term: "${broadTerm}"`);
 
     const endTime = new Date();
@@ -179,8 +239,11 @@ export class GoogleTrendsService {
       interestOverTime = (iotData.default?.timelineData ?? []).map(
         (d: { value: number[] }) => d.value[0] ?? 0,
       );
+      this.recordSuccess();
     } catch (error) {
+      this.recordFailure(error);
       logger.warn(`interestOverTime failed for "${broadTerm}": ${error instanceof Error ? error.message : error}`);
+      if (this.circuitOpen) return { rising: [], top: [], averageInterest: 0, trendDirection: 'stable' };
     }
 
     // 2. Rising + Top related queries
@@ -212,7 +275,9 @@ export class GoogleTrendsService {
           value: item.formattedValue === 'Breakout' ? 'Breakout' : (item.value ?? 0),
         }))
         .filter((q: RisingQuery) => q.query);
+      this.recordSuccess();
     } catch (error) {
+      this.recordFailure(error);
       logger.warn(`relatedQueries failed for "${broadTerm}": ${error instanceof Error ? error.message : error}`);
     }
 

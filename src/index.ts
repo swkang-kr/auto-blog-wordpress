@@ -1018,8 +1018,8 @@ async function main(): Promise<void> {
       // Start per-post cost tracking for ROI attribution
       costTracker.startPostTracking(niche.name);
 
-      // A-1. Keyword research with duplicate retry loop (up to 3 attempts)
-      const MAX_KEYWORD_ATTEMPTS = 3;
+      // A-1. Keyword research with duplicate retry loop (up to 5 attempts — increased from 3 as post history grows)
+      const MAX_KEYWORD_ATTEMPTS = 5;
       let researched: Awaited<ReturnType<typeof researchService.researchKeyword>> | null = null;
       let hasBreakout = false;
       const rejectedDupKeywords: string[] = [];
