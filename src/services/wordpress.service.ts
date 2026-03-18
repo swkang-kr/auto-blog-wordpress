@@ -2344,6 +2344,31 @@ ${ga4TrackingScript}`;
       }
     }
 
+    // 24차 감사: TVSeries schema for webtoon→anime adaptation content
+    if (content.category === 'K-Entertainment') {
+      const animeRegex = /\b(?:anime|animation|webtoon.*(?:adapt|anime)|manhwa.*anime)\b/i;
+      const animeTitleRegex = /\b(Solo\s*Leveling|Tower\s*of\s*God|Omniscient\s*Reader|Wind\s*Breaker|Noblesse|God\s*of\s*High\s*School|Bastard|Sweet\s*Home)\b/i;
+      const plainForAnime = htmlEn.replace(/<[^>]+>/g, ' ');
+      if (animeRegex.test(plainForAnime)) {
+        const animeMatch = animeTitleRegex.exec(plainForAnime);
+        const studioMatch = plainForAnime.match(/\b(A-1\s*Pictures|MAPPA|Telecom\s*Animation|Production\s*I\.?G|Crunchyroll|Netflix)\b/i);
+        if (animeMatch) {
+          jsonLdSchemas.push({
+            '@context': 'https://schema.org',
+            '@type': 'TVSeries',
+            name: animeMatch[1].trim(),
+            description: validatedExcerpt,
+            genre: 'Anime',
+            inLanguage: 'ja',
+            countryOfOrigin: { '@type': 'Country', name: 'Japan' },
+            isBasedOn: { '@type': 'CreativeWork', name: `${animeMatch[1].trim()} (Korean Webtoon)`, inLanguage: 'ko' },
+            ...(studioMatch ? { productionCompany: { '@type': 'Organization', name: studioMatch[1] } } : {}),
+          });
+          logger.debug(`TVSeries (Anime) schema prepared for "${animeMatch[1]}" webtoon adaptation content`);
+        }
+      }
+    }
+
     // Product schema for best-x-for-y and product-review content (rich results for product searches)
     if (options?.contentType === 'best-x-for-y' || options?.contentType === 'product-review') {
       const productItems = this.extractProductItems(htmlEn);

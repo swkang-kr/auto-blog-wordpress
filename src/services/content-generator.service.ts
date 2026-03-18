@@ -201,6 +201,10 @@ function getWordCountTargets(contentType: string, searchIntent?: string, nicheCa
   if (nicheCategory === 'K-Entertainment' && contentType === 'listicle') {
     result = { min: 1200, target: 1500, continuation: 1100, rejection: 900 };
   }
+  // 24차 감사: K-Entertainment analysis는 팬 대상 — 2500자 불필요, 2000자 적정
+  if (nicheCategory === 'K-Entertainment' && contentType === 'analysis') {
+    result = { min: 1500, target: 2000, continuation: 1300, rejection: 1100 };
+  }
 
   return result;
 }

@@ -68,7 +68,20 @@ ${category === 'K-Beauty' ? `Use these standardized Korean beauty terms consiste
 - fancam → 직캠, era → 활동기/시대, ult (ultimate bias) → 원픽/최최애, comeback stage → 컴백 무대
 - Circle Chart → 써클차트, Hanteo → 한터차트, Melon → 멜론, Weverse → 위버스
 - Daesang → 대상, Bonsang → 본상, music show win → 음방 1위
-- fansign → 팬사인회, fan meeting → 팬미팅, debut → 데뷔` : ''}
+- fansign → 팬사인회, fan meeting → 팬미팅, debut → 데뷔
+## 24차 감사: Trot/Ballad Cultural Adaptation Rules
+When the content covers trot (트로트) or ballad (발라드) artists:
+- Use formal respect language (존댓말) for trot artists — they are NOT idols. Use "~님" or "~선생님" for senior artists (임영웅님, 송가인 선생님)
+- Do NOT use K-pop fandom slang for trot content — no "최애돌/덕질/입덕/컴백". Use instead: "좋아하는 가수" (favorite singer), "새 앨범 발매" (new album release)
+- Trot emotional tone markers: preserve heartfelt language (가슴 아픈, 그리운, 한숨, 고향)
+- Trot fans are 30-60+ demographic — use 하십시오체 or 합쇼체 for article tone, not 해요체
+- "발라드의 정석" (the essence of ballad) carries cultural weight — do not simplify
+- Lee Mujin Show → 이무진의 무진장 (official Korean title)` : ''}
+
+## 24차 감사: Korean Punctuation Style
+- Use Korean quotation marks where appropriate: 「」 for titles, 『』 for publications
+- Use standard Korean ellipsis: ··· (가운뎃점) or … (말줄임표)
+- Maintain natural Korean sentence endings — avoid translationese patterns
 
 ## English Title: ${englishTitle}
 ## Category: ${category}

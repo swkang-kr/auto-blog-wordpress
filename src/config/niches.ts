@@ -1738,7 +1738,7 @@ export const NICHES: NicheConfig[] = [
       // YOUNG POSSE — 2023 데뷔, 힙합 걸그룹
       'YOUNG POSSE best songs ranked hip-hop girl group guide new fans 2026',
     ],
-    contentTypes: ['news-explainer', 'listicle', 'best-x-for-y', 'deep-dive', 'how-to', 'x-vs-y', 'case-study'],
+    contentTypes: ['news-explainer', 'listicle', 'best-x-for-y', 'deep-dive', 'how-to', 'x-vs-y', 'case-study', 'analysis'],
     adSenseRpm: 'medium',
     pillarTopics: [
       'Complete Guide to K-Pop for Beginners: Everything You Need to Know',   // 입문 허브 — 팬 문화/용어/차트 키워드 앵커

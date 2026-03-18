@@ -1559,6 +1559,20 @@ export function validateContent(
       }
     }
 
+    // 24a. Dermacosmetic regulatory status validator — YMYL safety (기능성 화장품 vs 의약외품 vs 의약품)
+    const dermaRegex = /\b(?:Dr\.?\s*G|Aestura|CNP|ILLIYOON|dermacosmetic)\b/i;
+    if (dermaRegex.test(plainText)) {
+      if (/(?:Dr\.?\s*G|Aestura|CNP|ILLIYOON)\b[^.]*\b(?:prescription|clinical[- ]grade|medical[- ]grade|replaces?\s*(?:prescription|dermatolog))/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'YMYL: Korean dermacosmetic brands (Dr.G, Aestura, CNP, ILLIYOON) are 기능성 화장품 (functional cosmetics), NOT prescription products. Do not claim they replace prescription treatments.', severity: 'error' });
+        eeatScore -= 3;
+      }
+      if (/(?:Dr\.?\s*G|Aestura|CNP)\b[^.]*\b(?:treat|cure|heal|eliminate|resolve)\b/i.test(plainText) &&
+          !/(?:consult|dermatologist|professional|medical advice)/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'Dermacosmetic content uses treatment language without professional consultation disclaimer — add "Consult a dermatologist" note.', severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
     // 20d. fromis_9 label accuracy — transferred to PLEDIS/HYBE in 2022
     if (/fromis.?9/i.test(plainText)) {
       if (/fromis.?9\b[^.]*\b(?:Off\s*The\s*Record|Stone\s*Music|CJ\s*ENM)/i.test(plainText) && !/(?:formerly|previously|transferred|moved)/i.test(plainText)) {
@@ -2818,7 +2832,21 @@ function computeAIDetectionScore(text: string): number {
   const fillerCount = fillerPhrases.filter(f => textLower.includes(f)).length;
   const fillerScore = fillerCount >= 5 ? 30 : fillerCount >= 3 ? 20 : fillerCount >= 1 ? 10 : 0;
 
-  return Math.min(100, burstyScore + openerScore + fillerScore);
+  // 4. Paragraph length variance — AI outputs uniform 3-4 sentence paragraphs
+  // Human writing mixes 1-sentence mini-paragraphs with 5-6+ sentence blocks
+  const paragraphs = text.split(/\n\s*\n/).filter(p => p.trim().length > 20);
+  let paraScore = 0;
+  if (paragraphs.length >= 4) {
+    const paraLengths = paragraphs.map(p => p.split(/[.!?]+/).filter(s => s.trim().length > 10).length);
+    const avgParaLen = paraLengths.reduce((a, b) => a + b, 0) / paraLengths.length;
+    if (avgParaLen > 0) {
+      const paraVariance = paraLengths.reduce((sum, l) => sum + Math.pow(l - avgParaLen, 2), 0) / paraLengths.length;
+      const paraCv = Math.sqrt(paraVariance) / avgParaLen;
+      paraScore = paraCv < 0.2 ? 15 : paraCv < 0.3 ? 8 : 0;
+    }
+  }
+
+  return Math.min(100, burstyScore + openerScore + fillerScore + paraScore);
 }
 
 /**
