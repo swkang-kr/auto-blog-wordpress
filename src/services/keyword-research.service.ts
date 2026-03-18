@@ -906,6 +906,16 @@ STRATEGY: Consider creating content that directly targets one of these content g
       'album format', 'pob', 'pre-order benefit', // K-Pop 앨범 구매 용어
       'azelaic acid',     // K-Beauty 성분
       'i am solo', '나는솔로', // 한국 데이팅 쇼
+      // 22차 감사: 트로트/발라드/뮤지컬/웹툰→애니/힙합
+      'trot', '트로트', 'mr trot', 'miss trot', 'lim young-woong', '임영웅',
+      'paul kim', '폴킴', 'lee mujin', '이무진', '10cm',
+      'korean musical', 'interpark ticket', // 한국 뮤지컬
+      'solo leveling', 'tower of god', 'omniscient reader', 'wind breaker', // 웹툰→애니
+      'manhwa anime', 'webtoon anime', // 웹툰-애니 파이프라인
+      'show me the money', 'smtm', 'aomg', 'h1ghr', // K-Hip-Hop
+      'led mask', 'beauty device', 'cellreturn', 'gua sha', // K-Beauty 디바이스
+      'cushion foundation', 'lip oil', // K-Beauty 카테고리
+      'hince', 'cnp laboratory', 'aestura', 'reedle shot', // K-Beauty 브랜드
     ];
     const keywordLower = analysis.selectedKeyword.toLowerCase();
     const titleLower = analysis.suggestedTitle.toLowerCase();

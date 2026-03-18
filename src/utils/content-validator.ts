@@ -1519,6 +1519,14 @@ export function validateContent(
       }
     }
 
+    // 22a. FIFTY FIFTY disbandment — viral group disbanded 2024 after legal disputes
+    if (/FIFTY\s*FIFTY/i.test(plainText)) {
+      if (/FIFTY\s*FIFTY\b[^.]*\b(?:comeback|new\s*(?:album|song|single)|world\s*tour|active|group\s*(?:activities|release))\b/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'FIFTY FIFTY officially disbanded in 2024 after legal disputes with ATTRAKT. Do not reference group comebacks or releases — only cover the disbandment story as a case study.', severity: 'error' });
+        eeatScore -= 3;
+      }
+    }
+
     // 20d. fromis_9 label accuracy — transferred to PLEDIS/HYBE in 2022
     if (/fromis.?9/i.test(plainText)) {
       if (/fromis.?9\b[^.]*\b(?:Off\s*The\s*Record|Stone\s*Music|CJ\s*ENM)/i.test(plainText) && !/(?:formerly|previously|transferred|moved)/i.test(plainText)) {
@@ -1624,7 +1632,7 @@ export function validateContent(
       'TWS': { count: 6 },
       'QWER': { count: 4 },
       'PLAVE': { count: 5, note: 'All 5 are virtual 3D avatar members' },
-      'EXO': { count: 9, note: '9 members total (some in military/solo activities); group remains 9-member' },
+      'EXO': { count: 9, note: 'All 9 members completed military service by mid-2025; group reunion/comeback era 2026' },
       'SHINee': { count: 4, note: '4 active members — Jonghyun passed away Dec 2017' },
       'Red Velvet': { count: 5 },
       'GOT7': { count: 7 },
@@ -1640,7 +1648,7 @@ export function validateContent(
       'NCT WISH': { count: 6 },
       'WHIPLASH': { count: 5 },
       'KATSEYE': { count: 6 },
-      'tripleS': { count: 24, note: '24-member collective under MODHAUS' },
+      'tripleS': { count: 24, note: '24-member collective under MODHAUS; rotating unit system — active unit lineup varies by promotion cycle' },
       'YOUNG POSSE': { count: 5 },
       'xikers': { count: 8 },
       '8TURN': { count: 8 },

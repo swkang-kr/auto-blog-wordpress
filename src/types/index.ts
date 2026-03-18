@@ -206,13 +206,13 @@ export const CONTENT_TYPE_PERSONA_MAP: Record<string, 'primary' | 'secondary' | 
 
 /** Niche-specific persona override: when keyword matches these patterns, force tertiary (Ella Park for K-Beauty makeup/hair) */
 // 21차 감사: cleansing balm, double cleanse, starter kit, TikTok viral 추가
-export const KBEAUTY_TERTIARY_KEYWORDS = /\b(?:makeup|mascara|eyeliner|eyeshadow|foundation|cushion|lip\s*tint|blush|contour|hair\s*(?:loss|care|shampoo|dye)|scalp|wig|nail\s*(?:art|gel|sticker|polish)|press[- ]on\s*nail|manicure|cleansing\s*balm|double\s*cleans|starter\s*kit|beginner\s*(?:kit|routine|set)|tiktok\s*(?:viral|shop|haul))\b/i;
+export const KBEAUTY_TERTIARY_KEYWORDS = /\b(?:makeup|mascara|eyeliner|eyeshadow|foundation|cushion\s*(?:foundation|compact)?|lip\s*(?:tint|oil|serum|gloss)|blush|contour|hair\s*(?:loss|care|shampoo|dye)|scalp|wig|nail\s*(?:art|gel|sticker|polish)|press[- ]on\s*nail|manicure|cleansing\s*balm|double\s*cleans|starter\s*kit|beginner\s*(?:kit|routine|set)|tiktok\s*(?:viral|shop|haul)|toner\s*pad|LED\s*mask|beauty\s*device|gua\s*sha|jade\s*roller|refillable|eco[- ]friendly|clean\s*beauty)\b/i;
 
 /** K-Entertainment tertiary persona override: force Sora Lee (cinema/film/drama-criticism persona) for film/cinema/award keywords.
  * Includes TV award shows (Baeksang, KBS/MBC/SBS Drama Awards) because Sora Lee's drama critic voice
  * is more authoritative than Jamie Yoon's fan voice for award analysis and predictions. */
 // 21차 감사: variety show, dating show, reality show, cooking show 추가
-export const KENTERTAINMENT_TERTIARY_KEYWORDS = /\b(?:korean\s*(?:film|movie|cinema)|blue\s*dragon|cheongryong|grand\s*bell|daejong|busan\s*film|biff|cannes|venice|oscar|director|cinematograph|screenplay|box\s*office|film\s*festival|korean\s*horror\s*film|noir|thriller\s*film|baeksang|백상|drama\s*award|kbs\s*drama\s*award|mbc\s*drama\s*award|sbs\s*drama\s*award|best\s*(?:actress|actor)\s*(?:award|winner|nominee)|daesang\s*(?:drama|film)|variety\s*show|예능|dating\s*show|reality\s*show|single.*inferno|heart\s*signal|exchange|transit\s*love|cooking\s*(?:show|variety)|food\s*variety|mukbang|youn.*kitchen|3\s*meals)\b/i;
+export const KENTERTAINMENT_TERTIARY_KEYWORDS = /\b(?:korean\s*(?:film|movie|cinema)|blue\s*dragon|cheongryong|grand\s*bell|daejong|busan\s*film|biff|cannes|venice|oscar|director|cinematograph|screenplay|box\s*office|film\s*festival|korean\s*horror\s*film|noir|thriller\s*film|baeksang|백상|drama\s*award|kbs\s*drama\s*award|mbc\s*drama\s*award|sbs\s*drama\s*award|best\s*(?:actress|actor)\s*(?:award|winner|nominee)|daesang\s*(?:drama|film)|variety\s*show|예능|dating\s*show|reality\s*show|single.*inferno|heart\s*signal|exchange|transit\s*love|cooking\s*(?:show|variety)|food\s*variety|mukbang|youn.*kitchen|3\s*meals|trot|트로트|ballad|K-?R&B|K-?hip[- ]?hop|webtoon.*anime|manhwa.*anime|musical\s*(?:theater|performance|ticket)|OST|soundtrack|concert\s*(?:tour|ticket)|fan\s*(?:event|meeting|sign)|solo\s*leveling|tower\s*of\s*god)\b/i;
 
 /** 니치 설정 */
 export interface NicheConfig {

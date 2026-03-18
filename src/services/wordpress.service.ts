@@ -1200,6 +1200,10 @@ ${rows}
         'JUNG SAEM MOOL',
         // 20차 감사: 클렌징 밤 브랜드
         'Banila Co',
+        // 22차 감사: 추가 브랜드 + 디바이스 + 지속가능성
+        'Hince', 'CNP Laboratory', 'Aestura', 'VT Cosmetics', 'Reedle Shot',
+        'LED mask', 'beauty device', 'CELLRETURN', 'gua sha', 'jade roller',
+        'cushion foundation', 'refillable',
         // Product categories (fallback matching)
         'toner pad', 'sun pad', 'sunscreen', 'serum', 'moisturizer', 'toner', 'cleanser', 'sheet mask',
         'essence', 'ampoule', 'sleeping mask', 'eye cream', 'SPF', 'collagen', 'lip oil',
@@ -1246,6 +1250,14 @@ ${rows}
         'Running Man', 'Knowing Bros', '3 Meals a Day', "Youn's Kitchen",
         // Album format keywords
         'Weverse Album', 'Digipack', 'photobook',
+        // 22차 감사: 트로트/발라드/힙합 심화 + 웹툰→애니 + 뮤지컬
+        'Lim Young-woong concert', 'Mr Trot', 'Miss Trot', 'trot singer',
+        'ZICO', 'DPR IAN', 'pH-1', 'Ash Island', 'Show Me The Money',
+        'Lee Chan-won', 'Young Tak', 'Jang Min-ho',
+        'Solo Leveling', 'Tower of God', 'Omniscient Reader', 'Wind Breaker',
+        'webtoon anime', 'manhwa anime', 'Korean webtoon',
+        'Korean musical', 'musical theater', 'Elisabeth musical', 'Phantom Opera Korean',
+        'Hince', 'lip oil',
       ],
       defaultUrl: 'https://www.amazon.com/s?k=kpop+merchandise&tag=trendhunt2007-20',
     },
@@ -1340,6 +1352,11 @@ ${rows}
         'Cleansing balm or oil cleanser for double cleansing — which team are you?',
         'What K-beauty product would you recommend to a complete beginner?',
         'Found any K-beauty deals on TikTok Shop? Share your haul!',
+        // 22차 감사: 립오일, 디바이스, 지속가능성, 크로스오버
+        'Lip oil or lip tint — which Korean lip product do you reach for daily?',
+        'Most underrated Korean skincare brand that deserves more hype? Drop your pick!',
+        'Have you tried any K-beauty devices (LED mask, gua sha)? Worth the investment?',
+        'Drugstore find or luxury splurge — which K-beauty category do you spend on?',
       ],
       'K-Entertainment': [
         'Who\'s your bias? Drop your K-pop opinions below!',
@@ -1357,6 +1374,12 @@ ${rows}
         'What Korean variety show makes you laugh the most? Share your pick!',
         'Tried cooking any Korean recipes after watching a food variety show?',
         'Digipack, Weverse Album, or full photobook — which album version do you buy?',
+        // 22차 감사: 트로트/뮤지컬/웹툰/힙합 프롬프트
+        'Trot or K-pop — which Korean music genre gets you more emotional?',
+        'Korean musical or K-drama — which do you prefer and why?',
+        'Which K-pop group\'s lore universe is the most complex? (aespa, ENHYPEN, TXT...)',
+        'Solo Leveling, Tower of God, or another webtoon — which anime adaptation is best?',
+        'What\'s your favorite Show Me The Money performance of all time?',
       ],
     };
     const categoryPrompts = prompts[category] || ['What are your thoughts on this topic? Share in the comments below!'];
