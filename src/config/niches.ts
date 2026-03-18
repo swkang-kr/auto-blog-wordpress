@@ -839,6 +839,39 @@ export const NICHES: NicheConfig[] = [
       // Sephora K-Beauty 독점 — 글로벌 프레스티지 채널
       'best Korean skincare at Sephora exclusive K-Beauty brands ranked 2026',
       'Sephora vs Ulta for Korean skincare which has better K-Beauty selection 2026',
+      // ── 전문가 감사 추가 (2026-03-18 batch 20): 누락 카테고리·유통·포맷 대형 보완 ──
+      // 리얼리티 데이팅 쇼 뷰티 — Netflix 글로벌 바이럴, K-Beauty ↔ K-Entertainment 최대 미개척 크로스니치
+      'Single\'s Inferno cast skincare routine products what they actually use guide 2026',
+      'Single\'s Inferno makeup look recreate K-Beauty products step by step guide 2026',
+      'Heart Signal cast beauty routine Korean skincare products revealed guide 2026',
+      'Korean reality show cast makeup products lip tint cushion revealed guide 2026',
+      'Korean dating show beauty trends 2026 what products went viral after episodes',
+      // TikTok Shop K-Beauty — 2025-2026 최대 성장 유통채널, Amazon 다음 #2 K-Beauty 유통
+      'best K-Beauty products on TikTok Shop 2026 ranked what to buy guide',
+      'TikTok Shop vs Amazon vs Olive Young Global best place to buy Korean skincare 2026',
+      'viral K-Beauty on TikTok Shop affordable Korean skincare under $20 ranked 2026',
+      'TikTok Shop K-Beauty deals how to find best prices Korean skincare guide 2026',
+      // 클렌징 밤 — Amazon K-Beauty Top 10 상시, oil cleanser와 별도 포맷
+      'best Korean cleansing balm 2026 ranked Banila Co Heimish review guide',
+      'Banila Co Clean It Zero vs Heimish All Clean Balm comparison which is better 2026',
+      'Korean cleansing balm vs oil cleanser which to choose for double cleanse guide 2026',
+      'best Korean cleansing balm for sensitive skin gentle makeup removal ranked 2026',
+      // K-Beauty 스타터 키트 — 입문자 최고 구매전환 키워드
+      'Korean skincare starter kit for beginners what to buy first complete guide 2026',
+      'best K-Beauty starter set under $50 beginner skincare routine products 2026',
+      'Korean skincare beginner kit 3-step routine essential products guide 2026',
+      'K-Beauty gift set starter kit holiday birthday skincare set ideas ranked 2026',
+      // 토너패드 브랜드별 랭킹 — K-Beauty 최대 포맷 트렌드, 개별 리뷰 키워드 부족
+      'best Korean toner pads 2026 ranked Anua Abib VT Numbuzin comparison guide',
+      'Anua heartleaf toner pad vs Abib heartleaf toner pad which is better review 2026',
+      'Numbuzin toner pad review No.3 brightening pad before after results 2026',
+      'VT Cosmetics CICA toner pad review sensitive skin soothing ranked 2026',
+      'Korean toner pad vs liquid toner which is better for your skin type guide 2026',
+      'best Korean exfoliating toner pads AHA BHA PHA ranked gentle effective 2026',
+      // 아젤라산 (Azelaic Acid) — 여드름+로사세아 듀얼 타겟, koreaTerms에만 있고 시드 키워드 0개
+      'best Korean azelaic acid products for acne rosacea ranked review 2026',
+      'Korean azelaic acid serum vs cream which format is better for acne guide 2026',
+      'azelaic acid vs niacinamide Korean skincare which brightening active is better guide',
     ],
     contentTypes: ['product-review', 'best-x-for-y', 'x-vs-y', 'how-to', 'listicle', 'case-study', 'deep-dive', 'news-explainer'],
     adSenseRpm: 'high',
@@ -1565,6 +1598,44 @@ export const NICHES: NicheConfig[] = [
       // BL 드라마 — 2024-2025 한국 BL 폭발적 성장
       'best Korean BL dramas 2026 ranked must watch boys love series guide',
       'Korean BL drama vs Thai BL which is better comparison guide 2026',
+      // ── 전문가 감사 추가 (2026-03-18 batch 20): 누락 카테고리 대형 보완 ──
+      // 한국 리얼리티 데이팅 쇼 — Netflix 글로벌 Top 10 상시, K-Drama와 별도 카테고리
+      // Single's Inferno (솔로지옥), Heart Signal, EXchange (환승연애), Love Transit (환승연애2), Transit Love
+      'best Korean dating shows ranked Single\'s Inferno Heart Signal 2026 guide',
+      'Single\'s Inferno season 4 Netflix cast couples what happened guide 2026',
+      'Heart Signal best seasons ranked Korean dating show guide where to watch 2026',
+      'EXchange Transit Love Korean dating show explained where to watch guide 2026',
+      'Korean dating shows vs Western dating shows comparison what makes them different guide',
+      'best Korean reality shows on Netflix 2026 dating variety ranked must watch',
+      'Korean dating show couples still together 2026 update who is dating guide',
+      // 시상식 투표 가이드 — 시즌마다 검색 폭발 (MAMA, AAA, SMA, MMA)
+      'how to vote MAMA Awards 2026 step by step guide international fans',
+      'how to vote Asia Artist Awards AAA 2026 complete guide international fans',
+      'how to vote Seoul Music Awards SMA 2026 fan voting guide step by step',
+      'K-pop award show voting apps guide Whosfan Mubeat how to use 2026',
+      'MAMA vs AAA vs Golden Disc vs SMA which K-pop awards matter most explained 2026',
+      // K-Drama 커플 케미 / ship 콘텐츠 — 팬 참여율 최고 에버그린
+      'best K-drama couples chemistry ranked all time iconic pairs guide 2026',
+      'best K-drama on-screen couples 2026 new shows best chemistry ranked',
+      'K-drama real life couples which actors are dating confirmed list 2026 update',
+      'best K-drama enemies to lovers couples ranked romance trope guide 2026',
+      // 한국 요리/음식 예능 — Netflix 글로벌 인기, 예능 카테고리 완전 누락
+      'best Korean cooking variety shows ranked Youn\'s Kitchen 3 Meals a Day guide 2026',
+      'Korean food variety shows on Netflix 2026 must watch ranked guide',
+      'New Journey to the West Korean variety show explained why fans love it guide',
+      'best Korean mukbang variety shows food content ranked where to watch 2026',
+      'Kang\'s Kitchen Korean variety show where to watch cast explained guide',
+      // K-Drama 의학/법률 용어 교육 — 에버그린 교육 콘텐츠
+      'Korean medical drama terms explained for international viewers vocabulary guide',
+      'Korean legal drama courtroom terms explained what judges say translated guide',
+      'K-drama honorifics explained oppa unnie sunbae complete Korean terms guide',
+      'Korean workplace drama terms explained office hierarchy vocabulary guide',
+      // K-Pop 앨범 포맷 교육 — 팬 초보자 필수 정보, 어필리에이트 전환 연결
+      'K-pop album versions explained Digipack Weverse Album Kit Jewel Case which to buy guide',
+      'K-pop Weverse Album vs physical album what is the difference explained guide 2026',
+      'K-pop album pre-order benefits explained what are POBs photocards guide 2026',
+      'which K-pop album version has best photocards how to choose buying guide 2026',
+      'K-pop album unboxing what is included Digipack vs regular vs special explained 2026',
     ],
     contentTypes: ['news-explainer', 'listicle', 'best-x-for-y', 'deep-dive', 'how-to', 'x-vs-y', 'case-study'],
     adSenseRpm: 'medium',

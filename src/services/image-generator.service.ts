@@ -178,6 +178,9 @@ export class ImageGeneratorService {
     const isKPopFanCulture = isKEntertainment && /photocard|lightstick|light\s*stick|unboxing|album\s*(?:haul|collection)|fan\s*(?:merch|merchandise|collect)/i.test(promptLower);
     const isKDramaOST = isKEntertainment && /(?:drama|kdrama).*ost|ost.*(?:drama|kdrama)|soundtrack.*(?:korean|k-drama)/i.test(promptLower);
     const isKVarietyShow = isKEntertainment && /variety\s*show|running\s*man|knowing\s*bros|web\s*(?:variety|entertainment)|youtube\s*variety/i.test(promptLower);
+    // 20차 감사: 리얼리티 데이팅 쇼 + 요리 예능 비주얼
+    const isKDatingShow = isKEntertainment && /dating\s*show|single.*inferno|heart\s*signal|exchange|transit\s*love|love\s*catcher|i\s*am\s*solo|reality.*dating|연애/i.test(promptLower);
+    const isKCookingVariety = isKEntertainment && /cooking|food\s*(?:show|variety)|youn.*kitchen|3\s*meals|kang.*kitchen|mukbang|new\s*journey|삼시세끼|윤식당/i.test(promptLower);
     const isKVirtualIdol = isKEntertainment && /virtual\s*idol|plave|metaverse.*idol|ai\s*idol|virtual\s*avatar|3d\s*idol/i.test(promptLower);
     const isKStreetDance = isKEntertainment && /street\s*(?:woman|man|dance)\s*fighter|swf|smf|dance\s*crew|street\s*dance/i.test(promptLower);
     // 8차 감사 추가
@@ -236,6 +239,10 @@ export class ImageGeneratorService {
                   ? ', K-pop photocard collection flat lay, colorful album packaging, lightstick glow, fan merchandise arrangement, pastel and holographic accents, cozy desk setup, warm ambient lighting, aesthetic fan collection display'
                   : isKDramaOST
                 ? ', Korean drama OST aesthetic, piano keys with soft warm lighting, headphones on cozy desk, emotional cinematic mood, warm golden hour tones, vinyl record and coffee, intimate listening atmosphere'
+                : isKDatingShow
+                  ? ', Korean reality dating show aesthetic, warm romantic villa or beach house setting, golden hour sunset lighting, soft pastel and warm tones, elegant casual outfits, intimate conversation atmosphere, pool party or rooftop terrace, Netflix-style cinematic composition'
+                  : isKCookingVariety
+                  ? ', Korean cooking variety show aesthetic, bright warm kitchen setting, fresh ingredients flat lay, steaming home-cooked Korean food, rustic countryside or cozy indoor kitchen, warm natural lighting, cheerful colorful table spread, delicious food photography composition'
                 : isKVarietyShow
                   ? ', Korean variety show set aesthetic, bright colorful studio background, fun playful atmosphere, game show props, vibrant lighting, energetic cheerful composition, entertainment studio setting'
                   : isKBandIdol

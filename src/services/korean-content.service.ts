@@ -34,11 +34,12 @@ export class KoreanContentService {
         .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
         .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '');
       // Safe HTML truncation: cut at a closing tag boundary to avoid malformed HTML
-      const contentForTranslation = KoreanContentService.safeHtmlTruncate(strippedHtml, 15000);
+      // 25K chars to prevent deep-dive content (3,500 word target) from being truncated
+      const contentForTranslation = KoreanContentService.safeHtmlTruncate(strippedHtml, 25000);
 
       const response = await this.client.messages.create({
         model: this.model,
-        max_tokens: 8000,
+        max_tokens: 12000,
         messages: [{
           role: 'user',
           content: `You are a professional Korean content localizer. Convert this English blog post into natural, native-sounding Korean content. This is NOT a direct translation — adapt the content for a Korean audience.

@@ -891,6 +891,21 @@ STRATEGY: Consider creating content that directly targets one of these content g
       'fifty fifty',      // 바이럴 걸그룹 케이스 스터디
       'lim young-woong', 'youngwoong', // 트로트 #1 아티스트
       'lee mujin',        // K-Ballad 신예
+      // 20차 감사: 누락 용어 추가
+      'single\'s inferno', 'solojigok', '솔로지옥', // Netflix 데이팅 쇼
+      'heart signal',     // Channel A 데이팅 쇼
+      'exchange', 'transit love', '환승연애', // TVING 데이팅 쇼
+      'love catcher',     // Mnet 데이팅 쇼
+      'tiktok shop',      // K-Beauty 유통채널
+      'cleansing balm',   // K-Beauty 포맷
+      'banila co', 'heimish', // 클렌징 밤 대표 브랜드
+      'starter kit',      // K-Beauty 입문자 키워드
+      'youn\'s kitchen', '윤식당', // 한국 요리 예능
+      'na young-seok', '나영석', // 한국 예능 PD
+      'digipack', 'weverse album', 'kit album', 'jewel case', // K-Pop 앨범 포맷
+      'album format', 'pob', 'pre-order benefit', // K-Pop 앨범 구매 용어
+      'azelaic acid',     // K-Beauty 성분
+      'i am solo', '나는솔로', // 한국 데이팅 쇼
     ];
     const keywordLower = analysis.selectedKeyword.toLowerCase();
     const titleLower = analysis.suggestedTitle.toLowerCase();
