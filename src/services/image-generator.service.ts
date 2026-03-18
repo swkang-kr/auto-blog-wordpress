@@ -190,6 +190,10 @@ export class ImageGeneratorService {
     // 10차 감사 추가
     const isKBandIdol = isKEntertainment && /day6|band\s*idol|밴드돌|live\s*(?:band|instrument)|qwer.*band/i.test(promptLower);
     const isKIdolFashion = isKEntertainment && /airport\s*fashion|idol\s*fashion|best\s*dressed|luxury\s*(?:brand|outfit)/i.test(promptLower);
+    // 23차 감사: 트로트/발라드, 웹툰→애니, 립오일 비주얼
+    const isKTrotBallad = isKEntertainment && /trot|트로트|mr\.?\s*trot|miss\s*trot|lim\s*young|임영웅|young\s*tak|song\s*ga|ballad\s*(?:singer|artist)|발라드/i.test(promptLower);
+    const isKWebtoonAnime = isKEntertainment && /webtoon.*anime|anime.*webtoon|solo\s*leveling.*anime|tower\s*of\s*god.*anime|omniscient.*reader.*anime|manhwa.*anime|webtoon.*adapt.*anime/i.test(promptLower);
+    const isKBeautyLipOil = isKBeauty && /lip\s*(?:oil|serum|treatment|gloss)|glass\s*lip|plumping\s*lip/i.test(promptLower);
 
     const nicheSuffix = isKBeautyNailArt
       ? ', Korean nail art close-up photography, trendy gel nail designs, cat eye magnet nail aurora gradient mirror chrome finish, 3D embedded nail art details, elegant hand pose, salon-quality macro detail, soft pink and lavender tones, clean minimal background, beauty editorial'
@@ -225,7 +229,9 @@ export class ImageGeneratorService {
         ? ', K-beauty makeup flat lay, vibrant coral and pink tones, mirror reflections, beauty editorial style, bright studio lighting, clean modern vanity, texture swatches visible'
         : isKBeautyHairCare
           ? ', Korean hair care editorial, sleek flowing hair texture, salon-quality lighting, minimalist bathroom setting, amber and warm tones, scalp care products arranged neatly'
-          : isKBeauty
+          : isKBeautyLipOil
+            ? ', Korean lip oil close-up macro photography, glossy dewy lip texture, luminous glass lip finish, serum droplet on applicator tip, plump volumized lips, warm soft lighting, luxury lip care editorial, pink and coral tones'
+            : isKBeauty
             ? ', soft pastel aesthetic, Korean beauty product photography, clean white or cream background, glass bottles, subtle gradient lighting, editorial K-beauty style, dewy skin texture'
             : isKVirtualIdol
               ? ', futuristic virtual idol aesthetic, holographic 3D character, neon cyan and purple glow, digital matrix background, metaverse stage, ethereal translucent effects, sci-fi concert atmosphere'
@@ -239,7 +245,11 @@ export class ImageGeneratorService {
                   ? ', K-pop photocard collection flat lay, colorful album packaging, lightstick glow, fan merchandise arrangement, pastel and holographic accents, cozy desk setup, warm ambient lighting, aesthetic fan collection display'
                   : isKDramaOST
                 ? ', Korean drama OST aesthetic, piano keys with soft warm lighting, headphones on cozy desk, emotional cinematic mood, warm golden hour tones, vinyl record and coffee, intimate listening atmosphere'
-                : isKDatingShow
+                : isKTrotBallad
+                  ? ', Korean trot ballad performance aesthetic, warm golden stage lighting, nostalgic TV studio ambiance, vintage microphone, emotional solo performer spotlight, classic Korean music show backdrop, middle-aged elegance, intimate concert hall, sentimental warm tones'
+                  : isKWebtoonAnime
+                  ? ', Korean webtoon to anime adaptation aesthetic, vibrant anime character art style, digital animation keyframe composition, dynamic action sequence, bold neon color palette, split-screen webtoon-panel-to-anime-frame comparison, studio anime quality, manga-style speed lines'
+                  : isKDatingShow
                   ? ', Korean reality dating show aesthetic, warm romantic villa or beach house setting, golden hour sunset lighting, soft pastel and warm tones, elegant casual outfits, intimate conversation atmosphere, pool party or rooftop terrace, Netflix-style cinematic composition'
                   : isKCookingVariety
                   ? ', Korean cooking variety show aesthetic, bright warm kitchen setting, fresh ingredients flat lay, steaming home-cooked Korean food, rustic countryside or cozy indoor kitchen, warm natural lighting, cheerful colorful table spread, delicious food photography composition'

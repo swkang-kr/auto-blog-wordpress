@@ -957,6 +957,9 @@ export const NICHES: NicheConfig[] = [
       `K-drama ${new Date().getFullYear()}`,
       `Korean movie ${new Date().getFullYear()}`,
       'Korean webtoon',
+      'Korean webtoon anime adaptation', // 23차 감사: 웹툰→애니 트렌드
+      'Korean trot music', // 23차 감사: 트로트 장르
+      'Korean musical theater', // 23차 감사: 한국 뮤지컬
     ],
     seedKeywords: [
       // BTS — 글로벌 최고 검색량 (2026년: 전원 전역 완료, 그룹 컴백 앵글 중심)
@@ -1751,6 +1754,9 @@ export const NICHES: NicheConfig[] = [
       'Best Korean Movies Guide: Thrillers, Horror, and Award Winners', // 17차 감사: 영화 허브 — 봉준호/박찬욱/넷플릭스/칸 앵커
       'Korean Short Drama Guide: Best Web Dramas on YouTube and Streaming Platforms', // 19차 감사: 웹드라마 허브 — YouTube 숏폼/Naver NOW 앵커
       'Korean Indie Music Guide: Best Bands Beyond K-Pop You Need to Hear', // 19차 감사: 인디밴드 허브 — HYUKOH/Wave to Earth/The Rose 앵커
+      'Korean Trot Music Guide: Mr. Trot, Miss Trot, and Best Trot Artists', // 23차 감사: 트로트 허브 — 임영웅/미스터트롯/콘서트/차트 앵커
+      'Korean Webtoon to Anime Adaptations: Complete Guide to Manhwa Anime', // 23차 감사: 웹툰→애니 허브 — Solo Leveling/Tower of God/적응 비교 앵커
+      'Korean Musical Theater Guide: Best Shows, Idol Casting, and Tickets', // 23차 감사: 뮤지컬 허브 — 인터파크/아이돌출연/캐스팅 앵커
     ],
   },
 ];

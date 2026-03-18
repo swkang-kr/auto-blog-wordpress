@@ -2199,9 +2199,9 @@ ${ga4TrackingScript}`;
 
     // 11차 감사: MusicAlbum schema for K-Entertainment album content (Google Music rich results)
     if (content.category === 'K-Entertainment') {
-      const albumRegex = /(?:best\s+)?(?:album|discography|comeback|mini\s*album|full\s*album|EP)\b/i;
+      const albumRegex = /(?:best\s+)?(?:album|discography|comeback|mini\s*album|full\s*album|EP|OST|soundtrack|anime\s*(?:music|ost))\b/i;
       // 21차 감사: NCT WISH, AMPERS&ONE, MEOVV, 8TURN, NEXZ, KATSEYE, H1-KEY, PURPLE KISS, Hearts2Hearts, fromis_9, n.SSign, xikers, VCHA, Xdinary Heroes 추가
-      const groupRegex = /\b(BTS|BLACKPINK|Stray Kids|SEVENTEEN|TWICE|EXO|SHINee|Red Velvet|GOT7|MAMAMOO|DAY6|BTOB|THE BOYZ|TREASURE|aespa|NewJeans|NJZ|LE SSERAFIM|ENHYPEN|TXT|ATEEZ|IVE|ITZY|NMIXX|\(G\)I-DLE|RIIZE|QWER|PLAVE|WHIPLASH|izna|UNIS|BABYMONSTER|BOYNEXTDOOR|KISS OF LIFE|Dreamcatcher|YOUNG POSSE|tripleS|NCT WISH|AMPERS&ONE|MEOVV|8TURN|NEXZ|KATSEYE|TWS|H1-KEY|PURPLE KISS|Hearts2Hearts|fromis_9|n\.SSign|xikers|VCHA|Xdinary Heroes|Kep1er|XG|Chung Ha|G-Dragon)\b/i;
+      const groupRegex = /\b(BTS|BLACKPINK|Stray Kids|SEVENTEEN|TWICE|EXO|SHINee|Red Velvet|GOT7|MAMAMOO|DAY6|BTOB|THE BOYZ|TREASURE|aespa|NewJeans|NJZ|LE SSERAFIM|ENHYPEN|TXT|ATEEZ|IVE|ITZY|NMIXX|\(G\)I-DLE|RIIZE|QWER|PLAVE|WHIPLASH|izna|UNIS|BABYMONSTER|BOYNEXTDOOR|KISS OF LIFE|Dreamcatcher|YOUNG POSSE|BADVILLAIN|tripleS|NCT WISH|AMPERS&ONE|MEOVV|8TURN|NEXZ|KATSEYE|TWS|H1-KEY|PURPLE KISS|Hearts2Hearts|fromis_9|n\.SSign|xikers|VCHA|Xdinary Heroes|Kep1er|XG|Chung Ha|G-Dragon)\b/i;
       const plainForMusic = htmlEn.replace(/<[^>]+>/g, ' ');
       const albumMatch = albumRegex.test(plainForMusic);
       const groupMatch = groupRegex.exec(plainForMusic);
@@ -2281,6 +2281,8 @@ ${ga4TrackingScript}`;
         // Only add MusicGroup when it's a group profile/guide, not album content (MusicAlbum already nests MusicGroup)
         const genreMap: Record<string, string> = {
           'DAY6': 'K-Rock', 'QWER': 'K-Rock', 'Dreamcatcher': 'K-Rock', 'Xdinary Heroes': 'K-Rock',
+          // 23차 감사: 비아이돌 장르 매핑
+          'YOUNG POSSE': 'K-Hip-Hop', 'BADVILLAIN': 'K-Pop',
         };
         const memberCountMap: Record<string, number> = {
           'BTS': 7, 'BLACKPINK': 4, 'aespa': 4, 'IVE': 6, 'LE SSERAFIM': 5,
@@ -2296,6 +2298,8 @@ ${ga4TrackingScript}`;
           'MAMAMOO': 4, 'TREASURE': 7, 'THE BOYZ': 11, 'BTOB': 4,
           'DAY6': 5, 'Dreamcatcher': 7, 'TXT': 5, 'ATEEZ': 8,
           'fromis_9': 9, 'Kep1er': 9, 'XG': 7, 'Xdinary Heroes': 6,
+          // 23차 감사: 신규 그룹 추가
+          'BADVILLAIN': 5, 'YOUNG POSSE': 5,
         };
         const groupName = groupMatch[1];
         jsonLdSchemas.push({

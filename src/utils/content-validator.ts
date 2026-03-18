@@ -1278,6 +1278,7 @@ export function validateContent(
       { pattern: /izna\b[^.]*\b(?:SM|JYP|YG)\b/i, correct: 'izna debuted via I-LAND2: N/a — under WAKEONE (CJ ENM) + HYBE partnership, NOT SM/JYP/YG' },
       { pattern: /Hearts2Hearts\b[^.]*\b(?:SM|HYBE|JYP|YG)\b/i, correct: 'Hearts2Hearts is under IST Entertainment, NOT a Big 4 label' },
       { pattern: /YOUNG\s*POSSE\b[^.]*\b(?:SM|HYBE|JYP|YG)\b/i, correct: 'YOUNG POSSE is under DSP Media, NOT a Big 4 label' },
+      { pattern: /BADVILLAIN\b[^.]*\b(?:SM|HYBE|JYP|YG)\b/i, correct: 'BADVILLAIN is under Big Planet Made (BPM), NOT a Big 4 label' },
       // 9차 감사 추가: 3세대 + 누락 보이그룹 레이블 검증
       { pattern: /(?:THE\s*)?BOYZ\b[^.]*\b(?:SM|HYBE|JYP|YG)\b/i, correct: 'THE BOYZ is under IST Entertainment (formerly Cre.ker), NOT a Big 4 label' },
       { pattern: /TREASURE\b[^.]*\b(?:SM|HYBE|JYP)\b/i, correct: 'TREASURE is under YG Entertainment, NOT SM/HYBE/JYP' },
@@ -1527,6 +1528,37 @@ export function validateContent(
       }
     }
 
+    // 23a. Mr. Trot / Miss Trot season-winner accuracy — prevent AI hallucination
+    if (/(?:mr\.?\s*trot|miss\s*trot|미스터트롯|미스트롯)/i.test(plainText)) {
+      // Mr. Trot Season 1 (2020): Winner = Lim Young-woong (임영웅)
+      if (/mr\.?\s*trot\b[^.]*season\s*1\b[^.]*winner\b[^.]*(?!lim\s*young)/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'Mr. Trot Season 1 (2020) winner is Lim Young-woong (임영웅), not another contestant.', severity: 'error' });
+        eeatScore -= 3;
+      }
+      // Miss Trot Season 1 (2019): Winner = Song Ga-in (송가인)
+      if (/miss\s*trot\b[^.]*(?:season\s*1|first)\b[^.]*winner\b[^.]*(?!song\s*ga)/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'Miss Trot Season 1 (2019) winner is Song Ga-in (송가인).', severity: 'warning' });
+        eeatScore -= 2;
+      }
+    }
+
+    // 23b. K-Beauty brand parent company accuracy — prevent corporate ownership errors
+    const kBeautyBrandParentErrors: Array<{ pattern: RegExp; correct: string }> = [
+      { pattern: /COSRX\b[^.]*\b(?:Amorepacific|LG\s*H&H|LG\s*Household)/i, correct: 'COSRX was acquired by Amorepacific in 2023 but operates independently — verify context' },
+      { pattern: /Innisfree\b[^.]*\b(?:independent|indie|not\s*Amorepacific)/i, correct: 'Innisfree is an Amorepacific brand (아모레퍼시픽 소속)' },
+      { pattern: /Laneige\b[^.]*\b(?:independent|indie|LG)/i, correct: 'Laneige is an Amorepacific brand (아모레퍼시픽 소속)' },
+      { pattern: /Sulwhasoo\b[^.]*\b(?:independent|indie|LG)/i, correct: 'Sulwhasoo is Amorepacific\'s luxury brand (아모레퍼시픽 럭셔리 라인)' },
+      { pattern: /(?:The\s*Face\s*Shop|Beyond|CNP|VDL)\b[^.]*\bAmorepacific/i, correct: 'The Face Shop, Beyond, CNP, VDL are LG H&H brands (LG생활건강), NOT Amorepacific' },
+      { pattern: /(?:su:?m37|O\s*HUI|History\s*of\s*Whoo|ohui)\b[^.]*\bAmorepacific/i, correct: 'su:m37, O HUI, History of Whoo are LG H&H luxury brands (LG생활건강), NOT Amorepacific' },
+      { pattern: /Dr\.?\s*G\b[^.]*\bAmorepacific/i, correct: 'Dr.G is a Gowoonsesang Cosmetics (고운세상코스메틱) brand, NOT Amorepacific' },
+    ];
+    for (const check of kBeautyBrandParentErrors) {
+      if (check.pattern.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: `K-Beauty brand ownership: ${check.correct}`, severity: 'warning' });
+        eeatScore -= 1;
+      }
+    }
+
     // 20d. fromis_9 label accuracy — transferred to PLEDIS/HYBE in 2022
     if (/fromis.?9/i.test(plainText)) {
       if (/fromis.?9\b[^.]*\b(?:Off\s*The\s*Record|Stone\s*Music|CJ\s*ENM)/i.test(plainText) && !/(?:formerly|previously|transferred|moved)/i.test(plainText)) {
@@ -1650,6 +1682,7 @@ export function validateContent(
       'KATSEYE': { count: 6 },
       'tripleS': { count: 24, note: '24-member collective under MODHAUS; rotating unit system — active unit lineup varies by promotion cycle' },
       'YOUNG POSSE': { count: 5 },
+      'BADVILLAIN': { count: 5, note: 'Big Planet Made (BPM) — debut June 2024' },
       'xikers': { count: 8 },
       '8TURN': { count: 8 },
       'fromis_9': { count: 9 },
@@ -1776,6 +1809,8 @@ export function validateContent(
       // 21차 감사: 누락 그룹 데뷔년도 추가
       'izna': 2024, 'UNIS': 2024, 'Hearts2Hearts': 2024,
       'AMPERS&ONE': 2023, 'MEOVV': 2023, 'NEXZ': 2024, 'XG': 2022, 'Kep1er': 2022,
+      // 23차 감사: 신규 그룹 데뷔년도
+      'BADVILLAIN': 2024,
     };
     for (const [group, year] of Object.entries(debutYears)) {
       const groupEscaped = group.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');

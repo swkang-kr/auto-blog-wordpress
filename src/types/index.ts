@@ -87,6 +87,9 @@ export const KOREAN_SEASONAL_EVENTS: Array<{
   // 21차 감사: 리얼리티 데이팅 쇼 시즌 프리미어 (K-Beauty × K-Entertainment 크로스니치 최대 이벤트)
   { name: "Single's Inferno Season Premiere", startMonth: 12, startDay: 1, endMonth: 1, endDay: 15, leadTimeDays: 30, relevantNiches: ['K-Entertainment', 'K-Beauty'], contentAngles: ["Single's Inferno new season cast predictions guide", "Single's Inferno cast skincare routine K-beauty products revealed", "Single's Inferno couples update who is still together", "best K-beauty products that went viral after Single's Inferno"] },
   { name: 'Heart Signal Season Premiere', startMonth: 3, startDay: 1, endMonth: 4, endDay: 30, leadTimeDays: 30, relevantNiches: ['K-Entertainment', 'K-Beauty'], contentAngles: ['Heart Signal new season cast review analysis guide', 'Heart Signal cast beauty routine K-beauty products revealed', 'Heart Signal panelist predictions who will match'] },
+  // 23차 감사: 트로트 시즌 + 뮤지컬 어워드
+  { name: 'Mr. Trot / Miss Trot Season Premiere', startMonth: 8, startDay: 15, endMonth: 10, endDay: 31, leadTimeDays: 30, relevantNiches: ['K-Entertainment'], contentAngles: ['Mr Trot Miss Trot new season contestants predictions complete guide', 'trot competition show what to expect new season preview', 'best trot performances all time Mr Trot Miss Trot ranked guide', 'how to vote Mr Trot Miss Trot international fans guide'] },
+  { name: 'Korean Musical Awards Season', startMonth: 5, startDay: 15, endMonth: 6, endDay: 15, leadTimeDays: 30, relevantNiches: ['K-Entertainment'], contentAngles: ['Korean Musical Awards nominees winners complete guide', 'best Korean musicals of the year ranked review', 'K-pop idols in musicals award-winning performances guide'] },
 ];
 
 /** 콘텐츠 유형 */
@@ -140,7 +143,7 @@ export const NICHE_AUTHOR_PROFILES: Record<string, AuthorProfile> = {
     name: 'Jamie Yoon',
     title: 'K-Pop & K-Drama Culture Writer',
     bio: 'Seoul-based Hallyu culture writer tracking Circle Chart, Hanteo, and Melon data daily. Has covered 30+ comeback seasons, attended MAMA and Melon Music Awards, and actively participates in fan communities on Weverse and X. Provides chart-backed analysis, award predictions, and fan-first content grounded in real community culture.',
-    expertise: ['K-pop fandom culture', 'K-drama recommendations & rankings', 'Idol comeback news', 'Award show predictions (MAMA/MMA/GDA/SMA)', 'Circle Chart & Hanteo data analysis', 'Fan community & Hallyu culture'],
+    expertise: ['K-pop fandom culture', 'K-drama recommendations & rankings', 'Idol comeback news', 'Award show predictions (MAMA/MMA/GDA/SMA)', 'Circle Chart & Hanteo data analysis', 'Fan community & Hallyu culture', 'Korean trot & ballad music', 'Webtoon-to-anime adaptation tracking', 'Korean musical theater'],
     credentials: ['Hallyu Culture Researcher', 'K-Entertainment Content Writer'],
     yearsExperience: 7,
   },
@@ -162,7 +165,7 @@ export const NICHE_AUTHOR_PERSONAS: Record<string, AuthorProfile[]> = {
       name: 'Ella Park',
       title: 'K-Beauty Hair & Makeup Specialist',
       bio: 'Covering the full spectrum of Korean beauty — from viral makeup looks and K-pop idol beauty trends to hair loss treatments and scalp care innovations. Focused on products available on Amazon and Olive Young.',
-      expertise: ['Korean makeup brands', 'K-pop idol makeup looks', 'Korean hair loss treatments', 'Scalp care', 'Korean nail art & gel stickers', 'Korean cosmetics on Amazon'],
+      expertise: ['Korean makeup brands', 'K-pop idol makeup looks', 'Korean hair loss treatments', 'Scalp care', 'Korean nail art & gel stickers', 'Korean cosmetics on Amazon', 'Lip oil & lip care trends', 'K-beauty device reviews'],
       credentials: ['Korean Beauty Content Specialist', 'Makeup & Haircare Product Reviewer'],
       yearsExperience: 4,
     },
@@ -181,7 +184,7 @@ export const NICHE_AUTHOR_PERSONAS: Record<string, AuthorProfile[]> = {
       name: 'Sora Lee',
       title: 'K-Drama & Korean Cinema Critic',
       bio: 'Dedicated to Korean drama and film criticism for international audiences. Specializing in webtoon-to-screen adaptations, streaming platform guides, OST rankings, and breakout actor spotlights. Translating the nuances of Korean storytelling for global fans.',
-      expertise: ['K-drama reviews & rankings', 'Webtoon adaptation analysis', 'K-drama OST rankings', 'Netflix & streaming platform guides', 'Korean film & cinema', 'Korean musical theater'],
+      expertise: ['K-drama reviews & rankings', 'Webtoon adaptation analysis', 'Webtoon-to-anime adaptation criticism', 'K-drama OST rankings', 'Netflix & streaming platform guides', 'Korean film & cinema', 'Korean musical theater', 'Trot & ballad music criticism'],
       credentials: ['Korean Media Studies Researcher', 'K-Drama Content Specialist'],
       yearsExperience: 6,
     },
