@@ -84,6 +84,9 @@ export const KOREAN_SEASONAL_EVENTS: Array<{
   { name: 'Suneung (Korean CSAT)', startMonth: 11, startDay: 13, endMonth: 11, endDay: 14, leadTimeDays: 30, relevantNiches: ['K-Entertainment'], contentAngles: ['K-pop idols Suneung encouragement messages fans guide 2026', 'best K-dramas to binge after Suneung exam stress relief ranked', 'K-pop idols who took Suneung while training exam stories explained', 'Suneung Korean college entrance exam explained for international fans guide'] },
   // Korea Sale Festa (코리아세일페스타) — 산업통상자원부 주관, 매년 10-11월 한국판 블랙프라이데이
   { name: 'Korea Sale Festa', startMonth: 10, startDay: 25, endMonth: 11, endDay: 15, leadTimeDays: 45, relevantNiches: ['K-Beauty'], contentAngles: ['Korea Sale Festa best K-beauty deals what to buy 2026 guide', 'Olive Young Korea Sale Festa discounts skincare must-buy list 2026', 'how to shop Korea Sale Festa internationally K-Beauty deals guide', 'Korea Sale Festa vs Black Friday which has better K-beauty deals comparison'] },
+  // 21차 감사: 리얼리티 데이팅 쇼 시즌 프리미어 (K-Beauty × K-Entertainment 크로스니치 최대 이벤트)
+  { name: "Single's Inferno Season Premiere", startMonth: 12, startDay: 1, endMonth: 1, endDay: 15, leadTimeDays: 30, relevantNiches: ['K-Entertainment', 'K-Beauty'], contentAngles: ["Single's Inferno new season cast predictions guide", "Single's Inferno cast skincare routine K-beauty products revealed", "Single's Inferno couples update who is still together", "best K-beauty products that went viral after Single's Inferno"] },
+  { name: 'Heart Signal Season Premiere', startMonth: 3, startDay: 1, endMonth: 4, endDay: 30, leadTimeDays: 30, relevantNiches: ['K-Entertainment', 'K-Beauty'], contentAngles: ['Heart Signal new season cast review analysis guide', 'Heart Signal cast beauty routine K-beauty products revealed', 'Heart Signal panelist predictions who will match'] },
 ];
 
 /** 콘텐츠 유형 */
@@ -202,12 +205,14 @@ export const CONTENT_TYPE_PERSONA_MAP: Record<string, 'primary' | 'secondary' | 
 };
 
 /** Niche-specific persona override: when keyword matches these patterns, force tertiary (Ella Park for K-Beauty makeup/hair) */
-export const KBEAUTY_TERTIARY_KEYWORDS = /\b(?:makeup|mascara|eyeliner|eyeshadow|foundation|cushion|lip\s*tint|blush|contour|hair\s*(?:loss|care|shampoo|dye)|scalp|wig|nail\s*(?:art|gel|sticker|polish)|press[- ]on\s*nail|manicure)\b/i;
+// 21차 감사: cleansing balm, double cleanse, starter kit, TikTok viral 추가
+export const KBEAUTY_TERTIARY_KEYWORDS = /\b(?:makeup|mascara|eyeliner|eyeshadow|foundation|cushion|lip\s*tint|blush|contour|hair\s*(?:loss|care|shampoo|dye)|scalp|wig|nail\s*(?:art|gel|sticker|polish)|press[- ]on\s*nail|manicure|cleansing\s*balm|double\s*cleans|starter\s*kit|beginner\s*(?:kit|routine|set)|tiktok\s*(?:viral|shop|haul))\b/i;
 
 /** K-Entertainment tertiary persona override: force Sora Lee (cinema/film/drama-criticism persona) for film/cinema/award keywords.
  * Includes TV award shows (Baeksang, KBS/MBC/SBS Drama Awards) because Sora Lee's drama critic voice
  * is more authoritative than Jamie Yoon's fan voice for award analysis and predictions. */
-export const KENTERTAINMENT_TERTIARY_KEYWORDS = /\b(?:korean\s*(?:film|movie|cinema)|blue\s*dragon|cheongryong|grand\s*bell|daejong|busan\s*film|biff|cannes|venice|oscar|director|cinematograph|screenplay|box\s*office|film\s*festival|korean\s*horror\s*film|noir|thriller\s*film|baeksang|백상|drama\s*award|kbs\s*drama\s*award|mbc\s*drama\s*award|sbs\s*drama\s*award|best\s*(?:actress|actor)\s*(?:award|winner|nominee)|daesang\s*(?:drama|film))\b/i;
+// 21차 감사: variety show, dating show, reality show, cooking show 추가
+export const KENTERTAINMENT_TERTIARY_KEYWORDS = /\b(?:korean\s*(?:film|movie|cinema)|blue\s*dragon|cheongryong|grand\s*bell|daejong|busan\s*film|biff|cannes|venice|oscar|director|cinematograph|screenplay|box\s*office|film\s*festival|korean\s*horror\s*film|noir|thriller\s*film|baeksang|백상|drama\s*award|kbs\s*drama\s*award|mbc\s*drama\s*award|sbs\s*drama\s*award|best\s*(?:actress|actor)\s*(?:award|winner|nominee)|daesang\s*(?:drama|film)|variety\s*show|예능|dating\s*show|reality\s*show|single.*inferno|heart\s*signal|exchange|transit\s*love|cooking\s*(?:show|variety)|food\s*variety|mukbang|youn.*kitchen|3\s*meals)\b/i;
 
 /** 니치 설정 */
 export interface NicheConfig {

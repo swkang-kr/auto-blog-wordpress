@@ -963,6 +963,10 @@ div[style*="background:#f8f9fa"]{background:#1e1e2e!important;border-color:#3b3b
         (kw) => `What's your skin type, and has ${kw} worked for you? Drop your mini-review below — it helps other readers!`,
         (kw) => `How does ${kw} fit into your current skincare routine? Share your experience in the comments.`,
         (kw) => `Have you compared ${kw} with Western alternatives? We'd love to hear which you prefer and why.`,
+        // 21차 감사: 신규 카테고리 engagement
+        (kw) => `What was the first K-Beauty product you ever tried? Share your ${kw} starter story below!`,
+        (kw) => `Cleansing balm or oil cleanser — which do you prefer for double cleansing ${kw}? Let us know your pick!`,
+        (kw) => `Have you shopped K-Beauty on TikTok Shop? Share your best ${kw} deal finds below!`,
       ],
       'K-Entertainment': [
         (kw) => `What's your perspective on ${kw}? Has it changed how you view Korean entertainment? Share below!`,
@@ -970,6 +974,10 @@ div[style*="background:#f8f9fa"]{background:#1e1e2e!important;border-color:#3b3b
         (kw) => `What do you think the future holds for ${kw}? Drop your predictions in the comments.`,
         (kw) => `Have you seen any Korean musicals or indie films related to ${kw}? Share your recommendations!`,
         (kw) => `Beyond K-pop, what aspect of ${kw} in Korean entertainment excites you most — dramas, movies, musicals, or hip-hop?`,
+        // 21차 감사: 데이팅 쇼, 예능, 요리 예능
+        (kw) => `Which Korean dating show couple from ${kw} do you think will last? Drop your predictions below!`,
+        (kw) => `What Korean variety show had you laughing the hardest? Share your favorite ${kw} moments below!`,
+        (kw) => `Have you tried cooking Korean dishes after watching food variety shows? Share your ${kw} cooking experience!`,
       ],
     };
 
@@ -1186,10 +1194,19 @@ ${rows}
         'Daeng Gi Meo Ri', 'Ryo', 'Masil',
         // Nail art brands
         'ohora', 'Dashing Diva', 'Gelato Factory',
+        // 18차 감사: 추가 브랜드
+        'goodal', 'Skinfood',
+        // 19차 감사: JUNG SAEM MOOL
+        'JUNG SAEM MOOL',
+        // 20차 감사: 클렌징 밤 브랜드
+        'Banila Co',
         // Product categories (fallback matching)
         'toner pad', 'sun pad', 'sunscreen', 'serum', 'moisturizer', 'toner', 'cleanser', 'sheet mask',
         'essence', 'ampoule', 'sleeping mask', 'eye cream', 'SPF', 'collagen', 'lip oil',
         'gel nail', 'press-on nail', 'nail sticker',
+        // 21차 감사: 신규 카테고리 키워드 추가
+        'cleansing balm', 'starter kit', 'beginner set', 'skincare gift set', 'skincare set',
+        'azelaic acid', 'double cleanse',
       ],
       defaultUrl: 'https://www.amazon.com/s?k=korean+skincare&tag=trendhunt2007-20',
     },
@@ -1219,6 +1236,16 @@ ${rows}
         'OST', 'soundtrack',
         // Korean musical theater
         'musical ticket', 'Interpark ticket',
+        // 21차 감사: 신규 그룹 + 데이팅 쇼 + 예능
+        'NCT WISH', 'AMPERS&ONE', 'MEOVV', '8TURN', 'NEXZ',
+        'PURPLE KISS', 'H1-KEY', 'izna', 'UNIS', 'Hearts2Hearts',
+        'G-Dragon', 'Chung Ha', 'Cha Eun-woo',
+        // Reality dating shows (K-Beauty cross-niche bridge)
+        "Single's Inferno", 'Heart Signal', 'EXchange', 'Transit Love', 'Love Catcher',
+        // Variety/cooking shows
+        'Running Man', 'Knowing Bros', '3 Meals a Day', "Youn's Kitchen",
+        // Album format keywords
+        'Weverse Album', 'Digipack', 'photobook',
       ],
       defaultUrl: 'https://www.amazon.com/s?k=kpop+merchandise&tag=trendhunt2007-20',
     },
@@ -1309,6 +1336,10 @@ ${rows}
         'Best K-beauty product under $20? Share your budget find!',
         'What\'s your skin type and which Korean product changed your routine?',
         'Have you tried any hanbang (traditional Korean herbal) skincare? How was it?',
+        // 21차 감사: 클렌징 밤, 스타터 키트, TikTok Shop 프롬프트
+        'Cleansing balm or oil cleanser for double cleansing — which team are you?',
+        'What K-beauty product would you recommend to a complete beginner?',
+        'Found any K-beauty deals on TikTok Shop? Share your haul!',
       ],
       'K-Entertainment': [
         'Who\'s your bias? Drop your K-pop opinions below!',
@@ -1321,6 +1352,11 @@ ${rows}
         'Who do you think will win Daesang at this year\'s awards? Drop your prediction!',
         'Which webtoon-to-screen adaptation are you most excited about?',
         'What was your best K-pop concert or fan event experience?',
+        // 21차 감사: 데이팅 쇼, 예능, 요리 프롬프트
+        'Which Korean dating show couple are you rooting for this season?',
+        'What Korean variety show makes you laugh the most? Share your pick!',
+        'Tried cooking any Korean recipes after watching a food variety show?',
+        'Digipack, Weverse Album, or full photobook — which album version do you buy?',
       ],
     };
     const categoryPrompts = prompts[category] || ['What are your thoughts on this topic? Share in the comments below!'];
@@ -2141,7 +2177,8 @@ ${ga4TrackingScript}`;
     // 11차 감사: MusicAlbum schema for K-Entertainment album content (Google Music rich results)
     if (content.category === 'K-Entertainment') {
       const albumRegex = /(?:best\s+)?(?:album|discography|comeback|mini\s*album|full\s*album|EP)\b/i;
-      const groupRegex = /\b(BTS|BLACKPINK|Stray Kids|SEVENTEEN|TWICE|EXO|SHINee|Red Velvet|GOT7|MAMAMOO|DAY6|BTOB|THE BOYZ|TREASURE|aespa|NewJeans|NJZ|LE SSERAFIM|ENHYPEN|TXT|ATEEZ|IVE|ITZY|NMIXX|\(G\)I-DLE|RIIZE|QWER|PLAVE|WHIPLASH|izna|UNIS|BABYMONSTER|BOYNEXTDOOR|KISS OF LIFE|Dreamcatcher|YOUNG POSSE|tripleS)\b/i;
+      // 21차 감사: NCT WISH, AMPERS&ONE, MEOVV, 8TURN, NEXZ, KATSEYE, H1-KEY, PURPLE KISS, Hearts2Hearts, fromis_9, n.SSign, xikers, VCHA, Xdinary Heroes 추가
+      const groupRegex = /\b(BTS|BLACKPINK|Stray Kids|SEVENTEEN|TWICE|EXO|SHINee|Red Velvet|GOT7|MAMAMOO|DAY6|BTOB|THE BOYZ|TREASURE|aespa|NewJeans|NJZ|LE SSERAFIM|ENHYPEN|TXT|ATEEZ|IVE|ITZY|NMIXX|\(G\)I-DLE|RIIZE|QWER|PLAVE|WHIPLASH|izna|UNIS|BABYMONSTER|BOYNEXTDOOR|KISS OF LIFE|Dreamcatcher|YOUNG POSSE|tripleS|NCT WISH|AMPERS&ONE|MEOVV|8TURN|NEXZ|KATSEYE|TWS|H1-KEY|PURPLE KISS|Hearts2Hearts|fromis_9|n\.SSign|xikers|VCHA|Xdinary Heroes|Kep1er|XG|Chung Ha|G-Dragon)\b/i;
       const plainForMusic = htmlEn.replace(/<[^>]+>/g, ' ');
       const albumMatch = albumRegex.test(plainForMusic);
       const groupMatch = groupRegex.exec(plainForMusic);
@@ -2220,12 +2257,22 @@ ${ga4TrackingScript}`;
       if (profileRegex.test(plainForMusic) && groupMatch && !albumMatch) {
         // Only add MusicGroup when it's a group profile/guide, not album content (MusicAlbum already nests MusicGroup)
         const genreMap: Record<string, string> = {
-          'DAY6': 'K-Rock', 'QWER': 'K-Rock', 'Dreamcatcher': 'K-Rock',
+          'DAY6': 'K-Rock', 'QWER': 'K-Rock', 'Dreamcatcher': 'K-Rock', 'Xdinary Heroes': 'K-Rock',
         };
         const memberCountMap: Record<string, number> = {
           'BTS': 7, 'BLACKPINK': 4, 'aespa': 4, 'IVE': 6, 'LE SSERAFIM': 5,
           'ENHYPEN': 7, 'SEVENTEEN': 13, 'TWICE': 9, 'ITZY': 5, 'NMIXX': 6,
           'BABYMONSTER': 7, 'WHIPLASH': 5, 'RIIZE': 7, 'Stray Kids': 8,
+          // 21차 감사: 누락 그룹 멤버수 추가
+          'KISS OF LIFE': 4, 'BOYNEXTDOOR': 6, 'ZeroBaseOne': 9, 'QWER': 4,
+          'PLAVE': 5, 'KATSEYE': 6, 'TWS': 6, 'tripleS': 24,
+          'NCT WISH': 6, 'AMPERS&ONE': 6, 'MEOVV': 4, '8TURN': 8,
+          'NEXZ': 6, 'H1-KEY': 5, 'PURPLE KISS': 6, 'Hearts2Hearts': 5,
+          'izna': 9, 'UNIS': 8, 'xikers': 8, 'VCHA': 6,
+          'EXO': 9, 'SHINee': 4, 'Red Velvet': 5, 'GOT7': 7,
+          'MAMAMOO': 4, 'TREASURE': 7, 'THE BOYZ': 11, 'BTOB': 4,
+          'DAY6': 5, 'Dreamcatcher': 7, 'TXT': 5, 'ATEEZ': 8,
+          'fromis_9': 9, 'Kep1er': 9, 'XG': 7, 'Xdinary Heroes': 6,
         };
         const groupName = groupMatch[1];
         jsonLdSchemas.push({

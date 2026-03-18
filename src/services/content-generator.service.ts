@@ -190,6 +190,18 @@ function getWordCountTargets(contentType: string, searchIntent?: string, nicheCa
     result = { min: 1200, target: 1600, continuation: 1100, rejection: 950 };
   }
 
+  // 21차 감사: K-Beauty news-explainer override for dating show viral/trend news
+  // Dating show beauty viral content shares same "time-sensitive fan audience" as K-Ent news
+  if (nicheCategory === 'K-Beauty' && contentType === 'news-explainer') {
+    result = { min: 1200, target: 1600, continuation: 1100, rejection: 950 };
+  }
+
+  // 21차 감사: K-Entertainment listicle override — variety show/dating show listicles
+  // Validator allows 1200 words min but generator targets 2000, causing unnecessary continuation retries
+  if (nicheCategory === 'K-Entertainment' && contentType === 'listicle') {
+    result = { min: 1200, target: 1500, continuation: 1100, rejection: 900 };
+  }
+
   return result;
 }
 

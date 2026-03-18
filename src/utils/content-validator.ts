@@ -1647,6 +1647,19 @@ export function validateContent(
       'fromis_9': { count: 9 },
       'Dreamcatcher': { count: 7 },
       'n.SSign': { count: 7 },
+      // 21차 감사: 누락 그룹 멤버수 추가
+      'izna': { count: 7, note: 'I-LAND 2 debut group — 7 members' },
+      'UNIS': { count: 8, note: 'Universe Ticket debut group — 8 members' },
+      'Hearts2Hearts': { count: 5 },
+      'AMPERS&ONE': { count: 7, note: 'FNC Entertainment — 7 members' },
+      'MEOVV': { count: 4, note: 'THEBLACKLABEL girl group — 4 members' },
+      'NEXZ': { count: 6, note: 'JYP Japan group — 6 members' },
+      'VCHA': { count: 7, note: 'JYP x Republic Records — 7 members (A2K debut)' },
+      'Xdinary Heroes': { count: 6, note: 'JYP band — 6 members' },
+      'XG': { count: 7, note: 'XGALX label — 7 Japanese members trained in Korea' },
+      'Kep1er': { count: 9, note: 'Girls Planet 999 — disbanded March 2025, WAS 9 members' },
+      'H1-KEY': { count: 5 },
+      'PURPLE KISS': { count: 6, note: 'RBW Entertainment — 6 members (Yuki left 2023)' },
     };
     for (const [group, info] of Object.entries(groupMemberCounts)) {
       const groupEscaped = group.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -1752,6 +1765,9 @@ export function validateContent(
       'WHIPLASH': 2024, 'KATSEYE': 2024, 'tripleS': 2023, 'xikers': 2023,
       'YOUNG POSSE': 2023, 'H1-KEY': 2022, 'PURPLE KISS': 2021,
       'Xdinary Heroes': 2021, 'VCHA': 2023, 'n.SSign': 2023, '8TURN': 2023,
+      // 21차 감사: 누락 그룹 데뷔년도 추가
+      'izna': 2024, 'UNIS': 2024, 'Hearts2Hearts': 2024,
+      'AMPERS&ONE': 2023, 'MEOVV': 2023, 'NEXZ': 2024, 'XG': 2022, 'Kep1er': 2022,
     };
     for (const [group, year] of Object.entries(debutYears)) {
       const groupEscaped = group.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -1781,6 +1797,27 @@ export function validateContent(
         eeatScore -= 2;
       }
     }
+
+    // 21차 감사 — 34. Korean dating show accuracy checks
+    const datingShowErrors: Array<{ pattern: RegExp; correct: string }> = [
+      { pattern: /Single'?s?\s*Inferno\b[^.]*\bTVING/i, correct: "Single's Inferno is a NETFLIX original, not TVING" },
+      { pattern: /Heart\s*Signal\b[^.]*\bNetflix/i, correct: 'Heart Signal is a Channel A show, not a Netflix original (though available on some streaming platforms)' },
+      { pattern: /EXchange\b[^.]*\bNetflix/i, correct: 'EXchange (환승연애) is a TVING original, not Netflix' },
+      { pattern: /Love\s*Catcher\b[^.]*\b(?:Netflix|TVING)/i, correct: 'Love Catcher is an Mnet show, not Netflix or TVING' },
+      { pattern: /I\s*Am\s*Solo\b[^.]*\b(?:Netflix|Mnet)/i, correct: 'I Am Solo (나는솔로) airs on SBS Plus/ENA, not Netflix or Mnet' },
+    ];
+    for (const check of datingShowErrors) {
+      if (check.pattern.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: `Dating show error: ${check.correct}`, severity: 'warning' });
+        eeatScore -= 2;
+      }
+    }
+
+    // 21차 감사 — 35. Variety show cast accuracy (common AI errors)
+    if (/Running\s*Man\b[^.]*\b(?:Yoo\s*Jae.?suk|Jae.?suk).{0,30}\bleft|depart|quit/i.test(plainText)) {
+      warnings.push({ category: 'niche-accuracy', message: 'Yoo Jae-suk has NOT left Running Man — he remains a permanent cast member as of 2026', severity: 'warning' });
+      eeatScore -= 2;
+    }
   }
 
   // ── Cross-niche K-Beauty accuracy checks ──
@@ -1805,6 +1842,16 @@ export function validateContent(
       if (check.pattern.test(plainText)) {
         warnings.push({ category: 'niche-accuracy', message: `Brand error: ${check.correct}`, severity: 'warning' });
         eeatScore -= 2;
+      }
+    }
+
+    // 21차 감사 — Cleansing balm ≠ oil cleanser conflation check
+    if (/cleansing\s*balm/i.test(plainText) && /oil\s*cleanser/i.test(plainText)) {
+      // Check if they are being described as the same thing (conflation)
+      if (/cleansing\s*balm\b[^.]{0,20}\b(?:also\s*(?:known\s*as|called)|same\s*as|identical|interchangeable)\b[^.]{0,20}\boil\s*cleanser/i.test(plainText) ||
+          /oil\s*cleanser\b[^.]{0,20}\b(?:also\s*(?:known\s*as|called)|same\s*as|identical|interchangeable)\b[^.]{0,20}\bcleansing\s*balm/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'Cleansing balm and oil cleanser are DIFFERENT product formats — balm is solid-to-oil texture, oil is liquid from the start. Both serve the first step of double cleansing but are not interchangeable terms.', severity: 'warning' });
+        eeatScore -= 1;
       }
     }
 
@@ -2221,12 +2268,12 @@ export function validateContent(
       'Karina': ['Lancôme', 'Prada'],
       'Winter': ['Miu Miu'],
       'Giselle': ['Givenchy'],
-      'Wonyoung': ['Miu Miu', 'FRED'],
+      'Wonyoung': ['Miu Miu', 'FRED', 'Laneige'],
       'Yujin': ['Versace'],
       'Eunchae': ['Louis Vuitton'],
       'Kazuha': ['Dior'],
       'Sakura': ['Valentino'],
-      'Minji': ['Chanel', 'Guerlain'],
+      'Minji': ['Chanel', 'Guerlain', 'HERA'],
       'Hanni': ['Gucci', 'Armani Beauty'],
       'Danielle': ['Burberry', 'YSL Beauty'],
       'Haerin': ['Dior'],
@@ -2234,7 +2281,7 @@ export function validateContent(
       'V': ['Celine', 'Cartier'],
       'Jimin': ['Dior', 'Tiffany & Co'],
       'Jungkook': ['Calvin Klein'],
-      'IU': ['Gucci', 'J.ESTINA', 'New Balance'],
+      'IU': ['Gucci', 'J.ESTINA', 'New Balance', 'Laneige'],
       'Suzy': ['Dior', 'Lancôme'],
       'Song Hye-kyo': ['Fendi', 'Sulwhasoo'],
       'Han So-hee': ['Dior', 'Charles & Keith'],

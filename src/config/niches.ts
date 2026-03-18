@@ -51,6 +51,9 @@ export function getSeasonallyOrderedNiches(): NicheConfig[] {
     'Circle Chart': ['K-Entertainment'],
     'Year-End K-Drama Awards': ['K-Entertainment'],
     'Gayo Daejun': ['K-Entertainment'],
+    // 21차 감사: 데이팅 쇼 시즌 프리미어
+    "Single's Inferno": ['K-Entertainment', 'K-Beauty'],
+    'Heart Signal': ['K-Entertainment', 'K-Beauty'],
   };
 
   const boostedCategories = new Set<string>();
