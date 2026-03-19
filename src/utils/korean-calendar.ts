@@ -214,6 +214,144 @@ const KOREAN_EVENTS: SeasonalEvent[] = [
       'K-pop merchandise Black Friday deals albums lightsticks guide',
     ],
   },
+  // ── 32차 감사: korean-calendar.ts에 누락된 주요 이벤트 동기화 (types/index.ts KOREAN_SEASONAL_EVENTS와 일치) ──
+  {
+    name: 'Olive Young Spring Grand Sale',
+    months: [3, 4],
+    days: [20, 10],
+    niches: ['K-Beauty'],
+    suggestions: [
+      'Olive Young spring grand sale 2026 best picks ranked what to buy',
+      'best K-beauty deals Olive Young spring sale skincare essentials 2026',
+      'Olive Young sale haul guide spring 2026 must-buy products',
+      'how to shop Olive Young spring sale internationally 2026 guide',
+    ],
+  },
+  {
+    name: 'Olive Young Fall Grand Sale',
+    months: [9, 10],
+    days: [20, 5],
+    niches: ['K-Beauty'],
+    suggestions: [
+      'Olive Young fall grand sale 2026 best picks what to buy ranked',
+      'best K-beauty deals Olive Young fall sale for dry season 2026',
+      'Olive Young fall haul guide 2026 skincare must-buys',
+    ],
+  },
+  {
+    name: 'Amazon Prime Day K-Beauty Deals',
+    months: [7, 7],
+    days: [10, 17],
+    niches: ['K-Beauty'],
+    suggestions: [
+      'best K-beauty deals Amazon Prime Day 2026 ranked',
+      'K-beauty skincare Prime Day steals under 20 dollars guide',
+      'COSRX Anua Numbuzin Prime Day discounts what to buy',
+    ],
+  },
+  {
+    name: 'WATERBOMB Festival',
+    months: [6, 7],
+    days: [20, 20],
+    niches: ['K-Entertainment', 'K-Beauty'],
+    suggestions: [
+      'WATERBOMB festival lineup 2026 K-pop idols performing guide',
+      'best waterproof Korean sunscreen for WATERBOMB summer festival',
+      'K-pop idol WATERBOMB performances fan experience guide',
+    ],
+  },
+  {
+    name: 'Coachella K-pop',
+    months: [4, 4],
+    days: [10, 20],
+    niches: ['K-Entertainment'],
+    suggestions: [
+      'K-pop at Coachella 2026 which groups are performing guide',
+      'K-pop Coachella history best performances ranked',
+    ],
+  },
+  {
+    name: 'Grammy Awards K-pop',
+    months: [2, 2],
+    days: [1, 10],
+    niches: ['K-Entertainment'],
+    suggestions: [
+      'K-pop Grammy nominations 2026 who could be next guide',
+      'K-pop at the Grammys history and performances ranked',
+    ],
+  },
+  {
+    name: 'Venice Film Festival Korean Cinema',
+    months: [8, 9],
+    days: [28, 7],
+    niches: ['K-Entertainment'],
+    suggestions: [
+      'Korean films at Venice Film Festival 2026 guide',
+      'Korean directors at Venice complete guide history',
+    ],
+  },
+  {
+    name: 'Korea Sale Festa',
+    months: [10, 11],
+    days: [25, 15],
+    niches: ['K-Beauty'],
+    suggestions: [
+      'Korea Sale Festa best K-beauty deals 2026 guide',
+      'Olive Young Korea Sale Festa discounts skincare must-buy list',
+      'Korea Sale Festa vs Black Friday which has better K-beauty deals',
+    ],
+  },
+  {
+    name: 'Korean Reality Dating Show Premieres',
+    months: [12, 1],
+    days: [1, 15],
+    niches: ['K-Entertainment', 'K-Beauty'],
+    suggestions: [
+      "Single's Inferno new season cast predictions guide",
+      "Single's Inferno cast skincare routine K-beauty products revealed",
+      'best Korean dating shows ranked where to watch guide',
+    ],
+  },
+  {
+    name: 'Heart Signal Season',
+    months: [3, 4],
+    days: [1, 30],
+    niches: ['K-Entertainment', 'K-Beauty'],
+    suggestions: [
+      'Heart Signal new season cast beauty routine K-beauty products',
+      'Heart Signal panelist predictions who will match guide',
+    ],
+  },
+  {
+    name: 'Asia Artist Awards',
+    months: [11, 12],
+    days: [25, 10],
+    niches: ['K-Entertainment'],
+    suggestions: [
+      'Asia Artist Awards predictions winners K-pop K-drama guide',
+      'how to vote Asia Artist Awards AAA international fans guide',
+    ],
+  },
+  {
+    name: 'Golden Disc Awards',
+    months: [1, 1],
+    days: [4, 12],
+    niches: ['K-Entertainment'],
+    suggestions: [
+      'Golden Disc Awards predictions winners K-pop guide',
+      'Golden Disc Awards nominees best album song ranked',
+    ],
+  },
+  {
+    name: 'Seoul Music Awards',
+    months: [1, 1],
+    days: [15, 31],
+    niches: ['K-Entertainment'],
+    suggestions: [
+      'Seoul Music Awards predictions daesang winners K-pop guide',
+      'Seoul Music Awards vs Golden Disc Awards difference explained',
+    ],
+  },
   {
     // 단오 (음력 5월 5일) — 전통 여름 절기. 한방 식물 성분 K-Beauty 콘텐츠와 연결.
     // NOTE: 음력 기준이라 양력 날짜가 매년 변동 (보통 6월 초~중순)
