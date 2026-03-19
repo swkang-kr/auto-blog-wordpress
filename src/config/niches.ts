@@ -432,6 +432,16 @@ export const NICHES: NicheConfig[] = [
       'best Korean skincare for rosacea gentle calming routine products 2026 guide',
       'Korean skincare routine for rosacea sensitive skin redness centella guide 2026',
       'best Korean centella products for rosacea redness calming ranked 2026',
+      // ── 전문가 감사 추가 (2026-03-19 batch 29): 누락 비교·트렌드 키워드 ──
+      // Korean vs Japanese skincare — 글로벌 검색량 최고 비교 키워드, 완전 누락
+      'Korean skincare vs Japanese skincare which is better differences explained 2026',
+      'K-beauty vs J-beauty skincare routine comparison which to choose guide',
+      'Korean sunscreen vs Japanese sunscreen which is better SPF comparison guide 2026',
+      // Korean skincare vs French pharmacy — 고검색량 비교 키워드
+      'Korean skincare vs French pharmacy La Roche-Posay comparison which is better 2026',
+      // Ceramide 성분 집중 — ILLIYOON/COSRX/Dr.Jart+ 핵심 성분, 비교 키워드 누락
+      'best Korean ceramide products ranked moisturizer serum toner 2026 guide',
+      'Korean ceramide vs Western ceramide skincare what is different explained guide',
       // ── 한방(Hanbang) & 프리미엄 K-Beauty — 고가 어필리에이트 + 럭셔리 세그먼트 ──
       // Sulwhasoo (설화수) — 아모레퍼시픽 최고급 한방 브랜드, 글로벌 프레스티지 라인
       'Sulwhasoo First Care Activating Serum review before after results 2026',

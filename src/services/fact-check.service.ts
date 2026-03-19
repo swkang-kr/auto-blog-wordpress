@@ -179,6 +179,8 @@ export class FactCheckService {
         'azelaic acid': { min: 5, max: 20, label: 'azelaic acid (cosmetic 5-10%, prescription 15-20%)' },
         'tranexamic acid': { min: 2, max: 5, label: 'tranexamic acid (cosmetic topical 2-5%)' },
         'copper peptide': { min: 0.001, max: 1, label: 'copper peptide / GHK-Cu (cosmetic 0.001-1%)' },
+        ceramide: { min: 0.1, max: 5, label: 'ceramide (cosmetic 0.1-5% — higher concentrations in pharmaceutical creams)' },
+        arbutin: { min: 1, max: 7, label: 'arbutin / alpha-arbutin (cosmetic 1-7%; >7% may cause paradoxical darkening)' },
       };
       for (const [ingredient, range] of Object.entries(concentrationRanges)) {
         const concRegex = new RegExp(`(\\d+(?:\\.\\d+)?)%\\s*${ingredient.replace(/\s+/g, '\\s*')}`, 'gi');
