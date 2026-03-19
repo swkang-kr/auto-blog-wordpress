@@ -58,6 +58,10 @@ const CATEGORY_CONTENT_TYPE_MIN_WORDS: Record<string, Record<string, number>> = 
   'K-Entertainment': {
     'news-explainer': 1200, // Fan comeback news needs personality, not academic depth
     'listicle': 1200,       // Fan listicles are snackable format
+    'analysis': 2000,       // 27차 감사: 팬 대상 분석 — 2500자 불필요, content-generator 오버라이드와 동기화
+  },
+  'K-Beauty': {
+    'news-explainer': 1200, // 27차 감사: 바이럴 뷰티 뉴스는 핵심 전달 우선 (기존 content-generator와 동기화)
   },
 };
 
@@ -111,6 +115,10 @@ function computeOriginalResearchBonus(plainText: string, html: string): number {
     'dispatch',     // 디스패치 — K-Entertainment 주요 취재 매체
     'cosmorning',   // 코스모닝 — 한국 화장품 산업 전문 뉴스
     'skinsort',     // K-Beauty 성분 분석 사이트 (cite 소스로 등록)
+    // 27차 감사: 누락 소스 추가
+    'kocowa',       // KOCOWA — 미주 한인 대상 K-Drama/예능 OTT 스트리밍
+    'agb nielsen',  // AGB Nielsen Korea — K-Drama 시청률 공식 측정 기관
+    'naver webtoon', // 네이버 웹툰 — 웹툰→K-Drama/애니 적응 소스
   ];
   const citedSources = koreanDataSources.filter(s => lower.includes(s)).length;
   if (citedSources >= 2) bonus += 2;

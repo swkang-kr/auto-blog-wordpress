@@ -408,6 +408,26 @@ export const NICHES: NicheConfig[] = [
       // 14차 감사: 남성 K-Beauty 젠더리스 확장 — Laka, FWEE 중성 라인
       'best Korean genderless makeup brands Laka FWEE for men guide 2026',
       'Korean skincare for men beginners guide affordable products ranked 2026',
+      // ── 전문가 감사 추가 (2026-03-19 batch 27): 누락 브랜드·비교·에버그린 ──
+      // Peripera — 립틴트 카테고리 리더, Ink Airy Velvet 글로벌 베스트셀러, 단독 리뷰 없음
+      'Peripera best lip tints ranked all shades reviewed guide 2026',
+      'Peripera Ink Airy Velvet vs rom&nd Blur Fudge Tint comparison review 2026',
+      'Peripera best products ranked makeup lip tint eyeliner guide 2026',
+      // Goodal — 비타C 세럼 특화, 올리브영 톱 브라이트닝 브랜드
+      'Goodal green tangerine vitamin C serum review dark spots brightening 2026',
+      'Goodal vs COSRX vs Klairs vitamin C serum comparison which is best 2026',
+      // SKINFOOD — 푸드 성분 코스메틱 원조, 복합 라인업
+      'SKINFOOD best products ranked food ingredient skincare guide 2026',
+      'SKINFOOD Royal Honey propolis enrich essence review vs Benton comparison 2026',
+      // K-Beauty 트렌드 3-way 비교 — 에버그린 고참여
+      'skin cycling vs skin flooding vs 7 skin method Korean skincare comparison guide 2026',
+      // 선크림 리어플리케이션 교육 — 에버그린 고트래픽
+      'how often to reapply Korean sunscreen SPF guide 2026 when and how explained',
+      'Korean sunscreen reapplication tips SPF stick pad cushion which method is best 2026',
+      // K-Beauty for Rosacea — 고전환 미개척 세그먼트
+      'best Korean skincare for rosacea gentle calming routine products 2026 guide',
+      'Korean skincare routine for rosacea sensitive skin redness centella guide 2026',
+      'best Korean centella products for rosacea redness calming ranked 2026',
       // ── 한방(Hanbang) & 프리미엄 K-Beauty — 고가 어필리에이트 + 럭셔리 세그먼트 ──
       // Sulwhasoo (설화수) — 아모레퍼시픽 최고급 한방 브랜드, 글로벌 프레스티지 라인
       'Sulwhasoo First Care Activating Serum review before after results 2026',
@@ -1850,6 +1870,35 @@ export const NICHES: NicheConfig[] = [
       'what happens during Korean military service K-pop idol experience explained guide',
       'Korean military service explained how long what they do daily life guide fans 2026',
       'K-pop idols in military what training is like alternative service options explained guide',
+      // ── 전문가 감사 추가 (2026-03-19 batch 27): 누락 세그먼트 대형 보완 ──
+      // Apple TV+ Korea 오리지널 — Netflix/TVING/Disney+ 커버, Apple TV+ 완전 누락
+      'best K-dramas on Apple TV Plus 2026 Pachinko Korean originals ranked guide',
+      'Apple TV Plus vs Netflix vs Disney Plus for K-dramas which is best 2026 comparison',
+      'Pachinko Apple TV Plus Korean drama review why it matters guide 2026',
+      // K-Drama J-Drama/C-Drama 리메이크 — Hollywood만 커버, 아시아 역방향 누락
+      'K-dramas remade from Japanese dramas J-drama to K-drama adaptations ranked 2026 guide',
+      'K-drama vs J-drama vs C-drama differences explained which to watch comparison guide',
+      // 팬사인회(Fan Sign Event) 가이드 — 콘서트/멤버십은 있지만 팬싸 완전 누락
+      'how to attend K-pop fan sign event guide international fans what to expect 2026',
+      'K-pop fan sign event how it works application process album buying explained guide',
+      'video call fansign vs in-person fansign K-pop which is better how to apply guide 2026',
+      // K-Drama 자막 품질 비교 — 팬 상위 검색 질문
+      'best subtitles for K-dramas Netflix vs Viki vs KOCOWA subtitle quality comparison guide',
+      'why Viki subtitles are better than Netflix for K-dramas explained fan perspective guide',
+      'how to watch K-dramas with accurate subtitles best platform comparison guide 2026',
+      // 초동(Chodong) 개념 교육 — 글로벌 팬 상위 질문
+      'what is chodong first week sales K-pop album explained why it matters guide 2026',
+      'K-pop chodong records highest first week sales all time ranked history guide',
+      'how chodong affects K-pop groups career chart success explained analysis guide',
+      // K-Drama 메이킹/비하인드 — 팬 관심 높은 에버그린
+      'best K-drama behind the scenes making film where to watch guide 2026',
+      'K-drama making film funniest moments behind the scenes ranked guide all time',
+      'how to find K-drama behind the scenes content YouTube Weverse guide 2026',
+      // KOCOWA — 한국 OTT 플랫폼, 미주 한인 팬 최대 서비스, 완전 누락
+      'KOCOWA Korean streaming platform what it offers vs Viki vs Netflix guide 2026',
+      'best K-dramas on KOCOWA 2026 exclusive Korean shows ranked guide',
+      // K-pop 라이트스틱 연동 기술 — Bluetooth 앱 연동 문화 누락
+      'how K-pop lightstick Bluetooth works concert technology explained fan guide 2026',
     ],
     contentTypes: ['news-explainer', 'listicle', 'best-x-for-y', 'deep-dive', 'how-to', 'x-vs-y', 'case-study', 'analysis'],
     adSenseRpm: 'medium',

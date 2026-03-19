@@ -280,6 +280,20 @@ export class FactCheckService {
           unverified++;
         }
       }
+
+      // 27차 감사: Apple TV+ / Disney+ Korea Original 에피소드 카운트 검증
+      const ottEpRegex = /(?:Apple\s*TV\+?|Disney\+?)\s*(?:Korea\s*)?Original[^.]{0,60}(\d{2,3})\s*episode/i;
+      const ottEpMatch = ottEpRegex.exec(plainText);
+      if (ottEpMatch) {
+        const epCount = parseInt(ottEpMatch[1]);
+        if (epCount > 16) {
+          flagged.push(
+            `OTT Korea Original claimed as ${epCount} episodes — Apple TV+/Disney+ Korea originals are typically 6-12 episodes (max 16). ` +
+            `Verify: a ${epCount}-episode drama may be a network drama with OTT distribution rights, NOT an OTT Original.`,
+          );
+          unverified++;
+        }
+      }
     }
 
     // 7. Cross-category: Check historical date claims
@@ -310,7 +324,14 @@ export class FactCheckService {
       zerobaseone: 2023, zb1: 2023, boynextdoor: 2023, xikers: 2023,
       'n.ssign': 2023, 'young posse': 2023, '8turn': 2023, 'ampers&one': 2023,
       tws: 2024, 'nct wish': 2024, meovv: 2024, whiplash: 2024,
-      katseye: 2024, unis: 2024,
+      katseye: 2024, unis: 2024, izna: 2024,
+      // 27차 감사: 누락 그룹/아티스트 데뷔 연도
+      'fifty fifty': 2022, 'h1-key': 2022, 'purple kiss': 2020,
+      'xdinary heroes': 2021, 'vcha': 2023, nexz: 2024,
+      'dreamcatcher': 2017, 'fromis_9': 2018,
+      '2ne1': 2009, bigbang: 2006,
+      'g-dragon': 2006, // BIGBANG 멤버로 데뷔 (솔로 데뷔 2009)
+      badvillain: 2024,
       // 19차 감사: 인디밴드 데뷔 연도 + 플랫폼 설립 연도
       'wave to earth': 2019, hyukoh: 2014, 'the rose': 2017, lucy: 2020,
       'silica gel': 2012, 'lim young-woong': 2020, // 미스터트롯 우승 데뷔 기준
@@ -335,6 +356,10 @@ export class FactCheckService {
       "i'm from": 2012, hince: 2019, 'skin&lab': 2016, cnp: 2000,
       heimish: 2015, 'cos de baha': 2017, goodal: 2012, skinfood: 2004,
       'peach c': 2019, wakemake: 2019, 'jung saem mool': 2015,
+      // 27차 감사: 누락 K-Beauty 브랜드 창립 연도
+      peripera: 2014, 'holika holika': 2010, 'tony moly': 2006, 'banila co': 2006,
+      'glow recipe': 2014, // NOTE: Glow Recipe는 한국계 미국 브랜드 (Christine Chang + Sarah Lee)
+      'laka': 2018,
       // Institutions
       'bank of korea': 1950, 'korea exchange': 2005, 'olive young': 1999,
       'korea tourism organization': 1962,
