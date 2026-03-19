@@ -54,6 +54,12 @@ export function getSeasonallyOrderedNiches(): NicheConfig[] {
     // 21차 감사: 데이팅 쇼 시즌 프리미어
     "Single's Inferno": ['K-Entertainment', 'K-Beauty'],
     'Heart Signal': ['K-Entertainment', 'K-Beauty'],
+    // 25차 감사: 누락 이벤트 매핑
+    'Olive Young 11.11': ['K-Beauty'],         // 11월 11일 올리브영 할인 (Singles Day와 별도)
+    'Grammy': ['K-Entertainment'],             // K-pop 그래미 후보 발표/시상식 (1-2월)
+    'Coachella': ['K-Entertainment'],          // K-pop 코첼라 출연 (4월)
+    'Anime Japan': ['K-Entertainment'],        // 웹툰→애니 파이프라인, 도쿄 (3월)
+    'Cannes Film': ['K-Entertainment'],        // 칸 영화제 한국 영화 (5월)
   };
 
   const boostedCategories = new Set<string>();
@@ -89,6 +95,13 @@ export const NICHES: NicheConfig[] = [
     name: 'Korean Skincare & Beauty',
     category: 'K-Beauty',
     broadTerm: 'Korean skincare routine',
+    broadTermsExtra: [
+      `K-beauty ${new Date().getFullYear()}`,
+      'Korean sunscreen',
+      'Korean makeup',
+      'Olive Young bestseller',
+      'Korean skincare ingredients',
+    ],
     seedKeywords: [
       // Product reviews — established brands (Amazon 어필리에이트 전환율 최고)
       'COSRX snail mucin essence review before and after',
@@ -892,8 +905,7 @@ export const NICHES: NicheConfig[] = [
       // 엑소좀 vs PDRN 비교 심화
       'exosome vs PDRN vs stem cell Korean skincare which is better comparison guide 2026',
       'Korean exosome skincare products best serum cream ranked how it works 2026',
-      // 갈락토미세스 — COSRX 95 에센스 Amazon 베스트셀러
-      'COSRX galactomyces 95 essence review vs SK-II Pitera dupe comparison 2026',
+      // 갈락토미세스 — 상위(L628)에 COSRX galactomyces vs SK-II 이미 있음, 여기서는 과학 앵글만
       'galactomyces ferment filtrate Korean skincare benefits explained science guide',
       'best Korean galactomyces products ranked fermented skincare guide 2026',
       // 뷰티 디바이스 — 고가 어필리에이트 아이템
@@ -927,6 +939,25 @@ export const NICHES: NicheConfig[] = [
       // 쿠션 파운데이션 — K-Beauty 대표 카테고리
       'best Korean cushion foundation 2026 ranked by skin type coverage guide',
       'Korean cushion foundation vs Western liquid foundation comparison which is better',
+      // ── 전문가 감사 추가 (2026-03-19 batch 25): K-Beauty 누락 세그먼트 ──
+      // Skinification — 바디/헤어/스칼프에 페이셜 급 성분 적용, 2025-2026 최대 K-Beauty 메가트렌드
+      'skinification trend explained applying facial skincare to body hair scalp K-Beauty guide 2026',
+      'best Korean scalp care products for hair loss thinning Dr ForHair TS ranked 2026',
+      'Korean scalp serum tonic review best products for hair growth guide 2026',
+      'Korean body skincare routine glass body skin skinification products step by step guide 2026',
+      // SPF 인도어 논쟁 — Reddit r/AsianBeauty 에버그린 토론, 고참여 콘텐츠
+      'do you need sunscreen indoors Korean dermatologist perspective SPF debate explained 2026',
+      'Korean sunscreen for indoor use blue light protection do you need it guide 2026',
+      // K-Beauty at Dollar Tree / Five Below — 미국 초저가 리테일 K-Beauty 진출
+      'K-Beauty at Dollar Tree Five Below what Korean skincare to buy budget guide 2026',
+      'cheapest K-Beauty products under $5 where to find Korean skincare budget guide 2026',
+      // K-Beauty 성분 안전성 논란 — YMYL 고관여 에버그린
+      // NOTE: 알러지·부작용 관련 "consult your dermatologist" 고지 필수
+      'Korean skincare ingredients safety EWG rating what to avoid sensitive skin guide 2026',
+      'K-Beauty fragrance in skincare is it safe or harmful debate explained guide 2026',
+      // Olive Young 글로벌 확장 케이스 스터디 — deep-dive 콘텐츠 밸런스 보강
+      'how Olive Young global expansion strategy changed K-Beauty distribution deep dive 2026',
+      'Korean dermacosmetic industry growth Aestura CNP Dr.G market analysis deep dive 2026',
     ],
     contentTypes: ['product-review', 'best-x-for-y', 'x-vs-y', 'how-to', 'listicle', 'case-study', 'deep-dive', 'news-explainer'],
     adSenseRpm: 'high',
@@ -1614,11 +1645,9 @@ export const NICHES: NicheConfig[] = [
       'best Korean web dramas free to watch on YouTube 2026 ranked guide',
       'Korean short drama TikTok viral clips best romantic comedy action 2026',
       'Naver NOW Korean short drama best shows how to watch guide 2026',
-      // Trot (트로트) — 국내 시청률 1위 장르, 미스터트롯/미스트롯 시리즈
+      // Trot (트로트) — 국내 시청률 1위 장르 (기초 키워드, batch 22에서 심화)
       'what is trot Korean traditional pop music genre explained guide for new fans',
       'best trot songs ranked all time Korean trot music guide beginners 2026',
-      'Mr Trot Miss Trot show explained contestants winners where to watch guide 2026',
-      'Lim Young-woong trot singer why he is Korea number one artist explained fans 2026',
       'trot vs K-pop what is the difference Korean music genre comparison guide',
       // Korean Indie Bands — HYUKOH, Wave to Earth, The Rose, LUCY, Silica Gel (실리카겔)
       // NOTE: 아이돌이 아닌 자체 작곡/연주 밴드, K-pop과 구분 필수
@@ -1630,9 +1659,7 @@ export const NICHES: NicheConfig[] = [
       'Silica Gel Korean indie band psychedelic experimental best songs guide 2026',
       'Korean indie music vs K-pop what is the difference genre comparison guide 2026',
       'best Korean indie music playlists Spotify Apple Music where to find guide 2026',
-      // KATSEYE — HYBE x Geffen Records 글로벌 걸그룹 (The Debut: Dream Academy 출신)
-      'KATSEYE HYBE global girl group debut story Dream Academy explained guide fans',
-      'KATSEYE best songs ranked guide for new fans 2026',
+      // KATSEYE — 상위 batch에 이미 존재 (L1145-1146), 여기서는 차별화된 앵글만 추가
       'KATSEYE vs XG vs VCHA global K-pop girl group comparison who to follow guide 2026',
       // YouTube Music / Spotify Korea — 스트리밍 플랫폼 차트 교육 (기존 Melon/Genie만 커버)
       'YouTube Music Korea chart how it works explained K-pop streaming guide 2026',
@@ -1643,19 +1670,13 @@ export const NICHES: NicheConfig[] = [
       'what is Chzzk Korean live streaming platform explained Naver guide fans 2026',
       'K-pop idols on Chzzk live streams how to watch international fans guide 2026',
       'Chzzk vs Weverse Live which is better for watching K-pop idol live streams 2026',
-      // 한국 웹예능 (Web Variety) — 워크맨, 피식대학, 숏박스 등 YouTube 예능 급성장
-      'best Korean YouTube variety shows 2026 Workman Short Box ranked guide',
-      'Korean web variety shows explained Workman Psick University Short Box guide fans',
-      'Korean YouTube variety vs TV variety shows comparison which to watch guide 2026',
+      // 한국 웹예능 — batch 2 (L1434-1436)에서 이미 커버, 중복 제거
+      // (기존 3개 키워드 → batch 2에 동일 키워드 존재)
       // Seoul Music Awards (서울가요대상) — 시즌 이벤트 보강
       'Seoul Music Awards 2026 winners nominees K-pop complete guide',
       'Melon Music Awards 2026 winners predictions complete K-pop guide',
-      // K-pop idol luxury brand ambassador — 팬 검색 폭발
-      'K-pop idols as luxury brand ambassadors 2026 complete list guide',
-      'why luxury brands choose K-pop idols as global ambassadors explained 2026',
-      // BL 드라마 — 2024-2025 한국 BL 폭발적 성장
-      'best Korean BL dramas 2026 ranked must watch boys love series guide',
-      'Korean BL drama vs Thai BL which is better comparison guide 2026',
+      // K-pop idol luxury brand ambassador — batch 22 (L1194-1196)에서 이미 커버, 중복 제거
+      // BL 드라마 — batch 12 (L1114-1117)에서 이미 커버, 중복 제거
       // ── 전문가 감사 추가 (2026-03-18 batch 20): 누락 카테고리 대형 보완 ──
       // 한국 리얼리티 데이팅 쇼 — Netflix 글로벌 Top 10 상시, K-Drama와 별도 카테고리
       // Single's Inferno (솔로지옥), Heart Signal, EXchange (환승연애), Love Transit (환승연애2), Transit Love
@@ -1695,15 +1716,15 @@ export const NICHES: NicheConfig[] = [
       'which K-pop album version has best photocards how to choose buying guide 2026',
       'K-pop album unboxing what is included Digipack vs regular vs special explained 2026',
       // ── 전문가 감사 추가 (2026-03-18 batch 22): 트로트/발라드 심화 + 뮤지컬 + 힙합/R&B + 웹툰→애니 ──
-      // 트로트 심화 — 국내 콘서트 매출 1위 장르, batch 19에서 기초만 추가
+      // 트로트 심화 — batch 19 기초 키워드 보완 (Mr Trot/Miss Trot/Lim Young-woong 기본은 batch 19에서 커버)
       'Lim Young-woong concert tour 2026 dates tickets fan guide how to attend',
       'best trot ballad singers 2026 Lim Young-woong Lee Chan-won ranking guide',
       'Mr Trot season 3 contestants winner predictions complete guide 2026',
       'Miss Trot best contestants winners all seasons ranked guide 2026',
       'Korean trot concert how to buy tickets Interpark Melon Ticket guide 2026',
       'trot music chart Korean domestic streaming vs K-pop comparison data 2026',
-      // K-발라드 / K-R&B — 국내 Melon 차트 50% 이상 점유, 시드 키워드 극소
-      'best Korean ballad singers 2026 Paul Kim 10cm Lee Mujin ranked guide',
+      // K-발라드 / K-R&B — 국내 Melon 차트 50% 이상 점유 (batch 6 기초 보완, 중복 제거)
+      // NOTE: 'best Korean ballad singers 2026' — batch 6 (L1459)와 동일, 여기서는 심화 앵글만
       'Lee Mujin Show best episodes guests Korean ballad discovery guide 2026',
       'Paul Kim best songs ranked Korean ballad singer complete guide new listeners',
       '10cm best songs ranked Korean indie ballad band guide new fans 2026',
@@ -1714,10 +1735,7 @@ export const NICHES: NicheConfig[] = [
       'best Korean hip-hop artists 2026 Jay Park ZICO DPR LIVE ranked guide',
       'Show Me The Money winners contestants best performances all seasons guide',
       'SMTM vs High School Rapper Korean hip-hop show comparison guide 2026',
-      // 한국 뮤지컬 — 국내 공연 매출 2위, K-pop 아이돌 크로스오버 핵심
-      'best Korean musicals to watch 2026 ranked complete guide',
-      'K-pop idols in musicals Doyoung Kyuhyun Taemin Onew performances guide 2026',
-      'Korean musical vs Broadway comparison what makes K-musicals unique guide',
+      // 한국 뮤지컬 — batch 2 (L1416-1420) 기초 커버, 여기서는 심화만 (중복 제거)
       'how to buy Korean musical tickets Interpark guide international fans 2026',
       'best Korean musical actors breakout stars 2026 guide ranked',
       'Korean musical OST best songs ranked soundtrack guide 2026',
@@ -1732,11 +1750,27 @@ export const NICHES: NicheConfig[] = [
       'Wind Breaker Korean webtoon anime adaptation review comparison guide 2026',
       'how to read Korean webtoons before anime adaptation complete guide 2026',
       'Korean manhwa vs Japanese manga vs Chinese manhua difference explained guide',
-      // BADVILLAIN — 2024 데뷔 걸그룹, 독보적 빌런 컨셉
-      'BADVILLAIN debut concept songs ranked new girl group guide fans 2026',
+      // BADVILLAIN — batch 6 (L1383)에 기초 있음, 여기서는 멤버 프로필만 추가
       'BADVILLAIN members profile debut story complete guide new fans 2026',
-      // YOUNG POSSE — 2023 데뷔, 힙합 걸그룹
-      'YOUNG POSSE best songs ranked hip-hop girl group guide new fans 2026',
+      // YOUNG POSSE — batch 6 (L1382)에 기초 있음, 여기서는 중복이므로 제거
+      // ── 전문가 감사 추가 (2026-03-19 batch 25): 누락 세그먼트 + 신규 트렌드 ──
+      // K-pop AI Cover — YouTube 검색량 폭발, 2025-2026 최대 팬 크리에이티브 트렌드
+      'K-pop AI cover songs explained how fans create them legal issues guide 2026',
+      'best K-pop AI cover songs YouTube viral ranked guide 2026',
+      // Korean Game Shows — 더 지니어스, 대탈출, Netflix 글로벌 팬 급증
+      'best Korean game shows The Genius Great Escape ranked guide for beginners 2026',
+      'Korean escape room variety shows Great Escape ranked where to watch guide 2026',
+      'best Korean survival variety shows 2026 ranked non-idol entertainment guide',
+      // K-Drama Weekly Recap 포맷 — 시즌 진행 중 반복 트래픽
+      'how to follow ongoing K-dramas weekly recap discussion guide international fans 2026',
+      // K-pop Vlive Archive → Weverse Migration — 팬 혼란 에버그린
+      'Vlive shutdown Weverse migration how to find old K-pop idol content guide 2026',
+      // K-Drama OST Spotify/Apple Music 큐레이션 — 어필리에이트 전환 가능
+      'best K-drama OST Spotify playlists curated by mood scene genre guide 2026',
+      // Coachella K-pop — 글로벌 크로스오버 최대 이벤트
+      'K-pop at Coachella history performances how Korean acts conquered guide 2026',
+      // Grammy K-pop — 글로벌 인지도 최고 이벤트
+      'K-pop Grammy nominations history BTS who could be next Korean artists guide 2026',
     ],
     contentTypes: ['news-explainer', 'listicle', 'best-x-for-y', 'deep-dive', 'how-to', 'x-vs-y', 'case-study', 'analysis'],
     adSenseRpm: 'medium',
