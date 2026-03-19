@@ -33,6 +33,11 @@ export class FacebookService {
     const message = this.buildCaption(content, utmUrl);
 
     try {
+      // Force Facebook to scrape/refresh OG tags before posting the link.
+      // Without this, newly published posts may appear without an image
+      // because Facebook's OG cache hasn't fetched the page yet.
+      await this.scrapeUrl(resolvedUrl);
+
       const res = await axios.post(
         `${GRAPH_API}/${this.pageId}/feed`,
         {
@@ -52,6 +57,30 @@ export class FacebookService {
         : String(error);
       logger.warn(`Facebook post failed (non-critical): ${msg}`);
       return null;
+    }
+  }
+
+  /**
+   * Force Facebook to scrape/refresh OG metadata for a URL.
+   * Uses the Graph API sharing debugger endpoint.
+   */
+  private async scrapeUrl(url: string): Promise<void> {
+    try {
+      await axios.post(
+        `${GRAPH_API}/`,
+        null,
+        {
+          params: {
+            id: url,
+            scrape: true,
+            access_token: this.accessToken,
+          },
+        },
+      );
+      logger.debug(`Facebook OG scrape refreshed for: ${url}`);
+    } catch (error) {
+      // Non-fatal — the post may still work with cached/stale OG data
+      logger.debug(`Facebook OG scrape failed (non-fatal): ${axios.isAxiosError(error) ? error.response?.status : error}`);
     }
   }
 

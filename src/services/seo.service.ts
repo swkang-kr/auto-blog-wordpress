@@ -441,12 +441,22 @@ add_action('wp_head', function() {
     if ($author_name) {
         echo '<meta property="article:author" content="' . esc_attr($author_name) . '" />' . "\\n";
     }
-    // OG image metadata (type, width, height) for proper social share rendering
+    // OG image fallback + metadata (type, width, height) for proper social share rendering
+    // Rank Math may not output og:image for newly published posts — add fallback from featured image
     $thumb_id = get_post_thumbnail_id($post_id);
     if ($thumb_id) {
         $img_data = wp_get_attachment_image_src($thumb_id, 'full');
         if ($img_data) {
             $src = $img_data[0]; $w = $img_data[1]; $h = $img_data[2];
+            // Fallback og:image if Rank Math hasn't output one yet
+            $has_og_image = false;
+            if (class_exists('RankMath')) {
+                $rm_img = get_post_meta($post_id, 'rank_math_facebook_image', true);
+                $has_og_image = !empty($rm_img);
+            }
+            if (!$has_og_image) {
+                echo '<meta property="og:image" content="' . esc_url($src) . '" />' . "\\n";
+            }
             $ext = strtolower(pathinfo(parse_url($src, PHP_URL_PATH), PATHINFO_EXTENSION));
             $type_map = ['jpg'=>'image/jpeg','jpeg'=>'image/jpeg','png'=>'image/png','webp'=>'image/webp','avif'=>'image/avif','gif'=>'image/gif'];
             $mime = isset($type_map[$ext]) ? $type_map[$ext] : 'image/jpeg';
