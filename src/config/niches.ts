@@ -958,6 +958,43 @@ export const NICHES: NicheConfig[] = [
       // Olive Young 글로벌 확장 케이스 스터디 — deep-dive 콘텐츠 밸런스 보강
       'how Olive Young global expansion strategy changed K-Beauty distribution deep dive 2026',
       'Korean dermacosmetic industry growth Aestura CNP Dr.G market analysis deep dive 2026',
+      // ── 전문가 감사 추가 (2026-03-19 batch 26): K-Beauty 아이 메이크업·브랜드·트렌드 대형 보완 ──
+      // 아이 메이크업 독립 카테고리 — 립 허브는 있으나 아이 카테고리 완전 누락, Amazon K-Beauty 상위
+      'best Korean eyeliner 2026 smudge-proof long lasting ranked waterproof guide',
+      'best Korean eyeshadow palette 2026 matte shimmer glitter ranked review guide',
+      'best Korean mascara 2026 volume lengthening waterproof no clump ranked guide',
+      'Korean eye makeup tutorial monolid hooded eyes step by step guide 2026',
+      'best Korean eyebrow products pencil tint powder ranked natural look guide 2026',
+      'Korean eye makeup trends 2026 soft glam douyin puppy eyes guide how to',
+      'best Korean under eye concealer brightener dark circles ranked 2026 guide',
+      // Peripera 브랜드 독립 키워드 — rom&nd 4개, Peripera 0개 (올리브영 립틴트 #2)
+      'Peripera best products ranked lip tint ink airy velvet review guide 2026',
+      'Peripera Ink Mood Glowy Tint review best shades swatches guide 2026',
+      'Peripera vs rom&nd lip tint detailed comparison which brand is better 2026',
+      'Peripera eyeshadow palette all take mood review best looks guide 2026',
+      // Korean setting spray / fixing mist — 메이크업 고정 카테고리 완전 누락
+      'best Korean setting spray fixing mist long lasting makeup 2026 ranked guide',
+      'Korean makeup setting spray vs Western setting spray comparison which lasts longer 2026',
+      // K-Beauty for bearded men — 서양 남성 특화 (수염 관리 + K-Beauty), 미개척
+      'Korean skincare routine for men with beard how to apply under facial hair guide 2026',
+      'best Korean beard oil face moisturizer for men with facial hair 2026 guide',
+      // 기후별 K-Beauty 루틴 — 열대/건조/한대 독자 타겟
+      'Korean skincare routine for humid tropical climate Southeast Asia guide 2026',
+      'Korean skincare routine for dry desert climate Middle East guide 2026',
+      'Korean skincare routine for cold winter Nordic European climate guide 2026',
+      'how to adapt Korean skincare routine for your climate weather guide 2026',
+      // Deinfluencing — 2025-2026 최대 TikTok 트렌드, 역방향 콘텐츠
+      'overhyped K-Beauty products not worth the money honest review guide 2026',
+      'K-Beauty deinfluencing overrated products you can skip save money guide 2026',
+      'most overrated vs underrated Korean skincare products honest comparison 2026',
+      // r/AsianBeauty Reddit 활용 가이드 — 에버그린 초보자 필수
+      'r/AsianBeauty Reddit guide how to find best Korean skincare recommendations 2026',
+      'best Korean skincare tips from Reddit AsianBeauty community guide beginners 2026',
+      // Mise en Scene / Ryo 독립 키워드 — 아모레 헤어 2대 브랜드 누락
+      'Ryo Korean herbal shampoo review hair loss anti-hair fall does it work 2026',
+      'Mise en Scene Korean hair care review best products styling treatment 2026',
+      'Ryo vs Daeng Gi Meo Ri Korean herbal shampoo comparison which is better 2026',
+      'best Korean hair treatment mask deep conditioning damaged hair repair ranked 2026',
     ],
     contentTypes: ['product-review', 'best-x-for-y', 'x-vs-y', 'how-to', 'listicle', 'case-study', 'deep-dive', 'news-explainer'],
     adSenseRpm: 'high',
@@ -974,6 +1011,7 @@ export const NICHES: NicheConfig[] = [
       'K-Beauty Dermacosmetics Guide: Aestura, Dr.G, CNP and Clinical Skincare', // 14차 감사: 더마코스메틱 허브 — 더마브랜드/병원급 제품 앵커
       'K-Beauty Lip Products Guide: Best Korean Lip Tints, Oils, and Glosses', // 17차 감사: 립 허브 — rom&nd/Peripera/립틴트/립오일 앵커
       'Olive Young Global Shopping Guide: How to Buy Korean Skincare Shipped Worldwide', // 19차 감사: 올리브영 글로벌 허브 — 직구/배송/가격비교 앵커
+      'K-Beauty Eye Makeup Guide: Best Korean Eyeliners, Eyeshadows, and Mascaras', // 26차 감사: 아이 메이크업 허브 — 아이라이너/아이섀도우/마스카라 앵커
     ],
   },
 
@@ -1771,6 +1809,47 @@ export const NICHES: NicheConfig[] = [
       'K-pop at Coachella history performances how Korean acts conquered guide 2026',
       // Grammy K-pop — 글로벌 인지도 최고 이벤트
       'K-pop Grammy nominations history BTS who could be next Korean artists guide 2026',
+      // ── 전문가 감사 추가 (2026-03-19 batch 26): K-Entertainment 누락 대형 세그먼트 ──
+      // 나영석 PD (Na PD) — 한국 예능 최고 PD, 꽃보다 시리즈/신서유기/지구오락실/캐나다 체크인, 완전 누락
+      'Na PD best Korean variety shows ranked complete guide for beginners 2026',
+      'New Journey to the West Na PD show explained why fans love it guide 2026',
+      'Earth Arcade Na PD Netflix variety show guide cast games explained 2026',
+      'Na PD YouTube channel content what to watch guide international fans 2026',
+      // 복면가왕 (King of Masked Singer) — 글로벌 포맷 수출 한국 대표 예능, 완전 누락
+      'King of Masked Singer Korean show explained how it works guide beginners 2026',
+      'best King of Masked Singer performances all time legendary reveals ranked guide',
+      'King of Masked Singer vs The Masked Singer how Korean original differs guide',
+      // Disney+ Korea 오리지널 — Netflix/TVING만 커버, Disney+ 완전 누락
+      'best K-dramas on Disney Plus 2026 exclusive Korean originals ranked must watch guide',
+      'Disney Plus Korea vs Netflix vs TVING which has best K-dramas comparison 2026',
+      'Moving Korean drama Disney Plus review why it became highest rated guide 2026',
+      // K-Drama PPL (Product Placement) — 팬 관심 높은 에버그린
+      'K-drama product placement PPL explained why brands appear in Korean dramas guide',
+      'best K-drama product placements that fans actually bought viral products guide 2026',
+      'how product placement works in K-dramas business model explained guide',
+      // 한국 영화 시상식 교육 — 대종상, 청룡, 백상 차이점 누락
+      'Korean film awards explained Daejong Blue Dragon Baeksang what is the difference guide',
+      'Korean movie awards vs Oscars comparison Blue Dragon Baeksang Grand Bell guide 2026',
+      // K-pop lightstick 커스터마이즈/디자인 문화 — 에버그린 팬 콘텐츠
+      'best K-pop lightstick designs ranked most creative beautiful unique guide 2026',
+      'how to customize K-pop lightstick DIY decoration guide fans 2026',
+      'K-pop lightstick history evolution how fanlight culture started explained guide',
+      'K-pop lightstick buying guide where to buy official how to spot fake 2026',
+      // K-Drama second lead syndrome — 에버그린 팬 토론 키워드
+      'K-drama second lead syndrome best examples why fans fall for second male lead guide',
+      'best K-dramas where second lead was better ranked fan picks guide 2026',
+      // Korean stand-up comedy — Netflix 한국 스탠드업 성장
+      'Korean stand-up comedy on Netflix best specials ranked guide 2026',
+      'Korean comedy scene explained stand-up gag concert SNL Korea guide beginners',
+      'best Korean comedians to watch 2026 stand-up variety show ranked guide',
+      // 힙합 레이블 생태계 — AOMG, H1GHR MUSIC, Just Music 가이드 누락
+      'Korean hip-hop labels ranked AOMG H1GHR MUSIC Just Music comparison guide 2026',
+      'AOMG artists roster Jay Park label best rappers singers ranked guide 2026',
+      'Korean hip-hop label system explained how K-hip-hop differs from K-pop guide',
+      // Korean military service 교육 — 글로벌 팬 상위 질문, 에버그린
+      'what happens during Korean military service K-pop idol experience explained guide',
+      'Korean military service explained how long what they do daily life guide fans 2026',
+      'K-pop idols in military what training is like alternative service options explained guide',
     ],
     contentTypes: ['news-explainer', 'listicle', 'best-x-for-y', 'deep-dive', 'how-to', 'x-vs-y', 'case-study', 'analysis'],
     adSenseRpm: 'medium',
@@ -1791,6 +1870,7 @@ export const NICHES: NicheConfig[] = [
       'Korean Trot Music Guide: Mr. Trot, Miss Trot, and Best Trot Artists', // 23차 감사: 트로트 허브 — 임영웅/미스터트롯/콘서트/차트 앵커
       'Korean Webtoon to Anime Adaptations: Complete Guide to Manhwa Anime', // 23차 감사: 웹툰→애니 허브 — Solo Leveling/Tower of God/적응 비교 앵커
       'Korean Musical Theater Guide: Best Shows, Idol Casting, and Tickets', // 23차 감사: 뮤지컬 허브 — 인터파크/아이돌출연/캐스팅 앵커
+      'Korean Variety Shows Guide: Na PD, Running Man, and Best Entertainment Programs', // 26차 감사: 예능 허브 — 나영석PD/복면가왕/게임쇼 앵커
     ],
   },
 ];
