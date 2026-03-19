@@ -916,6 +916,23 @@ STRATEGY: Consider creating content that directly targets one of these content g
       'led mask', 'beauty device', 'cellreturn', 'gua sha', // K-Beauty 디바이스
       'cushion foundation', 'lip oil', // K-Beauty 카테고리
       'hince', 'cnp laboratory', 'aestura', 'reedle shot', // K-Beauty 브랜드
+      // 30차 감사: batch 27-29에서 추가된 브랜드·그룹의 keyword-research 검증 동기화
+      'peripera',         // K-Beauty 립틴트 #1 브랜드, batch 27에서 시드 키워드 추가
+      'goodal',           // K-Beauty 비타C 세럼 브랜드
+      'skinfood',         // K-Beauty 푸드 코스메틱 원조
+      'nmixx',            // JYP 4세대 걸그룹, MIXXPOP 장르
+      'evnne',            // Boys Planet 보이그룹, Jellyfish
+      'fromis_9', 'fromis9', // PLEDIS/HYBE 걸그룹
+      'dreamcatcher',     // 록/메탈 컨셉 걸그룹
+      'vcha',             // JYP 글로벌 걸그룹
+      'itzy',             // JYP 4세대 걸그룹
+      '(g)i-dle', 'gidle', // Cube 셀프프로듀싱 걸그룹
+      'kocowa',           // 미주 한국 OTT 플랫폼
+      'apple tv korea', 'pachinko', // Apple TV+ 한국 오리지널
+      'chodong', '초동',  // K-pop 앨범 초동 용어
+      'fansign', '팬싸',  // K-pop 팬사인회
+      'korean vs japanese skincare', 'j-beauty vs k-beauty', // 비교 키워드
+      'rosacea',          // K-Beauty 피부 조건
     ];
     const keywordLower = analysis.selectedKeyword.toLowerCase();
     const titleLower = analysis.suggestedTitle.toLowerCase();

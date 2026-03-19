@@ -194,8 +194,16 @@ export class ImageGeneratorService {
     const isKTrotBallad = isKEntertainment && /trot|트로트|mr\.?\s*trot|miss\s*trot|lim\s*young|임영웅|young\s*tak|song\s*ga|ballad\s*(?:singer|artist)|발라드/i.test(promptLower);
     const isKWebtoonAnime = isKEntertainment && /webtoon.*anime|anime.*webtoon|solo\s*leveling.*anime|tower\s*of\s*god.*anime|omniscient.*reader.*anime|manhwa.*anime|webtoon.*adapt.*anime/i.test(promptLower);
     const isKBeautyLipOil = isKBeauty && /lip\s*(?:oil|serum|treatment|gloss)|glass\s*lip|plumping\s*lip/i.test(promptLower);
+    // 30차 감사: 누락 K-Beauty 서브카테고리
+    const isKBeautySheetMask = isKBeauty && /sheet\s*mask|hydrogel|bio[- ]?cellulose|mask\s*pack|sleeping\s*mask|overnight\s*mask/i.test(promptLower);
+    const isKBeautyCushion = isKBeauty && /cushion\s*(?:foundation|compact|refill)|쿠션/i.test(promptLower);
 
-    const nicheSuffix = isKBeautyNailArt
+    // 30차 감사: sheet mask / cushion foundation 비주얼 서브카테고리
+    const nicheSuffix = isKBeautySheetMask
+      ? ', Korean sheet mask flat lay photography, hydrogel or bio-cellulose mask unfolded, dewy translucent texture, serene spa-like atmosphere, soft blue and white tones, clean minimal surface, skincare ritual aesthetic, close-up mask application detail'
+      : isKBeautyCushion
+      ? ', Korean cushion foundation product photography, compact mirror reflection, puff applicator with product visible, dewy luminous finish swatch, clean vanity setting, soft warm lighting, makeup editorial, close-up cushion compact open view'
+      : isKBeautyNailArt
       ? ', Korean nail art close-up photography, trendy gel nail designs, cat eye magnet nail aurora gradient mirror chrome finish, 3D embedded nail art details, elegant hand pose, salon-quality macro detail, soft pink and lavender tones, clean minimal background, beauty editorial'
       : isKMusical
       ? ', Korean musical theater stage aesthetic, dramatic spotlight on performer, rich red curtain backdrop, warm golden stage lighting, Broadway-style grandeur with Korean sensibility, emotional theatrical atmosphere, cinematic wide shot composition'

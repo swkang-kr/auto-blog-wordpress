@@ -54,7 +54,7 @@ export class KoreanContentService {
 - Excerpt: Korean meta description, 60-80 characters (한글은 Google SERP에서 픽셀 너비 기준 ~920px 이내로 렌더링 — 영어보다 글자당 넓으므로 짧게)
 - Tags: 5-8 Korean tags related to the topic
 - K-Beauty specific: Replace Amazon USD pricing with Olive Young Korea KRW pricing. Korean readers buy at Olive Young (올리브영) directly, not Amazon. Replace "available at Sephora" with "올리브영에서 구매 가능". Reference 화해 (Hwahae app) review scores as social proof where applicable — it is Korea's #1 beauty review platform
-- K-Entertainment specific: Replace Spotify chart references with 멜론(Melon)/지니(Genie)/벅스(Bugs) for Korean domestic streaming charts. Replace Ticketmaster with 인터파크 티켓/YES24 티켓 for concert ticketing. Use 한터차트/써클차트 instead of "Hanteo Chart/Circle Chart". Replace "Billboard Korea" with 멜론 차트/지니 차트. Korean fans use Weverse/Bubble natively — no need to explain these platforms
+- K-Entertainment specific: Replace Spotify chart references with 멜론(Melon)/지니(Genie)/벅스(Bugs) for Korean domestic streaming charts. Replace Ticketmaster with 인터파크 티켓/YES24 티켓 for concert ticketing. Use 한터차트/써클차트 instead of "Hanteo Chart/Circle Chart". Replace "Billboard Korea" with 멜론 차트/지니 차트. Korean fans use Weverse/Bubble natively — no need to explain these platforms. 30차 감사: Replace "KOCOWA" with "코코와" (한국 독자에겐 해당 없음 — KOCOWA는 미주 한인 전용). Replace "Apple TV+" with "Apple TV+" (영문 유지 — 한국에서도 Apple TV+는 영문 명칭 사용). 쿠팡 플레이 references: 한국 독자에게 "Coupang Play"는 "쿠팡플레이"로 표기. OTT 비교 시 한국 독자 맥락: 티빙 > 쿠팡플레이 > 넷플릭스 > 디즈니+ 순서로 국내 오리지널 콘텐츠 언급
 
 ## 13차 감사: Korean Terminology Consistency Standards
 ${category === 'K-Beauty' ? `Use these standardized Korean beauty terms consistently:

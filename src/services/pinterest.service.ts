@@ -104,13 +104,23 @@ export class PinterestService {
     // Extract primary keyword from tags or title
     const primaryKeyword = content.tags[0] || content.title.split(':')[0].trim();
 
-    // Pinterest-optimized structure: keyword-rich opening + value proposition + hashtags
-    const keywordOpening = `${primaryKeyword} — `;
+    // 30차 감사: Pinterest-optimized structure with niche-aware opening
+    // K-Beauty: lead with ingredient/product for purchase-intent audience
+    // K-Entertainment: lead with artist/group for fan-engagement audience
+    const nichePrefix: Record<string, string> = {
+      'K-Beauty': 'Korean Skincare Guide: ',
+      'K-Entertainment': 'K-Pop & K-Drama: ',
+    };
+    const keywordOpening = `${nichePrefix[content.category] || ''}${primaryKeyword} — `;
     const valueExcerpt = content.excerpt.slice(0, 250 - keywordOpening.length);
     const hashtags = this.getCategoryHashtags(content.category);
 
-    // Add action-oriented CTA for Pinterest engagement
-    const cta = '\n\nSave this pin for later! Click through for the full guide.';
+    // Add niche-aware CTA for Pinterest engagement
+    const nicheCta: Record<string, string> = {
+      'K-Beauty': '\n\nSave for your next K-beauty haul! Tap for the full product guide.',
+      'K-Entertainment': '\n\nSave for later! Tap for the full guide and fan recommendations.',
+    };
+    const cta = nicheCta[content.category] || '\n\nSave this pin for later! Click through for the full guide.';
 
     const desc = `${keywordOpening}${valueExcerpt}${cta}\n\n${hashtags.join(' ')}`;
     return desc.slice(0, 500);
@@ -122,8 +132,11 @@ export class PinterestService {
   private getCategoryHashtags(category: string): string[] {
     const base = ['#Korea', '#SouthKorea'];
     const categoryTags: Record<string, string[]> = {
-      'K-Beauty': ['#KBeauty', '#KoreanSkincare', '#Skincare', '#KoreanBeauty', '#GlassSkin'],
-      'K-Entertainment': ['#KPop', '#KDrama', '#Hallyu', '#KoreanDrama', '#KHipHop', '#KRnB'],
+      // 30차 감사: 2025-2026 트렌드 해시태그 대폭 보강
+      'K-Beauty': ['#KBeauty', '#KoreanSkincare', '#Skincare', '#KoreanBeauty', '#GlassSkin',
+        '#OliveYoung', '#KoreanSunscreen', '#TonerPad', '#KBeautyRoutine', '#SkincareRoutine'],
+      'K-Entertainment': ['#KPop', '#KDrama', '#Hallyu', '#KoreanDrama',
+        '#KoreanVariety', '#Webtoon', '#KDramaRecommendation', '#KPopComeback'],
     };
     return [...base, ...(categoryTags[category] || [])];
   }
