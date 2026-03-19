@@ -175,6 +175,10 @@ export class FactCheckService {
         'mandelic acid': { min: 2, max: 10, label: 'mandelic acid (cosmetic 2-10%)' },
         madecassoside: { min: 0.1, max: 5, label: 'madecassoside (cosmetic 0.1-5%)' },
         adenosine: { min: 0.04, max: 0.2, label: 'adenosine (MFDS functional cosmetic min 0.04%, typical 0.04-0.1%)' },
+        // 28차 감사: 누락 성분 농도 범위
+        'azelaic acid': { min: 5, max: 20, label: 'azelaic acid (cosmetic 5-10%, prescription 15-20%)' },
+        'tranexamic acid': { min: 2, max: 5, label: 'tranexamic acid (cosmetic topical 2-5%)' },
+        'copper peptide': { min: 0.001, max: 1, label: 'copper peptide / GHK-Cu (cosmetic 0.001-1%)' },
       };
       for (const [ingredient, range] of Object.entries(concentrationRanges)) {
         const concRegex = new RegExp(`(\\d+(?:\\.\\d+)?)%\\s*${ingredient.replace(/\s+/g, '\\s*')}`, 'gi');
@@ -331,7 +335,7 @@ export class FactCheckService {
       'dreamcatcher': 2017, 'fromis_9': 2018,
       '2ne1': 2009, bigbang: 2006,
       'g-dragon': 2006, // BIGBANG 멤버로 데뷔 (솔로 데뷔 2009)
-      badvillain: 2024,
+      badvillain: 2024, evnne: 2023,
       // 19차 감사: 인디밴드 데뷔 연도 + 플랫폼 설립 연도
       'wave to earth': 2019, hyukoh: 2014, 'the rose': 2017, lucy: 2020,
       'silica gel': 2012, 'lim young-woong': 2020, // 미스터트롯 우승 데뷔 기준
@@ -360,6 +364,10 @@ export class FactCheckService {
       peripera: 2014, 'holika holika': 2010, 'tony moly': 2006, 'banila co': 2006,
       'glow recipe': 2014, // NOTE: Glow Recipe는 한국계 미국 브랜드 (Christine Chang + Sarah Lee)
       'laka': 2018,
+      // 28차 감사: 누락 K-Beauty 브랜드
+      'rom&nd': 2016, romand: 2016, // 롬앤 — Min Saerom 설립, 립틴트·블러셔 글로벌 베스트셀러
+      'clio': 2012, // 클리오 — Kill Cover 쿠션, BLACKPINK Jisoo 앰배서더 (2020~)
+      skintific: 2020, // NOTE: 인도네시아 브랜드, NOT Korean — Korean-inspired formulations
       // Institutions
       'bank of korea': 1950, 'korea exchange': 2005, 'olive young': 1999,
       'korea tourism organization': 1962,

@@ -60,6 +60,10 @@ export function getSeasonallyOrderedNiches(): NicheConfig[] {
     'Coachella': ['K-Entertainment'],          // K-pop 코첼라 출연 (4월)
     'Anime Japan': ['K-Entertainment'],        // 웹툰→애니 파이프라인, 도쿄 (3월)
     'Cannes Film': ['K-Entertainment'],        // 칸 영화제 한국 영화 (5월)
+    // 28차 감사: 누락 이벤트 매핑
+    'Venice Film': ['K-Entertainment'],        // 베니스 영화제 한국 영화 (8-9월)
+    'Asia Artist Awards': ['K-Entertainment'], // AAA 시상식 (11-12월)
+    'AAA': ['K-Entertainment'],
   };
 
   const boostedCategories = new Set<string>();
@@ -1870,6 +1874,11 @@ export const NICHES: NicheConfig[] = [
       'what happens during Korean military service K-pop idol experience explained guide',
       'Korean military service explained how long what they do daily life guide fans 2026',
       'K-pop idols in military what training is like alternative service options explained guide',
+      // ── 전문가 감사 추가 (2026-03-19 batch 28): 누락 그룹 + 이벤트 + 트렌드 ──
+      // EVNNE (이븐) — Boys Planet Season 1 프로젝트 그룹 (2023 데뷔), 시드 키워드 완전 누락
+      'EVNNE debut story Boys Planet how they were formed explained guide fans',
+      'EVNNE best songs ranked guide for new fans 2026',
+      'EVNNE comeback 2026 what fans need to know full update',
       // ── 전문가 감사 추가 (2026-03-19 batch 27): 누락 세그먼트 대형 보완 ──
       // Apple TV+ Korea 오리지널 — Netflix/TVING/Disney+ 커버, Apple TV+ 완전 누락
       'best K-dramas on Apple TV Plus 2026 Pachinko Korean originals ranked guide',
