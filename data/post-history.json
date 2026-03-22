@@ -603,6 +603,12 @@
           "position": 1,
           "clicks": 0,
           "impressions": 1
+        },
+        {
+          "date": "2026-03-22",
+          "position": 1,
+          "clicks": 0,
+          "impressions": 1
         }
       ],
       "lastPosition": 1,
@@ -732,7 +738,11 @@
       "searchIntent": "commercial-investigation",
       "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/kospi-q1-earnings-season-korean-stock-picks-2026-featured-2026.webp",
       "featuredImageMediaId": 15075,
-      "affiliateLinkCount": 0
+      "affiliateLinkCount": 0,
+      "titleTestPhaseBStarted": true,
+      "titleTestPhaseBTitle": "Korean Mid-Cap Stocks to Watch in Q1 2026 Earnings Season",
+      "titleTestWinner": "KOSPI Q1 2026 Earnings Season: Best Korean Stock Picks",
+      "titleTestResolved": true
     },
     {
       "keyword": "Korean skincare ingredients that actually work explained",
@@ -752,7 +762,11 @@
       "affiliateLinkCount": 0,
       "engagementScore": 30,
       "estimatedRpm": 8,
-      "estimatedRevenue": 0.072
+      "estimatedRevenue": 0.072,
+      "titleTestPhaseBStarted": true,
+      "titleTestPhaseBTitle": "Which Korean Skincare Ingredients Are Actually Proven? (2026)",
+      "titleTestWinner": "Korean Skincare Ingredients That Actually Work (2026 Guide)",
+      "titleTestResolved": true
     },
     {
       "keyword": "best K-pop albums 2026 ranked by sales and streaming",
@@ -772,7 +786,11 @@
       "affiliateLinkCount": 0,
       "engagementScore": 27,
       "estimatedRpm": 4,
-      "estimatedRevenue": 0.024
+      "estimatedRevenue": 0.024,
+      "titleTestPhaseBStarted": true,
+      "titleTestPhaseBTitle": "K-Pop Albums 2026: Ranked by Hanteo Sales & Spotify Streams",
+      "titleTestWinner": "Best K-Pop Albums of 2026 Ranked by Sales & Streaming",
+      "titleTestResolved": true
     },
     {
       "keyword": "best Korean vitamin C serum ranked dermatologist tested",
@@ -826,12 +844,22 @@
           "position": 63,
           "clicks": 0,
           "impressions": 3
+        },
+        {
+          "date": "2026-03-22",
+          "position": 63.75,
+          "clicks": 0,
+          "impressions": 4
         }
       ],
-      "lastPosition": 63,
+      "lastPosition": 63.75,
       "engagementScore": 31,
       "estimatedRpm": 8,
-      "estimatedRevenue": 0.04
+      "estimatedRevenue": 0.04,
+      "titleTestPhaseBStarted": true,
+      "titleTestPhaseBTitle": "Korean Vitamin C Serums: 7 Dermatologist-Tested Picks for 2026",
+      "titleTestWinner": "Best Korean Vitamin C Serums Ranked: Dermatologist Tested 2026",
+      "titleTestResolved": true
     },
     {
       "keyword": "best K-pop concerts in USA 2026 schedule dates",
@@ -851,7 +879,11 @@
       "affiliateLinkCount": 0,
       "engagementScore": 40,
       "estimatedRpm": 4,
-      "estimatedRevenue": 0.016
+      "estimatedRevenue": 0.016,
+      "titleTestPhaseBStarted": true,
+      "titleTestPhaseBTitle": "K-Pop Concerts USA 2026: Every Tour Date & Ticket Guide",
+      "titleTestWinner": "Best K-Pop Concerts in USA 2026: Dates & Schedule",
+      "titleTestResolved": true
     },
     {
       "keyword": "Korean skincare routine for beginners step by step 2026",
@@ -1724,7 +1756,10 @@
       "affiliateLinkCount": 0,
       "qualityScore": 78,
       "seriesId": "skincare-routine-guide",
-      "seriesPart": 12
+      "seriesPart": 12,
+      "engagementScore": 2,
+      "estimatedRpm": 8,
+      "estimatedRevenue": 0.04
     },
     {
       "keyword": "K-pop agency tour Seoul HYBE Insight SM Artium JYP complete guide 2026",
@@ -1744,17 +1779,60 @@
       "affiliateLinkCount": 0,
       "qualityScore": 74,
       "seriesId": "kpop-business-analysis",
-      "seriesPart": 1
+      "seriesPart": 1,
+      "engagementScore": 16,
+      "estimatedRpm": 4,
+      "estimatedRevenue": 0.024
+    },
+    {
+      "keyword": "best Korean lip oil for glass lips ranked 2026",
+      "postId": 88700,
+      "postUrl": "https://trendhunt.net/best-korean-lip-oil-glass-lips/",
+      "publishedAt": "2026-03-22T14:39:04.907Z",
+      "niche": "k-beauty-skincare",
+      "contentType": "best-x-for-y",
+      "titleCandidates": [
+        "Best Korean Lip Oils for Glass Lips: 7 Ranked (2026)",
+        "Korean Glass Lip Oils Ranked: rom&nd, FWEE & More (2026)"
+      ],
+      "originalTitle": "7 Best Korean Lip Oils for Glass Lips Ranked (2026)",
+      "searchIntent": "commercial",
+      "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/best-korean-lip-oil-glass-lips-ranked-2026-featured-2026.webp",
+      "featuredImageMediaId": 88695,
+      "affiliateLinkCount": 0,
+      "qualityScore": 68,
+      "seriesId": "skincare-routine-guide",
+      "seriesPart": 13
+    },
+    {
+      "keyword": "Korean BL drama vs Thai BL drama which to watch",
+      "postId": 88712,
+      "postUrl": "https://trendhunt.net/korean-bl-vs-thai-bl-drama/",
+      "publishedAt": "2026-03-22T14:41:23.790Z",
+      "niche": "k-entertainment-business",
+      "contentType": "x-vs-y",
+      "titleCandidates": [
+        "Korean BL Drama vs Thai BL: The Real Differences (2026)",
+        "Thai BL vs Korean BL Drama: Complete Beginner's Guide 2026"
+      ],
+      "originalTitle": "Korean BL vs Thai BL Drama: Which Should You Watch? (2026)",
+      "searchIntent": "commercial-investigation",
+      "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/korean-bl-drama-vs-thai-bl-drama-which-featured-2026.webp",
+      "featuredImageMediaId": 88708,
+      "affiliateLinkCount": 0,
+      "qualityScore": 88,
+      "seriesId": "k-entertainment-business-best-korean-dramas-on-netflix-",
+      "seriesPart": 10
     }
   ],
-  "lastRunAt": "2026-03-21T14:42:22.514Z",
-  "totalPosts": 59,
+  "lastRunAt": "2026-03-22T14:44:26.427Z",
+  "totalPosts": 61,
   "categoryLastPublished": {
     "korean-food-cooking": "2026-03-09T14:49:00.731Z",
     "korean-tech-ai": "2026-03-13T14:58:36.162Z",
     "korean-finance-stocks": "2026-03-13T14:59:25.920Z",
-    "k-beauty-skincare": "2026-03-21T14:36:02.533Z",
+    "k-beauty-skincare": "2026-03-22T14:39:04.905Z",
     "korea-travel-guide": "2026-03-12T15:04:37.207Z",
-    "k-entertainment-business": "2026-03-21T14:38:07.370Z"
+    "k-entertainment-business": "2026-03-22T14:41:23.788Z"
   }
 }
