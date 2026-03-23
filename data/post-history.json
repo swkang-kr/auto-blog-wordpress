@@ -760,7 +760,7 @@
       "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/korean-skincare-ingredients-actually-work-explained-featured-2026.webp",
       "featuredImageMediaId": 16228,
       "affiliateLinkCount": 0,
-      "engagementScore": 30,
+      "engagementScore": 0,
       "estimatedRpm": 8,
       "estimatedRevenue": 0.072,
       "titleTestPhaseBStarted": true,
@@ -850,9 +850,15 @@
           "position": 63.75,
           "clicks": 0,
           "impressions": 4
+        },
+        {
+          "date": "2026-03-23",
+          "position": 63.6,
+          "clicks": 0,
+          "impressions": 5
         }
       ],
-      "lastPosition": 63.75,
+      "lastPosition": 63.6,
       "engagementScore": 31,
       "estimatedRpm": 8,
       "estimatedRevenue": 0.04,
@@ -905,7 +911,11 @@
       "seriesPart": 1,
       "engagementScore": 38,
       "estimatedRpm": 8,
-      "estimatedRevenue": 0.064
+      "estimatedRevenue": 0.064,
+      "titleTestPhaseBStarted": true,
+      "titleTestPhaseBTitle": "Build a Korean Skincare Routine in 4 Weeks: Beginner's 2026 Stack",
+      "titleTestWinner": "Korean Skincare Routine for Beginners: Step-by-Step 2026",
+      "titleTestResolved": true
     },
     {
       "keyword": "BTS members solo activities ranked 2026",
@@ -925,7 +935,11 @@
       "affiliateLinkCount": 0,
       "engagementScore": 41,
       "estimatedRpm": 4,
-      "estimatedRevenue": 0.028
+      "estimatedRevenue": 0.028,
+      "titleTestPhaseBStarted": true,
+      "titleTestPhaseBTitle": "How to Follow Every BTS Solo Career in 2026 (Complete Guide)",
+      "titleTestWinner": "BTS Members Solo Activities Ranked 2026: Who Shines Most",
+      "titleTestResolved": true
     },
     {
       "keyword": "best Korean moisturizer under 30 dollars Amazon 2026",
@@ -977,7 +991,11 @@
           "impressions": 1
         }
       ],
-      "lastPosition": 50
+      "lastPosition": 50,
+      "titleTestPhaseBStarted": true,
+      "titleTestPhaseBTitle": "7 Best Korean Moisturizers Under $30 on Amazon — 2026 Ranked",
+      "titleTestWinner": "Best Korean Moisturizers Under $30 on Amazon (2026)",
+      "titleTestResolved": true
     },
     {
       "keyword": "best Korean dramas on Netflix 2026 must watch",
@@ -1029,7 +1047,11 @@
           "impressions": 1
         }
       ],
-      "lastPosition": 50
+      "lastPosition": 50,
+      "titleTestPhaseBStarted": true,
+      "titleTestPhaseBTitle": "Top 10 Must-Watch Korean Dramas on Netflix in 2026",
+      "titleTestWinner": "Best Korean Dramas on Netflix 2026: Must-Watch List",
+      "titleTestResolved": true
     },
     {
       "keyword": "COSRX vs CeraVe which is better for sensitive skin",
@@ -1048,7 +1070,11 @@
       "featuredImageMediaId": 33329,
       "affiliateLinkCount": 0,
       "seriesId": "skincare-routine-guide",
-      "seriesPart": 3
+      "seriesPart": 3,
+      "titleTestPhaseBStarted": true,
+      "titleTestPhaseBTitle": "COSRX vs CeraVe: Sensitive Skin Ingredient Breakdown 2026",
+      "titleTestWinner": "COSRX vs CeraVe for Sensitive Skin: 2026 Verdict",
+      "titleTestResolved": true
     },
     {
       "keyword": "best K-pop reality shows to watch 2026",
@@ -1500,7 +1526,7 @@
       "lastPosition": 50,
       "engagementScore": 18,
       "estimatedRpm": 8,
-      "estimatedRevenue": 0.048
+      "estimatedRevenue": 0.08
     },
     {
       "keyword": "how K-pop charts work complete beginner guide",
@@ -1757,9 +1783,9 @@
       "qualityScore": 78,
       "seriesId": "skincare-routine-guide",
       "seriesPart": 12,
-      "engagementScore": 2,
+      "engagementScore": 34,
       "estimatedRpm": 8,
-      "estimatedRevenue": 0.04
+      "estimatedRevenue": 0.048
     },
     {
       "keyword": "K-pop agency tour Seoul HYBE Insight SM Artium JYP complete guide 2026",
@@ -1780,9 +1806,9 @@
       "qualityScore": 74,
       "seriesId": "kpop-business-analysis",
       "seriesPart": 1,
-      "engagementScore": 16,
+      "engagementScore": 44,
       "estimatedRpm": 4,
-      "estimatedRevenue": 0.024
+      "estimatedRevenue": 0.028
     },
     {
       "keyword": "best Korean lip oil for glass lips ranked 2026",
@@ -1802,7 +1828,10 @@
       "affiliateLinkCount": 0,
       "qualityScore": 68,
       "seriesId": "skincare-routine-guide",
-      "seriesPart": 13
+      "seriesPart": 13,
+      "engagementScore": 1,
+      "estimatedRpm": 8,
+      "estimatedRevenue": 0.016
     },
     {
       "keyword": "Korean BL drama vs Thai BL drama which to watch",
@@ -1822,17 +1851,60 @@
       "affiliateLinkCount": 0,
       "qualityScore": 88,
       "seriesId": "k-entertainment-business-best-korean-dramas-on-netflix-",
-      "seriesPart": 10
+      "seriesPart": 10,
+      "engagementScore": 5,
+      "estimatedRpm": 4,
+      "estimatedRevenue": 0.024
+    },
+    {
+      "keyword": "collagen banking skincare routine Korean products 20s 30s prevention guide 2026",
+      "postId": 88739,
+      "postUrl": "https://trendhunt.net/korean-collagen-banking-skincare-routine/",
+      "publishedAt": "2026-03-23T15:05:25.087Z",
+      "niche": "k-beauty-skincare",
+      "contentType": "how-to",
+      "titleCandidates": [
+        "Collagen Banking Korean Skincare: 20s & 30s Guide (2026)",
+        "Pro-Aging Korean Routine: Collagen Banking for Your 20s & 30s"
+      ],
+      "originalTitle": "Korean Collagen Banking Routine for Your 20s & 30s (2026)",
+      "searchIntent": "informational",
+      "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/collagen-banking-skincare-routine-korean-products-20s-30s-featured-2026.webp",
+      "featuredImageMediaId": 88734,
+      "affiliateLinkCount": 0,
+      "qualityScore": 83,
+      "seriesId": "skincare-routine-guide",
+      "seriesPart": 14
+    },
+    {
+      "keyword": "saesang fan culture explained why it happens K-pop idol privacy guide 2026",
+      "postId": 88751,
+      "postUrl": "https://trendhunt.net/saesang-fan-culture-explained-kpop-idol/",
+      "publishedAt": "2026-03-23T15:07:43.560Z",
+      "niche": "k-entertainment-business",
+      "contentType": "deep-dive",
+      "titleCandidates": [
+        "K-Pop's Saesang Problem: Psychology, Industry Failures & Fan Guide",
+        "Obsessive Fan Behavior in K-Pop: The Saesang Deep-Dive (2026)"
+      ],
+      "originalTitle": "Saesang Fan Culture Explained: Why It Happens & Idol Privacy (2026)",
+      "searchIntent": "informational",
+      "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/saesang-fan-culture-explained-happens-kpop-idol-privacy-featured-2026.webp",
+      "featuredImageMediaId": 88747,
+      "affiliateLinkCount": 0,
+      "qualityScore": 71,
+      "seriesId": "k-entertainment-business-best-korean-dramas-on-netflix-",
+      "seriesPart": 11
     }
   ],
-  "lastRunAt": "2026-03-22T14:44:26.427Z",
-  "totalPosts": 61,
+  "lastRunAt": "2026-03-23T15:19:02.072Z",
+  "totalPosts": 63,
   "categoryLastPublished": {
     "korean-food-cooking": "2026-03-09T14:49:00.731Z",
     "korean-tech-ai": "2026-03-13T14:58:36.162Z",
     "korean-finance-stocks": "2026-03-13T14:59:25.920Z",
-    "k-beauty-skincare": "2026-03-22T14:39:04.905Z",
+    "k-beauty-skincare": "2026-03-23T15:05:25.085Z",
     "korea-travel-guide": "2026-03-12T15:04:37.207Z",
-    "k-entertainment-business": "2026-03-22T14:41:23.788Z"
+    "k-entertainment-business": "2026-03-23T15:07:43.548Z"
   }
 }
