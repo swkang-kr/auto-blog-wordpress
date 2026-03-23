@@ -2573,9 +2573,13 @@ ${ga4TrackingScript}`;
 
         // For future/scheduled posts WordPress returns ?p=XXXXX — derive clean URL from slug instead
         const resolvedSlug = response.data.slug || content.slug || '';
-        const resolvedUrl = (response.data.link?.includes('?p=') && resolvedSlug)
+        // WordPress REST API may return link as string or as { rendered: "..." } object
+        const rawLink = typeof response.data.link === 'string'
+          ? response.data.link
+          : (response.data.link as { rendered?: string })?.rendered || `${this.wpUrl}/${resolvedSlug}/`;
+        const resolvedUrl = (rawLink.includes('?p=') && resolvedSlug)
           ? `${this.wpUrl}/${resolvedSlug}/`
-          : response.data.link;
+          : rawLink;
 
         const post: PublishedPost = {
           postId: response.data.id,
