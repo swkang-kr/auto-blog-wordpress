@@ -1943,7 +1943,12 @@ async function main(): Promise<void> {
     );
     const { broken, fixed } = await linkCheckService.checkBrokenExternalLinks(20);
     if (broken > 0) {
-      logger.info(`Broken link maintenance: ${broken} broken link(s) found, ${fixed} post(s) updated`);
+      logger.info(`Broken external link maintenance: ${broken} broken link(s) found, ${fixed} post(s) updated`);
+    }
+    // Fix broken internal links (deleted posts, hallucinated category/guide pages)
+    const intResult = await linkCheckService.fixBrokenInternalLinks(50);
+    if (intResult.broken > 0) {
+      logger.info(`Broken internal link maintenance: ${intResult.broken} broken link(s) found, ${intResult.fixed} post(s) updated`);
     }
   } catch (error) {
     logger.warn(`Broken link check failed: ${error instanceof Error ? error.message : error}`);

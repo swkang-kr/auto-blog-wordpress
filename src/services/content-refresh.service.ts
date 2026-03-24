@@ -1572,6 +1572,104 @@ Return pure JSON only.`;
   }
 
   /**
+   * Fix broken internal links (404 self-referencing URLs and hallucinated category/guide pages).
+   * Strips <a> tags but keeps anchor text for internal links returning 404.
+   * Also removes hallucinated /category/ and /guide-.../ URLs that don't exist.
+   */
+  async fixBrokenInternalLinks(limit: number = 50): Promise<{ checked: number; broken: number; fixed: number }> {
+    let checked = 0;
+    let broken = 0;
+    let fixed = 0;
+
+    try {
+      const { data: posts } = await this.api.get('/posts', {
+        params: { per_page: limit, status: 'publish', _fields: 'id,content,title', orderby: 'modified', order: 'asc' },
+      });
+
+      if (!Array.isArray(posts) || posts.length === 0) return { checked: 0, broken: 0, fixed: 0 };
+
+      // Build a set of all valid internal URLs for fast lookup
+      const { data: allPosts } = await this.api.get('/posts', {
+        params: { per_page: 100, status: 'publish', _fields: 'link,slug' },
+      });
+      const validSlugs = new Set(
+        (allPosts as Array<{ link: string; slug: string }>).map(p => `/${p.slug}/`),
+      );
+
+      const siteHost = new URL(this.wpUrl).hostname;
+
+      for (const post of posts as Array<{ id: number; content: { rendered: string }; title: { rendered: string } }>) {
+        const content = post.content?.rendered || '';
+        // Match internal links (same domain, no target="_blank")
+        const internalLinkRegex = new RegExp(
+          `<a\\s+[^>]*href="(https?://[^"]*${siteHost.replace(/\./g, '\\.')}[^"]*)"[^>]*>(.*?)</a>`,
+          'gi',
+        );
+        const links: Array<{ full: string; url: string; text: string; path: string }> = [];
+        let match;
+        while ((match = internalLinkRegex.exec(content)) !== null) {
+          try {
+            const urlObj = new URL(match[1]);
+            links.push({ full: match[0], url: match[1], text: match[2], path: urlObj.pathname });
+          } catch { /* invalid URL, skip */ }
+        }
+
+        if (links.length === 0) continue;
+
+        let updatedContent = content;
+        let postFixed = false;
+
+        for (const link of links) {
+          checked++;
+          // Check for hallucinated category/guide/author pages
+          const isHallucinatedPage = /^\/(category|guide-|author|tag)\//i.test(link.path);
+          // Check if path matches a known post slug
+          const normalizedPath = link.path.endsWith('/') ? link.path : `${link.path}/`;
+          const isKnownPost = validSlugs.has(normalizedPath) || normalizedPath === '/';
+
+          if (isHallucinatedPage || !isKnownPost) {
+            // Verify it's actually 404 by checking (skip hallucinated pages — they're always broken)
+            if (isHallucinatedPage) {
+              updatedContent = updatedContent.replace(link.full, link.text);
+              broken++;
+              postFixed = true;
+              logger.warn(`Broken internal link removed from "${post.title.rendered.slice(0, 50)}": ${link.path} (hallucinated page)`);
+            } else {
+              // HEAD check to confirm 404
+              try {
+                const resp = await axios.head(link.url, { timeout: 5000, validateStatus: () => true });
+                if (resp.status === 404) {
+                  updatedContent = updatedContent.replace(link.full, link.text);
+                  broken++;
+                  postFixed = true;
+                  logger.warn(`Broken internal link removed from "${post.title.rendered.slice(0, 50)}": ${link.path} (404)`);
+                }
+              } catch { /* network error, skip */ }
+            }
+          }
+        }
+
+        if (postFixed) {
+          try {
+            await this.api.post(`/posts/${post.id}`, { content: updatedContent });
+            fixed++;
+          } catch {
+            logger.warn(`Failed to update post ${post.id} after internal link fix`);
+          }
+        }
+      }
+    } catch (error) {
+      logger.warn(`Internal link fix failed: ${error instanceof Error ? error.message : error}`);
+    }
+
+    if (broken > 0) {
+      logger.info(`Internal link fix: checked ${checked}, found ${broken} broken, fixed ${fixed} post(s)`);
+    }
+
+    return { checked, broken, fixed };
+  }
+
+  /**
    * Optimize existing posts for Featured Snippet capture.
    * Targets queries at positions 2-10 with 20+ impressions from GSC data.
    * Inserts optimized content structures based on snippet type:
