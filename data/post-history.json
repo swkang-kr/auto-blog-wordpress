@@ -862,9 +862,15 @@
           "position": 63,
           "clicks": 0,
           "impressions": 4
+        },
+        {
+          "date": "2026-03-25",
+          "position": 63.4,
+          "clicks": 0,
+          "impressions": 5
         }
       ],
-      "lastPosition": 63,
+      "lastPosition": 63.4,
       "engagementScore": 31,
       "estimatedRpm": 8,
       "estimatedRevenue": 0.04,
@@ -1243,7 +1249,11 @@
           "impressions": 1
         }
       ],
-      "lastPosition": 50
+      "lastPosition": 50,
+      "titleTestPhaseBStarted": true,
+      "titleTestPhaseBTitle": "Korean Sheet Masks for Glowing Skin: Ranked by Ingredient Science (2026)",
+      "titleTestWinner": "10 Best Korean Sheet Masks for Glowing Skin (2026 Ranked)",
+      "titleTestResolved": true
     },
     {
       "keyword": "spring K-pop festivals outdoor concerts Korea 2026",
@@ -1262,7 +1272,11 @@
       "featuredImageMediaId": 45018,
       "affiliateLinkCount": 0,
       "seriesId": "k-entertainment-business-best-korean-dramas-on-netflix-",
-      "seriesPart": 4
+      "seriesPart": 4,
+      "titleTestPhaseBStarted": true,
+      "titleTestPhaseBTitle": "Spring K-Pop Outdoor Concerts Korea 2026: 10 Best Events",
+      "titleTestWinner": "Best Spring K-Pop Festivals & Outdoor Concerts Korea 2026",
+      "titleTestResolved": true
     },
     {
       "keyword": "aespa Supernova era what happened explained",
@@ -1279,7 +1293,11 @@
       "searchIntent": "informational",
       "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/aespa-supernova-era-happened-explained-featured-2026.webp",
       "featuredImageMediaId": 47739,
-      "affiliateLinkCount": 0
+      "affiliateLinkCount": 0,
+      "titleTestPhaseBStarted": true,
+      "titleTestPhaseBTitle": "aespa Supernova Era Explained: SM's Boldest Strategic Bet",
+      "titleTestWinner": "aespa's Supernova Era: What Happened and Why It Matters",
+      "titleTestResolved": true
     },
     {
       "keyword": "how to build a Korean glass skin routine on a budget",
@@ -1298,7 +1316,11 @@
       "featuredImageMediaId": 49861,
       "affiliateLinkCount": 0,
       "seriesId": "skincare-routine-guide",
-      "seriesPart": 5
+      "seriesPart": 5,
+      "titleTestPhaseBStarted": true,
+      "titleTestPhaseBTitle": "How to Get Glass Skin with Affordable Korean Products (2026)",
+      "titleTestWinner": "Korean Glass Skin Routine on a Budget (2026 Guide)",
+      "titleTestResolved": true
     },
     {
       "keyword": "Melon Music Awards 2026 predictions ranked",
@@ -1317,7 +1339,11 @@
       "featuredImageMediaId": 50783,
       "affiliateLinkCount": 0,
       "seriesId": "k-entertainment-business-most-watched-k-dramas-of-2026-",
-      "seriesPart": 2
+      "seriesPart": 2,
+      "titleTestPhaseBStarted": true,
+      "titleTestPhaseBTitle": "MMA 2026: How Melon Chart Data Predicts the Winners",
+      "titleTestWinner": "Melon Music Awards 2026: Predictions and Top Contenders",
+      "titleTestResolved": true
     },
     {
       "keyword": "Torriden dive-in serum vs COSRX hyaluronic acid review",
@@ -1550,9 +1576,9 @@
         }
       ],
       "lastPosition": 50,
-      "engagementScore": 18,
+      "engagementScore": 17,
       "estimatedRpm": 8,
-      "estimatedRevenue": 0.104
+      "estimatedRevenue": 0.12
     },
     {
       "keyword": "how K-pop charts work complete beginner guide",
@@ -1901,9 +1927,9 @@
       "qualityScore": 83,
       "seriesId": "skincare-routine-guide",
       "seriesPart": 14,
-      "engagementScore": 6,
+      "engagementScore": 34,
       "estimatedRpm": 8,
-      "estimatedRevenue": 0.096
+      "estimatedRevenue": 0.104
     },
     {
       "keyword": "saesang fan culture explained why it happens K-pop idol privacy guide 2026",
@@ -1924,9 +1950,9 @@
       "qualityScore": 71,
       "seriesId": "k-entertainment-business-best-korean-dramas-on-netflix-",
       "seriesPart": 11,
-      "engagementScore": 4,
+      "engagementScore": 34,
       "estimatedRpm": 4,
-      "estimatedRevenue": 0.024
+      "estimatedRevenue": 0.028
     },
     {
       "keyword": "best Korean lip tints 2026 long-lasting shades beginners guide",
@@ -1946,7 +1972,10 @@
       "affiliateLinkCount": 0,
       "qualityScore": 91,
       "seriesId": "skincare-routine-guide",
-      "seriesPart": 15
+      "seriesPart": 15,
+      "engagementScore": 3,
+      "estimatedRpm": 8,
+      "estimatedRevenue": 0.064
     },
     {
       "keyword": "Korean entertainment Big 4 SM JYP YG HYBE training system compared 2026",
@@ -1966,16 +1995,39 @@
       "affiliateLinkCount": 0,
       "qualityScore": 82,
       "seriesId": "kpop-business-analysis",
-      "seriesPart": 2
+      "seriesPart": 2,
+      "engagementScore": 4,
+      "estimatedRpm": 4,
+      "estimatedRevenue": 0.032
+    },
+    {
+      "keyword": "ceramide types NP AP EOP explained which Korean product has best ceramide guide",
+      "postId": 88858,
+      "postUrl": "https://trendhunt.net/ceramide-types-np-ap-eop-korean/",
+      "publishedAt": "2026-03-25T15:07:51.791Z",
+      "niche": "k-beauty-skincare",
+      "contentType": "deep-dive",
+      "titleCandidates": [
+        "Ceramide NP vs AP vs EOP: Which Korean Product Has the Best Formula?",
+        "Korean Ceramide Moisturizers Ranked by Science: NP, AP & EOP Explained (2026)"
+      ],
+      "originalTitle": "Ceramide Types NP, AP & EOP: Best Korean Products Ranked (2026)",
+      "searchIntent": "informational",
+      "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/ceramide-types-np-ap-eop-explained-which-korean-featured-2026.webp",
+      "featuredImageMediaId": 88855,
+      "affiliateLinkCount": 0,
+      "qualityScore": 75,
+      "seriesId": "skincare-routine-guide",
+      "seriesPart": 16
     }
   ],
-  "lastRunAt": "2026-03-24T15:17:13.332Z",
-  "totalPosts": 65,
+  "lastRunAt": "2026-03-25T15:14:41.315Z",
+  "totalPosts": 66,
   "categoryLastPublished": {
     "korean-food-cooking": "2026-03-09T14:49:00.731Z",
     "korean-tech-ai": "2026-03-13T14:58:36.162Z",
     "korean-finance-stocks": "2026-03-13T14:59:25.920Z",
-    "k-beauty-skincare": "2026-03-24T15:06:19.637Z",
+    "k-beauty-skincare": "2026-03-25T15:07:51.789Z",
     "korea-travel-guide": "2026-03-12T15:04:37.207Z",
     "k-entertainment-business": "2026-03-24T15:08:46.765Z"
   }
