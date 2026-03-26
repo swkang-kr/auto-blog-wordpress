@@ -566,7 +566,7 @@
       "searchIntent": "commercial-investigation",
       "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/best-korean-sunscreen-outdoor-activities-spring-2026-featured-2026.webp",
       "featuredImageMediaId": 15036,
-      "engagementScore": 66,
+      "engagementScore": 0,
       "rankingHistory": [
         {
           "date": "2026-03-16",
@@ -868,9 +868,15 @@
           "position": 63.4,
           "clicks": 0,
           "impressions": 5
+        },
+        {
+          "date": "2026-03-26",
+          "position": 64,
+          "clicks": 0,
+          "impressions": 4
         }
       ],
-      "lastPosition": 63.4,
+      "lastPosition": 64,
       "engagementScore": 31,
       "estimatedRpm": 8,
       "estimatedRevenue": 0.04,
@@ -1360,7 +1366,11 @@
       "searchIntent": "commercial-investigation",
       "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/torriden-divein-serum-vs-cosrx-hyaluronic-acid-review-featured-2026.webp",
       "featuredImageMediaId": 54942,
-      "affiliateLinkCount": 0
+      "affiliateLinkCount": 0,
+      "titleTestPhaseBStarted": true,
+      "titleTestPhaseBTitle": "Torriden DIVE-IN vs COSRX HA Serum: 2026 Skin Type Guide",
+      "titleTestWinner": "Torriden Dive-In vs COSRX Hyaluronic Acid: Which Wins?",
+      "titleTestResolved": true
     },
     {
       "keyword": "Laneige lip sleeping mask vs Tatcha review comparison",
@@ -1377,7 +1387,11 @@
       "searchIntent": "commercial-investigation",
       "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/laneige-lip-sleeping-mask-vs-tatcha-review-comparison-featured-2026.webp",
       "featuredImageMediaId": 57208,
-      "affiliateLinkCount": 0
+      "affiliateLinkCount": 0,
+      "titleTestPhaseBStarted": true,
+      "titleTestPhaseBTitle": "Laneige vs Tatcha Lip Mask: Korean Innovation Wins in 2026?",
+      "titleTestWinner": "Laneige Lip Mask vs Tatcha: Which Is Worth It in 2026?",
+      "titleTestResolved": true
     },
     {
       "keyword": "BABYMONSTER debut songs ranked 2026",
@@ -1396,7 +1410,11 @@
       "featuredImageMediaId": 59714,
       "affiliateLinkCount": 0,
       "seriesId": "k-entertainment-business-most-watched-k-dramas-of-2026-",
-      "seriesPart": 3
+      "seriesPart": 3,
+      "titleTestPhaseBStarted": true,
+      "titleTestPhaseBTitle": "BABYMONSTER Songs Ranked: Best Entry Points by Fan Type (2026)",
+      "titleTestWinner": "BABYMONSTER Debut Songs Ranked for New Fans (2026)",
+      "titleTestResolved": true
     },
     {
       "keyword": "Beauty of Joseon relief sun rice probiotics review",
@@ -1413,7 +1431,11 @@
       "searchIntent": "commercial-investigation",
       "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/beauty-joseon-relief-sun-rice-probiotics-review-featured-2026.webp",
       "featuredImageMediaId": 60402,
-      "affiliateLinkCount": 0
+      "affiliateLinkCount": 0,
+      "titleTestPhaseBStarted": true,
+      "titleTestPhaseBTitle": "Beauty of Joseon Relief Sun SPF 50+: Is the Probiotic Hype Real?",
+      "titleTestWinner": "Beauty of Joseon Relief Sun Review: Rice & Probiotics SPF 50+",
+      "titleTestResolved": true
     },
     {
       "keyword": "COSRX snail mucin essence review before and after",
@@ -1430,7 +1452,11 @@
       "searchIntent": "commercial-investigation",
       "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/cosrx-snail-mucin-essence-review-before-after-featured-2026.webp",
       "featuredImageMediaId": 63560,
-      "affiliateLinkCount": 0
+      "affiliateLinkCount": 0,
+      "titleTestPhaseBStarted": true,
+      "titleTestPhaseBTitle": "COSRX Snail Mucin 96: 30-Day Before and After Results (2026)",
+      "titleTestWinner": "COSRX Snail Mucin Essence: Honest Before and After Review",
+      "titleTestResolved": true
     },
     {
       "keyword": "best SKIN1004 Madagascar centella products ranked",
@@ -1578,7 +1604,7 @@
       "lastPosition": 50,
       "engagementScore": 17,
       "estimatedRpm": 8,
-      "estimatedRevenue": 0.12
+      "estimatedRevenue": 0.128
     },
     {
       "keyword": "how K-pop charts work complete beginner guide",
@@ -1973,9 +1999,9 @@
       "qualityScore": 91,
       "seriesId": "skincare-routine-guide",
       "seriesPart": 15,
-      "engagementScore": 3,
+      "engagementScore": 29,
       "estimatedRpm": 8,
-      "estimatedRevenue": 0.064
+      "estimatedRevenue": 0.08
     },
     {
       "keyword": "Korean entertainment Big 4 SM JYP YG HYBE training system compared 2026",
@@ -1996,9 +2022,9 @@
       "qualityScore": 82,
       "seriesId": "kpop-business-analysis",
       "seriesPart": 2,
-      "engagementScore": 4,
+      "engagementScore": 31,
       "estimatedRpm": 4,
-      "estimatedRevenue": 0.032
+      "estimatedRevenue": 0.036
     },
     {
       "keyword": "ceramide types NP AP EOP explained which Korean product has best ceramide guide",
@@ -2018,17 +2044,60 @@
       "affiliateLinkCount": 0,
       "qualityScore": 75,
       "seriesId": "skincare-routine-guide",
-      "seriesPart": 16
+      "seriesPart": 16,
+      "engagementScore": 3,
+      "estimatedRpm": 8,
+      "estimatedRevenue": 0.016
+    },
+    {
+      "keyword": "best Korean comfort healing dramas 2026 low stress feel good ranked guide",
+      "postId": 88894,
+      "postUrl": "https://trendhunt.net/best-korean-comfort-healing-dramas-2026/",
+      "publishedAt": "2026-03-26T15:13:08.948Z",
+      "niche": "k-entertainment-business",
+      "contentType": "best-x-for-y",
+      "titleCandidates": [
+        "Korean Healing Dramas Ranked by Emotional Need (2026 Guide)",
+        "치유 드라마: 15 Feel-Good Korean Dramas for Every Mood (2026)"
+      ],
+      "originalTitle": "15 Best Korean Comfort Dramas to Watch in 2026",
+      "searchIntent": "commercial",
+      "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/best-korean-comfort-healing-dramas-2026-low-stress-featured-2026.webp",
+      "featuredImageMediaId": 88889,
+      "affiliateLinkCount": 0,
+      "qualityScore": 74,
+      "seriesId": "k-entertainment-business-best-korean-dramas-on-netflix-",
+      "seriesPart": 12
+    },
+    {
+      "keyword": "Banila Co Clean It Zero vs Heimish All Clean Balm comparison which is better 2026",
+      "postId": 88905,
+      "postUrl": "https://trendhunt.net/banila-co-clean-zero-vs-heimish/",
+      "publishedAt": "2026-03-26T15:15:40.981Z",
+      "niche": "k-beauty-skincare",
+      "contentType": "x-vs-y",
+      "titleCandidates": [
+        "Banila Co Clean It Zero vs Heimish: 2026 Skin-Type Verdict",
+        "Heimish vs Banila Co Cleansing Balm: Which Wins for Your Skin?"
+      ],
+      "originalTitle": "Banila Co vs Heimish Cleansing Balm: Which Is Better? (2026)",
+      "searchIntent": "commercial-investigation",
+      "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/banila-co-clean-zero-vs-heimish-all-clean-featured-2026.webp",
+      "featuredImageMediaId": 88902,
+      "affiliateLinkCount": 0,
+      "qualityScore": 79,
+      "seriesId": "skincare-routine-guide",
+      "seriesPart": 17
     }
   ],
-  "lastRunAt": "2026-03-25T15:14:41.315Z",
-  "totalPosts": 66,
+  "lastRunAt": "2026-03-26T15:22:57.102Z",
+  "totalPosts": 68,
   "categoryLastPublished": {
     "korean-food-cooking": "2026-03-09T14:49:00.731Z",
     "korean-tech-ai": "2026-03-13T14:58:36.162Z",
     "korean-finance-stocks": "2026-03-13T14:59:25.920Z",
-    "k-beauty-skincare": "2026-03-25T15:07:51.789Z",
+    "k-beauty-skincare": "2026-03-26T15:15:40.979Z",
     "korea-travel-guide": "2026-03-12T15:04:37.207Z",
-    "k-entertainment-business": "2026-03-24T15:08:46.765Z"
+    "k-entertainment-business": "2026-03-26T15:13:08.946Z"
   }
 }
