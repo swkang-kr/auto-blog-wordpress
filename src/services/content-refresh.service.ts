@@ -1002,7 +1002,15 @@ Return pure JSON only. No markdown.`;
       }
 
       if (endIdx === -1) return null;
-      const result = JSON.parse(cleaned.slice(startIdx, endIdx + 1)) as { title: string; html: string; excerpt: string };
+      const rawJson = cleaned.slice(startIdx, endIdx + 1);
+      let result: { title: string; html: string; excerpt: string };
+      try {
+        result = JSON.parse(rawJson);
+      } catch {
+        // JSON parse failed — try jsonrepair for malformed Claude output
+        const { jsonrepair } = await import('jsonrepair');
+        result = JSON.parse(jsonrepair(rawJson));
+      }
 
       const newWordCount = result.html.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
       if (newWordCount < 2000) {
