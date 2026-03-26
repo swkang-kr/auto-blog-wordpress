@@ -974,12 +974,14 @@ Return JSON: {"title":"improved title","html":"full HTML content","excerpt":"com
 Return pure JSON only. No markdown.`;
 
     try {
-      const response = await this.claude.messages.create({
+      // Use streaming to avoid Anthropic SDK timeout for long-running requests
+      const stream = this.claude.messages.stream({
         model: this.model,
         max_tokens: 32000,
         temperature: 0.7,
         messages: [{ role: 'user', content: prompt }],
       });
+      const response = await stream.finalMessage();
 
       costTracker.addClaudeCall(this.model, response.usage?.input_tokens || 0, response.usage?.output_tokens || 0);
 
