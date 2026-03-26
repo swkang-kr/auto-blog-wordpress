@@ -9,7 +9,7 @@ import type { GA4AnalyticsService } from './ga4-analytics.service.js';
 import type { GSCAnalyticsService } from './gsc-analytics.service.js';
 import type { SeoService } from './seo.service.js';
 
-interface WPPost {
+export interface WPPost {
   id: number;
   title: { rendered: string };
   slug: string;
@@ -1569,6 +1569,16 @@ Return pure JSON only.`;
     }
 
     return { checked, broken, fixed };
+  }
+
+  /**
+   * Public wrapper for rewriteContent — used by manual rewrite script.
+   */
+  async rewriteSinglePost(
+    post: WPPost,
+    perf?: { pageviews: number; bounceRate: number; avgEngagementTime: number },
+  ): Promise<{ title: string; html: string; excerpt: string } | null> {
+    return this.rewriteContent(post, perf ?? { pageviews: 0, bounceRate: 1.0, avgEngagementTime: 0 });
   }
 
   /**

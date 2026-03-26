@@ -1,0 +1,39 @@
+name: Rewrite Post
+
+on:
+  workflow_dispatch:
+    inputs:
+      post_id:
+        description: 'WordPress Post ID to rewrite'
+        required: true
+        type: string
+      reason:
+        description: 'Reason for rewrite'
+        required: false
+        default: 'Manual quality improvement'
+
+permissions:
+  contents: write
+
+jobs:
+  rewrite:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Rewrite post
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USERNAME: ${{ secrets.WP_USERNAME }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          GOOGLE_INDEXING_SA_KEY: ${{ secrets.GOOGLE_INDEXING_SA_KEY }}
+          CLAUDE_MODEL: ${{ vars.CLAUDE_MODEL || 'claude-sonnet-4-6' }}
+        run: |
+          node --import tsx/esm src/scripts/rewrite-post.ts ${{ inputs.post_id }} --reason="${{ inputs.reason }}"
