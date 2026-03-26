@@ -942,12 +942,14 @@ PERFORMANCE DATA: ${perf.pageviews} views, ${(perf.bounceRate * 100).toFixed(0)}
 ${nicheRewriteRules}
 REWRITE RULES:
 1. Keep the same topic and primary keyword
-2. Add a much stronger opening hook (first paragraph must grab attention)
-3. Break up long paragraphs (max 3-4 sentences each)
-4. Add more subheadings (H2/H3) every 200-300 words
-5. Include more specific data points and Korean market context
+2. Add a much stronger opening hook — start with a surprising stat, bold claim, or provocative question. NEVER start with "In today's..." or "In this guide..."
+3. CRITICAL READABILITY: Every paragraph MUST be 3-4 sentences MAX. Break ALL long paragraphs ruthlessly. Mix short punchy sentences (5-8 words) with longer ones (20-30 words). Include at least 2 sentence fragments for natural rhythm.
+4. Add more subheadings (H2/H3) every 200-300 words — EACH section must start with a self-contained answer sentence
+5. Include more specific data points and Korean market context — target 3+ data points per 500 words (numbers, percentages, dates, rankings)
 6. Add a compelling FAQ section (3-5 questions) if missing
 7. Target 2,500+ words
+7b. MANDATORY: Include at least 2 <cite data-source="KEY" data-topic="TOPIC"> external source citations for E-E-A-T scoring
+7c. NEVER repeat the same sentence-opening pattern more than twice in the entire article. Vary sentence structure aggressively.
 8. Use the same inline CSS styling as the original
 9. Include "Last Updated: ${dateFormatted}" banner at top
 10. Add a "What Changed in This Update" section right after the Last Updated banner using this format:
