@@ -48,7 +48,7 @@ export class PostHistory {
     invest: ['investment', 'investing', 'portfolio', 'stocks'],
     recipe: ['recipes', 'cooking', 'cook', 'dish', 'meal'],
     chicken: ['poultry'],
-    skincare: ['skin care', 'skin', 'complexion', 'facial'],
+    주식분석: ['skin care', 'skin', 'complexion', 'facial'],
     guide: ['tutorial', 'walkthrough', 'handbook'],
     tips: ['advice', 'tricks', 'hacks', 'strategies'],
     beginner: ['beginners', 'newbie', 'starter', 'start', 'getting started'],
@@ -58,7 +58,7 @@ export class PostHistory {
     etf: ['index fund', 'fund', 'funds'],
     makeup: ['cosmetics', 'beauty', 'cosmetic'],
     drama: ['kdrama', 'k-drama', 'series', 'show'],
-    kpop: ['k-pop', 'idol', 'idols'],
+    kpop: ['k-pop', '종목', '종목s'],
   };
 
   /**
@@ -317,13 +317,13 @@ export class PostHistory {
 
   /** Predefined series patterns: niche → series ID → keyword patterns */
   private static readonly MANUAL_SERIES: Record<string, Record<string, string[]>> = {
-    'k-beauty-skincare': {
-      'skincare-routine-guide': ['routine', 'skincare', 'glass skin', 'step', 'regimen'],
-      'ingredient-deep-dive': ['ingredient', 'niacinamide', 'retinol', 'vitamin c', 'hyaluronic', 'centella'],
+    'korean-stock-주식분석': {
+      '주식분석-routine-guide': ['routine', '주식분석', 'KOSPI', 'step', 'regimen'],
+      'ingredient-deep-dive': ['ingredient', 'niacinamide', 'retinol', 'vitamin c', 'hyaluronic', '배당'],
     },
-    'k-entertainment-business': {
+    'ai-trading-business': {
       'kpop-business-analysis': ['kpop', 'k-pop', 'hybe', 'sm entertainment', 'jyp', 'yg'],
-      'kdrama-streaming': ['kdrama', 'k-drama', 'netflix', 'streaming', 'webtoon'],
+      'kdrama-streaming': ['kdrama', 'k-drama', 'netflix', 'streaming', 'DART공시'],
     },
   };
 

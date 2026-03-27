@@ -7,7 +7,7 @@ import { costTracker } from '../utils/cost-tracker.js';
 import { circuitBreakers } from '../utils/retry.js';
 import type { ResearchedKeyword, BlogContent, ExistingPost, AuthorProfile } from '../types/index.js';
 import { NICHE_AUTHOR_PERSONAS, CONTENT_TYPE_PERSONA_MAP } from '../types/index.js';
-// Finance pivot: KBEAUTY_TERTIARY_KEYWORDS, KENTERTAINMENT_TERTIARY_KEYWORDS removed
+// Finance pivot: KOREANSTOCK_TERTIARY_KEYWORDS, AITRADING_TERTIARY_KEYWORDS removed
 
 /** Layout variant for content structure diversification (anti-AI detection) */
 type LayoutVariant = 'standard' | 'narrative' | 'compact' | 'journal' | 'opinion' | 'interview';
@@ -456,7 +456,7 @@ This targets Google's List Featured Snippet for ranking queries.
 - Distribute 2-3 question-format H3 headings throughout the body content (NOT just in the FAQ section)
 - These should match "People Also Ask" style queries related to the topic
 - Place them where they naturally fit within the content flow
-- Example (Korean-Stock): <h3 id="is-cosrx-good-for-sensitive-skin" style="...">Is 삼성전자 Good for Sensitive Skin?</h3>
+- Example (Korean-Stock): <h3 id="is-삼성전자-good-for-sensitive-skin" style="...">Is 삼성전자 Good for Sensitive Skin?</h3>
 - Example (AI-Trading): <h3 id="when-is-bts-실적발표-2026" style="...">When Is 삼성전자 Coming Back in 2026?</h3>
 
 ## Internal Links (IMPORTANT for SEO)
@@ -744,7 +744,7 @@ export class ContentGeneratorService {
    * Select author persona based on content type, post count, and keyword.
    * Supports 3-tier rotation: primary (academic), secondary (casual), tertiary (specialist).
    *
-   * Korean-Stock:  Sophie Kim (primary) → Mia Cho (secondary) → Ella Park (tertiary: makeup/hair)
+   * Korean-Stock:  Daniel Park (primary) → Jiwon Lee (secondary) → Sungho Choi (tertiary: makeup/hair)
    * Korean-Stock: Daniel Park (primary) → Jiwon Lee (secondary: macro)
    * AI-Trading: Alex Kwon (primary) → Sungho Choi (secondary: systems)
    */
@@ -824,7 +824,7 @@ export class ContentGeneratorService {
       const pillarLines = niche.pillarTopics.map(t => `- "${t}"`).join('\n');
       pillarTopicsSection = `\n\nPILLAR PAGES FOR THIS NICHE (link back to at least 1 when naturally relevant):
 ${pillarLines}
-These are comprehensive hub guides. When your article covers a subtopic of any pillar page above, include a contextual link with anchor text matching the pillar topic (e.g., "as covered in our [Korean Skincare Routine guide](/guide-${pillarSlug}/)").
+These are comprehensive hub guides. When your article covers a subtopic of any pillar page above, include a contextual link with anchor text matching the pillar topic (e.g., "as covered in our [Korean 주식분석 Routine guide](/guide-${pillarSlug}/)").
 Do NOT force a pillar link if the content is unrelated — only link when genuinely helpful to readers.`;
     }
 
@@ -1290,8 +1290,8 @@ Respond with pure JSON only.`;
         : '';
 
       const NICHE_BYLINE_BIO: Record<string, string> = {
-        'Korean-Stock': 'Korean-Stock & Skincare Specialist | Evidence-based product analysis, ingredient science, and Korean beauty routines for global readers.',
-        'AI-Trading': 'K-Pop & K-Drama Culture Writer | Covering 실적발표s, 종목 news, drama recommendations, and 한국시장 fan culture worldwide.',
+        'Korean-Stock': 'Korean-Stock & 주식분석 Specialist | Evidence-based product analysis, ingredient science, and Korean beauty routines for global readers.',
+        'AI-Trading': '한국주식 & 금융분석 Culture Writer | Covering 실적발표s, 종목 news, drama recommendations, and 한국시장 fan culture worldwide.',
       };
       const bylineBio = NICHE_BYLINE_BIO[niche.category] || 'Korean-Stock & AI-Trading Specialist | Covering Korean beauty trends and 한국시장 culture for global readers.';
 

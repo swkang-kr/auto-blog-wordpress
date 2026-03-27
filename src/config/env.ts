@@ -72,7 +72,7 @@ const envSchema = z.object({
   // Affiliate settings - optional JSON mapping of category to affiliate program URLs
   AFFILIATE_MAP: z.string().default(''),
   // Niche focus mode: comma-separated niche IDs to concentrate on for topical authority
-  // e.g., "k-beauty-skincare,k-beauty-makeup,k-entertainment-business"
+  // e.g., "korean-stock-주식분석,korean-stock-makeup,ai-trading-business"
   // When set, only these niches are used (ignoring others). Clear after cluster is built.
   NICHE_FOCUS_IDS: z.string().default(''),
   // Korean content generation: enable hreflang Korean versions of published posts

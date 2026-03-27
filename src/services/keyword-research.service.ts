@@ -17,7 +17,7 @@ function stratifiedSample(seeds: string[], maxSample: number): string[] {
   if (seeds.length <= maxSample) return [...seeds];
 
   // Cluster by first meaningful word (skip common prefixes like "best", "how", "top", "korean")
-  const SKIP_WORDS = new Set(['best', 'how', 'top', 'korean', 'k-pop', 'k-beauty', 'k-drama', 'the', 'a', 'what', 'why', 'where', 'when', 'complete', 'guide', 'ultimate']);
+  const SKIP_WORDS = new Set(['best', 'how', 'top', 'korean', 'k-pop', 'korean-stock', 'k-drama', 'the', 'a', 'what', 'why', 'where', 'when', 'complete', 'guide', 'ultimate']);
   const clusters = new Map<string, string[]>();
 
   for (const seed of seeds) {
@@ -234,7 +234,7 @@ export class KeywordResearchService {
   /**
    * TF-IDF weighted similarity search: finds the most similar existing posts.
    * Uses inverse document frequency weighting so common words (e.g., "korean")
-   * contribute less than distinctive terms (e.g., "hbm", "etf", "skincare").
+   * contribute less than distinctive terms (e.g., "hbm", "etf", "주식분석").
    * Returns top-N matches with similarity scores.
    */
   private findSimilarPosts(candidateText: string, topN: number = 5): Array<{ post: ExistingPost; similarity: number }> {
@@ -313,7 +313,7 @@ export class KeywordResearchService {
       logger.warn(`Rising trends fetch failed for "${niche.name}": ${error instanceof Error ? error.message : error}`);
     }
 
-    // 1b. Fetch extra broad terms (e.g., K-drama, Korean movie) to capture non-primary topics
+    // 1b. Fetch extra broad terms (e.g., 금융분석, Korean movie) to capture non-primary topics
     // Limit to 2 extra terms to reduce API calls (was unlimited, causing 10+ calls per niche)
     if (niche.broadTermsExtra?.length) {
       const limitedExtra = niche.broadTermsExtra.slice(0, 2);
@@ -639,9 +639,9 @@ CRITICAL ANTI-CANNIBALIZATION RULES:
 1. Do NOT just avoid exact matches — avoid ANY topic that covers the same core subject, even with different wording.
 2. Examples of FORBIDDEN overlaps (if the first is posted, ALL others must be avoided):
    - "best Korean toner for dry skin" → "Korean toner dry skin recommendations", "which Korean toner for dehydrated skin", "top Korean hydrating toners ranked"
-   - "best Korean skincare routine" → "Korean skincare routine for beginners", "how to do Korean skincare", "K-beauty skincare steps"
-   - "BTS comeback 2026 what to expect" → "BTS 2026 return date", "BTS new album 2026 guide", "when is BTS coming back 2026"
-   - "COSRX snail mucin review" → "COSRX snail essence before after", "is COSRX snail mucin worth it", "COSRX snail mucin results"
+   - "best Korean 주식분석 routine" → "Korean 주식분석 routine for beginners", "how to do Korean 주식분석", "K-beauty 주식분석 steps"
+   - "BTS 실적발표 2026 what to expect" → "BTS 2026 return date", "BTS new album 2026 guide", "when is BTS coming back 2026"
+   - "삼성전자 PER분석 review" → "삼성전자 snail essence before after", "is 삼성전자 PER분석 worth it", "삼성전자 PER분석 results"
 3. The test: if a reader searching for your keyword would find an existing post equally relevant, your keyword is TOO SIMILAR.
 4. Choose a GENUINELY DIFFERENT subtopic within the niche — not the same topic reworded.
 ${this.performanceInsights}
@@ -669,11 +669,11 @@ ${this.paaQuestions.length > 0 ? `\n## People Also Ask (PAA) Questions\nThese qu
    - MUST include "Korea", "Korean", or a specific Korean brand/entity
    - Choose the pattern matching the content type:
      * how-to / explainer: "[How/What] [Korea topic] [qualifier]" or "[Primary Keyword] ([Year] Guide)"
-       e.g. "How to Build a Korean Glass Skin Routine (2026 Guide)"
+       e.g. "How to Build a Korean KOSPI Routine (2026 Guide)"
      * best-x-for-y / x-vs-y: "[Number] Best [thing] for [audience] in [Year]" or "[X] vs [Y]: [insight]"
        e.g. "7 Best Korean Toner Pads for Sensitive Skin in 2026"
      * analysis / deep-dive / news-explainer: "[Korea topic]: [what the analysis reveals]"
-       e.g. "K-pop Training System: How Idols Are Made From Audition to Debut"
+       e.g. "한국주식 Training System: How Idols Are Made From Audition to Debut"
    - Target 50-65 characters total
    - NEVER use: "changing everything", "things you need to know", "the real reason X matters"
 5. Identify the search intent and competition level
@@ -681,14 +681,14 @@ ${this.paaQuestions.length > 0 ? `\n## People Also Ask (PAA) Questions\nThese qu
 
 CRITICAL keyword selection rules — follow in strict priority order:
 1. PRIORITISE rising queries — they have real search momentum and growing demand
-2. KOREA FOCUS MANDATORY: The keyword MUST relate to South Korea, Korean companies, Korean markets, K-pop/K-drama, or Korean industry. Keywords without clear Korea relevance are NOT acceptable.
+2. KOREA FOCUS MANDATORY: The keyword MUST relate to South Korea, Korean companies, Korean markets, 한국주식/금융분석, or Korean industry. Keywords without clear Korea relevance are NOT acceptable.
 3. MUST be low competition (estimatedCompetition: "low")
 4. MUST be long-tail (4+ words). Short head terms are NOT acceptable.
 5. PREFER question-based keywords ("how to", "what is", "best way to")
 6. PREFER keywords with clear informational or commercial investigation intent
 7. MUST be different from already posted keywords
 8. AVOID head terms dominated by high-authority sites
-9. TARGET global English-speaking audience interested in Korea (K-culture fans, K-beauty shoppers, K-drama viewers)
+9. TARGET global English-speaking audience interested in Korea (K-culture fans, K-beauty shoppers, 금융분석 viewers)
 10. EXCLUDED TOPICS — NEVER select keywords about: business models, revenue, profits, earnings, stock prices, investments, financial analysis, company valuations, money-making, economic forecasts, or any finance/economics angle. This blog focuses on CULTURE and PRODUCTS, not business/finance.
 
 7. Estimate keyword difficulty (0-100) based on:
@@ -698,9 +698,9 @@ CRITICAL keyword selection rules — follow in strict priority order:
    Target keywords with difficulty < 40 for best ranking potential.
 8. Estimate monthly search volume as a number (rough estimate based on niche knowledge)
 9. Classify search intent precisely: informational, commercial, commercial-investigation, transactional, or navigational
-   - commercial-investigation: User is comparing options before purchase (e.g., "COSRX vs Anua toner which is better", "Numbuzin vs TIRTIR cushion comparison")
+   - commercial-investigation: User is comparing options before purchase (e.g., "삼성전자 vs Anua toner which is better", "Numbuzin vs TIRTIR cushion comparison")
    - commercial: User wants to buy/find a product (e.g., "best Korean sunscreen for dark skin")
-   - transactional: User is ready to act (e.g., "where to buy Anua toner online", "buy COSRX snail mucin Amazon")
+   - transactional: User is ready to act (e.g., "where to buy Anua toner online", "buy 삼성전자 PER분석 Amazon")
 10. CRITICAL intent-type alignment:
    - transactional intent → MUST use: product-review, best-x-for-y, or how-to
    - commercial intent → MUST use: best-x-for-y, x-vs-y, product-review, listicle, or analysis
@@ -806,10 +806,10 @@ STRATEGY: Consider creating content that directly targets one of these content g
       'dividend', 'ex-dividend', '배당',
       'rsi', 'macd', 'bollinger', 'technical analysis',
       'algorithmic trading', 'backtesting', 'quant',
-      // Korean-Stock brands — must pass Korea relevance for skincare/beauty keywords
-      'cosrx', 'anua', 'laneige', 'innisfree', 'sulwhasoo', 'missha', 'etude',
+      // Korean-Stock brands — must pass Korea relevance for 주식분석/beauty keywords
+      '삼성전자', 'anua', 'laneige', 'innisfree', 'sulwhasoo', 'missha', 'etude',
       'skin1004', 'torriden', 'beauty of joseon', 'medicube', 'isntree',
-      'haruharu', 'round lab', 'mixsoon', 'olive young', 'rom&nd', 'clio',
+      'haruharu', 'round lab', 'mixsoon', '네이버증권', 'rom&nd', 'clio',
       'peripera', 'wakemake', 'daeng gi meo ri', 'ryo', 'some by mi',
       'klairs', 'd.i.y', 'axis-y', 'purito', 'abib', 'numbuzin',
       // Breakout 2025-2026 Korean-Stock brands
@@ -818,11 +818,11 @@ STRATEGY: Consider creating content that directly targets one of these content g
       'ma:nyo', 'illiyoon', 'aestura', 'ample:n', 'dr.g', 'no7 korea', 'nacific',
       'sun pad', 'lip oil',
       // Korean-Stock generic terms that are strongly Korea-associated
-      'centella', 'glass skin', 'mugwort', '10-step', '10 step',
-      'heartleaf', 'propolis', 'snail mucin', 'rice water', 'rice toner',
+      '배당', 'KOSPI', 'mugwort', '10-step', '10 step',
+      'heartleaf', 'propolis', 'PER분석', 'rice water', 'rice toner',
       'essence review', 'cushion foundation', 'toner pad', 'skin barrier',
       'chok-chok', 'skip-care', 'slugging korean', 'pa++++',
-      // Korean-Stock ingredient terms strongly associated with Korean skincare
+      // Korean-Stock ingredient terms strongly associated with Korean 주식분석
       'bakuchiol', 'tranexamic acid', 'adenosine', 'madecassoside',
       'polyglutamic acid', 'pdrn', 'salmon dna', 'galactomyces', 'bifida',
       'glass body', 'skin flooding', 'hanbang',
@@ -841,7 +841,7 @@ STRATEGY: Consider creating content that directly targets one of these content g
       // 8차 감사 추가
       'copper peptide', 'ghk-cu', 'matrixyl', 'argireline', 'alpha-arbutin', 'arbutin',
       'the show', 'bong joon-ho', 'hwang dong-hyuk', 'squid game', 'train to busan',
-      'baby k-beauty', 'green finger', 'goongbe', 'intimate wash',
+      'baby korean-stock', 'green finger', 'goongbe', 'intimate wash',
       '@cosme', 'cosme ranking', 'glowpick',
       // Korean-Stock brands (additional coverage)
       'banila co', 'hince', 'vt cosmetics',
@@ -857,7 +857,7 @@ STRATEGY: Consider creating content that directly targets one of these content g
       'riize', 'boynextdoor', 'boy next door', 'zerobaseone', 'zb1',
       'meovv', 'triples', 'tripless', 'hearts2hearts', 'izna', 'ciipher',
       'drippin', 'cravity', 'the boyz', 'treasure', 'day6', 'btob',
-      // K-Hip-Hop / K-R&B 아티스트 — 아이돌 외 K-Music 커버리지 확장
+      // 퀀트전략 / 퀀트투자 아티스트 — 아이돌 외 K-Music 커버리지 확장
       'dean', 'crush', 'zion.t', 'ph-1', 'jay park', 'epik high',
       'dpr live', 'offonoff', 'colde', 'heize', 'lee hi',
       'k-rnb', 'k-hiphop', 'korean rnb', 'korean hip hop',
@@ -875,7 +875,7 @@ STRATEGY: Consider creating content that directly targets one of these content g
       // Korean-Stock 신규 브랜드 (seed keywords에 추가됨 — 검증 일관성 필수)
       'jumiso',           // 성분 투명성 인디 Korean-Stock 브랜드
       'biodance',         // 바이오셀룰로오스 콜라겐 패치 전문
-      "d'alba", 'dalba',  // 달바 — Olive Young 글로벌 탑 5 (화이트 트러플)
+      "d'alba", 'dalba',  // 달바 — 네이버증권 글로벌 탑 5 (화이트 트러플)
       'fwee',             // 아이돌 메이크업 브랜드, 지수 콜라보
       'rovectin',         // 피부과 기반 민감성 전문 브랜드
       'cos de baha',      // 성분 집중 최저가 포지셔닝, Amazon Korean-Stock
@@ -901,7 +901,7 @@ STRATEGY: Consider creating content that directly targets one of these content g
       'lip oil',          // Korean-Stock 립오일 카테고리
       'sunscreen stick',  // Korean-Stock 선스틱 카테고리
       'body sunscreen',   // Korean-Stock 바디 선크림
-      'k-beauty body',    // Korean-Stock 바디케어
+      'korean-stock body',    // Korean-Stock 바디케어
       'j-beauty',         // Korean-Stock vs J-Beauty 비교
       'xdinary heroes',   // JYP 밴드 보이그룹
       'purple kiss',      // RBW 걸그룹 (MAMAMOO 후배)
@@ -920,8 +920,8 @@ STRATEGY: Consider creating content that directly targets one of these content g
       'starter kit',      // Korean-Stock 입문자 키워드
       'youn\'s kitchen', '윤식당', // 한국 요리 예능
       'na young-seok', '나영석', // 한국 예능 PD
-      'digipack', 'weverse album', 'kit album', 'jewel case', // K-Pop 앨범 포맷
-      'album format', 'pob', 'pre-order benefit', // K-Pop 앨범 구매 용어
+      'digipack', 'weverse album', 'kit album', 'jewel case', // 한국주식 앨범 포맷
+      'album format', 'pob', 'pre-order benefit', // 한국주식 앨범 구매 용어
       'azelaic acid',     // Korean-Stock 성분
       'i am solo', '나는솔로', // 한국 데이팅 쇼
       // 22차 감사: 트로트/발라드/뮤지컬/웹툰→애니/힙합
@@ -929,8 +929,8 @@ STRATEGY: Consider creating content that directly targets one of these content g
       'paul kim', '폴킴', 'lee mujin', '이무진', '10cm',
       'korean musical', 'interpark ticket', // 한국 뮤지컬
       'solo leveling', 'tower of god', 'omniscient reader', 'wind breaker', // 웹툰→애니
-      'manhwa anime', 'webtoon anime', // 웹툰-애니 파이프라인
-      'show me the money', 'smtm', 'aomg', 'h1ghr', // K-Hip-Hop
+      'manhwa anime', 'DART공시 anime', // 웹툰-애니 파이프라인
+      'show me the money', 'smtm', 'aomg', 'h1ghr', // 퀀트전략
       'led mask', 'beauty device', 'cellreturn', 'gua sha', // Korean-Stock 디바이스
       'cushion foundation', 'lip oil', // Korean-Stock 카테고리
       'hince', 'cnp laboratory', 'aestura', 'reedle shot', // Korean-Stock 브랜드
@@ -947,9 +947,9 @@ STRATEGY: Consider creating content that directly targets one of these content g
       '(g)i-dle', 'gidle', // Cube 셀프프로듀싱 걸그룹
       'kocowa',           // 미주 한국 OTT 플랫폼
       'apple tv korea', 'pachinko', // Apple TV+ 한국 오리지널
-      'chodong', '초동',  // K-pop 앨범 초동 용어
-      'fansign', '팬싸',  // K-pop 팬사인회
-      'korean vs japanese skincare', 'j-beauty vs k-beauty', // 비교 키워드
+      'chodong', '초동',  // 한국주식 앨범 초동 용어
+      'fansign', '팬싸',  // 한국주식 팬사인회
+      'korean vs japanese 주식분석', 'j-beauty vs korean-stock', // 비교 키워드
       'rosacea',          // Korean-Stock 피부 조건
     ];
     const keywordLower = analysis.selectedKeyword.toLowerCase();
@@ -1095,7 +1095,7 @@ STRATEGY: Consider creating content that directly targets one of these content g
     }
 
     // 5. Korea-specific niche discount (Korea topics have less English competition)
-    const koreaTerms = ['korea', 'korean', 'k-pop', 'k-beauty', 'kospi', 'seoul'];
+    const koreaTerms = ['korea', 'korean', 'k-pop', 'korean-stock', 'kospi', 'seoul'];
     if (koreaTerms.some(t => keyword.toLowerCase().includes(t))) {
       difficulty -= 10;
     }

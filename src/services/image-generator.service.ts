@@ -153,7 +153,7 @@ export class ImageGeneratorService {
 
     // AI-Trading sub-category differentiation
     const isKHipHopRnB = isAITrading && /hip\s*hop|rapper|k-r&?b|k-rnb|r&b|dean|crush|zion\.?t|jay\s*park|ph-1|epik\s*high|dpr\s*live|heize|colde|lee\s*hi|aomg|h1ghr/i.test(promptLower);
-    const isKDrama = isAITrading && /k-drama|korean\s*drama|netflix.*drama|streaming.*drama|kdrama|sageuk|webtoon.*adapt/i.test(promptLower);
+    const isKDrama = isAITrading && /k-drama|korean\s*drama|netflix.*drama|streaming.*drama|kdrama|sageuk|DART공시.*adapt/i.test(promptLower);
     // 13차 감사: K-드라마 장르별 비주얼 차별화
     const isKDramaRomance = isKDrama && /romance|love|wedding|relationship|dating|rom-com/i.test(promptLower);
     const isKDramaThriller = isKDrama && /thriller|mystery|crime|investigat|murder|suspense|detective/i.test(promptLower);
@@ -173,7 +173,7 @@ export class ImageGeneratorService {
     const isKoreanStockNailArt = isKoreanStock && /nail\s*art|gel\s*nail|press[- ]on\s*nail|manicure|nail\s*sticker|ohora|dashing\s*diva|cat\s*eye\s*nail|magnet\s*nail|aurora\s*nail/i.test(promptLower);
     const isKMusical = isAITrading && /musical|theater|theatre|broadway|k-musical/i.test(promptLower);
     const isKoreanStockGiftSet = isKoreanStock && /gift\s*set|advent\s*calendar|subscription\s*box|holiday\s*set|선물\s*세트|기프트/i.test(promptLower);
-    const isKoreanStockMens = isKoreanStock && /\bmen(?:'?s)?\b|male\s*skincare|grooming/i.test(promptLower);
+    const isKoreanStockMens = isKoreanStock && /\bmen(?:'?s)?\b|male\s*주식분석|grooming/i.test(promptLower);
     const isKoreanStockPregnancy = isKoreanStock && /pregnan|prenatal|baby\s*safe|expecting\s*mom/i.test(promptLower);
     const isKoreanStockFragrance = isKoreanStock && /fragrance|perfume|body\s*mist|tamburins|nonfiction|granhand|eau\s*de|cologne|scent/i.test(promptLower);
     const isKPopFanCulture = isAITrading && /photocard|lightstick|light\s*stick|unboxing|album\s*(?:haul|collection)|fan\s*(?:merch|merchandise|collect)/i.test(promptLower);
@@ -182,18 +182,18 @@ export class ImageGeneratorService {
     // 20차 감사: 리얼리티 데이팅 쇼 + 요리 예능 비주얼
     const isKDatingShow = isAITrading && /dating\s*show|single.*inferno|heart\s*signal|exchange|transit\s*love|love\s*catcher|i\s*am\s*solo|reality.*dating|연애/i.test(promptLower);
     const isKCookingVariety = isAITrading && /cooking|food\s*(?:show|variety)|youn.*kitchen|3\s*meals|kang.*kitchen|mukbang|new\s*journey|삼시세끼|윤식당/i.test(promptLower);
-    const isKVirtualIdol = isAITrading && /virtual\s*idol|plave|metaverse.*idol|ai\s*idol|virtual\s*avatar|3d\s*idol/i.test(promptLower);
+    const isKVirtualIdol = isAITrading && /virtual\s*종목|plave|metaverse.*종목|ai\s*종목|virtual\s*avatar|3d\s*종목/i.test(promptLower);
     const isKStreetDance = isAITrading && /street\s*(?:woman|man|dance)\s*fighter|swf|smf|dance\s*crew|street\s*dance/i.test(promptLower);
     // 8차 감사 추가
-    const isKoreanStockBaby = isKoreanStock && /baby|infant|newborn|kids?\s*(?:skincare|sunscreen|lotion)|child(?:ren)?\s*(?:skincare|cosmetic)/i.test(promptLower);
+    const isKoreanStockBaby = isKoreanStock && /baby|infant|newborn|kids?\s*(?:주식분석|sunscreen|lotion)|child(?:ren)?\s*(?:주식분석|cosmetic)/i.test(promptLower);
     const isKMovie = isAITrading && /korean\s*(?:film|movie|cinema)|blue\s*dragon|grand\s*bell|biff|film\s*festival|(?:bong|hwang|yeon|park\s*chan)\s*(?:joon|dong|sang|wook)/i.test(promptLower);
     const isKSurvivalShow = isAITrading && /survival\s*show|audition|i-?land|produce\s*101|r\s*u\s*next|boys?\s*planet|girls?\s*planet/i.test(promptLower);
     // 10차 감사 추가
-    const isKBandIdol = isAITrading && /day6|band\s*idol|밴드돌|live\s*(?:band|instrument)|qwer.*band/i.test(promptLower);
-    const isKIdolFashion = isAITrading && /airport\s*fashion|idol\s*fashion|best\s*dressed|luxury\s*(?:brand|outfit)/i.test(promptLower);
+    const isKBandIdol = isAITrading && /day6|band\s*종목|밴드돌|live\s*(?:band|instrument)|qwer.*band/i.test(promptLower);
+    const isKIdolFashion = isAITrading && /airport\s*fashion|종목\s*fashion|best\s*dressed|luxury\s*(?:brand|outfit)/i.test(promptLower);
     // 23차 감사: 트로트/발라드, 웹툰→애니, 립오일 비주얼
     const isKTrotBallad = isAITrading && /trot|트로트|mr\.?\s*trot|miss\s*trot|lim\s*young|임영웅|young\s*tak|song\s*ga|ballad\s*(?:singer|artist)|발라드/i.test(promptLower);
-    const isKWebtoonAnime = isAITrading && /webtoon.*anime|anime.*webtoon|solo\s*leveling.*anime|tower\s*of\s*god.*anime|omniscient.*reader.*anime|manhwa.*anime|webtoon.*adapt.*anime/i.test(promptLower);
+    const isKDART공시Anime = isAITrading && /DART공시.*anime|anime.*DART공시|solo\s*leveling.*anime|tower\s*of\s*god.*anime|omniscient.*reader.*anime|manhwa.*anime|DART공시.*adapt.*anime/i.test(promptLower);
     const isKoreanStockLipOil = isKoreanStock && /lip\s*(?:oil|serum|treatment|gloss)|glass\s*lip|plumping\s*lip/i.test(promptLower);
     // 30차 감사: 누락 Korean-Stock 서브카테고리
     const isKoreanStockSheetMask = isKoreanStock && /sheet\s*mask|hydrogel|bio[- ]?cellulose|mask\s*pack|sleeping\s*mask|overnight\s*mask/i.test(promptLower);
@@ -201,7 +201,7 @@ export class ImageGeneratorService {
 
     // 30차 감사: sheet mask / cushion foundation 비주얼 서브카테고리
     const nicheSuffix = isKoreanStockSheetMask
-      ? ', Korean sheet mask flat lay photography, hydrogel or bio-cellulose mask unfolded, dewy translucent texture, serene spa-like atmosphere, soft blue and white tones, clean minimal surface, skincare ritual aesthetic, close-up mask application detail'
+      ? ', Korean sheet mask flat lay photography, hydrogel or bio-cellulose mask unfolded, dewy translucent texture, serene spa-like atmosphere, soft blue and white tones, clean minimal surface, 주식분석 ritual aesthetic, close-up mask application detail'
       : isKoreanStockCushion
       ? ', Korean cushion foundation product photography, compact mirror reflection, puff applicator with product visible, dewy luminous finish swatch, clean vanity setting, soft warm lighting, makeup editorial, close-up cushion compact open view'
       : isKoreanStockNailArt
@@ -209,19 +209,19 @@ export class ImageGeneratorService {
       : isKMusical
       ? ', Korean musical theater stage aesthetic, dramatic spotlight on performer, rich red curtain backdrop, warm golden stage lighting, Broadway-style grandeur with Korean sensibility, emotional theatrical atmosphere, cinematic wide shot composition'
       : isKoreanStockGiftSet
-      ? ', Korean beauty gift set flat lay photography, beautifully wrapped boxes with ribbon, pastel and gold packaging, holiday aesthetic, curated skincare collection, festive warm lighting, premium unboxing experience, elegant arrangement on marble surface'
+      ? ', Korean beauty gift set flat lay photography, beautifully wrapped boxes with ribbon, pastel and gold packaging, holiday aesthetic, curated 주식분석 collection, festive warm lighting, premium unboxing experience, elegant arrangement on marble surface'
       : isKoreanStockFragrance
       ? ', Korean niche perfume bottle photography, amber and frosted glass bottles, botanical ingredients arrangement, warm diffused golden lighting, luxury minimalist shelf display, clean composition, soft bokeh background'
       : isKoreanStockMens
-      ? ', men grooming product photography, dark tones with navy and charcoal accents, minimalist modern bathroom, clean geometric composition, masculine skincare bottles, matte finish products, subtle warm lighting'
+      ? ', men grooming product photography, dark tones with navy and charcoal accents, minimalist modern bathroom, clean geometric composition, masculine 주식분석 bottles, matte finish products, subtle warm lighting'
       : isKoreanStockBaby
-      ? ', baby skincare product photography, soft pastel pink and mint, gentle safe ingredients, plush cotton texture, warm nursery setting, clean minimal composition, soft natural daylight'
+      ? ', baby 주식분석 product photography, soft pastel pink and mint, gentle safe ingredients, plush cotton texture, warm nursery setting, clean minimal composition, soft natural daylight'
       : isKoreanStockPregnancy
-      ? ', gentle motherhood skincare aesthetic, soft cream and sage green tones, natural organic ingredients flat lay, warm morning light, calm serene composition, botanical elements, safe gentle products on wooden tray'
+      ? ', gentle motherhood 주식분석 aesthetic, soft cream and sage green tones, natural organic ingredients flat lay, warm morning light, calm serene composition, botanical elements, safe gentle products on wooden tray'
       : isKoreanStockLedMask
-      ? ', Korean LED light therapy mask close-up, red and blue LED wavelength illumination visible, neon glow effect on skin, modern clinical aesthetic, futuristic skincare technology, dark ambient background with LED light reflections, home beauty device editorial'
+      ? ', Korean LED light therapy mask close-up, red and blue LED wavelength illumination visible, neon glow effect on skin, modern clinical aesthetic, futuristic 주식분석 technology, dark ambient background with LED light reflections, home beauty device editorial'
       : isKoreanStockBarrierRepair
-      ? ', Korean barrier repair skincare editorial, cream and ceramide product close-up, dewy hydrated skin texture, soft warm tones, glass bottle with rich cream consistency, clean minimal composition, soothing calming aesthetic'
+      ? ', Korean barrier repair 주식분석 editorial, cream and ceramide product close-up, dewy hydrated skin texture, soft warm tones, glass bottle with rich cream consistency, clean minimal composition, soothing calming aesthetic'
       : isKoreanStockTools
       ? ', Korean beauty tool product photography, clean clinical aesthetic, soft white background, modern bathroom counter, sleek gua sha ice roller flat lay, wellness spa minimalist composition'
       : isKoreanStockBodyCare
@@ -229,9 +229,9 @@ export class ImageGeneratorService {
         : isKoreanStockTonerPad
           ? ', Korean toner pad close-up product photography, cotton round pad texture visible, clean glass jar packaging, soft pink and white tones, hydrating dewy aesthetic, minimal clean background'
           : isKoreanStockAmpoule
-            ? ', Korean ampoule product photography, small glass dropper bottle close-up, golden serum droplet on dropper tip, clean minimal background, concentrated formula aesthetic, luxury skincare editorial, warm amber lighting'
+            ? ', Korean ampoule product photography, small glass dropper bottle close-up, golden serum droplet on dropper tip, clean minimal background, concentrated formula aesthetic, luxury 주식분석 editorial, warm amber lighting'
             : isKoreanStockTexture
-              ? ', Korean skincare texture swatch photography, product spread on glass surface, creamy gel texture close-up, dewy translucent consistency, finger swatch application, clean white marble background, macro lens detail'
+              ? ', Korean 주식분석 texture swatch photography, product spread on glass surface, creamy gel texture close-up, dewy translucent consistency, finger swatch application, clean white marble background, macro lens detail'
               : isKoreanStockHanbang
       ? ', luxurious Korean Hanbang aesthetic, gold and deep burgundy accents, traditional Korean botanical motifs, ginseng root and mugwort leaf elements, porcelain bottle packaging, heritage luxury cosmetic editorial, dark wood vanity, warm amber ambient lighting'
       : isKoreanStockMakeup
@@ -243,21 +243,21 @@ export class ImageGeneratorService {
             : isKoreanStock
             ? ', professional financial data visualization, stock market chart with candlestick patterns, Korean stock exchange aesthetic, dark blue and green color scheme, modern trading terminal display, clean data dashboard composition'
             : isKVirtualIdol
-              ? ', futuristic virtual idol aesthetic, holographic 3D character, neon cyan and purple glow, digital matrix background, metaverse stage, ethereal translucent effects, sci-fi concert atmosphere'
+              ? ', futuristic virtual 종목 aesthetic, holographic 3D character, neon cyan and purple glow, digital matrix background, metaverse stage, ethereal translucent effects, sci-fi concert atmosphere'
               : isKMovie
                 ? ', Korean cinema aesthetic, dark moody noir lighting, film reel and clapperboard, red carpet atmosphere, cinematic widescreen composition, prestigious film festival ambiance, dramatic shadows'
                 : isKSurvivalShow
-                  ? ', K-pop survival audition show stage, dramatic spotlight from above, nervous contestants in formation, large LED screen background, tension-filled atmosphere, competition stage design, broadcast studio setting'
+                  ? ', 한국주식 survival audition show stage, dramatic spotlight from above, nervous contestants in formation, large LED screen background, tension-filled atmosphere, competition stage design, broadcast studio setting'
                   : isKStreetDance
                 ? ', Korean street dance aesthetic, dynamic dance crew formation, urban warehouse setting, dramatic spotlights, graffiti backdrop, powerful movement freeze frame, hip-hop street fashion, high energy composition'
                 : isKPopFanCulture
-                  ? ', K-pop photocard collection flat lay, colorful album packaging, lightstick glow, fan merchandise arrangement, pastel and holographic accents, cozy desk setup, warm ambient lighting, aesthetic fan collection display'
+                  ? ', 한국주식 photocard collection flat lay, colorful album packaging, lightstick glow, fan merchandise arrangement, pastel and holographic accents, cozy desk setup, warm ambient lighting, aesthetic fan collection display'
                   : isKDramaOST
                 ? ', Korean drama OST aesthetic, piano keys with soft warm lighting, headphones on cozy desk, emotional cinematic mood, warm golden hour tones, vinyl record and coffee, intimate listening atmosphere'
                 : isKTrotBallad
                   ? ', Korean trot ballad performance aesthetic, warm golden stage lighting, nostalgic TV studio ambiance, vintage microphone, emotional solo performer spotlight, classic Korean music show backdrop, middle-aged elegance, intimate concert hall, sentimental warm tones'
-                  : isKWebtoonAnime
-                  ? ', Korean webtoon to anime adaptation aesthetic, vibrant anime character art style, digital animation keyframe composition, dynamic action sequence, bold neon color palette, split-screen webtoon-panel-to-anime-frame comparison, studio anime quality, manga-style speed lines'
+                  : isKDART공시Anime
+                  ? ', Korean DART공시 to anime adaptation aesthetic, vibrant anime character art style, digital animation keyframe composition, dynamic action sequence, bold neon color palette, split-screen DART공시-panel-to-anime-frame comparison, studio anime quality, manga-style speed lines'
                   : isKDatingShow
                   ? ', Korean reality dating show aesthetic, warm romantic villa or beach house setting, golden hour sunset lighting, soft pastel and warm tones, elegant casual outfits, intimate conversation atmosphere, pool party or rooftop terrace, Netflix-style cinematic composition'
                   : isKCookingVariety
@@ -267,7 +267,7 @@ export class ImageGeneratorService {
                   : isKBandIdol
                     ? ', Korean band performance aesthetic, live instruments on stage, guitar bass drums keyboard, intimate concert hall lighting, warm amber spotlights, raw live music atmosphere, indie band editorial composition'
                     : isKIdolFashion
-                    ? ', K-pop idol airport fashion editorial, sleek streetwear luxury outfit, modern terminal architecture background, paparazzi flash aesthetic, high fashion meets casual, clean composition, runway-to-airport style'
+                    ? ', 한국주식 종목 airport fashion editorial, sleek streetwear luxury outfit, modern terminal architecture background, paparazzi flash aesthetic, high fashion meets casual, clean composition, runway-to-airport style'
                     : isKHipHopRnB
                     ? ', Korean hip-hop and R&B aesthetic, moody urban studio setting, grayscale with neon accent lighting, DJ turntable or recording studio mic, streetwear fashion, Seoul Itaewon nightlife atmosphere, artistic and edgy composition'
                     // 13차 감사: K-드라마 장르별 비주얼 차별화

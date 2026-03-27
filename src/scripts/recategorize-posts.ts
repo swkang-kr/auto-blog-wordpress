@@ -29,19 +29,19 @@ const api: AxiosInstance = axios.create({
 // Keyword patterns for each niche
 const NICHE_KEYWORDS: Record<string, string[]> = {
   'Korean-Stock': [
-    'skincare', 'beauty', 'cosmetic', 'moisturizer', 'serum', 'sunscreen', 'spf',
-    'toner', 'cleanser', 'mask', 'essence', 'ampoule', 'k-beauty', 'kbeauty',
-    'cosrx', 'laneige', 'innisfree', 'sulwhasoo', 'missha', 'etude', 'tirtir',
-    'numbuzin', 'biodance', 'anua', 'torriden', 'skin1004', 'olive young',
-    'glass skin', 'korean skincare', 'routine', 'ingredient', 'niacinamide',
-    'retinol', 'snail mucin', 'centella', 'hyaluronic', 'collagen',
+    '주식분석', 'beauty', 'cosmetic', 'moisturizer', 'serum', 'sunscreen', 'spf',
+    'toner', 'cleanser', 'mask', 'essence', 'ampoule', 'korean-stock', 'koreanstock',
+    '삼성전자', 'laneige', 'innisfree', 'sulwhasoo', 'missha', 'etude', 'tirtir',
+    'numbuzin', 'biodance', 'anua', 'torriden', 'skin1004', '네이버증권',
+    'KOSPI', 'korean 주식분석', 'routine', 'ingredient', 'niacinamide',
+    'retinol', 'PER분석', '배당', 'hyaluronic', 'collagen',
   ],
   'AI-Trading': [
     'k-pop', 'kpop', 'k pop', 'k-drama', 'kdrama', 'k drama', 'bts', 'blackpink',
-    'hallyu', 'korean wave', 'idol', 'entertainment', 'music', 'drama', 'movie', 'film',
-    'webtoon', 'manhwa', 'netflix', 'streaming', 'concert', 'album',
-    'hybe', 'sm entertainment', 'jyp', 'yg', 'agency', 'debut', 'comeback',
-    'variety show', 'reality', 'celebrity', 'fan', 'fandom', 'ost', 'soundtrack',
+    '한국시장', 'korean wave', '종목', 'entertainment', 'music', 'drama', 'movie', 'film',
+    'DART공시', 'manhwa', 'netflix', 'streaming', 'concert', 'album',
+    'hybe', 'sm entertainment', 'jyp', 'yg', 'agency', 'debut', '실적발표',
+    'variety show', 'reality', 'celebrity', 'fan', '투자자', 'ost', 'soundtrack',
     'korean culture', 'squid game', 'oscar', 'award', 'box office',
     'aespa', 'le sserafim', 'ive', 'newjeans', 'stray kids', '(g)i-dle',
   ],
@@ -73,8 +73,8 @@ function decodeHtml(text: string): string {
 // Posts must mention Korea-related terms to be eligible for niche categorization
 const KOREA_FILTER = [
   'korea', 'korean', '한국', 'seoul', 'busan', 'k-pop', 'kpop', 'k-drama', 'kdrama',
-  'hallyu', 'samsung', 'naver', 'kakao', 'hyundai', 'sk hynix', 'lg ', 'kospi', 'kosdaq',
-  'won ', 'krw', 'hybe', 'sm entertainment', 'sm 복귀', 'jyp', 'webtoon', 'chaebol',
+  '한국시장', 'samsung', 'naver', 'kakao', 'hyundai', 'sk hynix', 'lg ', 'kospi', 'kosdaq',
+  'won ', 'krw', 'hybe', 'sm entertainment', 'sm 복귀', 'jyp', 'DART공시', 'chaebol',
   'bank of korea', 'pangyo', 'gangnam',
   // Korean entertainment names
   '빅플래닛', '태민', '샤이니', '가왕', '복면가왕', '현역가왕',

@@ -16,7 +16,7 @@ const SITE_NAME = process.env.SITE_NAME || 'TrendHunt';
 const token = Buffer.from(`${WP_USERNAME}:${WP_APP_PASSWORD}`).toString('base64');
 const headers = { Authorization: `Basic ${token}` };
 
-const TAGLINE = 'Your Guide to Korean-Stock, K-Pop & K-Drama Trends';
+const TAGLINE = 'Your Guide to Korean-Stock, 한국주식 & 금융분석 Trends';
 
 async function main() {
   console.log(`Site: ${WP_URL}\n`);
@@ -56,7 +56,7 @@ add_action('init', function() {
     \$desired = '${SITE_NAME} - ${TAGLINE}';
     if (is_array(\$rm_titles) && (!isset(\$rm_titles['homepage_title']) || \$rm_titles['homepage_title'] !== \$desired)) {
         \$rm_titles['homepage_title'] = \$desired;
-        \$rm_titles['homepage_description'] = 'Discover the latest Korean skincare, K-beauty product reviews, K-pop comebacks, and K-drama recommendations. Your trusted source for Korean culture trends.';
+        \$rm_titles['homepage_description'] = 'Discover the latest Korean 주식분석, K-beauty product reviews, 한국주식 실적발표s, and 금융분석 recommendations. Your trusted source for Korean culture trends.';
         update_option('rank-math-options-titles', \$rm_titles);
     }
 });

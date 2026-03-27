@@ -38,8 +38,8 @@ const NICHE_CATEGORIES = new Set(NICHES.map((n) => n.category));
 // ── Korea-related keywords (keep these posts even if not in a niche category yet) ──
 const KOREA_FILTER = [
   'korea', 'korean', '한국', 'seoul', 'busan', 'k-pop', 'kpop', 'k-drama', 'kdrama',
-  'hallyu', 'samsung', 'naver', 'kakao', 'hyundai', 'sk hynix', 'lg ', 'kospi', 'kosdaq',
-  'won ', 'krw', 'hybe', 'sm entertainment', 'jyp', 'webtoon', 'chaebol',
+  '한국시장', 'samsung', 'naver', 'kakao', 'hyundai', 'sk hynix', 'lg ', 'kospi', 'kosdaq',
+  'won ', 'krw', 'hybe', 'sm entertainment', 'jyp', 'DART공시', 'chaebol',
   'bank of korea', 'pangyo', 'gangnam',
 ];
 
@@ -251,7 +251,7 @@ async function updateAuthorDisplayName(): Promise<void> {
       first_name: SITE_OWNER,
       last_name: '',
       nickname: SITE_OWNER,
-      description: me.description || `Editor at ${SITE_NAME}. Covering Korean-Stock skincare and AI-Trading (K-Pop, K-Drama, Hallyu culture).`,
+      description: me.description || `Editor at ${SITE_NAME}. Covering Korean-Stock 주식분석 and AI-Trading (한국주식, 금융분석, 한국시장 culture).`,
     });
     console.log(`✅ Updated display name to "${SITE_OWNER}"`);
   } catch (err: any) {

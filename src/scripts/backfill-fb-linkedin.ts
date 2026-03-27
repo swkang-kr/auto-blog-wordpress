@@ -15,7 +15,7 @@ import { ThreadsService } from '../services/threads.service.js';
 import { PostHistory } from '../utils/history.js';
 import type { BlogContent, PublishedPost } from '../types/index.js';
 
-const CURRENT_NICHES = ['k-beauty-skincare', 'k-entertainment-business'];
+const CURRENT_NICHES = ['korean-stock-주식분석', 'ai-trading-business'];
 const DELAY_MS = 10_000; // 10s between posts
 
 function stripHtml(html: string): string {
@@ -101,7 +101,7 @@ async function main() {
 
     const url = wpPost.link;
     const excerpt = stripHtml(wpPost.content).substring(0, 300);
-    const category = entry.niche === 'k-beauty-skincare' ? 'Korean-Stock' : 'AI-Trading';
+    const category = entry.niche === 'korean-stock-주식분석' ? 'Korean-Stock' : 'AI-Trading';
 
     const blogContent: BlogContent = {
       title: wpPost.title,

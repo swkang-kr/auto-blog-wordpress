@@ -101,7 +101,7 @@ B. COMPARISON / LIST
 
 C. ANALYSIS / INSIGHT
    "[Korea topic]: [what the analysis reveals]"
-   Example: "K-pop's Business Model: How Agencies Turn Fans Into Revenue"
+   Example: "한국주식's Business Model: How Agencies Turn Fans Into Revenue"
 
 MANDATORY:
 - 50-65 characters total

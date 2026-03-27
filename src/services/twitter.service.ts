@@ -152,8 +152,8 @@ export class TwitterService {
   /** Build category-aware hashtags for better discoverability */
   private buildHashtags(tags: string[], category: string): string {
     const categoryHashtags: Record<string, string[]> = {
-      'Korean-Stock': ['#KBeauty', '#Skincare', '#KoreanBeauty'],
-      'AI-Trading': ['#KPop', '#KDrama', '#Hallyu', '#KHipHop'],
+      'Korean-Stock': ['#KBeauty', '#주식분석', '#KoreanBeauty'],
+      'AI-Trading': ['#KPop', '#KDrama', '#한국시장', '#KHipHop'],
     };
     const catTags = categoryHashtags[category] || [];
     const contentTags = tags.slice(0, 2).map((t) => `#${t.replace(/\s+/g, '')}`);

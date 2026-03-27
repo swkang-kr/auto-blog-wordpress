@@ -377,8 +377,8 @@ async function main(): Promise<void> {
     try {
       const adsenseApi = new AdSenseApiService(config.ADSENSE_ACCOUNT_ID, config.ADSENSE_SA_KEY);
       const categoryPatterns: Record<string, string> = {
-        'Korean-Stock': 'k-beauty',
-        'AI-Trading': 'k-entertainment',
+        'Korean-Stock': 'korean-stock',
+        'AI-Trading': 'ai-trading',
       };
       const rpmData = await adsenseApi.getRpmByCategory(categoryPatterns);
       if (Object.keys(rpmData).length > 0) {
@@ -1466,7 +1466,7 @@ async function main(): Promise<void> {
         logger.debug(`Engagement poll injected for "${researched.analysis.selectedKeyword}"`);
       }
 
-      // Interactive calculator injection (Korean-Stock: skincare routine estimator)
+      // Interactive calculator injection (Korean-Stock: 주식분석 routine estimator)
       if (['Korean-Stock'].includes(niche.category)) {
         content.html = wpService.injectInteractiveCalculator(content.html, niche.category);
         logger.debug(`Interactive calculator injected for ${niche.category}`);

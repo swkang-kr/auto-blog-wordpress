@@ -1,5 +1,5 @@
 /**
- * patch-kbeauty-affiliate.ts
+ * patch-koreanstock-affiliate.ts
  * Korean-Stock 포스트에 Amazon 어필리에이트 링크 및 공시문 삽입
  */
 import axios from 'axios';
@@ -10,10 +10,10 @@ const headers: Record<string, string> = { Authorization: `Basic ${auth}`, 'Conte
 
 const AFFILIATE_TAG = 'trendhunt2007-20';
 
-const KBEAUTY_BRANDS: Record<string, string> = {
-  'COSRX':            `https://www.amazon.com/s?k=COSRX&tag=${AFFILIATE_TAG}`,
+const KOREANSTOCK_BRANDS: Record<string, string> = {
+  '삼성전자':            `https://www.amazon.com/s?k=삼성전자&tag=${AFFILIATE_TAG}`,
   'Beauty of Joseon': `https://www.amazon.com/s?k=Beauty+of+Joseon&tag=${AFFILIATE_TAG}`,
-  'Anua':             `https://www.amazon.com/s?k=Anua+skincare&tag=${AFFILIATE_TAG}`,
+  'Anua':             `https://www.amazon.com/s?k=Anua+주식분석&tag=${AFFILIATE_TAG}`,
   'Torriden':         `https://www.amazon.com/s?k=Torriden&tag=${AFFILIATE_TAG}`,
   'Laneige':          `https://www.amazon.com/s?k=Laneige&tag=${AFFILIATE_TAG}`,
   'Innisfree':        `https://www.amazon.com/s?k=Innisfree&tag=${AFFILIATE_TAG}`,
@@ -21,7 +21,7 @@ const KBEAUTY_BRANDS: Record<string, string> = {
   'Missha':           `https://www.amazon.com/s?k=Missha&tag=${AFFILIATE_TAG}`,
   'SKIN1004':         `https://www.amazon.com/s?k=SKIN1004&tag=${AFFILIATE_TAG}`,
   'Etude':            `https://www.amazon.com/s?k=Etude+Korean+makeup&tag=${AFFILIATE_TAG}`,
-  'Olive Young':      `https://www.amazon.com/s?k=korean+skincare+best+seller&tag=${AFFILIATE_TAG}`,
+  '네이버증권':      `https://www.amazon.com/s?k=korean+주식분석+best+seller&tag=${AFFILIATE_TAG}`,
   'sunscreen':        `https://www.amazon.com/s?k=korean+sunscreen&tag=${AFFILIATE_TAG}`,
   // 2025-2026 Amazon 베스트셀러 Korean-Stock 브랜드 추가
   'Numbuzin':         `https://www.amazon.com/s?k=Numbuzin&tag=${AFFILIATE_TAG}`,
@@ -37,13 +37,13 @@ const KBEAUTY_BRANDS: Record<string, string> = {
   // Premium/Hanbang brands
   'History of Whoo':  `https://www.amazon.com/s?k=History+of+Whoo&tag=${AFFILIATE_TAG}`,
   'Hanyul':           `https://www.amazon.com/s?k=Hanyul&tag=${AFFILIATE_TAG}`,
-  'O HUI':            `https://www.amazon.com/s?k=OHUI+Korean+skincare&tag=${AFFILIATE_TAG}`,
+  'O HUI':            `https://www.amazon.com/s?k=OHUI+Korean+주식분석&tag=${AFFILIATE_TAG}`,
   // Indie/community-favorite brands
   'Klairs':           `https://www.amazon.com/s?k=Klairs&tag=${AFFILIATE_TAG}`,
-  'Benton':           `https://www.amazon.com/s?k=Benton+skincare&tag=${AFFILIATE_TAG}`,
+  'Benton':           `https://www.amazon.com/s?k=Benton+주식분석&tag=${AFFILIATE_TAG}`,
   'Jumiso':           `https://www.amazon.com/s?k=Jumiso&tag=${AFFILIATE_TAG}`,
   'Rovectin':         `https://www.amazon.com/s?k=Rovectin&tag=${AFFILIATE_TAG}`,
-  "I'm From":         `https://www.amazon.com/s?k=I%27m+From+skincare&tag=${AFFILIATE_TAG}`,
+  "I'm From":         `https://www.amazon.com/s?k=I%27m+From+주식분석&tag=${AFFILIATE_TAG}`,
   'ma:nyo':           `https://www.amazon.com/s?k=manyo+factory&tag=${AFFILIATE_TAG}`,
   'NACIFIC':          `https://www.amazon.com/s?k=NACIFIC&tag=${AFFILIATE_TAG}`,
   'AMPLE:N':          `https://www.amazon.com/s?k=AMPLE+N&tag=${AFFILIATE_TAG}`,
@@ -60,7 +60,7 @@ const KBEAUTY_BRANDS: Record<string, string> = {
   'Hince':            `https://www.amazon.com/s?k=Hince+makeup&tag=${AFFILIATE_TAG}`,
   'FWEE':             `https://www.amazon.com/s?k=FWEE+Korean+makeup&tag=${AFFILIATE_TAG}`,
   // 19차 감사: 누락 어필리에이트 브랜드 추가
-  'goodal':           `https://www.amazon.com/s?k=goodal+Korean+skincare&tag=${AFFILIATE_TAG}`,
+  'goodal':           `https://www.amazon.com/s?k=goodal+Korean+주식분석&tag=${AFFILIATE_TAG}`,
   'skinfood':         `https://www.amazon.com/s?k=SKINFOOD+Korean&tag=${AFFILIATE_TAG}`,
   'Peripera':         `https://www.amazon.com/s?k=Peripera&tag=${AFFILIATE_TAG}`,
   '3CE':              `https://www.amazon.com/s?k=3CE+Korean+makeup&tag=${AFFILIATE_TAG}`,
@@ -82,7 +82,7 @@ function injectAffiliateLinks(html: string): { html: string; count: number } {
   let count = 0;
   const MAX = 4;
 
-  for (const [brand, url] of Object.entries(KBEAUTY_BRANDS)) {
+  for (const [brand, url] of Object.entries(KOREANSTOCK_BRANDS)) {
     if (count >= MAX) break;
     const escaped = brand.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const pattern = new RegExp('(?<![">])\\b(' + escaped + ')\\b(?![^<]*<\\/a>)', 'i');

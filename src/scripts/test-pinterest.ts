@@ -5,7 +5,7 @@
  * 단계별 검증:
  *  1. Access Token 유효성 (GET /v5/user_account)
  *  2. Board 목록 조회 (GET /v5/boards)
- *  3. Board 생성/확인 (Korean-Stock & Skincare)
+ *  3. Board 생성/확인 (Korean-Stock & 주식분석)
  *  4. 실제 Pin 생성 테스트 (최근 WP 포스트 1개 사용)
  *
  * Usage: npx tsx src/scripts/test-pinterest.ts [--dry-run] [--pin]
@@ -99,7 +99,7 @@ async function main() {
   }
 
   // ── Step 3: Ensure Korean-Stock board exists ──
-  const targetBoard = 'Korean-Stock & Skincare';
+  const targetBoard = 'Korean-Stock & 주식분석';
   console.log(`\n[Step 3] Ensure board "${targetBoard}" exists`);
   let boardId: string | null = null;
   const existing = boards.find(b => b.name.toLowerCase() === targetBoard.toLowerCase());
@@ -181,7 +181,7 @@ async function main() {
       const pinBody = {
         board_id: boardId,
         title: wpPost.title.substring(0, 100),
-        description: `${wpPost.excerpt}\n\nSave this pin for later! Click through for the full guide.\n\n#Korea #SouthKorea #KBeauty #KoreanSkincare #GlassSkin`.substring(0, 500),
+        description: `${wpPost.excerpt}\n\nSave this pin for later! Click through for the full guide.\n\n#Korea #SouthKorea #KBeauty #Korean주식분석 #GlassSkin`.substring(0, 500),
         link: `${wpPost.link}?utm_source=pinterest&utm_medium=social&utm_campaign=test`,
         media_source: {
           source_type: 'image_url',

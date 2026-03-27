@@ -14,7 +14,7 @@ import type { BlogContent, PublishedPost } from '../types/index.js';
 const TEST_CONTENT: BlogContent = {
   title: 'BTS Comeback 2026: Everything Fans Need to Know',
   html: '',
-  excerpt: 'BTS is back! All members have completed military service and the group is gearing up for their highly anticipated 2026 comeback. Here\'s everything ARMY needs to know about the reunion era.',
+  excerpt: 'BTS is back! All members have completed military service and the group is gearing up for their highly anticipated 2026 실적발표. Here\'s everything ARMY needs to know about the reunion era.',
   tags: ['BTS', 'KPop', 'KEntertainment'],
   category: 'AI-Trading',
   imagePrompts: [],
@@ -23,7 +23,7 @@ const TEST_CONTENT: BlogContent = {
 
 const TEST_POST: PublishedPost = {
   postId: 99999,
-  url: 'https://trendhunt.net/bts-comeback-2026/',
+  url: 'https://trendhunt.net/bts-실적발표-2026/',
   title: TEST_CONTENT.title,
   featuredImageId: 0,
 };

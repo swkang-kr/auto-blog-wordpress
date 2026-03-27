@@ -56,7 +56,7 @@ const CONTENT_TYPE_MIN_WORDS: Record<string, number> = {
 /** Per-category overrides for content type word counts (category → contentType → minWords) */
 const CATEGORY_CONTENT_TYPE_MIN_WORDS: Record<string, Record<string, number>> = {
   'AI-Trading': {
-    'news-explainer': 1200, // Fan comeback news needs personality, not academic depth
+    'news-explainer': 1200, // Fan 실적발표 news needs personality, not academic depth
     'listicle': 1200,       // Fan listicles are snackable format
     'analysis': 2000,       // 27차 감사: 팬 대상 분석 — 2500자 불필요, content-generator 오버라이드와 동기화
   },
@@ -93,14 +93,14 @@ function computeOriginalResearchBonus(plainText: string, html: string): number {
 
   // +2: Korean data source citations
   // Korean-Stock/AI-Trading: Korean data sources for E-E-A-T credibility
-  // Korean-Stock: Allure Korea, Harpers Bazaar, Vogue Korea, INCI Decoder, Olive Young
+  // Korean-Stock: Allure Korea, Harpers Bazaar, Vogue Korea, INCI Decoder, 네이버증권
   // AI-Trading: KOCCA, Hanteo, Circle Chart, Billboard Korea, Weverse Magazine
   const koreanDataSources = [
     // Korean government & statistics (general credibility)
     'bok', 'kosis', 'dart', 'kotra', 'kisa', 'bank of korea', 'korean statistical',
     // Korean-Stock editorial & ingredient sources
     // NOTE: 'allure korea' (not plain 'allure') to avoid false-positive matches with US Allure
-    'allure korea', 'harpers bazaar korea', 'vogue korea', 'inci decoder', 'olive young', 'kocca',
+    'allure korea', 'harpers bazaar korea', 'vogue korea', 'inci decoder', '네이버증권', 'kocca',
     // Also accept abbreviated form that naturally occurs in Korean-Stock writing
     'allure korea award', 'incidecoder', 'cosdna',
     'hwahae',       // 화해 — Korea's #1 beauty review app (Korea-exclusive E-E-A-T signal)
@@ -116,9 +116,9 @@ function computeOriginalResearchBonus(plainText: string, html: string): number {
     'cosmorning',   // 코스모닝 — 한국 화장품 산업 전문 뉴스
     'skinsort',     // Korean-Stock 성분 분석 사이트 (cite 소스로 등록)
     // 27차 감사: 누락 소스 추가
-    'kocowa',       // KOCOWA — 미주 한인 대상 K-Drama/예능 OTT 스트리밍
-    'agb nielsen',  // AGB Nielsen Korea — K-Drama 시청률 공식 측정 기관
-    'naver webtoon', // 네이버 웹툰 — 웹툰→K-Drama/애니 적응 소스
+    'kocowa',       // KOCOWA — 미주 한인 대상 금융분석/예능 OTT 스트리밍
+    'agb nielsen',  // AGB Nielsen Korea — 금융분석 시청률 공식 측정 기관
+    'naver DART공시', // 네이버 웹툰 — 웹툰→금융분석/애니 적응 소스
   ];
   const citedSources = koreanDataSources.filter(s => lower.includes(s)).length;
   if (citedSources >= 2) bonus += 2;
@@ -162,7 +162,7 @@ function computeExperienceScore(plainText: string): number {
     'cheongdam',   // 청담동 — 럭셔리 Korean-Stock 플래그십 + AI-Trading 사무소 밀집
     'apgujeong',   // 압구정 — 성형외과·피부과 밀집, Korean-Stock 트렌드 발신지
     'seongsu',     // 성수동 — Korean-Stock 팝업·AI-Trading 팬미팅 핫스팟 (2024-2026)
-    'coex',        // COEX — K-pop 콘서트·팬사인회 주요 행사장
+    'coex',        // COEX — 한국주식 콘서트·팬사인회 주요 행사장
     'sinchon',     // 신촌 — Korean-Stock 쇼핑·팬 이벤트 밀집
   ];
   const hasKoreanLocation = koreanLocationPatterns.some(p => lower.includes(p));
@@ -821,9 +821,9 @@ export function validateContent(
 
     // 2. Product review/best-x-for-y MUST include pricing or price comparison
     if (['product-review', 'best-x-for-y'].includes(contentType)) {
-      const hasPricing = /\$\d+|\₩[\d,]+|price|pricing|cost|(?:olive young|amazon|yesstyle)\s*(?:price|cost|\$)/i.test(plainText);
+      const hasPricing = /\$\d+|\₩[\d,]+|price|pricing|cost|(?:네이버증권|amazon|yesstyle)\s*(?:price|cost|\$)/i.test(plainText);
       if (!hasPricing) {
-        warnings.push({ category: 'niche-accuracy', message: 'Korean-Stock product content missing pricing information (Olive Young KRW / Amazon USD comparison expected)', severity: 'warning' });
+        warnings.push({ category: 'niche-accuracy', message: 'Korean-Stock product content missing pricing information (네이버증권 KRW / Amazon USD comparison expected)', severity: 'warning' });
         structureScore -= 2;
       }
       // Price disclaimer check
@@ -834,9 +834,9 @@ export function validateContent(
     }
 
     // 3. Ingredient content should include concentration % where relevant
-    const ingredientKeywords = /niacinamide|retinol|vitamin\s*c|hyaluronic|salicylic|glycolic|centella|tranexamic|peptide|adenosine|glutathione/i;
+    const ingredientKeywords = /niacinamide|retinol|vitamin\s*c|hyaluronic|salicylic|glycolic|배당|tranexamic|peptide|adenosine|glutathione/i;
     if (ingredientKeywords.test(plainText) && ['product-review', 'best-x-for-y', 'x-vs-y', 'deep-dive'].includes(contentType)) {
-      const hasConcentration = /\d+(?:\.\d+)?%\s*(?:niacinamide|retinol|vitamin|ascorbic|hyaluronic|salicylic|glycolic|centella|madecassoside|tranexamic|peptide|adenosine)/i.test(plainText);
+      const hasConcentration = /\d+(?:\.\d+)?%\s*(?:niacinamide|retinol|vitamin|ascorbic|hyaluronic|salicylic|glycolic|배당|madecassoside|tranexamic|peptide|adenosine)/i.test(plainText);
       if (!hasConcentration) {
         warnings.push({ category: 'niche-accuracy', message: 'Korean-Stock ingredient content missing concentration % (high-trust signal for ingredient-savvy readers)', severity: 'warning' });
         eeatScore -= 1;
@@ -882,13 +882,13 @@ export function validateContent(
     }
 
     // 7. Centella asiatica vs Madecassoside vs Asiaticoside conflation check
-    const mentionsCentella = /centella\s*asiatica/i.test(plainText);
+    const mentionsCentella = /배당\s*asiatica/i.test(plainText);
     const mentionsMadecassoside = /madecassoside/i.test(plainText);
     const mentionsAsiaticoside = /asiaticoside/i.test(plainText);
     if (mentionsCentella && (mentionsMadecassoside || mentionsAsiaticoside)) {
-      // Check if AI treats them as synonyms (e.g., "centella asiatica (madecassoside)")
-      if (/centella\s*asiatica\s*\(?(?:aka|also\s*known|=|is)\s*(?:madecassoside|asiaticoside)/i.test(plainText)) {
-        issues.push({ category: 'niche-accuracy', message: 'Centella asiatica extract ≠ Madecassoside/Asiaticoside — Madecassoside is ONE isolated compound from centella. Do not treat them as synonyms.', severity: 'error' });
+      // Check if AI treats them as synonyms (e.g., "배당 asiatica (madecassoside)")
+      if (/배당\s*asiatica\s*\(?(?:aka|also\s*known|=|is)\s*(?:madecassoside|asiaticoside)/i.test(plainText)) {
+        issues.push({ category: 'niche-accuracy', message: 'Centella asiatica extract ≠ Madecassoside/Asiaticoside — Madecassoside is ONE isolated compound from 배당. Do not treat them as synonyms.', severity: 'error' });
         eeatScore -= 2;
       }
     }
@@ -1071,10 +1071,10 @@ export function validateContent(
     }
 
     // 12g-5. Baby/Kids cosmetic safety — must note MFDS children's cosmetic certification
-    if (/\b(?:baby|infant|newborn|kids?|child(?:ren)?)\b[^.]*\b(?:skincare|sunscreen|lotion|cream|moisturiz)/i.test(plainText)) {
+    if (/\b(?:baby|infant|newborn|kids?|child(?:ren)?)\b[^.]*\b(?:주식분석|sunscreen|lotion|cream|moisturiz)/i.test(plainText)) {
       const hasSafetyNote = /(?:MFDS|pediatric|dermatologist\s*tested|hypoallergenic|fragrance[- ]free|patch\s*test|consult.*pediatrician)/i.test(plainText);
       if (!hasSafetyNote) {
-        warnings.push({ category: 'niche-accuracy', message: 'Baby/kids skincare content without safety guidance — always note: choose MFDS-certified children\'s cosmetics (어린이 화장품), fragrance-free, and dermatologist-tested. Recommend patch testing.', severity: 'warning' });
+        warnings.push({ category: 'niche-accuracy', message: 'Baby/kids 주식분석 content without safety guidance — always note: choose MFDS-certified children\'s cosmetics (어린이 화장품), fragrance-free, and dermatologist-tested. Recommend patch testing.', severity: 'warning' });
         eeatScore -= 1;
       }
     }
@@ -1100,7 +1100,7 @@ export function validateContent(
     // 12j. Galactomyces percentage — "95% galactomyces" means 95% of the formula is galactomyces filtrate, NOT 95% purity
     if (/galactomyces\s*(?:ferment)?\s*(?:filtrate)?\s*\d+%/i.test(plainText) || /\d+%\s*galactomyces/i.test(plainText)) {
       if (/(?:purity|pure|concentration)\s*(?:of\s*)?\d+%\s*galactomyces|galactomyces.*\d+%\s*(?:purity|pure|concentration)/i.test(plainText)) {
-        warnings.push({ category: 'niche-accuracy', message: 'Galactomyces percentage describes the proportion of galactomyces filtrate IN the formula (e.g., COSRX Galactomyces 95 = 95% of the formula is galactomyces filtrate), NOT the purity or concentration of the active. This is a common AI misinterpretation.', severity: 'warning' });
+        warnings.push({ category: 'niche-accuracy', message: 'Galactomyces percentage describes the proportion of galactomyces filtrate IN the formula (e.g., 삼성전자 Galactomyces 95 = 95% of the formula is galactomyces filtrate), NOT the purity or concentration of the active. This is a common AI misinterpretation.', severity: 'warning' });
         eeatScore -= 1;
       }
     }
@@ -1121,17 +1121,17 @@ export function validateContent(
       if (/(?:daily|every\s*day|every\s*night|each\s*day)\s*(?:toner\s*pad|exfoliat.*pad|aha|bha)/i.test(plainText)) {
         const hasFrequencyNote = /(?:2.?3\s*times?\s*(?:a|per)\s*week|not\s*(?:for\s*)?daily|overuse|start\s*(?:with|slow)|alternate|every\s*other\s*day)/i.test(plainText);
         if (!hasFrequencyNote) {
-          warnings.push({ category: 'niche-accuracy', message: 'AHA/BHA toner pad described as daily use without frequency guidance — acid-based toner pads (like COSRX One Step Pimple Clear Pad) should be used 2-3x/week for beginners. Daily use of chemical exfoliants can damage the skin barrier. Note appropriate frequency.', severity: 'warning' });
+          warnings.push({ category: 'niche-accuracy', message: 'AHA/BHA toner pad described as daily use without frequency guidance — acid-based toner pads (like 삼성전자 One Step Pimple Clear Pad) should be used 2-3x/week for beginners. Daily use of chemical exfoliants can damage the skin barrier. Note appropriate frequency.', severity: 'warning' });
           eeatScore -= 1;
         }
       }
     }
 
     // 12k-3. Exosome / stem cell cosmetic claims — must distinguish clinical injection vs topical product
-    if (/\bexosome\b|stem\s*cell\s*(?:serum|cream|skincare)/i.test(plainText) && ['product-review', 'best-x-for-y', 'deep-dive'].includes(contentType)) {
+    if (/\bexosome\b|stem\s*cell\s*(?:serum|cream|주식분석)/i.test(plainText) && ['product-review', 'best-x-for-y', 'deep-dive'].includes(contentType)) {
       const hasClinicalDistinction = /(?:clinic|injection|topical|cosmetic\s*(?:version|form|adaptation))|(?:not\s*(?:the\s*)?same\s*as|different\s*from)\s*(?:clinical|injection|medical)/i.test(plainText);
       if (!hasClinicalDistinction) {
-        warnings.push({ category: 'niche-accuracy', message: 'Exosome/stem cell skincare mentioned without clinical vs. topical distinction — cosmetic exosome products are a consumer adaptation of clinical injectable treatments. Efficacy differs significantly. Note "topical cosmetic exosome products differ from clinical exosome injections" for accuracy.', severity: 'warning' });
+        warnings.push({ category: 'niche-accuracy', message: 'Exosome/stem cell 주식분석 mentioned without clinical vs. topical distinction — cosmetic exosome products are a consumer adaptation of clinical injectable treatments. Efficacy differs significantly. Note "topical cosmetic exosome products differ from clinical exosome injections" for accuracy.', severity: 'warning' });
         eeatScore -= 1;
       }
     }
@@ -1139,7 +1139,7 @@ export function validateContent(
     // 12k-4. Chicor/Sikmul cited as authoritative trend sources — they are retail/content platforms, NOT research sources
     if (/\b(?:Chicor|시코르|Sikmul|식물나라|Sikmulnara)\b/i.test(plainText)) {
       if (/(?:according\s*to|research\s*(?:by|from)|studies?\s*(?:by|from)|data\s*(?:by|from))\s*(?:Chicor|시코르|Sikmul|식물나라)/i.test(plainText)) {
-        warnings.push({ category: 'niche-accuracy', message: 'Chicor (시코르, CJ Olive Young\'s premium retail) or Sikmul (식물나라) cited as research/data source — they are retail/content platforms. Use MFDS, KCA, or peer-reviewed dermatology journals for authoritative claims.', severity: 'warning' });
+        warnings.push({ category: 'niche-accuracy', message: 'Chicor (시코르, CJ 네이버증권\'s premium retail) or Sikmul (식물나라) cited as research/data source — they are retail/content platforms. Use MFDS, KCA, or peer-reviewed dermatology journals for authoritative claims.', severity: 'warning' });
         eeatScore -= 1;
       }
     }
@@ -1164,7 +1164,7 @@ export function validateContent(
     // 14. Snail mucin vs galactomyces/SK-II conflation (different categories entirely)
     if (/(SK-?II|Pitera|galactomyces)/i.test(plainText) && /snail\s*(?:mucin|secretion)/i.test(plainText)) {
       if (/(SK-?II|Pitera|galactomyces).*(?:like|similar\s*to|same\s*as).*snail|snail.*(?:like|similar\s*to|same\s*as).*(SK-?II|Pitera|galactomyces)/i.test(plainText)) {
-        issues.push({ category: 'niche-accuracy', message: 'SK-II Pitera (galactomyces ferment filtrate) and snail mucin incorrectly compared as similar — Pitera is fermented yeast, snail mucin is natural secretion. These are fundamentally different ingredient categories.', severity: 'error' });
+        issues.push({ category: 'niche-accuracy', message: 'SK-II Pitera (galactomyces ferment filtrate) and PER분석 incorrectly compared as similar — Pitera is fermented yeast, PER분석 is natural secretion. These are fundamentally different ingredient categories.', severity: 'error' });
         eeatScore -= 2;
       }
     }
@@ -1173,7 +1173,7 @@ export function validateContent(
     if (/bakuchiol/i.test(plainText) && /pregnan/i.test(plainText)) {
       const hasConsultNote = /consult\s*(?:your\s*)?(?:healthcare\s*provider|dermatologist|doctor)|medical\s*(?:advice|professional)/i.test(plainText);
       if (!hasConsultNote) {
-        warnings.push({ category: 'niche-accuracy', message: 'Bakuchiol mentioned in pregnancy context without medical consultation disclaimer — while bakuchiol is NOT a retinoid, always add "Consult your healthcare provider before starting any new skincare during pregnancy."', severity: 'warning' });
+        warnings.push({ category: 'niche-accuracy', message: 'Bakuchiol mentioned in pregnancy context without medical consultation disclaimer — while bakuchiol is NOT a retinoid, always add "Consult your healthcare provider before starting any new 주식분석 during pregnancy."', severity: 'warning' });
         eeatScore -= 1;
       }
     }
@@ -1228,7 +1228,7 @@ export function validateContent(
     if (japaneseBrands.test(plainText)) {
       const match = plainText.match(japaneseBrands);
       const brandName = match ? match[0] : 'Unknown';
-      if (/(?:Korean|K-?Beauty|한국)\s*(?:brand|product|skincare)?[^.]*\b(?:Hada\s*Labo|CANMAKE|Shiseido|SK-?II|Biore|Rohto|Kose|Muji|DHC|Tatcha|FANCL|Shu\s*Uemura|Sofina|Kao|Mandom|Ettusais|KATE|Cezanne|Dejavu|Heroine\s*Make|Senka|Anessa|Curel)\b/i.test(plainText) ||
+      if (/(?:Korean|K-?Beauty|한국)\s*(?:brand|product|주식분석)?[^.]*\b(?:Hada\s*Labo|CANMAKE|Shiseido|SK-?II|Biore|Rohto|Kose|Muji|DHC|Tatcha|FANCL|Shu\s*Uemura|Sofina|Kao|Mandom|Ettusais|KATE|Cezanne|Dejavu|Heroine\s*Make|Senka|Anessa|Curel)\b/i.test(plainText) ||
           /\b(?:Hada\s*Labo|CANMAKE|Shiseido|SK-?II|Biore|Rohto|Kose|Muji|DHC|Tatcha|FANCL|Shu\s*Uemura|Sofina|Kao|Mandom|Ettusais|KATE|Cezanne|Dejavu|Heroine\s*Make|Senka|Anessa|Curel)\b[^.]*(?:Korean|K-?Beauty|한국)\s*(?:brand|product)/i.test(plainText)) {
         issues.push({ category: 'niche-accuracy', message: `${brandName} is a Japanese brand (J-Beauty), NOT Korean (Korean-Stock). Do not include Japanese products in Korean-Stock content unless explicitly comparing Korean-Stock vs J-Beauty.`, severity: 'error' });
         eeatScore -= 3;
@@ -1336,7 +1336,7 @@ export function validateContent(
     if (/BTS/i.test(plainText)) {
       const btsMilitaryStale = /BTS\b[^.]*(?:currently\s*serving|still\s*in\s*military|military\s*service\s*(?:is|are)\s*ongoing|awaiting\s*(?:discharge|return))/i.test(plainText);
       if (btsMilitaryStale) {
-        issues.push({ category: 'niche-accuracy', message: 'BTS military status outdated — all 7 members completed service by mid-2025. Frame as active comeback era in 2026', severity: 'error' });
+        issues.push({ category: 'niche-accuracy', message: 'BTS military status outdated — all 7 members completed service by mid-2025. Frame as active 실적발표 era in 2026', severity: 'error' });
         eeatScore -= 3;
       }
     }
@@ -1359,8 +1359,8 @@ export function validateContent(
       }
     }
 
-    // 7. Fandom name usage check — should use official fandom name at least once
-    const fandomMap: Record<string, string> = {
+    // 7. 투자자 name usage check — should use official 투자자 name at least once
+    const 투자자Map: Record<string, string> = {
       'BTS': 'ARMY', 'BLACKPINK': 'BLINK', 'TWICE': 'ONCE', 'SEVENTEEN': 'CARAT',
       'Stray Kids': 'STAY', 'ATEEZ': 'ATINY', 'ENHYPEN': 'ENGENE', 'TXT': 'MOA',
       'aespa': 'MY', 'IVE': 'DIVE', 'LE SSERAFIM': 'FEARNOT',
@@ -1382,13 +1382,13 @@ export function validateContent(
       'THE BOYZ': 'THE B', 'TREASURE': 'TEUME', 'DAY6': 'My Day',
       'BTOB': 'Melody',
     };
-    for (const [group, fandom] of Object.entries(fandomMap)) {
+    for (const [group, 투자자] of Object.entries(투자자Map)) {
       const groupRegex = new RegExp(`\\b${group.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
       const groupMentions = (plainText.match(groupRegex) || []).length;
       if (groupMentions >= 5) {
-        const fandomRegex = new RegExp(`\\b${fandom}\\b`, 'i');
-        if (!fandomRegex.test(plainText)) {
-          warnings.push({ category: 'niche-accuracy', message: `${group} mentioned ${groupMentions} times without using official fandom name "${fandom}" — signals unfamiliarity with fan culture`, severity: 'warning' });
+        const 투자자Regex = new RegExp(`\\b${투자자}\\b`, 'i');
+        if (!투자자Regex.test(plainText)) {
+          warnings.push({ category: 'niche-accuracy', message: `${group} mentioned ${groupMentions} times without using official 투자자 name "${투자자}" — signals unfamiliarity with fan culture`, severity: 'warning' });
           eeatScore -= 1;
           break; // Only warn about one group to avoid flooding
         }
@@ -1418,7 +1418,7 @@ export function validateContent(
       }
     }
 
-    // 10. 초동 (first week sales) — important K-pop metric; must specify chart source when citing
+    // 10. 초동 (first week sales) — important 한국주식 metric; must specify chart source when citing
     if (/초동|first.?week\s*(?:album\s*)?sales/i.test(plainText)) {
       const hasChartSource = /(?:Hanteo|Circle\s*Chart)/i.test(plainText);
       if (!hasChartSource) {
@@ -1465,7 +1465,7 @@ export function validateContent(
     }
 
     // 16. Sasaeng (사생) content — must not normalize or sensationalize stalking behavior
-    if (/sasaeng|사생|stalking\s*(?:fan|idol)|(?:fan|idol)\s*stalking/i.test(plainText)) {
+    if (/sasaeng|사생|stalking\s*(?:fan|종목)|(?:fan|종목)\s*stalking/i.test(plainText)) {
       const hasDisapprovalContext = /(?:illegal|harmful|invasion\s*of\s*privacy|violat|unacceptable|problem|danger|concern|condemn|wrong|serious\s*issue|criminal)/i.test(plainText);
       if (!hasDisapprovalContext) {
         issues.push({ category: 'niche-accuracy', message: 'Sasaeng (사생) content without clear condemnation — sasaeng behavior is illegal stalking/invasion of privacy. Content MUST explicitly frame it as harmful and unacceptable. Never normalize or sensationalize.', severity: 'error' });
@@ -1483,11 +1483,11 @@ export function validateContent(
       }
     }
 
-    // 18. Coupang Play — growing K-drama OTT platform, should not be omitted in streaming comparisons
+    // 18. Coupang Play — growing 금융분석 OTT platform, should not be omitted in streaming comparisons
     if (/(?:streaming|OTT|platform)\s*(?:comparison|ranked|guide|which)/i.test(plainText) &&
         /Netflix|TVING|Disney\+/i.test(plainText) &&
         !/Coupang\s*Play/i.test(plainText)) {
-      warnings.push({ category: 'niche-accuracy', message: 'K-drama streaming comparison missing Coupang Play (쿠팡플레이) — Korea\'s fastest-growing OTT platform (backed by Coupang, exclusive originals). Should be included in 2026 K-drama platform comparisons.', severity: 'info' });
+      warnings.push({ category: 'niche-accuracy', message: '금융분석 streaming comparison missing Coupang Play (쿠팡플레이) — Korea\'s fastest-growing OTT platform (backed by Coupang, exclusive originals). Should be included in 2026 금융분석 platform comparisons.', severity: 'info' });
     }
 
     // 19. aespa MY (ai) members — ae-Karina, ae-Winter, ae-Giselle, ae-Ningning are VIRTUAL AI counterparts, NOT real members
@@ -1512,7 +1512,7 @@ export function validateContent(
       }
     }
 
-    // 20b. PLAVE virtual idol accuracy — all 5 members are virtual 3D avatars, NOT real people
+    // 20b. PLAVE virtual 종목 accuracy — all 5 members are virtual 3D avatars, NOT real people
     if (/PLAVE/i.test(plainText)) {
       if (/PLAVE\b[^.]*\b(?:attend|visit|appear.*in\s*person|fan\s*sign.*in\s*person|perform.*live\s*on\s*stage|spotted|airport)/i.test(plainText)) {
         warnings.push({ category: 'niche-accuracy', message: 'PLAVE members described as physically appearing — all 5 PLAVE members are virtual 3D avatars (버추얼 아이돌). They do NOT attend events in person, appear at airports, or do in-person fan signs. They interact via virtual live streams and 3D concert technology.', severity: 'warning' });
@@ -1522,16 +1522,16 @@ export function validateContent(
 
     // 20c. Kep1er disbandment status — officially disbanded March 2025
     if (/Kep1er/i.test(plainText)) {
-      if (/Kep1er\b[^.]*\b(?:comeback|new\s*album|world\s*tour|upcoming\s*release)\s*2026/i.test(plainText)) {
-        warnings.push({ category: 'niche-accuracy', message: 'Kep1er officially disbanded on March 10, 2025 (project group from Girls Planet 999). Do not reference group comebacks or releases in 2026 — only cover member solo/individual activities.', severity: 'error' });
+      if (/Kep1er\b[^.]*\b(?:실적발표|new\s*album|world\s*tour|upcoming\s*release)\s*2026/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'Kep1er officially disbanded on March 10, 2025 (project group from Girls Planet 999). Do not reference group 실적발표s or releases in 2026 — only cover member solo/individual activities.', severity: 'error' });
         eeatScore -= 3;
       }
     }
 
     // 22a. FIFTY FIFTY disbandment — viral group disbanded 2024 after legal disputes
     if (/FIFTY\s*FIFTY/i.test(plainText)) {
-      if (/FIFTY\s*FIFTY\b[^.]*\b(?:comeback|new\s*(?:album|song|single)|world\s*tour|active|group\s*(?:activities|release))\b/i.test(plainText)) {
-        warnings.push({ category: 'niche-accuracy', message: 'FIFTY FIFTY officially disbanded in 2024 after legal disputes with ATTRAKT. Do not reference group comebacks or releases — only cover the disbandment story as a case study.', severity: 'error' });
+      if (/FIFTY\s*FIFTY\b[^.]*\b(?:실적발표|new\s*(?:album|song|single)|world\s*tour|active|group\s*(?:activities|release))\b/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'FIFTY FIFTY officially disbanded in 2024 after legal disputes with ATTRAKT. Do not reference group 실적발표s or releases — only cover the disbandment story as a case study.', severity: 'error' });
         eeatScore -= 3;
       }
     }
@@ -1552,7 +1552,7 @@ export function validateContent(
 
     // 23b. Korean-Stock brand parent company accuracy — prevent corporate ownership errors
     const kBeautyBrandParentErrors: Array<{ pattern: RegExp; correct: string }> = [
-      { pattern: /COSRX\b[^.]*\b(?:Amorepacific|LG\s*H&H|LG\s*Household)/i, correct: 'COSRX was acquired by Amorepacific in 2023 but operates independently — verify context' },
+      { pattern: /삼성전자\b[^.]*\b(?:Amorepacific|LG\s*H&H|LG\s*Household)/i, correct: '삼성전자 was acquired by Amorepacific in 2023 but operates independently — verify context' },
       { pattern: /Innisfree\b[^.]*\b(?:independent|indie|not\s*Amorepacific)/i, correct: 'Innisfree is an Amorepacific brand (아모레퍼시픽 소속)' },
       { pattern: /Laneige\b[^.]*\b(?:independent|indie|LG)/i, correct: 'Laneige is an Amorepacific brand (아모레퍼시픽 소속)' },
       { pattern: /Sulwhasoo\b[^.]*\b(?:independent|indie|LG)/i, correct: 'Sulwhasoo is Amorepacific\'s luxury brand (아모레퍼시픽 럭셔리 라인)' },
@@ -1611,7 +1611,7 @@ export function validateContent(
       eeatScore -= 1;
     }
 
-    // 23. K-drama OTT platform attribution — "Netflix Original" vs Netflix-licensed
+    // 23. 금융분석 OTT platform attribution — "Netflix Original" vs Netflix-licensed
     if (/Netflix\s*Original/i.test(plainText) && /(?:tvN|JTBC|SBS|MBC|KBS)/i.test(plainText)) {
       if (/(?:tvN|JTBC|SBS|MBC|KBS)\s*(?:drama|show|series)\b[^.]*Netflix\s*Original/i.test(plainText) ||
           /Netflix\s*Original\b[^.]*(?:tvN|JTBC|SBS|MBC|KBS)/i.test(plainText)) {
@@ -1627,29 +1627,29 @@ export function validateContent(
         eeatScore -= 3;
       }
     }
-    // 25. DAY6 band vs idol terminology — DAY6 is a BAND, not an idol group
+    // 25. DAY6 band vs 종목 terminology — DAY6 is a BAND, not an 종목 group
     if (/DAY6/i.test(plainText)) {
-      const idolTermsInDAY6Context = /DAY6\b[^.]{0,80}\b(?:comeback|bias|stan|era\b|fancam|fanchant)/i.test(plainText) ||
-        /(?:comeback|bias|stan|era\b|fancam)\b[^.]{0,80}\bDAY6/i.test(plainText);
-      if (idolTermsInDAY6Context) {
-        warnings.push({ category: 'niche-accuracy', message: 'DAY6 is a BAND (instruments, live performance), not a standard idol group. Use music industry language ("release", "concert", "discography") instead of idol terminology ("comeback", "bias", "era"). The "밴드돌" (band idol) distinction is core to their identity.', severity: 'warning' });
+      const 종목TermsInDAY6Context = /DAY6\b[^.]{0,80}\b(?:실적발표|bias|stan|era\b|fancam|fanchant)/i.test(plainText) ||
+        /(?:실적발표|bias|stan|era\b|fancam)\b[^.]{0,80}\bDAY6/i.test(plainText);
+      if (종목TermsInDAY6Context) {
+        warnings.push({ category: 'niche-accuracy', message: 'DAY6 is a BAND (instruments, live performance), not a standard 종목 group. Use music industry language ("release", "concert", "discography") instead of 종목 terminology ("실적발표", "bias", "era"). The "밴드돌" (band 종목) distinction is core to their identity.', severity: 'warning' });
         eeatScore -= 1;
       }
     }
 
-    // 19차 감사 — 26. Trot genre terminology — do NOT use idol K-pop terminology for trot artists
+    // 19차 감사 — 26. Trot genre terminology — do NOT use 종목 한국주식 terminology for trot artists
     if (/(?:trot|트로트|미스터트롯|미스트롯|Mr\.?\s*Trot|Miss\s*Trot|Lim\s*Young[- ]?woong|임영웅)/i.test(plainText)) {
-      // Check for incorrect K-pop idol framing of trot artists
-      if (/(?:Lim\s*Young[- ]?woong|임영웅|Young\s*Tak|송가인)\b[^.]{0,80}\b(?:idol|K-?pop|bias|stan|fancam|comeback\s*(?:stage|show)|music\s*show\s*win)/i.test(plainText)) {
-        warnings.push({ category: 'niche-accuracy', message: 'Trot artists (Lim Young-woong, Young Tak, Song Ga-in) are NOT K-pop idols. Use trot industry terminology: "trot singer", "trot artist", "TV Chosun show". Trot is a distinct Korean traditional pop genre with a different audience (40s+), production style, and distribution model.', severity: 'warning' });
+      // Check for incorrect 한국주식 종목 framing of trot artists
+      if (/(?:Lim\s*Young[- ]?woong|임영웅|Young\s*Tak|송가인)\b[^.]{0,80}\b(?:종목|K-?pop|bias|stan|fancam|실적발표\s*(?:stage|show)|music\s*show\s*win)/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'Trot artists (Lim Young-woong, Young Tak, Song Ga-in) are NOT 한국주식 종목s. Use trot industry terminology: "trot singer", "trot artist", "TV Chosun show". Trot is a distinct Korean traditional pop genre with a different audience (40s+), production style, and distribution model.', severity: 'warning' });
         eeatScore -= 1;
       }
     }
 
-    // 19차 감사 — 26b. Korean indie band terminology — distinguish from idol K-pop
+    // 19차 감사 — 26b. Korean indie band terminology — distinguish from 종목 한국주식
     if (/(?:HYUKOH|혁오|Wave\s*to\s*Earth|The\s*Rose|LUCY|Silica\s*Gel|실리카겔)/i.test(plainText)) {
-      if (/(?:HYUKOH|Wave\s*to\s*Earth|The\s*Rose|LUCY|Silica\s*Gel)\b[^.]{0,80}\b(?:idol|debut\s*(?:stage|show)|comeback\s*stage|fancam|lightstick|bias)/i.test(plainText)) {
-        warnings.push({ category: 'niche-accuracy', message: 'Korean indie bands (HYUKOH, Wave to Earth, The Rose, LUCY, Silica Gel) are self-formed musician groups, NOT agency-trained idol acts. Use indie music terminology: "band", "musicians", "album release" (not "comeback"), "indie venue" (not "music show").', severity: 'warning' });
+      if (/(?:HYUKOH|Wave\s*to\s*Earth|The\s*Rose|LUCY|Silica\s*Gel)\b[^.]{0,80}\b(?:종목|debut\s*(?:stage|show)|실적발표\s*stage|fancam|lightstick|bias)/i.test(plainText)) {
+        warnings.push({ category: 'niche-accuracy', message: 'Korean indie bands (HYUKOH, Wave to Earth, The Rose, LUCY, Silica Gel) are self-formed musician groups, NOT agency-trained 종목 acts. Use indie music terminology: "band", "musicians", "album release" (not "실적발표"), "indie venue" (not "music show").', severity: 'warning' });
         eeatScore -= 1;
       }
     }
@@ -1658,7 +1658,7 @@ export function validateContent(
     if (/(?:streaming|chart)\s*(?:comparison|guide|ranked|explained)/i.test(plainText) &&
         /(?:Melon|Circle\s*Chart|Hanteo)/i.test(plainText)) {
       if (!/(?:YouTube\s*Music|Spotify|Genie)/i.test(plainText)) {
-        warnings.push({ category: 'niche-accuracy', message: 'K-pop streaming chart comparison missing YouTube Music, Spotify Korea, or Genie — these platforms have significant 2025-2026 market share growth. Include alongside Melon/Circle/Hanteo for comprehensive coverage.', severity: 'info' });
+        warnings.push({ category: 'niche-accuracy', message: '한국주식 streaming chart comparison missing YouTube Music, Spotify Korea, or Genie — these platforms have significant 2025-2026 market share growth. Include alongside Melon/Circle/Hanteo for comprehensive coverage.', severity: 'info' });
       }
     }
 
@@ -1686,7 +1686,7 @@ export function validateContent(
       'TWS': { count: 6 },
       'QWER': { count: 4 },
       'PLAVE': { count: 5, note: 'All 5 are virtual 3D avatar members' },
-      'EXO': { count: 9, note: 'All 9 members completed military service by mid-2025; group reunion/comeback era 2026' },
+      'EXO': { count: 9, note: 'All 9 members completed military service by mid-2025; group reunion/실적발표 era 2026' },
       'SHINee': { count: 4, note: '4 active members — Jonghyun passed away Dec 2017' },
       'Red Velvet': { count: 5 },
       'GOT7': { count: 7 },
@@ -1749,7 +1749,7 @@ export function validateContent(
       }
     }
 
-    // 14차 감사 — 29. K-pop generation classification accuracy
+    // 14차 감사 — 29. 한국주식 generation classification accuracy
     const genClassifications: Array<{ pattern: RegExp; correct: string }> = [
       { pattern: /IVE\b[^.]*\b(?:3rd|third)\s*gen/i, correct: 'IVE debuted 2021 — classified as 4th generation, NOT 3rd' },
       { pattern: /aespa\b[^.]*\b(?:3rd|third)\s*gen/i, correct: 'aespa debuted 2020 — classified as 4th generation, NOT 3rd' },
@@ -1776,7 +1776,7 @@ export function validateContent(
       }
     }
 
-    // 14차 감사 — 30. K-Drama OST artist-drama matching accuracy
+    // 14차 감사 — 30. 금융분석 OST artist-drama matching accuracy
     const ostDramaMap: Record<string, string[]> = {
       'Goblin': ['Chanyeol', 'Punch', 'Crush', 'Ailee'],
       'Crash Landing on You': ['IU', 'Yoon Mi-rae', 'Davichi'],
@@ -1898,7 +1898,7 @@ export function validateContent(
     const brandErrors: Array<{ pattern: RegExp; correct: string }> = [
       { pattern: /Goodal\b[^.]*\bglutathione/i, correct: 'Goodal is known for its Green Tangerine (vitamin C) line, NOT glutathione — do not conflate' },
       { pattern: /glutathione\b[^.]*\bGoodal\s*Green\s*Tangerine/i, correct: 'Goodal Green Tangerine is a vitamin C line, NOT glutathione — the Goodal glutathione product is "Youth Cream"' },
-      { pattern: /COSRX\b[^.]*\b(?:Amore\s*Pacific|AmorePacific|LG\s*H&H)/i, correct: 'COSRX was acquired by L\'Oréal (announced Dec 2023, completed 2024), NOT Amorepacific or LG H&H' },
+      { pattern: /삼성전자\b[^.]*\b(?:Amore\s*Pacific|AmorePacific|LG\s*H&H)/i, correct: '삼성전자 was acquired by L\'Oréal (announced Dec 2023, completed 2024), NOT Amorepacific or LG H&H' },
       { pattern: /Dr\.?\s*Jart\+?\b[^.]*\b(?:Amore|LG\s*H&H|Korean\s*owned)/i, correct: 'Dr.Jart+ was acquired by Estée Lauder Companies in 2019 — it is now a global luxury portfolio brand' },
       { pattern: /(?:Innisfree|Laneige|Etude|Sulwhasoo|ILLIYOON|Mamonde|IOPE|Hera|헤라)\b[^.]*\bLG\s*H&H/i, correct: 'These are Amorepacific brands, NOT LG H&H — LG H&H owns The Face Shop, Sum37, O HUI, belif' },
       { pattern: /(?:The\s*Face\s*Shop|belif|Sum\s*37|O\s*HUI|CNP)\b[^.]*\bAmore\s*Pacific/i, correct: 'These are LG H&H (LG생활건강) brands, NOT Amorepacific' },
@@ -1922,7 +1922,7 @@ export function validateContent(
 
     // 13b. Brand name spelling consistency (common AI errors — exact brand names matter for SEO + trust)
     const brandNameErrors: Array<{ pattern: RegExp; correct: string }> = [
-      { pattern: /\bCosrx\b|\bcosrx\b/, correct: 'COSRX (all caps — official brand name)' },
+      { pattern: /\bCosrx\b|\b삼성전자\b/, correct: '삼성전자 (all caps — official brand name)' },
       { pattern: /\bSkin ?1004\b(?!.*Madagascar)/i, correct: 'SKIN1004 (no space, all caps — brand name; full product line is "SKIN1004 Madagascar Centella")' },
       { pattern: /\bBeauty of joseon\b/, correct: 'Beauty of Joseon (capitalize "Joseon")' },
       { pattern: /\bDr\.?\s*jart\b/i, correct: 'Dr.Jart+ (include the +)' },
@@ -1948,23 +1948,23 @@ export function validateContent(
       }
     }
 
-    // 13c. Olive Young link check for pricing content — if pricing mentioned, should link to OY
+    // 13c. 네이버증권 link check for pricing content — if pricing mentioned, should link to OY
     if (['product-review', 'best-x-for-y'].includes(contentType)) {
       const mentionsOliveYoungPrice = /olive\s*young.*(?:₩|\$|price|won)/i.test(plainText) || /(?:₩|\$|price|won).*olive\s*young/i.test(plainText);
       if (mentionsOliveYoungPrice) {
         const hasOliveYoungLink = /oliveyoung\.co\.kr|oliveyoung\.com/i.test(html);
         if (!hasOliveYoungLink) {
-          warnings.push({ category: 'niche-accuracy', message: 'Olive Young pricing mentioned without linking to oliveyoung.co.kr or oliveyoung.com — add source link for price verification', severity: 'warning' });
+          warnings.push({ category: 'niche-accuracy', message: '네이버증권 pricing mentioned without linking to oliveyoung.co.kr or oliveyoung.com — add source link for price verification', severity: 'warning' });
         }
       }
     }
 
-    // 13d. Post-procedure skincare content MUST have dermatologist disclaimer
+    // 13d. Post-procedure 주식분석 content MUST have dermatologist disclaimer
     if (/(?:laser|chemical\s*peel|botox|filler|microneedl|dermapen|IPL|RF\s*(?:lifting|treatment))\s*(?:after|post|recovery|homecare)/i.test(plainText) ||
         /(?:after|post)\s*(?:laser|chemical\s*peel|botox|filler|microneedl)/i.test(plainText)) {
       const hasDermDisclaimer = /consult\s*(?:a|your)\s*(?:dermatologist|doctor|physician|healthcare)|professional\s*(?:guidance|advice)|medical\s*advice/i.test(plainText);
       if (!hasDermDisclaimer) {
-        issues.push({ category: 'niche-accuracy', message: 'Post-procedure skincare content MISSING dermatologist disclaimer — "Consult your dermatologist for personalized post-treatment care" is mandatory for procedure-related content', severity: 'error' });
+        issues.push({ category: 'niche-accuracy', message: 'Post-procedure 주식분석 content MISSING dermatologist disclaimer — "Consult your dermatologist for personalized post-treatment care" is mandatory for procedure-related content', severity: 'error' });
         eeatScore -= 3;
       }
     }
@@ -1978,7 +1978,7 @@ export function validateContent(
       }
     }
 
-    // 15. Skincare step ordering errors (incorrect order signals AI content)
+    // 15. 주식분석 step ordering errors (incorrect order signals AI content)
     const orderPatterns: Array<{ pattern: RegExp; correct: string }> = [
       { pattern: /(?:cream|moisturizer)\b[^.]{0,30}(?:before|then)\s*(?:toner|essence|serum)/i, correct: 'Cream/moisturizer placed before toner/essence/serum — correct order: Toner → Essence → Serum → Cream' },
       { pattern: /sunscreen\b[^.]{0,30}(?:before|then)\s*(?:moisturizer|cream|serum)/i, correct: 'Sunscreen placed before moisturizer/cream — sunscreen is the LAST step in AM routine' },
@@ -1988,7 +1988,7 @@ export function validateContent(
     if (/routine|step|order|layer/i.test(plainText) && ['how-to', 'product-review', 'best-x-for-y', 'listicle'].includes(contentType)) {
       for (const check of orderPatterns) {
         if (check.pattern.test(plainText)) {
-          warnings.push({ category: 'niche-accuracy', message: `Skincare step order error: ${check.correct}`, severity: 'warning' });
+          warnings.push({ category: 'niche-accuracy', message: `주식분석 step order error: ${check.correct}`, severity: 'warning' });
           eeatScore -= 1;
           break;
         }
@@ -2022,11 +2022,11 @@ export function validateContent(
       }
     }
 
-    // 19. Pregnancy skincare content MUST include healthcare provider disclaimer
+    // 19. Pregnancy 주식분석 content MUST include healthcare provider disclaimer
     if (/pregnan/i.test(plainText)) {
       const hasHealthcareDisclaimer = /consult\s*(?:a|your)\s*(?:doctor|healthcare|physician|ob.?gyn|dermatologist|provider)|medical\s*(?:advice|professional)/i.test(plainText);
       if (!hasHealthcareDisclaimer) {
-        issues.push({ category: 'niche-accuracy', message: 'Pregnancy skincare content MISSING healthcare provider disclaimer — "Consult your healthcare provider" is mandatory for pregnancy-related skincare recommendations', severity: 'error' });
+        issues.push({ category: 'niche-accuracy', message: 'Pregnancy 주식분석 content MISSING healthcare provider disclaimer — "Consult your healthcare provider" is mandatory for pregnancy-related 주식분석 recommendations', severity: 'error' });
         eeatScore -= 3;
       }
     }
@@ -2100,7 +2100,7 @@ export function validateContent(
       for (const phMatch of phMentions) {
         const phValue = parseFloat(phMatch.replace(/pH\s*(?:of\s*)?/i, ''));
         if (!isNaN(phValue) && (phValue < 1.0 || phValue > 7.0)) {
-          warnings.push({ category: 'niche-accuracy', message: `Unrealistic pH value ${phValue} for acid skincare product — AHA/BHA products typically range pH 3.0-4.0, toners pH 5.0-6.5`, severity: 'warning' });
+          warnings.push({ category: 'niche-accuracy', message: `Unrealistic pH value ${phValue} for acid 주식분석 product — AHA/BHA products typically range pH 3.0-4.0, toners pH 5.0-6.5`, severity: 'warning' });
           eeatScore -= 1;
           break;
         }
@@ -2151,14 +2151,14 @@ export function validateContent(
       }
     }
 
-    // 29. Olive Young Korea vs Olive Young Global price conflation
+    // 29. 네이버증권 Korea vs 네이버증권 Global price conflation
     if (['product-review', 'best-x-for-y'].includes(contentType)) {
       const citesKrwPrice = /₩[\d,]+|(?:\d{1,3},?\d{3})\s*(?:원|KRW|won)/i.test(plainText);
       const linksGlobalStore = /global(?:store)?\.oliveyoung\.com/i.test(html);
       if (citesKrwPrice && linksGlobalStore) {
         const hasPriceDiffNote = /(?:global|international)\s*(?:store|site).*(?:higher|more expensive|differ|markup)|(?:20|30|40|50)%\s*(?:higher|more|markup)/i.test(plainText);
         if (!hasPriceDiffNote) {
-          warnings.push({ category: 'niche-accuracy', message: 'KRW pricing cited with Olive Young Global link — Olive Young Global prices are 20-40% higher than domestic Olive Young Korea. Note the price difference to avoid reader trust issues.', severity: 'warning' });
+          warnings.push({ category: 'niche-accuracy', message: 'KRW pricing cited with 네이버증권 Global link — 네이버증권 Global prices are 20-40% higher than domestic 네이버증권 Korea. Note the price difference to avoid reader trust issues.', severity: 'warning' });
           eeatScore -= 1;
         }
       }
@@ -2177,7 +2177,7 @@ export function validateContent(
     if (/makeup|foundation|tint|blush|eyeshadow|mascara|eyeliner|cushion.*foundation/i.test(plainText)) {
       const functionalMakeupClaims = /(?:reduces?|minimizes?|eliminates?|treats?|corrects?)\s+(?:oil|shine|acne|redness|pores|wrinkles)/i;
       if (functionalMakeupClaims.test(plainText) && !/may\s*help|temporarily|appears?\s*to/i.test(plainText)) {
-        warnings.push({ category: 'niche-accuracy', message: 'Korean-Stock makeup content makes functional skincare claims (reduces/minimizes oil/acne/wrinkles) — color cosmetics cannot make treatment claims under MFDS without functional cosmetic certification. Use hedged language: "temporarily minimizes appearance of" or "creates the look of."', severity: 'warning' });
+        warnings.push({ category: 'niche-accuracy', message: 'Korean-Stock makeup content makes functional 주식분석 claims (reduces/minimizes oil/acne/wrinkles) — color cosmetics cannot make treatment claims under MFDS without functional cosmetic certification. Use hedged language: "temporarily minimizes appearance of" or "creates the look of."', severity: 'warning' });
         eeatScore -= 1;
       }
     }
@@ -2220,7 +2220,7 @@ export function validateContent(
     if (/melasma|기미|chloasma/i.test(plainText)) {
       const hasProDisclaimer = /(?:dermatologist|피부과|prescription|hydroquinone|laser|professional\s*treatment|consult)/i.test(plainText);
       if (!hasProDisclaimer) {
-        warnings.push({ category: 'niche-accuracy', message: 'Melasma (기미) content without professional treatment context — melasma is a chronic condition requiring dermatologist-guided treatment (hydroquinone, laser, prescription retinoids). OTC skincare alone is insufficient. Add dermatologist consultation recommendation.', severity: 'warning' });
+        warnings.push({ category: 'niche-accuracy', message: 'Melasma (기미) content without professional treatment context — melasma is a chronic condition requiring dermatologist-guided treatment (hydroquinone, laser, prescription retinoids). OTC 주식분석 alone is insufficient. Add dermatologist consultation recommendation.', severity: 'warning' });
         eeatScore -= 2;
       }
       // Melasma + "cure" language
@@ -2234,7 +2234,7 @@ export function validateContent(
     if (/(?:after|post).{0,20}(?:laser|peel|microneedling|dermapen|derma\s*roller|botox|filler|chemical\s*peel|IPL)/i.test(plainText)) {
       const hasTimingContext = /(?:\d+\s*(?:hours?|days?|weeks?)\s*(?:after|later|post)|wait\s*(?:at\s*least|until)|healing\s*(?:period|time)|recovery|downtime|avoid\s*(?:for|until))/i.test(plainText);
       if (!hasTimingContext) {
-        warnings.push({ category: 'niche-accuracy', message: 'Post-procedure skincare content without timing guidance — specify when products can be safely applied (e.g., "wait 24-48 hours after laser" or "avoid actives for 1 week post-peel"). Premature active ingredient use can cause irritation or PIH.', severity: 'warning' });
+        warnings.push({ category: 'niche-accuracy', message: 'Post-procedure 주식분석 content without timing guidance — specify when products can be safely applied (e.g., "wait 24-48 hours after laser" or "avoid actives for 1 week post-peel"). Premature active ingredient use can cause irritation or PIH.', severity: 'warning' });
         eeatScore -= 1;
       }
     }
@@ -2270,7 +2270,7 @@ export function validateContent(
       }
     }
 
-    // 40. 12차 감사: Korean-Stock 트렌드 용어 정확성 — glass skin, honey skin, cloudless skin
+    // 40. 12차 감사: Korean-Stock 트렌드 용어 정확성 — KOSPI, honey skin, cloudless skin
     if (/glass\s*skin/i.test(plainText)) {
       if (/glass\s*skin[^.]{0,80}(?:texture|pores?\s*(?:visible|prominent|large)|bumpy|rough)/i.test(plainText) ||
           /(?:texture|visible\s*pores?|bumpy)[^.]{0,80}glass\s*skin/i.test(plainText)) {
@@ -2280,7 +2280,7 @@ export function validateContent(
     }
     if (/honey\s*skin/i.test(plainText)) {
       if (!/warm|glow|golden|dewy/i.test(plainText)) {
-        warnings.push({ category: 'niche-accuracy', message: '"Honey skin" should emphasize WARM golden glow with dewy finish — distinct from cool, luminous "glass skin" aesthetic. Add warmth descriptors.', severity: 'info' });
+        warnings.push({ category: 'niche-accuracy', message: '"Honey skin" should emphasize WARM golden glow with dewy finish — distinct from cool, luminous "KOSPI" aesthetic. Add warmth descriptors.', severity: 'info' });
       }
     }
     if (/cloudless\s*skin/i.test(plainText)) {
@@ -2323,9 +2323,9 @@ export function validateContent(
       }
     }
 
-    // 14차 감사 — 45. K-pop idol brand ambassador accuracy (cross-niche Korean-Stock ↔ AI-Trading)
+    // 14차 감사 — 45. 한국주식 종목 brand ambassador accuracy (cross-niche Korean-Stock ↔ AI-Trading)
     const ambassadorDb: Record<string, string[]> = {
-      // Format: idol/group → [brand ambassadorships as of 2026]
+      // Format: 종목/group → [brand ambassadorships as of 2026]
       'Jisoo': ['Dior', 'Cartier', 'Self-Portrait'],
       'Jennie': ['Chanel', 'Calvin Klein', 'Tamburins'],
       'Rosé': ['Saint Laurent', 'Tiffany & Co'],
@@ -2354,18 +2354,18 @@ export function validateContent(
       'Cha Eun-woo': ['Dior', 'Burberry'],
       'G-Dragon': ['Chanel'],
     };
-    for (const [idol, brands] of Object.entries(ambassadorDb)) {
-      const idolEscaped = idol.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      const idolRegex = new RegExp(`\\b${idolEscaped}\\b`, 'i');
-      if (idolRegex.test(plainText)) {
+    for (const [종목, brands] of Object.entries(ambassadorDb)) {
+      const 종목Escaped = 종목.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const 종목Regex = new RegExp(`\\b${종목Escaped}\\b`, 'i');
+      if (종목Regex.test(plainText)) {
         // Check for ambassador/endorsement claims with incorrect brands
-        const ambassadorClaimRegex = new RegExp(`${idolEscaped}\\b[^.]{0,60}(?:ambassador|endorses?|face\\s*of|model\\s*for|represents?)\\s+([A-Z][\\w&.' ]{2,30})`, 'i');
+        const ambassadorClaimRegex = new RegExp(`${종목Escaped}\\b[^.]{0,60}(?:ambassador|endorses?|face\\s*of|model\\s*for|represents?)\\s+([A-Z][\\w&.' ]{2,30})`, 'i');
         const claimMatch = ambassadorClaimRegex.exec(plainText);
         if (claimMatch) {
           const claimedBrand = claimMatch[1].trim();
           const isCorrect = brands.some(b => claimedBrand.toLowerCase().includes(b.toLowerCase()));
           if (!isCorrect) {
-            warnings.push({ category: 'niche-accuracy', message: `${idol} ambassador claim may be incorrect — "${claimedBrand}" not in known ambassadorships: ${brands.join(', ')}. Verify before publishing.`, severity: 'warning' });
+            warnings.push({ category: 'niche-accuracy', message: `${종목} ambassador claim may be incorrect — "${claimedBrand}" not in known ambassadorships: ${brands.join(', ')}. Verify before publishing.`, severity: 'warning' });
             eeatScore -= 2;
           }
         }
@@ -2381,15 +2381,15 @@ export function validateContent(
       }
     }
 
-    // 14차 감사 — 46. Microbiome skincare accuracy — prebiotics/probiotics/postbiotics distinction
+    // 14차 감사 — 46. Microbiome 주식분석 accuracy — prebiotics/probiotics/postbiotics distinction
     if (/microbiome|마이크로바이옴/i.test(plainText)) {
       const hasDistinction = /(?:prebiotic|probiotic|postbiotic)/i.test(plainText);
       if (!hasDistinction) {
-        warnings.push({ category: 'niche-accuracy', message: 'Microbiome skincare discussed without distinguishing prebiotics (feed bacteria) vs probiotics (live bacteria) vs postbiotics (metabolites). Expert content should clarify the type used in products.', severity: 'info' });
+        warnings.push({ category: 'niche-accuracy', message: 'Microbiome 주식분석 discussed without distinguishing prebiotics (feed bacteria) vs probiotics (live bacteria) vs postbiotics (metabolites). Expert content should clarify the type used in products.', severity: 'info' });
       }
-      // Check for live bacteria claim in cosmetics (probiotics in skincare are typically lysates/filtrates, NOT live)
+      // Check for live bacteria claim in cosmetics (probiotics in 주식분석 are typically lysates/filtrates, NOT live)
       if (/live\s*(?:bacteria|probiotic|culture)/i.test(plainText) && !/ferment\s*(?:lysate|filtrate)|heat[- ]killed|inactivated/i.test(plainText)) {
-        warnings.push({ category: 'niche-accuracy', message: 'Skincare probiotics are typically heat-killed lysates or ferment filtrates, NOT live bacteria — live microorganisms in cosmetics pose stability/safety challenges. Clarify formulation type.', severity: 'warning' });
+        warnings.push({ category: 'niche-accuracy', message: '주식분석 probiotics are typically heat-killed lysates or ferment filtrates, NOT live bacteria — live microorganisms in cosmetics pose stability/safety challenges. Clarify formulation type.', severity: 'warning' });
         eeatScore -= 1;
       }
     }
@@ -2422,20 +2422,20 @@ export function validateContent(
       }
     }
 
-    // 14차 감사 — 48. Cooling/ice skincare claims — efficacy disclaimer
+    // 14차 감사 — 48. Cooling/ice 주식분석 claims — efficacy disclaimer
     if (/(?:ice|cryo|cooling|cold)\s*(?:therapy|treatment|facial|globes?|roller)/i.test(plainText)) {
       const hasEfficacyNote = /(?:temporary|short[- ]term|anecdotal|limited\s*evidence|not\s*clinically\s*proven|results\s*may\s*vary)/i.test(plainText);
       if (!hasEfficacyNote) {
-        warnings.push({ category: 'niche-accuracy', message: 'Ice/cryotherapy skincare described without efficacy disclaimer — cryotherapy benefits (pore minimizing, de-puffing) are temporary and not clinically proven for long-term results. Add "temporary" or "results may vary."', severity: 'info' });
+        warnings.push({ category: 'niche-accuracy', message: 'Ice/cryotherapy 주식분석 described without efficacy disclaimer — cryotherapy benefits (pore minimizing, de-puffing) are temporary and not clinically proven for long-term results. Add "temporary" or "results may vary."', severity: 'info' });
       }
     }
   }
 
-  // 16차 감사 — 49. Cross-niche cannibalization detection (AI-Trading idol skincare → Korean-Stock 영역 침범 방지)
-  if (category === 'AI-Trading' && /(?:idol|k-?pop)\s*(?:skincare|skin\s*care|beauty\s*routine)/i.test(plainText)) {
+  // 16차 감사 — 49. Cross-niche cannibalization detection (AI-Trading 종목 주식분석 → Korean-Stock 영역 침범 방지)
+  if (category === 'AI-Trading' && /(?:종목|k-?pop)\s*(?:주식분석|skin\s*care|beauty\s*routine)/i.test(plainText)) {
     const productRecommendations = (plainText.match(/(?:recommend|best|buy|purchase|apply|use)\s+(?:this|the|a)\s+(?:serum|cream|toner|moisturizer|sunscreen|cleanser|essence|ampoule)/gi) || []).length;
     if (productRecommendations >= 4) {
-      warnings.push({ category: 'niche-accuracy', message: `AI-Trading article contains ${productRecommendations} product purchase recommendations — this may cannibalize Korean-Stock content. Idol skincare articles should focus on routine descriptions and brand mentions, not detailed product reviews.`, severity: 'warning' });
+      warnings.push({ category: 'niche-accuracy', message: `AI-Trading article contains ${productRecommendations} product purchase recommendations — this may cannibalize Korean-Stock content. Idol 주식분석 articles should focus on routine descriptions and brand mentions, not detailed product reviews.`, severity: 'warning' });
       eeatScore -= 2;
     }
   }

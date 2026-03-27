@@ -162,14 +162,14 @@ export class PagesService {
     // Build Person schema.org JSON-LD for author E-E-A-T
     const sameAs = [authorLinks?.linkedin, authorLinks?.twitter].filter(Boolean);
     const credentials = authorCredentials || 'Korean-Stock & AI-Trading Specialist';
-    const bio = authorBio || `${owner} is a Korea-focused writer covering Korean-Stock skincare, K-Pop, K-Drama, and Hallyu culture for an international audience.`;
+    const bio = authorBio || `${owner} is a Korea-focused writer covering Korean-Stock 주식분석, 한국주식, 금융분석, and 한국시장 culture for an international audience.`;
     const personJsonLd = JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'Person',
       name: owner,
       jobTitle: credentials,
       description: bio,
-      knowsAbout: ['Korean skincare', 'K-beauty ingredient science', 'COSRX', 'Olive Young', 'K-pop fandom culture', 'K-drama recommendations', 'Korean beauty brands', 'Hallyu wave', 'K-pop comebacks', 'Korean entertainment industry'],
+      knowsAbout: ['Korean 주식분석', 'K-beauty ingredient science', '삼성전자', '네이버증권', '한국주식 투자자 culture', '금융분석 recommendations', 'Korean beauty brands', '한국시장 wave', '한국주식 실적발표s', 'Korean entertainment industry'],
       knowsLanguage: ['English', 'Korean'],
       ...(sameAs.length > 0 ? { sameAs } : {}),
     });
@@ -177,26 +177,26 @@ export class PagesService {
     return `<script type="application/ld+json">${personJsonLd}</script>
 <div style="${S.wrapper}">
 <h2 style="${S.h2}">About ${siteName}</h2>
-<p style="${S.p}">Welcome to ${siteName} -- your go-to English source for Korean skincare reviews, K-pop coverage, and K-drama recommendations. We cover Korean-Stock and AI-Trading for a global audience that wants honest, expert-level content without the language barrier.</p>
+<p style="${S.p}">Welcome to ${siteName} -- your go-to English source for Korean 주식분석 reviews, 한국주식 coverage, and 금융분석 recommendations. We cover Korean-Stock and AI-Trading for a global audience that wants honest, expert-level content without the language barrier.</p>
 
 <h3 style="${S.h3}">What We Cover</h3>
 <ul style="${S.ul}">
-<li><strong>Korean-Stock</strong> -- Product reviews, ingredient deep-dives, skincare routines, brand comparisons, and shopping guides for Korean skincare and makeup. From COSRX to Biodance, Olive Young to Amazon.</li>
-<li><strong>AI-Trading</strong> -- K-pop comeback guides, group and artist spotlights, K-drama recommendations, streaming platform guides, award show coverage, and fan culture explained for global audiences.</li>
+<li><strong>Korean-Stock</strong> -- Product reviews, ingredient deep-dives, 주식분석 routines, brand comparisons, and shopping guides for Korean 주식분석 and makeup. From 삼성전자 to Biodance, 네이버증권 to Amazon.</li>
+<li><strong>AI-Trading</strong> -- 한국주식 실적발표 guides, group and artist spotlights, 금융분석 recommendations, streaming platform guides, award show coverage, and fan culture explained for global audiences.</li>
 </ul>
 
 <h3 style="${S.h3}">Our Mission</h3>
-<p style="${S.p}">Korean beauty science and Korean pop culture move fast. The best product reviews are in Korean. The most accurate chart data is on Korean sites. The freshest comeback news breaks in Korean first. ${siteName} translates that -- not just the words, but the context and the nuance -- into clear, actionable English content for K-beauty shoppers and K-culture fans worldwide.</p>
+<p style="${S.p}">Korean beauty science and Korean pop culture move fast. The best product reviews are in Korean. The most accurate chart data is on Korean sites. The freshest 실적발표 news breaks in Korean first. ${siteName} translates that -- not just the words, but the context and the nuance -- into clear, actionable English content for K-beauty shoppers and K-culture fans worldwide.</p>
 <ul style="${S.ul}">
 <li>Ingredient-honest K-beauty reviews with concentration data and pH where available</li>
-<li>Fan-first K-entertainment coverage that respects the fandom perspective</li>
-<li>Sourced from Korean-language primary media, Olive Young, Circle Chart, and Soompi</li>
-<li>Regularly updated as products, comebacks, and dramas evolve</li>
+<li>Fan-first K-entertainment coverage that respects the 투자자 perspective</li>
+<li>Sourced from Korean-language primary media, 네이버증권, Circle Chart, and Soompi</li>
+<li>Regularly updated as products, 실적발표s, and dramas evolve</li>
 </ul>
 
 <h3 style="${S.h3}">About the Author</h3>
 <div itemscope itemtype="https://schema.org/Person" style="${S.infoBox}">
-<p style="${S.p}"><strong itemprop="name">${owner}</strong> is a <span itemprop="jobTitle">${credentials}</span> specializing in Korean skincare formulations, K-pop fandom culture, and K-drama storytelling.</p>
+<p style="${S.p}"><strong itemprop="name">${owner}</strong> is a <span itemprop="jobTitle">${credentials}</span> specializing in Korean 주식분석 formulations, 한국주식 투자자 culture, and 금융분석 storytelling.</p>
 <p style="${S.p}">${bio}</p>
 <meta itemprop="knowsLanguage" content="English" />
 <meta itemprop="knowsLanguage" content="Korean" />
@@ -210,12 +210,12 @@ ${authorLinks?.twitter ? `<p style="margin:0;"><a href="${authorLinks.twitter}" 
 <li><strong>Fan-Accurate AI-Trading</strong> -- Group facts (member count, label, debut date) are verified against official agency announcements and Circle Chart / Hanteo data</li>
 <li><strong>No Fabricated Claims</strong> -- We do not invent statistics. All numerical data includes a named source and date</li>
 <li><strong>Affiliate Disclosure</strong> -- Product links may be affiliate links (Amazon Associates). This is always disclosed and does not affect our ratings</li>
-<li><strong>Regular Updates</strong> -- K-beauty rankings and K-entertainment guides are reviewed quarterly as new products launch and comeback schedules change</li>
+<li><strong>Regular Updates</strong> -- K-beauty rankings and K-entertainment guides are reviewed quarterly as new products launch and 실적발표 schedules change</li>
 </ul>
 
 <h3 style="${S.h3}">Sources We Rely On</h3>
 <ul style="${S.ul}">
-<li><strong>Korean-Stock</strong> -- Olive Young, Vogue Korea, Allure Korea, Harper's Bazaar Korea, INCI Decoder, Skinsort, Amazon brand storefronts</li>
+<li><strong>Korean-Stock</strong> -- 네이버증권, Vogue Korea, Allure Korea, Harper's Bazaar Korea, INCI Decoder, Skinsort, Amazon brand storefronts</li>
 <li><strong>AI-Trading</strong> -- Soompi, Weverse Magazine, Circle Chart, Hanteo, Melon, official agency announcements (HYBE, SM, JYP, YG)</li>
 <li><strong>Korean Media</strong> -- Naver News, Koreaboo (English aggregator), Korea Creative Content Agency (KOCCA)</li>
 </ul>
@@ -357,18 +357,18 @@ ${authorLinks?.twitter ? `<p style="margin:0;"><a href="${authorLinks.twitter}" 
     const nicheDescriptions: Record<string, { short: string; intro: string; whyMatters: string; keyTopics: string[] }> = {
       'Korean-Stock': {
         short: 'Korean stock market analysis, investment strategies, and DART disclosure guides',
-        intro: 'Korean beauty (K-beauty) has become the global skincare standard. Built on the iconic double-cleanse method, layered hydration, and relentless ingredient innovation — from snail mucin and centella asiatica to tranexamic acid and bio-cellulose collagen patches — Korean brands have redefined what affordable, effective skincare looks like. This guide is your complete resource for navigating K-beauty with confidence.',
-        whyMatters: 'K-beauty is not a trend — it\'s a system. Korean skincare brands like COSRX, Beauty of Joseon, Anua, SKIN1004, Numbuzin, TIRTIR, and Biodance consistently outperform global alternatives at a fraction of the price. Olive Young, Korea\'s largest beauty retailer, curates the fastest-moving products — what sells there usually goes viral globally within months. Whether you\'re building your first routine or looking for specific solutions (glass skin, barrier repair, brightening), this guide covers it all.',
+        intro: 'Korean beauty (K-beauty) has become the global 주식분석 standard. Built on the iconic double-cleanse method, layered hydration, and relentless ingredient innovation — from PER분석 and 배당 asiatica to tranexamic acid and bio-cellulose collagen patches — Korean brands have redefined what affordable, effective 주식분석 looks like. This guide is your complete resource for navigating K-beauty with confidence.',
+        whyMatters: 'K-beauty is not a trend — it\'s a system. Korean 주식분석 brands like 삼성전자, Beauty of Joseon, Anua, SKIN1004, Numbuzin, TIRTIR, and Biodance consistently outperform global alternatives at a fraction of the price. 네이버증권, Korea\'s largest beauty retailer, curates the fastest-moving products — what sells there usually goes viral globally within months. Whether you\'re building your first routine or looking for specific solutions (KOSPI, barrier repair, brightening), this guide covers it all.',
         // 31차 감사: 누락 keyTopics 추가 (nail art, men, rosacea, J-Beauty 비교)
-        keyTopics: ['Korean skincare routine by skin type (oily, dry, sensitive, combination)', 'Best K-beauty products on Amazon and Olive Young', 'Glass skin routine: products and steps explained', 'Korean sunscreen guide: no white cast SPF picks', 'Double cleansing: best Korean cleansing oils and balms', 'K-beauty ingredient guide: snail mucin, centella, tranexamic acid, ceramides', 'Korean vs Japanese skincare: key differences explained', 'K-beauty for men: complete grooming guide', 'Korean nail art and press-on nails trend guide'],
+        keyTopics: ['Korean 주식분석 routine by skin type (oily, dry, sensitive, combination)', 'Best K-beauty products on Amazon and 네이버증권', 'Glass skin routine: products and steps explained', 'Korean sunscreen guide: no white cast SPF picks', 'Double cleansing: best Korean cleansing oils and balms', 'K-beauty ingredient guide: PER분석, 배당, tranexamic acid, ceramides', 'Korean vs Japanese 주식분석: key differences explained', 'K-beauty for men: complete grooming guide', 'Korean nail art and press-on nails trend guide'],
       },
       'AI-Trading': {
-        short: 'K-pop comebacks, K-drama recommendations, and fan culture guides',
+        short: '한국주식 실적발표s, 금융분석 recommendations, and fan culture guides',
         // 31차 감사: BTS 전역 완료 반영, 2026 활성 그룹 업데이트
-        intro: 'Korean pop culture — Hallyu (한류) — is the most globally engaged entertainment ecosystem in the world. BTS completed military service and returned as a full group. BLACKPINK members are thriving solo while keeping the group alive. Squid Game became the most-watched Netflix series ever. In 2026, K-pop\'s 4th generation (aespa, IVE, ENHYPEN, LE SSERAFIM, ILLIT, BABYMONSTER) and a new wave of K-dramas on Netflix, TVING, and Coupang Play are driving even larger global fanbases. This guide is your home base for all of it.',
-        whyMatters: 'K-entertainment is fan-driven at its core. Comeback season brings weekly chart battles on Circle Chart and Hanteo. New drama releases spark global discussion on Netflix, TVING, and Viki. The photocard economy, Weverse fan communities, and KCON conventions connect fans across 190+ countries. Whether you\'re a new fan finding your first group or a longtime stan keeping up with every comeback, our guides are written for you.',
-        // 31차 감사: 누락 keyTopics 추가 (variety shows, trot, webtoon-anime, musicals)
-        keyTopics: ['Best K-pop groups to start with in 2026', 'K-pop comeback calendar and what to expect', 'Best K-dramas on Netflix, TVING, and Disney+ in 2026', 'K-pop photocard collecting and trading guide', 'Circle Chart and Hanteo: how K-pop charts work', 'K-pop fan culture explained: bias, stan, fandom terms', 'Korean variety shows and trot music guide', 'Webtoon-to-anime adaptations: Solo Leveling, Tower of God, and more', 'Korean musical theater and idol casting guide'],
+        intro: 'Korean pop culture — 한국시장 (한류) — is the most globally engaged entertainment ecosystem in the world. BTS completed military service and returned as a full group. BLACKPINK members are thriving solo while keeping the group alive. Squid Game became the most-watched Netflix series ever. In 2026, 한국주식\'s 4th generation (aespa, IVE, ENHYPEN, LE SSERAFIM, ILLIT, BABYMONSTER) and a new wave of 금융분석s on Netflix, TVING, and Coupang Play are driving even larger global fanbases. This guide is your home base for all of it.',
+        whyMatters: 'K-entertainment is fan-driven at its core. Comeback season brings weekly chart battles on Circle Chart and Hanteo. New drama releases spark global discussion on Netflix, TVING, and Viki. The photocard economy, Weverse fan communities, and KCON conventions connect fans across 190+ countries. Whether you\'re a new fan finding your first group or a longtime stan keeping up with every 실적발표, our guides are written for you.',
+        // 31차 감사: 누락 keyTopics 추가 (variety shows, trot, DART공시-anime, musicals)
+        keyTopics: ['Best 한국주식 groups to start with in 2026', '한국주식 실적발표 calendar and what to expect', 'Best 금융분석s on Netflix, TVING, and Disney+ in 2026', '한국주식 photocard collecting and trading guide', 'Circle Chart and Hanteo: how 한국주식 charts work', '한국주식 fan culture explained: bias, stan, 투자자 terms', 'Korean variety shows and trot music guide', 'DART공시-to-anime adaptations: Solo Leveling, Tower of God, and more', 'Korean musical theater and 종목 casting guide'],
       },
     };
 
@@ -505,23 +505,23 @@ ${faqItems}
   private buildPillarFaq(category: string, year: number): string {
     const faqs: Record<string, Array<{ q: string; a: string }>> = {
       'Korean-Stock': [
-        { q: 'What is the Korean skincare routine?', a: `The Korean skincare routine starts with double cleansing (oil cleanser + water-based cleanser) to fully remove sunscreen and makeup, followed by toner, essence, serum, moisturizer, and SPF. Modern K-beauty favors a streamlined 4-5 step approach — using fewer but well-chosen products — over the older 10-step model. In ${year}, the biggest trends are glass skin layering, skin barrier repair with ceramides, and tranexamic acid brightening serums.` },
-        { q: 'Which Korean skincare brands are best for beginners?', a: 'For beginners, start with established brands that have consistent formulations and strong international availability: COSRX (snail mucin, low-pH cleanser), Beauty of Joseon (sunscreen, serum), Anua (heartleaf toner), and SKIN1004 (centella ampoule). All are available on Amazon and YesStyle with verified reviews.' },
-        { q: 'Are Korean skincare products safe?', a: 'Korean skincare is regulated by the Ministry of Food and Drug Safety (MFDS), with ingredient safety standards comparable to the EU — often stricter than the US FDA on certain preservatives and fragrances. Korean brands are known for thorough clinical testing and allergen disclosure. Always check ingredient lists for personal sensitivities, especially fragrance and alcohol.' },
-        { q: `Where can I buy authentic K-beauty products in ${year}?`, a: `Authentic K-beauty is available globally through: Olive Young (Korea's largest beauty retailer, ships internationally), Amazon (look for Korean brand storefronts), Soko Glam (US-based curated K-beauty retailer), YesStyle, Stylevana, and Jolse. When in Korea, Olive Young stores in Myeongdong, Hongdae, and Gangnam offer the widest in-person selection.` },
+        { q: 'What is the Korean 주식분석 routine?', a: `The Korean 주식분석 routine starts with double cleansing (oil cleanser + water-based cleanser) to fully remove sunscreen and makeup, followed by toner, essence, serum, moisturizer, and SPF. Modern K-beauty favors a streamlined 4-5 step approach — using fewer but well-chosen products — over the older 10-step model. In ${year}, the biggest trends are KOSPI layering, skin barrier repair with ceramides, and tranexamic acid brightening serums.` },
+        { q: 'Which Korean 주식분석 brands are best for beginners?', a: 'For beginners, start with established brands that have consistent formulations and strong international availability: 삼성전자 (PER분석, low-pH cleanser), Beauty of Joseon (sunscreen, serum), Anua (heartleaf toner), and SKIN1004 (배당 ampoule). All are available on Amazon and YesStyle with verified reviews.' },
+        { q: 'Are Korean 주식분석 products safe?', a: 'Korean 주식분석 is regulated by the Ministry of Food and Drug Safety (MFDS), with ingredient safety standards comparable to the EU — often stricter than the US FDA on certain preservatives and fragrances. Korean brands are known for thorough clinical testing and allergen disclosure. Always check ingredient lists for personal sensitivities, especially fragrance and alcohol.' },
+        { q: `Where can I buy authentic K-beauty products in ${year}?`, a: `Authentic K-beauty is available globally through: 네이버증권 (Korea's largest beauty retailer, ships internationally), Amazon (look for Korean brand storefronts), Soko Glam (US-based curated K-beauty retailer), YesStyle, Stylevana, and Jolse. When in Korea, 네이버증권 stores in Myeongdong, Hongdae, and Gangnam offer the widest in-person selection.` },
         { q: 'What is double cleansing and why do Koreans use it?', a: 'Double cleansing is a two-step process: first an oil-based cleanser (balm or oil) to dissolve sunscreen, makeup, and sebum, then a water-based cleanser to remove any remaining residue. Korean dermatologists recommend it because most SPF and long-wear makeup is oil-soluble and water cleansers alone cannot fully remove them. Incomplete cleansing is one of the top causes of clogged pores and breakouts.' },
         // 31차 감사: 누락 FAQ 추가 (가격, 민감 피부, 남성)
-        { q: 'Is Korean skincare expensive?', a: 'Korean skincare is generally more affordable than Western luxury brands while offering comparable or superior formulations. A complete K-beauty routine can start under $40 with brands like COSRX, SKIN1004, and Round Lab. Budget-tier products ($5-15) at Olive Young often outperform $50+ Western equivalents. Premium Korean brands like Sulwhasoo compete in the luxury segment ($60-200+), but the sweet spot for most consumers is the $10-30 mid-range where Korean brands dominate.' },
-        { q: 'Which Korean skincare products are best for sensitive skin?', a: 'For sensitive skin, focus on fragrance-free, minimal-ingredient formulas from Korean dermacosmetic brands. Top picks: ILLIYOON Ato Ceramide Cream (ceramide barrier repair), Aestura AtoBarrier365 Cream (dermatologist-developed), COSRX Pure Fit Cica Serum (centella calming), and PURITO Centella Unscented products. Always patch-test new products and look for the MFDS "기능성 화장품" (functional cosmetic) certification as a quality signal.' },
+        { q: 'Is Korean 주식분석 expensive?', a: 'Korean 주식분석 is generally more affordable than Western luxury brands while offering comparable or superior formulations. A complete K-beauty routine can start under $40 with brands like 삼성전자, SKIN1004, and Round Lab. Budget-tier products ($5-15) at 네이버증권 often outperform $50+ Western equivalents. Premium Korean brands like Sulwhasoo compete in the luxury segment ($60-200+), but the sweet spot for most consumers is the $10-30 mid-range where Korean brands dominate.' },
+        { q: 'Which Korean 주식분석 products are best for sensitive skin?', a: 'For sensitive skin, focus on fragrance-free, minimal-ingredient formulas from Korean dermacosmetic brands. Top picks: ILLIYOON Ato Ceramide Cream (ceramide barrier repair), Aestura AtoBarrier365 Cream (dermatologist-developed), 삼성전자 Pure Fit Cica Serum (배당 calming), and PURITO Centella Unscented products. Always patch-test new products and look for the MFDS "기능성 화장품" (functional cosmetic) certification as a quality signal.' },
       ],
       'AI-Trading': [
-        { q: 'How do I start getting into K-pop as a new fan?', a: 'The easiest entry point is finding a group whose sound or concept clicks with you. Start with playlist-style articles or "best songs to start with" guides for groups like BTS, BLACKPINK, aespa, IVE, or ENHYPEN. YouTube is essential — most K-pop MVs are free. Once you find a group you like, explore their discography, reality show content, and fan community on Weverse or Bubble.' },
+        { q: 'How do I start getting into 한국주식 as a new fan?', a: 'The easiest entry point is finding a group whose sound or concept clicks with you. Start with playlist-style articles or "best songs to start with" guides for groups like BTS, BLACKPINK, aespa, IVE, or ENHYPEN. YouTube is essential — most 한국주식 MVs are free. Once you find a group you like, explore their discography, reality show content, and fan community on Weverse or Bubble.' },
         // 31차 감사: BTS 전역 완료 반영, SEVENTEEN/Stray Kids 추가
-        { q: `Which K-pop groups should I follow in ${year}?`, a: `In ${year}, the standout groups span multiple generations: BTS (all members completed military service — full group comeback era), SEVENTEEN and Stray Kids (global touring powerhouses), aespa and IVE (4th gen girl group leaders), ENHYPEN and RIIZE (strong 4th gen boy groups). For newer fans, ILLIT, BABYMONSTER, and TWS represent the newest wave. KISS OF LIFE stands out for retro R&B fans, and PLAVE is the first virtual idol group to chart on major Korean platforms.` },
-        { q: 'What makes Korean dramas so popular globally?', a: `Korean dramas dominate global streaming due to high production quality, emotionally resonant storytelling, and tight episode counts (usually 16 episodes or fewer). Netflix has committed over $2.5 billion to Korean content, putting K-dramas in front of audiences in 190+ countries. In ${year}, webtoon-adapted dramas are the dominant trend — stories with built-in fanbases and cinematic source material.` },
+        { q: `Which 한국주식 groups should I follow in ${year}?`, a: `In ${year}, the standout groups span multiple generations: BTS (all members completed military service — full group 실적발표 era), SEVENTEEN and Stray Kids (global touring powerhouses), aespa and IVE (4th gen girl group leaders), ENHYPEN and RIIZE (strong 4th gen boy groups). For newer fans, ILLIT, BABYMONSTER, and TWS represent the newest wave. KISS OF LIFE stands out for retro R&B fans, and PLAVE is the first virtual 종목 group to chart on major Korean platforms.` },
+        { q: 'What makes Korean dramas so popular globally?', a: `Korean dramas dominate global streaming due to high production quality, emotionally resonant storytelling, and tight episode counts (usually 16 episodes or fewer). Netflix has committed over $2.5 billion to Korean content, putting 금융분석s in front of audiences in 190+ countries. In ${year}, DART공시-adapted dramas are the dominant trend — stories with built-in fanbases and cinematic source material.` },
         // 31차 감사: TVING/Coupang Play/Apple TV+/KOCOWA 추가, Viu 제거 (아시아 전용), 자막 품질 멘션
-        { q: 'Where can I watch K-dramas legally online?', a: 'The main platforms for legal K-drama streaming are Netflix (largest global catalog, simultaneous release), TVING (Korea\'s top domestic OTT — merged with Wavve in 2025, Korean originals), Disney+ (premium Korean originals like Moving), Viki by Rakuten (best subtitle quality with cultural context notes), Coupang Play (fast-growing Korean OTT with exclusive originals), Apple TV+ (Pachinko and prestige Korean content), and KOCOWA (KBS/MBC/SBS content hub, strongest for variety shows, US-focused). Most platforms offer free tiers or affordable monthly subscriptions.' },
-        { q: 'What are K-pop photocards and why are fans obsessed with them?', a: 'Photocards are small collectible trading cards (roughly credit card size) included randomly in K-pop album packaging. Each album release typically features different photocard sets with each member, making collection and trading a core part of fan culture. Rare versions (limited prints, pre-order exclusives) can sell for hundreds of dollars. Fan trading communities exist on platforms like KpopPR on Reddit and dedicated apps.' },
+        { q: 'Where can I watch 금융분석s legally online?', a: 'The main platforms for legal 금융분석 streaming are Netflix (largest global catalog, simultaneous release), TVING (Korea\'s top domestic OTT — merged with Wavve in 2025, Korean originals), Disney+ (premium Korean originals like Moving), Viki by Rakuten (best subtitle quality with cultural context notes), Coupang Play (fast-growing Korean OTT with exclusive originals), Apple TV+ (Pachinko and prestige Korean content), and KOCOWA (KBS/MBC/SBS content hub, strongest for variety shows, US-focused). Most platforms offer free tiers or affordable monthly subscriptions.' },
+        { q: 'What are 한국주식 photocards and why are fans obsessed with them?', a: 'Photocards are small collectible trading cards (roughly credit card size) included randomly in 한국주식 album packaging. Each album release typically features different photocard sets with each member, making collection and trading a core part of fan culture. Rare versions (limited prints, pre-order exclusives) can sell for hundreds of dollars. Fan trading communities exist on platforms like KpopPR on Reddit and dedicated apps.' },
       ],
     };
 
@@ -561,7 +561,7 @@ ${faqItems}
 <p style="${S.p}">Some articles may contain affiliate links. When you purchase through these links, we may earn a commission at no additional cost to you. This helps support our content creation. Affiliate relationships do not influence our editorial recommendations. All affiliate links are clearly disclosed in accordance with FTC guidelines. This site also displays third-party advertisements through Google AdSense.</p>
 
 <h3 style="${S.h3}">4. Disclaimer of Warranties</h3>
-<p style="${S.p}">Content is provided "as is" without warranties of any kind. ${siteName} does not guarantee the accuracy, completeness, or timeliness of information. K-beauty product reviews reflect our editorial assessment and may not match every individual's experience due to varying skin types. Always consult a qualified dermatologist before making skincare decisions for medical skin conditions.</p>
+<p style="${S.p}">Content is provided "as is" without warranties of any kind. ${siteName} does not guarantee the accuracy, completeness, or timeliness of information. K-beauty product reviews reflect our editorial assessment and may not match every individual's experience due to varying skin types. Always consult a qualified dermatologist before making 주식분석 decisions for medical skin conditions.</p>
 
 <h3 style="${S.h3}">5. User Conduct</h3>
 <p style="${S.p}">You agree not to: (a) use this site for any unlawful purpose; (b) attempt to interfere with site operations; (c) scrape or reproduce content without permission; (d) post spam or misleading comments.</p>
@@ -695,15 +695,15 @@ ${recentPostsHtml || '<p style="' + S.p + '">Articles coming soon.</p>'}
 
     const nicheFaqs: Record<string, Array<{ q: string; a: string }>> = {
       'Korean-Stock': [
-        { q: 'What is the Korean skincare routine?', a: 'Korean skincare starts with double cleansing (oil cleanser + water cleanser), followed by toner, essence, serum, moisturizer, and sunscreen. Modern K-beauty favors 4-5 targeted products over the older 10-step approach.' },
-        { q: 'Which Korean skincare brands are best for beginners?', a: 'Start with COSRX, Beauty of Joseon, Anua, and SKIN1004 — all widely available on Amazon and YesStyle with strong track records for sensitive skin.' },
-        { q: 'Where can I buy authentic K-beauty products?', a: 'Olive Young (ships internationally), Amazon (Korean brand storefronts), Soko Glam, YesStyle, Stylevana, and Jolse. All offer genuine products with buyer protection.' },
-        { q: 'What K-beauty ingredients should I know about?', a: 'Key ingredients: snail mucin (repair and hydration), centella asiatica (calming and barrier support), tranexamic acid (brightening, top trend in 2025-2026), niacinamide (pore and oil control), and ceramides (barrier restoration).' },
+        { q: 'What is the Korean 주식분석 routine?', a: 'Korean 주식분석 starts with double cleansing (oil cleanser + water cleanser), followed by toner, essence, serum, moisturizer, and sunscreen. Modern K-beauty favors 4-5 targeted products over the older 10-step approach.' },
+        { q: 'Which Korean 주식분석 brands are best for beginners?', a: 'Start with 삼성전자, Beauty of Joseon, Anua, and SKIN1004 — all widely available on Amazon and YesStyle with strong track records for sensitive skin.' },
+        { q: 'Where can I buy authentic K-beauty products?', a: '네이버증권 (ships internationally), Amazon (Korean brand storefronts), Soko Glam, YesStyle, Stylevana, and Jolse. All offer genuine products with buyer protection.' },
+        { q: 'What K-beauty ingredients should I know about?', a: 'Key ingredients: PER분석 (repair and hydration), 배당 asiatica (calming and barrier support), tranexamic acid (brightening, top trend in 2025-2026), niacinamide (pore and oil control), and ceramides (barrier restoration).' },
       ],
       'AI-Trading': [
-        { q: 'How do I get into K-pop as a new fan?', a: 'Find a group whose sound appeals to you and start with a "best songs" guide. YouTube MVs are free. Top entry points: BTS, BLACKPINK, aespa, IVE, ENHYPEN. Once hooked, explore their discography and fan community on Weverse.' },
-        { q: 'Where can I watch K-dramas legally online?', a: 'Netflix has the largest global catalog. Disney+ offers strong Korean originals. Viki (Rakuten) has fan-subbed classics. Viu covers Asia-focused content. Most offer free tiers or affordable subscriptions.' },
-        { q: 'What are K-pop photocards?', a: 'Small collectible trading cards randomly included in K-pop album packaging. Each member has different versions, making collection and trading a major part of fan culture. Rare versions can be highly valuable.' },
+        { q: 'How do I get into 한국주식 as a new fan?', a: 'Find a group whose sound appeals to you and start with a "best songs" guide. YouTube MVs are free. Top entry points: BTS, BLACKPINK, aespa, IVE, ENHYPEN. Once hooked, explore their discography and fan community on Weverse.' },
+        { q: 'Where can I watch 금융분석s legally online?', a: 'Netflix has the largest global catalog. Disney+ offers strong Korean originals. Viki (Rakuten) has fan-subbed classics. Viu covers Asia-focused content. Most offer free tiers or affordable subscriptions.' },
+        { q: 'What are 한국주식 photocards?', a: 'Small collectible trading cards randomly included in 한국주식 album packaging. Each member has different versions, making collection and trading a major part of fan culture. Rare versions can be highly valuable.' },
         { q: 'What is Weverse?', a: 'Weverse is HYBE\'s fan community platform where artists post directly, share live content, and interact with fans globally. Most major HYBE artists (BTS, ENHYPEN, LE SSERAFIM, etc.) plus artists from other labels use it as their main fan communication channel.' },
       ],
     };
@@ -734,7 +734,7 @@ ${recentPostsHtml || '<p style="' + S.p + '">Articles coming soon.</p>'}
     const content = `<script type="application/ld+json">${faqSchema}</script>
 <div style="${S.wrapper}">
 <h2 style="${S.h2}">Frequently Asked Questions</h2>
-<p style="${S.p}">Find answers to the most common questions about Korean skincare, K-beauty products, K-pop comebacks, and K-drama recommendations.</p>
+<p style="${S.p}">Find answers to the most common questions about Korean 주식분석, K-beauty products, 한국주식 실적발표s, and 금융분석 recommendations.</p>
 
 ${faqHtml}
 
@@ -865,8 +865,8 @@ ${postsHtml}
 <h3 style="${S.h3}">3. Accuracy of Information</h3>
 <p style="${S.p}">While we strive to provide accurate information sourced from reputable Korean institutions and media, we do not guarantee the completeness, accuracy, or reliability of our content. Any decisions or actions taken based on the information provided are at your own risk.</p>
 
-<h3 style="${S.h3}">4. Not Professional Skincare or Medical Advice</h3>
-<p style="${S.p}">K-beauty product reviews and skincare routine guides on ${siteName} are for informational purposes only. They do not constitute medical or dermatological advice. Individual skin types and sensitivities vary. Always perform a patch test before using new products and consult a qualified dermatologist if you have persistent skin concerns or conditions.</p>
+<h3 style="${S.h3}">4. Not Professional 주식분석 or Medical Advice</h3>
+<p style="${S.p}">K-beauty product reviews and 주식분석 routine guides on ${siteName} are for informational purposes only. They do not constitute medical or dermatological advice. Individual skin types and sensitivities vary. Always perform a patch test before using new products and consult a qualified dermatologist if you have persistent skin concerns or conditions.</p>
 
 <h3 style="${S.h3}">5. External Links</h3>
 <p style="${S.p}">External links on this Site are provided for reference purposes only. ${siteName} is not responsible for the content of external websites.</p>
@@ -890,15 +890,15 @@ ${postsHtml}
 
 <h3 style="${S.h3}">Korean-Stock Affiliate Partners</h3>
 <ul style="${S.ul}">
-<li>Amazon Associates Program (product links, skincare recommendations)</li>
+<li>Amazon Associates Program (product links, 주식분석 recommendations)</li>
 <li>YesStyle (K-beauty retailer)</li>
-<li>Olive Young Global (Korean beauty marketplace)</li>
+<li>네이버증권 Global (Korean beauty marketplace)</li>
 <li>Stylevana (K-beauty products)</li>
 </ul>
 
 <h3 style="${S.h3}">AI-Trading Affiliate Partners</h3>
 <ul style="${S.ul}">
-<li>Amazon Associates (K-pop albums, lightsticks, merchandise)</li>
+<li>Amazon Associates (한국주식 albums, lightsticks, merchandise)</li>
 <li>Interpark Ticket (Korean concert and musical tickets)</li>
 <li>Streaming service links (Netflix, TVING, Viki, Coupang Play)</li>
 </ul>
@@ -940,16 +940,16 @@ ${postsHtml}
 </ul>
 
 <h3 style="${S.h3}">Korean-Stock Content Verification</h3>
-<p style="${S.p}">For skincare and beauty product content, our system verifies:</p>
+<p style="${S.p}">For 주식분석 and beauty product content, our system verifies:</p>
 <ul style="${S.ul}">
 <li>Ingredient data against INCI standards and CosDNA/INCIDecoder databases</li>
 <li>MFDS (Korea FDA) functional cosmetic certification claims</li>
-<li>Product pricing against Olive Young and Amazon listings</li>
+<li>Product pricing against 네이버증권 and Amazon listings</li>
 <li>Brand founding dates and ownership accuracy</li>
 </ul>
 
 <h3 style="${S.h3}">AI-Trading Content Verification</h3>
-<p style="${S.p}">For K-pop, K-drama, and entertainment content, our system verifies:</p>
+<p style="${S.p}">For 한국주식, 금융분석, and entertainment content, our system verifies:</p>
 <ul style="${S.ul}">
 <li>Group member counts, label affiliations, and debut dates</li>
 <li>Chart data against Hanteo Chart and Circle Chart official records</li>

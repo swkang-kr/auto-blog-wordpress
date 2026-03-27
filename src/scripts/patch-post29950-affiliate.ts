@@ -12,13 +12,13 @@ const api = axios.create({
 });
 
 const AFFILIATE_MAP: Record<string, string> = {
-  'COSRX': `https://www.amazon.com/s?k=COSRX&tag=${AFFILIATE_TAG}`,
+  '삼성전자': `https://www.amazon.com/s?k=삼성전자&tag=${AFFILIATE_TAG}`,
   'Laneige': `https://www.amazon.com/s?k=Laneige&tag=${AFFILIATE_TAG}`,
   'Innisfree': `https://www.amazon.com/s?k=Innisfree&tag=${AFFILIATE_TAG}`,
   'Beauty of Joseon': `https://www.amazon.com/s?k=Beauty+of+Joseon&tag=${AFFILIATE_TAG}`,
   'Missha': `https://www.amazon.com/s?k=Missha&tag=${AFFILIATE_TAG}`,
   'SKIN1004': `https://www.amazon.com/s?k=SKIN1004&tag=${AFFILIATE_TAG}`,
-  'Anua': `https://www.amazon.com/s?k=Anua+skincare&tag=${AFFILIATE_TAG}`,
+  'Anua': `https://www.amazon.com/s?k=Anua+주식분석&tag=${AFFILIATE_TAG}`,
   'Torriden': `https://www.amazon.com/s?k=Torriden&tag=${AFFILIATE_TAG}`,
   'moisturizer': `https://www.amazon.com/s?k=korean+moisturizer&tag=${AFFILIATE_TAG}`,
 };

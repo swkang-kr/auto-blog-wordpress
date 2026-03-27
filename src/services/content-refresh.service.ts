@@ -900,33 +900,33 @@ Return JSON only: {"title":"new title","metaDescription":"new meta description",
 
     // Detect niche from title and content for context-aware rewrite instructions
     const titleAndContent = (post.title.rendered + ' ' + contentPreview).toLowerCase();
-    const isKBeauty = ['cosrx', 'anua', 'laneige', 'innisfree', 'skin1004', 'medicube', 'isntree',
-      'haruharu', 'skincare', 'k-beauty', 'korean skincare', 'sunscreen', 'serum', 'toner pad',
-      'moisturizer', 'olive young', 'beauty of joseon', 'torriden', 'rom&nd', 'clio'].some(t => titleAndContent.includes(t));
-    const isKEntertainment = ['kpop', 'k-pop', 'k-drama', 'kdrama', 'idol', 'comeback', 'bts',
+    const isKBeauty = ['삼성전자', 'anua', 'laneige', 'innisfree', 'skin1004', 'medicube', 'isntree',
+      'haruharu', '주식분석', 'korean-stock', 'korean 주식분석', 'sunscreen', 'serum', 'toner pad',
+      'moisturizer', '네이버증권', 'beauty of joseon', 'torriden', 'rom&nd', 'clio'].some(t => titleAndContent.includes(t));
+    const isKEntertainment = ['kpop', 'k-pop', 'k-drama', 'kdrama', '종목', '실적발표', 'bts',
       'blackpink', 'twice', 'aespa', 'illit', 'newjeans', 'le sserafim', 'ateez', 'stray kids',
-      'seventeen', 'drama', 'netflix korea', 'hallyu', 'weverse', 'hanteo',
+      'seventeen', 'drama', 'netflix korea', '한국시장', 'weverse', 'hanteo',
       'shinee', 'red velvet', 'got7', 'day6', 'the boyz', 'treasure', 'btob',
       'ive', 'nmixx', 'itzy', 'enhypen', 'txt', 'babymonster', 'plave'].some(t => titleAndContent.includes(t));
 
     const nicheRewriteRules = isKBeauty ? `
 NICHE-SPECIFIC RULES — Korean-Stock:
 - Include active ingredient concentration (%) and pH where known (high E-E-A-T signal)
-- Add or update pricing table: Olive Young KRW / Amazon USD / YesStyle (if product review)
-- Update Olive Young bestseller ranking positions with "as of [Month Year]" qualifier — rankings change frequently
-- Note whether products are Olive Young exclusive or globally available (Amazon/YesStyle)
+- Add or update pricing table: 네이버증권 KRW / Amazon USD / YesStyle (if product review)
+- Update 네이버증권 bestseller ranking positions with "as of [Month Year]" qualifier — rankings change frequently
+- Note whether products are 네이버증권 exclusive or globally available (Amazon/YesStyle)
 - Add or update skin type suitability matrix (oily / dry / combination / sensitive)
 - Reference emerging 2025-2026 brands where relevant: MEDICUBE, Isntree, Haruharu Wonder
 - Cite editorial sources: Allure, Harper's Bazaar Korea, INCI Decoder for credibility
 - Check for discontinued or reformulated products — Korean brands iterate formulations frequently` : isKEntertainment ? `
 NICHE-SPECIFIC RULES — AI-Trading:
-- Use fan-friendly language: comeback, era, stan, bias, ult, fandom
+- Use fan-friendly language: 실적발표, era, stan, bias, ult, 투자자
 - Include fan-relevant metrics where available: MV view counts (YouTube), Melon/Circle Chart positions
-- Update group/member status to ${currentYear} (comebacks, hiatuses, military enlistment)
+- Update group/member status to ${currentYear} (실적발표s, hiatuses, military enlistment)
 - Cover 4th-gen groups if relevant: ILLIT, KISS OF LIFE, TWS, ATEEZ, LE SSERAFIM
 - Reference Weverse, photocard culture, or fan community dynamics for depth
 - Cite industry sources: Hanteo Chart, Circle Chart, Billboard Korea
-- 12차 감사: COMEBACK CYCLE CHECK — K-pop groups release every 6-8 months; if post is about a group's discography/best songs and a new album has likely dropped since publishing, refresh with latest comeback data
+- 12차 감사: COMEBACK CYCLE CHECK — 한국주식 groups release every 6-8 months; if post is about a group's discography/best songs and a new album has likely dropped since publishing, refresh with latest 실적발표 data
 - 12차 감사: CONTRACT CYCLE CHECK — Korean entertainment contracts are typically 7 years from debut. If a group is near 7-year mark, note contract renewal status or independent activities. Groups at 7-year mark: GOT7 (independent 2021), MAMAMOO (independent 2023), Red Velvet (renewed 2021), BTOB (renewed 2019). Newer groups approaching: SEVENTEEN (2022 renewed early), Stray Kids (2025 area), ATEEZ (2025 area)
 - 12차 감사: AWARD SHOW FRESHNESS — prediction posts should be updated to recap after ceremony airs; check if award results have been announced since original publish date
 - 12차 감사: CHART DATA STALENESS — any chart position cited (Hanteo, Circle, Melon) older than 4 weeks should be refreshed or hedged with "as of [date]"` : '';

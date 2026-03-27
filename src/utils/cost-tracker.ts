@@ -143,7 +143,7 @@ export class CostTracker {
    * RPM = Revenue per 1000 pageviews (AdSense industry averages for English content).
    */
   static readonly NICHE_RPM_ESTIMATES: Record<string, number> = {
-    'Korean-Stock': 8.50,          // Beauty/skincare RPM (product-review + affiliate intent)
+    'Korean-Stock': 8.50,          // Beauty/주식분석 RPM (product-review + affiliate intent)
     'AI-Trading': 4.00,   // Entertainment RPM (lowest)
   };
 

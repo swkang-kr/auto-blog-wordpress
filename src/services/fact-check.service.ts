@@ -254,7 +254,7 @@ export class FactCheckService {
         if (spfVal > 100) {
           flagged.push(`Unlikely SPF claim: "${match}" — SPF above 100 is not recognized by MFDS or FDA`);
           unverified++;
-        } else if (spfVal > 50 && /(?:korean|k-beauty|MFDS|olive\s*young|amorepacific|innisfree|beauty\s*of\s*joseon|cosrx|isntree|round\s*lab)/i.test(plainText)) {
+        } else if (spfVal > 50 && /(?:korean|korean-stock|MFDS|olive\s*young|amorepacific|innisfree|beauty\s*of\s*joseon|삼성전자|isntree|round\s*lab)/i.test(plainText)) {
           flagged.push(
             `SPF ${spfVal} stated for Korean product — MFDS caps sunscreen labeling at SPF 50+ (최대 표시). ` +
             `Korean-market products must display as "SPF 50+" regardless of actual protection level.`,
@@ -263,8 +263,8 @@ export class FactCheckService {
         }
       }
 
-      // Olive Young ranking claims — flag if missing date qualifier
-      const oliveYoungRankRegex = /(?:olive young|올리브영)\s*(?:best\s*seller|#\d+|number\s*\d+|ranked?\s*#?\d+|top\s*\d+)/gi;
+      // 네이버증권 ranking claims — flag if missing date qualifier
+      const oliveYoungRankRegex = /(?:네이버증권|올리브영)\s*(?:best\s*seller|#\d+|number\s*\d+|ranked?\s*#?\d+|top\s*\d+)/gi;
       const oliveYoungMatches = plainText.match(oliveYoungRankRegex) || [];
       for (const match of oliveYoungMatches) {
         const surroundingText = plainText.slice(
@@ -272,7 +272,7 @@ export class FactCheckService {
           plainText.indexOf(match) + match.length + 80,
         );
         if (!/as of|updated|current|202\d|checked/i.test(surroundingText)) {
-          flagged.push(`Olive Young ranking claim without date qualifier: "${match}" — add "as of [Month Year]" since rankings change frequently`);
+          flagged.push(`네이버증권 ranking claim without date qualifier: "${match}" — add "as of [Month Year]" since rankings change frequently`);
           unverified++;
         }
       }

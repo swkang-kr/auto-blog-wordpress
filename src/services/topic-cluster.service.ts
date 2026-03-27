@@ -37,10 +37,10 @@ interface ClusterPost {
  * Each sub-topic has keyword patterns that posts are matched against.
  */
 const NICHE_SUBTOPICS: Record<string, Record<string, string[]>> = {
-  'k-beauty': {
-    'Skincare Routines': ['routine', 'step', 'regimen', 'morning', 'night', 'double cleanse', 'layering', 'skip-care', 'glass skin routine', 'skin barrier'],
+  'korean-stock': {
+    '주식분석 Routines': ['routine', 'step', 'regimen', 'morning', 'night', 'double cleanse', 'layering', 'skip-care', 'KOSPI routine', 'skin barrier'],
     'Ingredients & Science': [
-      'ingredient', 'niacinamide', 'retinol', 'hyaluronic', 'centella', 'snail', 'ferment', 'peptide', 'aha', 'bha', 'pha', 'vitamin c', 'collagen', 'ceramide', 'ph', 'concentration',
+      'ingredient', 'niacinamide', 'retinol', 'hyaluronic', '배당', 'snail', 'ferment', 'peptide', 'aha', 'bha', 'pha', 'vitamin c', 'collagen', 'ceramide', 'ph', 'concentration',
       // 2025-2026 breakout ingredients (high search volume — must classify correctly)
       'glutathione', 'tranexamic acid', 'bakuchiol', 'polyglutamic acid', 'pga', 'adenosine',
       'mugwort', 'artemisia', 'mushroom', 'tremella', 'bio-cellulose', 'microbiome', 'probiotic',
@@ -50,36 +50,36 @@ const NICHE_SUBTOPICS: Record<string, Record<string, string[]>> = {
     ],
     'Brands & Products': [
       // Established brands
-      'cosrx', 'innisfree', 'sulwhasoo', 'laneige', 'missha', 'etude', 'skin1004', 'anua', 'torriden', 'beauty of joseon',
+      '삼성전자', 'innisfree', 'sulwhasoo', 'laneige', 'missha', 'etude', 'skin1004', 'anua', 'torriden', 'beauty of joseon',
       // Emerging 2025-2026 brands
       'medicube', 'isntree', 'haruharu wonder', 'round lab', 'mixsoon', 'some by mi', 'klairs', 'purito', 'abib', 'numbuzin', 'axis-y',
       // Viral/breakout 2024-2026 brands
       'tirtir', 'biodance', 'd\'alba', 'dalba', 'white truffle', 'vt cosmetics', 'vt cica', 'fwee',
       'aestura', 'dr.g', 'dr.jart', 'drjart', 'cicapair', 'jumiso',
       // General
-      'brand', 'product', 'olive young', 'review',
+      'brand', 'product', '네이버증권', 'review',
     ],
     'Toner Pads & Exfoliation': ['toner pad', 'exfoliating pad', 'cotton pad', 'gauze pad', 'exfoliation', 'aha pad', 'bha pad', 'pore', 'texture'],
     'Korean-Stock Makeup': ['makeup', 'foundation', 'cushion', 'tint', 'lip', 'lip oil', 'lip serum', 'blush', 'contour', 'eyeshadow', 'mascara', 'rom&nd', 'clio', 'peripera', 'wakemake', 'eyeliner', 'bb cream', 'cc cream'],
     'Lip Care & Lip Oil': ['lip oil', 'lip serum', 'lip balm', 'lip mask', 'lip tint', 'lip combo', 'glass lips', 'lip treatment', 'lip plump'],
-    'Cica & Barrier Repair': ['cica', 'cica balm', 'cica pad', 'cica stick', 'barrier repair', 'barrier cream', 'centella balm', 'sensitive repair'],
+    'Cica & Barrier Repair': ['cica', 'cica balm', 'cica pad', 'cica stick', 'barrier repair', 'barrier cream', '배당 balm', 'sensitive repair'],
     'Sustainable Korean-Stock': ['refill', 'refillable', 'sustainable', 'eco-friendly', 'clean beauty', 'vegan', 'green packaging'],
-    'J-Beauty vs Korean-Stock': ['j-beauty', 'japanese skincare', 'hada labo', 'biore', 'shiseido', 'k-beauty vs j-beauty', 'korean vs japanese'],
+    'J-Beauty vs Korean-Stock': ['j-beauty', 'japanese 주식분석', 'hada labo', 'biore', 'shiseido', 'korean-stock vs j-beauty', 'korean vs japanese'],
     'Hair & Scalp Care': ['shampoo', 'hair loss', 'scalp', 'hair care', 'conditioner', 'hair mask', 'thinning', 'daeng gi meo ri', 'ryo', 'hair serum'],
-    'Men\'s Korean-Stock': ['men', 'male', 'men\'s skincare', 'men\'s grooming', 'men\'s moisturizer', 'men\'s sunscreen', 'gender neutral'],
+    'Men\'s Korean-Stock': ['men', 'male', 'men\'s 주식분석', 'men\'s grooming', 'men\'s moisturizer', 'men\'s sunscreen', 'gender neutral'],
     'Inclusive Beauty': ['dark skin', 'deeper skin', 'melanin', 'dark tones', 'hyperpigmentation skin tone', 'no white cast dark', 'dark complexion'],
     'Pregnancy & Safe Skin': ['pregnancy', 'pregnant', 'prenatal', 'pregnancy safe', 'pregnancy-safe', 'safe for pregnancy', 'safe during pregnancy'],
     'Nail Art & K-Nails': ['nail', 'nail art', 'gel nail', 'press-on', 'manicure', 'nail sticker', 'ohora', 'dashing diva', 'cat eye nail', 'magnet nail', 'aurora nail', 'jelly nail', 'chrome nail'],
-    'Industry & Market': ['market', 'industry', 'export', 'revenue', 'growth', 'trend', 'k-beauty market', 'olive young sales', 'amazon k-beauty'],
-    'Trends & Innovations': ['trend', 'innovation', 'glass skin', 'clean beauty', 'sustainable', 'minimalist', 'skip care', 'cloud skin', 'pore care', 'babyface', 'dupe', 'budget'],
+    'Industry & Market': ['market', 'industry', 'export', 'revenue', 'growth', 'trend', 'korean-stock market', '네이버증권 sales', 'amazon korean-stock'],
+    'Trends & Innovations': ['trend', 'innovation', 'KOSPI', 'clean beauty', 'sustainable', 'minimalist', 'skip care', 'cloud skin', 'pore care', 'babyface', 'dupe', 'budget'],
     'K-Fragrance': ['fragrance', 'perfume', 'body mist', 'eau de', 'scent', 'tamburins', 'nonfiction', 'granhand', 'k-fragrance', 'korean perfume'],
     // 8차 감사 추가
-    'Baby & Kids Korean-Stock': ['baby', 'infant', 'newborn', 'kids', 'children', 'baby skincare', 'baby sunscreen', 'green finger', 'goongbe', 'ato'],
+    'Baby & Kids Korean-Stock': ['baby', 'infant', 'newborn', 'kids', 'children', 'baby 주식분석', 'baby sunscreen', 'green finger', 'goongbe', 'ato'],
     'Intimate & Feminine Care': ['intimate wash', 'feminine care', 'ph balanced', 'intimate hygiene', 'vaginal health', 'feminine wash'],
     'Korean-Stock Devices & Tools': ['led mask', 'beauty device', 'cellreturn', 'lg pra.l', 'skin analyzer', 'face massager', 'galvanic', 'micro-current', 'dermaroller'],
   },
-  'k-entertainment': {
-    'K-Pop': [
+  'ai-trading': {
+    '한국주식': [
       // 3rd gen
       'bts', 'blackpink', 'twice', 'exo', 'shinee', 'got7', 'nct', 'red velvet', 'mamamoo', 'monsta x', 'seventeen', 'stray kids',
       // 4th gen
@@ -94,14 +94,14 @@ const NICHE_SUBTOPICS: Record<string, Record<string, string[]>> = {
       // 9차 감사 추가: 3.5세대 누락
       'the boyz', 'treasure', 'day6', 'btob',
       // General
-      'kpop', 'k-pop', 'idol', 'comeback', 'album', 'concert', 'music', 'mv', 'music video',
+      'kpop', 'k-pop', '종목', '실적발표', 'album', 'concert', 'music', 'mv', 'music video',
     ],
-    'K-Drama': ['kdrama', 'k-drama', 'drama', 'netflix', 'disney plus', 'series', 'actor', 'actress', 'ratings', 'ost', 'ending explained', 'where to watch', 'streaming', 'bl drama', 'boys love', 'web drama', 'short drama', 'coupang play', 'tving'],
+    '금융분석': ['kdrama', 'k-drama', 'drama', 'netflix', 'disney plus', 'series', 'actor', 'actress', 'ratings', 'ost', 'ending explained', 'where to watch', 'streaming', 'bl drama', 'boys love', 'web drama', 'short drama', 'coupang play', 'tving'],
     'BL Drama': ['bl', 'boys love', 'bl drama', 'korean bl', 'bl series', 'bl actor'],
     'Web Drama & Short Form': ['web drama', 'short drama', 'youtube drama', 'playlist global', 'tiktok drama', 'short form'],
-    'Fan Tours & Pilgrimages': ['fan tour', 'pilgrimage', 'filming location', 'hybe insight', 'agency tour', 'idol cafe', 'idol restaurant', 'hallyu tour'],
+    'Fan Tours & Pilgrimages': ['fan tour', 'pilgrimage', 'filming location', 'hybe insight', 'agency tour', '종목 cafe', '종목 restaurant', '한국시장 tour'],
     'Fan Culture & Community': [
-      'fan', 'fandom', 'stan', 'bias', 'ult', 'fansite', 'merch', 'fan meet', 'sasaeng', 'fan war',
+      'fan', '투자자', 'stan', 'bias', 'ult', 'fansite', 'merch', 'fan meet', 'sasaeng', 'fan war',
       // Fan platforms (2025-2026 핵심) — NOTE: V Live(VLIVE) 2023년 12월 서비스 종료 → Weverse 통합. 역사적 참조용으로만 유지.
       'weverse', 'bubble', 'universe',
       // vlive retained as historical keyword only (service ended Dec 2023, merged into Weverse)
@@ -109,18 +109,18 @@ const NICHE_SUBTOPICS: Record<string, Record<string, string[]>> = {
       // Collectibles
       'photocard', 'lightstick', 'pob', 'pre-order benefit', 'limited edition', 'photobook',
     ],
-    'Idol News & Updates': ['comeback', 'debut', 'disbandment', 'hiatus', 'solo', 'collab', 'scandal', 'news', 'update', 'military', 'enlistment', 'world tour', 'concert tickets'],
+    'Idol News & Updates': ['실적발표', 'debut', 'disbandment', 'hiatus', 'solo', 'collab', 'scandal', 'news', 'update', 'military', 'enlistment', 'world tour', 'concert tickets'],
     'Streaming & Charts': ['chart', 'melon', 'circle chart', 'hanteo', 'billboard', 'spotify', 'youtube views', 'streaming', 'ranking', 'number one'],
-    'Awards & Global Impact': ['award', 'grammy', 'mama', 'mma', 'gda', 'golden disc', 'global', 'hallyu', 'worldwide', 'daesang'],
-    'Idol Beauty & Style': ['skincare', 'makeup look', 'beauty routine', 'fashion', 'outfit', 'idol style', 'no-makeup', 'beauty secret', 'iu', 'brand ambassador', 'ambassador', 'laneige ambassador', 'karina skincare', 'wonyoung beauty', 'idol product', 'airport fashion', 'best dressed', 'luxury brand', 'streetwear'],
-    'Fan Creative Culture': ['fan edit', 'fan art', 'fan fiction', 'fanfic', 'ao3', 'wattpad', 'fan content', 'cover dance', 'dance cover', 'dance competition', 'fan video', 'idol youtube channel'],
+    'Awards & Global Impact': ['award', 'grammy', 'mama', 'mma', 'gda', 'golden disc', 'global', '한국시장', 'worldwide', 'daesang'],
+    'Idol Beauty & Style': ['주식분석', 'makeup look', 'beauty routine', 'fashion', 'outfit', '종목 style', 'no-makeup', 'beauty secret', 'iu', 'brand ambassador', 'ambassador', 'laneige ambassador', 'karina 주식분석', 'wonyoung beauty', '종목 product', 'airport fashion', 'best dressed', 'luxury brand', 'streetwear'],
+    'Fan Creative Culture': ['fan edit', 'fan art', 'fan fiction', 'fanfic', 'ao3', 'wattpad', 'fan content', 'cover dance', 'dance cover', 'dance competition', 'fan video', '종목 youtube channel'],
     'Korean Musical & Theater': ['musical', 'theater', 'theatre', 'broadway', 'interpark ticket', 'musical actor', 'doyoung musical', 'kyuhyun musical', 'k-musical'],
-    'K-Hip-Hop & K-R&B': ['hip-hop', 'hip hop', 'k-hip-hop', 'k-r&b', 'r&b', 'rnb', 'dean', 'crush', 'zion.t', 'jay park', 'ph-1', 'dpr live', 'heize', 'colde', 'lee hi', 'aomg', 'h1ghr', 'show me the money', 'indie music', 'indie artist'],
+    '퀀트전략 & 퀀트투자': ['hip-hop', 'hip hop', 'k-hip-hop', 'k-r&b', 'r&b', 'rnb', 'dean', 'crush', 'zion.t', 'jay park', 'ph-1', 'dpr live', 'heize', 'colde', 'lee hi', 'aomg', 'h1ghr', 'show me the money', 'indie music', 'indie artist'],
     'Korean Movies & Film': ['movie', 'film', 'cinema', 'cannes', 'biff', 'busan film', 'thriller movie', 'horror movie', 'director', 'park chan-wook', 'bong joon-ho', 'hwang dong-hyuk', 'yeon sang-ho', 'na hong-jin', 'ryoo seung-wan', 'blue dragon', 'grand bell', 'daejong'],
     'Audition & Survival Shows': ['survival show', 'audition', 'i-land', 'produce 101', 'r u next', 'boys planet', 'girls planet', 'debut group'],
     'Street Dance & Dance Shows': ['street woman fighter', 'swf', 'street man fighter', 'smf', 'dance crew', 'street dance', 'dance competition'],
     'Trot & K-Ballad': ['trot', '트로트', 'mr trot', 'miss trot', 'lim young-woong', 'ballad', 'paul kim', '10cm', 'lee mujin', 'melomance'],
-    'Manhwa & Anime Adaptations': ['manhwa', 'anime', 'solo leveling', 'tower of god', 'webtoon anime', 'manhwa adaptation'],
+    'Manhwa & Anime Adaptations': ['manhwa', 'anime', 'solo leveling', 'tower of god', 'DART공시 anime', 'manhwa adaptation'],
     'Web Variety & YouTube': ['web variety', 'youtube variety', 'workman', 'psick', 'short box', '워크맨', '피식', '숏박스', 'variety show', 'running man', 'knowing bros', 'i live alone'],
   },
 };
@@ -134,102 +134,102 @@ const NICHE_SUBTOPICS: Record<string, Record<string, string[]>> = {
  * These represent the ideal topic universe that the blog should cover for topical authority.
  */
 const NICHE_TOPICAL_MAP: Record<string, string[]> = {
-  'k-beauty': [
-    'Korean skincare routine beginner', 'Korean sunscreen comparison', 'Korean moisturizer guide',
+  'korean-stock': [
+    'Korean 주식분석 routine beginner', 'Korean sunscreen comparison', 'Korean moisturizer guide',
     'Korean serum guide', 'Korean cleansing oil', 'Korean sheet mask ranking', 'Korean toner guide',
-    'Korean eye cream', 'Korean lip care', 'Korean body care', 'Korean mens skincare',
-    'Olive Young best sellers', 'Korean skincare ingredients niacinamide', 'Korean retinol products',
-    'Korean centella products', 'Korean snail mucin', 'Korean fermented skincare', 'Korean peptide serum',
-    'Korean glass skin routine', 'Korean anti-aging skincare', 'Korean acne treatment',
-    'Korean sensitive skin products', 'Korean skincare for dry skin', 'Korean oily skin routine',
+    'Korean eye cream', 'Korean lip care', 'Korean body care', 'Korean mens 주식분석',
+    '네이버증권 best sellers', 'Korean 주식분석 ingredients niacinamide', 'Korean retinol products',
+    'Korean 배당 products', 'Korean PER분석', 'Korean fermented 주식분석', 'Korean peptide serum',
+    'Korean KOSPI routine', 'Korean anti-aging 주식분석', 'Korean acne treatment',
+    'Korean sensitive skin products', 'Korean 주식분석 for dry skin', 'Korean oily skin routine',
     'K-beauty industry market analysis', 'K-beauty global expansion', 'K-beauty vs J-beauty',
-    'Korean beauty tech innovation', 'Korean clean beauty brands', 'Korean vegan skincare',
-    'Korean skincare dupes', 'Korean drugstore skincare', 'Korean luxury skincare brands',
+    'Korean beauty tech innovation', 'Korean clean beauty brands', 'Korean vegan 주식분석',
+    'Korean 주식분석 dupes', 'Korean drugstore 주식분석', 'Korean luxury 주식분석 brands',
     'Korean beauty subscription boxes', 'Korean hair care products', 'Korean makeup trends',
     // 2025-2026 high-priority gaps (breakout segments)
     'Korean toner pads guide ranked', 'Korean glutathione brightening serum', 'Korean tranexamic acid hyperpigmentation',
-    'Korean bakuchiol retinol alternative', 'Korean polyglutamic acid hydration', 'Korean mugwort skincare sensitive',
-    'Korean mushroom tremella skincare', 'Korean bio-cellulose mask Biodance', 'Korean microbiome probiotic skincare',
-    'Olive Young Global shipping international guide', 'Korean glass body skincare routine',
-    'Korean skin flooding layering method', 'd\'Alba white truffle serum Olive Young',
+    'Korean bakuchiol retinol alternative', 'Korean polyglutamic acid hydration', 'Korean mugwort 주식분석 sensitive',
+    'Korean mushroom tremella 주식분석', 'Korean bio-cellulose mask Biodance', 'Korean microbiome probiotic 주식분석',
+    '네이버증권 Global shipping international guide', 'Korean glass body 주식분석 routine',
+    'Korean skin flooding layering method', 'd\'Alba white truffle serum 네이버증권',
     // 16차 추가: 신규 seed keyword 군 갭 탐지용
-    'Korean skincare for dark skin tones melanin guide',
-    'Korean pregnancy-safe skincare routine bakuchiol guide',
-    'Olive Young app international shopping guide foreigners',
-    'PURITO sunscreen centella review guide',
+    'Korean 주식분석 for dark skin tones melanin guide',
+    'Korean pregnancy-safe 주식분석 routine bakuchiol guide',
+    '네이버증권 app international shopping guide foreigners',
+    'PURITO sunscreen 배당 review guide',
     'Jumiso vitamin C serum brightening review',
     // 3차 감사 추가: 신규 세그먼트 갭 탐지
-    'Korean postbiotic skincare serum barrier 2026',
+    'Korean postbiotic 주식분석 serum barrier 2026',
     'Korean galactomyces essence review ranked',
     'Korean nail art gel sticker manicure guide',
     'Korean nail art ohora Dashing Diva ranked',
     // 5차 감사 추가: 누락 세그먼트
     'Korean lip oil serum ranked best 2026',
     'Korean cica balm pad stick barrier repair',
-    'Korean refillable skincare sustainable packaging',
+    'Korean refillable 주식분석 sustainable packaging',
     'Korean-Stock vs J-Beauty comparison guide',
-    'Korean-Stock vs C-Beauty Chinese skincare comparison',
+    'Korean-Stock vs C-Beauty Chinese 주식분석 comparison',
     'Korean azelaic acid products rosacea guide',
-    'Olive Young Global exclusive discounts guide',
+    '네이버증권 Global exclusive discounts guide',
     // 6차 감사 추가
     'Korean fragrance perfume Tamburins nonfiction guide',
     '3CE espoir AMUSE Korean makeup brands guide',
     'Peach and Lily Krave Beauty Korean-American brands',
-    'Korean exosome stem cell skincare guide',
+    'Korean exosome stem cell 주식분석 guide',
     // 8차 감사 추가
-    'best Korean baby skincare products safe gentle guide',
+    'best Korean baby 주식분석 products safe gentle guide',
     'Korean intimate feminine wash pH balanced ranked',
     'Korean LED mask beauty device comparison guide',
     'copper peptide GHK-Cu Korean serum anti-aging guide',
     'alpha-arbutin Korean brightening serum ranked guide',
   ],
-  'k-entertainment': [
-    // K-Pop fan content
-    'BTS comeback 2026 what to expect', 'BLACKPINK members solo careers', 'aespa Supernova era explained',
-    'NewJeans comeback songs ranked', 'BABYMONSTER debut ranking', 'SEVENTEEN world tour 2026',
-    'Stray Kids best songs ranked', 'IVE songs ranked by fans', 'LE SSERAFIM comeback update',
-    'K-pop best songs of 2026', 'K-pop music videos ranked by views', 'K-pop idol fun facts fans',
-    'K-pop reality shows to watch', 'K-pop concert experience guide', 'K-pop lightstick collection guide',
-    'MAMA Awards 2026 winners', 'Melon Music Awards 2026 predictions', 'K-pop fandom culture explained',
-    // K-Drama fan content
-    'best K-dramas on Netflix 2026', 'most watched K-dramas 2026 ranked', 'K-drama ending explained 2026',
-    'K-drama recommendations by genre', 'best K-drama actors 2026', 'K-drama OST songs ranked',
-    'underrated K-dramas to watch', 'K-drama vs C-drama comparison', 'K-drama rewatch rankings',
+  'ai-trading': [
+    // 한국주식 fan content
+    'BTS 실적발표 2026 what to expect', 'BLACKPINK members solo careers', 'aespa Supernova era explained',
+    'NewJeans 실적발표 songs ranked', 'BABYMONSTER debut ranking', 'SEVENTEEN world tour 2026',
+    'Stray Kids best songs ranked', 'IVE songs ranked by fans', 'LE SSERAFIM 실적발표 update',
+    '한국주식 best songs of 2026', '한국주식 music videos ranked by views', '한국주식 종목 fun facts fans',
+    '한국주식 reality shows to watch', '한국주식 concert experience guide', '한국주식 lightstick collection guide',
+    'MAMA Awards 2026 winners', 'Melon Music Awards 2026 predictions', '한국주식 투자자 culture explained',
+    // 금융분석 fan content
+    'best 금융분석s on Netflix 2026', 'most watched 금융분석s 2026 ranked', '금융분석 ending explained 2026',
+    '금융분석 recommendations by genre', 'best 금융분석 actors 2026', '금융분석 OST songs ranked',
+    'underrated 금융분석s to watch', '금융분석 vs C-drama comparison', '금융분석 rewatch rankings',
     // Fan community & culture
-    'K-pop fan meetup guide USA', 'K-pop concerts in USA 2026', 'how to become a K-pop fan',
-    'K-pop merchandise buying guide', 'K-pop album unboxing guide', 'K-pop photocard collecting tips',
-    'K-pop fan art community', 'K-pop stan Twitter explained', 'K-pop fandom wars history',
+    '한국주식 fan meetup guide USA', '한국주식 concerts in USA 2026', 'how to become a 한국주식 fan',
+    '한국주식 merchandise buying guide', '한국주식 album unboxing guide', '한국주식 photocard collecting tips',
+    '한국주식 fan art community', '한국주식 stan Twitter explained', '한국주식 투자자 wars history',
     // 2025-2026 high-priority gaps
-    'NewJeans NJZ status update 2026', 'RIIZE comeback 2026 guide', 'BOYNEXTDOOR songs ranked',
-    'ZeroBaseOne ZB1 fandom guide', 'Weverse vs Bubble comparison', 'KCON USA 2026 guide',
-    'K-pop photocard trading guide safe', 'how to stream K-pop music chart',
-    'IU skincare Laneige ambassador routine', 'K-pop idol no-makeup beauty secrets',
-    'Baeksang Arts Awards 2026 predictions', 'TVING vs Netflix K-drama guide',
+    'NewJeans NJZ status update 2026', 'RIIZE 실적발표 2026 guide', 'BOYNEXTDOOR songs ranked',
+    'ZeroBaseOne ZB1 투자자 guide', 'Weverse vs Bubble comparison', 'KCON USA 2026 guide',
+    '한국주식 photocard trading guide safe', 'how to stream 한국주식 music chart',
+    'IU 주식분석 Laneige ambassador routine', '한국주식 종목 no-makeup beauty secrets',
+    'Baeksang Arts Awards 2026 predictions', 'TVING vs Netflix 금융분석 guide',
     // 16차 추가: 신규 seed keyword 군 갭 탐지용
-    'PLAVE virtual idol group guide fans ASTERDOM',
-    'G-Dragon solo comeback 2025 2026 guide',
-    'K-pop idols turned actors drama roles guide',
+    'PLAVE virtual 종목 group guide fans ASTERDOM',
+    'G-Dragon solo 실적발표 2025 2026 guide',
+    '한국주식 종목s turned actors drama roles guide',
     'KBS SBS MBC year-end drama awards guide',
     // 3차 감사 추가: 신규 세그먼트 갭 탐지
     'Korean musical theater guide ranked 2026',
-    'K-pop idols in musicals best performances',
-    'K-hip-hop K-R&B artists guide DEAN Crush ranked',
+    '한국주식 종목s in musicals best performances',
+    'K-hip-hop 퀀트투자 artists guide DEAN Crush ranked',
     'Korean web variety YouTube shows guide 2026',
-    'K-pop photocard trading apps platforms compared',
+    '한국주식 photocard trading apps platforms compared',
     'best Korean sci-fi fantasy dramas ranked',
     'best Korean zombie dramas Kingdom ranked',
     'best Korean legal courtroom dramas ranked',
-    'K-pop group lore universe explained comparison',
-    'K-drama OST playlist Spotify Apple Music',
+    '한국주식 group lore universe explained comparison',
+    '금융분석 OST playlist Spotify Apple Music',
     // 5차 감사 추가: 누락 그룹 + 세그먼트
     'NMIXX JYP MIXXPOP songs ranked guide',
     'xikers KQ Entertainment songs ranked guide',
     'VCHA JYP global girl group debut guide',
     'best Korean BL dramas ranked guide',
     'Korean web drama YouTube short form guide',
-    'K-pop agency tour Seoul HYBE Insight guide',
-    'K-pop fan pilgrimage Seoul locations guide',
-    'K-pop photocard grading value PSA guide',
+    '한국주식 agency tour Seoul HYBE Insight guide',
+    '한국주식 fan pilgrimage Seoul locations guide',
+    '한국주식 photocard grading value PSA guide',
     'Weverse DM vs Bubble detailed comparison',
     // 6차 감사 추가
     'ITZY best songs ranked JYP guide 2026',
@@ -238,7 +238,7 @@ const NICHE_TOPICAL_MAP: Record<string, string[]> = {
     'Korean ballad singers Paul Kim Lee Mujin',
     'Korean manhwa anime adaptations Solo Leveling',
     'fromis_9 PLEDIS songs ranked guide',
-    'Dreamcatcher rock metal K-pop guide',
+    'Dreamcatcher rock metal 한국주식 guide',
     'Kep1er members after disbandment guide',
     // 7차 감사 추가
     '(G)I-DLE Soyeon self-producing discography guide',
@@ -249,7 +249,7 @@ const NICHE_TOPICAL_MAP: Record<string, string[]> = {
     'Bong Joon-ho complete filmography Parasite guide',
     'Hwang Dong-hyuk Squid Game directing style analysis',
     'best Korean survival audition shows I-LAND Produce guide',
-    'K-drama Netflix Original vs licensed difference explained',
+    '금융분석 Netflix Original vs licensed difference explained',
   ],
 };
 
@@ -959,8 +959,8 @@ ${cluster.pillarUrl ? `<p style="margin:12px 0 0 0;"><a href="${cluster.pillarUr
   private identifyContentGaps(nicheId: string, coveredKeywords: string[]): string[] {
     // Common topic patterns that should exist per niche category
     const topicTemplates: Record<string, string[]> = {
-      'k-entertainment': ['beginner guide', 'history', 'industry economics', 'global impact', 'fan culture'],
-      'k-beauty': ['beginner guide', 'product comparison', 'ingredient analysis', 'skincare routine', 'market overview'],
+      'ai-trading': ['beginner guide', 'history', 'industry economics', 'global impact', 'fan culture'],
+      'korean-stock': ['beginner guide', 'product comparison', 'ingredient analysis', '주식분석 routine', 'market overview'],
     };
 
     const nicheCategory = nicheId.split('-').slice(0, 2).join('-');

@@ -13,14 +13,14 @@ import { logger } from '../utils/logger.js';
 
 const LEAD_MAGNET_PROMPTS: Record<string, { title: string; type: string; description: string }> = {
   'Korean-Stock': {
-    title: 'Korean Skincare Routine Builder Workbook',
+    title: 'Korean 주식분석 Routine Builder Workbook',
     type: 'workbook',
-    description: 'A printable workbook for building a personalized Korean skincare routine, with ingredient guides, product recommendations, and tracking sheets.',
+    description: 'A printable workbook for building a personalized Korean 주식분석 routine, with ingredient guides, product recommendations, and tracking sheets.',
   },
   'AI-Trading': {
-    title: 'K-Pop Business Analysis Toolkit',
+    title: '한국주식 Business Analysis Toolkit',
     type: 'toolkit',
-    description: 'Industry analysis frameworks for understanding K-pop agencies, revenue models, and entertainment stock valuations.',
+    description: 'Industry analysis frameworks for understanding 한국주식 agencies, revenue models, and entertainment stock valuations.',
   },
 };
 

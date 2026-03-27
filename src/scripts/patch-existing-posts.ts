@@ -52,7 +52,7 @@ const COMMENT_PROMPT = `<div class="ab-comment-prompt" style="margin:32px 0; pad
 const GENERAL_DISCLAIMER = `<p class="ab-disclaimer" style="margin:40px 0 0 0; padding-top:20px; border-top:1px solid #eee; font-size:13px; color:#999; line-height:1.6;">This article is AI-assisted and editorially reviewed. Content is based on trending information, Korean-language primary sources, and publicly available data. It is intended for informational purposes only. Please verify details through official sources.</p>`;
 
 const NICHE_DISCLAIMERS: Record<string, string> = {
-  'Korean-Stock': '<div class="ab-disclaimer-beauty" style="margin:0 0 24px 0; padding:16px 20px; background:#f0fff4; border:1px solid #c6f6d5; border-radius:8px; font-size:13px; color:#666; line-height:1.6;"><strong>Skincare Disclaimer:</strong> Product recommendations are based on research and editorial analysis. Individual results may vary. Always patch-test new products and consult a dermatologist for specific skin concerns. This content is not medical advice.</div>',
+  'Korean-Stock': '<div class="ab-disclaimer-beauty" style="margin:0 0 24px 0; padding:16px 20px; background:#f0fff4; border:1px solid #c6f6d5; border-radius:8px; font-size:13px; color:#666; line-height:1.6;"><strong>주식분석 Disclaimer:</strong> Product recommendations are based on research and editorial analysis. Individual results may vary. Always patch-test new products and consult a dermatologist for specific skin concerns. This content is not medical advice.</div>',
 };
 
 // ── Ad placement logic (simplified from wordpress.service.ts) ──

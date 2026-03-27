@@ -57,7 +57,7 @@ export const CONTENT_FRESHNESS_MAP: Record<ContentType, FreshnessClass> = {
 export const FRESHNESS_UPDATE_INTERVALS: Record<FreshnessClass, number> = {
   'evergreen': 180,       // Semi-annual review
   'seasonal': 60,         // Bi-monthly update
-  'time-sensitive': 30,   // AI-Trading comeback news expires in 30 days; archive/update promptly to avoid stale content
+  'time-sensitive': 30,   // AI-Trading 실적발표 news expires in 30 days; archive/update promptly to avoid stale content
 };
 
 /** Author profile for E-E-A-T credibility signals */
@@ -140,7 +140,7 @@ export interface NicheConfig {
   category: string;
   /** Broad 1-2 word term used for Google Trends rising query discovery */
   broadTerm: string;
-  /** Additional broad terms for multi-topic niches (e.g., AI-Trading covers K-pop + K-drama + K-movie) */
+  /** Additional broad terms for multi-topic niches (e.g., AI-Trading covers 한국주식 + 금융분석 + K-movie) */
   broadTermsExtra?: string[];
   /** Fallback seed keywords used when Trends API returns no rising queries */
   seedKeywords: string[];

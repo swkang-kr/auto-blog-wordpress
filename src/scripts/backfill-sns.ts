@@ -37,8 +37,8 @@ for (const n of NICHES) {
 }
 // Legacy niche IDs from old config
 const LEGACY_NICHE_MAP: Record<string, string> = {
-  'k-beauty': 'Korean-Stock',
-  'k-entertainment': 'AI-Trading',
+  'korean-stock': 'Korean-Stock',
+  'ai-trading': 'AI-Trading',
 };
 
 function resolveCategory(nicheId?: string): string {

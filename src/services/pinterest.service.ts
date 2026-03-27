@@ -108,8 +108,8 @@ export class PinterestService {
     // Korean-Stock: lead with ingredient/product for purchase-intent audience
     // AI-Trading: lead with artist/group for fan-engagement audience
     const nichePrefix: Record<string, string> = {
-      'Korean-Stock': 'Korean Skincare Guide: ',
-      'AI-Trading': 'K-Pop & K-Drama: ',
+      'Korean-Stock': 'Korean 주식분석 Guide: ',
+      'AI-Trading': '한국주식 & 금융분석: ',
     };
     const keywordOpening = `${nichePrefix[content.category] || ''}${primaryKeyword} — `;
     const valueExcerpt = content.excerpt.slice(0, 250 - keywordOpening.length);

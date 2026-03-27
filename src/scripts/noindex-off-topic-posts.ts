@@ -31,11 +31,11 @@ const OFF_TOPIC_SLUGS = [
   // AI-Trading romanized slugs (영어권 검색 불가)
   'cha-ji-yeons-bold-challenge-on-hyeon-yeok-gawang-3-no-regrets',
   'yoon-yu-seons-whirlwind-marriage-shocks-best-friend-yoo-ho-jung',
-  'hong-jas-comeback-can-she-overturn-last-place-in-semifinals',
+  'hong-jas-실적발표-can-she-overturn-last-place-in-semifinals',
   // Misc off-niche
   'budgeting-tips-families-2026-kr',
   'korean-startup-ecosystem-trends-investment',
-  'korean-webtoon-platform-global-expansion-strategy',
+  'korean-DART공시-platform-global-expansion-strategy',
 ];
 
 const api = axios.create({

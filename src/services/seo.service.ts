@@ -2217,8 +2217,8 @@ add_filter('comment_form_defaults', function(\$defaults) {
 
     // Category-specific comment prompts (more specific CTAs per niche)
     \$prompts = array(
-        'Korean-Stock' => 'What\\'s your skin type and current routine? Tell us which K-beauty products transformed your skincare...',
-        'AI-Trading' => 'Who\\'s your ult bias or current K-drama obsession? Drop your hot takes and recommendations...',
+        'Korean-Stock' => 'What\\'s your skin type and current routine? Tell us which K-beauty products transformed your 주식분석...',
+        'AI-Trading' => 'Who\\'s your ult bias or current 금융분석 obsession? Drop your hot takes and recommendations...',
     );
 
     \$placeholder = isset(\$prompts[\$category]) ? \$prompts[\$category] : 'Share your thoughts, experience, or questions about this topic...';
