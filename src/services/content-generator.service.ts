@@ -6,7 +6,8 @@ import { validateContent, autoFixContent, logContentScore } from '../utils/conte
 import { costTracker } from '../utils/cost-tracker.js';
 import { circuitBreakers } from '../utils/retry.js';
 import type { ResearchedKeyword, BlogContent, ExistingPost, AuthorProfile } from '../types/index.js';
-import { NICHE_AUTHOR_PERSONAS, CONTENT_TYPE_PERSONA_MAP, KBEAUTY_TERTIARY_KEYWORDS, KENTERTAINMENT_TERTIARY_KEYWORDS } from '../types/index.js';
+import { NICHE_AUTHOR_PERSONAS, CONTENT_TYPE_PERSONA_MAP } from '../types/index.js';
+// Finance pivot: KBEAUTY_TERTIARY_KEYWORDS, KENTERTAINMENT_TERTIARY_KEYWORDS removed
 
 /** Layout variant for content structure diversification (anti-AI detection) */
 type LayoutVariant = 'standard' | 'narrative' | 'compact' | 'journal' | 'opinion' | 'interview';
@@ -17,27 +18,27 @@ type LayoutVariant = 'standard' | 'narrative' | 'compact' | 'journal' | 'opinion
  * (previously all niches used same 3 names).
  */
 const NICHE_SIGNATURE_SECTIONS: Record<string, Record<string, string[]>> = {
-  'K-Beauty': {
-    default: ['Expert Skincare Insight', 'Product Science', 'Global Beauty Context', 'Behind the Formula'],
-    'how-to': ['Pro Tips', 'Expert Skincare Insight'],
-    'listicle': ["Editor's Picks", 'Product Science'],
-    'x-vs-y': ['Head-to-Head Verdict', 'Product Science'],
-    'product-review': ['Behind the Formula', 'Expert Skincare Insight'],
-    'deep-dive': ['Product Science', 'Global Beauty Context'],
-    'news-explainer': ['Industry Watch', 'Beauty Science Update'],
+  'Korean-Stock': {
+    default: ['Market Insight', 'Data Analysis', 'Investment Takeaway', 'Sector Watch'],
+    'analysis': ['Chart Analysis', 'Data Deep Dive', 'Market Insight'],
+    'deep-dive': ['Fundamental Analysis', 'Market Insight'],
+    'news-explainer': ['Market Impact', 'Investor Takeaway'],
+    'how-to': ['Pro Tips', 'Step-by-Step Guide'],
+    'x-vs-y': ['Head-to-Head Verdict', 'Data Analysis'],
+    'best-x-for-y': ['Top Picks Analysis', 'Data Analysis'],
+    'listicle': ["Analyst's Picks", 'Sector Watch'],
+    'case-study': ['Performance Analysis', 'Investment Takeaway'],
   },
-  'K-Entertainment': {
-    default: ["Fan's Take", 'Fandom Spotlight', 'Global Hallyu Context', 'Behind the Scenes'],
-    'how-to': ['Pro Tips', 'Fan Community Guide'],
-    'listicle': ["Editor's Picks", 'Fandom Spotlight'],
-    'x-vs-y': ['Head-to-Head Verdict', "Fan's Take"],
-    'case-study': ['Global Hallyu Context', 'Fandom Deep Dive'],
-    'deep-dive': ['Fandom Spotlight', 'Global Hallyu Context'],
-    'news-explainer': ['Fan News Breakdown', 'Global Hallyu Context'],
-    // 29차 감사: analysis 전용 시그니처 추가 (기존 default 사용 → 차별화)
-    'analysis': ['Data Deep Dive', 'Chart Analysis', 'Global Hallyu Context'],
-    // NOTE: K-Entertainment contentTypes에 product-review 없으므로 시그니처 불필요 (dead code 정리 batch 16)
-    'best-x-for-y': ["Editor's Picks", 'Fandom Spotlight'],
+  'AI-Trading': {
+    default: ['Strategy Insight', 'Technical Deep Dive', 'Implementation Notes', 'Risk Analysis'],
+    'analysis': ['Backtest Results', 'Strategy Insight'],
+    'deep-dive': ['Technical Deep Dive', 'Implementation Notes'],
+    'how-to': ['Code Walkthrough', 'Pro Tips'],
+    'case-study': ['Performance Analysis', 'Lessons Learned'],
+    'x-vs-y': ['Head-to-Head Verdict', 'Backtest Comparison'],
+    'news-explainer': ['Market Tech Watch', 'Strategy Insight'],
+    'best-x-for-y': ['Tool Comparison', 'Strategy Insight'],
+    'listicle': ["Developer's Picks", 'Tool Comparison'],
   },
 };
 
@@ -240,9 +241,9 @@ function optimizeSlug(slug: string): string {
 
 function buildSystemPrompt(variant: LayoutVariant): string {
   const variantDirectives = getVariantDirectives(variant);
-  return `You are a Korea-focused beauty and entertainment writer creating authoritative English content for a global audience passionate about K-Beauty skincare and K-pop/K-drama culture.
+  return `You are a Korea-focused financial analyst and algorithmic trading expert creating authoritative English content for a global audience interested in Korean stock market investing and AI-powered trading systems.
 
-You combine deep knowledge of Korean skincare science, beauty trends, idol culture, and fan communities with accessible English writing that helps international readers discover and enjoy the best of Korean beauty and entertainment.
+You combine deep knowledge of Korean capital markets (KOSPI/KOSDAQ), technical analysis (RSI, MACD, Bollinger Bands), DART corporate disclosures, and Python-based trading systems with accessible English writing that helps international investors and developers navigate the Korean stock market.
 
 ## ⚠️ PARAGRAPH LENGTH ENFORCEMENT (ABSOLUTE RULE — checked by automated validator)
 Your content is scored by an automated system. The #1 scoring failure is LONG PARAGRAPHS.
@@ -812,79 +813,39 @@ export class ContentGeneratorService {
    * Supports 3-tier rotation: primary (academic), secondary (casual), tertiary (specialist).
    *
    * K-Beauty:  Sophie Kim (primary) → Mia Cho (secondary) → Ella Park (tertiary: makeup/hair)
-   * K-Entertainment: Jamie Yoon (primary) → Alex Han (secondary) → Sora Lee (tertiary: K-drama)
+   * Korean-Stock: Daniel Park (primary) → Jiwon Lee (secondary: macro)
+   * AI-Trading: Alex Kwon (primary) → Sungho Choi (secondary: systems)
    */
   selectAuthorPersona(category: string, contentType: string, postCount: number, keyword?: string): AuthorProfile {
     const personas = NICHE_AUTHOR_PERSONAS[category];
     if (!personas || personas.length <= 1) {
-      return personas?.[0] || { name: '', title: 'Korea Analyst', bio: '', expertise: [], credentials: [], yearsExperience: 3 };
+      return personas?.[0] || { name: '', title: 'Korea Market Analyst', bio: '', expertise: [], credentials: [], yearsExperience: 3 };
     }
 
     const preferredVoice = CONTENT_TYPE_PERSONA_MAP[contentType] || 'primary';
 
-    // K-Beauty: only use Ella Park (tertiary, index 2) for explicitly makeup/hair content.
-    // All skincare product-review/x-vs-y/how-to should use Sophie Kim (primary) or Mia Cho (secondary).
-    if (category === 'K-Beauty' && personas.length >= 3 && keyword) {
-      const isMakeupHairContent = KBEAUTY_TERTIARY_KEYWORDS.test(keyword);
-      if (isMakeupHairContent && postCount % 3 !== 0) {
-        return personas[2]; // Ella Park — K-Beauty Hair & Makeup Specialist
-      }
-      // For skincare content, fall through to preferredVoice mapping (primary/secondary)
-    }
-
-    // K-Entertainment: detect K-drama content for Sora Lee (index 2)
-    if (category === 'K-Entertainment' && personas.length >= 3 && keyword) {
+    // Korean-Stock: macro/interest-rate/currency → Jiwon Lee (secondary)
+    if (category === 'Korean-Stock' && keyword) {
       const kw = keyword.toLowerCase();
-      const isDramaFilmContent =
-        kw.includes('drama') || kw.includes('kdrama') || kw.includes('k-drama') ||
-        kw.includes(' ost') || kw.includes('webtoon') || kw.includes('netflix') ||
-        kw.includes('streaming') || kw.includes('watch') || kw.includes('actor') ||
-        kw.includes('actress') || kw.includes('manhwa') ||
-        kw.includes('movie') || kw.includes('film') || kw.includes('cinema') ||
-        kw.includes('musical') || kw.includes('cannes') || kw.includes('biff') ||
-        KENTERTAINMENT_TERTIARY_KEYWORDS.test(keyword);
-      if (isDramaFilmContent) {
-        return personas[2]; // Sora Lee — K-Drama & Korean Cinema Critic (also covers musicals & films)
-      }
-
-      // K-Hip-Hop/K-R&B/indie/variety → Alex Han (secondary, index 1) — NOT Jamie Yoon (idol-focused primary)
-      const isNonIdolContent =
-        kw.includes('hip-hop') || kw.includes('hip hop') || kw.includes('r&b') ||
-        kw.includes('r & b') || kw.includes('indie') || kw.includes('variety show') ||
-        kw.includes('variety') || kw.includes('web variety') || kw.includes('workman') ||
-        kw.includes('running man') || kw.includes('knowing bros');
-      if (isNonIdolContent) {
-        return personas[1]; // Alex Han — K-Pop & Hallyu Culture Writer (broader scope)
+      if (kw.includes('interest rate') || kw.includes('bok') || kw.includes('bank of korea') ||
+          kw.includes('exchange rate') || kw.includes('won') || kw.includes('gdp') ||
+          kw.includes('inflation') || kw.includes('fomc') || kw.includes('bond') || kw.includes('macro')) {
+        return personas[1]; // Jiwon Lee — Macro Strategist
       }
     }
 
-    // K-Entertainment how-to/x-vs-y: only use Sora Lee (tertiary) for drama-adjacent content.
-    // K-pop how-to (streaming, photocards, merch, concerts) should use Alex Han (secondary).
-    if (
-      category === 'K-Entertainment' &&
-      preferredVoice === 'tertiary' &&
-      personas.length >= 3 &&
-      keyword
-    ) {
+    // AI-Trading: system architecture/infrastructure → Sungho Choi (secondary)
+    if (category === 'AI-Trading' && keyword) {
       const kw = keyword.toLowerCase();
-      const isDramaContent =
-        kw.includes('drama') || kw.includes('kdrama') || kw.includes('k-drama') ||
-        kw.includes(' ost') || kw.includes('webtoon') || kw.includes('netflix') ||
-        kw.includes('streaming') || kw.includes('watch') || kw.includes('actor') ||
-        kw.includes('actress') || kw.includes('manhwa');
-      // Non-drama K-Entertainment how-to → Alex Han (index 1) is more appropriate
-      if (!isDramaContent && postCount % 3 !== 0) {
-        return personas[1]; // Alex Han — K-Pop & Hallyu Culture Writer
+      if (kw.includes('architecture') || kw.includes('websocket') || kw.includes('dashboard') ||
+          kw.includes('monitoring') || kw.includes('circuit breaker') || kw.includes('production') ||
+          kw.includes('deployment') || kw.includes('api') || kw.includes('infrastructure')) {
+        return personas[1]; // Sungho Choi — Systems Engineer
       }
-    }
-
-    // Tertiary persona for specialist content types (rotate every 3rd post back to primary)
-    if (preferredVoice === 'tertiary' && personas.length >= 3 && postCount % 3 !== 0) {
-      return personas[2];
     }
 
     // Secondary persona for casual content types (rotate every 3rd post back to primary)
-    if (preferredVoice === 'secondary' && postCount % 3 !== 0) {
+    if (preferredVoice === 'secondary' && postCount % 3 !== 0 && personas.length >= 2) {
       return personas[1];
     }
 
@@ -1002,154 +963,85 @@ If you need to reference a topic with no matching URL below, just write the text
 
     // Niche-specific writing directives for differentiated voice
     const nicheDirectives: Record<string, string> = {
-      'K-Beauty': `NICHE VOICE: Write as a trusted K-beauty skincare specialist who has personally tested the products. MANDATORY real-use signals: describe texture, skin feel on application, absorption speed, and visible results timeline (e.g., "after 2 weeks", "first use glow"). Specify skin type suitability — cover the core 5 (oily, dry, combination, sensitive, acne-prone) AND where relevant mention extended conditions (rosacea-prone, eczema/atopic, mature/aging, dehydrated). IMPORTANT: dehydrated ≠ dry — dehydrated skin lacks water (any skin type), dry skin lacks oil (a skin type). Include key active ingredients with their function (e.g., niacinamide 5% for pore-tightening). Where applicable, classify products by price tier (Budget under $15 / Mid-Range $15-30 / Premium $30-60 / Luxury $60+) and note platform availability (Olive Young, Amazon, YesStyle, Stylevana) — do NOT state exact prices as they fluctuate. Call out any scent, finish (matte/dewy/satin), or irritation potential. Never write about K-beauty products in purely abstract terms — reader experience is paramount.
-SEASONAL SKINCARE CONTEXT (${(() => { const m = new Date().getMonth(); return m >= 2 && m <= 4 ? 'Spring — transitional season: lighter textures, UV protection increase, pollen-sensitive skin care' : m >= 5 && m <= 7 ? 'Summer — humidity 80%+: oil control, lightweight SPF, waterproof sunscreen, sebum management, sweat-proof formulas' : m >= 8 && m <= 10 ? 'Fall — transitional: barrier repair after summer UV damage, richer textures, hydration boost' : 'Winter — humidity 20%-: heavy ceramide creams, occlusive layers, indoor heating dryness protection'; })()}). Factor this seasonal context into product recommendations — a heavy cream is wrong for Korean summer, a lightweight gel may be insufficient for Korean winter.
-RETINOID SAFETY: ALL retinol/retinal/retinoid content MUST include pregnancy contraindication warning ("Avoid during pregnancy — consult your healthcare provider"). Retinoids are Category X teratogens.
-POST-PROCEDURE CONTENT: If writing about skincare after laser, peel, botox, filler, or microneedling — MUST include "Consult your dermatologist for personalized post-treatment care" disclaimer. Do NOT recommend specific procedures — focus only on homecare routines after procedures.
-K-BEAUTY POST-PROCEDURE CONTEXT: After laser (fractional/CO2): Korean dermatologists prescribe centella (센텔라) almost universally — recommend centella-heavy routines 2-4 weeks, avoid all actives (retinol/vitamin C/AHA/BHA) 1 week minimum. After chemical peel: barrier repair (ceramide + centella + peptides) standard, AHA/BHA restricted 7 days minimum. After microneedling: LED therapy common add-on, PDRN serums popular (originated as injectable skincare in Korean dermatology). Gold standard across all 피부과 post-procedure: centella + sunscreen + ceramide barrier repair.
-SKINCARE ROUTINE STEP ORDERING (mandatory for how-to content): Double cleanse: oil cleanser → water cleanser (ALWAYS this order). Layer thinnest to thickest consistency. Actives: apply lowest pH first (acids pH 3-4) → wait → niacinamide → retinol (PM only). Moisturizer BEFORE sunscreen in AM. 7-skin method = 7 thin layers of hydrating toner for barrier repair (not daily — max 1-2x/week for dehydrated skin).
-ADDITIONAL INGREDIENT INTERACTIONS (must warn when relevant):
-- Vitamin C (L-ascorbic acid) + Benzoyl Peroxide: BP oxidizes ascorbic acid instantly — never layer together. Use AM/PM separation.
-- Niacinamide + Copper Peptides: Niacinamide chelates copper ions, reducing efficacy of both. Separate by 30 min or AM/PM.
-- AHA + Vitamin C (L-ascorbic acid): Both require low pH — redundant layering increases irritation with no benefit. Use on alternating days.
-- PHA + Retinol: Even mild PHAs can amplify retinol irritation through barrier disruption. Start with PHA only, then alternate.
-- Acid exfoliants (AHA/BHA/PHA) → MANDATORY sunscreen next AM: acids increase photosensitivity significantly. Always note AM SPF requirement in how-to content.
-- Retinol + Niacinamide: NOT dangerous despite myths — high niacinamide (>10%) may cause temporary flushing in sensitive users. 4-10% K-Beauty standard is safe to layer.
-- Copper Peptide (GHK-Cu) + Vitamin C (L-ascorbic acid): Low pH (<3.5) degrades copper peptides. Separate into AM (peptide) / PM (vitamin C).
-- Centella + Vitamin C (L-ascorbic acid): Acidity can destabilize centella polysaccharides. Apply vitamin C first, wait 15min, then centella. OR use stabilized vitamin C derivatives.
-- Polyglutamic Acid (PGA) + Hyaluronic Acid: Both humectants — over-layering creates dehydration paradox. Use ONE per routine, not both. PGA binds 3.5-4x more moisture than HA.
-- Bakuchiol + Retinol: Bakuchiol is 5-10x weaker than retinol — do NOT layer together. Use bakuchiol as retinol alternative only, not as a booster.
-- Niacinamide + Vitamin C (L-ascorbic acid): NOT dangerous despite widespread myth — the 2005 Cosmetic Dermatology study is constantly misquoted. At typical K-Beauty concentrations (4-10% niacinamide), layering with vitamin C is safe. Only at extreme concentrations (>10% niacinamide + pure LAA at pH <2) may temporary flushing occur. This is the #1 most misreported K-Beauty ingredient interaction — always debunk when relevant.
-15차 감사 — REGENERATIVE INGREDIENTS HIERARCHY (2026):
-- PDRN (폴리데옥시리보뉴클레오티드 / Salmon DNA): DNA fragments stimulating cell regeneration. Originated as injectable 피부과 treatment, now in cosmetic serums. Key brands: Medi-Peel, Dr.G.
-- Exosome (엑소좀): Cell-derived vesicles carrying growth factors and signaling molecules. More targeted delivery than PDRN — considered next-generation regenerative ingredient. Key brands: Biodance, AXXZIA (Japan), Medi-Peel. Note: exosome cosmetics are NOT the same as clinical exosome therapy (injectable).
-- EGF (Epidermal Growth Factor / 표피성장인자): Single-protein cell growth stimulator. MFDS approves EGF as 피부재생 ingredient at cosmetic-grade concentrations. US FDA has NOT approved EGF for cosmetic use. Always note regulatory difference when comparing markets.
-Hierarchy: Exosome (most targeted delivery) > PDRN (broad DNA-fragment regeneration) > EGF (single-pathway stimulation). All three are distinct — do NOT treat as interchangeable.
-15차 감사 — COLLAGEN BANKING (콜라겐 뱅킹): A 2025-2026 Korean skincare philosophy — proactively building collagen reserves in your 20s-30s through peptides, PDRN, and low-dose retinoids BEFORE visible aging begins, rather than treating wrinkles reactively. Key concept: collagen production peaks at ~25 and declines ~1% annually after 30. "Banking" = maximizing collagen stimulation during peak years. This is NOT the same as "anti-aging" — frame it as PREVENTIVE, not corrective.
-15차 감사 — 더마코스메틱 (DERMACOSMETIC) TIER: Korean retail category at Olive Young sitting between drugstore skincare and prescription dermatology. Key distinction: formulated with clinical-grade active concentrations but sold as cosmetics without prescription. Often affiliated with university hospitals or dermatology research labs — CNP (CHA Medical Group-linked), Aestura (Amorepacific's dermatology division), Dr.G (Gowoonsesang Dermatology). Dermacosmetics typically feature: (1) simplified ingredient lists, (2) free of fragrance/colorants/essential oils, (3) clinically tested at affiliated hospitals. When reviewing, always note the hospital/research affiliation as E-E-A-T signal.
-15차 감사 — FITZPATRICK SKIN TYPE GUIDANCE FOR BRIGHTENING CONTENT: When recommending brightening ingredients for Fitzpatrick types IV-VI (deeper skin tones), prioritize: tranexamic acid (lower irritation risk, effective on PIH), alpha-arbutin (gentler than kojic acid which oxidizes on darker skin), niacinamide (well-tolerated at 4-10%). Avoid recommending high-concentration L-ascorbic acid (>15%) as first-line for Fitzpatrick IV-VI — irritation can worsen PIH. Kojic acid carries oxidation-related darkening risk on deeper tones. Always specify Fitzpatrick suitability when writing hyperpigmentation/brightening content.
-15차 감사 — MINERAL VS CHEMICAL SUNSCREEN (KOREAN CONTEXT): Korean mineral sunscreens (zinc oxide/titanium dioxide) have largely solved the white-cast problem through micronized and coated particles — this is a critical Korean innovation that Western mineral formulas often lack. Beauty of Joseon Relief Sun uses rice probiotics with coated mineral particles. When writing for Fitzpatrick IV-VI readers, recommend Korean mineral sunscreens specifically because they eliminate traditional white cast. Do not perpetuate the Western "mineral sunscreen = white cast" assumption in K-Beauty content.
-POSTBIOTICS (포스트바이오틱스 — 2026 마이크로바이옴 진화): Postbiotics are bioactive compounds produced AFTER fermentation (dead bacteria metabolites) — distinct from probiotics (live bacteria) and prebiotics (bacteria food). Korean brands increasingly use postbiotics for sensitive skin because they deliver benefits without live organism stability issues. Key postbiotic ingredients: Lactobacillus Ferment Lysate (LFL — common in Korean sensitive skin lines), Bifida Ferment Lysate (BFL — barrier strengthening). When writing microbiome content, always distinguish the three: prebiotics feed → probiotics live → postbiotics byproducts.
-K-BEAUTY ADDITIONAL FORMAT GLOSSARY:
-- 클렌징 밤 (Cleansing Balm) ≠ 오일 클렌저 (Oil Cleanser) — cleansing balm is solid/semi-solid that emulsifies with water; oil cleanser is liquid. Do not conflate in double-cleansing content.
-- 크림 패드 (Cream Pad) — distinct from toner pads; deposits leave-on moisturizing film, not toner or acids. New Olive Young subcategory.
-- 올인원 (All-in-One) — single product replacing multiple steps (toner + essence + serum + cream). Core to skip-care and men's K-Beauty.
-- 선스틱 (Sun Stick) vs 쿠션 선크림 (Cushion SPF Compact) — different formats with different application methods and finishes. Sun stick = targeted reapplication, cushion SPF = coverage + protection.
-- 클렌징 워터 (Cleansing Water / Micellar Water) — NOT interchangeable with oil cleanser in double-cleanse context. Suitable as single cleanse for no-makeup/light-sunscreen days only. NOT the first step of double-cleansing for heavy SPF/makeup.
-KOREAN MICRO-SEASON SKINCARE CONTEXT (장마철/온돌):
-- 장마철 (Jangma — Korean monsoon, late Jun–late Jul): 80-90% humidity triggers specific skincare needs — lighter textures, oil control, fungal acne risk from prolonged humidity. K-Beauty brands release "장마 에디션" (monsoon edition) lightweight products. Content angle: "best Korean products for monsoon season humidity."
-- 환절기 (Hwanjeolgi — seasonal transition, Mar-Apr & Sep-Oct): Temperature/humidity swings cause barrier disruption. Korea's #1 skincare concern period — Hwahae search spikes for 환절기 스킨케어. Content angle: "how to adjust your K-Beauty routine for seasonal transitions."
-- 온돌 건조 (Ondol dryness — Korean floor heating, Nov-Feb): Traditional ondol heating creates extreme indoor dryness (20-30% humidity). Drives Korea's heavy cream/sleeping mask culture. Content angle: "Korean winter skincare for ondol-heated rooms."
-- 미세먼지 (Fine dust, Mar-May peak): PM2.5 from China drives Korean cleansing/barrier products and anti-pollution skincare. Content angle: "best Korean anti-pollution skincare for fine dust season."
-K-BEAUTY FOR MEN (남성 스킨케어): Korean men's advanced skincare culture originates from mandatory military service (군대 스킨케어), where young men maintain strict skin hygiene routines. This military-to-civilian pipeline explains why Korean drugstore men's lines are more sophisticated than Western equivalents. When writing men's K-Beauty content, reference this cultural context as an E-E-A-T differentiator.
-PLATFORM DIFFERENTIATION: Olive Young Global (globalstore.oliveyoung.com) is typically more expensive than Olive Young Korea domestic (roughly 20-40% premium for international shipping). YesStyle is a marketplace with occasional gray-market product authentication concerns (documented on r/AsianBeauty). Soko Glam uses a curated editor-tested model. Stylevana offers competitive pricing but slower shipping. Always note which platform when recommending purchases. Do NOT cite specific prices — use price tier (Budget/Mid-Range/Premium/Luxury) and note platform availability instead.
-SAFETY DATABASE CITATION HIERARCHY: When citing ingredient safety: (1) MFDS 기능성 화장품 certification (highest authority), (2) CosDNA safety score, (3) INCIDecoder analysis, (4) Hwahae ingredient rating. EWG should be mentioned last or not at all — it is an advocacy group, not a regulatory body. @cosme (cosme.net) Best Cosmetics Awards are a powerful cross-border credibility signal for K-beauty products popular in Japan.
-ECTOIN (엑토인): Extremophile-derived protective ingredient (사막/염전 극한환경 미생물 유래). Superior moisture retention and anti-inflammatory properties — often called "better than hyaluronic acid" in Korean formulation circles. Key differentiator: protects cell membranes from environmental stress. Growing in Korean sensitive-skin products.
-SQUALANE vs SQUALENE: Squalane (with 'a') is the stable, hydrogenated form used in skincare. Squalene (with 'e') is the unstable natural form. Modern K-Beauty squalane is sugarcane-derived (vegan) — NOT shark liver (avoid). Always specify "plant-derived squalane" in K-Beauty context.
-SOCIAL PROOF SIGNALS: For product reviews, reference Hwahae (화해) and Glowpick (글로우픽) rating scores as concrete social proof — e.g., "rated 4.7/5 on Hwahae with 12,000+ reviews" or "ranked #1 in Glowpick's toner pad category." These are Korea's two largest beauty review platforms and citing specific scores demonstrates insider credibility that Western-only reviewers cannot replicate.
-2026 BRAND ACCURACY NOTES (18차 감사):
-- SKIN1004 (스킨1004): 마다가스카르 센텔라 라인 전문 — 센텔라 단일 성분 특화 브랜드. Amazon 글로벌 K-Beauty serum 카테고리 상위. 올리브영 민감성 스킨케어 대표 브랜드. COSRX 센텔라 라인과 비교 시: SKIN1004는 마다가스카르 산지 센텔라 원료에 집중, COSRX는 다성분 복합 접근.
-- round lab (라운드랩): 독도 토너(Dokdo Toner)로 글로벌 인지도 확보 — 저자극 미니멀 철학. Amazon K-Beauty 토너 카테고리 상위. 자작나무 수액(birch juice) 라인은 건성 피부 대안. 올리브영 클린뷰티 섹션 대표.
-- Torriden (토리든): 다이브인(DIVE-IN) 히알루론산 세럼이 Amazon K-Beauty 세럼 #1 등극. 저분자 히알루론산(5D HA) 특화. The Ordinary HA와 비교 시: Torriden은 5가지 분자량 히알루론산 블렌드, TO는 단일 HA+B5 — 피부 깊이별 수분 공급 차이를 설명할 것.
-- GLP-1/OZEMPIC SKIN (오젬픽 스킨): 2025-2026 급부상 키워드. GLP-1 약물 복용 후 급격한 체중 감소로 인한 피부 변화(처짐, 콜라겐 손실, 건조) 케어. 한국 스킨케어 솔루션 앵글: 펩타이드 세럼, PDRN, 콜라겐 뱅킹 제품 추천. YMYL 경고: "이 콘텐츠는 의학적 조언이 아닙니다. GLP-1 약물 관련 피부 변화는 담당 의사와 상담하세요" 면책 필수.
-- K-BEAUTY vs EUROPEAN DERMACOSMETICS: Aestura/Dr.G/CNP (한국 더마) vs La Roche-Posay/CeraVe/Avène (유럽 더마) 비교 시 — 한국 더마는 병원 연구 기반 + 한국 피부 타입 최적화, 유럽 더마는 약국 유통 + EU 규제 기반. 가격대, 텍스처, 성분 철학 차이를 구체적으로 설명. NEVER frame one as objectively superior — present as different philosophies for different skin needs.
+      'Korean-Stock': `NICHE VOICE: Write as an experienced Korean stock market analyst. Use financial terminology correctly: PER (not P/E in Korean context), PBR (not P/B), ROE, EPS, BPS. Reference KOSPI/KOSDAQ indices, KRX market data, and DART filings. Include specific stock codes (e.g., Samsung Electronics 005930.KS). Always note whether analysis is technical, fundamental, or both.
 
-K-BEAUTY E-E-A-T SOURCES: Reference Korean beauty industry sources — cite Olive Young (올리브영) bestseller rankings, Hwahae (화해 — Korea's #1 beauty review app with ingredient analysis and user ratings; referencing "Hwahae rating of 4.5/5" or "ranked #1 in Hwahae's toner category" is a powerful E-E-A-T trust signal because it demonstrates access to Korea-exclusive consumer data), Allure Korea awards, Vogue Korea beauty editors, INCIDecoder or CosDNA for ingredient analysis, and Korean cosmetic formulation research. Do NOT cite KOSPI, KRX, BOK, FSC, or financial regulatory bodies — this is beauty content, not finance content.
-${analysis.contentType === 'case-study' ? `K-BEAUTY CASE STUDY STRUCTURE: Focus on ONE brand, product line, or beauty trend as the subject. Structure: Origin Story → Innovation (formula/ingredient breakthrough) → Market Reception (Olive Young category ranking trajectory — e.g., "rose from #47 to #3 in Serum category within 3 months", Amazon BSR movement, TikTok virality metrics, r/AsianBeauty community reception) → Why It Worked → Lessons for Skincare Consumers. KEY METRIC: Olive Young bestseller ranking trajectory is the K-Beauty equivalent of chart performance in K-Entertainment — always include if available. Include before/after timelines and community reception data rather than revenue figures.` : ''}`,
-      'K-Entertainment': `NICHE VOICE: Write as a passionate K-pop and K-drama fan who is deeply embedded in the community. Focus on fan experience, content rankings, idol news, and community culture. Use fan-friendly language (comeback, bias, stan, era, fandom). Include specific examples fans care about (song rankings, drama recommendations, award predictions, concert experiences). General label or agency context (e.g., "under HYBE", "SM Entertainment group", "aespa's label SM") is acceptable when naturally relevant to fans. Do NOT analyze stock prices, earnings reports, revenue breakdowns, or investment outlooks — this is fan content, not finance content.
-MONETIZATION BEYOND ADSENSE: K-Entertainment content has affiliate opportunities beyond pure AdSense — include where natural: (1) K-drama streaming subscriptions (Netflix/TVING/Viki comparison with signup links), (2) K-pop official merchandise guides (Weverse Shop, official fan club membership links), (3) K-pop album purchase guides (specify version recommendations for collectors vs casual fans), (4) concert ticketing (Interpark/Ticketmaster guides for international fans), (5) K-drama OST album links (physical and digital). Frame affiliate context as fan service — "here's where to buy" — not as sales pushes.
-TRIPLESBMODHAUS SYSTEM (unique narrative angle): tripleS is a 24-member K-pop collective under MODHAUS (모드하우스) with a decentralized "Cosmo" system — fans vote to determine which members form the next unit/subgroup. This is the ONLY K-pop group using blockchain-adjacent fan governance for lineup decisions. Units rotate, creating a dynamic roster unlike any other group. When covering tripleS, the "Cosmo system" IS the story — not just the music. Frame as: "a 24-member K-pop collective where fans decide who performs together."
-YOUNG POSSE (영파씨): DSP Media 걸그룹 (2023 데뷔), hip-hop/confident concept. Known for powerful performances and self-assured identity. Fandom name: YOPPIE. Frame as a hip-hop-focused girl group distinct from the cute/girl-crush binary.
-BADVILLAIN: PEAI Inc. 걸그룹 (2024 데뷔), dark charismatic concept. Small-label group with strong visual identity — cover as an emerging indie-label act with distinctive aesthetics.
-WHIPLASH (휘플래쉬): SM Entertainment 보이그룹 (2024 데뷔, 5 members — Kwangsun, Hwan, Jungmo, Leo, Donghyun). SM의 최신 남자 그룹으로 NCT 이후 SM 보이그룹 계보. 퍼포먼스 중심 컨셉. SM 타 그룹(NCT 127, NCT Dream, RIIZE)과 혼동 주의 — WHIPLASH는 독립 브랜드. Fandom name: WHIP.
-izna (이즈나): Mnet I-LAND 2: N/a 프로젝트 그룹 (2024 데뷔, 7 members). HYBE x CJ ENM 합작 글로벌 걸그룹. 프로젝트 그룹 특성상 활동 기간 한정 — 그룹 계약 기간 확인 후 콘텐츠 작성. Fandom name: izily.
-UNIS (유니스): Universe Ticket 프로젝트 걸그룹 (2024 데뷔, 8 members). SBS 오디션 프로그램 출신. WAKEONE Entertainment 소속 (구 F&F Entertainment에서 이관). Fandom name: NOVASS.
-BTS 2026 GROUP COMEBACK (18차 감사): 전원 전역 완료 후 2026년은 BTS 완전체 컴백이 K-pop 최대 이벤트. 콘텐츠 작성 시: 컴백 일정은 공식 발표 전까지 "expected/anticipated" 사용, 확정 단언 금지. 월드투어 예상, 앨범 예측, 팬 준비 가이드 등 다각도 앵글 가능.
-TICKETING PLATFORM SPECIFICITY: Concert/tour content MUST specify region-appropriate ticketing platforms. Korea: 인터파크 티켓 (Interpark Ticket), YES24 티켓, 멜론 티켓 (Melon Ticket). USA: Ticketmaster, AXS. Europe: Ticketmaster, AXS, Eventim. HYBE groups (BTS, SEVENTEEN, TXT, ENHYPEN, LE SSERAFIM, fromis_9) often have Weverse Shop fan pre-sale periods before general sale. Never tell US fans to use Interpark for US concerts.
-K-DRAMA PLATFORM ATTRIBUTION: Distinguish between (1) Netflix Originals = produced by Netflix Korea Studios (Squid Game, D.P., My Name), (2) Netflix-licensed = Korean network drama (tvN/JTBC/SBS) with Netflix international distribution rights, (3) Korean OTT exclusives = TVING, Coupang Play, Wavve originals. A tvN drama available on Netflix is NOT a "Netflix Original."
-K-DRAMA STREAMING CONTENT STRATEGY (12차 감사, 27차 감사 보강): When comparing platforms, specify: Netflix (global simultaneous release, subtitled 30+ languages), Viki (fan-community subtitles, widest older drama library, highest subtitle quality for nuance — fan translators add cultural context notes), TVING (Korean-exclusive originals post-Wavve merger), Coupang Play (growing original slate + sports), Disney+ Korea (premium production — Moving, Big Bet), Apple TV+ Korea (Pachinko — highest-profile Korean-language Apple original; limited but prestige slate focused on international co-productions), KOCOWA (SBS/KBS/MBC content hub — strongest for Korean variety shows and currently-airing network dramas; North America focus, real-time simulcast for many shows). For "where to watch" content, ALWAYS note regional availability differs — what's on Netflix US may not be on Netflix UK.
-K-DRAMA SUBTITLE QUALITY (27차 감사): When covering subtitle platforms: Viki > Netflix > KOCOWA for subtitle accuracy/cultural context. Viki's community-driven "Timed Comments" and cultural annotations are unmatched. Netflix machine-translates first, then human-reviews — sometimes loses honorific nuance (oppa/sunbae flattened to names). KOCOWA provides decent simulcast subs but less cultural annotation. Always note: "Subtitle quality significantly impacts K-drama enjoyment — Viki's community subtitles include cultural context notes that help international viewers understand honorifics, wordplay, and cultural references."
-K-VARIETY SHOW GUIDANCE (12차 감사): Broadcast variety shows (Running Man, Knowing Bros/아는 형님, I Live Alone/나 혼자 산다) are K-pop crossover discovery mechanisms — many international fans discover K-pop through variety appearances. When covering variety, explain game formats for international audiences, note member chemistry and long-running cast dynamics, and frame as gateway content for K-Entertainment newcomers.
-FANDOM CULTURE NUANCE (12차 감사): Photocard trading: grading tiers exist (mint/near-mint/played), online platforms include Twitter/X, specialized apps (포카마켓), and 당근마켓 (Carrot Market). Fansign (팬싸인) ≠ fan meeting (팬미팅) — fansign = intimate album-purchase lottery event with individual member interaction; fan meeting = large-scale ticketed fan event with performances. Pre-voting: music show wins partly determined by fan online voting (idol CHAMP, Whosfan, STARPLAY apps) before broadcast — explain this system when covering music show results.
-GROUP MEMBER COUNT REFERENCE (prevent AI hallucination): BTS=7, BLACKPINK=4, aespa=4, IVE=6, NewJeans/NJZ=5 (Minji, Hanni, Danielle, Haerin, Hyein), LE SSERAFIM=5 (Sakura, Chaewon, Yunjin, Kazuha, Eunchae), ENHYPEN=7, SEVENTEEN=13, Stray Kids=8 (since Felix joined), TWICE=9, (G)I-DLE=5, ITZY=5, NMIXX=6, BABYMONSTER=7, BTOB=6 (Ilhoon left 2021), WHIPLASH=5 (Kwangsun, Hwan, Jungmo, Leo, Donghyun), izna=7, UNIS=8, EVNNE=7, ZeroBaseOne/ZB1=9 (Sung Han-bin, Kim Ji-woong, Zhang Hao, Seok Matthew, Kim Tae-rae, Ricky, Kim Gyu-vin, Park Gun-wook, Han Yu-jin — debuted July 2023 via Boys Planet, Wakeone Entertainment, project group with contract until 2025). When mentioning member count, verify against this reference. Never state a member count you are not certain about.
-KOREAN MUSICAL (한국 뮤지컬 — 누락 세그먼트): Korea has the world's third-largest musical theater market after Broadway and London's West End. K-pop idols frequently star in musicals (Doyoung/NCT, Kyuhyun/Super Junior, Ock Joo-hyun). Korean-produced original musicals (e.g., Gwanghwamun Sonata) and licensed adaptations of Western musicals are both hugely popular. Frame as: "a hidden pillar of Korean entertainment that fans of K-pop and K-drama often discover next." Interpark Ticket (인터파크 티켓) is the primary ticketing platform.
-MUSIC SHOW GUIDE: Korea has 6 major weekly music shows — M Countdown (Mnet/Thu), Music Bank (KBS/Fri), Inkigayo (SBS/Sun), THE SHOW (SBS MTV/Tue), Show Champion (MBC M/Wed), Music Core (MBC/Sat). Win criteria differ per show — combination of digital streaming, physical sales, online voting, expert panel, and broadcast score. 1위 (first place) on Inkigayo/Music Bank/M Countdown is most prestigious. "Triple Crown" = 3 consecutive wins on one show. "All-Kill" = #1 on all major digital charts simultaneously (real-time + daily).
-WEBTOON CONTENT: Naver Webtoon (네이버 웹툰) and Kakao Webtoon (카카오웹툰) are the two dominant platforms. LEZHIN (레진코믹스) specializes in premium/mature content. Tappytoon and Tapas are English-localized platforms. When recommending webtoons, specify platform availability and whether official English translations exist.
-FANCAM (직캠) CULTURE: K-pop fancams are individual-member focused recordings from music show performances, usually uploaded by broadcast stations' official YouTube channels. Key metric: fancam view count as indicator of member popularity (e.g., "Hanni's Attention fancam reached 100M views"). 직캠 culture is unique to K-pop — explain to international readers as "individual member performance clips."
-KOREAN WEB VARIETY (웹예능): YouTube-based variety shows have become a major K-Entertainment category. Key shows: Workman/워크맨 (Jang Sung-kyu, JTBC Studios), Psick University/피식대학 (comedians, parody), Short Box/숏박스 (sketch comedy). These have massive viewership rivaling TV variety. When covering web variety, note the creator/production company and YouTube subscriber count as authority metrics.
-K-HIP-HOP / K-R&B VOICE GUIDE (distinct from idol K-pop voice):
-When writing K-Hip-Hop or K-R&B content, switch from the fan-centric idol voice to a music journalism voice:
-- Use standard music industry language: "release", "project", "album cycle", "discography" — NOT idol terminology like "comeback", "era", "bias", "stan"
-- Emphasize producer/crew importance: AOMG, H1GHR MUSIC, HILLENIUM MUSIC, P Nation are as important as the artists — mention the label ecosystem
-- Highlight mixtape/single culture: K-Hip-Hop artists drop singles, EPs, and mixtapes more frequently than idol groups — cover release cadence differently
-- Reference Show Me The Money (쇼미더머니) and High School Rapper as entry points for international fans discovering K-Hip-Hop
-- Collaboration web: K-R&B/K-Hip-Hop artists frequently feature on each other's tracks and idol songs — map these connections (e.g., "Crush featured on BTS Jimin's solo track")
-- Do NOT frame K-Hip-Hop/K-R&B artists as "non-idol" or "underground" — many are mainstream chart-toppers (Heize, Crush, Zion.T regularly top Melon charts)
+INVESTMENT DISCLAIMER: EVERY article MUST include the investment disclaimer div at the top. This is YMYL content — never give specific buy/sell recommendations. Use hedging: "based on the analysis, the stock appears...", "investors may consider...", "the data suggests...". NEVER say "you should buy/sell this stock."
 
-K-ENTERTAINMENT E-E-A-T SOURCES: Reference fan-trusted K-pop/K-drama sources — cite Hanteo Chart and Circle Chart (formerly Gaon) for album sales, Melon for digital streaming (dominant Korean platform, ~65%+ market share), YouTube for MV view counts, Weverse for fan community activity, KOCCA (Korea Creative Content Agency) for industry statistics, and Billboard Korea. For K-drama streaming, cite TVING (Korea's dominant domestic OTT — completed a merger with Wavve in 2025, creating Korea's largest domestic streaming platform; platform integration is still ongoing as of 2026; known for exclusive Korean original content; when referencing TVING, note the Wavve merger on first mention: "TVING (which merged with Wavve in 2025)"), Netflix Korea, Disney+ Korea, and Coupang Play (쿠팡플레이 — Korea's fastest-growing OTT backed by Coupang; known for exclusive original K-dramas and sports content; significant investment in original production since 2024; include in all 2026 K-drama platform comparisons). Do NOT cite Bugs (한국 스트리밍 — market share has declined sharply since 2023; rarely cited in current industry reporting). Spotify Korea is growing but remains secondary to Melon for Korean-language music. Do NOT cite KRX, BOK, DART, KOSIS, or financial/economic data sources — this is fan content.
-CHART ACCURACY: Hanteo Chart tracks physical album sales (real-time, often the first-day/first-week sales benchmark); Circle Chart (formerly Gaon) is the official comprehensive chart aggregating physical, digital, and streaming. When citing sales data, specify which chart and timeframe (e.g., "600,000 first-week sales on Hanteo"). Do NOT conflate the two. 초동 (初動, "choding" — first week sales): THE key K-pop album metric. Always measured via Hanteo (real-time physical sales). Example usage: "SEVENTEEN's 10th Mini Album recorded 초동 of 5.14M copies on Hanteo." When writing about album performance, 초동 is the primary fan benchmark — not cumulative sales.
-KOREAN STREAMING PLATFORM HIERARCHY (2026): Melon (멜론) remains the dominant Korean music streaming platform (~65% domestic market share) — always cite Melon for Korean digital streaming performance. Spotify Korea launched in 2021 and is growing but remains secondary for Korean-language music (stronger for international catalog). FLO (플로) and VIBE (바이브) are minor domestic platforms. Bugs (벅스) has declined sharply since 2023 — rarely cited in current industry reporting. For music chart context, the key benchmark is Melon Chart "실시간 차트" (real-time chart) and "일간 차트" (daily chart). "Melon 역주행" (reverse-climbing on Melon) = a song gaining traction weeks/months after release — a significant viral achievement.
-LABEL ACCURACY (prevent common AI errors): IVE → Starship Entertainment (NOT HYBE). aespa, SHINee, EXO, NCT units, WHIPLASH → SM Entertainment (NOT HYBE). BABYMONSTER → YG Entertainment (NOT HYBE). ILLIT → BELIFT LAB (HYBE/CJ ENM joint venture — NOT ADOR). NMIXX → JYP Entertainment (debuted Feb 2022, 6 active members — defining the "MIXXPOP" genre that blends multiple musical styles within a single track). ITZY → JYP Entertainment. 8TURN → MNH Entertainment (NOT JYP). AMPERS&ONE → FNC Entertainment (NOT SM/HYBE). MEOVV → THEBLACKLABEL (YG 계열이지만 독립 레이블 — NOT Big 4 directly). xikers → KQ Entertainment (ATEEZ's label, debuted 2023). VCHA → JYP x Republic Records global girl group (debuted via A2K audition). n.SSign → n.CH Entertainment (debuted via Boys Be Brave). HYBE labels include: Big Hit Music (BTS, TXT), PLEDIS Entertainment (SEVENTEEN, TWS), SOURCE MUSIC (LE SSERAFIM), Belift Lab (ENHYPEN, ILLIT), ADOR (NewJeans — but members left ADOR in 2025), KOZ Entertainment (Zico). QWER (큐더블유이알) → Million Market/밀리언마켓 (4-member girl band with live instruments — pioneering the "밴드돌" band idol genre; NOT a standard idol group). EVNNE (이븐) → Jellyfish Entertainment (debuted September 2023 via Boys Planet, 7 members — do NOT confuse with ENHYPEN). Always verify a group's label before stating it — mislabeling is a high-visibility accuracy error.
-BTS MILITARY STATUS (2026 context): All 7 BTS members completed their mandatory military service by mid-2025 — Jin (June 2024), Suga (June 2025, 사회복무요원/social service worker due to shoulder surgery — NOT active duty like the other 6 members), J-Hope (Oct 2024), RM/V/Jimin/Jungkook (all by June 2025). When writing BTS comeback content in 2026, frame this as already completed ("following the completion of all members' military service in 2025") — NOT as a future event. When writing detailed BTS military content, note Suga's alternative service path for accuracy.
-SCHEDULE ACCURACY: K-pop comeback dates and K-drama air dates change frequently. Always qualify schedule information with "as of [month] ${year}" and include: "Schedule subject to change — check the group's official Weverse or agency SNS for the latest updates." Never present an unconfirmed comeback date as fact.
-FAN TERMINOLOGY: Use light fandom vocabulary naturally (comeback, bias, era, stan, ult, fancam, fanchant) but define any term that new fans might not know, on first use, in a parenthetical (e.g., "bias (your favourite member)"). Do not overuse slang — aim for 1-2 terms per 400 words. Never misrepresent fan speculation or community theories as official information from the artist or agency.
-SASAENG CONTENT (사생 — STRICT PROHIBITION): Never write content that normalizes, sensationalizes, or provides how-to information about sasaeng (stalker fan) behavior. Sasaeng activity is illegal (stalking, invasion of privacy, trespassing) under Korean law (스토킹처벌법, 2021). If sasaeng culture is mentioned in context (e.g., fan culture explainer), it MUST be framed as harmful and unacceptable with explicit condemnation. Do NOT include idol private schedules, personal addresses, airport arrival times for stalking purposes, or leaked private information.
-IDOL DATING/PERSONAL LIFE: Do NOT speculate about idol relationships or personal lives unless officially confirmed by the artist or agency. "Dispatch revealed" dating news is acceptable to reference as a reported event, but never editorialize or take a position on whether dating is "acceptable" — frame it neutrally. Always respect artist privacy.
-GROUP-SPECIFIC NOTES (accuracy-critical — verify before mentioning):
-- RIIZE: SM Entertainment 7-member boy group (debut Sept 2023). Member Seunghan took a hiatus due to personal controversy; he returned to activities in 2024. If writing about member profiles or unit activities, note "all 7 members currently active" only if confirmed current — otherwise describe as "RIIZE members" without an exact count.
-- ILLIT vs NewJeans dispute (2026 status — RESOLVED): The ADOR/NewJeans dispute concluded with members departing ADOR in Dec 2025. ILLIT remains under BELIFT LAB. NewJeans members promote independently (name trademark status: use hedged language). 2026 content should focus on their independent activities and direct-to-fan strategy, NOT rehash the 2025 dispute (resolved, stale narrative). Cover each group independently — ILLIT as a rising HYBE-affiliated group, NewJeans for their independent era activities and legacy discography.
-- KATSEYE: Global girl group project by HYBE/Geffen Records (debuted 2024), members selected via "The Debut: Dream Academy" reality show (Netflix). Cover as a K-pop adjacent / global K-pop expansion group. Not a traditional Korean idol group — members are international. Fandom name: EMBERS.
-- NCT WISH: SM Entertainment's 2024 NCT sub-unit (6 members). Part of the broader NCT universe alongside NCT 127, NCT Dream, WayV, and NCT U.
-- 8TURN: MNH Entertainment boy group (debut 2023, 8 members). Often mistakenly attributed to JYP — they are under MNH Entertainment (MNH엔터테인먼트). Fandom name: EIGHTURE.
-- AMPERS&ONE: FNC Entertainment girl group (debut November 2023). Often mistakenly attributed to SM — they are under FNC Entertainment. Debuted via audition show.
-- MEOVV: THEBLACKLABEL girl group (debut 2024). THEBLACKLABEL is a YG-affiliated label but operates independently. NOT directly under YG Entertainment or Big 4. Cover as an emerging indie-label group with YG-adjacent aesthetics.
-- EVNNE (이븐): Jellyfish Entertainment boy group (debut September 2023, 7 members). Formed through Mnet Boys Planet (2023). Fandom name: EUNOIA. Do NOT confuse with ENHYPEN — different show (I-LAND vs Boys Planet), different label (Belift Lab vs Jellyfish).
-- SHINee (샤이니): SM Entertainment legendary 2nd/3rd gen group (debut 2008, 4 active members — Onew, Key, Minho, Taemin; Jonghyun passed in 2017). K-pop visual and conceptual pioneers. All members completed military service by 2024. Frame as ACTIVE LEGACY GROUP — they release music and do individual activities (Taemin solo, Key variety/solo, Minho acting, Onew solo). NEVER frame as "disbanded" or "inactive." Fandom: Shawol (샤월).
-- Red Velvet (레드벨벳): SM Entertainment 3rd gen girl group (debut 2014, 5 members — Irene, Seulgi, Wendy, Joy, Yeri). DEFINING FEATURE: dual concept system — "Red" = bright, bold, experimental pop; "Velvet" = smooth, mature R&B/ballad. ALWAYS note which concept era when discussing specific releases. Members active in solo/acting. Fandom: ReVeluv (레베럽).
-- GOT7 (갓세븐): UNIQUE CASE — all 7 members (Jay B, Mark, Jackson, Jinyoung, Youngjae, BamBam, Yugyeom) left JYP Entertainment in 2021 but DID NOT disband. They signed with individual agencies while maintaining the group under their own management. This is the ONLY major K-pop group to achieve full independence and stay together. NEVER frame as "disbanded" or "ex-JYP." Frame as: "the self-managed independent K-pop group that rewrote industry norms." Fandom: IGOT7/Ahgase (아가새).
-- DAY6 (데이식스): JYP Entertainment BAND (NOT idol group). 5 members who play instruments live (Sungjin-guitar/vocals, Young K-bass/vocals, Wonpil-keyboard, Dowoon-drums; Jae departed 2021). CRITICAL DISTINCTION: use music industry language ("release", "discography", "concert") NOT idol terminology ("comeback", "era", "bias"). Experienced massive 2024-2025 viral resurgence ("역주행") on Melon — organic streaming growth, NOT marketing-driven. Pioneer of "밴드돌" (band idol) genre alongside QWER. Fandom: My Day.
-- THE BOYZ (더보이즈): IST Entertainment (formerly Cre.ker), 11 members. Won Mnet "Road to Kingdom" (2020), establishing them as PERFORMANCE SPECIALISTS — known for elaborate choreography and stage design. NOT a Big 4 group. Fandom: THE B (더비).
-- TREASURE (트레저): YG Entertainment boy group (debut 2020, 10 members). YG's only active boy group alongside G-Dragon. Dominant Southeast Asian fanbase (especially Indonesia, Philippines, Thailand). Multi-language capabilities. Fandom: Teume (트메).
-- BTOB (비투비): Cube Entertainment (debut 2012, 6 active members — Eunkwang, Minhyuk, Changsub, Hyunsik, Peniel, Sungjae; Ilhoon left 2021). Known as "variety show kings" — among the funniest K-pop groups on Korean TV. ALSO known for exceptional vocal line (Eunkwang, Changsub, Hyunsik). NOT primarily album-sales-focused — strength is live performance and variety appearances. Fandom: Melody (멜로디).
-- BLACKPINK (2025-2026 status): All 4 members renewed individual exclusive contracts with YG Entertainment, but group comeback schedules are uncertain. Rosé signed additionally with Atlantic Records (global), Lisa with RCA Records (global) for solo activities. Do NOT present group comebacks as "confirmed" or "imminent" without qualification — use hedged language: "if BLACKPINK releases group content in 2026" or "should they come back as a group." Member solo activities are safe to write about.
-- tripleS: Under MODHAUS (모드하우스), unique decentralized structure with 24 members organized into rotating units based on fan voting (cosmo system). Describe as "a 24-member K-pop collective" not a standard idol group — their unit rotation model is the defining narrative angle.
-- PLAVE (플레이브): Under VLAST (블라스트), Korea's breakout virtual idol group — 5 AI-rendered members who perform as 3D virtual characters (NOT real people in costumes or motion capture suits). Despite being virtual, they achieved massive physical album sales and won a Rookie Award at the 2024 Golden Disc Awards. Their appeal lies in blending real-time interaction (V LIVE, fan calls with virtual avatars) with K-pop idol culture. Always clarify they are virtual idols (버추얼 아이돌) on first mention — conflating them with human idol groups is a significant accuracy error. Fandom: ASTERDOM.
-- Kep1er (케플러): Officially disbanded March 10, 2025 (project group from Mnet Girls Planet 999, debuted 2022). In 2026, cover only member individual/solo activities — do NOT reference group comebacks or new releases.
-- fromis_9 (프로미스나인): Under PLEDIS Entertainment (HYBE sublabel) since 2022. Transferred from Off The Record (Stone Music/CJ ENM). Do NOT describe as "CJ ENM group" in 2026 context. Fandom: flover.
-- Dreamcatcher (드림캐쳐): Under Dreamcatcher Company (formerly Happy Face Entertainment). Unique rock/metal concept girl group — the ONLY major K-pop girl group with a consistent rock genre identity. Massive Western/international fandom. Fandom: InSomnia.
-- ITZY (있지): JYP Entertainment (debuted Feb 2019, 5 members). Do NOT confuse with NMIXX (both JYP, but ITZY = girl crush/performance, NMIXX = MIXXPOP genre fusion). Fandom: MIDZY.
-- G-Dragon (지드래곤/권지용): YG Entertainment solo artist and BIGBANG leader. Completed military service (2018-2019). Returned with solo music in late 2024 — the most anticipated K-pop solo comeback of the decade. Always reference his role as a fashion icon and self-produced artist (자작곡). When writing about G-Dragon, note his dual identity as musician AND high-fashion figure (Chanel ambassador, Paris Fashion Week regular). Do NOT describe him as "former" BIGBANG member — BIGBANG has not officially disbanded.
-AWARD TERMINOLOGY (prevent common errors): Daesang (대상) = Grand Prize, the most prestigious award at K-pop ceremonies — only 3-5 given per show (Album of the Year, Artist of the Year, Song of the Year). Bonsang (본상) = Main Prize, given to multiple artists. Rookie Award (신인상) = New Artist Award. Never describe a Bonsang as a Daesang — it is a high-visibility factual error. When writing award predictions or recaps, always specify: which award show, which category, and which tier (Daesang vs Bonsang).
-K-DRAMA VIEWERSHIP DATA (accuracy-critical): Two competing rating agencies cover Korean TV — AGB Nielsen (전국) and TNmS (전국). Always specify which agency when citing ratings. Additionally: traditional broadcast ratings (KBS/MBC/SBS — percentages of households) are NOT comparable to OTT metrics (Netflix Global Top 10 view hours; TVING completion rate/unique viewers). Never present "Netflix Global #1" as equivalent to high Korean broadcast ratings — they measure completely different audiences.
-K-POP ALBUM FORMAT GLOSSARY (use correctly in all content): 정규앨범 (Full/Studio Album) = complete album, typically 10-15 tracks; 미니앨범 (Mini Album/EP) = 4-7 tracks, the most common K-pop release format; 싱글 앨범 (Single Album) = 1-3 tracks physical release; 리패키지 (Repackaged Album) = expanded re-release of an existing album with new tracks added; 디지털 싱글 (Digital Single) = digital-only release. Use the correct format name — calling a mini album a "full album" is a common AI error.
-K-POP GENERATION CLASSIFICATION (hedge appropriately): 1st gen (1990s-early 2000s: H.O.T., S.E.S., g.o.d.), 2nd gen (mid-2000s–2012: SNSD/Girls' Generation, SHINee, 2NE1, Big Bang, KARA), 3rd gen (2012–2017: EXO, BTS, BLACKPINK, TWICE, SEVENTEEN (2015 debut), GOT7, MAMAMOO, Red Velvet, Wanna One), 4th gen (2018–2022: ITZY (2019), aespa (2020), IVE (2021), LE SSERAFIM (2022), NewJeans (2022), (G)I-DLE (2018), ILLIT (2024)), 5th gen (2023+: RIIZE, WHIPLASH, TWS, BOYNEXTDOOR — emerging classification). IMPORTANT: SEVENTEEN is 3rd gen (debuted May 2015 under PLEDIS), NOT 4th gen — this is one of the most common misclassifications. "3.5-gen" is NOT an official or universally agreed classification — it's informal fan shorthand for groups that debuted between the 3rd and 4th gen boundary (2017-2019). When using it, always hedge: "often informally classified as 3.5-gen" or "by some fans considered 3.5-gen." Never state it as established fact. Groups like TXT (2019), Stray Kids (2018), ATEEZ (2018), ENHYPEN (2020) are variously classified as late 3rd gen, 3.5-gen, or early 4th gen depending on the fan community.
-K-POP CONCEPT GLOSSARY (use correctly): "컨셉" (concept) = the visual/musical/narrative identity of a comeback or era. Dark concept (어두운 컨셉) = intense, moody aesthetic (e.g., EXO Overdose, ATEEZ). Cute concept (귀여운 컨셉/아이돌 컨셉) = bright, playful aesthetic. Girl crush concept (걸크러시) = powerful, confident female group aesthetic (e.g., 2NE1, BLACKPINK). Retro concept (레트로) = vintage-inspired styling (KISS OF LIFE, MAMAMOO). "세계관" (universe/lore) = narrative world-building across releases (aespa's KWANGYA universe — SM continues to develop and reference it in new releases, do NOT describe as "complete" or "resolved"; TXT's The Dream Chapter; ATEEZ's Treasure universe). "자작곡" (self-produced) = idols who write/compose their own music — a significant prestige marker (BTS, SEVENTEEN, ZICO, G-Dragon). Always specify when a group is known for self-production — it is a major E-E-A-T credibility signal for K-pop content.
-K-DRAMA HISTORICAL GENRE (사극 terminology): "사극" (sageuk) = Korean historical drama, the most distinct Korean TV genre. Sub-types: 정통 사극 (traditional sageuk — strict historical accuracy, court politics, Joseon/Goryeo period), 퓨전 사극 (fusion sageuk — blends historical setting with modern sensibilities or fantasy elements), 무협 사극 (martial arts historical drama). For international readers, always note the historical period (e.g., "set during the Joseon Dynasty (조선, 1392–1897)") — most global viewers cannot place Korean historical periods without context. Key production detail: sageuk dramas are known for high production budgets and elaborate hanbok (한복, traditional Korean clothing) costumes.
-K-DRAMA PRODUCTION & BROADCAST STRUCTURE: Standard K-drama = 16 episodes, airing 2 per week (common slots: Wed-Thu or Sat-Sun). Mini-series = 8-12 episodes (favored by Netflix/TVING). "생방 드라마" (Live-shot production) = episodes written and filmed while airing, with real-time audience response shaping the story — a uniquely Korean production practice worth mentioning in drama analysis content. Netflix Korea typically releases all episodes simultaneously; broadcast networks (KBS/MBC/SBS) air weekly. This structural difference affects pacing discussions (binge-watch vs appointment viewing). Always specify broadcast network or platform when referencing a drama — "SBS drama" vs "Netflix original" implies different production budgets, episode counts, and audience reach.
-K-POP CHART ALL-KILL SYSTEM (음원 올킬 — CRITICAL fan terminology):
-IMPORTANT: There are TWO types of "all-kill" — do NOT conflate them.
-(1) 음원 올킬 (Chart All-Kill) = a song reaching #1 simultaneously on ALL major Korean streaming platforms (Melon, Genie, Bugs, FLO, VIBE). This measures digital streaming dominance.
-(2) 음방 올킬 (Music Show All-Kill) = winning #1 on ALL five weekly music shows with one song (see Music Show Ecosystem below). This measures broadcast promotion success.
-PAK (Perfect All-Kill / 퍼펙트 올킬) = the HIGHEST digital achievement: #1 on ALL real-time charts AND ALL daily charts simultaneously across all platforms. PAK is extremely rare and a career-defining milestone — only a handful of songs achieve it each year. When referencing chart achievements, always specify WHICH type of all-kill.
-K-POP COMEBACK SCHEDULE TERMINOLOGY (컴백 스케줄 — core fan vocabulary):
-K-pop comebacks follow a structured promotional timeline that fans track closely:
-(1) 컴백 스케줄러 (Comeback Scheduler) — official timeline graphic posted by the agency
-(2) 컨셉 포토 (Concept Photos) — visual teasers revealing the era's aesthetic (usually 3-5 days of member/group photos)
-(3) 트랙리스트 (Tracklist) — full song list with credits, reveals the title track (타이틀곡)
-(4) 하이라이트 메들리 (Highlight Medley) — 15-30 second preview snippets of all album tracks
-(5) MV 티저 (MV Teaser) — 15-30 second music video preview (usually 2 teasers)
-(6) 발매 (Release) — album + MV drop, usually at 6PM KST (Korean Standard Time)
-Related terms: 선공개 (pre-release single) = a single released before the full album drops to build anticipation; 후속곡 (follow-up single) = second promoted single from the same album, with a separate music show promotion cycle; 활동 기간 (promotion period) = typically 2-4 weeks of music show appearances.
-K-POP ALBUM VERSION CULTURE (다버전 문화 — essential context for sales data):
-K-pop albums are released in multiple versions (2-8+), each with different cover art, photobook, and random photocard inclusions. Fans buy multiple copies to collect all photocards of their bias — this is the PRIMARY driver of high physical album sales (초동). When writing about album sales numbers, always contextualize: "K-pop album sales reflect a collecting culture where fans purchase multiple versions for photocard pulls — individual unit sales do not equate to individual listeners." This prevents misleading comparisons with Western album sales where one purchase = one listener. Key terms: 랜덤 포토카드 (random photocard), 앨범깡 (albkang — buying many copies to pull a specific photocard), 럭키드로우 (lucky draw — special event photocard from specific retailers).
-K-POP MUSIC SHOW ECOSYSTEM (음악 방송 — essential for fan content): Six major weekly music shows where groups compete for #1 (1위): THE SHOW (더쇼, SBS MTV — Tuesday, lowest viewership threshold — often a rookie group's first ever win), Show Champion (챔피언, MBC M — Wednesday), M Countdown (엠카운트다운, Mnet — Thursday), Music Bank (뮤직뱅크, KBS2 — Friday), Show! Music Core (쇼 음악중심, MBC — Saturday), Inkigayo (인기가요, SBS — Sunday). Prestige ranking (fan community consensus): Inkigayo/Music Bank > M Countdown > Show Champion > Music Core > THE SHOW. Key terminology: "올킬 (All-kill)" = winning #1 on ALL six major music shows with one song — an exceptional achievement. "트리플 크라운 (Triple Crown)" = winning the same song 3 consecutive weeks on one show. "뮤직쇼 1위 (music show win)" = a fan community milestone reported in real time. Always name which show when referencing a win — "they won Inkigayo" is meaningful; "they won a music show" is vague and signals non-fan content.
-K-POP FANDOM NAMES (use official names — signals fan content authenticity): BTS → ARMY, BLACKPINK → BLINK, TWICE → ONCE, SEVENTEEN → CARAT, Stray Kids → STAY, ATEEZ → ATINY, ENHYPEN → ENGENE, TXT (Tomorrow X Together) → MOA, aespa → MY, IVE → DIVE, LE SSERAFIM → FEARNOT, BABYMONSTER → MONSTER, NewJeans/NJZ → Bunnies, ILLIT → GLLIT, NCT (all units) → NCTzen, PLAVE → ASTERDOM, G-Dragon/BIGBANG → VIP, QWER → AUBE (아우브), 8TURN → EIGHTURE, NCT WISH → WISHING, RIIZE → BRIIZE, BOYNEXTDOOR → ONEDOOR (원도어), KISS OF LIFE → KISSY (키시), KATSEYE → EMBERS, AMPERS&ONE → UNDINE, MEOVV → MEOW (미아우), ITZY → MIDZY (믿지), NMIXX → NSWer, (G)I-DLE → NEVERLAND (네버랜드), EXO → EXO-L, SHINee → SHAWOL (샤월), GOT7 → IGOT7/Ahgase (아가새), MAMAMOO → MOOMOO (무무), Red Velvet → ReVeluv (레베럽), ZeroBaseOne → ZEROSE (제로즈), tripleS → +(PLUS), YOUNG POSSE → YOPPIE, WHIPLASH → WHIP, izna → izily, UNIS → NOVASS, EVNNE → EUNOIA. Always use the official fandom name at least once per article when writing about a specific group. Never write "BTS fans" without also noting "ARMY" — it signals unfamiliarity with fan culture.
-15차 감사 — SOLO DEBUT/ACTIVITY CONTENT FRAMING: Solo debuts require different framing than group comebacks. Always contextualize group affiliation ("Jimin, BTS member", "Winter of aespa"). Solo albums use standard album format terms (미니앨범/정규앨범), NOT "group mini album." Solo fandom names carry over from the parent group (e.g., Jimin solo fans are still ARMY). Solo chart data should NEVER be directly compared to group sales — solos and groups have different album-buying dynamics. When covering idol solo careers: frame as artistic growth/personal direction, not as "leaving" or "competing with" their group.
-15차 감사 — WORLD TOUR CONTENT GUIDE: K-pop world tour content is among the highest-intent fan searches. MANDATORY context: (1) always distinguish "standing" (스탠딩/구역) vs "seated" (좌석) sections — Korean terminology differs from Western "GA pit", (2) ticket resale warning: recommend official channels (Interpark, YES24, Ticketmaster) as primary, caution about secondary market risks, (3) Korean venue capacity reference: KSPO Dome = 15,000, Olympic Gymnastics Arena (KSPO) = 12,000, Jamsil Olympic Stadium = 69,950, Gocheok Sky Dome = 25,000, BEXCO (Busan) = 4,000. Never publish capacity claims without checking these benchmarks. (4) Fan culture at Korean concerts: 떼창 (group chanting/fanchant), 응원봉 (lightstick), no flash photography policy.
-15차 감사 — 세계관 (UNIVERSE/LORE) CONTENT DEPTH: When writing deep-dive or analysis content about K-pop group universes: MUST distinguish between official lore (released by the label via concept films, Weverse webtoons, album storylines) and fan theory (speculation, unmarked). Weverse webtoons, concept films, and official universe timelines are CANON; fan-produced interpretations are NOT canon — mark as "fan theory" or "community speculation." Never present fan theories as confirmed storyline. Key universes: aespa KWANGYA (SM Culture Universe), TXT Dream Chapter/World, ATEEZ HALATEEZ, LOONA Loonaverse (legacy), tripleS Cosmo.
-NEWJEANS / NJZ STATUS (2025-2026): After the 5 members (Minji, Hanni, Danielle, Haerin, Hyein) left ADOR in 2025, they began international promotional activities under the name "NJZ." Use "NewJeans" when referring to their pre-2025 discography and legacy; use "NJZ" or "NewJeans (now promoting as NJZ)" for 2025-2026 activities. Do NOT state definitively which name is "official" — the legal situation regarding the group name is still contested. Hedge with "the group, known to fans as NewJeans, has been performing as NJZ internationally."
-${analysis.contentType === 'case-study' ? `K-ENTERTAINMENT CASE STUDY STRUCTURE: Focus on ONE idol group, K-drama, or fan cultural phenomenon as the subject. Structure: Origin & Debut Context → Breakthrough Moment (chart milestone, viral MV, award win) → Global Fandom Growth (YouTube views, Weverse members, tour scale) → Why Fans Connected → What This Means for Hallyu. Measure success in chart positions, MV views, concert sold-out speed, and fandom milestones — NOT revenue or stock performance.` : ''}`,
+KOREAN STOCK MARKET CONTEXT:
+- KOSPI: Large-cap index (~800 stocks), dominated by Samsung Electronics, SK Hynix, Hyundai
+- KOSDAQ: Small/mid-cap growth index (~1,600 stocks), tech/bio heavy
+- Trading hours: 09:00-15:30 KST (pre-market 08:00-09:00, after-hours 15:40-18:00)
+- T+2 settlement, Foreign investor ownership limits vary by company
+- DART (dart.fss.or.kr): Electronic disclosure system — all public company filings
+- KRX (krx.co.kr): Korea Exchange — official market data source
+
+TECHNICAL ANALYSIS ACCURACY:
+- RSI: Relative Strength Index (14-period default). Oversold < 30, Overbought > 70
+- MACD: 12-period EMA minus 26-period EMA, Signal line = 9-period EMA of MACD
+- Bollinger Bands: 20-period SMA ± 2 standard deviations
+- When citing indicator values, specify the period and timeframe (daily/weekly)
+- Golden Cross = short MA crosses above long MA (bullish). Death Cross = opposite
+- Never state indicator values without the timeframe context
+
+DART DISCLOSURE TYPES (key for Korean investors):
+- 사업보고서 (Annual Report): Filed within 90 days of fiscal year-end
+- 분기보고서 (Quarterly Report): Q1/Q2/Q3 filed within 45 days
+- 주요사항보고서: Major events (M&A, stock splits, large investments)
+- 공정공시: Fair disclosure (earnings previews, guidance changes)
+- 자기주식취득/처분 (Treasury Stock): Buyback signals — often bullish
+- 대량보유상황보고 (5% Ownership Disclosure): Activist investor signals
+
+KOREAN STOCK VALUATION NORMS:
+- Samsung Electronics: Often trades at a "Korea discount" (lower PER vs global peers)
+- Korean banks: Typically PBR < 0.5 (global average ~1.0)
+- Korean biotech: Revenue multiples, not PER (most are pre-profit)
+- Semiconductor cycle: Track HBM demand (AI), DRAM/NAND pricing, foundry utilization
+- Battery chain: LG Energy, Samsung SDI, SK Innovation — track EV sales + raw material prices
+
+CITE SOURCES: Use DART filings, KRX data, BOK statistics, Naver Finance (네이버 금융), KIS (한국투자증권) research reports. Do NOT cite unnamed "analysts" or "experts" — cite specific data sources.
+
+${analysis.contentType === 'case-study' ? 'CASE STUDY STRUCTURE: Focus on ONE stock, sector, or market event. Structure: Context & Background → Catalyst/Trigger → Market Reaction (with chart data) → Fundamental Impact → Lessons for Investors. Include specific dates, prices, and volume data.' : ''}`,
+
+      'AI-Trading': `NICHE VOICE: Write as an experienced algorithmic trader and Python developer. Include code snippets where relevant (Python with pandas, numpy, pandas_ta). Explain strategies with both theory AND implementation. Reference backtesting metrics (Sharpe ratio, max drawdown, win rate, profit factor).
+
+TRADING SYSTEM DISCLAIMER: EVERY article MUST include the trading disclaimer div. Backtested results ≠ live results. Always note: "Past performance does not guarantee future results. Backtested strategies may not account for slippage, commissions, and market impact."
+
+TECHNICAL STRATEGY ACCURACY:
+- RSI Strategy: Buy when RSI(14) crosses below 30 from above (oversold recovery). Sell when RSI crosses above 70 from below. Korean stocks: RSI(14) on daily candles is standard.
+- MACD Strategy: Buy on MACD line crossing above signal line (golden cross). Sell on death cross. Parameters: fast=12, slow=26, signal=9.
+- Bollinger Band Strategy: Buy when price touches lower band and bounces. Sell at upper band. Width expansion = volatility increase (potential breakout).
+- Volume-Price Analysis: Confirm signals with volume. Breakout without volume = likely false breakout.
+
+PYTHON CODE STANDARDS:
+- Use pandas for data manipulation, pandas_ta for technical indicators
+- KIS OpenAPI: Use websocket for real-time data, REST for historical
+- Show complete, runnable code examples (not pseudo-code)
+- Include error handling and rate limiting in API examples
+- Use asyncio for concurrent operations (Korean stock API is async-friendly)
+
+BACKTESTING BEST PRACTICES:
+- Walk-forward optimization > in-sample-only testing
+- Report: Sharpe ratio, max drawdown, win rate, avg P&L per trade, profit factor
+- Account for slippage (0.1-0.3% for Korean stocks), commissions (0.015% KRX fee)
+- Minimum 2 years of data for statistical significance
+- Out-of-sample validation period: at least 20% of total data
+
+RISK MANAGEMENT RULES:
+- Position sizing: Kelly criterion or fixed-fraction (1-2% of capital per trade)
+- Stop-loss types: Fixed %, ATR-based, time-based (max holding period)
+- Maximum drawdown threshold: Recommend 10-15% for systematic strategies
+- Correlation-aware sizing: Reduce exposure when holding correlated positions
+
+KOREAN MARKET SPECIFIC:
+- KIS OpenAPI: REST + WebSocket, rate limit ~20 req/sec
+- DART OpenAPI: 100 req/min, authentication via API key
+- BOK ECOS API: Free, economic indicators and KOSPI index data
+- Market microstructure: VI (Volatility Interruption) at ±10% for KOSPI
+- Trading lot: 1 share (no fractional shares in Korea)
+
+${analysis.contentType === 'case-study' ? 'CASE STUDY STRUCTURE: Focus on ONE trading strategy or system. Structure: Strategy Hypothesis → Implementation (with code) → Backtest Results (with metrics) → Live Trading Observations → What Worked/Failed → Improvements Made. Include actual performance numbers.' : ''}`,
     };
+    // Legacy K-Beauty/K-Entertainment directives removed in finance pivot (see git history)
     const nicheVoice = nicheDirectives[niche.category] || '';
 
     const userPrompt = `Today's Date: ${today}

@@ -1,479 +1,105 @@
 /**
- * Korean seasonal content calendar for keyword research.
- * Maps Korean holidays/events to date ranges and relevant niches.
+ * Korean financial events calendar for keyword research.
+ * Maps Korean market events to date ranges and relevant niches.
  */
 
 interface SeasonalEvent {
   name: string;
-  /** Month range [startMonth, endMonth] (1-indexed, inclusive) */
   months: [number, number];
-  /** Day range within months [startDay, endDay] (approximate) */
   days?: [number, number];
   niches: string[];
   suggestions: string[];
 }
 
 const KOREAN_EVENTS: SeasonalEvent[] = [
-  {
-    name: 'Seollal (Korean Lunar New Year)',
-    months: [1, 2],
-    days: [15, 15],
-    niches: ['K-Entertainment', 'K-Beauty'],
-    suggestions: [
-      'K-drama and K-pop Seollal special content guide 2026',
-      'best Korean New Year gift sets K-beauty picks for fans',
-      'K-pop idol Seollal messages fan community highlights',
-      'best Korean skincare gift sets for Lunar New Year 2026',
-    ],
-  },
-  {
-    name: 'K-Beauty Awards Season',
-    months: [1, 2],
-    days: [1, 28],
-    niches: ['K-Beauty'],
-    suggestions: [
-      'best Korean skincare products of the year awards winners',
-      'Olive Young beauty awards top picks for foreigners 2026',
-      'Korean beauty trends forecast new ingredients to watch 2026',
-      'best new K-beauty brands to watch this year ranked',
-    ],
-  },
-  {
-    name: 'Valentine & White Day K-Beauty Season',
-    months: [2, 3],
-    days: [1, 20],
-    niches: ['K-Beauty', 'K-Entertainment'],
-    suggestions: [
-      'best Korean lip tints for Valentine Day rom&nd peripera ranked',
-      'K-pop idol couple moments fans love Valentine Day compilation',
-      'best Korean skincare gift sets for Valentine Day under 30 dollars',
-      'Korean White Day gift guide K-beauty products to buy',
-    ],
-  },
-  {
-    name: 'Cherry Blossom Season',
-    months: [3, 4],
-    days: [20, 15],
-    niches: ['K-Beauty', 'K-Entertainment'],
-    suggestions: [
-      'Korean spring skincare routine transition guide 2026',
-      'best Korean sunscreen for outdoor spring activities 2026',
-      'K-pop spring comeback season what to expect guide 2026',
-      'best Korean brightening products for spring glow 2026',
-    ],
-  },
-  {
-    name: 'Baeksang Arts Awards Season',
-    months: [4, 5],
-    days: [15, 31],
-    niches: ['K-Entertainment'],
-    suggestions: [
-      'Baeksang Arts Awards 2026 predictions who will win complete guide',
-      'Baeksang Arts Awards nominees 2026 K-drama film best actress actor',
-      'best K-dramas that won Baeksang awards all time ranked list',
-      'how to watch Baeksang Arts Awards 2026 livestream international fans',
-    ],
-  },
-  {
-    name: 'K-pop Spring Comeback Season',
-    months: [4, 5],
-    days: [1, 31],
-    niches: ['K-Entertainment', 'K-Beauty'],
-    suggestions: [
-      'K-pop spring comebacks 2026 ranked by fan anticipation',
-      'best K-pop albums releasing this spring complete guide',
-      'K-pop idol beauty looks from spring comeback MVs recreate',
-      'spring K-pop concert schedule USA Europe 2026 guide',
-    ],
-  },
-  {
-    name: "Children's Day & Spring K-pop Festival",
-    months: [5, 5],
-    days: [1, 15],
-    niches: ['K-Entertainment'],
-    suggestions: [
-      'spring K-pop festivals and outdoor concert events Korea 2026',
-      'K-pop idol fan meet events May 2026 schedule guide',
-      'best K-drama to watch during Korean spring holiday season',
-    ],
-  },
-  {
-    name: 'Seoul Fashion Week & K-Beauty Crossover',
-    months: [3, 4],
-    days: [15, 30],
-    niches: ['K-Beauty', 'K-Entertainment'],
-    suggestions: [
-      'Seoul Fashion Week K-pop idol front row looks beauty breakdown',
-      'Korean fashion week makeup trends to recreate 2026 guide',
-      'K-pop idol fashion week outfits ranked best dressed 2026',
-    ],
-  },
-  {
-    name: 'Korean Summer Sales & Mid-Year K-Beauty Shopping',
-    months: [6, 7],
-    days: [15, 10],
-    niches: ['K-Beauty', 'K-Entertainment'],
-    suggestions: [
-      'Korean mid-year sale best K-beauty deals Olive Young June July',
-      'best Korean skincare sets to buy on sale summer 2026',
-      'K-pop summer comeback season albums releases to watch 2026',
-      'best Korean sunscreen deals to stock up on summer sale',
-    ],
-  },
-  {
-    name: 'K-pop Summer Comeback Season',
-    months: [7, 8],
-    days: [1, 31],
-    niches: ['K-Entertainment', 'K-Beauty'],
-    suggestions: [
-      'K-pop summer comebacks 2026 ranked most anticipated',
-      'best K-pop music videos of summer 2026 ranked YouTube views',
-      'K-pop idol summer beauty looks skincare routine guide',
-      'summer K-pop concert tour dates USA Europe 2026 complete list',
-    ],
-  },
-  {
-    name: 'Korean Summer Skincare Season',
-    months: [7, 8],
-    days: [1, 31],
-    niches: ['K-Beauty'],
-    suggestions: [
-      'Korean summer skincare routine waterproof sunscreen essentials 2026',
-      'best Korean cooling beauty products for hot humid weather',
-      'best Korean lightweight moisturizer for summer oily skin 2026',
-      'Korean sunscreen reapplication guide summer outdoor tips',
-    ],
-  },
-  {
-    name: 'Chuseok (Korean Thanksgiving)',
-    months: [9, 10],
-    days: [1, 10],
-    niches: ['K-Entertainment', 'K-Beauty'],
-    suggestions: [
-      'Chuseok K-drama specials and entertainment lineup 2026',
-      'best K-pop idol Chuseok greetings fan community highlights',
-      'best Korean beauty gift sets for Chuseok holiday season',
-      'Korean skincare routine for fall season transition guide',
-    ],
-  },
-  {
-    name: 'BIFF (Busan International Film Festival)',
-    months: [10, 10],
-    days: [1, 15],
-    niches: ['K-Entertainment'],
-    suggestions: [
-      'BIFF Busan Film Festival 2026 Korean films to watch guide',
-      'Korean cinema must-watch films BIFF 2026 complete lineup',
-      'K-drama actors at BIFF 2026 best performances to look for',
-    ],
-  },
-  {
-    name: 'K-pop Awards Pre-Campaign Season',
-    months: [10, 11],
-    days: [1, 15],
-    niches: ['K-Entertainment'],
-    suggestions: [
-      'K-pop year-end awards 2026 predictions who will win daesang',
-      'MAMA MMA GDA nominations 2026 complete list analysis',
-      'how to vote for K-pop year-end awards guide for fans 2026',
-      'K-pop circle chart year rankings 2026 top artists so far',
-    ],
-  },
-  {
-    name: 'Korean University Entrance (Suneung)',
-    months: [11, 11],
-    days: [10, 20],
-    niches: ['K-Entertainment'],
-    suggestions: [
-      'K-pop idol Suneung messages fan community support tradition',
-      'best K-drama to watch after Korean college entrance exams',
-      'K-pop study playlist for exam season concentration guide',
-    ],
-  },
-  {
-    name: 'MAMA Awards Season',
-    months: [11, 12],
-    days: [15, 10],
-    niches: ['K-Entertainment'],
-    suggestions: [
-      'MAMA Awards 2026 predictions who will win daesang complete guide',
-      'K-pop year-end awards complete guide MAMA MMA GDA 2026',
-      'best MAMA Awards performances of all time ranked fan guide',
-      'how to watch MAMA Awards 2026 livestream guide international fans',
-    ],
-  },
-  {
-    name: 'Black Friday & Singles Day K-Beauty Sale',
-    months: [11, 11],
-    days: [1, 30],
-    niches: ['K-Beauty', 'K-Entertainment'],
-    suggestions: [
-      'best Korean skincare deals Black Friday Olive Young sales 2026',
-      'Black Friday K-beauty shopping guide best products to buy',
-      'Korean skincare sets worth buying on sale Black Friday ranked',
-      'K-pop merchandise Black Friday deals albums lightsticks guide',
-    ],
-  },
-  // ── 32차 감사: korean-calendar.ts에 누락된 주요 이벤트 동기화 (types/index.ts KOREAN_SEASONAL_EVENTS와 일치) ──
-  {
-    name: 'Olive Young Spring Grand Sale',
-    months: [3, 4],
-    days: [20, 10],
-    niches: ['K-Beauty'],
-    suggestions: [
-      'Olive Young spring grand sale 2026 best picks ranked what to buy',
-      'best K-beauty deals Olive Young spring sale skincare essentials 2026',
-      'Olive Young sale haul guide spring 2026 must-buy products',
-      'how to shop Olive Young spring sale internationally 2026 guide',
-    ],
-  },
-  {
-    name: 'Olive Young Fall Grand Sale',
-    months: [9, 10],
-    days: [20, 5],
-    niches: ['K-Beauty'],
-    suggestions: [
-      'Olive Young fall grand sale 2026 best picks what to buy ranked',
-      'best K-beauty deals Olive Young fall sale for dry season 2026',
-      'Olive Young fall haul guide 2026 skincare must-buys',
-    ],
-  },
-  {
-    name: 'Amazon Prime Day K-Beauty Deals',
-    months: [7, 7],
-    days: [10, 17],
-    niches: ['K-Beauty'],
-    suggestions: [
-      'best K-beauty deals Amazon Prime Day 2026 ranked',
-      'K-beauty skincare Prime Day steals under 20 dollars guide',
-      'COSRX Anua Numbuzin Prime Day discounts what to buy',
-    ],
-  },
-  {
-    name: 'WATERBOMB Festival',
-    months: [6, 7],
-    days: [20, 20],
-    niches: ['K-Entertainment', 'K-Beauty'],
-    suggestions: [
-      'WATERBOMB festival lineup 2026 K-pop idols performing guide',
-      'best waterproof Korean sunscreen for WATERBOMB summer festival',
-      'K-pop idol WATERBOMB performances fan experience guide',
-    ],
-  },
-  {
-    name: 'Coachella K-pop',
-    months: [4, 4],
-    days: [10, 20],
-    niches: ['K-Entertainment'],
-    suggestions: [
-      'K-pop at Coachella 2026 which groups are performing guide',
-      'K-pop Coachella history best performances ranked',
-    ],
-  },
-  {
-    name: 'Grammy Awards K-pop',
-    months: [2, 2],
-    days: [1, 10],
-    niches: ['K-Entertainment'],
-    suggestions: [
-      'K-pop Grammy nominations 2026 who could be next guide',
-      'K-pop at the Grammys history and performances ranked',
-    ],
-  },
-  {
-    name: 'Venice Film Festival Korean Cinema',
-    months: [8, 9],
-    days: [28, 7],
-    niches: ['K-Entertainment'],
-    suggestions: [
-      'Korean films at Venice Film Festival 2026 guide',
-      'Korean directors at Venice complete guide history',
-    ],
-  },
-  {
-    name: 'Korea Sale Festa',
-    months: [10, 11],
-    days: [25, 15],
-    niches: ['K-Beauty'],
-    suggestions: [
-      'Korea Sale Festa best K-beauty deals 2026 guide',
-      'Olive Young Korea Sale Festa discounts skincare must-buy list',
-      'Korea Sale Festa vs Black Friday which has better K-beauty deals',
-    ],
-  },
-  {
-    name: 'Korean Reality Dating Show Premieres',
-    months: [12, 1],
-    days: [1, 15],
-    niches: ['K-Entertainment', 'K-Beauty'],
-    suggestions: [
-      "Single's Inferno new season cast predictions guide",
-      "Single's Inferno cast skincare routine K-beauty products revealed",
-      'best Korean dating shows ranked where to watch guide',
-    ],
-  },
-  {
-    name: 'Heart Signal Season',
-    months: [3, 4],
-    days: [1, 30],
-    niches: ['K-Entertainment', 'K-Beauty'],
-    suggestions: [
-      'Heart Signal new season cast beauty routine K-beauty products',
-      'Heart Signal panelist predictions who will match guide',
-    ],
-  },
-  {
-    name: 'Asia Artist Awards',
-    months: [11, 12],
-    days: [25, 10],
-    niches: ['K-Entertainment'],
-    suggestions: [
-      'Asia Artist Awards predictions winners K-pop K-drama guide',
-      'how to vote Asia Artist Awards AAA international fans guide',
-    ],
-  },
-  {
-    name: 'Golden Disc Awards',
-    months: [1, 1],
-    days: [4, 12],
-    niches: ['K-Entertainment'],
-    suggestions: [
-      'Golden Disc Awards predictions winners K-pop guide',
-      'Golden Disc Awards nominees best album song ranked',
-    ],
-  },
-  {
-    name: 'Seoul Music Awards',
-    months: [1, 1],
-    days: [15, 31],
-    niches: ['K-Entertainment'],
-    suggestions: [
-      'Seoul Music Awards predictions daesang winners K-pop guide',
-      'Seoul Music Awards vs Golden Disc Awards difference explained',
-    ],
-  },
-  {
-    // 단오 (음력 5월 5일) — 전통 여름 절기. 한방 식물 성분 K-Beauty 콘텐츠와 연결.
-    // NOTE: 음력 기준이라 양력 날짜가 매년 변동 (보통 6월 초~중순)
-    name: 'Dano (Korean Summer Solstice Festival)',
-    months: [5, 6],
-    days: [20, 20],
-    niches: ['K-Entertainment', 'K-Beauty'],
-    suggestions: [
-      'Dano Korean traditional holiday what is it fan culture guide',
-      'best Korean traditional botanical skincare ingredients for summer Dano',
-      'Korean mugwort skincare tradition Dano holiday history explained',
-      'K-pop idol Dano greetings Korean holiday fan community highlights',
-    ],
-  },
-  {
-    // 페페로데이 (11월 11일) — 커플·팬서비스 선물 시즌. K-Beauty 선물 세트 + K-Entertainment 팬덤 이벤트 복합 트리거.
-    name: 'Pepero Day',
-    months: [11, 11],
-    days: [11, 11],
-    niches: ['K-Beauty', 'K-Entertainment'],
-    suggestions: [
-      'best Korean skincare gift sets for Pepero Day under 30 dollars',
-      'Pepero Day K-beauty couples gift guide lip tints hand creams',
-      'K-pop idol Pepero Day fan service moments compilation guide',
-      'how Korean couples celebrate Pepero Day K-drama fan culture',
-    ],
-  },
-  {
-    name: 'Korean Winter Skincare & Holiday K-Beauty',
-    months: [12, 12],
-    days: [1, 31],
-    niches: ['K-Beauty'],
-    suggestions: [
-      'Korean winter skincare routine dry cold weather ceramide guide',
-      'best Korean gift sets and holiday beauty collections 2026',
-      'Korean skincare for cold weather skin barrier repair guide',
-      'best Korean hydrating toners for winter dry skin ranked 2026',
-    ],
-  },
-  {
-    name: 'K-pop Year-End & New Year Fan Content',
-    months: [12, 1],
-    days: [20, 10],
-    niches: ['K-Entertainment', 'K-Beauty'],
-    suggestions: [
-      'K-pop year in review 2026 biggest comebacks moments ranked',
-      'best K-pop songs of 2026 year-end ranked fan favorites',
-      'K-pop idol New Year messages fan community highlights 2026',
-      'best Korean beauty products of 2026 year-end rankings',
-    ],
-  },
+  // Earnings seasons
+  { name: 'Q4 Earnings Season Korea', months: [1, 2], days: [15, 15], niches: ['Korean-Stock'], suggestions: ['Korean stock Q4 earnings preview analysis', 'Samsung SK Hynix earnings investment impact', 'Korean corporate earnings strategy guide'] },
+  { name: 'Q1 Earnings Season Korea', months: [4, 5], days: [15, 15], niches: ['Korean-Stock'], suggestions: ['Korean stock Q1 earnings preview', 'semiconductor earnings outlook Samsung SK Hynix'] },
+  { name: 'Q2 Earnings Season Korea', months: [7, 8], days: [15, 15], niches: ['Korean-Stock'], suggestions: ['Korean stock Q2 earnings analysis', 'mid-year market review investment outlook'] },
+  { name: 'Q3 Earnings Season Korea', months: [10, 11], days: [15, 15], niches: ['Korean-Stock'], suggestions: ['Korean stock Q3 earnings preview semiconductor', 'Korean tech earnings AI chip outlook'] },
+
+  // BOK rate decisions
+  { name: 'BOK Rate Decision', months: [1, 1], days: [10, 20], niches: ['Korean-Stock'], suggestions: ['Bank of Korea interest rate decision analysis', 'BOK rate impact stock market forecast'] },
+  { name: 'BOK Rate Decision (Apr)', months: [4, 4], days: [1, 15], niches: ['Korean-Stock'], suggestions: ['Bank of Korea April rate decision analysis'] },
+  { name: 'BOK Rate Decision (Jul)', months: [7, 7], days: [1, 15], niches: ['Korean-Stock'], suggestions: ['Bank of Korea July rate decision analysis'] },
+  { name: 'BOK Rate Decision (Oct)', months: [10, 10], days: [1, 15], niches: ['Korean-Stock'], suggestions: ['Bank of Korea October rate decision analysis'] },
+
+  // FOMC (US Fed — impacts Korean market)
+  { name: 'FOMC Meeting', months: [3, 3], days: [15, 25], niches: ['Korean-Stock', 'AI-Trading'], suggestions: ['FOMC March decision Korean stock market impact', 'US rate decision Korean won stock impact'] },
+  { name: 'FOMC Meeting (Jun)', months: [6, 6], days: [10, 20], niches: ['Korean-Stock', 'AI-Trading'], suggestions: ['FOMC June meeting Korean market impact forecast'] },
+  { name: 'FOMC Meeting (Sep)', months: [9, 9], days: [15, 25], niches: ['Korean-Stock', 'AI-Trading'], suggestions: ['FOMC September Korean stock market analysis'] },
+  { name: 'FOMC Meeting (Dec)', months: [12, 12], days: [10, 20], niches: ['Korean-Stock', 'AI-Trading'], suggestions: ['FOMC December year-end Korean market impact'] },
+
+  // Dividend season
+  { name: 'Korean Dividend Season', months: [12, 12], days: [1, 31], niches: ['Korean-Stock'], suggestions: ['Korean stock best dividend stocks year-end picks', 'ex-dividend date calendar Korean stocks', 'Korean high dividend yield stocks guide'] },
+
+  // MSCI/FTSE rebalancing
+  { name: 'MSCI Rebalancing', months: [5, 6], days: [20, 5], niches: ['Korean-Stock'], suggestions: ['MSCI rebalancing Korean stock additions deletions impact', 'MSCI Korea index weight changes analysis'] },
+  { name: 'MSCI Rebalancing (Nov)', months: [11, 11], days: [10, 30], niches: ['Korean-Stock'], suggestions: ['MSCI November rebalancing Korean stock impact'] },
+
+  // Tech events
+  { name: 'CES', months: [1, 1], days: [5, 12], niches: ['Korean-Stock', 'AI-Trading'], suggestions: ['CES Korean tech companies Samsung LG stock impact', 'CES AI chip Korean semiconductor analysis'] },
+  { name: 'MWC', months: [2, 2], days: [24, 28], niches: ['Korean-Stock'], suggestions: ['MWC Korean tech stocks Samsung SK Telecom impact'] },
+  { name: 'InterBattery Korea', months: [3, 3], days: [10, 12], niches: ['Korean-Stock'], suggestions: ['InterBattery battery stocks LG Samsung SDI analysis'] },
+
+  // Year-end tax selling
+  { name: 'Year-End Tax Loss Selling', months: [11, 12], days: [15, 28], niches: ['Korean-Stock'], suggestions: ['Korean stock tax loss selling strategy year-end', 'Korean stock capital gains tax guide', 'year-end portfolio rebalancing strategy'] },
+
+  // IPO seasons
+  { name: 'Korean IPO Season (Spring)', months: [3, 5], days: [1, 31], niches: ['Korean-Stock'], suggestions: ['upcoming Korean IPO stocks what to watch', 'Korean IPO investing guide how to apply'] },
+  { name: 'Korean IPO Season (Fall)', months: [9, 11], days: [1, 30], niches: ['Korean-Stock'], suggestions: ['fall Korean IPO pipeline analysis', 'how to invest in Korean IPOs guide'] },
+
+  // Options expiry (quarterly)
+  { name: 'Options Expiry', months: [3, 3], days: [8, 15], niches: ['Korean-Stock', 'AI-Trading'], suggestions: ['Korean stock options expiry volatility impact', 'quad witching day Korean market strategy'] },
+  { name: 'Options Expiry (Jun)', months: [6, 6], days: [8, 15], niches: ['Korean-Stock', 'AI-Trading'], suggestions: ['Korean stock options expiry June impact'] },
+  { name: 'Options Expiry (Sep)', months: [9, 9], days: [8, 15], niches: ['Korean-Stock', 'AI-Trading'], suggestions: ['Korean stock options expiry September impact'] },
+  { name: 'Options Expiry (Dec)', months: [12, 12], days: [8, 15], niches: ['Korean-Stock', 'AI-Trading'], suggestions: ['year-end options expiry Korean stock impact'] },
 ];
 
 export interface SeasonalContext {
   events: string[];
   suggestions: string[];
-  /** Upcoming events 2-3 months ahead — publish content early for SEO ranking */
   upcomingEvents: string[];
   upcomingSuggestions: string[];
 }
 
-/**
- * Get seasonal context for the current date.
- * Returns relevant Korean events and content suggestions.
- * Also detects upcoming events 2-3 months ahead for pre-seasonal SEO content.
- */
 export function getSeasonalContext(date: Date = new Date()): SeasonalContext {
-  const month = date.getMonth() + 1; // 1-indexed
+  const month = date.getMonth() + 1;
   const day = date.getDate();
-
   const activeEvents: string[] = [];
   const activeSuggestions: string[] = [];
   const upcomingEvents: string[] = [];
   const upcomingSuggestions: string[] = [];
 
-  // Future date 2-3 months ahead for pre-seasonal detection
   const futureDate2m = new Date(date);
   futureDate2m.setMonth(futureDate2m.getMonth() + 2);
   const futureMonth2 = futureDate2m.getMonth() + 1;
-
   const futureDate3m = new Date(date);
   futureDate3m.setMonth(futureDate3m.getMonth() + 3);
   const futureMonth3 = futureDate3m.getMonth() + 1;
 
   for (const event of KOREAN_EVENTS) {
     const [startMonth, endMonth] = event.months;
-
-    // Check current active events
-    let inRange = false;
-    if (startMonth <= endMonth) {
-      inRange = month >= startMonth && month <= endMonth;
-    } else {
-      inRange = month >= startMonth || month <= endMonth;
-    }
+    let inRange = startMonth <= endMonth
+      ? month >= startMonth && month <= endMonth
+      : month >= startMonth || month <= endMonth;
 
     if (inRange) {
       if (event.days) {
         const [startDay, endDay] = event.days;
-        if (month === event.months[0] && day < startDay - 14) { /* skip */ }
-        else if (month === event.months[1] && day > endDay + 7) { /* skip */ }
-        else {
-          activeEvents.push(event.name);
-          activeSuggestions.push(...event.suggestions);
-        }
-      } else {
-        activeEvents.push(event.name);
-        activeSuggestions.push(...event.suggestions);
+        if (month === event.months[0] && day < startDay - 14) continue;
+        if (month === event.months[1] && day > endDay + 7) continue;
       }
-      continue; // Already active, no need to check upcoming
+      activeEvents.push(event.name);
+      activeSuggestions.push(...event.suggestions);
+      continue;
     }
 
-    // Check if event is 2-3 months ahead (pre-seasonal SEO window)
-    let isUpcoming = false;
-    if (startMonth <= endMonth) {
-      isUpcoming = futureMonth2 >= startMonth && futureMonth2 <= endMonth ||
-                   futureMonth3 >= startMonth && futureMonth3 <= endMonth;
-    } else {
-      isUpcoming = futureMonth2 >= startMonth || futureMonth2 <= endMonth ||
-                   futureMonth3 >= startMonth || futureMonth3 <= endMonth;
-    }
+    let isUpcoming = startMonth <= endMonth
+      ? (futureMonth2 >= startMonth && futureMonth2 <= endMonth) || (futureMonth3 >= startMonth && futureMonth3 <= endMonth)
+      : futureMonth2 >= startMonth || futureMonth2 <= endMonth || futureMonth3 >= startMonth || futureMonth3 <= endMonth;
 
-    if (isUpcoming && !activeEvents.includes(event.name)) {
+    if (isUpcoming) {
       upcomingEvents.push(`[Upcoming] ${event.name}`);
       upcomingSuggestions.push(...event.suggestions.map(s => `[Pre-seasonal] ${s}`));
     }
@@ -482,16 +108,11 @@ export function getSeasonalContext(date: Date = new Date()): SeasonalContext {
   return { events: activeEvents, suggestions: activeSuggestions, upcomingEvents, upcomingSuggestions };
 }
 
-/**
- * Get seasonal suggestions filtered by niche.
- * Includes both active and upcoming (2-3 months ahead) suggestions.
- */
 export function getSeasonalSuggestionsForNiche(nicheCategory: string, date: Date = new Date()): string[] {
   const month = date.getMonth() + 1;
   const day = date.getDate();
   const suggestions: string[] = [];
 
-  // Future months for pre-seasonal detection
   const futureDate2m = new Date(date);
   futureDate2m.setMonth(futureDate2m.getMonth() + 2);
   const futureMonth2 = futureDate2m.getMonth() + 1;
@@ -501,16 +122,10 @@ export function getSeasonalSuggestionsForNiche(nicheCategory: string, date: Date
 
   for (const event of KOREAN_EVENTS) {
     if (!event.niches.includes(nicheCategory)) continue;
-
     const [startMonth, endMonth] = event.months;
-
-    // Check active range
-    let inRange = false;
-    if (startMonth <= endMonth) {
-      inRange = month >= startMonth && month <= endMonth;
-    } else {
-      inRange = month >= startMonth || month <= endMonth;
-    }
+    let inRange = startMonth <= endMonth
+      ? month >= startMonth && month <= endMonth
+      : month >= startMonth || month <= endMonth;
 
     if (inRange) {
       if (event.days) {
@@ -522,15 +137,9 @@ export function getSeasonalSuggestionsForNiche(nicheCategory: string, date: Date
       continue;
     }
 
-    // Check upcoming (2-3 months ahead) for pre-seasonal SEO
-    let isUpcoming = false;
-    if (startMonth <= endMonth) {
-      isUpcoming = (futureMonth2 >= startMonth && futureMonth2 <= endMonth) ||
-                   (futureMonth3 >= startMonth && futureMonth3 <= endMonth);
-    } else {
-      isUpcoming = futureMonth2 >= startMonth || futureMonth2 <= endMonth ||
-                   futureMonth3 >= startMonth || futureMonth3 <= endMonth;
-    }
+    let isUpcoming = startMonth <= endMonth
+      ? (futureMonth2 >= startMonth && futureMonth2 <= endMonth) || (futureMonth3 >= startMonth && futureMonth3 <= endMonth)
+      : futureMonth2 >= startMonth || futureMonth2 <= endMonth || futureMonth3 >= startMonth || futureMonth3 <= endMonth;
 
     if (isUpcoming) {
       suggestions.push(...event.suggestions.map(s => `[Publish early for SEO] ${s}`));

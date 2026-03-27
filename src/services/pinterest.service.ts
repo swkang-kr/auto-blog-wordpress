@@ -11,8 +11,8 @@ const PINTEREST_CATEGORIES = new Set([
 
 /** Map blog categories to Pinterest board names */
 const CATEGORY_BOARD_MAP: Record<string, string> = {
-  'K-Beauty': 'K-Beauty & Skincare',
-  'K-Entertainment': 'K-Pop & K-Drama',
+  'Korean-Stock': 'Korean Stock Market & Investing',
+  'AI-Trading': 'AI Trading & Quant Strategy',
 };
 
 export class PinterestService {
@@ -132,11 +132,10 @@ export class PinterestService {
   private getCategoryHashtags(category: string): string[] {
     const base = ['#Korea', '#SouthKorea'];
     const categoryTags: Record<string, string[]> = {
-      // 30차 감사: 2025-2026 트렌드 해시태그 대폭 보강
-      'K-Beauty': ['#KBeauty', '#KoreanSkincare', '#Skincare', '#KoreanBeauty', '#GlassSkin',
-        '#OliveYoung', '#KoreanSunscreen', '#TonerPad', '#KBeautyRoutine', '#SkincareRoutine'],
-      'K-Entertainment': ['#KPop', '#KDrama', '#Hallyu', '#KoreanDrama',
-        '#KoreanVariety', '#Webtoon', '#KDramaRecommendation', '#KPopComeback'],
+      'Korean-Stock': ['#KoreanStocks', '#KOSPI', '#Investing', '#StockMarket',
+        '#Samsung', '#SKHynix', '#KoreanInvesting', '#StockAnalysis'],
+      'AI-Trading': ['#AlgoTrading', '#QuantTrading', '#PythonTrading', '#AIInvesting',
+        '#TradingStrategy', '#Backtesting', '#TechAnalysis', '#FinTech'],
     };
     return [...base, ...(categoryTags[category] || [])];
   }

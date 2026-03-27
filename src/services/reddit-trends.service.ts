@@ -17,10 +17,9 @@ interface RedditTrend {
 }
 
 /** Subreddits relevant to Korea-focused content */
-// 31차 감사: 누락 서브레딧 추가 (koreanbeauty, kpophelp, kpopthoughts, webtoons)
 const KOREA_SUBREDDITS: Record<string, string[]> = {
-  'K-Beauty': ['kbeauty', 'AsianBeauty', 'SkincareAddiction', 'koreanbeauty'],
-  'K-Entertainment': ['kpop', 'kdrama', 'korea', 'kpophelp', 'kpopthoughts', 'webtoons'],
+  'Korean-Stock': ['korea', 'investing', 'stocks', 'algotrading', 'financialindependence'],
+  'AI-Trading': ['algotrading', 'quantfinance', 'python', 'learnpython', 'machinelearning'],
 };
 
 /**

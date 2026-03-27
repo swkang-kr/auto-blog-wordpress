@@ -3,6 +3,7 @@ import path from 'node:path';
 import axios from 'axios';
 import { loadConfig } from './config/env.js';
 import { NICHES, getSeasonallyOrderedNiches, getSeasonalContentSuggestions } from './config/niches.js';
+import { TradeEngineBridge } from './services/trade-engine-bridge.service.js';
 import { KeywordResearchService } from './services/keyword-research.service.js';
 import { ContentGeneratorService } from './services/content-generator.service.js';
 import { ImageGeneratorService } from './services/image-generator.service.js';
@@ -987,6 +988,21 @@ async function main(): Promise<void> {
     // Pre-fill results for already-completed niches so batch summary is accurate
     for (let ci = 0; ci < checkpointResumeIdx && ci < activeNiches.length; ci++) {
       results.push({ keyword: activeNiches[ci].name, niche: activeNiches[ci].id, success: true, duration: 0 });
+    }
+  }
+
+  // ── Trade Engine Data Bridge ──────────────────────────────────────────
+  const tradeEngineBridge = new TradeEngineBridge();
+  const tradeEngineData = tradeEngineBridge.loadData();
+  const tradeEngineContext = tradeEngineBridge.buildContentContext(tradeEngineData);
+  if (!tradeEngineData.isStale) {
+    // Inject Trade Engine keyword suggestions into niche seed keywords
+    const teSuggestions = tradeEngineBridge.generateKeywordSuggestions(tradeEngineData);
+    if (teSuggestions.length > 0) {
+      for (const niche of activeNiches) {
+        niche.seedKeywords = [...teSuggestions.slice(0, 5), ...niche.seedKeywords];
+      }
+      logger.info(`Trade Engine: Injected ${Math.min(teSuggestions.length, 5)} data-driven keywords per niche`);
     }
   }
 
