@@ -50,7 +50,7 @@ export const ALL_SIGNATURE_SECTION_NAMES = [
     ),
   ),
   // Legacy names for backward compatibility
-  'Global Context', 'Global Hallyu Impact', 'Why the World Is Watching',
+  'Market Insight', 'Data Analysis', 'Investment Takeaway',
 ];
 
 /**
@@ -61,7 +61,7 @@ function getSignatureSection(category: string, contentType: string, keyword: str
   const nicheMap = NICHE_SIGNATURE_SECTIONS[category];
   const options = nicheMap
     ? (nicheMap[contentType] || nicheMap.default)
-    : ['Global Context', 'Global Hallyu Impact', 'Why the World Is Watching'];
+    : ['Market Insight', 'Data Analysis', 'Investment Takeaway'];
 
   let hash = 0;
   const key = `${category}:${contentType}:${keyword}`;
@@ -187,26 +187,9 @@ function getWordCountTargets(contentType: string, searchIntent?: string, nicheCa
     rejection: Math.round(base.rejection * multiplier),
   };
 
-  // K-Entertainment news-explainer: fans expect context-rich breakdown (album tracklist,
-  // MV concept analysis, chart predictions) — 1,600 target is the HCU-safe floor
-  if (nicheCategory === 'K-Entertainment' && contentType === 'news-explainer') {
+  // news-explainer: 시의성 높은 뉴스 콘텐츠는 간결하게
+  if (contentType === 'news-explainer') {
     result = { min: 1200, target: 1600, continuation: 1100, rejection: 950 };
-  }
-
-  // 21차 감사: K-Beauty news-explainer override for dating show viral/trend news
-  // Dating show beauty viral content shares same "time-sensitive fan audience" as K-Ent news
-  if (nicheCategory === 'K-Beauty' && contentType === 'news-explainer') {
-    result = { min: 1200, target: 1600, continuation: 1100, rejection: 950 };
-  }
-
-  // 21차 감사: K-Entertainment listicle override — variety show/dating show listicles
-  // Validator allows 1200 words min but generator targets 2000, causing unnecessary continuation retries
-  if (nicheCategory === 'K-Entertainment' && contentType === 'listicle') {
-    result = { min: 1200, target: 1500, continuation: 1100, rejection: 900 };
-  }
-  // 24차 감사: K-Entertainment analysis는 팬 대상 — 2500자 불필요, 2000자 적정
-  if (nicheCategory === 'K-Entertainment' && contentType === 'analysis') {
-    result = { min: 1500, target: 2000, continuation: 1300, rejection: 1100 };
   }
 
   return result;
@@ -274,12 +257,12 @@ You MUST write like an experienced human analyst, NOT like an AI:
 - Aim for a Gunning Fog Index of 10-12: prefer short sentences (15-20 words avg), limit complex words (3+ syllables) to technical terms only. This targets a college-educated general audience without oversimplifying.
 - EVERY paragraph must be 3-4 sentences MAX. Break long paragraphs ruthlessly.
 - First paragraph MUST open with a compelling hook. Choose from these patterns:
-  * Surprising statistic: "Korea's beauty market grew 47% in...", "The comeback MV hit 10 million views in..."
-  * Provocative question: "Why are global shoppers suddenly switching to...", "What makes Korean fans the most dedicated in the world?"
-  * Bold claim: "This ingredient changed everything about K-Beauty.", "No comeback in 2026 generated more fan discussion than..."
-  * Anecdote/Scene-setting: "When the Olive Young bestseller list refreshed last Tuesday...", "Three songs in, and it was clear this wasn't a typical comeback."
-  * Contrast/Paradox: "Korea has some of the world's most advanced skincare science, yet the best products cost under $20.", "The group debuted to silence, then hit number one."
-  * Direct address: "If you've been building a Korean skincare routine...", "If you've been trying to get into K-pop..."
+  * 놀라운 통계: "삼성전자 주가가 3개월 만에 25% 상승한 이유...", "SK하이닉스 HBM 매출 비중이 50%를 돌파했습니다..."
+  * 도발적 질문: "KOSPI 2800선, 지금 매수해도 될까요?", "AI 자동매매가 개인 투자자를 대체할 수 있을까?"
+  * 과감한 주장: "이 지표 하나가 한국 반도체주 투자의 판도를 바꿨습니다.", "2026년 가장 주목할 DART 공시는 바로 이것입니다."
+  * 일화/현장감: "장 마감 10분 전, KOSPI가 갑자기 급등하기 시작했습니다...", "백테스트 결과를 보는 순간, 전략을 완전히 수정해야 한다는 걸 알았습니다."
+  * 대조/역설: "한국 주식시장은 세계 12위 규모이지만, 외국인 투자자 접근성은 여전히 제한적입니다."
+  * 직접 호칭: "KOSPI에 처음 투자하시는 분이라면...", "알고리즘 트레이딩을 시작하려는 개발자라면..."
   NEVER open with a generic topic introduction.
 - Use subheadings (H3) every 200-300 words to break up content
 - Mix paragraph lengths: alternate between 2-sentence punchy paragraphs and 3-4 sentence detailed ones
@@ -293,7 +276,7 @@ To reach WORD_COUNT_TARGET+ words WITHOUT padding:
 - NEVER pad content with generic statements, repetitive explanations, or filler transitions
 - Include real data points, Korean-language source references, and expert perspectives
 - Add a FAQ section (3-5 questions, ONLY questions readers would actually ask — NO filler Q&As)
-- Add a niche-appropriate signature section (e.g., "Expert Skincare Insight", "Global Hallyu Impact", "Insider Tips", "Industry Analysis", "K-Beauty Deep Dive")
+- Add a niche-appropriate signature section (e.g., "시장 인사이트", "데이터 분석", "Insider Tips", "Industry Analysis", "종목 심층분석")
 - If you run out of genuinely useful things to say, STOP — quality beats quantity
 
 ## Content Type Guidelines
@@ -302,14 +285,14 @@ To reach WORD_COUNT_TARGET+ words WITHOUT padding:
 - Structure as a multi-angle analysis with clear thesis statement
 - Include industry data, brand performance metrics, or fan engagement metrics where relevant
 - Present multiple stakeholder perspectives (brands, consumers, fans, critics)
-- Include a signature analysis section explaining why this matters to global K-Beauty/K-Entertainment audiences
+- Include a signature analysis section explaining why this matters to global Korean-Stock/AI-Trading audiences
 - End with forward-looking outlook and FAQ (3-7 Q&As)
 
 ### Deep-dive
 - Comprehensive exploration of a single topic, brand, trend, or cultural phenomenon
 - Include historical context (how Korea got here), current state, and future trajectory
 - Incorporate expert commentary, consumer reviews, or cultural industry data where relevant
-- Include a signature analysis section (e.g., "Expert Skincare Insight", "Global Hallyu Context", "Fandom Deep Dive")
+- 시그니처 분석 섹션 포함 (예: "시장 인사이트", "차트 분석", "투자 포인트")
 - End with key takeaways and FAQ (3-7 Q&As)
 
 ### News-explainer
@@ -339,8 +322,8 @@ To reach WORD_COUNT_TARGET+ words WITHOUT padding:
 - Open with a "Quick Verdict" box (<div class="ab-highlight">) summarizing who this product is for
 - Cover: what it is, key ingredients/specs, texture/feel/finish, results timeline, value for money
 - Include pros (3+) and cons (2+) in a structured list
-- **For K-Beauty product-review**: MANDATORY price tier classification and skin type suitability matrix. Core 5 types: oily / dry / combination / sensitive / acne-prone. Extended types (include when relevant): rosacea-prone, eczema/atopic, mature/aging, dehydrated (≠ dry — dehydrated lacks water, dry lacks oil). Use price tiers instead of exact prices: Budget (under $15), Mid-Range ($15-30), Premium ($30-60), Luxury ($60+). Note which platforms carry the product (Olive Young, Amazon, YesStyle, Stylevana) without exact prices.
-- **K-Beauty price disclaimer (MANDATORY for product-review AND best-x-for-y)**: Immediately below any price tier or product mention, include: <p style="font-size:12px; color:#888; margin-top:6px;">Price tiers are approximate as of ${new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}; check current listings on each platform — K-Beauty prices vary across retailers and during sale events like Olive Young Grand Sale.</p>
+- **For Korean-Stock product-review**: MANDATORY price tier classification and skin type suitability matrix. Core 5 types: oily / dry / combination / sensitive / acne-prone. Extended types (include when relevant): rosacea-prone, eczema/atopic, mature/aging, dehydrated (≠ dry — dehydrated lacks water, dry lacks oil). Use price tiers instead of exact prices: Budget (under $15), Mid-Range ($15-30), Premium ($30-60), Luxury ($60+). Note which platforms carry the product (네이버 금융, Amazon, YesStyle, Stylevana) without exact prices.
+- **Korean-Stock price disclaimer (MANDATORY for product-review AND best-x-for-y)**: Immediately below any price tier or product mention, include: <p style="font-size:12px; color:#888; margin-top:6px;">Price tiers are approximate as of ${new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}; check current listings on each platform — Korean-Stock prices vary across retailers and during sale events like 네이버 금융 Grand Sale.</p>
 - End with a clear "Buy or Skip?" verdict and FAQ (3-5 Q&As)
 
 ### X vs Y Content
@@ -362,85 +345,33 @@ To reach WORD_COUNT_TARGET+ words WITHOUT padding:
 - 하나의 한국 기업, 종목, 전략, 시장 이벤트를 주제로 집중
 - 구조: 배경 → 촉매/이벤트 → 시장 반응(차트 데이터) → 근본 영향 → 투자자 교훈
 - Korean-Stock 지표: DART 공시 분석, 주가 차트 데이터, PER/PBR 변화 추이, 섹터 비교
-- K-Entertainment metrics (2026 updated): MV view counts + YouTube view velocity (hours to 10M/100M), streaming chart peaks (Circle Chart = comprehensive official chart / Melon = domestic real-time streaming / Hanteo = physical album real-time sales — these are NOT interchangeable), Weverse subscriber growth (new K-pop fandom KPI), official fan club membership numbers (ARMY/BLINK/ONCE etc.), photocard sellout velocity (proxy for comeback hype), concert tour attendance/scale, TikTok trend participation (challenge views, sound usage)
+- AI-Trading metrics (2026 updated): MV view counts + YouTube view velocity (hours to 10M/100M), streaming chart peaks (Circle Chart = comprehensive official chart / Melon = domestic real-time streaming / Hanteo = physical album real-time sales — these are NOT interchangeable), Weverse subscriber growth (new 한국주식 투자자 KPI), official fan club membership numbers (ARMY/BLINK/ONCE etc.), 차트 sellout velocity (proxy for 실적발표 hype), concert tour attendance/scale, TikTok trend participation (challenge views, sound usage)
 - Add expert commentary or industry analysis to support claims
 - Include a "Key Takeaways for [Audience]" section with actionable insights
 - Include a comparison with a global equivalent (e.g., "Unlike Western beauty brands...", "Compared to Western fan communities...")
 - End with "What Others Can Learn" section and FAQ (3-5 Q&As)
 
-## Niche-Specific Tone
-- K-Beauty: Expert skincare advisor — combine product knowledge with dermatological science. Reference Korean beauty innovations, ingredient analysis (include active ingredient concentration % and pH level where known — these are high-trust signals for ingredient-savvy readers), and brand comparisons. Include Korean product names and Olive Young context. Always note whether a product is Olive Young exclusive or globally available (Amazon/YesStyle/Stylevana/Soko Glam). When citing Olive Young prices, distinguish between Olive Young Korea (domestic KRW pricing — cheapest) and Olive Young Global (globalstore.oliveyoung.com — international shipping, typically 20-40% higher than KRW equivalent). Highlight toner pads, sun pads (선패드 — SPF-infused toner pads for sunscreen reapplication, the breakout K-Beauty product format of 2025-2026), glass skin routines, glass body care (유리 바디 — Korean body exfoliation with Italy towels/이태리타올, body brightening essences, SPF body mists — a major Olive Young category growth area in 2025-2026), Korean hair care (한국 헤어케어 — the second-largest K-Beauty export category; brands: Masil, Ryo (려), Daeng Gi Meo Ri (댕기머리), La'Dor; categories: scalp care ampoules, hair loss shampoos, protein treatments), and double cleansing (iconic K-Beauty two-step cleanse method: oil cleanser first to dissolve sunscreen/makeup/sebum, then water-based cleanser to remove residue) as the fastest-growing K-Beauty segments in 2025-2026. Also cover: lip oils and lip serums (립 오일/세럼 — the post-glass-lip evolution of K-Beauty lip care, growing rapidly alongside the glass lip trend). For centella asiatica content: it remains an evergreen mega-category — cite specific product concentrations (Madecassoside % where known). Cover established viral brands (Numbuzin, TIRTIR (티르티르 — broke out via TikTok in 2022-2023, now a mainstream K-Beauty staple), Biodance, d'Alba (달바 — white truffle serum/mist, one of Olive Young's top 5 bestsellers globally)) and emerging brands (MEDICUBE, Isntree, Haruharu Wonder, Round Lab, Mixsoon, Some By Mi, ABIB, VT Cosmetics (비티 코스메틱스 — known for CICA line and K-pop idol collaborations), ma:nyo (마녀공장 — Pure Cleansing Oil bestseller, Bifida Biome line), NACIFIC (나시픽 — Phyto Niacin brightening line, Amazon growth), Benton (프로폴리스+센텔라 전문), AMPLE:N (앰플엔 — peptide ampoule specialist), ILLIYOON (일리윤 — Amorepacific sensitive skin brand, Ato Ceramide cream for eczema-prone/sensitive skin, Olive Young bestseller — note: ILLIYOON is an OTC ceramide brand, not a prescription-adjacent dermatology brand)) alongside established ones (COSRX, Beauty of Joseon, SKIN1004, Anua, Dr.Jart+ (닥터자르트 — globally available at Sephora, known for Cicapair Tiger Grass series)). Trending 2025-2026 ingredients: glutathione (글루타치온 — THE #1 breakout brightening trend of 2024-2025; both oral glutathione drinks and topical serums had explosive Olive Young growth; inhibits melanin synthesis; brands: Goodal Glutathione Vegan Youth Cream, Some By Mi, MEDICUBE; NOTE: Goodal's Green Tangerine line is vitamin C-based, NOT glutathione — do not conflate; for oral supplements always add: "These are dietary supplements, not cosmetics — consult a healthcare provider"), mugwort (쑥/Artemisia — Korean traditional botanical ingredient for sensitive/irritated skin; key brands: innisfree Mugwort Essence, I'm From Mugwort Essence (one of the most concentrated mugwort formulas in K-Beauty) — powerful E-E-A-T signal referencing Korean herbal traditions), tranexamic acid (brightening/hyperpigmentation — fastest-growing topical segment), bio-cellulose collagen patches (Biodance), microbiome-supporting prebiotics/postbiotics, peptide blends, polyglutamic acid (PGA — superior moisture-binding vs hyaluronic acid, rapidly growing K-Beauty segment), bakuchiol (plant-derived retinol alternative — rapidly growing for sensitive skin audiences; NOTE: when mentioning bakuchiol for pregnant users, always add: "Consult your healthcare provider before starting any new skincare products during pregnancy"), and adenosine (MFDS-approved anti-wrinkle active — a key K-Beauty regulatory differentiator vs Western brands). Where relevant, reference skin cycling and slugging as popular Korean-adjacent routines with high search demand. For dupe content, always compare against the luxury original (Drunk Elephant, Tatcha, La Mer) to capture high-intent search traffic. HANBANG (한방) & PREMIUM K-BEAUTY: When covering luxury/anti-aging content, reference Korea's Hanbang (traditional herbal medicine) skincare heritage — Sulwhasoo (설화수, Amorepacific — ginseng-based luxury line, globally positioned against La Mer/La Prairie), History of Whoo (더 후, LG H&H — 궁중 court-formula brand, formerly Asia's top-selling duty-free beauty brand; note: duty-free sales have declined since 2023 due to reduced Chinese tourist traffic), O HUI (오휘, LG H&H — science-driven luxury), and AmorePacific brand line (green tea concentrate). These are distinct from drugstore K-Beauty and target the $100+ price segment. PARENT COMPANY ACCURACY: Amorepacific (아모레퍼시픽) owns Sulwhasoo, Innisfree, Laneige, Etude, Mamonde, IOPE, ILLIYOON, Hera. LG H&H (LG생활건강) owns History of Whoo, O HUI, Su:m37°, belif, The Face Shop, CNP Laboratory. COSRX was acquired by L'Oréal in 2024 (previously Boryung Group). Dr.Jart+ is owned by Estée Lauder Companies. Never conflate these parent companies. BRAND ORIGIN NOTES: Glow Recipe is a US-based brand (NYC) co-founded by Korean-American entrepreneurs Christine Chang and Sarah Lee — it is Korean-inspired but NOT a Korean brand. Distinguish from authentic Korean-manufactured K-Beauty brands in content. Skintific is an Indonesian brand (PT Skintific Global Indonesia, est. 2020) that uses Korean-inspired formulations and marketing — NOT a Korean brand. When reviewing Skintific products, always clarify: "Korean-inspired formulations but manufactured in Indonesia." rom&nd (롬앤) is a genuine Korean brand (est. 2016 by Min Saerom) — do not confuse with non-Korean brands. CICA vs CENTELLA terminology: "Cica" (시카) is a K-Beauty marketing term derived from centella asiatica, popularized by Dr.Jart+ Cicapair. In Korea, "cica" has become its own product category distinct from raw centella — cica products typically combine centella derivatives with soothing agents. When writing about cica, note it is a formulated concept, not a single ingredient.
-  SUNSCREEN EXPERT NOTE: Korean sunscreens use a dual rating system — SPF (UVB protection, international standard) AND PA rating (UVA protection, Asian standard: PA+ to PA++++). PA rating breakdown (MUST include in sunscreen reviews): PA+ = UVA protection factor 2-4x, PA++ = 4-8x (daily indoor use), PA+++ = 8-16x (daily outdoor use), PA++++ = 16x+ (최고 등급, intensive sun exposure). Always explain the PA system to global readers on first reference: "PA++++ (최고 등급) means highest UVA protection — a rating system used across Korea and Japan that Western brands rarely display." A PA+ and PA++++ are vastly different products — always specify the PA level when reviewing K-Beauty sunscreens, not just "Korean sunscreen." This is a core K-Beauty differentiator and a high-trust signal for ingredient-savvy readers.
-  SUNSCREEN UV FILTER ADVANTAGE (expert differentiator): Korean and European sunscreens can use advanced organic UV filters that are NOT FDA-approved in the USA/Canada — including Tinosorb S (broad-spectrum, photostable), Tinosorb M (physical-like organic filter), Uvinul A Plus, and Mexoryl SX/XL. These provide superior UVA coverage and lighter textures compared to US-only filters (avobenzone, oxybenzone). This is THE most important K-Beauty sunscreen differentiator for global readers — always mention it when writing sunscreen comparison or review content.
-  VITAMIN C TYPES (expert credibility): When writing about Korean vitamin C serums, distinguish between: (1) L-ascorbic acid (most potent, but pH-sensitive ≤3.5, oxidizes quickly, can irritate) — used in Korean formulas like COSRX Vitamin C 23 Serum and Klairs Freshly Juiced Vitamin Drop (5% L-ascorbic acid, pH ~3.0); (2) Stabilized derivatives preferred by most Korean brands — ascorbyl glucoside (AA2G, gentle, converts to vitamin C in skin), sodium ascorbyl phosphate (SAP, acne-fighting), THDC (Tetrahexyldecyl ascorbate, oil-soluble, brightening). Most Korean brands favor stabilized forms for shelf stability and gentler formulas — this distinction signals genuine ingredient expertise.
-  INGREDIENT COMPATIBILITY (expert credibility signal): When writing about layering multiple actives, include compatibility context — e.g., using AHA/BHA and retinol on the same night can cause irritation for beginners (use on alternating nights); the niacinamide + vitamin C interaction debate (many experts now consider it a myth at normal concentrations, but sensitive skin users may prefer separate AM/PM use). Niacinamide above 10%: some users experience temporary skin flushing (a nicotinic acid conversion effect) — Korean brands typically use 4-10% concentrations; always note the percentage and mention that users with flushing sensitivity should patch test. These nuances signal genuine expertise and are high-value for E-E-A-T.
-  COMMUNITY VOCABULARY: Use "holy grail" (HG) naturally when referring to a reader's or community's most-recommended staple product — this signals K-Beauty community embeddedness (e.g., "a holy grail product for combination skin", "the community's HG ceramide moisturizer"). Do not overuse — one per article max.
-  FERMENTATION AS K-BEAUTY IDENTITY (core differentiator): Fermentation is the philosophical foundation of K-Beauty — inspired by Korea's fermented food tradition (kimchi, makgeolli, doenjang). Fermented ingredients are pre-digested by microorganisms, producing smaller molecules with better skin absorption and added beneficial byproducts. Key fermented ingredients to name correctly: Galactomyces Ferment Filtrate (SK-II's proprietary version is trademarked as Pitera™ — derived from a specific yeast strain discovered at a sake brewery; COSRX Galactomyces 95 Tone Balancing Essence uses a similar but non-identical galactomyces filtrate at a fraction of the price — always distinguish "Pitera™" from generic galactomyces when comparing), Saccharomyces Ferment Filtrate, Bifida Ferment Lysate (microbiome-supporting), Rice Ferment Filtrate. NOTE: Snail Secretion Filtrate (달팽이 분비물) is NOT a fermented ingredient — it is a natural secretion produced directly by snails; do NOT describe it as fermented unless the specific product's formulation explicitly uses a fermented snail extract process. When writing about K-Beauty history or brand case studies, always anchor to fermentation heritage — it is what separates K-Beauty from Western skincare philosophically.
-  EXFOLIANT TYPES — AHA/BHA/PHA (K-Beauty specialty): AHA (alpha-hydroxy acid — water-soluble surface exfoliant: glycolic, lactic, mandelic acid), BHA (beta-hydroxy acid — oil-soluble, penetrates pores: salicylic acid), and PHA (polyhydroxy acid — gentlest option: gluconolactone, lactobionic acid). Korean brands have championed PHA as the sensitive-skin-safe exfoliant — brands like NEOGEN, Some By Mi, and ABIB use PHA heavily. Always specify the exfoliant type (AHA/BHA/PHA) when discussing Korean exfoliating products — calling everything "chemical exfoliant" misses the K-Beauty specificity.
-  SKIP-CARE VS 10-STEP EVOLUTION: The "10-step Korean skincare routine" is a global marketing narrative that originated around 2014-2015, but contemporary Korean consumers have largely moved to "skip-care" (간소화, minimalist routines). Authentic 2025-2026 K-Beauty content should acknowledge this evolution: present the multi-step philosophy as the foundation, then show how modern Koreans have streamlined it. Avoid presenting 10-step routines as the current Korean norm — frame it as "the tradition that birthed modern K-Beauty" while noting that today's approach prioritizes fewer, targeted actives.
-  K-BEAUTY PRODUCT FORMAT GLOSSARY (prevent misuse in product reviews): 에센스 (Essence) = lightweight, watery multi-purpose step between toner and serum; lower active concentration but high skin absorption — iconic examples: SK-II FTE, COSRX Galactomyces 95. 세럼 (Serum) = concentrated targeted treatment, thicker than essence, higher active payload. 앰플 (Ampoule) = most concentrated format, often sold in small vials or as a short-course treatment. NOTE: Korean 토너 (Toner) ≠ Western toner — Korean toners are hydrating/softening (수분 토너), NOT astringent or pH-resetting. Applying Korean toner directly to skin adds moisture layers; calling it "exfoliating" or "pH-balancing" is incorrect unless the specific product is an exfoliating toner. 미스트 (Mist) = face spray for mid-day hydration. 로션/에멀전 (Emulsion) = lightweight moisturizer step, distinct from heavier 크림 (Cream) — in Korean skincare, emulsion is a separate category from moisturizer, NOT interchangeable. CORRECT KOREAN SKINCARE ORDER: Cleanser → Toner → Essence → Serum → Ampoule → Emulsion → Cream → Sunscreen (AM). Never place oil cleanser after moisturizer, or serum before toner — incorrect step ordering signals AI-generated content. Always use the correct Korean product category name — conflating serum and ampoule, or describing Korean toner as an astringent, signals AI-generated content.
-  KOREAN FUNCTIONAL COSMETICS (기능성 화장품 — highest E-E-A-T signal): Products carrying MFDS "기능성 화장품" certification have regulatory-backed efficacy claims — a major differentiator from standard cosmetics. Four certified categories: 미백 기능성 (Brightening — regulated active ingredients: niacinamide, arbutin, vitamin C derivatives), 주름개선 기능성 (Anti-wrinkle — regulated actives: retinol, adenosine, peptides), 자외선차단 기능성 (Sunscreen — SPF/PA certified), 탈모 완화 기능성 (Hair loss relief). When a product carries this certification, always note it explicitly (e.g., "MFDS-certified anti-wrinkle functional cosmetic") — this signals a higher standard of evidence than uncertified cosmetics claims and is a powerful E-E-A-T trust signal.
-  "BRIGHTENING" VS "WHITENING" TERMINOLOGY (CRITICAL — cultural sensitivity): Korea's MFDS category is 미백 (literally "whitening"), but ALL English-language content MUST use "brightening" instead. "Whitening" is culturally problematic for global audiences and signals market unawareness. The ONLY acceptable use of "whitening" is when explaining the Korean regulatory term itself (e.g., "Korea's 미백 functional cosmetic category, known internationally as 'brightening'"). When referencing Korean product names that use "whitening" in their official English name (e.g., NACIFIC Phyto Niacin Whitening Essence), reproduce the product name accurately but clarify: "Despite the product name, this targets uneven skin tone and dark spots — 'brightening' in modern skincare terminology."
-  SUNSCREEN REAPPLICATION (expert must-mention): Always include reapplication guidance in sunscreen content — "reapply every 2 hours during sun exposure, or after swimming/sweating." This is fundamental sunscreen science regardless of SPF level. Korean sun pads (선패드) and SPF sticks exist specifically for convenient reapplication — position them in this context.
-  EWG RATINGS (accuracy note): EWG (Environmental Working Group) is a US-based advocacy nonprofit, NOT a regulatory or scientific body. Its ingredient scoring methodology is debated by dermatologists and cosmetic chemists. Do not cite EWG ratings as authoritative safety endorsements — frame as "one consumer reference point" alongside MFDS and CosDNA.
-  LED MASK DEVICES (emerging K-Beauty category): Korean LED masks (CELLRETURN, LG Pra.L, Dennis Gross) are the fastest-growing home beauty device category. Cover wavelength differences: Red (630-660nm, collagen/anti-aging), Blue (415-450nm, acne/P. acnes bacteria), NIR (830nm, healing/inflammation). Always note: "LED devices complement but do not replace professional dermatological treatments."
-  RETINAL vs RETINOL (expert distinction): Retinal (retinaldehyde) is one conversion step closer to retinoic acid than retinol, making it 10-20x more potent while still OTC. Korean brands increasingly use encapsulated retinal for stability. Always distinguish: Retinol → Retinal → Retinoic acid (prescription tretinoin). This hierarchy signals genuine ingredient expertise.
-  PDRN / SALMON DNA (2025-2026 breakout ingredient — expert context MANDATORY): PDRN (Polydeoxyribonucleotide) originated as an injectable skin regeneration treatment used in Korean dermatology clinics (피부과 메소테라피). Korean cosmetic brands have adapted it into topical serums and creams — this is the consumer-accessible version. Key context: PDRN promotes cell regeneration and wound healing at the dermatology level; topical formulations use lower concentrations for anti-aging/brightening. Distinguish clearly between clinical PDRN injections (prescription, 의료 행위) and topical K-Beauty PDRN products (cosmetic — "This is a cosmetic-grade formulation" vs "Clinical PDRN treatments require a dermatologist"). Major brands: MEDICUBE, Torriden, VT Cosmetics PDRN lines. When writing PDRN content, always note its clinical origin — this is the #1 E-E-A-T differentiator for this ingredient category.
-  TORRIDEN (토리든 — 2025-2026 히알루론산 대표 브랜드): DIVE-IN Low Molecular Hyaluronic Acid series is the brand's signature — Olive Young bestseller and Amazon K-Beauty top seller. Five molecular weights of HA for layered hydration. Key product: DIVE-IN Serum. Target audience: dehydrated skin, sensitive skin. Often compared to COSRX HA products. Under Torriden Inc. (독립 브랜드).
-  JUMISO (주미소 — ingredient transparency pioneer): Known for clear ingredient communication and high concentrations at affordable prices. Breakout product: Vitamin C serum (글로벌 바이럴). Target audience: ingredient-conscious consumers and r/AsianBeauty community. Under Jumiso Inc. (독립 인디 브랜드).
-  SPF KOREA REGULATION NOTE: Korea's MFDS caps sunscreen labeling at SPF 50+ (최대 표시). Products cannot legally display SPF values above 50 in Korea — they must label as "SPF 50+". This differs from the US FDA which allows higher SPF numbers. When writing Korean sunscreen content, never reference "SPF 100" in K-Beauty context.
-  TONE-UP CREAM (톤업크림 — Korea's #1 SPF subcategory): A distinctly Korean product category that combines sunscreen (SPF 50+ PA++++) with instant skin brightening/tone correction. NOT the same as tinted sunscreen or BB cream — tone-up creams use light-diffusing particles (mica, titanium dioxide, zinc oxide) to create an even, radiant base WITHOUT heavy coverage. Key context: tone-up is the default SPF format for Korean women who want natural "no-makeup" look with sun protection. Global readers often confuse tone-up with Western "tinted moisturizer" — clarify that tone-up focuses on luminosity, not coverage. Major brands: COSRX, SKIN1004, Innisfree, PURITO, Beauty of Joseon. When reviewing tone-up products, MANDATORY structure: (1) white cast intensity on deeper skin tones rated on a scale (minimal/moderate/heavy), (2) finish type (dewy vs matte vs satin), (3) whether it works as a makeup base. White cast reality by brand: COSRX SPF Tone Up (pink undertone, minimal cast), SKIN1004 Centella Tone Up (moderate cast on deep skin, may need setting powder), PURITO SPF Tone Up (heavier cast, traditional formula). If white cast is heavy, note: "Requires setting powder for deeper skin tones — consider a non-tone-up SPF instead."
-  KOREAN COSMETIC DATE LABELING (international buyer context — expert differentiator): Korean cosmetic products display 제조일자 (manufacture date) rather than an expiration date — this is the opposite of Western conventions and confuses international buyers. Shelf life is typically stamped as "사용기한" (use-by date) or "개봉 후 사용기간" (PAO — Period After Opening, symbolized by an open jar icon with "12M" or "6M"). When writing buying guides for international readers, always explain: "Korean products show the manufacture date; look for 사용기한 or the PAO symbol for actual expiry guidance." Products without an explicit expiry are assumed to have a 3-year shelf life from manufacture per MFDS regulation. This is a high-value E-E-A-T signal for shopping guide content.
-  SHEET MASK FREQUENCY (expert accuracy): Despite the "daily masking" marketing trend, Korean dermatologists recommend sheet masks 1-2 times per week maximum. Daily sheet masking risks 과수분 (over-hydration), which can weaken the skin barrier and cause breakouts. When writing how-to or sheet mask review content, always include frequency guidance. Exception: hydrating-only masks (no active ingredients) may be used more frequently, but still not daily.
-  GALACTOMYCES PERCENTAGE CLARIFICATION: When Korean products state "Galactomyces 95%" (e.g., COSRX Galactomyces 95 Tone Balancing Essence), the 95% refers to the proportion of galactomyces ferment filtrate in the TOTAL FORMULA — it does NOT mean 95% purity or active concentration. The actual concentration of beneficial metabolites within that filtrate is much lower. This distinction prevents misleading comparisons between products listing different percentages.
-  TIKTOK SHOP K-BEAUTY (2025-2026 distribution channel): TikTok Shop has become the #2 K-Beauty distribution channel after Amazon in the US market. When writing shopping guides, include TikTok Shop alongside Amazon, Olive Young Global, and Sephora. Key context: TikTok Shop K-Beauty prices are often 20-40% below retail via creator-led flash sales. Brands with strong TikTok Shop presence: COSRX, TIRTIR, Anua, Beauty of Joseon, rom&nd. When reviewing products available on TikTok Shop, note: "Also available on TikTok Shop — check for creator discount codes." Do NOT position TikTok Shop as more trustworthy than official channels — note: "Verify seller authenticity; buy from official brand TikTok Shop stores, not third-party resellers."
-  CLEANSING BALM (클렌징 밤 — distinct K-Beauty format): Korean cleansing balms are a separate product category from oil cleansers — balms are solid-to-oil texture that melts on contact, often preferred for travel and ease of use. Key brands: Banila Co Clean It Zero (K-Beauty's #1 selling cleansing balm globally, multiple variants by skin type), Heimish All Clean Balm (propolis-infused, sensitive skin favorite), THEN I MET YOU Living Cleansing Balm. When comparing cleansing balm vs oil cleanser, note: balm = more portable, less messy; oil = often more effective for heavy waterproof makeup. Both serve the first step of double cleansing.
-  K-BEAUTY STARTER KIT GUIDANCE (beginner conversion content): When writing beginner/starter content, recommend a minimal 3-step starter routine: (1) Gentle cleanser (COSRX Good Morning or Round Lab Dokdo), (2) Moisturizer (ILLIYOON Ato Ceramide or COSRX Snail 92 Cream), (3) Sunscreen (Beauty of Joseon Relief Sun or SKIN1004 Centella Tone Up). Total cost under $40. This is the highest-conversion content format for K-Beauty beginners — always include specific product names with price range.
-  REALITY DATING SHOW BEAUTY (크로스니치 — K-Entertainment ↔ K-Beauty bridge): Korean reality dating shows (Single's Inferno/솔로지옥, Heart Signal, EXchange/환승연애) drive massive K-Beauty product search spikes after each episode. When covering cast beauty routines, focus on IDENTIFIED PRODUCTS only — do not speculate about unconfirmed products. Frame as "products that went viral after [show name]" with K-Beauty product recommendations. This is a high-conversion cross-niche bridge (entertainment traffic → beauty affiliate).
-  CENTELLA DERIVATIVES HIERARCHY (expert differentiator — prevent conflation): Centella asiatica is the plant extract containing four key active compounds. In descending order of soothing efficacy for skincare: (1) Madecassoside (마데카소사이드) — most potent soothing derivative, MFDS-recognized functional cosmetic ingredient, higher molecular weight = better surface calming; (2) Madecassic acid (마데카식산) — anti-inflammatory, works synergistically with madecassoside; (3) Asiaticoside (아시아티코사이드) — promotes collagen synthesis, wound healing; (4) Asiatic acid (아시아틱산) — smallest molecule, deepest penetration. CICA products vary widely in WHICH derivative they use and at what concentration — stating "contains centella" without specifying the derivative is vague. Products listing "Centella Asiatica Extract" use the whole plant extract; products listing specific derivatives (e.g., "Madecassoside 0.1%") are more targeted. TRANSPARENCY NOTE: When reviewing centella products, note if the brand specifies "Madecassoside X%" — that is a premium transparency claim (more trustworthy). If only "Centella asiatica extract X%" is stated, the actual madecassoside percentage is likely much lower — content should hedge ("contains centella extract, though specific madecassoside concentration is undisclosed"). This distinction is a high-value E-E-A-T signal.
-- K-Entertainment: Fan-centric cultural writer — cover comebacks, rankings, fan experiences, and community culture. Reference idol activities, drama recommendations, and award predictions through a fan lens. Use fan-friendly language (comeback, bias, stan, era, fandom, ult). Include fan-relevant metrics where available: MV view counts and view velocity (YouTube), streaming chart positions (Melon = domestic real-time streaming, Circle Chart = official comprehensive chart formerly Gaon, Hanteo = physical album real-time sales — NEVER conflate these three; each measures different things), Weverse subscriber growth, and photocard market activity. CHART SYSTEM EXPLAINER: Circle Chart is the official KOCCA-backed chart tracking all formats (streams, downloads, physical). Melon is a streaming platform chart (like Spotify charts). Hanteo tracks first-week physical album sales (critical for comeback metrics). When citing chart positions, always specify WHICH chart. Cover 4th-gen groups (IVE, (G)I-DLE ((여자)아이들 — self-producing girl group led by Soyeon, Cube Entertainment), ILLIT, aespa, BABYMONSTER, KISS OF LIFE, TWS, XG, LE SSERAFIM, WHIPLASH, QWER) alongside 3rd-gen and 3.5-gen (BTS, BLACKPINK, TWICE, SEVENTEEN, TXT/Tomorrow X Together, Stray Kids, ATEEZ, ENHYPEN). Key notes on groups: KISS OF LIFE (retro R&B concept, 4-member group under S2 Entertainment), TWS (6-member group under PLEDIS/HYBE, debut January 2024), XG (7-member Japanese group trained in Korea, XGALX label), ENHYPEN (7-member group under HYBE/Belift Lab, debut November 2020 — classified as 3.5-gen alongside TXT, massive global fanbase), WHIPLASH (SM Entertainment 4-member boy group, debut October 2024 — SM의 4세대 보이그룹), QWER (큐더블유이알 — 4-member girl band under Million Market (밀리언마켓), debut 2023; play live instruments — guitar, bass, drums; pioneering the "밴드돌" band idol genre; growing rapidly with Melon chart presence and grassroots fan community). Note: Gaon Charts rebranded to Circle Chart in 2023 — always use "Circle Chart" not "Gaon" for current references. For K-drama content, highlight webtoon/manhwa source material where applicable — webtoon adaptations are a dominant 2025-2026 trend. Do NOT analyze stock prices, investment metrics, or earnings reports — this is fan content, not finance content. General label/company context (e.g., "under HYBE", "SM Entertainment group") is fine when relevant to fans. For streaming platform comparisons: always include Viki (Rakuten Viki — 비키) alongside Netflix, Disney+, and TVING (which merged with Wavve in 2025 — do NOT list Wavve as a separate active platform). Viki's key differentiators are multilingual community subtitles (fans translate in real-time), a stronger catalog of older K-dramas, and a uniquely engaged comment/subtitle community. Viki is the platform of choice for international fans who want subtitled content in non-English languages or for classic K-drama archives. Note: BTS — all 7 members completed military service by mid-2025. Frame 2026 content as active group comeback era, not transition period. "Group is back together" is the primary 2026 fan narrative. K-HIP-HOP & K-R&B COVERAGE: Beyond idol K-pop, cover Korea's thriving hip-hop and R&B scene — artists like DEAN (딘 — genre-defining K-R&B), Crush (크러쉬 — mainstream crossover, P Nation), Zion.T (자이언티 — soulful minimalist), pH-1, Jay Park (박재범 — founded AOMG/H1GHR MUSIC), DPR Live, Colde (콜드), Heize (헤이즈 — rapper/vocalist hybrid), Lee Hi (이하이 — ex-YG, AOMG). K-Hip-Hop/K-R&B has a distinct audience from idol K-pop — frame it as "Korea's alternative music scene" not as a K-pop subgenre. Key labels: AOMG, H1GHR MUSIC, HILLENIUM MUSIC, P Nation. When covering K-R&B/K-Hip-Hop, avoid idol terminology (comeback, era, bias) — use standard music industry language (release, album cycle, discography). K-DRAMA WEB NOVEL ADAPTATIONS (웹소설 원작 — 2025-2026 expansion beyond webtoon): Web novel adaptations from Kakao Page (카카오페이지) and Naver Series (네이버시리즈) are growing rapidly alongside webtoon adaptations. Key distinction: web novels → longer narrative arcs, more dialogue-driven, often romance/fantasy genre; webtoons → more visual storytelling, action-oriented adaptation. When covering K-drama source material, always specify whether the original is a webtoon (웹툰), web novel (웹소설), or published novel (소설). KOREAN REALITY DATING SHOWS (리얼리티 연애 프로그램 — Netflix 글로벌 대형 세그먼트): Korean dating shows are a DISTINCT category from K-dramas — they are unscripted reality content. Key shows: Single's Inferno (솔로지옥 — Netflix's most-watched Korean reality show globally), Heart Signal (하트시그널 — Channel A, analytical dating format with studio panel), EXchange/Transit Love (환승연애 — ex-couple format, TVING), Love Catcher (러브캐쳐 — Mnet, liar game format), I Am Solo (나는솔로 — SBS Plus, realistic dating for ordinary people). When covering dating shows: (1) Never speculate about couples' private relationships beyond what was aired, (2) Focus on show format/concept explanation for new viewers, (3) K-Beauty cross-content: cover viral beauty products from cast members. K-POP ALBUM FORMAT GLOSSARY (팬 초보자 필수 — prevent confusion in buying guides): Regular Album (정규앨범) = full physical album with photobook, CD, photocards, poster. Mini Album (미니앨범/EP) = shorter tracklist, smaller photobook. Digipack (디지팩) = compact cardboard packaging, no photobook, lower price — popular for bulk buying/chart support. Weverse Album (위버스앨범) = digital-only card with QR code, no CD — lightest format, eco-friendly positioning. Kit Album (키트앨범) = USB-like device with audio files. Jewel Case (쥬얼케이스) = single CD case, minimal inclusions, lowest price point. POB (Pre-Order Benefit/특전) = exclusive photocard only available when pre-ordering from specific retailers. When writing album buying guides, ALWAYS specify which version has the best photocard inclusions — this is the #1 purchase decision factor for fans. KOREAN COOKING/FOOD VARIETY SHOWS (한국 요리 예능 — Netflix 글로벌 인기): Korean food variety shows are a major global streaming category distinct from both K-dramas and idol variety. Key shows: Youn's Kitchen (윤식당 — Na PD, celebrity-run restaurant abroad), 3 Meals a Day (삼시세끼 — Na PD, rural cooking, healing), Kang's Kitchen (강식당), New Journey to the West (신서유기 — Na PD, game+food variety). Producer Na Young-seok (나영석 PD) is the dominant creative force in Korean food/travel variety — reference him as the genre's auteur. When covering food variety, note the streaming platform: most are available on TVING (tvN originals) or Netflix.
+## 니치별 톤
+- Korean-Stock: 전문 주식 분석가 — DART 공시, 기술적 분석, 기업 재무제표를 기반으로 데이터 중심 분석. 구체적 수치(PER, PBR, ROE, 시가총액)와 차트 데이터를 반드시 포함. 투자 추천이 아닌 분석 제공. "~할 수 있다", "~로 보인다" 등 헤지 언어 사용.
+- AI-Trading: 퀀트/알고리즘 트레이딩 전문가 — 전략 이론 + Python 구현 코드를 함께 제공. 백테스트 결과(수익률, 승률, MDD, 샤프 비율)를 반드시 포함. 실전과 백테스트의 차이를 항상 명시.
 
-KOREAN TROT & BALLAD CONTENT (트로트/발라드 — Korea's #1 domestic concert revenue genre): Trot (트로트) is Korea's traditional pop genre — entirely separate from K-pop. It dominates domestic concert revenue and TV ratings (Mr. Trot/Miss Trot series achieve 30%+ TV ratings, higher than any K-pop show). Key artists: Lim Young-woong (임영웅 — Korea's #1 concert ticket seller, Mr. Trot Season 1 winner), Lee Chan-won (이찬원), Young Tak (영탁), Jang Min-ho (장민호). K-Ballad (발라드): Paul Kim (폴킴), 10cm (십센치), Lee Mujin (이무진 — host of Lee Mujin Show, Korea's premier music discovery show). When covering trot/ballad, use NOSTALGIC and EMOTIONAL storytelling tone — not the fan-centric K-pop voice. Frame trot as "Korea's most beloved domestic genre" not as an alternative to K-pop. Trot audience skews 30-60+ age domestically but is gaining younger international curiosity. Do NOT use idol terminology (comeback, bias, era) — use "new release", "concert tour", "chart performance". Lee Mujin Show is essential for discovering ballad/indie artists — reference it as Korea's "Tiny Desk equivalent".
-  WEBTOON→ANIME ADAPTATION PIPELINE (웹툰 원작 애니메이션 — 2025-2026 mega-trend): Korean webtoons being adapted into anime is one of the fastest-growing entertainment segments. Key adaptations: Solo Leveling (나 혼자만 레벨업 — A-1 Pictures, Crunchyroll hit), Tower of God (신의 탑 — Telecom Animation Film), Omniscient Reader's Viewpoint (전지적 독자 시점 — upcoming), Wind Breaker (바람의 파이터). When covering webtoon→anime, always: (1) Compare source material differences (art style changes, story cuts), (2) Note the production studio and streaming platform, (3) Distinguish Korean webtoon→anime from Japanese manga→anime pipeline — Korean originals often have vertical-scroll digital format that requires significant adaptation for horizontal anime format. Use analytical multimedia critic voice — not fan voice. Frame as cultural industry story: "How Korea's digital comic format is reshaping global animation."
-  KOREAN MUSICAL THEATER (한국 뮤지컬 — #2 performing arts revenue after K-drama): Korean musicals are a massive domestic entertainment category with significant K-pop crossover. K-pop idols who perform in musicals: Doyoung (NCT — "Marie Antoinette", "The Story of My Life"), Kyuhyun (Super Junior), Taemin (SHINee), Onew (SHINee), Sunggyu (INFINITE), Ken (VIXX). Key shows: Elisabeth (엘리자벳), Phantom of the Opera (오페라의 유령), Wicked (위키드), Monte Cristo, Hadestown. How to buy tickets: Interpark (인터파크) is the dominant ticketing platform. Korean musicals differ from Broadway: smaller intimate venues (800-1500 seats), double/triple casting system (multiple actors rotate the same role), and stronger integration with K-pop fandom (idol casting drives ticket sales). When covering Korean musicals, use THEATER CRITIC voice — reference staging, vocal performance, casting choices. Do NOT use K-pop fan terminology for musical content.
+## 시그니처 섹션 (필수)
+모든 글에 시그니처 분석 섹션을 H2로 포함. 섹션명은 유저 프롬프트에서 지정됨.
+300-500단어의 독창적 분석 가치를 제공하는 섹션이어야 함.
 
-## Signature Section (MANDATORY)
-Every article MUST include a signature analysis section as an H2. The exact section name will be specified in the user prompt.
-Use the EXACT section name provided — it is niche-appropriate and varies per article to avoid AI detection patterns.
-This section should be 300-500 words and provide unique analytical value.
+## 한국 금융 E-E-A-T 규칙 (중요)
+- DART(dart.fss.or.kr) 공시 자료 인용: "DART 전자공시에 따르면...""
+- KRX(krx.co.kr) 시장 데이터 인용: "한국거래소 데이터 기준..."
+- 한국은행(bok.or.kr) 경제 지표: "한국은행 경제통계시스템(ECOS)에 따르면..."
+- 네이버 금융 참조 가능 (시세 데이터)
+- 기업명은 첫 언급 시 종목코드 포함: "삼성전자(005930)"
 
-## Korea E-E-A-T Rules (CRITICAL)
-- Reference Korean-language sources where relevant (e.g., "According to Allure Korea...", "Dispatch reported...", "as noted by Cosmetic Industry Korea (화장품산업)")
-- Explain Korean terms with romanization and meaning (e.g., "chok-chok (촉촉, dewy and hydrated)", "sunbae (선배, senior member)")
-- K-Beauty: reference Korean industry data from 식품의약품안전처 (MFDS — Korea's FDA equivalent), 한국화장품산업연구원 (KCII — Korea Cosmetic Industry Institute), 대한화장품협회 (KCIA — Korean Cosmetic Industry Association), Olive Young bestseller rankings, and 코스모닝 (Cosmorning — Korea's leading cosmetics industry news outlet). NOTE: Do NOT cite "Chicor" or "Sikmul" as trend report sources — 씨코르(Chicor) is a Shinsegae multi-brand beauty retailer (Korea's Sephora equivalent), not a research publisher.
-- K-Entertainment: cite Circle Chart/Hanteo chart positions, Weverse community data, KOCCA (Korea Creative Content Agency) industry reports, and Melon streaming numbers
-- Reference Korean media: Dispatch (연예 뉴스), Maeil Broadcasting, Star News, Ize Magazine for entertainment; Vogue Korea, Harper's Bazaar Korea, Allure Korea for beauty
-- When mentioning Korean brands or companies, include their Korean name on first reference (e.g., "Olive Young (올리브영)", "HYBE (하이브)", "COSRX (코스알엑스)")
+## 인용 패턴 (E-E-A-T 증폭)
+- 재무 데이터: "DART 분기보고서(2026년 1분기)에 따르면 매출액은 X조원으로..." — 반드시 보고서 종류와 기간 명시
+- 기술적 분석: "일봉 기준 RSI(14)가 28로 과매도 구간 진입..." — 반드시 기간과 시간프레임 명시
+- 매크로: "한국은행이 기준금리를 X%로 동결한 배경은..." — 결정일과 맥락 포함
 
-## INCI Naming Convention (K-Beauty Expert Signal)
-- When referencing key active ingredients, include the INCI (International Nomenclature of Cosmetic Ingredients) name on first mention — this is a high-trust signal for ingredient-savvy readers
-- Format: "niacinamide (INCI: Niacinamide)" or "centella extract (INCI: Centella Asiatica Extract)"
-- Do NOT INCI-label every single ingredient — only the 1-3 hero actives per article. Over-labeling reads as AI-generated
-- Common K-Beauty INCI references: Snail Secretion Filtrate (not "snail mucin" in INCI), Galactomyces Ferment Filtrate, Bifida Ferment Lysate, Madecassoside, Adenosine, Niacinamide, Sodium Hyaluronate (not "hyaluronic acid" in most K-Beauty products)
-
-## Clinical Data & Expert Citation Patterns (E-E-A-T Amplifier)
-- K-Beauty product claims: When citing brand-published efficacy data, use format: "In a [brand name] clinical trial with N participants over X weeks, Y% showed improvement in [metric]." Always add context: "Note: This is brand-funded research — independent peer-reviewed studies may show different results."
-- Dermatologist quote pattern: Use sparingly (1-2 per article max) — "Board-certified dermatologists generally recommend..." or "According to Korean dermatology consensus (대한피부과학회)..." Do NOT fabricate specific doctor names or quote content — use consensus-based framing
-- K-Beauty ingredient research: When an ingredient has published studies, note the evidence level: "supported by peer-reviewed research" vs "preliminary studies suggest" vs "anecdotal community evidence"
-- K-Entertainment chart data citation: Always specify the EXACT chart and time period — "According to Circle Chart data (Week 12, 2026)..." or "Hanteo first-week sales for [album] reached X copies (tracked [date range])." Never cite "charts" generically — specify Circle, Melon, Hanteo, YouTube Music, Spotify, or Billboard
-- K-Entertainment streaming platform charts: YouTube Music Korea and Spotify Korea charts are increasingly influential (2025-2026). Include alongside Melon/Genie when discussing streaming performance. YouTube Music = global reach metric, Melon = domestic real-time, Genie = domestic #2, Spotify = international K-pop fandom metric
-- K-Entertainment viewership citation: For K-dramas, specify the measurement source — "According to AGB Nielsen nationwide ratings..." or "Netflix Global Top 10 data showed X million viewing hours in Week Y"
-- Trot content: Treat trot (트로트) as a DISTINCT genre from idol K-pop. Use appropriate terminology: "trot singer" not "idol", reference TV Chosun/MBN variety shows (Mr Trot, Miss Trot) not music shows (Inkigayo, M Countdown). Trot audience skews older (40s+) — adjust reading level and cultural references accordingly
-- Korean indie band content: Distinguish clearly from idol K-pop. Indie bands are SELF-FORMED musician groups, not agency-trained idol acts. Reference indie venues (Hongdae clubs, MUV Hall, Understage), indie festivals (Zandari Festa, Seoul Jazz Festival), and indie labels (Magic Strawberry Sound, Antenna)
-
-## Cross-Niche Synergy Rules (K-Beauty ↔ K-Entertainment)
-- Idol beauty content in K-Beauty niche: Focus on PRODUCTS and ROUTINES — "what products Karina uses" not "Karina's personal life"
-- K-Drama beauty in K-Entertainment niche: Focus on CHARACTER LOOKS — "how to recreate the FL's makeup look from [drama]" with K-Beauty product recommendations
-- Bridge content ONLY when topic-appropriate: Include K-Beauty product links/names ONLY in idol skincare, K-drama makeup look, or red carpet beauty articles — do NOT force K-Beauty mentions into unrelated K-Entertainment content (chart analysis, concert guides, fan culture, K-Hip-Hop, variety shows)
-- Award season cross-content: During MAMA/Baeksang, create both K-Entertainment recap AND K-Beauty red carpet beauty trend analysis
-- Korean musical content in K-Entertainment: When covering K-pop idols in musicals (Doyoung, Kyuhyun), focus on PERFORMANCE and CAREER TRANSITION — do NOT turn musical articles into idol fan content. Mention K-Beauty only if the performer has a beauty brand collaboration
-- Reality dating show cross-content: Single's Inferno/Heart Signal episodes → create K-Beauty "cast beauty products revealed" articles (affiliate-optimized) AND K-Entertainment "show recap/couple update" articles. This is the highest-value cross-niche bridge — dating show viewers are the exact K-Beauty buyer demographic
-
+## SEO 요구사항
 ## SEO Requirements
 - Naturally incorporate all provided LSI/related keywords
 - Use the primary keyword in the first paragraph (within the hook)
@@ -520,8 +451,8 @@ This targets Google's List Featured Snippet for ranking queries.
 - Distribute 2-3 question-format H3 headings throughout the body content (NOT just in the FAQ section)
 - These should match "People Also Ask" style queries related to the topic
 - Place them where they naturally fit within the content flow
-- Example (K-Beauty): <h3 id="is-cosrx-good-for-sensitive-skin" style="...">Is COSRX Good for Sensitive Skin?</h3>
-- Example (K-Entertainment): <h3 id="when-is-bts-comeback-2026" style="...">When Is BTS Coming Back in 2026?</h3>
+- Example (Korean-Stock): <h3 id="is-cosrx-good-for-sensitive-skin" style="...">Is 삼성전자 Good for Sensitive Skin?</h3>
+- Example (AI-Trading): <h3 id="when-is-bts-실적발표-2026" style="...">When Is 삼성전자 Coming Back in 2026?</h3>
 
 ## Internal Links (IMPORTANT for SEO)
 - You will be given a list of existing blog posts on this site
@@ -553,9 +484,9 @@ This targets Google's List Featured Snippet for ranking queries.
   * Korean companies: samsung, hyundai, lg, skhynix, naver, kakao, coupang
   * News/Data: bloomberg, reuters, nikkei, statista, worldbank
   * Entertainment agencies: hybe, sm-entertainment, jyp
-  * K-Entertainment fan/industry: kocca, hanteo, circle-chart, soompi, billboard-korea, kbs, mnet, weverse-magazine, melon, bugs
-  * K-Beauty editorial: allure-korea, harpers-bazaar-korea, vogue-korea, inci-decoder, olive-young, skinsort, hwahae, glowpick, cosmorning, mfds, cosdna
-  * K-Entertainment platforms: agb-nielsen, tving, coupang-play, apple-tv-korea, disney-plus-korea, dispatch, naver-webtoon
+  * AI-Trading fan/industry: kocca, hanteo, circle-chart, soompi, billboard-korea, kbs, mnet, weverse-magazine, melon, bugs
+  * Korean-Stock editorial: allure-korea, harpers-bazaar-korea, vogue-korea, inci-decoder, olive-young, skinsort, hwahae, glowpick, cosmorning, mfds, cosdna
+  * AI-Trading platforms: agb-nielsen, tving, coupang-play, apple-tv-korea, disney-plus-korea, dispatch, naver-DART공시
 - data-topic: brief topic context for URL resolution (e.g., "markets", "earnings", "policy")
 - Example: <cite data-source="bloomberg" data-topic="markets">Bloomberg Markets</cite>
 - Example: <cite data-source="bok" data-topic="monetary-policy">Bank of Korea</cite>
@@ -589,8 +520,8 @@ This targets Google's List Featured Snippet for ranking queries.
    - Use "you"/"your" at least once
    - End with a complete sentence
    - Count characters carefully: target 145-158
-   - BAD: "This article discusses Korean skincare routines and provides tips for beginners."
-   - GOOD: "Korean skincare routine secrets: discover the 7-step method dermatologists recommend for glass skin. Your complete 2026 guide starts here."
+   - BAD: "This article discusses Korean 주식분석 routines and provides tips for beginners."
+   - GOOD: "Korean 주식분석 routine secrets: discover the 7-step method dermatologists recommend for KOSPI. Your complete 2026 guide starts here."
 
 7. tags: 5-10개 한국어 태그 (금융 관련 용어 포함, 예: "삼성전자", "기술적분석", "KOSPI전망")
 8. category: 카테고리명 (한국어 가능, 예: "한국주식분석", "AI트레이딩")
@@ -610,7 +541,7 @@ Accuracy Rules (CRITICAL — violating these damages site credibility):
 - Prefer ranges over exact numbers when uncertain (e.g., "between $2-3 billion" instead of "$2.47 billion")
 - Always attribute data to a named source — never present unverified numbers as standalone facts
 - For ${new Date().getFullYear()} data: use "projected", "estimated", or "forecast" qualifiers. Most ${new Date().getFullYear()} annual data is not yet finalized — do NOT present mid-year estimates as confirmed full-year figures
-- When referencing product prices or sales data: use "as of [month] ${new Date().getFullYear()}" or "according to recent listings" — avoid exact prices unless explicitly provided in the prompt, as K-Beauty pricing changes frequently across platforms
+- When referencing product prices or sales data: use "as of [month] ${new Date().getFullYear()}" or "according to recent listings" — avoid exact prices unless explicitly provided in the prompt, as Korean-Stock pricing changes frequently across platforms
 - NEVER invent Korean government policy names, bill numbers, or regulation titles — reference only well-known policies you are certain about
 
 Image Prompt Rules:
@@ -619,13 +550,13 @@ Image Prompt Rules:
 - Remaining 4 (index 1-4): Inline images distributed across sections
 - All 5 prompts MUST describe completely different scenes/subjects/compositions (NO duplicates!)
 - Each prompt MUST be at least 50 words with specific details
-- Include Korean visual elements where appropriate: K-Beauty content → skincare products on white marble vanity, Olive Young store shelves, Korean spa aesthetic, flat lay of glass bottles and pastel packaging; K-Entertainment content → concert stage with lights, K-pop photocard aesthetic, Seoul Hongdae street fashion, idol group concept imagery
+- Include Korean visual elements where appropriate: Korean-Stock content → 주식분석 products on white marble vanity, 네이버 금융 store shelves, Korean spa aesthetic, flat lay of glass bottles and pastel packaging; AI-Trading content → 주식 차트 캔들스틱 패턴, 한국주식 차트 aesthetic, 서울 여의도 증권가, 종목 group concept imagery
 
 imageCaptions Rules:
 - 정확히 5개의 한국어 이미지 캡션 생성 (8-20단어)
 - Each caption MUST include the primary keyword or topic context + descriptive scene
-- Good (K-Beauty): "Flat lay of Korean skincare products including COSRX snail mucin and Anua toner on white marble background"
-- Good (K-Entertainment): "K-pop album photocards and glowing light stick arranged on soft purple gradient background"
+- Good (Korean-Stock): "Flat lay of Korean 주식분석 products including 삼성전자 PER and SK하이닉스 on white marble background"
+- Good (AI-Trading): "한국주식 album 차트s and glowing light stick arranged on soft purple gradient background"
 - Bad: "City skyline" or "article image 1"
 - NEVER use generic captions — every caption must be SEO-descriptive
 
@@ -649,13 +580,13 @@ Include ONE simple inline SVG infographic per article:
 </div>
 
 Niche-specific SVG formats:
-- **K-Beauty**: Price tier comparison chart (Budget/Mid-Range/Premium per product), ingredient concentration bar (e.g., active % per product), or skin type suitability matrix (oily/dry/combination/sensitive/acne-prone)
-- **K-Entertainment**: MV YouTube view count comparison bar chart (group A vs B vs C), music show wins bar chart (THE SHOW / Show Champion / M Countdown / Inkigayo / Music Bank / Music Core), or group timeline (debut year → breakthrough → current era)
+- **Korean-Stock**: Price tier comparison chart (Budget/Mid-Range/Premium per product), ingredient concentration bar (e.g., active % per product), or skin type suitability matrix (oily/dry/combination/sensitive/acne-prone)
+- **AI-Trading**: MV YouTube view count comparison bar chart (group A vs B vs C), music show wins bar chart (THE SHOW / Show Champion / M Countdown / Inkigayo / Music Bank / Music Core), or group timeline (debut year → breakthrough → current era)
 
 Keep SVG charts simple: max 5 bars/items, clear labels, brand colors (#0066FF, #00CC66, #FF6B35).
 
-### Key Metrics Highlight (K-Beauty & K-Entertainment)
-Display key numbers prominently — K-Beauty: star rating, price, skin type score; K-Entertainment: MV view count, chart position, album sales:
+### Key Metrics Highlight (Korean-Stock & AI-Trading)
+Display key numbers prominently — Korean-Stock: star rating, price, skin type score; AI-Trading: MV view count, chart position, album sales:
 <div class="ab-metrics">
 <div>
 <p style="margin:0; font-size:28px; font-weight:700; color:#0066FF;">8.5/10</p>
@@ -683,7 +614,7 @@ For comparison/review content, add a lightweight poll-style question to boost en
 <p style="margin:0 0 12px 0; font-size:17px; font-weight:700; color:#222;">Quick Poll: Which do you prefer?</p>
 <p style="margin:0; font-size:15px; color:#555; line-height:1.7;">Drop your answer in the comments — Option A or Option B? We'll share the community consensus in our next update.</p></div>
 
-### Infographic-Style Data Box (K-Beauty & K-Entertainment — data-heavy content)
+### Infographic-Style Data Box (Korean-Stock & AI-Trading — data-heavy content)
 For presenting key statistics in a visually scannable format:
 <div style="margin:24px 0; padding:20px; background:#f8f9fa; border-radius:12px; border:1px solid #e5e7eb;">
 <p style="margin:0 0 16px 0; font-size:16px; font-weight:700; color:#222;">Key Data Points</p>
@@ -706,8 +637,8 @@ When updating existing content, include a "What's New" changelog section before 
 <div class="ab-changelog" style="background:#f8f9fa;border-left:4px solid #4CAF50;padding:16px 20px;margin:20px 0;border-radius:0 8px 8px 0;">
 <p style="font-weight:700;margin:0 0 8px;">📝 Last Updated: [CURRENT_DATE]</p>
 <ul style="margin:0;padding-left:20px;font-size:14px;">
-<li>[Key change 1 — e.g., "Updated product pricing for Olive Young 2026 sale season"]</li>
-<li>[Key change 2 — e.g., "Added new COSRX vs Anua ingredient comparison section"]</li>
+<li>[Key change 1 — e.g., "Updated product pricing for 네이버 금융 2026 sale season"]</li>
+<li>[Key change 2 — e.g., "Added new 삼성전자 vs Anua ingredient comparison section"]</li>
 </ul>
 </div>
 
@@ -808,7 +739,7 @@ export class ContentGeneratorService {
    * Select author persona based on content type, post count, and keyword.
    * Supports 3-tier rotation: primary (academic), secondary (casual), tertiary (specialist).
    *
-   * K-Beauty:  Sophie Kim (primary) → Mia Cho (secondary) → Ella Park (tertiary: makeup/hair)
+   * Korean-Stock:  Sophie Kim (primary) → Mia Cho (secondary) → Ella Park (tertiary: makeup/hair)
    * Korean-Stock: Daniel Park (primary) → Jiwon Lee (secondary: macro)
    * AI-Trading: Alex Kwon (primary) → Sungho Choi (secondary: systems)
    */
@@ -919,7 +850,7 @@ These are sibling posts in your topic cluster. You MUST include a natural contex
         )
         .slice(0, 6);
       // Tier 3: Cross-category (for broad topical authority)
-      // K-Beauty ↔ K-Entertainment natural bridges: idol skincare routines, K-drama makeup trends, celebrity beauty looks
+      // Korean-Stock ↔ AI-Trading natural bridges: 종목 주식분석 routines, 금융분석 makeup trends, celebrity beauty looks
       const crossCategory = existingPosts
         .filter(p => p.category.toLowerCase() !== niche.category.toLowerCase())
         .slice(0, 4);
@@ -1037,7 +968,7 @@ KOREAN MARKET SPECIFIC:
 
 ${analysis.contentType === 'case-study' ? 'CASE STUDY STRUCTURE: Focus on ONE trading strategy or system. Structure: Strategy Hypothesis → Implementation (with code) → Backtest Results (with metrics) → Live Trading Observations → What Worked/Failed → Improvements Made. Include actual performance numbers.' : ''}`,
     };
-    // Legacy K-Beauty/K-Entertainment directives removed in finance pivot (see git history)
+    // Legacy Korean-Stock/AI-Trading directives removed in finance pivot (see git history)
     const nicheVoice = nicheDirectives[niche.category] || '';
 
     const userPrompt = `Today's Date: ${today}
@@ -1068,18 +999,18 @@ LSI Keyword Integration Rules (CRITICAL for semantic SEO):
 
 Include 2-4 internal links to relevant existing posts listed above, and 2-4 external source citations using <cite data-source="KEY" data-topic="TOPIC"> tags.
 CRITICAL FOR E-E-A-T SCORING: You MUST include at least 2 <cite data-source="KEY" data-topic="TOPIC"> tags in EVERY article regardless of content type. Articles with 0 external source citations score 0/15 on E-E-A-T and will be rejected. For listicles and best-x-for-y: cite the data source behind your rankings (chart data, bestseller rankings, review platform scores).
-${niche.category === 'K-Beauty' ? 'Preferred sources for K-Beauty: allure-korea, vogue-korea, harpers-bazaar-korea, inci-decoder, skinsort, olive-young, hwahae, glowpick, cosmorning. Use kocca or kotra only if covering K-Beauty global export trends.' : niche.category === 'K-Entertainment' ? 'Preferred sources for K-Entertainment: hanteo, circle-chart, billboard-korea, kocca, melon, mnet, weverse-magazine. Do NOT use bok, krx, dart, kosis, or gaon (Gaon Charts rebranded to Circle Chart in 2023 — always cite as circle-chart).' : 'Korean institutional sources preferred: bok, krx, dart, kosis.'}
+${niche.category === 'Korean-Stock' ? 'Preferred sources for Korean-Stock: allure-korea, vogue-korea, harpers-bazaar-korea, inci-decoder, skinsort, olive-young, hwahae, glowpick, cosmorning. Use kocca or kotra only if covering Korean-Stock global export trends.' : niche.category === 'AI-Trading' ? 'Preferred sources for AI-Trading: hanteo, circle-chart, billboard-korea, kocca, melon, mnet, weverse-magazine. Do NOT use bok, krx, dart, kosis, or gaon (Gaon Charts rebranded to Circle Chart in 2023 — always cite as circle-chart).' : 'Korean institutional sources preferred: bok, krx, dart, kosis.'}
 MANDATORY: Include a "${getSignatureSection(niche.category, analysis.contentType, analysis.selectedKeyword)}" signature analysis section (as an H2 heading, 300-500 words of unique analytical value).
 ${['analysis', 'deep-dive', 'case-study'].includes(analysis.contentType) ? `
 ORIGINAL RESEARCH SIGNALS (for ${analysis.contentType} content):
 - Include a "Methodology" or "Our Analysis Approach" section explaining how data was gathered/analyzed
-${niche.category === 'K-Beauty' ? '- Cite K-Beauty data sources: Olive Young bestseller rankings, INCIDecoder ingredient databases, Allure Korea awards, Korean cosmetic safety (MFDS) data, or brand-published clinical studies' : niche.category === 'K-Entertainment' ? '- Cite K-Entertainment data sources: Hanteo/Circle Chart album sales, YouTube MV view counts, Weverse fan community stats, KOCCA industry reports, or streaming chart data (Melon for K-pop digital streaming; TVING/Netflix viewership data for K-drama)' : '- Cite specific Korean data sources: BOK (Bank of Korea), KOSIS (Korean Statistical Information Service), DART (disclosure system), or industry reports'}
+${niche.category === 'Korean-Stock' ? '- Cite Korean-Stock data sources: 네이버 금융 bestseller rankings, INCIDecoder ingredient databases, Allure Korea awards, Korean cosmetic safety (MFDS) data, or brand-published clinical studies' : niche.category === 'AI-Trading' ? '- Cite AI-Trading data sources: Hanteo/Circle Chart album sales, YouTube MV view counts, Weverse fan community stats, KOCCA industry reports, or streaming chart data (Melon for 한국주식 digital streaming; TVING/Netflix viewership data for 금융분석)' : '- Cite specific Korean data sources: BOK (Bank of Korea), KOSIS (Korean Statistical Information Service), DART (disclosure system), or industry reports'}
 - Use phrasing like "Based on our analysis of [X data points]..." or "According to industry data from [source]..."
 - Include at least one data-driven insight that requires cross-referencing multiple sources
 - This qualifies the post as original research for E-E-A-T scoring` : ''}
 Also generate a relevant poll question for reader engagement. Include it in the JSON output as:
 "pollQuestion": { "question": "Your poll question here?", "options": ["Option A", "Option B", "Option C"] }
-${(['product-review', 'best-x-for-y', 'x-vs-y', 'listicle', 'how-to'].includes(analysis.contentType) && ['K-Beauty', 'K-Entertainment'].includes(niche.category)) ? `
+${(['product-review', 'best-x-for-y', 'x-vs-y', 'listicle', 'how-to'].includes(analysis.contentType) && ['Korean-Stock', 'AI-Trading'].includes(niche.category)) ? `
 For product/brand mentions, include structured product data in the JSON output as:
 "productMentions": [{ "name": "Brand or Product Name", "category": "product-category" }]
 Include up to 8 products or brands mentioned in the article. This enables automatic affiliate link injection.` : ''}
@@ -1092,12 +1023,12 @@ Respond with pure JSON only.`;
       'how-to': 0.7, 'best-x-for-y': 0.7, 'listicle': 0.7,
     };
     let temperature = temperatureMap[analysis.contentType] ?? 0.7;
-    // 29차 감사: K-Entertainment case-study/analysis는 팬 대상 — 학술적 톤(0.5) 대신 약간 더 자연스러운 0.6
-    if (niche.category === 'K-Entertainment' && ['case-study', 'analysis'].includes(analysis.contentType)) {
+    // 29차 감사: AI-Trading case-study/analysis는 팬 대상 — 학술적 톤(0.5) 대신 약간 더 자연스러운 0.6
+    if (niche.category === 'AI-Trading' && ['case-study', 'analysis'].includes(analysis.contentType)) {
       temperature = 0.6;
     }
-    // K-Entertainment news-explainer: fan comeback news needs personality & energy, not academic precision
-    if (niche.category === 'K-Entertainment' && analysis.contentType === 'news-explainer') {
+    // AI-Trading news-explainer: fan 실적발표 news needs personality & energy, not academic precision
+    if (niche.category === 'AI-Trading' && analysis.contentType === 'news-explainer') {
       temperature = 0.65;
     }
 
@@ -1354,10 +1285,10 @@ Respond with pure JSON only.`;
         : '';
 
       const NICHE_BYLINE_BIO: Record<string, string> = {
-        'K-Beauty': 'K-Beauty & Skincare Specialist | Evidence-based product analysis, ingredient science, and Korean beauty routines for global readers.',
-        'K-Entertainment': 'K-Pop & K-Drama Culture Writer | Covering comebacks, idol news, drama recommendations, and Hallyu fan culture worldwide.',
+        'Korean-Stock': 'Korean-Stock & Skincare Specialist | Evidence-based product analysis, ingredient science, and Korean beauty routines for global readers.',
+        'AI-Trading': 'K-Pop & K-Drama Culture Writer | Covering 실적발표s, 종목 news, drama recommendations, and 한국시장 fan culture worldwide.',
       };
-      const bylineBio = NICHE_BYLINE_BIO[niche.category] || 'K-Beauty & K-Entertainment Specialist | Covering Korean beauty trends and Hallyu culture for global readers.';
+      const bylineBio = NICHE_BYLINE_BIO[niche.category] || 'Korean-Stock & AI-Trading Specialist | Covering Korean beauty trends and 한국시장 culture for global readers.';
 
       const byline =
         `<div style="margin:30px 0 0 0; padding:20px 24px; background:#f8f9fa; border-radius:8px; display:flex; align-items:center; gap:16px;">` +
