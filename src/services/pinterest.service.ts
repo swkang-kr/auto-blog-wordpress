@@ -190,7 +190,11 @@ export class PinterestService {
       logger.info(`Pinterest: Created board "${boardName}" (ID: ${newId})`);
       return newId;
     } catch (error) {
-      logger.warn(`Pinterest board lookup failed: ${error instanceof Error ? error.message : error}`);
+      const errMsg = error instanceof Error ? error.message : String(error);
+      logger.warn(`Pinterest board lookup failed: ${errMsg}`);
+      if (errMsg.includes('401') || errMsg.includes('Unauthorized')) {
+        logger.warn('Pinterest: Access token expired. Regenerate at https://developers.pinterest.com/tools/access_token/ and update PINTEREST_ACCESS_TOKEN secret.');
+      }
       return null;
     }
   }

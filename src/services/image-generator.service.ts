@@ -295,10 +295,17 @@ export class ImageGeneratorService {
     }
 
     const MAX_RETRIES = 3;
+    // Prompt variations for retry: add style modifiers to avoid repeated blank images
+    const retryModifiers = [
+      '',  // first attempt: original prompt
+      ', high contrast, vibrant saturated colors, detailed sharp focus',  // attempt 2: force visual detail
+      ', photorealistic studio photography, bright white background, product close-up',  // attempt 3: simpler composition
+    ];
     for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
       try {
-        logger.debug(`Generating image ${index + 1} (attempt ${attempt}/${MAX_RETRIES}): "${fullPrompt.substring(0, 80)}..."`);
-        const response = await model.generateContent(fullPrompt);
+        const retryPrompt = fullPrompt + (retryModifiers[attempt - 1] || '');
+        logger.debug(`Generating image ${index + 1} (attempt ${attempt}/${MAX_RETRIES}): "${retryPrompt.substring(0, 80)}..."`);
+        const response = await model.generateContent(retryPrompt);
         const parts = response.response.candidates?.[0]?.content?.parts ?? [];
 
         let imageBuffer: Buffer | null = null;

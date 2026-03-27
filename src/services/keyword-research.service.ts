@@ -153,7 +153,7 @@ export class KeywordResearchService {
       `  - Evergreen (how-to, deep-dive, case-study): ${evergreenPct}% (${freshnessCounts['evergreen']}/${total})${evergreenPct < 50 ? ' [NEEDS MORE EVERGREEN]' : ''}\n` +
       `  - Seasonal (best-x, comparison, analysis, listicle, review): ${Math.round((freshnessCounts['seasonal'] / total) * 100)}% (${freshnessCounts['seasonal']}/${total})\n` +
       `  - Time-sensitive (news-explainer): ${Math.round((freshnessCounts['time-sensitive'] / total) * 100)}% (${freshnessCounts['time-sensitive']}/${total})\n` +
-      `${evergreenPct < 50 ? 'PREFER evergreen content types (how-to, deep-dive, case-study) to build long-term organic traffic.\n' : ''}`;
+      `${evergreenPct < 50 ? 'MANDATORY: You MUST select an evergreen content type (how-to, deep-dive, or case-study) for this post. Evergreen content is at ' + evergreenPct + '% (target 50%+). Seasonal/time-sensitive types are FORBIDDEN until evergreen ratio recovers.\n' : ''}`;
 
     this.contentTypeDistribution = `\n## Content Type Distribution (IMPORTANT — maintain diversity)\n${lines.join('\n')}\nTypes marked [OVERREPRESENTED] (above 30%) should be AVOIDED unless the topic strongly demands it. PREFER underrepresented types.\n${freshnessLine}`;
   }

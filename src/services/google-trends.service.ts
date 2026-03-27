@@ -4,7 +4,8 @@ import { GoogleTrendsError } from '../types/errors.js';
 import { withRetry } from '../utils/retry.js';
 import type { TrendsData, RisingQuery } from '../types/index.js';
 
-const RATE_LIMIT_MS = 2500;
+// Increased from 2500ms to 4000ms to reduce Google captcha/rate-limit triggers
+const RATE_LIMIT_MS = 4000;
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -45,7 +46,8 @@ export class GoogleTrendsService {
     // Detect HTML response (rate limit / captcha)
     const msg = error instanceof Error ? error.message : String(error);
     const isHtmlResponse = msg.includes('Unexpected token') && msg.includes('<');
-    if (isHtmlResponse || this.consecutiveFailures >= GoogleTrendsService.CIRCUIT_BREAKER_THRESHOLD) {
+    // Only trip circuit breaker after threshold reached (not on first HTML response)
+    if (this.consecutiveFailures >= GoogleTrendsService.CIRCUIT_BREAKER_THRESHOLD) {
       if (!this.circuitOpen) {
         logger.warn(`🔴 Google Trends circuit breaker OPEN — ${this.consecutiveFailures} consecutive failures${isHtmlResponse ? ' (HTML response detected — likely rate-limited/captcha)' : ''}. Skipping all Trends calls for this batch.`);
         this.circuitOpen = true;

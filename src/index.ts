@@ -745,7 +745,14 @@ async function main(): Promise<void> {
       logger.info(`Content funnel: TOFU=${funnelDist.tofu} (${tofuPct.toFixed(0)}%) | MOFU=${funnelDist.mofu} (${mofuPct.toFixed(0)}%) | BOFU=${funnelDist.bofu} (${bofuPct.toFixed(0)}%) | Total=${funnelDist.total}`);
       if (bofuPct < 10) {
         logger.warn('Funnel imbalance: BOFU content is below 10%. Consider more transactional/comparison content.');
-        insightParts.push('## Funnel Imbalance Alert\nBOFU (bottom-of-funnel) content is critically low. Prioritize comparison, review, and buying-guide content types.');
+        insightParts.push(
+          '## Funnel Imbalance Alert (MANDATORY)\n' +
+          'BOFU (bottom-of-funnel) content is critically low at ' + bofuPct.toFixed(0) + '%.\n' +
+          'You MUST select one of these content types: product-review, best-x-for-y, or x-vs-y.\n' +
+          'You MUST select a transactional or commercial search intent.\n' +
+          'Pick keywords with buying intent: "best [product] for [use case]", "[brand] vs [brand]", "[product] review".\n' +
+          'Do NOT select informational/how-to/deep-dive — those are overrepresented.',
+        );
       }
     }
   } catch (funnelError) {
@@ -816,7 +823,7 @@ async function main(): Promise<void> {
           !completeness.subTopicDetails?.find((d: { subTopic: string; postCount: number }) => d.subTopic === gap && d.postCount > 0),
         );
         const gapSeedKeywords = zeroCoverageGaps
-          .slice(0, 3) // Top 3 gaps per niche
+          .slice(0, 5) // Top 5 gaps per niche (increased from 3 to accelerate topical coverage)
           .map(gap => `${gap} ${niche.category} guide ${new Date().getFullYear()}`);
 
         if (gapSeedKeywords.length > 0) {

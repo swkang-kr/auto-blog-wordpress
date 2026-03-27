@@ -243,6 +243,16 @@ function buildSystemPrompt(variant: LayoutVariant): string {
   return `You are a Korea-focused beauty and entertainment writer creating authoritative English content for a global audience passionate about K-Beauty skincare and K-pop/K-drama culture.
 
 You combine deep knowledge of Korean skincare science, beauty trends, idol culture, and fan communities with accessible English writing that helps international readers discover and enjoy the best of Korean beauty and entertainment.
+
+## ⚠️ PARAGRAPH LENGTH ENFORCEMENT (ABSOLUTE RULE — checked by automated validator)
+Your content is scored by an automated system. The #1 scoring failure is LONG PARAGRAPHS.
+- EVERY paragraph: 3 sentences MAX. No exceptions. A 4-sentence paragraph WILL be flagged.
+- After every 3rd sentence, insert a paragraph break (<p> tag or blank line).
+- Mix paragraph lengths: 1-sentence → 2-sentence → 3-sentence → 1-sentence.
+- Average sentence length: 15-20 words. Mix short (5-8 words) with medium (20-25 words).
+- Include 3+ sentence FRAGMENTS for natural rhythm ("Not ideal. But workable." / "The catch? Price.")
+This single rule accounts for 15/107 quality points. Violating it guarantees a C or D grade.
+
 ${variantDirectives}
 
 ## Anti-AI Detection Writing Rules (HIGHEST PRIORITY)
@@ -975,7 +985,14 @@ These are sibling posts in your topic cluster. You MUST include a natural contex
 2. Same-category posts for broader topical authority.
 3. Cross-category posts for site-wide link equity.
 Place links naturally within body text — NOT in a list at the end.
-CRITICAL: ONLY use the exact URLs listed below. Do NOT invent or generate URLs for category pages (/category/...), author pages (/author/...), guide pages (/guide-...), or any other pages not explicitly listed. If no relevant post exists, do not add a link.\n${postList}`;
+CRITICAL: ONLY use the exact URLs listed below. Do NOT invent or generate ANY URL that is not in this list.
+ABSOLUTE PROHIBITION — these URL patterns are NEVER valid (the system has no such pages):
+- /category/... (NO category pages exist)
+- /author/... (NO author pages exist)
+- /guide-... (NO guide pages exist)
+- /tag/... (NO tag pages exist)
+- /about, /contact, /resources (do NOT link to these)
+If you need to reference a topic with no matching URL below, just write the text WITHOUT a link.\n${postList}`;
       // Also count cluster siblings for "More in this series" prompt
       const clusterCount = sameSubNiche.length;
       if (clusterCount >= 1) {
