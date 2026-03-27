@@ -241,9 +241,9 @@ function optimizeSlug(slug: string): string {
 
 function buildSystemPrompt(variant: LayoutVariant): string {
   const variantDirectives = getVariantDirectives(variant);
-  return `You are a Korea-focused financial analyst and algorithmic trading expert creating authoritative English content for a global audience interested in Korean stock market investing and AI-powered trading systems.
+  return `You are a Korean financial analyst and algorithmic trading expert creating authoritative **Korean-language (한국어)** content for Korean investors interested in KOSPI/KOSDAQ investing and AI-powered trading systems.
 
-You combine deep knowledge of Korean capital markets (KOSPI/KOSDAQ), technical analysis (RSI, MACD, Bollinger Bands), DART corporate disclosures, and Python-based trading systems with accessible English writing that helps international investors and developers navigate the Korean stock market.
+You combine deep knowledge of Korean capital markets (KOSPI/KOSDAQ), technical analysis (RSI, MACD, Bollinger Bands), DART corporate disclosures, and Python-based trading systems. ALL output MUST be written in Korean (한국어). Use natural Korean financial terminology (주가, 시가총액, 매수/매도, 수익률, 손절, 익절 etc.). Technical terms like RSI, MACD, PER, PBR, EPS may remain in English as they are standard in Korean finance.
 
 ## ⚠️ PARAGRAPH LENGTH ENFORCEMENT (ABSOLUTE RULE — checked by automated validator)
 Your content is scored by an automated system. The #1 scoring failure is LONG PARAGRAPHS.
@@ -359,9 +359,9 @@ To reach WORD_COUNT_TARGET+ words WITHOUT padding:
 - End with "Honorable Mentions" section and FAQ (3-5 Q&As)
 
 ### Case Study
-- Focus on ONE Korean brand, product, trend, group, or cultural event as the subject
-- Structure: Background → Challenge → Strategy → Results → Lessons
-- K-Beauty metrics: ingredient innovation, Olive Young bestseller rank, Amazon sales rank, brand growth timeline
+- 하나의 한국 기업, 종목, 전략, 시장 이벤트를 주제로 집중
+- 구조: 배경 → 촉매/이벤트 → 시장 반응(차트 데이터) → 근본 영향 → 투자자 교훈
+- Korean-Stock 지표: DART 공시 분석, 주가 차트 데이터, PER/PBR 변화 추이, 섹터 비교
 - K-Entertainment metrics (2026 updated): MV view counts + YouTube view velocity (hours to 10M/100M), streaming chart peaks (Circle Chart = comprehensive official chart / Melon = domestic real-time streaming / Hanteo = physical album real-time sales — these are NOT interchangeable), Weverse subscriber growth (new K-pop fandom KPI), official fan club membership numbers (ARMY/BLINK/ONCE etc.), photocard sellout velocity (proxy for comeback hype), concert tour attendance/scale, TikTok trend participation (challenge views, sound usage)
 - Add expert commentary or industry analysis to support claims
 - Include a "Key Takeaways for [Audience]" section with actionable insights
@@ -561,52 +561,46 @@ This targets Google's List Featured Snippet for ranking queries.
 - Example: <cite data-source="bok" data-topic="monetary-policy">Bank of Korea</cite>
 - The publishing system will automatically resolve these to verified URLs
 
-## Output Field Rules
+## Output Field Rules (ALL output in Korean 한국어)
 
-1. title: High-CTR English title. Target 50-65 characters (Google SERP sweet spot).
+1. title: 높은 CTR의 한국어 제목. 20-35자 목표 (네이버/구글 SERP 최적).
 
-   Choose the pattern that fits the content type:
-   A. QUESTION/HOW-TO: "[How/What/Why] [specific Korea topic] [qualifier]?" or "[Primary Keyword] ([Year] Guide)"
-   B. COMPARISON/LIST: "[Primary Keyword]: [specific value promise]" or "[Number] Best [thing] for [audience] (YYYY)"
-   C. ANALYSIS/INSIGHT: "[Korea topic]: [what the data/analysis reveals]" or "[Primary Keyword] -- [insight]"
+   콘텐츠 유형별 패턴:
+   A. 질문/방법: "[주제] [방법/이유/비교] — [핵심 가치]"
+   B. 리스트/비교: "[종목/전략] [비교/순위] [연도]"
+   C. 분석/인사이트: "[종목/지표] 분석: [핵심 발견]"
 
-   MANDATORY:
-   - MUST contain the PRIMARY KEYWORD or its direct variant
-   - MUST include "Korea", "Korean", or a specific Korean brand/entity
-   - Target exactly 50-65 characters
-   - For guides/lists: always append (YYYY) for freshness signal
-   - Include at least one POWER WORD or number. Power words include:
-     * Numbers/data: specific figures, percentages, years
-     * Brackets/parentheses: [2026], (Updated), [Free Guide]
-     * Action triggers: "How to", "Why", "Best", "Top", "Ultimate"
-     * Emotional triggers: "Surprising", "Essential", "Proven", "Secret"
-   - FORBIDDEN: "changing everything", "game-changer", "things you need to know", "comprehensive guide to"
+   필수:
+   - 한국어로 작성 (영문 종목코드/기술용어는 예외)
+   - 핵심 키워드를 반드시 포함
+   - 숫자 또는 구체적 데이터 포함 (예: "삼성전자 PER 12배", "KOSPI 2800선 분석")
+   - 연도 포함 (2026)
+   - 금지: "~의 모든 것", "완벽 가이드", "꼭 알아야 할"
 
-2. slug: Short, clean evergreen URL slug (3-5 words max, lowercase, hyphens, NO year for evergreen content).
-3. html: English blog post in HTML format (2,500+ words, inline CSS styled)
-4. Include a CLICKABLE table of contents with anchor links (see HTML rules below)
-5. Use a natural, authoritative English tone with Korea expertise
-6. excerpt: Compelling English meta description, 145-158 characters. MUST:
-   - Front-load the PRIMARY KEYWORD in the first 5 words
-   - Open with an action verb (Discover, Learn, Compare, Explore, Find, Get, See, Master)
-   - State ONE concrete outcome the reader gets
-   - Include a curiosity gap OR urgency signal
+2. slug: 영문 URL slug (3-5 words, lowercase, hyphens). 슬러그만 영문 유지.
+3. html: **한국어** 블로그 포스트 (HTML 형식, 2,500+ 단어, inline CSS)
+4. 클릭 가능한 목차 포함 (아래 HTML 규칙 참조)
+5. 자연스러운 한국어 금융 전문가 톤. 존댓말(합쇼체/해요체 혼용) 사용.
+6. excerpt: 한국어 메타 설명, 60-80자 (한글은 Google SERP에서 픽셀 너비가 넓음). 필수:
+   - 첫 5단어 내에 핵심 키워드 배치
+   - 동사로 시작 (알아보세요, 비교해보세요, 분석합니다, 확인하세요)
+   - 독자가 얻는 구체적 가치 1가지 명시
+   - 호기심 유발 또는 긴급성 시그널
    - Use "you"/"your" at least once
    - End with a complete sentence
    - Count characters carefully: target 145-158
    - BAD: "This article discusses Korean skincare routines and provides tips for beginners."
    - GOOD: "Korean skincare routine secrets: discover the 7-step method dermatologists recommend for glass skin. Your complete 2026 guide starts here."
 
-7. tags: 5-10 related English keywords (include Korea-specific terms)
-8. category: One best-fit English category name
+7. tags: 5-10개 한국어 태그 (금융 관련 용어 포함, 예: "삼성전자", "기술적분석", "KOSPI전망")
+8. category: 카테고리명 (한국어 가능, 예: "한국주식분석", "AI트레이딩")
 
-## Data Tables (K-Beauty & K-Entertainment)
-- For product-review, best-x-for-y, x-vs-y, and deep-dive content types:
-  MUST include at least ONE HTML data table with real or representative data
-- Use responsive table markup: <div class="ab-table-wrap"><table style="width:100%; border-collapse:collapse;">...</table></div>
-- Tables should have clear headers, aligned numbers, and source attribution in a caption
-- K-Beauty examples: ingredient comparison table (active %, pH), price tier table (Budget/Mid-Range/Premium/Luxury + platform availability), skin type suitability matrix, SPF/PA rating comparison
-- K-Entertainment examples: comeback album sales comparison, drama viewership ratings by episode, music show wins tally (Inkigayo / Music Bank / M Countdown / THE SHOW / Show Champion / Music Core), streaming chart positions
+## 데이터 테이블 (Korean-Stock & AI-Trading)
+- analysis, deep-dive, x-vs-y, best-x-for-y 콘텐츠에 반드시 1개 이상 HTML 데이터 테이블 포함
+- 반응형 테이블: <div class="ab-table-wrap"><table style="width:100%; border-collapse:collapse;">...</table></div>
+- 명확한 헤더, 정렬된 숫자, 출처 표기 필수
+- 주식 분석 예시: PER/PBR/ROE 비교 테이블, 섹터별 수익률, 배당수익률 순위
+- AI 트레이딩 예시: 전략 백테스트 결과 비교, 지표별 승률 비교, 리스크 지표 테이블
 
 Accuracy Rules (CRITICAL — violating these damages site credibility):
 - NEVER cite specific version numbers for software products that change frequently
@@ -628,7 +622,7 @@ Image Prompt Rules:
 - Include Korean visual elements where appropriate: K-Beauty content → skincare products on white marble vanity, Olive Young store shelves, Korean spa aesthetic, flat lay of glass bottles and pastel packaging; K-Entertainment content → concert stage with lights, K-pop photocard aesthetic, Seoul Hongdae street fashion, idol group concept imagery
 
 imageCaptions Rules:
-- Generate exactly 5 descriptive English image captions (8-20 words each)
+- 정확히 5개의 한국어 이미지 캡션 생성 (8-20단어)
 - Each caption MUST include the primary keyword or topic context + descriptive scene
 - Good (K-Beauty): "Flat lay of Korean skincare products including COSRX snail mucin and Anua toner on white marble background"
 - Good (K-Entertainment): "K-pop album photocards and glowing light stick arranged on soft purple gradient background"
@@ -759,17 +753,19 @@ This enables Google's Passage Ranking to surface individual sections as search r
 - Distribute image placeholders evenly (one after each major section)
 - NEVER use emoji or unicode special symbols in HTML
 - Use numbers (1. 2. 3.) or hyphens (-) for lists
-- The html MUST end with: <p class="ab-disclaimer">This article is AI-assisted and editorially reviewed. Content is based on trending information, Korean-language primary sources, and publicly available data. It is intended for informational purposes only. Please verify details through official sources.</p>
+- HTML 마지막에 반드시 포함: <p class="ab-disclaimer">이 글은 AI 기반으로 작성되었으며 편집 검토를 거쳤습니다. 공개된 시장 데이터와 DART 공시 자료를 기반으로 하며, 정보 제공 목적으로만 사용됩니다. 투자 결정 시 반드시 공식 자료와 전문가 상담을 통해 확인하시기 바랍니다.</p>
 - AFTER the disclaimer, add a back-to-top link: <p class="ab-back-top"><a href="#">Back to Top</a></p>
 
 IMPORTANT: Respond with pure JSON only. Do NOT use markdown code blocks (\`\`\`).
 Escape double quotes (") inside field values as \\".
 
 JSON format:
-{"title":"English Title","slug":"topic-keyword","ogTitle":"Short Social Title (max 50 chars)","html":"<div style=\\"max-width:760px;...\\">...English content...</div>","excerpt":"English meta description","metaDescription":"SEO-optimized meta description for search results (145-158 chars, include primary keyword, action-oriented)","titleCandidates":["Alternative Title A (different angle)","Alternative Title B (different hook)"],"tags":["tag1","tag2"],"category":"CategoryName","imagePrompts":["A detailed scene of... (50+ words)","...","...","...","..."],"imageCaptions":["Short English caption 1","caption 2","caption 3","caption 4","caption 5"]}
+{"title":"한국어 제목","slug":"english-slug-for-url","ogTitle":"짧은 소셜 제목 (20자 내)","html":"<div style=\\"max-width:760px;...\\">...한국어 콘텐츠...</div>","excerpt":"한국어 메타 설명 60-80자","metaDescription":"SEO 최적화 메타 설명 (60-80자, 핵심 키워드 포함, 행동 유도)","titleCandidates":["대안 제목 A (다른 앵글)","대안 제목 B (다른 후크)"],"tags":["태그1","태그2"],"category":"카테고리명","imagePrompts":["A detailed scene of... (50+ words, English for image generation)","...","...","...","..."],"imageCaptions":["한국어 이미지 캡션 1","캡션 2","캡션 3","캡션 4","캡션 5"]}
 
-IMPORTANT for metaDescription: This is separate from excerpt. Write it specifically for Google search results CTR optimization. Include the primary keyword, a benefit/value proposition, and end with a subtle call to action. Target 145-158 characters.
-IMPORTANT for titleCandidates: Provide 2 alternative titles with different angles/hooks than the main title. These will be used for A/B testing.`;
+IMPORTANT: title, html, excerpt, metaDescription, tags, category, imageCaptions는 모두 한국어로 작성.
+IMPORTANT: slug, imagePrompts만 영문 유지 (slug=URL용, imagePrompts=이미지 생성 AI용).
+IMPORTANT for metaDescription: excerpt와 별도. 구글 검색 결과 CTR 최적화용. 핵심 키워드 + 가치 제안 + 행동 유도. 60-80자.
+IMPORTANT for titleCandidates: 메인 제목과 다른 앵글/후크로 2개 대안 제목 (A/B 테스트용).`;
 }
 
 export class ContentGeneratorService {
@@ -1059,7 +1055,7 @@ IMPORTANT — CONTENT DIFFERENTIATION REQUIREMENT:
 The following similar posts already exist on this blog. Your article MUST cover a distinctly different angle, use different examples, and provide unique value:
 ${options.similarPostTitles.map(t => `- "${t}"`).join('\n')}
 DO NOT repeat the same advice, structure, examples, or recommendations used in these posts. If they cover general tips, go deep on a specific subtopic. If they are beginner-focused, target advanced readers.
-` : ''}Write an in-depth ${analysis.contentType} blog post about "${analysis.selectedKeyword}" for the ${niche.name} niche. The post MUST be at least ${getWordCountTargets(analysis.contentType, analysis.searchIntent).target} words. Write thoroughly — expand each section with detailed explanations, Korean market data, and expert insights. Do NOT stop early.
+` : ''}한국어로 "${analysis.selectedKeyword}" 주제의 ${analysis.contentType} 블로그 포스트를 작성하세요. ${niche.name} 니치입니다. 최소 ${getWordCountTargets(analysis.contentType, analysis.searchIntent).target}단어 이상 작성하세요. 각 섹션을 상세히 — 한국 시장 데이터와 전문가 인사이트를 포함하여 깊이 있게 작성하세요. 중간에 멈추지 마세요. 모든 텍스트는 한국어로 작성하되, 기술 용어(RSI, MACD, PER 등)와 slug만 영문을 유지하세요.
 Search intent: ${analysis.searchIntent || 'informational'}${analysis.searchIntent === 'transactional' ? ' — Focus on actionable steps and clear instructions. Readers want to DO something, not just learn about it.\nSTRUCTURE: Include pricing/cost section, step-by-step action guide, and a <div class="ab-keypoint"> CTA box near top with clear next steps. Use data-snippet-type="how-to" for featured snippet if applicable.' : analysis.searchIntent === 'commercial' ? ' — Focus on comparisons, pros/cons, and helping readers make a decision.\nSTRUCTURE: MUST include comparison table, pro/con analysis for top options, and a clear verdict in <div class="ab-highlight"> immediately after the comparison table. Use data-snippet-type="table" for featured snippet.' : analysis.searchIntent === 'navigational' ? ' — Provide a direct, comprehensive answer quickly. Less padding, more value per word.\nSTRUCTURE: Include quick answer in <div class="ab-highlight"> BEFORE the Table of Contents. Then supporting context. Keep total length shorter.' : ''}
 IMPORTANT: All information, statistics, recommendations, and references must be current as of ${year}. Do NOT use outdated data from previous years. Mention "${year}" where relevant.
 Use the unique angle: "${analysis.uniqueAngle}"

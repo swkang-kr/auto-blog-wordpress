@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-03-27T07:34:28.746Z",
+  "lastUpdated": "2026-03-27T07:46:12.640Z",
   "activeFeatures": [
     "auto-blog-wordpress",
     "config",
@@ -27,7 +27,8 @@
     "facebook.service.ts",
     "twitter.service.ts",
     "reddit-post.service.ts",
-    "trade-engine-bridge.service.ts"
+    "trade-engine-bridge.service.ts",
+    "scheduler"
   ],
   "primaryFeature": "auto-blog-wordpress",
   "features": {
@@ -70,7 +71,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-09T01:26:04.863Z",
-        "lastUpdated": "2026-03-27T06:53:44.608Z"
+        "lastUpdated": "2026-03-27T07:41:14.525Z"
       },
       "lastFile": "/home/trendhunt/workspace/trade-engine/scripts/export_blog_data.py"
     },
@@ -109,7 +110,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-09T02:06:54.047Z",
-        "lastUpdated": "2026-03-27T07:13:54.869Z"
+        "lastUpdated": "2026-03-27T07:46:12.640Z"
       },
       "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/content-generator.service.ts"
     },
@@ -372,6 +373,19 @@
         "lastUpdated": "2026-03-27T06:54:37.865Z"
       },
       "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/trade-engine-bridge.service.ts"
+    },
+    "scheduler": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-27T07:37:53.344Z",
+        "lastUpdated": "2026-03-27T07:39:07.159Z"
+      },
+      "lastFile": "/home/trendhunt/workspace/trade-engine/src/scheduler/market_scheduler.py"
     }
   },
   "pipeline": {
@@ -382,7 +396,7 @@
   "session": {
     "startedAt": "2026-02-24T10:12:24.092Z",
     "onboardingCompleted": true,
-    "lastActivity": "2026-03-27T07:34:28.746Z"
+    "lastActivity": "2026-03-27T07:46:12.640Z"
   },
   "history": [
     {
@@ -13009,6 +13023,90 @@
     {
       "timestamp": "2026-03-27T07:34:28.746Z",
       "feature": "auto-blog-wordpress",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:37:53.344Z",
+      "feature": "scheduler",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:38:25.023Z",
+      "feature": "scheduler",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:39:07.159Z",
+      "feature": "scheduler",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:40:51.161Z",
+      "feature": "scripts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:40:57.870Z",
+      "feature": "scripts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:41:14.525Z",
+      "feature": "scripts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:43:04.627Z",
+      "feature": "content-generator.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:43:39.936Z",
+      "feature": "content-generator.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:44:04.517Z",
+      "feature": "content-generator.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:44:37.112Z",
+      "feature": "content-generator.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:44:54.938Z",
+      "feature": "content-generator.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:45:32.964Z",
+      "feature": "content-generator.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:45:51.119Z",
+      "feature": "content-generator.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:46:12.640Z",
+      "feature": "content-generator.service.ts",
       "phase": "do",
       "action": "updated"
     }
