@@ -251,7 +251,7 @@ async function updateAuthorDisplayName(): Promise<void> {
       first_name: SITE_OWNER,
       last_name: '',
       nickname: SITE_OWNER,
-      description: me.description || `Editor at ${SITE_NAME}. Covering K-Beauty skincare and K-Entertainment (K-Pop, K-Drama, Hallyu culture).`,
+      description: me.description || `Editor at ${SITE_NAME}. Covering Korean-Stock skincare and AI-Trading (K-Pop, K-Drama, Hallyu culture).`,
     });
     console.log(`✅ Updated display name to "${SITE_OWNER}"`);
   } catch (err: any) {

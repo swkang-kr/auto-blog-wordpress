@@ -8,7 +8,7 @@ const DEVTO_API = 'https://dev.to/api';
 
 /** DEV.to syndicates tech-relevant content + lifestyle niches with tech-curious audiences */
 const DEVTO_ALLOWED_CATEGORIES = new Set([
-  'K-Beauty', 'K-Entertainment',
+  'Korean-Stock', 'AI-Trading',
 ]);
 
 export class DevToService {

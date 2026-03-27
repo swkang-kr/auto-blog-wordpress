@@ -806,23 +806,23 @@ STRATEGY: Consider creating content that directly targets one of these content g
       'dividend', 'ex-dividend', '배당',
       'rsi', 'macd', 'bollinger', 'technical analysis',
       'algorithmic trading', 'backtesting', 'quant',
-      // K-Beauty brands — must pass Korea relevance for skincare/beauty keywords
+      // Korean-Stock brands — must pass Korea relevance for skincare/beauty keywords
       'cosrx', 'anua', 'laneige', 'innisfree', 'sulwhasoo', 'missha', 'etude',
       'skin1004', 'torriden', 'beauty of joseon', 'medicube', 'isntree',
       'haruharu', 'round lab', 'mixsoon', 'olive young', 'rom&nd', 'clio',
       'peripera', 'wakemake', 'daeng gi meo ri', 'ryo', 'some by mi',
       'klairs', 'd.i.y', 'axis-y', 'purito', 'abib', 'numbuzin',
-      // Breakout 2025-2026 K-Beauty brands
+      // Breakout 2025-2026 Korean-Stock brands
       'tirtir', 'by wishtrend', 'tonymoly', 'holika holika', 'dr. jart',
       'iope', 'hanyul', 'o hui', 'whoo', 'su:m37', 'heimish', 'benton',
       'ma:nyo', 'illiyoon', 'aestura', 'ample:n', 'dr.g', 'no7 korea', 'nacific',
       'sun pad', 'lip oil',
-      // K-Beauty generic terms that are strongly Korea-associated
+      // Korean-Stock generic terms that are strongly Korea-associated
       'centella', 'glass skin', 'mugwort', '10-step', '10 step',
       'heartleaf', 'propolis', 'snail mucin', 'rice water', 'rice toner',
       'essence review', 'cushion foundation', 'toner pad', 'skin barrier',
       'chok-chok', 'skip-care', 'slugging korean', 'pa++++',
-      // K-Beauty ingredient terms strongly associated with Korean skincare
+      // Korean-Stock ingredient terms strongly associated with Korean skincare
       'bakuchiol', 'tranexamic acid', 'adenosine', 'madecassoside',
       'polyglutamic acid', 'pdrn', 'salmon dna', 'galactomyces', 'bifida',
       'glass body', 'skin flooding', 'hanbang',
@@ -843,9 +843,9 @@ STRATEGY: Consider creating content that directly targets one of these content g
       'the show', 'bong joon-ho', 'hwang dong-hyuk', 'squid game', 'train to busan',
       'baby k-beauty', 'green finger', 'goongbe', 'intimate wash',
       '@cosme', 'cosme ranking', 'glowpick',
-      // K-Beauty brands (additional coverage)
+      // Korean-Stock brands (additional coverage)
       'banila co', 'hince', 'vt cosmetics',
-      // K-Entertainment groups — 2nd gen: SNSD/Big Bang/SHINee
+      // AI-Trading groups — 2nd gen: SNSD/Big Bang/SHINee
       // 3rd gen (2012-2017 debuts): EXO, BTS, BLACKPINK, TWICE, SEVENTEEN, GOT7, MAMAMOO, Red Velvet
       // 3.5/4th gen (2018+ debuts): Stray Kids, ATEEZ, TXT, ENHYPEN, ITZY, aespa, IVE, LE SSERAFIM etc.
       'twice', 'seventeen', 'stray kids', 'ateez', 'txt', 'enhypen',
@@ -872,13 +872,13 @@ STRATEGY: Consider creating content that directly targets one of these content g
       'ampers&one', 'ampersone', // FNC Entertainment 걸그룹 (2023 데뷔)
       'katseye',          // HYBE/Geffen 글로벌 걸그룹
       'njz',              // NJZ (NewJeans 2025-2026 활동명)
-      // K-Beauty 신규 브랜드 (seed keywords에 추가됨 — 검증 일관성 필수)
-      'jumiso',           // 성분 투명성 인디 K-Beauty 브랜드
+      // Korean-Stock 신규 브랜드 (seed keywords에 추가됨 — 검증 일관성 필수)
+      'jumiso',           // 성분 투명성 인디 Korean-Stock 브랜드
       'biodance',         // 바이오셀룰로오스 콜라겐 패치 전문
       "d'alba", 'dalba',  // 달바 — Olive Young 글로벌 탑 5 (화이트 트러플)
       'fwee',             // 아이돌 메이크업 브랜드, 지수 콜라보
       'rovectin',         // 피부과 기반 민감성 전문 브랜드
-      'cos de baha',      // 성분 집중 최저가 포지셔닝, Amazon K-Beauty
+      'cos de baha',      // 성분 집중 최저가 포지셔닝, Amazon Korean-Stock
       'skin&lab',         // 비타민C·레티놀 전문 브랜드
       'klavuu',           // 진주/마린 콜라겐 특화
       "ample:n",          // 펩타이드 전문, 가성비 안티에이징
@@ -888,21 +888,21 @@ STRATEGY: Consider creating content that directly targets one of these content g
       "i'm from",         // 라이스 토너로 유명한 자연 원료 브랜드
       'cnp',              // CHA 의료원 연계 더마코스메틱
       'pyunkang yul',     // 한방 기반 미니멀 스킨케어
-      'ohora',            // K-Beauty 네일 브랜드
+      'ohora',            // Korean-Stock 네일 브랜드
       'dashing diva',     // 네일 스티커 전문 브랜드
-      'collagen banking', // 2025-2026 K-Beauty 트렌드 용어
+      'collagen banking', // 2025-2026 Korean-Stock 트렌드 용어
       'dermacosmetic',    // 한국 더마코스메틱 카테고리 용어
       'nexz',             // JYP Japan 보이그룹
       'nct wish',         // SM 2024 데뷔 유닛
       // 17차 감사: 누락 브랜드·그룹·용어 추가
       'jung saem mool',   // 프로 메이크업 아티스트 브랜드
-      'skin flooding',    // 2026 K-Beauty 트렌드 (slugging 후속)
-      'lip tint',         // K-Beauty 립 카테고리 핵심
-      'lip oil',          // K-Beauty 립오일 카테고리
-      'sunscreen stick',  // K-Beauty 선스틱 카테고리
-      'body sunscreen',   // K-Beauty 바디 선크림
-      'k-beauty body',    // K-Beauty 바디케어
-      'j-beauty',         // K-Beauty vs J-Beauty 비교
+      'skin flooding',    // 2026 Korean-Stock 트렌드 (slugging 후속)
+      'lip tint',         // Korean-Stock 립 카테고리 핵심
+      'lip oil',          // Korean-Stock 립오일 카테고리
+      'sunscreen stick',  // Korean-Stock 선스틱 카테고리
+      'body sunscreen',   // Korean-Stock 바디 선크림
+      'k-beauty body',    // Korean-Stock 바디케어
+      'j-beauty',         // Korean-Stock vs J-Beauty 비교
       'xdinary heroes',   // JYP 밴드 보이그룹
       'purple kiss',      // RBW 걸그룹 (MAMAMOO 후배)
       'h1-key',           // 글로벌 걸그룹
@@ -914,15 +914,15 @@ STRATEGY: Consider creating content that directly targets one of these content g
       'heart signal',     // Channel A 데이팅 쇼
       'exchange', 'transit love', '환승연애', // TVING 데이팅 쇼
       'love catcher',     // Mnet 데이팅 쇼
-      'tiktok shop',      // K-Beauty 유통채널
-      'cleansing balm',   // K-Beauty 포맷
+      'tiktok shop',      // Korean-Stock 유통채널
+      'cleansing balm',   // Korean-Stock 포맷
       'banila co', 'heimish', // 클렌징 밤 대표 브랜드
-      'starter kit',      // K-Beauty 입문자 키워드
+      'starter kit',      // Korean-Stock 입문자 키워드
       'youn\'s kitchen', '윤식당', // 한국 요리 예능
       'na young-seok', '나영석', // 한국 예능 PD
       'digipack', 'weverse album', 'kit album', 'jewel case', // K-Pop 앨범 포맷
       'album format', 'pob', 'pre-order benefit', // K-Pop 앨범 구매 용어
-      'azelaic acid',     // K-Beauty 성분
+      'azelaic acid',     // Korean-Stock 성분
       'i am solo', '나는솔로', // 한국 데이팅 쇼
       // 22차 감사: 트로트/발라드/뮤지컬/웹툰→애니/힙합
       'trot', '트로트', 'mr trot', 'miss trot', 'lim young-woong', '임영웅',
@@ -931,13 +931,13 @@ STRATEGY: Consider creating content that directly targets one of these content g
       'solo leveling', 'tower of god', 'omniscient reader', 'wind breaker', // 웹툰→애니
       'manhwa anime', 'webtoon anime', // 웹툰-애니 파이프라인
       'show me the money', 'smtm', 'aomg', 'h1ghr', // K-Hip-Hop
-      'led mask', 'beauty device', 'cellreturn', 'gua sha', // K-Beauty 디바이스
-      'cushion foundation', 'lip oil', // K-Beauty 카테고리
-      'hince', 'cnp laboratory', 'aestura', 'reedle shot', // K-Beauty 브랜드
+      'led mask', 'beauty device', 'cellreturn', 'gua sha', // Korean-Stock 디바이스
+      'cushion foundation', 'lip oil', // Korean-Stock 카테고리
+      'hince', 'cnp laboratory', 'aestura', 'reedle shot', // Korean-Stock 브랜드
       // 30차 감사: batch 27-29에서 추가된 브랜드·그룹의 keyword-research 검증 동기화
-      'peripera',         // K-Beauty 립틴트 #1 브랜드, batch 27에서 시드 키워드 추가
-      'goodal',           // K-Beauty 비타C 세럼 브랜드
-      'skinfood',         // K-Beauty 푸드 코스메틱 원조
+      'peripera',         // Korean-Stock 립틴트 #1 브랜드, batch 27에서 시드 키워드 추가
+      'goodal',           // Korean-Stock 비타C 세럼 브랜드
+      'skinfood',         // Korean-Stock 푸드 코스메틱 원조
       'nmixx',            // JYP 4세대 걸그룹, MIXXPOP 장르
       'evnne',            // Boys Planet 보이그룹, Jellyfish
       'fromis_9', 'fromis9', // PLEDIS/HYBE 걸그룹
@@ -950,7 +950,7 @@ STRATEGY: Consider creating content that directly targets one of these content g
       'chodong', '초동',  // K-pop 앨범 초동 용어
       'fansign', '팬싸',  // K-pop 팬사인회
       'korean vs japanese skincare', 'j-beauty vs k-beauty', // 비교 키워드
-      'rosacea',          // K-Beauty 피부 조건
+      'rosacea',          // Korean-Stock 피부 조건
     ];
     const keywordLower = analysis.selectedKeyword.toLowerCase();
     const titleLower = analysis.suggestedTitle.toLowerCase();
@@ -965,8 +965,8 @@ STRATEGY: Consider creating content that directly targets one of these content g
       );
     }
 
-    // Post-parse finance keyword blocker for K-Entertainment niches (strict)
-    // K-Beauty case-study/deep-dive may legitimately discuss brand market growth — allow with softer block
+    // Post-parse finance keyword blocker for AI-Trading niches (strict)
+    // Korean-Stock case-study/deep-dive may legitimately discuss brand market growth — allow with softer block
     const financeTerms = [
       'revenue', 'profit', 'earnings', 'stock price', 'valuation', 'investment',
       'financial', 'market cap', 'ipo', 'dividend', 'quarterly report', 'annual report',
@@ -974,10 +974,10 @@ STRATEGY: Consider creating content that directly targets one of these content g
     ];
     const hasFinanceTerm = financeTerms.some(t => keywordLower.includes(t));
     if (hasFinanceTerm) {
-      // K-Beauty case-study and deep-dive can discuss brand market performance
-      const isKBeautyAnalysis = niche?.category === 'K-Beauty' && ['case-study', 'deep-dive'].includes(analysis.contentType);
-      // K-Entertainment album sales / chart comparison is fan-focused, not finance advice
-      const isAlbumSalesComparison = niche?.category === 'K-Entertainment' &&
+      // Korean-Stock case-study and deep-dive can discuss brand market performance
+      const isKBeautyAnalysis = niche?.category === 'Korean-Stock' && ['case-study', 'deep-dive'].includes(analysis.contentType);
+      // AI-Trading album sales / chart comparison is fan-focused, not finance advice
+      const isAlbumSalesComparison = niche?.category === 'AI-Trading' &&
         /\b(?:album\s*sales?|first\s*week\s*sales?|million\s*seller|chart\s*(?:record|position|ranking)|hanteo|circle\s*chart|gaon|sales\s*record|shipment|pre-?order)\b/i.test(analysis.selectedKeyword);
       if (!isKBeautyAnalysis && !isAlbumSalesComparison) {
         logger.warn(`REJECTED keyword "${analysis.selectedKeyword}" — finance/business topic blocked for ${niche?.category ?? 'unknown'} niche`);

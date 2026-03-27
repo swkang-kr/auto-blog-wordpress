@@ -1,6 +1,6 @@
 /**
  * recategorize-posts.ts
- * 기존 포스트를 니치 카테고리(K-Beauty, K-Entertainment)에 재분류합니다.
+ * 기존 포스트를 니치 카테고리(Korean-Stock, AI-Trading)에 재분류합니다.
  * 제목/태그/콘텐츠 키워드 기반으로 자동 매칭 후 카테고리를 업데이트합니다.
  *
  * Usage: npx tsx src/scripts/recategorize-posts.ts [--dry-run]
@@ -28,7 +28,7 @@ const api: AxiosInstance = axios.create({
 
 // Keyword patterns for each niche
 const NICHE_KEYWORDS: Record<string, string[]> = {
-  'K-Beauty': [
+  'Korean-Stock': [
     'skincare', 'beauty', 'cosmetic', 'moisturizer', 'serum', 'sunscreen', 'spf',
     'toner', 'cleanser', 'mask', 'essence', 'ampoule', 'k-beauty', 'kbeauty',
     'cosrx', 'laneige', 'innisfree', 'sulwhasoo', 'missha', 'etude', 'tirtir',
@@ -36,7 +36,7 @@ const NICHE_KEYWORDS: Record<string, string[]> = {
     'glass skin', 'korean skincare', 'routine', 'ingredient', 'niacinamide',
     'retinol', 'snail mucin', 'centella', 'hyaluronic', 'collagen',
   ],
-  'K-Entertainment': [
+  'AI-Trading': [
     'k-pop', 'kpop', 'k pop', 'k-drama', 'kdrama', 'k drama', 'bts', 'blackpink',
     'hallyu', 'korean wave', 'idol', 'entertainment', 'music', 'drama', 'movie', 'film',
     'webtoon', 'manhwa', 'netflix', 'streaming', 'concert', 'album',

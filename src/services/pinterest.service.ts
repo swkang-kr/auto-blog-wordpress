@@ -5,8 +5,8 @@ import type { BlogContent, PublishedPost } from '../types/index.js';
 
 /** Pinterest-eligible categories for auto-pinning */
 const PINTEREST_CATEGORIES = new Set([
-  'K-Beauty',
-  'K-Entertainment',
+  'Korean-Stock',
+  'AI-Trading',
 ]);
 
 /** Map blog categories to Pinterest board names */
@@ -105,11 +105,11 @@ export class PinterestService {
     const primaryKeyword = content.tags[0] || content.title.split(':')[0].trim();
 
     // 30차 감사: Pinterest-optimized structure with niche-aware opening
-    // K-Beauty: lead with ingredient/product for purchase-intent audience
-    // K-Entertainment: lead with artist/group for fan-engagement audience
+    // Korean-Stock: lead with ingredient/product for purchase-intent audience
+    // AI-Trading: lead with artist/group for fan-engagement audience
     const nichePrefix: Record<string, string> = {
-      'K-Beauty': 'Korean Skincare Guide: ',
-      'K-Entertainment': 'K-Pop & K-Drama: ',
+      'Korean-Stock': 'Korean Skincare Guide: ',
+      'AI-Trading': 'K-Pop & K-Drama: ',
     };
     const keywordOpening = `${nichePrefix[content.category] || ''}${primaryKeyword} — `;
     const valueExcerpt = content.excerpt.slice(0, 250 - keywordOpening.length);
@@ -117,8 +117,8 @@ export class PinterestService {
 
     // Add niche-aware CTA for Pinterest engagement
     const nicheCta: Record<string, string> = {
-      'K-Beauty': '\n\nSave for your next K-beauty haul! Tap for the full product guide.',
-      'K-Entertainment': '\n\nSave for later! Tap for the full guide and fan recommendations.',
+      'Korean-Stock': '\n\nSave for your next K-beauty haul! Tap for the full product guide.',
+      'AI-Trading': '\n\nSave for later! Tap for the full guide and fan recommendations.',
     };
     const cta = nicheCta[content.category] || '\n\nSave this pin for later! Click through for the full guide.';
 

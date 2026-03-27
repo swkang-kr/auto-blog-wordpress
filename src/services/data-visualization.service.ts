@@ -200,8 +200,8 @@ ${labels.join('\n')}
     category: string,
   ): string {
     const gradients: Record<string, [string, string]> = {
-      'K-Beauty': ['#831843', '#be185d'],
-      'K-Entertainment': ['#2d1b69', '#6b21a8'],
+      'Korean-Stock': ['#831843', '#be185d'],
+      'AI-Trading': ['#2d1b69', '#6b21a8'],
     };
     const [c1, c2] = gradients[category] || ['#0052CC', '#0066FF'];
 

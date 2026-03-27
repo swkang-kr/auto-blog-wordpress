@@ -65,7 +65,7 @@ const envSchema = z.object({
   // Auto-rewrite underperforming posts (0 = disabled)
   AUTO_REWRITE_COUNT: z.coerce.number().int().min(0).default(2),
   AUTO_REWRITE_MIN_AGE_DAYS: z.coerce.number().int().min(7).default(30),
-  // Pinterest - optional, enables auto-pinning for visual categories (K-Beauty, K-Entertainment)
+  // Pinterest - optional, enables auto-pinning for visual categories (Korean-Stock, AI-Trading)
   PINTEREST_ACCESS_TOKEN: z.string().default(''),
   // Newsletter form URL (Mailchimp/ConvertKit) - optional, enables in-content email CTA
   NEWSLETTER_FORM_URL: z.string().default(''),
@@ -80,7 +80,7 @@ const envSchema = z.object({
   ENABLE_KOREAN_CONTENT: z.string().default('false').transform(v => v === 'true' ? 'true' : 'false').pipe(z.enum(['true', 'false'])),
   // YouTube Data API key for finding relevant videos to embed in posts (optional)
   YOUTUBE_API_KEY: z.string().default(''),
-  // RPM overrides: JSON object of niche → actual RPM from AdSense (e.g., '{"K-Beauty":8.5}')
+  // RPM overrides: JSON object of niche → actual RPM from AdSense (e.g., '{"Korean-Stock":8.5}')
   ADSENSE_RPM_OVERRIDES: z.string().default(''),
   // Reddit OAuth API credentials (optional — falls back to public JSON API if not set)
   REDDIT_CLIENT_ID: z.string().default(''),

@@ -377,8 +377,8 @@ async function main(): Promise<void> {
     try {
       const adsenseApi = new AdSenseApiService(config.ADSENSE_ACCOUNT_ID, config.ADSENSE_SA_KEY);
       const categoryPatterns: Record<string, string> = {
-        'K-Beauty': 'k-beauty',
-        'K-Entertainment': 'k-entertainment',
+        'Korean-Stock': 'k-beauty',
+        'AI-Trading': 'k-entertainment',
       };
       const rpmData = await adsenseApi.getRpmByCategory(categoryPatterns);
       if (Object.keys(rpmData).length > 0) {
@@ -1096,7 +1096,7 @@ async function main(): Promise<void> {
           continue;
         }
 
-        // Cross-niche topic similarity: prevent K-Beauty and K-Entertainment from covering same topic in one batch
+        // Cross-niche topic similarity: prevent Korean-Stock and AI-Trading from covering same topic in one batch
         const candidateWords = new Set(candidate.analysis.selectedKeyword.toLowerCase().split(/\s+/).filter(w => w.length > 3));
         const crossNicheDup = batchKeywords.find(bk => {
           const bkWords = new Set(bk.toLowerCase().split(/\s+/).filter(w => w.length > 3));
@@ -1297,8 +1297,8 @@ async function main(): Promise<void> {
         const categoryLabel = niche.category.replace(/&/g, '&amp;');
         // Use category-specific gradient colors for visual variety
         const gradients: Record<string, [string, string]> = {
-          'K-Beauty': ['#b5395a', '#e8758a'],
-          'K-Entertainment': ['#2d1b69', '#6b21a8'],
+          'Korean-Stock': ['#b5395a', '#e8758a'],
+          'AI-Trading': ['#2d1b69', '#6b21a8'],
         };
         const [c1, c2] = gradients[niche.category] || ['#0052CC', '#0066FF'];
         // Split long keywords into two lines to prevent SVG text overflow
@@ -1444,7 +1444,7 @@ async function main(): Promise<void> {
         logger.debug(`Fact-check skipped: ${factError instanceof Error ? factError.message : factError}`);
       }
 
-      // Inject infographic for data-rich K-Beauty/K-Entertainment content
+      // Inject infographic for data-rich Korean-Stock/AI-Trading content
       try {
         const dataPoints = extractDataPoints(content.html);
         if (dataPoints.length >= 3) {
@@ -1466,8 +1466,8 @@ async function main(): Promise<void> {
         logger.debug(`Engagement poll injected for "${researched.analysis.selectedKeyword}"`);
       }
 
-      // Interactive calculator injection (K-Beauty: skincare routine estimator)
-      if (['K-Beauty'].includes(niche.category)) {
+      // Interactive calculator injection (Korean-Stock: skincare routine estimator)
+      if (['Korean-Stock'].includes(niche.category)) {
         content.html = wpService.injectInteractiveCalculator(content.html, niche.category);
         logger.debug(`Interactive calculator injected for ${niche.category}`);
       }
@@ -1476,7 +1476,7 @@ async function main(): Promise<void> {
       // Always run for monetizable niches — PRODUCT_AFFILIATE_DB provides keyword matching
       // even when AFFILIATE_MAP env var is not set. productMentions gate removed so listicle,
       // x-vs-y, how-to etc. also get affiliate links, not just product-review/best-x-for-y.
-      if (['K-Beauty', 'K-Entertainment'].includes(niche.category)) {
+      if (['Korean-Stock', 'AI-Trading'].includes(niche.category)) {
         const affiliateMap = config.AFFILIATE_MAP ? (() => { try { return JSON.parse(config.AFFILIATE_MAP); } catch { return {}; } })() : {};
         content.html = wpService.injectContextualAffiliateLinks(content.html, niche.category, affiliateMap);
         logger.debug(`Affiliate link injection attempted for "${researched.analysis.selectedKeyword}" (${niche.category})`);

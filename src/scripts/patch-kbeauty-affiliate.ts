@@ -1,6 +1,6 @@
 /**
  * patch-kbeauty-affiliate.ts
- * K-Beauty 포스트에 Amazon 어필리에이트 링크 및 공시문 삽입
+ * Korean-Stock 포스트에 Amazon 어필리에이트 링크 및 공시문 삽입
  */
 import axios from 'axios';
 
@@ -23,7 +23,7 @@ const KBEAUTY_BRANDS: Record<string, string> = {
   'Etude':            `https://www.amazon.com/s?k=Etude+Korean+makeup&tag=${AFFILIATE_TAG}`,
   'Olive Young':      `https://www.amazon.com/s?k=korean+skincare+best+seller&tag=${AFFILIATE_TAG}`,
   'sunscreen':        `https://www.amazon.com/s?k=korean+sunscreen&tag=${AFFILIATE_TAG}`,
-  // 2025-2026 Amazon 베스트셀러 K-Beauty 브랜드 추가
+  // 2025-2026 Amazon 베스트셀러 Korean-Stock 브랜드 추가
   'Numbuzin':         `https://www.amazon.com/s?k=Numbuzin&tag=${AFFILIATE_TAG}`,
   'TIRTIR':           `https://www.amazon.com/s?k=TIRTIR&tag=${AFFILIATE_TAG}`,
   'Biodance':         `https://www.amazon.com/s?k=Biodance&tag=${AFFILIATE_TAG}`,

@@ -29,15 +29,15 @@ export interface ContentIssue {
  */
 /** Per-category Flesch-Kincaid readability targets (category → [min, max]) */
 const CATEGORY_READABILITY_TARGETS: Record<string, [number, number]> = {
-  'K-Entertainment': [60, 75],   // Casual audience expects easy reading
-  'K-Beauty': [55, 70],          // Consumer-friendly but some science
+  'AI-Trading': [60, 75],   // Casual audience expects easy reading
+  'Korean-Stock': [55, 70],          // Consumer-friendly but some science
 };
 
 /** Per-category minimum quality scores — raised across the board for HCU compliance */
 const CATEGORY_MIN_QUALITY: Record<string, number> = {
-  'K-Entertainment': 60,
-  // K-Beauty product-review/best-x-for-y = purchase-intent (YMYL-adjacent) → stricter bar
-  'K-Beauty': 65,
+  'AI-Trading': 60,
+  // Korean-Stock product-review/best-x-for-y = purchase-intent (YMYL-adjacent) → stricter bar
+  'Korean-Stock': 65,
 };
 
 /** Content type-specific minimum word counts — lowered for information density over padding */
@@ -55,12 +55,12 @@ const CONTENT_TYPE_MIN_WORDS: Record<string, number> = {
 
 /** Per-category overrides for content type word counts (category → contentType → minWords) */
 const CATEGORY_CONTENT_TYPE_MIN_WORDS: Record<string, Record<string, number>> = {
-  'K-Entertainment': {
+  'AI-Trading': {
     'news-explainer': 1200, // Fan comeback news needs personality, not academic depth
     'listicle': 1200,       // Fan listicles are snackable format
     'analysis': 2000,       // 27차 감사: 팬 대상 분석 — 2500자 불필요, content-generator 오버라이드와 동기화
   },
-  'K-Beauty': {
+  'Korean-Stock': {
     'news-explainer': 1200, // 27차 감사: 바이럴 뷰티 뉴스는 핵심 전달 우선 (기존 content-generator와 동기화)
   },
 };
@@ -92,29 +92,29 @@ function computeOriginalResearchBonus(plainText: string, html: string): number {
   if (hasMethodology) bonus += 2;
 
   // +2: Korean data source citations
-  // K-Beauty/K-Entertainment: Korean data sources for E-E-A-T credibility
-  // K-Beauty: Allure Korea, Harpers Bazaar, Vogue Korea, INCI Decoder, Olive Young
-  // K-Entertainment: KOCCA, Hanteo, Circle Chart, Billboard Korea, Weverse Magazine
+  // Korean-Stock/AI-Trading: Korean data sources for E-E-A-T credibility
+  // Korean-Stock: Allure Korea, Harpers Bazaar, Vogue Korea, INCI Decoder, Olive Young
+  // AI-Trading: KOCCA, Hanteo, Circle Chart, Billboard Korea, Weverse Magazine
   const koreanDataSources = [
     // Korean government & statistics (general credibility)
     'bok', 'kosis', 'dart', 'kotra', 'kisa', 'bank of korea', 'korean statistical',
-    // K-Beauty editorial & ingredient sources
+    // Korean-Stock editorial & ingredient sources
     // NOTE: 'allure korea' (not plain 'allure') to avoid false-positive matches with US Allure
     'allure korea', 'harpers bazaar korea', 'vogue korea', 'inci decoder', 'olive young', 'kocca',
-    // Also accept abbreviated form that naturally occurs in K-Beauty writing
+    // Also accept abbreviated form that naturally occurs in Korean-Stock writing
     'allure korea award', 'incidecoder', 'cosdna',
     'hwahae',       // 화해 — Korea's #1 beauty review app (Korea-exclusive E-E-A-T signal)
     'glowpick',     // 글로우픽 — Korea's #2 beauty review/ranking platform
-    // K-Entertainment chart & industry sources
+    // AI-Trading chart & industry sources
     'hanteo', 'circle chart', 'billboard korea', 'weverse magazine', 'melon chart',
     'youtube music chart', // 19차 감사: YouTube Music 한국 차트 영향력 급성장
     'spotify korea',       // 19차 감사: Spotify Korea 2025-2026 차트 인용 증가
     'genie chart',         // 19차 감사: 지니뮤직 차트 — Melon 다음 국내 2위 스트리밍
     // system prompt에서 권장하나 validator에 미포함이었던 소스 (보너스 점수 일관성)
-    'soompi',       // K-Entertainment 최대 영문 뉴스 아웃렛
-    'dispatch',     // 디스패치 — K-Entertainment 주요 취재 매체
+    'soompi',       // AI-Trading 최대 영문 뉴스 아웃렛
+    'dispatch',     // 디스패치 — AI-Trading 주요 취재 매체
     'cosmorning',   // 코스모닝 — 한국 화장품 산업 전문 뉴스
-    'skinsort',     // K-Beauty 성분 분석 사이트 (cite 소스로 등록)
+    'skinsort',     // Korean-Stock 성분 분석 사이트 (cite 소스로 등록)
     // 27차 감사: 누락 소스 추가
     'kocowa',       // KOCOWA — 미주 한인 대상 K-Drama/예능 OTT 스트리밍
     'agb nielsen',  // AGB Nielsen Korea — K-Drama 시청률 공식 측정 기관
@@ -158,12 +158,12 @@ function computeExperienceScore(plainText: string): number {
   const koreanLocationPatterns = [
     'gangnam', 'pangyo', 'yeouido', 'mapo', 'itaewon', 'hongdae',
     'myeongdong', 'insadong', 'gwanghwamun', 'jamsil', 'songpa',
-    // K-Beauty/K-Entertainment 핵심 지역 (E-E-A-T 현장 경험 신호)
-    'cheongdam',   // 청담동 — 럭셔리 K-Beauty 플래그십 + K-Entertainment 사무소 밀집
-    'apgujeong',   // 압구정 — 성형외과·피부과 밀집, K-Beauty 트렌드 발신지
-    'seongsu',     // 성수동 — K-Beauty 팝업·K-Entertainment 팬미팅 핫스팟 (2024-2026)
+    // Korean-Stock/AI-Trading 핵심 지역 (E-E-A-T 현장 경험 신호)
+    'cheongdam',   // 청담동 — 럭셔리 Korean-Stock 플래그십 + AI-Trading 사무소 밀집
+    'apgujeong',   // 압구정 — 성형외과·피부과 밀집, Korean-Stock 트렌드 발신지
+    'seongsu',     // 성수동 — Korean-Stock 팝업·AI-Trading 팬미팅 핫스팟 (2024-2026)
     'coex',        // COEX — K-pop 콘서트·팬사인회 주요 행사장
-    'sinchon',     // 신촌 — K-Beauty 쇼핑·팬 이벤트 밀집
+    'sinchon',     // 신촌 — Korean-Stock 쇼핑·팬 이벤트 밀집
   ];
   const hasKoreanLocation = koreanLocationPatterns.some(p => lower.includes(p));
   const hasDateRef = /\b(?:january|february|march|april|may|june|july|august|september|october|november|december)\s+\d{4}\b/i.test(plainText);
@@ -666,7 +666,7 @@ export function validateContent(
     /KISA/i,
     /KOCCA/i,
     /Maeil Business|매일경제/i,
-    // K-Entertainment sources (prevent unfair -5 penalty for entertainment content)
+    // AI-Trading sources (prevent unfair -5 penalty for entertainment content)
     /Hanteo/i,
     /Circle\s*Chart/i,
     /Melon\s*(?:Chart|streaming)?/i,
@@ -674,7 +674,7 @@ export function validateContent(
     /Dispatch|디스패치/i,
     /Weverse\s*Magazine/i,
     /Billboard\s*Korea/i,
-    // K-Beauty editorial sources (prevent unfair -5 penalty for beauty content)
+    // Korean-Stock editorial sources (prevent unfair -5 penalty for beauty content)
     /Allure\s*Korea/i,
     /Vogue\s*Korea/i,
     /Harper.?s?\s*Bazaar\s*Korea/i,
@@ -713,10 +713,10 @@ export function validateContent(
       'statista.com', 'worldbank.org', 'imf.org', 'mckinsey.com', 'techcrunch.com',
       'samsung.com', 'hyundai.com', 'lgcorp.com', 'koreaherald.com', 'mk.co.kr',
       'wikipedia.org', 'google.com', 'youtube.com',
-      // K-Entertainment trusted sources
+      // AI-Trading trusted sources
       'weverse.io', 'melon.com', 'hanteonews.com', 'circlechart.kr',
       'soompi.com', 'billboard.com', 'sbs.co.kr', 'kbs.co.kr', 'mbc.co.kr',
-      // K-Beauty trusted sources
+      // Korean-Stock trusted sources
       'oliveyoung.co.kr', 'oliveyoung.com', 'allure.co.kr',
       'incidecoder.com', 'cosdna.com', 'skinsort.com',
       'hwahae.co.kr', 'glowpick.com', 'cosme.net',
@@ -770,8 +770,8 @@ export function validateContent(
     eeatScore -= unsourcedClaims;
   }
 
-  // 8. Stricter Korean source requirement for K-Beauty (YMYL-adjacent, need 2+ citations)
-  if (category === 'K-Beauty') {
+  // 8. Stricter Korean source requirement for Korean-Stock (YMYL-adjacent, need 2+ citations)
+  if (category === 'Korean-Stock') {
     if (koreanCitationCount === 1) {
       warnings.push({
         category: 'eeat',
@@ -803,18 +803,18 @@ export function validateContent(
   const experienceScore = computeExperienceScore(plainText);
 
   // ── Niche-specific content accuracy checks ──
-  if (category === 'K-Beauty') {
+  if (category === 'Korean-Stock') {
     // 1. Sunscreen content MUST explain PA rating system (presence + explanation)
     const isSunscreenContent = /sunscreen|spf|sun\s*protection|uv\s*(?:a|b)|sun\s*block/i.test(plainText);
     if (isSunscreenContent && !/PA\+/i.test(plainText)) {
-      warnings.push({ category: 'niche-accuracy', message: 'K-Beauty sunscreen content missing PA rating explanation (PA+ to PA++++ — core K-Beauty differentiator)', severity: 'warning' });
+      warnings.push({ category: 'niche-accuracy', message: 'Korean-Stock sunscreen content missing PA rating explanation (PA+ to PA++++ — core Korean-Stock differentiator)', severity: 'warning' });
       eeatScore -= 2;
     }
     // 1b. PA rating mentioned but not explained — must educate global readers
     if (isSunscreenContent && /PA\+/i.test(plainText) && ['product-review', 'best-x-for-y', 'how-to', 'deep-dive'].includes(contentType)) {
       const hasPaExplanation = /PA\s*rating\s*system|UVA\s*protection\s*(?:level|factor|rating)|PA\+\s*to\s*PA\+{4}|PA\+{4}\s*(?:means|highest|maximum)/i.test(plainText);
       if (!hasPaExplanation) {
-        warnings.push({ category: 'niche-accuracy', message: 'PA rating mentioned but not explained — global readers need context: "PA++++ means highest UVA protection (16x+ protection factor), a rating system used in Korea/Japan." This is a core K-Beauty differentiator.', severity: 'warning' });
+        warnings.push({ category: 'niche-accuracy', message: 'PA rating mentioned but not explained — global readers need context: "PA++++ means highest UVA protection (16x+ protection factor), a rating system used in Korea/Japan." This is a core Korean-Stock differentiator.', severity: 'warning' });
         eeatScore -= 1;
       }
     }
@@ -823,13 +823,13 @@ export function validateContent(
     if (['product-review', 'best-x-for-y'].includes(contentType)) {
       const hasPricing = /\$\d+|\₩[\d,]+|price|pricing|cost|(?:olive young|amazon|yesstyle)\s*(?:price|cost|\$)/i.test(plainText);
       if (!hasPricing) {
-        warnings.push({ category: 'niche-accuracy', message: 'K-Beauty product content missing pricing information (Olive Young KRW / Amazon USD comparison expected)', severity: 'warning' });
+        warnings.push({ category: 'niche-accuracy', message: 'Korean-Stock product content missing pricing information (Olive Young KRW / Amazon USD comparison expected)', severity: 'warning' });
         structureScore -= 2;
       }
       // Price disclaimer check
       const hasPriceDisclaimer = /prices?\s*(?:verified|checked|as of)|prices?\s*vary\s*frequently/i.test(plainText);
       if (hasPricing && !hasPriceDisclaimer) {
-        warnings.push({ category: 'niche-accuracy', message: 'K-Beauty pricing without date/platform disclaimer ("Prices verified as of...")', severity: 'warning' });
+        warnings.push({ category: 'niche-accuracy', message: 'Korean-Stock pricing without date/platform disclaimer ("Prices verified as of...")', severity: 'warning' });
       }
     }
 
@@ -838,7 +838,7 @@ export function validateContent(
     if (ingredientKeywords.test(plainText) && ['product-review', 'best-x-for-y', 'x-vs-y', 'deep-dive'].includes(contentType)) {
       const hasConcentration = /\d+(?:\.\d+)?%\s*(?:niacinamide|retinol|vitamin|ascorbic|hyaluronic|salicylic|glycolic|centella|madecassoside|tranexamic|peptide|adenosine)/i.test(plainText);
       if (!hasConcentration) {
-        warnings.push({ category: 'niche-accuracy', message: 'K-Beauty ingredient content missing concentration % (high-trust signal for ingredient-savvy readers)', severity: 'warning' });
+        warnings.push({ category: 'niche-accuracy', message: 'Korean-Stock ingredient content missing concentration % (high-trust signal for ingredient-savvy readers)', severity: 'warning' });
         eeatScore -= 1;
       }
     }
@@ -848,7 +848,7 @@ export function validateContent(
     if (isSupplementContent) {
       const hasSafetyDisclaimer = /not\s*a?\s*substitute|consult\s*(?:a|your)\s*(?:doctor|healthcare|physician|dermatologist)|medical\s*advice|healthcare\s*provider/i.test(plainText);
       if (!hasSafetyDisclaimer) {
-        issues.push({ category: 'niche-accuracy', message: 'K-Beauty supplement content MISSING safety disclaimer ("not a substitute for medical advice" / "consult healthcare provider")', severity: 'error' });
+        issues.push({ category: 'niche-accuracy', message: 'Korean-Stock supplement content MISSING safety disclaimer ("not a substitute for medical advice" / "consult healthcare provider")', severity: 'error' });
         eeatScore -= 3;
       }
     }
@@ -863,19 +863,19 @@ export function validateContent(
     if (contentType === 'product-review') {
       const hasSkinType = /(?:oily|dry|combination|sensitive|acne.prone)\s*skin/i.test(plainText);
       if (!hasSkinType) {
-        warnings.push({ category: 'niche-accuracy', message: 'K-Beauty product review missing skin type suitability (oily/dry/combination/sensitive/acne-prone)', severity: 'warning' });
+        warnings.push({ category: 'niche-accuracy', message: 'Korean-Stock product review missing skin type suitability (oily/dry/combination/sensitive/acne-prone)', severity: 'warning' });
         structureScore -= 1;
       }
       // Extended skin condition check for product reviews — these are high-value segments
       const hasExtendedConditions = /(?:rosacea|eczema|atopic|mature|aging|dehydrat(?:ed|ion))\s*(?:skin|prone)/i.test(plainText);
       if (hasSkinType && !hasExtendedConditions && wordCount > 1800) {
-        warnings.push({ category: 'niche-accuracy', message: 'K-Beauty product review could benefit from extended skin condition mentions (rosacea-prone, eczema/atopic, mature/aging, dehydrated) — these are high-conversion segments', severity: 'info' });
+        warnings.push({ category: 'niche-accuracy', message: 'Korean-Stock product review could benefit from extended skin condition mentions (rosacea-prone, eczema/atopic, mature/aging, dehydrated) — these are high-conversion segments', severity: 'info' });
       }
       // Dehydrated vs dry distinction check — common conflation
       if (/dehydrat/i.test(plainText) && /dry/i.test(plainText)) {
         if (/dehydrat(?:ed|ion)\s*(?:=|is\s*(?:the\s*same|identical|just)\s*(?:as|to))\s*dry/i.test(plainText) ||
             /dry\s*(?:=|is\s*(?:the\s*same|identical|just)\s*(?:as|to))\s*dehydrat/i.test(plainText)) {
-          warnings.push({ category: 'niche-accuracy', message: 'Dehydrated ≠ Dry skin — dehydrated skin lacks water (any skin type can be dehydrated), dry skin lacks oil (a skin type). This is a fundamental K-Beauty distinction.', severity: 'warning' });
+          warnings.push({ category: 'niche-accuracy', message: 'Dehydrated ≠ Dry skin — dehydrated skin lacks water (any skin type can be dehydrated), dry skin lacks oil (a skin type). This is a fundamental Korean-Stock distinction.', severity: 'warning' });
           eeatScore -= 1;
         }
       }
@@ -913,7 +913,7 @@ export function validateContent(
         /\b(?:LMW|HMW)\b/.test(plainText) || /\bDa\b|\bdalton/i.test(plainText) ||
         /(?:penetrat|absorb|surface|deep)\s*(?:layer|skin)/i.test(plainText);
       if (!hasWeightContext) {
-        warnings.push({ category: 'niche-accuracy', message: 'K-Beauty HA content should mention molecular weight variants (high MW = surface hydration, low MW = deeper penetration) — a core K-Beauty formulation differentiator', severity: 'warning' });
+        warnings.push({ category: 'niche-accuracy', message: 'Korean-Stock HA content should mention molecular weight variants (high MW = surface hydration, low MW = deeper penetration) — a core Korean-Stock formulation differentiator', severity: 'warning' });
         eeatScore -= 1;
       }
     }
@@ -1007,8 +1007,8 @@ export function validateContent(
     }
 
     // 12f. SPF 50+ is the maximum in Korea — SPF 100 is not available in Korean market
-    if (/SPF\s*(?:1[0-9]{2}|[2-9][0-9]{2})/i.test(plainText) && /(?:Korean|K-Beauty|K-beauty|Olive\s*Young|MFDS)/i.test(plainText)) {
-      warnings.push({ category: 'niche-accuracy', message: 'SPF 100+ referenced in K-Beauty context — Korea (MFDS) caps labeling at SPF 50+. SPF values above 50 are labeled "SPF 50+" in Korean products.', severity: 'warning' });
+    if (/SPF\s*(?:1[0-9]{2}|[2-9][0-9]{2})/i.test(plainText) && /(?:Korean|Korean-Stock|K-beauty|Olive\s*Young|MFDS)/i.test(plainText)) {
+      warnings.push({ category: 'niche-accuracy', message: 'SPF 100+ referenced in Korean-Stock context — Korea (MFDS) caps labeling at SPF 50+. SPF values above 50 are labeled "SPF 50+" in Korean products.', severity: 'warning' });
       eeatScore -= 1;
     }
 
@@ -1016,7 +1016,7 @@ export function validateContent(
     if (/PDRN|salmon\s*DNA/i.test(plainText) && ['product-review', 'best-x-for-y', 'deep-dive'].includes(contentType)) {
       const hasDermaContext = /(?:dermatolog|aesthetic\s*clinic|피부과|injection|meso(?:therapy)?|topical\s*(?:formulation|version|form))/i.test(plainText);
       if (!hasDermaContext) {
-        warnings.push({ category: 'niche-accuracy', message: 'PDRN/salmon DNA mentioned without noting its dermatology origin — PDRN originated as an injectable skin regeneration treatment (피부과 시술). Topical K-Beauty PDRN products are a consumer adaptation of this clinical ingredient. Add context for credibility.', severity: 'warning' });
+        warnings.push({ category: 'niche-accuracy', message: 'PDRN/salmon DNA mentioned without noting its dermatology origin — PDRN originated as an injectable skin regeneration treatment (피부과 시술). Topical Korean-Stock PDRN products are a consumer adaptation of this clinical ingredient. Add context for credibility.', severity: 'warning' });
         eeatScore -= 1;
       }
     }
@@ -1084,7 +1084,7 @@ export function validateContent(
       const hasCeramideRatio = /(?:ceramide|cholesterol|fatty\s*acid).*(?:ratio|1:1:1|3:1:1|proportion)/i.test(plainText) ||
         /(?:ratio|proportion).*(?:ceramide|cholesterol|fatty\s*acid)/i.test(plainText);
       if (!hasCeramideRatio && /ceramide/i.test(plainText)) {
-        warnings.push({ category: 'niche-accuracy', message: 'Barrier repair content with ceramide mention but missing the optimal lipid ratio context — skin barrier consists of ceramides, cholesterol, and fatty acids in roughly equal proportions. This is a key K-Beauty expertise signal.', severity: 'info' });
+        warnings.push({ category: 'niche-accuracy', message: 'Barrier repair content with ceramide mention but missing the optimal lipid ratio context — skin barrier consists of ceramides, cholesterol, and fatty acids in roughly equal proportions. This is a key Korean-Stock expertise signal.', severity: 'info' });
       }
     }
 
@@ -1211,11 +1211,11 @@ export function validateContent(
       }
     }
 
-    // 19. "Whitening" terminology in English-language K-Beauty content — prefer "brightening"
+    // 19. "Whitening" terminology in English-language Korean-Stock content — prefer "brightening"
     if (/\bwhitening\b/i.test(plainText) && !/미백|MFDS.*whitening|whitening.*MFDS|product\s*name|official\s*name|despite\s*the\s*(?:product\s*)?name/i.test(plainText)) {
       const whitenCount = (plainText.match(/\bwhitening\b/gi) || []).length;
       if (whitenCount === 1) {
-        warnings.push({ category: 'niche-accuracy', message: 'Use \'brightening\' instead of \'whitening\' for K-Beauty content — "whitening" is culturally insensitive in English. Only acceptable when explaining Korea\'s 미백 MFDS category or reproducing an official product name.', severity: 'warning' });
+        warnings.push({ category: 'niche-accuracy', message: 'Use \'brightening\' instead of \'whitening\' for Korean-Stock content — "whitening" is culturally insensitive in English. Only acceptable when explaining Korea\'s 미백 MFDS category or reproducing an official product name.', severity: 'warning' });
         eeatScore -= 1;
       } else if (whitenCount >= 2) {
         warnings.push({ category: 'niche-accuracy', message: '"Whitening" used multiple times without contextualizing as MFDS 미백 term — use "brightening" for English-language content (cultural sensitivity). Only use "whitening" when explaining the Korean regulatory term or reproducing an official product name.', severity: 'warning' });
@@ -1223,23 +1223,23 @@ export function validateContent(
       }
     }
 
-    // 20. Japanese brand misidentification — AI frequently labels J-Beauty as K-Beauty
+    // 20. Japanese brand misidentification — AI frequently labels J-Beauty as Korean-Stock
     const japaneseBrands = /\b(?:Hada\s*Labo|CANMAKE|Shiseido|SK-?II|Biore|Rohto|Kose|Muji|DHC|Tatcha|FANCL|Shu\s*Uemura|Sofina|Kao|Mandom|Ettusais|KATE|Cezanne|Dejavu|Heroine\s*Make|Senka|Anessa|Curel)\b/i;
     if (japaneseBrands.test(plainText)) {
       const match = plainText.match(japaneseBrands);
       const brandName = match ? match[0] : 'Unknown';
       if (/(?:Korean|K-?Beauty|한국)\s*(?:brand|product|skincare)?[^.]*\b(?:Hada\s*Labo|CANMAKE|Shiseido|SK-?II|Biore|Rohto|Kose|Muji|DHC|Tatcha|FANCL|Shu\s*Uemura|Sofina|Kao|Mandom|Ettusais|KATE|Cezanne|Dejavu|Heroine\s*Make|Senka|Anessa|Curel)\b/i.test(plainText) ||
           /\b(?:Hada\s*Labo|CANMAKE|Shiseido|SK-?II|Biore|Rohto|Kose|Muji|DHC|Tatcha|FANCL|Shu\s*Uemura|Sofina|Kao|Mandom|Ettusais|KATE|Cezanne|Dejavu|Heroine\s*Make|Senka|Anessa|Curel)\b[^.]*(?:Korean|K-?Beauty|한국)\s*(?:brand|product)/i.test(plainText)) {
-        issues.push({ category: 'niche-accuracy', message: `${brandName} is a Japanese brand (J-Beauty), NOT Korean (K-Beauty). Do not include Japanese products in K-Beauty content unless explicitly comparing K-Beauty vs J-Beauty.`, severity: 'error' });
+        issues.push({ category: 'niche-accuracy', message: `${brandName} is a Japanese brand (J-Beauty), NOT Korean (Korean-Stock). Do not include Japanese products in Korean-Stock content unless explicitly comparing Korean-Stock vs J-Beauty.`, severity: 'error' });
         eeatScore -= 3;
       }
     }
 
-    // 21. Cleanser pH context — K-Beauty hallmark differentiator
+    // 21. Cleanser pH context — Korean-Stock hallmark differentiator
     if (/cleanser|클렌저|foam.*wash|face\s*wash|cleansing\s*(?:gel|foam|milk)/i.test(plainText) && ['product-review', 'best-x-for-y', 'how-to'].includes(contentType)) {
       const hasPhContext = /pH\s*\d|pH\s*level|pH\s*balanced|low\s*pH|acidic\s*pH|pH\s*5\.5/i.test(plainText);
       if (!hasPhContext) {
-        warnings.push({ category: 'niche-accuracy', message: 'K-Beauty cleanser content missing pH context — low pH (5.5) cleansing is a core K-Beauty differentiator. Mention pH level or pH-balanced formulation for expert authority.', severity: 'warning' });
+        warnings.push({ category: 'niche-accuracy', message: 'Korean-Stock cleanser content missing pH context — low pH (5.5) cleansing is a core Korean-Stock differentiator. Mention pH level or pH-balanced formulation for expert authority.', severity: 'warning' });
         eeatScore -= 1;
       }
     }
@@ -1256,7 +1256,7 @@ export function validateContent(
     }
   }
 
-  if (category === 'K-Entertainment') {
+  if (category === 'AI-Trading') {
     // 1. Group label accuracy checks (common AI errors)
     const labelErrors: Array<{ pattern: RegExp; correct: string }> = [
       { pattern: /IVE\b[^.]*\bHYBE\b/i, correct: 'IVE is under Starship Entertainment, NOT HYBE' },
@@ -1395,10 +1395,10 @@ export function validateContent(
       }
     }
 
-    // 8. K-Entertainment E-E-A-T: should cite entertainment sources, NOT financial sources
+    // 8. AI-Trading E-E-A-T: should cite entertainment sources, NOT financial sources
     const financeSources = /\b(?:BOK|Bank of Korea|KRX|DART|KOSIS|FSC)\b/i;
     if (financeSources.test(plainText)) {
-      warnings.push({ category: 'niche-accuracy', message: 'K-Entertainment content cites financial/economic sources (BOK/KRX/DART) — should use entertainment sources (Hanteo, Circle Chart, KOCCA, Melon)', severity: 'warning' });
+      warnings.push({ category: 'niche-accuracy', message: 'AI-Trading content cites financial/economic sources (BOK/KRX/DART) — should use entertainment sources (Hanteo, Circle Chart, KOCCA, Melon)', severity: 'warning' });
       eeatScore -= 2;
     }
 
@@ -1550,7 +1550,7 @@ export function validateContent(
       }
     }
 
-    // 23b. K-Beauty brand parent company accuracy — prevent corporate ownership errors
+    // 23b. Korean-Stock brand parent company accuracy — prevent corporate ownership errors
     const kBeautyBrandParentErrors: Array<{ pattern: RegExp; correct: string }> = [
       { pattern: /COSRX\b[^.]*\b(?:Amorepacific|LG\s*H&H|LG\s*Household)/i, correct: 'COSRX was acquired by Amorepacific in 2023 but operates independently — verify context' },
       { pattern: /Innisfree\b[^.]*\b(?:independent|indie|not\s*Amorepacific)/i, correct: 'Innisfree is an Amorepacific brand (아모레퍼시픽 소속)' },
@@ -1562,7 +1562,7 @@ export function validateContent(
     ];
     for (const check of kBeautyBrandParentErrors) {
       if (check.pattern.test(plainText)) {
-        warnings.push({ category: 'niche-accuracy', message: `K-Beauty brand ownership: ${check.correct}`, severity: 'warning' });
+        warnings.push({ category: 'niche-accuracy', message: `Korean-Stock brand ownership: ${check.correct}`, severity: 'warning' });
         eeatScore -= 1;
       }
     }
@@ -1885,12 +1885,12 @@ export function validateContent(
     }
   }
 
-  // ── Cross-niche K-Beauty accuracy checks ──
-  if (category === 'K-Beauty') {
+  // ── Cross-niche Korean-Stock accuracy checks ──
+  if (category === 'Korean-Stock') {
     // MFDS vs FDA conflation check — Korean sunscreens are MFDS-approved, NOT FDA-approved
-    if (/FDA.{0,30}(?:approv|certif|register).{0,30}(?:Korean|K-Beauty|K-beauty)/i.test(plainText) ||
-        /(?:Korean|K-Beauty|K-beauty).{0,30}FDA.{0,30}(?:approv|certif|register)/i.test(plainText)) {
-      issues.push({ category: 'niche-accuracy', message: 'K-Beauty products are MFDS-approved (식품의약품안전처), NOT FDA-approved — these are separate regulatory bodies', severity: 'error' });
+    if (/FDA.{0,30}(?:approv|certif|register).{0,30}(?:Korean|Korean-Stock|K-beauty)/i.test(plainText) ||
+        /(?:Korean|Korean-Stock|K-beauty).{0,30}FDA.{0,30}(?:approv|certif|register)/i.test(plainText)) {
+      issues.push({ category: 'niche-accuracy', message: 'Korean-Stock products are MFDS-approved (식품의약품안전처), NOT FDA-approved — these are separate regulatory bodies', severity: 'error' });
       eeatScore -= 2;
     }
 
@@ -1999,7 +1999,7 @@ export function validateContent(
     if (contentType === 'best-x-for-y') {
       const hasSkinType = /(?:oily|dry|combination|sensitive|acne.prone)\s*skin/i.test(plainText);
       if (!hasSkinType) {
-        warnings.push({ category: 'niche-accuracy', message: 'K-Beauty best-x-for-y content missing skin type suitability mentions (oily/dry/combination/sensitive/acne-prone)', severity: 'warning' });
+        warnings.push({ category: 'niche-accuracy', message: 'Korean-Stock best-x-for-y content missing skin type suitability mentions (oily/dry/combination/sensitive/acne-prone)', severity: 'warning' });
         structureScore -= 1;
       }
     }
@@ -2008,7 +2008,7 @@ export function validateContent(
     if (contentType === 'x-vs-y') {
       const hasComparisonTable = /<table[\s>]/i.test(plainText) || /comparison\s*table|head.to.head|side.by.side/i.test(plainText);
       if (!hasComparisonTable) {
-        warnings.push({ category: 'niche-accuracy', message: 'K-Beauty x-vs-y content missing comparison table — readers expect structured head-to-head comparison', severity: 'warning' });
+        warnings.push({ category: 'niche-accuracy', message: 'Korean-Stock x-vs-y content missing comparison table — readers expect structured head-to-head comparison', severity: 'warning' });
         structureScore -= 2;
       }
     }
@@ -2044,7 +2044,7 @@ export function validateContent(
     if (/10.step\s*(?:korean|K-?beauty)/i.test(plainText) && !contentType.includes('deep-dive')) {
       const acknowledgesEvolution = /skip.care|간소화|minimalist|evolved|moved\s*(?:away|beyond|on)|contemporary|modern\s*Korean/i.test(plainText);
       if (!acknowledgesEvolution) {
-        warnings.push({ category: 'niche-accuracy', message: '10-step K-Beauty routine presented without acknowledging skip-care evolution — modern Koreans use minimalist routines. Frame 10-step as historical foundation, not current norm.', severity: 'warning' });
+        warnings.push({ category: 'niche-accuracy', message: '10-step Korean-Stock routine presented without acknowledging skip-care evolution — modern Koreans use minimalist routines. Frame 10-step as historical foundation, not current norm.', severity: 'warning' });
         eeatScore -= 1;
       }
     }
@@ -2053,7 +2053,7 @@ export function validateContent(
     if (/essence\s*(?:=|is\s*(?:the\s*same|identical|just)\s*(?:as|to))\s*serum/i.test(plainText) ||
         /serum\s*(?:=|is\s*(?:the\s*same|identical|just)\s*(?:as|to))\s*(?:essence|ampoule)/i.test(plainText) ||
         /ampoule\s*(?:=|is\s*(?:the\s*same|identical|just)\s*(?:as|to))\s*(?:serum|essence)/i.test(plainText)) {
-      warnings.push({ category: 'niche-accuracy', message: 'Essence ≠ Serum ≠ Ampoule — these are distinct K-Beauty product formats with different concentrations and textures. Do not treat as interchangeable.', severity: 'warning' });
+      warnings.push({ category: 'niche-accuracy', message: 'Essence ≠ Serum ≠ Ampoule — these are distinct Korean-Stock product formats with different concentrations and textures. Do not treat as interchangeable.', severity: 'warning' });
       eeatScore -= 1;
     }
 
@@ -2111,7 +2111,7 @@ export function validateContent(
     if (/sunscreen|spf|sun\s*protection/i.test(plainText) && ['product-review', 'best-x-for-y', 'how-to', 'deep-dive'].includes(contentType)) {
       const hasReapplicationGuidance = /reappl|every\s*(?:2|two)\s*hours|retouch|sun\s*stick.*reappl|재도포/i.test(plainText);
       if (!hasReapplicationGuidance) {
-        warnings.push({ category: 'niche-accuracy', message: 'K-Beauty sunscreen content missing reapplication guidance — "reapply every 2 hours" is fundamental sunscreen science and a core expert signal', severity: 'warning' });
+        warnings.push({ category: 'niche-accuracy', message: 'Korean-Stock sunscreen content missing reapplication guidance — "reapply every 2 hours" is fundamental sunscreen science and a core expert signal', severity: 'warning' });
         eeatScore -= 1;
       }
     }
@@ -2146,7 +2146,7 @@ export function validateContent(
     if (contentType === 'product-review') {
       const hasPaoMention = /(?:PAO|period\s*after\s*opening|shelf\s*life|expir(?:y|ation)|개봉\s*후|사용\s*기한|유통\s*기한|\d+M\s*(?:symbol|icon|after\s*opening))/i.test(plainText);
       if (!hasPaoMention) {
-        warnings.push({ category: 'niche-accuracy', message: 'K-Beauty product review missing PAO (Period After Opening) or shelf life info — essential for vitamin C, retinol, and preservative-free products', severity: 'warning' });
+        warnings.push({ category: 'niche-accuracy', message: 'Korean-Stock product review missing PAO (Period After Opening) or shelf life info — essential for vitamin C, retinol, and preservative-free products', severity: 'warning' });
         // No score deduction — informational, not critical
       }
     }
@@ -2173,25 +2173,25 @@ export function validateContent(
       }
     }
 
-    // 31. K-Beauty 메이크업 검증 — 색조 화장품 기능성 주장 불가
+    // 31. Korean-Stock 메이크업 검증 — 색조 화장품 기능성 주장 불가
     if (/makeup|foundation|tint|blush|eyeshadow|mascara|eyeliner|cushion.*foundation/i.test(plainText)) {
       const functionalMakeupClaims = /(?:reduces?|minimizes?|eliminates?|treats?|corrects?)\s+(?:oil|shine|acne|redness|pores|wrinkles)/i;
       if (functionalMakeupClaims.test(plainText) && !/may\s*help|temporarily|appears?\s*to/i.test(plainText)) {
-        warnings.push({ category: 'niche-accuracy', message: 'K-Beauty makeup content makes functional skincare claims (reduces/minimizes oil/acne/wrinkles) — color cosmetics cannot make treatment claims under MFDS without functional cosmetic certification. Use hedged language: "temporarily minimizes appearance of" or "creates the look of."', severity: 'warning' });
+        warnings.push({ category: 'niche-accuracy', message: 'Korean-Stock makeup content makes functional skincare claims (reduces/minimizes oil/acne/wrinkles) — color cosmetics cannot make treatment claims under MFDS without functional cosmetic certification. Use hedged language: "temporarily minimizes appearance of" or "creates the look of."', severity: 'warning' });
         eeatScore -= 1;
       }
     }
 
-    // 32. K-Beauty 네일아트 검증 — 네일 제품 기능성 주장 불가
+    // 32. Korean-Stock 네일아트 검증 — 네일 제품 기능성 주장 불가
     if (/nail\s*(?:art|polish|gel|sticker|diva|ohora|press[- ]on)/i.test(plainText)) {
       const functionalNailClaims = /(?:strengthen|harden|prevents?\s*breakage|nail\s*growth|repair\s*damage)/i;
       if (functionalNailClaims.test(plainText) && !/may\s*help|supports?|known\s*for/i.test(plainText)) {
-        warnings.push({ category: 'niche-accuracy', message: 'K-Beauty nail product makes treatment claims (strengthen/harden/repair) — nail cosmetics cannot make these claims without functional cosmetic certification. Use hedged language.', severity: 'warning' });
+        warnings.push({ category: 'niche-accuracy', message: 'Korean-Stock nail product makes treatment claims (strengthen/harden/repair) — nail cosmetics cannot make these claims without functional cosmetic certification. Use hedged language.', severity: 'warning' });
         eeatScore -= 1;
       }
     }
 
-    // 33. K-Beauty 향수 검증 — 농도 타입 구분 필수
+    // 33. Korean-Stock 향수 검증 — 농도 타입 구분 필수
     if (/fragrance|perfume|cologne|eau\s*de/i.test(plainText) && /(?:Tamburins|nonfiction|granhand|K-fragrance|Korean\s*(?:perfume|fragrance))/i.test(plainText)) {
       const hasConcentrationContext = /eau\s*de\s*(?:toilette|parfum|cologne)|(?:EDT|EDP)|body\s*mist|concentration|(?:5|10|15|20|30)%/i.test(plainText);
       if (!hasConcentrationContext) {
@@ -2199,11 +2199,11 @@ export function validateContent(
       }
     }
 
-    // 34. K-Beauty 디바이스 검증 — LED 마스크/미세전류 효능 면책 필수
+    // 34. Korean-Stock 디바이스 검증 — LED 마스크/미세전류 효능 면책 필수
     if (/LED\s*mask|microcurrent|gua\s*sha|dermapen|derma\s*roller|facial\s*device/i.test(plainText)) {
       const hasDeviceDisclaimer = /(?:not\s*a\s*substitute|consult|results\s*(?:may\s*)?vary|individual\s*results|device\s*classification|MFDS|FDA)/i.test(plainText);
       if (!hasDeviceDisclaimer) {
-        warnings.push({ category: 'niche-accuracy', message: 'K-Beauty device content (LED mask/microcurrent/dermapen) without efficacy disclaimer — home devices have limited clinical evidence vs professional treatments. Add "results may vary" or regulatory classification note.', severity: 'warning' });
+        warnings.push({ category: 'niche-accuracy', message: 'Korean-Stock device content (LED mask/microcurrent/dermapen) without efficacy disclaimer — home devices have limited clinical evidence vs professional treatments. Add "results may vary" or regulatory classification note.', severity: 'warning' });
         eeatScore -= 1;
       }
     }
@@ -2212,7 +2212,7 @@ export function validateContent(
     if (/hada\s*labo/i.test(plainText)) {
       const hasJapaneseContext = /japanese|japan|MHLW|not\s*korean|rohto/i.test(plainText);
       if (!hasJapaneseContext) {
-        warnings.push({ category: 'niche-accuracy', message: 'Hada Labo mentioned in K-Beauty context without noting it is Japanese (Rohto Pharmaceutical, MHLW regulated). Add "Japanese brand often compared in K-Beauty discussions" for clarity.', severity: 'warning' });
+        warnings.push({ category: 'niche-accuracy', message: 'Hada Labo mentioned in Korean-Stock context without noting it is Japanese (Rohto Pharmaceutical, MHLW regulated). Add "Japanese brand often compared in Korean-Stock discussions" for clarity.', severity: 'warning' });
       }
     }
 
@@ -2264,13 +2264,13 @@ export function validateContent(
       for (const phMatch of cleanserPhMatches) {
         const phValue = parseFloat(phMatch.replace(/pH\s*(?:of\s*)?/i, ''));
         if (!isNaN(phValue) && phValue > 7.0) {
-          warnings.push({ category: 'niche-accuracy', message: `Cleanser pH ${phValue} is too high — K-Beauty cleansers should be pH 4.5-6.5 to maintain skin barrier. pH >7 disrupts acid mantle.`, severity: 'warning' });
+          warnings.push({ category: 'niche-accuracy', message: `Cleanser pH ${phValue} is too high — Korean-Stock cleansers should be pH 4.5-6.5 to maintain skin barrier. pH >7 disrupts acid mantle.`, severity: 'warning' });
           eeatScore -= 1;
         }
       }
     }
 
-    // 40. 12차 감사: K-Beauty 트렌드 용어 정확성 — glass skin, honey skin, cloudless skin
+    // 40. 12차 감사: Korean-Stock 트렌드 용어 정확성 — glass skin, honey skin, cloudless skin
     if (/glass\s*skin/i.test(plainText)) {
       if (/glass\s*skin[^.]{0,80}(?:texture|pores?\s*(?:visible|prominent|large)|bumpy|rough)/i.test(plainText) ||
           /(?:texture|visible\s*pores?|bumpy)[^.]{0,80}glass\s*skin/i.test(plainText)) {
@@ -2289,7 +2289,7 @@ export function validateContent(
       }
     }
 
-    // 41. 12차 감사: K-Entertainment 차트 혼동 방지 — 초동(Hanteo) vs 누적(Circle) 비교 금지
+    // 41. 12차 감사: AI-Trading 차트 혼동 방지 — 초동(Hanteo) vs 누적(Circle) 비교 금지
     if (/초동|first.?week\s*sales?|hanteo/i.test(plainText) && /circle\s*chart|gaon/i.test(plainText)) {
       const conflatesCharts = /hanteo[^.]{0,60}circle|circle[^.]{0,60}hanteo/i.test(plainText);
       if (conflatesCharts && !/(?:differ|distinct|respectively|whereas|vs\.?|hanteo\s*(?:tracks?|measures?)\s*(?:physical|real))/i.test(plainText)) {
@@ -2298,7 +2298,7 @@ export function validateContent(
       }
     }
 
-    // 42. 12차 감사: K-Entertainment 어워드 명칭 정확성 — MAMA / GDA / SMA 혼동 방지
+    // 42. 12차 감사: AI-Trading 어워드 명칭 정확성 — MAMA / GDA / SMA 혼동 방지
     if (/MAMA/i.test(plainText) && !/MAMA\s*Awards?|Mnet\s*Asian\s*Music\s*Awards?/i.test(plainText)) {
       if (/MAMA\s*(?:ceremony|show|event|winners?|nominees?)/i.test(plainText)) {
         warnings.push({ category: 'niche-accuracy', message: 'MAMA referenced without full name — specify "MAMA Awards (Mnet Asian Music Awards)" on first mention for SEO and accuracy.', severity: 'info' });
@@ -2323,7 +2323,7 @@ export function validateContent(
       }
     }
 
-    // 14차 감사 — 45. K-pop idol brand ambassador accuracy (cross-niche K-Beauty ↔ K-Entertainment)
+    // 14차 감사 — 45. K-pop idol brand ambassador accuracy (cross-niche Korean-Stock ↔ AI-Trading)
     const ambassadorDb: Record<string, string[]> = {
       // Format: idol/group → [brand ambassadorships as of 2026]
       'Jisoo': ['Dior', 'Cartier', 'Self-Portrait'],
@@ -2402,7 +2402,7 @@ export function validateContent(
         if (!isNaN(phValue) && phValue >= 4.0 && phValue <= 6.0) {
           // Normal range for non-acid toners — no warning needed
         } else if (!isNaN(phValue) && phValue > 6.5 && !/acid|AHA|BHA|vitamin\s*c/i.test(plainText)) {
-          warnings.push({ category: 'niche-accuracy', message: `Toner/essence pH ${phValue} is above optimal range — K-Beauty hydrating toners should be pH 4.5-6.0 for skin barrier compatibility`, severity: 'warning' });
+          warnings.push({ category: 'niche-accuracy', message: `Toner/essence pH ${phValue} is above optimal range — Korean-Stock hydrating toners should be pH 4.5-6.0 for skin barrier compatibility`, severity: 'warning' });
           eeatScore -= 1;
           break;
         }
@@ -2410,7 +2410,7 @@ export function validateContent(
     }
 
     // 16차 감사 — 50. AHA/BHA optimal pH range validation (pH 3.0-4.0)
-    if (category === 'K-Beauty' && /\b(?:AHA|BHA|glycolic|salicylic|lactic)\b/i.test(plainText) && /\bpH\b/i.test(plainText)) {
+    if (category === 'Korean-Stock' && /\b(?:AHA|BHA|glycolic|salicylic|lactic)\b/i.test(plainText) && /\bpH\b/i.test(plainText)) {
       const acidPhMatches = plainText.match(/\bpH\s*(?:of\s*)?([\d.]+)/gi) || [];
       for (const phMatch of acidPhMatches) {
         const phValue = parseFloat(phMatch.replace(/pH\s*(?:of\s*)?/i, ''));
@@ -2431,11 +2431,11 @@ export function validateContent(
     }
   }
 
-  // 16차 감사 — 49. Cross-niche cannibalization detection (K-Entertainment idol skincare → K-Beauty 영역 침범 방지)
-  if (category === 'K-Entertainment' && /(?:idol|k-?pop)\s*(?:skincare|skin\s*care|beauty\s*routine)/i.test(plainText)) {
+  // 16차 감사 — 49. Cross-niche cannibalization detection (AI-Trading idol skincare → Korean-Stock 영역 침범 방지)
+  if (category === 'AI-Trading' && /(?:idol|k-?pop)\s*(?:skincare|skin\s*care|beauty\s*routine)/i.test(plainText)) {
     const productRecommendations = (plainText.match(/(?:recommend|best|buy|purchase|apply|use)\s+(?:this|the|a)\s+(?:serum|cream|toner|moisturizer|sunscreen|cleanser|essence|ampoule)/gi) || []).length;
     if (productRecommendations >= 4) {
-      warnings.push({ category: 'niche-accuracy', message: `K-Entertainment article contains ${productRecommendations} product purchase recommendations — this may cannibalize K-Beauty content. Idol skincare articles should focus on routine descriptions and brand mentions, not detailed product reviews.`, severity: 'warning' });
+      warnings.push({ category: 'niche-accuracy', message: `AI-Trading article contains ${productRecommendations} product purchase recommendations — this may cannibalize Korean-Stock content. Idol skincare articles should focus on routine descriptions and brand mentions, not detailed product reviews.`, severity: 'warning' });
       eeatScore -= 2;
     }
   }
@@ -2689,10 +2689,10 @@ function detectSuspiciousUrls(html: string): string[] {
     'koreaherald.com', 'mk.co.kr', 'hankyung.com',
     'hybecorp.com', 'smentertainment.com', 'jype.com', 'ygfamily.com',
     'cosmeticsdesign-asia.com', 'lonelyplanet.com',
-    // K-Entertainment trusted sources
+    // AI-Trading trusted sources
     'weverse.io', 'melon.com', 'hanteonews.com', 'circlechart.kr',
     'soompi.com', 'billboard.com', 'sbs.co.kr', 'kbs.co.kr', 'mbc.co.kr', 'mnet.com',
-    // K-Beauty trusted sources
+    // Korean-Stock trusted sources
     'oliveyoung.co.kr', 'oliveyoung.com', 'allure.co.kr',
     'incidecoder.com', 'cosdna.com', 'skinsort.com', 'yesstyle.com', 'stylevana.com',
     'twitter.com', 'x.com', 'linkedin.com', 'facebook.com',

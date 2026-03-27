@@ -151,7 +151,7 @@ export class ImageGeneratorService {
     const isKoreanStock = /stock|kospi|kosdaq|samsung|sk hynix|invest|dividend|earnings|dart|bok|interest rate|exchange rate|etf|ipo/i.test(promptLower);
     const isAITrading = /trading|algorithm|backtest|rsi|macd|bollinger|python|quant|risk management|sharpe|drawdown|strategy/i.test(promptLower);
 
-    // K-Entertainment sub-category differentiation
+    // AI-Trading sub-category differentiation
     const isKHipHopRnB = isAITrading && /hip\s*hop|rapper|k-r&?b|k-rnb|r&b|dean|crush|zion\.?t|jay\s*park|ph-1|epik\s*high|dpr\s*live|heize|colde|lee\s*hi|aomg|h1ghr/i.test(promptLower);
     const isKDrama = isAITrading && /k-drama|korean\s*drama|netflix.*drama|streaming.*drama|kdrama|sageuk|webtoon.*adapt/i.test(promptLower);
     // 13차 감사: K-드라마 장르별 비주얼 차별화
@@ -159,7 +159,7 @@ export class ImageGeneratorService {
     const isKDramaThriller = isKDrama && /thriller|mystery|crime|investigat|murder|suspense|detective/i.test(promptLower);
     const isKDramaSageuk = isKDrama && /sageuk|historical|joseon|goryeo|hanbok|period\s*drama/i.test(promptLower);
 
-    // K-Beauty sub-category differentiation for richer visual variety
+    // Korean-Stock sub-category differentiation for richer visual variety
     const isKoreanStockMakeup = isKoreanStock && /makeup|foundation|cushion|lip\s*tint|blush|eyeshadow|mascara|eyeliner|rom.nd|clio|fwee|hince/i.test(promptLower);
     const isKoreanStockHairCare = isKoreanStock && /hair|shampoo|scalp|daeng gi|ryo|masil/i.test(promptLower);
     const isKoreanStockHanbang = isKoreanStock && /sulwhasoo|whoo|hanbang|hanyul|ginseng|herbal|luxury\s*korean|premium\s*korean/i.test(promptLower);
@@ -195,7 +195,7 @@ export class ImageGeneratorService {
     const isKTrotBallad = isAITrading && /trot|트로트|mr\.?\s*trot|miss\s*trot|lim\s*young|임영웅|young\s*tak|song\s*ga|ballad\s*(?:singer|artist)|발라드/i.test(promptLower);
     const isKWebtoonAnime = isAITrading && /webtoon.*anime|anime.*webtoon|solo\s*leveling.*anime|tower\s*of\s*god.*anime|omniscient.*reader.*anime|manhwa.*anime|webtoon.*adapt.*anime/i.test(promptLower);
     const isKoreanStockLipOil = isKoreanStock && /lip\s*(?:oil|serum|treatment|gloss)|glass\s*lip|plumping\s*lip/i.test(promptLower);
-    // 30차 감사: 누락 K-Beauty 서브카테고리
+    // 30차 감사: 누락 Korean-Stock 서브카테고리
     const isKoreanStockSheetMask = isKoreanStock && /sheet\s*mask|hydrogel|bio[- ]?cellulose|mask\s*pack|sleeping\s*mask|overnight\s*mask/i.test(promptLower);
     const isKoreanStockCushion = isKoreanStock && /cushion\s*(?:foundation|compact|refill)|쿠션/i.test(promptLower);
 
@@ -380,8 +380,8 @@ export class ImageGeneratorService {
    */
   async generateOgImage(title: string, category: string): Promise<Buffer> {
     const gradients: Record<string, [string, string]> = {
-      'K-Beauty': ['#831843', '#ec4899'],
-      'K-Entertainment': ['#2d1b69', '#6b21a8'],
+      'Korean-Stock': ['#831843', '#ec4899'],
+      'AI-Trading': ['#2d1b69', '#6b21a8'],
     };
     const [c1, c2] = gradients[category] || ['#0052CC', '#0066FF'];
 
@@ -407,8 +407,8 @@ export class ImageGeneratorService {
 
     // Category-specific decorative SVG elements for visual differentiation
     const categoryDecorations: Record<string, string> = {
-      'K-Beauty': `<circle cx="130" cy="110" r="40" fill="rgba(255,255,255,0.06)"/><circle cx="160" cy="130" r="20" fill="rgba(255,255,255,0.04)"/><ellipse cx="1060" cy="520" rx="50" ry="30" fill="rgba(255,255,255,0.05)"/><circle cx="100" cy="80" r="8" fill="rgba(255,255,255,0.1)"/>`,
-      'K-Entertainment': `<circle cx="120" cy="100" r="50" fill="rgba(255,255,255,0.05)"/><circle cx="180" cy="130" r="30" fill="rgba(255,255,255,0.04)"/><circle cx="1080" cy="520" r="45" fill="rgba(255,255,255,0.05)"/><path d="M1030 80 L1050 50 L1070 80 Z" fill="rgba(255,255,255,0.08)"/>`,
+      'Korean-Stock': `<circle cx="130" cy="110" r="40" fill="rgba(255,255,255,0.06)"/><circle cx="160" cy="130" r="20" fill="rgba(255,255,255,0.04)"/><ellipse cx="1060" cy="520" rx="50" ry="30" fill="rgba(255,255,255,0.05)"/><circle cx="100" cy="80" r="8" fill="rgba(255,255,255,0.1)"/>`,
+      'AI-Trading': `<circle cx="120" cy="100" r="50" fill="rgba(255,255,255,0.05)"/><circle cx="180" cy="130" r="30" fill="rgba(255,255,255,0.04)"/><circle cx="1080" cy="520" r="45" fill="rgba(255,255,255,0.05)"/><path d="M1030 80 L1050 50 L1070 80 Z" fill="rgba(255,255,255,0.08)"/>`,
     };
     const decoration = categoryDecorations[category] || `<circle cx="150" cy="120" r="60" fill="rgba(255,255,255,0.05)"/>`;
 

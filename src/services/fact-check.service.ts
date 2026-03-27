@@ -244,8 +244,8 @@ export class FactCheckService {
 
     // 9. (Reserved for future niche-specific checks)
 
-    // 10. K-Beauty: Check for recalled or discontinued product claims
-    if (category === 'K-Beauty') {
+    // 10. Korean-Stock: Check for recalled or discontinued product claims
+    if (category === 'Korean-Stock') {
       // Check sunscreen SPF claims — MFDS caps Korean sunscreen at SPF 50+
       const spfRegex = /SPF\s*(\d+)/gi;
       const spfMatches = plainText.match(spfRegex) || [];

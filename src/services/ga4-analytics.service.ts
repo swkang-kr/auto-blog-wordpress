@@ -446,8 +446,8 @@ Favor top-performing content types when choosing format for each niche.`;
 
         // Find category for this niche
         const category = entry.niche.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
-          .replace('K Beauty', 'K-Beauty')
-          .replace('K Entertainment', 'K-Entertainment');
+          .replace('K Beauty', 'Korean-Stock')
+          .replace('K Entertainment', 'AI-Trading');
         const rpm = rpmByCategory[category] || 3; // Default RPM $3 if unknown
         const estimatedRevenue = (post.pageviews / 1000) * rpm;
 

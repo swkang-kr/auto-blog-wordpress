@@ -16,7 +16,7 @@ const TEST_CONTENT: BlogContent = {
   html: '',
   excerpt: 'BTS is back! All members have completed military service and the group is gearing up for their highly anticipated 2026 comeback. Here\'s everything ARMY needs to know about the reunion era.',
   tags: ['BTS', 'KPop', 'KEntertainment'],
-  category: 'K-Entertainment',
+  category: 'AI-Trading',
   imagePrompts: [],
   imageCaptions: [],
 };

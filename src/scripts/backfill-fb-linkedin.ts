@@ -101,7 +101,7 @@ async function main() {
 
     const url = wpPost.link;
     const excerpt = stripHtml(wpPost.content).substring(0, 300);
-    const category = entry.niche === 'k-beauty-skincare' ? 'K-Beauty' : 'K-Entertainment';
+    const category = entry.niche === 'k-beauty-skincare' ? 'Korean-Stock' : 'AI-Trading';
 
     const blogContent: BlogContent = {
       title: wpPost.title,

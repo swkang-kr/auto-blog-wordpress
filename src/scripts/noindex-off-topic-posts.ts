@@ -28,7 +28,7 @@ const OFF_TOPIC_SLUGS = [
   'sk-hynix-hbm-memory-market-share',
   'kospi-q1-earnings-korean-stock-picks',
   'how-to-invest-korean-stocks-foreigner',
-  // K-Entertainment romanized slugs (영어권 검색 불가)
+  // AI-Trading romanized slugs (영어권 검색 불가)
   'cha-ji-yeons-bold-challenge-on-hyeon-yeok-gawang-3-no-regrets',
   'yoon-yu-seons-whirlwind-marriage-shocks-best-friend-yoo-ho-jung',
   'hong-jas-comeback-can-she-overturn-last-place-in-semifinals',
@@ -82,7 +82,7 @@ async function main() {
         meta: {
           rank_math_robots: 'noindex,nofollow',
           _autoblog_archived: new Date().toISOString(),
-          _autoblog_archive_reason: 'Off-topic or deferred: 2-niche focus strategy (K-Beauty + K-Entertainment)',
+          _autoblog_archive_reason: 'Off-topic or deferred: 2-niche focus strategy (Korean-Stock + AI-Trading)',
         },
       });
 

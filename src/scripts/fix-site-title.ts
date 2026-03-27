@@ -16,7 +16,7 @@ const SITE_NAME = process.env.SITE_NAME || 'TrendHunt';
 const token = Buffer.from(`${WP_USERNAME}:${WP_APP_PASSWORD}`).toString('base64');
 const headers = { Authorization: `Basic ${token}` };
 
-const TAGLINE = 'Your Guide to K-Beauty, K-Pop & K-Drama Trends';
+const TAGLINE = 'Your Guide to Korean-Stock, K-Pop & K-Drama Trends';
 
 async function main() {
   console.log(`Site: ${WP_URL}\n`);

@@ -107,8 +107,8 @@ export class FacebookService {
 
   private nicheEmoji(category: string): string {
     const map: Record<string, string> = {
-      'K-Beauty': '✨',
-      'K-Entertainment': '🎵',
+      'Korean-Stock': '✨',
+      'AI-Trading': '🎵',
     };
     return map[category] || '📝';
   }

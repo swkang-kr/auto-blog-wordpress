@@ -101,7 +101,7 @@ export class ContentRefreshService {
           if (rpmByCategory) {
             const entry = freshnessData.find(f => f.postUrl && (slug.includes(f.postUrl.replace(/^https?:\/\/[^/]+/, '').replace(/\/+$/, '')) || f.postUrl.includes(p.url.replace(/^\//, ''))));
             if (entry?.niche) {
-              const nicheCategory = entry.niche.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()).replaceAll('K Beauty', 'K-Beauty').replaceAll('K Entertainment', 'K-Entertainment');
+              const nicheCategory = entry.niche.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()).replaceAll('K Beauty', 'Korean-Stock').replaceAll('K Entertainment', 'AI-Trading');
               const rpm = rpmByCategory[nicheCategory] || 5;
               // High RPM posts get negative boost (lower score = higher priority)
               revenueBoost = -(rpm / 15) * 10; // Max ~-8 for $12 RPM categories
@@ -910,7 +910,7 @@ Return JSON only: {"title":"new title","metaDescription":"new meta description",
       'ive', 'nmixx', 'itzy', 'enhypen', 'txt', 'babymonster', 'plave'].some(t => titleAndContent.includes(t));
 
     const nicheRewriteRules = isKBeauty ? `
-NICHE-SPECIFIC RULES — K-Beauty:
+NICHE-SPECIFIC RULES — Korean-Stock:
 - Include active ingredient concentration (%) and pH where known (high E-E-A-T signal)
 - Add or update pricing table: Olive Young KRW / Amazon USD / YesStyle (if product review)
 - Update Olive Young bestseller ranking positions with "as of [Month Year]" qualifier — rankings change frequently
@@ -919,7 +919,7 @@ NICHE-SPECIFIC RULES — K-Beauty:
 - Reference emerging 2025-2026 brands where relevant: MEDICUBE, Isntree, Haruharu Wonder
 - Cite editorial sources: Allure, Harper's Bazaar Korea, INCI Decoder for credibility
 - Check for discontinued or reformulated products — Korean brands iterate formulations frequently` : isKEntertainment ? `
-NICHE-SPECIFIC RULES — K-Entertainment:
+NICHE-SPECIFIC RULES — AI-Trading:
 - Use fan-friendly language: comeback, era, stan, bias, ult, fandom
 - Include fan-relevant metrics where available: MV view counts (YouTube), Melon/Circle Chart positions
 - Update group/member status to ${currentYear} (comebacks, hiatuses, military enlistment)
