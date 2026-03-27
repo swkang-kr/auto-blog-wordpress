@@ -6,7 +6,7 @@ import { validateContent, autoFixContent, logContentScore } from '../utils/conte
 import { costTracker } from '../utils/cost-tracker.js';
 import { circuitBreakers } from '../utils/retry.js';
 import type { ResearchedKeyword, BlogContent, ExistingPost, AuthorProfile } from '../types/index.js';
-import { NICHE_AUTHOR_PERSONAS, CONTENT_TYPE_PERSONA_MAP, KBEAUTY_TERTIARY_KEYWORDS, KENTERTAINMENT_TERTIARY_KEYWORDS } from '../types/index.js';
+import { NICHE_AUTHOR_PERSONAS, CONTENT_TYPE_PERSONA_MAP } from '../types/index.js';
 
 /** Layout variant for content structure diversification (anti-AI detection) */
 type LayoutVariant = 'standard' | 'narrative' | 'compact' | 'journal' | 'opinion' | 'interview';
@@ -812,75 +812,45 @@ export class ContentGeneratorService {
    * Supports 3-tier rotation: primary (academic), secondary (casual), tertiary (specialist).
    *
    * K-Beauty:  Sophie Kim (primary) → Mia Cho (secondary) → Ella Park (tertiary: makeup/hair)
-   * K-Entertainment: Jamie Yoon (primary) → Alex Han (secondary) → Sora Lee (tertiary: K-drama)
+   * Korean-Stock: Daniel Park (primary) → Jiwon Lee (secondary: macro)
+   * AI-Trading: Alex Kwon (primary) → Sungho Choi (secondary: systems)
    */
   selectAuthorPersona(category: string, contentType: string, postCount: number, keyword?: string): AuthorProfile {
     const personas = NICHE_AUTHOR_PERSONAS[category];
     if (!personas || personas.length <= 1) {
-      return personas?.[0] || { name: '', title: 'Korea Analyst', bio: '', expertise: [], credentials: [], yearsExperience: 3 };
+      return personas?.[0] || { name: '', title: 'Korea Market Analyst', bio: '', expertise: [], credentials: [], yearsExperience: 3 };
     }
 
     const preferredVoice = CONTENT_TYPE_PERSONA_MAP[contentType] || 'primary';
 
-    // K-Beauty: only use Ella Park (tertiary, index 2) for explicitly makeup/hair content.
-    // All skincare product-review/x-vs-y/how-to should use Sophie Kim (primary) or Mia Cho (secondary).
-    if (category === 'K-Beauty' && personas.length >= 3 && keyword) {
-      const isMakeupHairContent = KBEAUTY_TERTIARY_KEYWORDS.test(keyword);
-      if (isMakeupHairContent && postCount % 3 !== 0) {
-        return personas[2]; // Ella Park — K-Beauty Hair & Makeup Specialist
-      }
-      // For skincare content, fall through to preferredVoice mapping (primary/secondary)
-    }
-
-    // K-Entertainment: detect K-drama content for Sora Lee (index 2)
-    if (category === 'K-Entertainment' && personas.length >= 3 && keyword) {
+    // Korean-Stock: macro/interest-rate/currency content → Jiwon Lee (secondary)
+    if (category === 'Korean-Stock' && keyword) {
       const kw = keyword.toLowerCase();
-      const isDramaFilmContent =
-        kw.includes('drama') || kw.includes('kdrama') || kw.includes('k-drama') ||
-        kw.includes(' ost') || kw.includes('webtoon') || kw.includes('netflix') ||
-        kw.includes('streaming') || kw.includes('watch') || kw.includes('actor') ||
-        kw.includes('actress') || kw.includes('manhwa') ||
-        kw.includes('movie') || kw.includes('film') || kw.includes('cinema') ||
-        kw.includes('musical') || kw.includes('cannes') || kw.includes('biff') ||
-        KENTERTAINMENT_TERTIARY_KEYWORDS.test(keyword);
-      if (isDramaFilmContent) {
-        return personas[2]; // Sora Lee — K-Drama & Korean Cinema Critic (also covers musicals & films)
-      }
-
-      // K-Hip-Hop/K-R&B/indie/variety → Alex Han (secondary, index 1) — NOT Jamie Yoon (idol-focused primary)
-      const isNonIdolContent =
-        kw.includes('hip-hop') || kw.includes('hip hop') || kw.includes('r&b') ||
-        kw.includes('r & b') || kw.includes('indie') || kw.includes('variety show') ||
-        kw.includes('variety') || kw.includes('web variety') || kw.includes('workman') ||
-        kw.includes('running man') || kw.includes('knowing bros');
-      if (isNonIdolContent) {
-        return personas[1]; // Alex Han — K-Pop & Hallyu Culture Writer (broader scope)
+      const isMacroContent =
+        kw.includes('interest rate') || kw.includes('bok') || kw.includes('bank of korea') ||
+        kw.includes('exchange rate') || kw.includes('won') || kw.includes('gdp') ||
+        kw.includes('inflation') || kw.includes('fomc') || kw.includes('federal reserve') ||
+        kw.includes('bond') || kw.includes('macro');
+      if (isMacroContent) {
+        return personas[1]; // Jiwon Lee — Macro Strategist
       }
     }
 
-    // K-Entertainment how-to/x-vs-y: only use Sora Lee (tertiary) for drama-adjacent content.
-    // K-pop how-to (streaming, photocards, merch, concerts) should use Alex Han (secondary).
-    if (
-      category === 'K-Entertainment' &&
-      preferredVoice === 'tertiary' &&
-      personas.length >= 3 &&
-      keyword
-    ) {
+    // AI-Trading: system architecture/infrastructure content → Sungho Choi (secondary)
+    if (category === 'AI-Trading' && keyword) {
       const kw = keyword.toLowerCase();
-      const isDramaContent =
-        kw.includes('drama') || kw.includes('kdrama') || kw.includes('k-drama') ||
-        kw.includes(' ost') || kw.includes('webtoon') || kw.includes('netflix') ||
-        kw.includes('streaming') || kw.includes('watch') || kw.includes('actor') ||
-        kw.includes('actress') || kw.includes('manhwa');
-      // Non-drama K-Entertainment how-to → Alex Han (index 1) is more appropriate
-      if (!isDramaContent && postCount % 3 !== 0) {
-        return personas[1]; // Alex Han — K-Pop & Hallyu Culture Writer
+      const isSystemContent =
+        kw.includes('architecture') || kw.includes('websocket') || kw.includes('dashboard') ||
+        kw.includes('monitoring') || kw.includes('circuit breaker') || kw.includes('production') ||
+        kw.includes('deployment') || kw.includes('api') || kw.includes('infrastructure');
+      if (isSystemContent) {
+        return personas[1]; // Sungho Choi — Systems Engineer
       }
     }
 
-    // Tertiary persona for specialist content types (rotate every 3rd post back to primary)
-    if (preferredVoice === 'tertiary' && personas.length >= 3 && postCount % 3 !== 0) {
-      return personas[2];
+    // Secondary persona for specialist content (rotate every 3rd post back to primary)
+    if (preferredVoice === 'secondary' && postCount % 3 !== 0 && personas.length >= 2) {
+      return personas[1];
     }
 
     // Secondary persona for casual content types (rotate every 3rd post back to primary)
