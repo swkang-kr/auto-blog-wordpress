@@ -4,8 +4,9 @@ import { GoogleTrendsError } from '../types/errors.js';
 import { withRetry } from '../utils/retry.js';
 import type { TrendsData, RisingQuery } from '../types/index.js';
 
-// Increased from 2500ms to 4000ms to reduce Google captcha/rate-limit triggers
-const RATE_LIMIT_MS = 4000;
+// Progressive rate limiting: starts at 5s, increases after each call to avoid captcha
+const BASE_RATE_LIMIT_MS = 5000;
+const RATE_LIMIT_INCREMENT_MS = 500; // Each subsequent call adds 500ms delay
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -46,7 +47,12 @@ export class GoogleTrendsService {
     // Detect HTML response (rate limit / captcha)
     const msg = error instanceof Error ? error.message : String(error);
     const isHtmlResponse = msg.includes('Unexpected token') && msg.includes('<');
-    // Only trip circuit breaker after threshold reached (not on first HTML response)
+    // On HTML/captcha response, add extra cooldown delay before next call
+    if (isHtmlResponse && this.consecutiveFailures < GoogleTrendsService.CIRCUIT_BREAKER_THRESHOLD) {
+      logger.info(`Google Trends: HTML response detected, adding 15s cooldown before next call (failure ${this.consecutiveFailures}/${GoogleTrendsService.CIRCUIT_BREAKER_THRESHOLD})`);
+      this.lastCallTime = Date.now() + 15000; // Force 15s gap before next call
+    }
+    // Only trip circuit breaker after threshold reached
     if (this.consecutiveFailures >= GoogleTrendsService.CIRCUIT_BREAKER_THRESHOLD) {
       if (!this.circuitOpen) {
         logger.warn(`🔴 Google Trends circuit breaker OPEN — ${this.consecutiveFailures} consecutive failures${isHtmlResponse ? ' (HTML response detected — likely rate-limited/captcha)' : ''}. Skipping all Trends calls for this batch.`);
@@ -55,12 +61,17 @@ export class GoogleTrendsService {
     }
   }
 
+  private callCount = 0;
+
   private async rateLimit(): Promise<void> {
+    // Progressive delay: 5s, 5.5s, 6s, 6.5s, ... (reduces captcha triggers)
+    const dynamicDelay = BASE_RATE_LIMIT_MS + (this.callCount * RATE_LIMIT_INCREMENT_MS);
     const elapsed = Date.now() - this.lastCallTime;
-    if (elapsed < RATE_LIMIT_MS) {
-      await sleep(RATE_LIMIT_MS - elapsed);
+    if (elapsed < dynamicDelay) {
+      await sleep(dynamicDelay - elapsed);
     }
     this.lastCallTime = Date.now();
+    this.callCount++;
   }
 
   async fetchTrendsData(keyword: string): Promise<TrendsData> {
@@ -111,31 +122,8 @@ export class GoogleTrendsService {
       if (this.circuitOpen) return { keyword, interestOverTime: [], relatedTopics: [], relatedQueries: [], averageInterest: 0, trendDirection: 'stable', hasBreakout: false };
     }
 
-    // Fetch related topics
-    let relatedTopics: string[] = [];
-    try {
-      await this.rateLimit();
-      const rtRaw = await withRetry(
-        () => googleTrends.relatedTopics({
-          keyword,
-          startTime,
-          endTime,
-          geo: this.geo,
-        }),
-        2,
-        5000,
-      );
-      const rtData = JSON.parse(rtRaw);
-      const ranked = rtData.default?.rankedList?.[0]?.rankedKeyword ?? [];
-      relatedTopics = ranked
-        .slice(0, 10)
-        .map((item: { topic: { title: string } }) => item.topic?.title)
-        .filter(Boolean);
-      this.recordSuccess();
-    } catch (error) {
-      this.recordFailure(error);
-      logger.warn(`relatedTopics failed for "${keyword}": ${error instanceof Error ? error.message : error}`);
-    }
+    // Skip relatedTopics API call — not used by keyword research, saves 1 API call per keyword
+    const relatedTopics: string[] = [];
 
     // Fetch related queries (single call — reuse for both queries and breakout detection)
     let relatedQueries: string[] = [];

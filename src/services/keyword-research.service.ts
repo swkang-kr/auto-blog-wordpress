@@ -314,8 +314,10 @@ export class KeywordResearchService {
     }
 
     // 1b. Fetch extra broad terms (e.g., K-drama, Korean movie) to capture non-primary topics
+    // Limit to 2 extra terms to reduce API calls (was unlimited, causing 10+ calls per niche)
     if (niche.broadTermsExtra?.length) {
-      for (const extraTerm of niche.broadTermsExtra) {
+      const limitedExtra = niche.broadTermsExtra.slice(0, 2);
+      for (const extraTerm of limitedExtra) {
         try {
           const extra = await this.trendsService.fetchRisingQueries(extraTerm);
           if (extra.rising.length > 0) {
@@ -367,8 +369,8 @@ export class KeywordResearchService {
       // 2b. Fall back to seed keyword scanning if still empty
       //     Sample up to MAX_SEED_SAMPLE random seeds + apply time budget to avoid batch timeout
       if (topQueries.length === 0) {
-        const MAX_SEED_SAMPLE = 20;
-        const SEED_TIME_BUDGET_MS = 3 * 60 * 1000; // 3 minutes per niche
+        const MAX_SEED_SAMPLE = 10; // Reduced from 20 to lower API call count (each seed = 2 Trends API calls)
+        const SEED_TIME_BUDGET_MS = 2 * 60 * 1000; // 2 minutes per niche (reduced from 3)
         const seedStart = Date.now();
 
         // Stratified sampling: cluster seeds by first significant word, then sample evenly across clusters
