@@ -1,0 +1,149 @@
+{
+  "exported_at": "2026-03-27T07:41:22.265393+00:00",
+  "period": "30d",
+  "daily_performance": [
+    {
+      "date": "20260327",
+      "pnl": 0,
+      "pnl_rate": 0,
+      "trade_count": 0,
+      "win_count": 0,
+      "sharpe": -8.60076,
+      "mdd": -2.131
+    },
+    {
+      "date": "20260326",
+      "pnl": 0,
+      "pnl_rate": 0,
+      "trade_count": 2,
+      "win_count": 1,
+      "sharpe": -8.887614,
+      "mdd": -2.131
+    },
+    {
+      "date": "20260325",
+      "pnl": -65432.0,
+      "pnl_rate": -0.667,
+      "trade_count": 2,
+      "win_count": 0,
+      "sharpe": -9.21424,
+      "mdd": -2.131
+    },
+    {
+      "date": "20260324",
+      "pnl": 4050.0,
+      "pnl_rate": 0.0413,
+      "trade_count": 0,
+      "win_count": 0,
+      "sharpe": -7.877209,
+      "mdd": -1.5145
+    },
+    {
+      "date": "20260323",
+      "pnl": -11667.0,
+      "pnl_rate": -0.1188,
+      "trade_count": 1,
+      "win_count": 0,
+      "sharpe": -8.445046,
+      "mdd": -1.5146
+    },
+    {
+      "date": "20260320",
+      "pnl": 2916.0,
+      "pnl_rate": 0.0297,
+      "trade_count": 0,
+      "win_count": 0,
+      "sharpe": -8.093636,
+      "mdd": -1.4267
+    },
+    {
+      "date": "20260319",
+      "pnl": 0,
+      "pnl_rate": 0,
+      "trade_count": 31,
+      "win_count": 5,
+      "sharpe": -8.686984,
+      "mdd": -1.4267
+    },
+    {
+      "date": "20260318",
+      "pnl": -77440.0,
+      "pnl_rate": -0.7794,
+      "trade_count": 39,
+      "win_count": 1,
+      "sharpe": -9.161603,
+      "mdd": -1.4267
+    },
+    {
+      "date": "20260317",
+      "pnl": -4888.0,
+      "pnl_rate": -0.0492,
+      "trade_count": 21,
+      "win_count": 7,
+      "sharpe": -7.496068,
+      "mdd": -0.6523
+    },
+    {
+      "date": "20260316",
+      "pnl": -2334.0,
+      "pnl_rate": -0.0235,
+      "trade_count": 4,
+      "win_count": 2,
+      "sharpe": null,
+      "mdd": null
+    },
+    {
+      "date": "20260313",
+      "pnl": -58020.0,
+      "pnl_rate": -0.5801,
+      "trade_count": 6,
+      "win_count": 2,
+      "sharpe": null,
+      "mdd": null
+    },
+    {
+      "date": "20260312",
+      "pnl": 0,
+      "pnl_rate": 0,
+      "trade_count": 0,
+      "win_count": 0,
+      "sharpe": null,
+      "mdd": null
+    },
+    {
+      "date": "20260311",
+      "pnl": 0,
+      "pnl_rate": 0,
+      "trade_count": 0,
+      "win_count": 0,
+      "sharpe": null,
+      "mdd": null
+    },
+    {
+      "date": "20260304",
+      "pnl": 0,
+      "pnl_rate": 0,
+      "trade_count": 0,
+      "win_count": 0,
+      "sharpe": null,
+      "mdd": null
+    },
+    {
+      "date": "20260303",
+      "pnl": 0,
+      "pnl_rate": 0,
+      "trade_count": 0,
+      "win_count": 0,
+      "sharpe": null,
+      "mdd": null
+    }
+  ],
+  "summary": {
+    "total_pnl": -212815.0,
+    "total_trades": 106,
+    "win_rate": 17.0,
+    "avg_daily_pnl": -14188.0,
+    "best_day": 4050.0,
+    "worst_day": -77440.0
+  }
+}
