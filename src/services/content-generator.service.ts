@@ -212,14 +212,14 @@ const SLUG_STOP_WORDS = new Set([
 function optimizeSlug(slug: string): string {
   const words = slug
     .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/[^a-z0-9가-힣\s-]/g, '') // 한글(가-힣) + 영문 + 숫자 허용
     .replace(/\s+/g, '-')
     .replace(/-+/g, '-')
     .replace(/^-|-$/g, '')
     .split('-')
     .filter(w => w.length > 0 && !SLUG_STOP_WORDS.has(w));
 
-  return words.slice(0, 6).join('-');
+  return words.slice(0, 8).join('-'); // 한글은 단어가 짧으므로 8개까지 허용
 }
 
 function buildSystemPrompt(variant: LayoutVariant): string {
@@ -513,7 +513,7 @@ This targets Google's List Featured Snippet for ranking queries.
    - 연도 포함 (2026)
    - 금지: "~의 모든 것", "완벽 가이드", "꼭 알아야 할"
 
-2. slug: 영문 URL slug (3-5 words, lowercase, hyphens). 슬러그만 영문 유지.
+2. slug: 한국어 URL slug (3-5 단어, 하이픈 구분). 예: "삼성전자-주가-전망-분석", "RSI-MACD-매매-전략". 한글+영문 혼용 가능.
 3. html: **한국어** 블로그 포스트 (HTML 형식, 2,500+ 단어, inline CSS)
 4. 클릭 가능한 목차 포함 (아래 HTML 규칙 참조)
 5. 자연스러운 한국어 금융 전문가 톤. 존댓말(합쇼체/해요체 혼용) 사용.
@@ -696,10 +696,10 @@ IMPORTANT: Respond with pure JSON only. Do NOT use markdown code blocks (\`\`\`)
 Escape double quotes (") inside field values as \\".
 
 JSON format:
-{"title":"한국어 제목","slug":"english-slug-for-url","ogTitle":"짧은 소셜 제목 (20자 내)","html":"<div style=\\"max-width:760px;...\\">...한국어 콘텐츠...</div>","excerpt":"한국어 메타 설명 60-80자","metaDescription":"SEO 최적화 메타 설명 (60-80자, 핵심 키워드 포함, 행동 유도)","titleCandidates":["대안 제목 A (다른 앵글)","대안 제목 B (다른 후크)"],"tags":["태그1","태그2"],"category":"카테고리명","imagePrompts":["A detailed scene of... (50+ words, English for image generation)","...","...","...","..."],"imageCaptions":["한국어 이미지 캡션 1","캡션 2","캡션 3","캡션 4","캡션 5"]}
+{"title":"한국어 제목","slug":"삼성전자-주가-전망-분석","ogTitle":"짧은 소셜 제목 (20자 내)","html":"<div style=\\"max-width:760px;...\\">...한국어 콘텐츠...</div>","excerpt":"한국어 메타 설명 60-80자","metaDescription":"SEO 최적화 메타 설명 (60-80자, 핵심 키워드 포함, 행동 유도)","titleCandidates":["대안 제목 A (다른 앵글)","대안 제목 B (다른 후크)"],"tags":["태그1","태그2"],"category":"카테고리명","imagePrompts":["A detailed scene of... (50+ words, English for image generation)","...","...","...","..."],"imageCaptions":["한국어 이미지 캡션 1","캡션 2","캡션 3","캡션 4","캡션 5"]}
 
-IMPORTANT: title, html, excerpt, metaDescription, tags, category, imageCaptions는 모두 한국어로 작성.
-IMPORTANT: slug, imagePrompts만 영문 유지 (slug=URL용, imagePrompts=이미지 생성 AI용).
+IMPORTANT: title, html, excerpt, metaDescription, tags, category, imageCaptions, slug 모두 한국어로 작성.
+IMPORTANT: imagePrompts만 영문 유지 (이미지 생성 AI용).
 IMPORTANT for metaDescription: excerpt와 별도. 구글 검색 결과 CTR 최적화용. 핵심 키워드 + 가치 제안 + 행동 유도. 60-80자.
 IMPORTANT for titleCandidates: 메인 제목과 다른 앵글/후크로 2개 대안 제목 (A/B 테스트용).`;
 }
