@@ -1,0 +1,306 @@
+/**
+ * Trade Engine Data Bridge Service
+ *
+ * Reads exported JSON data from Trade Engine and provides it as context
+ * to the content generator for Korean stock market blog posts.
+ *
+ * Data flow:
+ * 1. Trade Engine exports data daily → data/trade-engine/*.json
+ * 2. This service reads the JSON files at batch start
+ * 3. Content generator uses the data for market-aware content
+ */
+
+import { readFileSync, existsSync } from 'fs';
+import { join, dirname } from 'path';
+import { logger } from '../utils/logger.js';
+
+const DATA_DIR = join(dirname(new URL(import.meta.url).pathname), '../../data/trade-engine');
+
+export interface DailySummary {
+  exported_at: string;
+  period: string;
+  daily_performance: Array<{
+    date: string;
+    pnl: number;
+    pnl_rate: number;
+    trade_count: number;
+    win_count: number;
+    sharpe: number | null;
+    mdd: number | null;
+  }>;
+  summary?: {
+    total_pnl: number;
+    total_trades: number;
+    win_rate: number;
+    avg_daily_pnl: number;
+    best_day: number;
+    worst_day: number;
+  };
+}
+
+export interface TradeSignal {
+  stock_code: string;
+  stock_name: string;
+  strategy: string;
+  signal_type: string;
+  confidence: number;
+  reason: string;
+  price: number;
+  created_at: string;
+}
+
+export interface Holding {
+  stock_code: string;
+  stock_name: string;
+  quantity: number;
+  avg_price: number;
+  current_price: number;
+  unrealized_pnl: number;
+  unrealized_pnl_rate: number;
+  strategy: string;
+  entry_date: string;
+}
+
+export interface TradeRecord {
+  stock_code: string;
+  stock_name: string;
+  side: string;
+  quantity: number;
+  price: number;
+  pnl: number | null;
+  pnl_rate: number | null;
+  strategy: string;
+  reason: string;
+  filled_at: string;
+}
+
+export interface DisclosureItem {
+  corp_name: string;
+  stock_code: string;
+  report_name: string;
+  disclosure_type: string;
+  sentiment: number | null;
+  submitted_at: string;
+  signal_used: boolean;
+}
+
+export interface TopMover {
+  stock_code: string;
+  stock_name: string;
+  close: number;
+  change_rate: number;
+  volume: number;
+}
+
+export interface TradeEngineData {
+  dailySummary: DailySummary | null;
+  signals: TradeSignal[];
+  holdings: Holding[];
+  trades: TradeRecord[];
+  disclosures: DisclosureItem[];
+  topGainers: TopMover[];
+  topLosers: TopMover[];
+  dataAge: number; // hours since last export
+  isStale: boolean; // true if data is >24h old
+}
+
+export class TradeEngineBridge {
+  private dataDir: string;
+
+  constructor(dataDir?: string) {
+    this.dataDir = dataDir || DATA_DIR;
+  }
+
+  /** Load all trade engine data files */
+  loadData(): TradeEngineData {
+    const result: TradeEngineData = {
+      dailySummary: null,
+      signals: [],
+      holdings: [],
+      trades: [],
+      disclosures: [],
+      topGainers: [],
+      topLosers: [],
+      dataAge: Infinity,
+      isStale: true,
+    };
+
+    try {
+      // Daily summary
+      const summary = this.readJson<DailySummary>('daily_summary.json');
+      if (summary) {
+        result.dailySummary = summary;
+        result.dataAge = this.getDataAge(summary.exported_at);
+      }
+
+      // Signals
+      const signals = this.readJson<{ signals: TradeSignal[] }>('signals.json');
+      if (signals) result.signals = signals.signals || [];
+
+      // Holdings
+      const holdings = this.readJson<{ holdings: Holding[] }>('holdings.json');
+      if (holdings) result.holdings = holdings.holdings || [];
+
+      // Trades
+      const trades = this.readJson<{ trades: TradeRecord[] }>('trades.json');
+      if (trades) result.trades = trades.trades || [];
+
+      // Disclosures
+      const disclosures = this.readJson<{ disclosures: DisclosureItem[] }>('disclosures.json');
+      if (disclosures) result.disclosures = disclosures.disclosures || [];
+
+      // Top movers
+      const movers = this.readJson<{ top_gainers: TopMover[]; top_losers: TopMover[] }>('top_movers.json');
+      if (movers) {
+        result.topGainers = movers.top_gainers || [];
+        result.topLosers = movers.top_losers || [];
+      }
+
+      result.isStale = result.dataAge > 24;
+
+      if (result.isStale) {
+        logger.warn(`Trade Engine data is ${result.dataAge.toFixed(0)}h old (stale). Content will use general market context.`);
+      } else {
+        logger.info(`Trade Engine data loaded: ${result.signals.length} signals, ${result.holdings.length} holdings, ${result.trades.length} trades, ${result.disclosures.length} disclosures`);
+      }
+    } catch (error) {
+      logger.warn(`Trade Engine data load failed: ${error instanceof Error ? error.message : error}`);
+    }
+
+    return result;
+  }
+
+  /** Build content generation context from trade engine data */
+  buildContentContext(data: TradeEngineData): string {
+    if (data.isStale || !data.dailySummary) {
+      return '\n## Trade Engine Data: UNAVAILABLE (use general Korean market knowledge)\n';
+    }
+
+    const parts: string[] = ['\n## Trade Engine Live Data (use in content where relevant)\n'];
+
+    // Performance summary
+    if (data.dailySummary.summary) {
+      const s = data.dailySummary.summary;
+      parts.push(
+        `### 30-Day Trading Performance\n` +
+        `- Total P&L: ${s.total_pnl >= 0 ? '+' : ''}${s.total_pnl.toLocaleString()}원\n` +
+        `- Win Rate: ${s.win_rate}% (${s.total_trades} trades)\n` +
+        `- Best Day: +${s.best_day.toLocaleString()}원 | Worst Day: ${s.worst_day.toLocaleString()}원\n`,
+      );
+    }
+
+    // Recent signals (top 5)
+    if (data.signals.length > 0) {
+      parts.push('### Recent Trading Signals\n');
+      for (const sig of data.signals.slice(0, 5)) {
+        parts.push(`- [${sig.signal_type}] ${sig.stock_name} (${sig.stock_code}) — ${sig.strategy}, confidence: ${(sig.confidence * 100).toFixed(0)}%, reason: ${sig.reason.slice(0, 100)}`);
+      }
+      parts.push('');
+    }
+
+    // Current holdings
+    if (data.holdings.length > 0) {
+      parts.push('### Current Holdings\n');
+      for (const h of data.holdings) {
+        const pnlSign = h.unrealized_pnl >= 0 ? '+' : '';
+        parts.push(`- ${h.stock_name} (${h.stock_code}): ${h.quantity}주 @ ${h.avg_price.toLocaleString()}원, P&L: ${pnlSign}${h.unrealized_pnl_rate.toFixed(1)}%`);
+      }
+      parts.push('');
+    }
+
+    // Key disclosures
+    if (data.disclosures.length > 0) {
+      parts.push('### Recent Key Disclosures (DART)\n');
+      for (const d of data.disclosures.slice(0, 5)) {
+        const sentiment = d.sentiment ? ` (sentiment: ${d.sentiment > 0 ? 'positive' : d.sentiment < 0 ? 'negative' : 'neutral'})` : '';
+        parts.push(`- ${d.corp_name}: ${d.report_name}${sentiment}`);
+      }
+      parts.push('');
+    }
+
+    // Top movers
+    if (data.topGainers.length > 0 || data.topLosers.length > 0) {
+      parts.push('### Market Movers (Latest Trading Day)\n');
+      if (data.topGainers.length > 0) {
+        parts.push('Top Gainers:');
+        for (const g of data.topGainers.slice(0, 5)) {
+          parts.push(`  - ${g.stock_name}: +${g.change_rate.toFixed(1)}% (${g.close.toLocaleString()}원)`);
+        }
+      }
+      if (data.topLosers.length > 0) {
+        parts.push('Top Losers:');
+        for (const l of data.topLosers.slice(0, 5)) {
+          parts.push(`  - ${l.stock_name}: ${l.change_rate.toFixed(1)}% (${l.close.toLocaleString()}원)`);
+        }
+      }
+      parts.push('');
+    }
+
+    // Recent trades (top 5)
+    if (data.trades.length > 0) {
+      parts.push('### Recent Trades\n');
+      for (const t of data.trades.slice(0, 5)) {
+        const pnl = t.pnl != null ? ` → P&L: ${t.pnl >= 0 ? '+' : ''}${t.pnl.toLocaleString()}원 (${t.pnl_rate?.toFixed(1)}%)` : '';
+        parts.push(`- [${t.side.toUpperCase()}] ${t.stock_name} ${t.quantity}주 @ ${t.price.toLocaleString()}원${pnl} — ${t.strategy}`);
+      }
+      parts.push('');
+    }
+
+    return parts.join('\n');
+  }
+
+  /** Generate keyword suggestions based on trade engine data */
+  generateKeywordSuggestions(data: TradeEngineData): string[] {
+    const suggestions: string[] = [];
+
+    // Signal-based keywords
+    for (const sig of data.signals.slice(0, 3)) {
+      suggestions.push(`${sig.stock_name} 주가 전망 분석 ${new Date().getFullYear()}`);
+      suggestions.push(`${sig.stock_name} 기술적 분석 RSI MACD 매매 전략`);
+    }
+
+    // Holding-based keywords
+    for (const h of data.holdings.slice(0, 3)) {
+      suggestions.push(`${h.stock_name} 투자 분석 목표가 전망 ${new Date().getFullYear()}`);
+    }
+
+    // Disclosure-based keywords
+    for (const d of data.disclosures.slice(0, 3)) {
+      suggestions.push(`${d.corp_name} ${d.report_name} 공시 분석 투자 영향`);
+    }
+
+    // Top movers keywords
+    for (const g of data.topGainers.slice(0, 2)) {
+      suggestions.push(`${g.stock_name} 급등 이유 분석 전망 ${new Date().getFullYear()}`);
+    }
+    for (const l of data.topLosers.slice(0, 2)) {
+      suggestions.push(`${l.stock_name} 하락 원인 분석 반등 가능성`);
+    }
+
+    return suggestions;
+  }
+
+  private readJson<T>(filename: string): T | null {
+    const filepath = join(this.dataDir, filename);
+    if (!existsSync(filepath)) {
+      logger.debug(`Trade Engine data file not found: ${filename}`);
+      return null;
+    }
+    try {
+      const raw = readFileSync(filepath, 'utf-8');
+      return JSON.parse(raw) as T;
+    } catch (error) {
+      logger.warn(`Failed to parse ${filename}: ${error instanceof Error ? error.message : error}`);
+      return null;
+    }
+  }
+
+  private getDataAge(exportedAt: string): number {
+    try {
+      const exported = new Date(exportedAt).getTime();
+      return (Date.now() - exported) / (1000 * 60 * 60); // hours
+    } catch {
+      return Infinity;
+    }
+  }
+}
