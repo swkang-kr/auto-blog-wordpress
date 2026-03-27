@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-03-27T07:04:18.662Z",
+  "lastUpdated": "2026-03-27T07:23:16.941Z",
   "activeFeatures": [
     "auto-blog-wordpress",
     "config",
@@ -43,9 +43,9 @@
       },
       "phaseNumber": 3,
       "doCompleted": true,
-      "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/types/index.ts",
+      "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/utils/korean-calendar.ts",
       "timestamps": {
-        "lastUpdated": "2026-03-27T07:02:06.415Z"
+        "lastUpdated": "2026-03-27T07:23:16.941Z"
       }
     },
     "config": {
@@ -109,7 +109,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-09T02:06:54.047Z",
-        "lastUpdated": "2026-03-27T07:04:18.661Z"
+        "lastUpdated": "2026-03-27T07:13:54.869Z"
       },
       "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/content-generator.service.ts"
     },
@@ -122,7 +122,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-09T02:08:11.137Z",
-        "lastUpdated": "2026-03-27T01:50:21.843Z"
+        "lastUpdated": "2026-03-27T07:21:59.843Z"
       },
       "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/keyword-research.service.ts"
     },
@@ -239,7 +239,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-09T08:46:48.741Z",
-        "lastUpdated": "2026-03-27T01:42:30.684Z"
+        "lastUpdated": "2026-03-27T07:22:19.557Z"
       },
       "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/pinterest.service.ts"
     },
@@ -252,7 +252,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-10T00:19:48.137Z",
-        "lastUpdated": "2026-03-19T04:39:03.059Z"
+        "lastUpdated": "2026-03-27T07:22:30.007Z"
       },
       "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/reddit-trends.service.ts"
     },
@@ -382,7 +382,7 @@
   "session": {
     "startedAt": "2026-02-24T10:12:24.092Z",
     "onboardingCompleted": true,
-    "lastActivity": "2026-03-27T07:04:18.662Z"
+    "lastActivity": "2026-03-27T07:23:16.941Z"
   },
   "history": [
     {
@@ -12805,6 +12805,114 @@
     {
       "timestamp": "2026-03-27T07:04:18.661Z",
       "feature": "content-generator.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:07:57.402Z",
+      "feature": "auto-blog-wordpress",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:08:09.378Z",
+      "feature": "auto-blog-wordpress",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:08:22.374Z",
+      "feature": "auto-blog-wordpress",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:09:10.420Z",
+      "feature": "auto-blog-wordpress",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:09:21.814Z",
+      "feature": "auto-blog-wordpress",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:09:37.951Z",
+      "feature": "auto-blog-wordpress",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:10:00.783Z",
+      "feature": "content-generator.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:10:40.218Z",
+      "feature": "content-generator.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:11:14.694Z",
+      "feature": "content-generator.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:11:26.475Z",
+      "feature": "content-generator.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:12:52.707Z",
+      "feature": "content-generator.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:13:45.534Z",
+      "feature": "content-generator.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:13:54.869Z",
+      "feature": "content-generator.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:21:59.843Z",
+      "feature": "keyword-research.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:22:08.426Z",
+      "feature": "pinterest.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:22:19.557Z",
+      "feature": "pinterest.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:22:30.007Z",
+      "feature": "reddit-trends.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:23:16.941Z",
+      "feature": "auto-blog-wordpress",
       "phase": "do",
       "action": "updated"
     }

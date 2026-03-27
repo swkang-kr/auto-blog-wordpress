@@ -785,11 +785,27 @@ STRATEGY: Consider creating content that directly targets one of these content g
     const koreaTerms = [
       // Core Korea terms
       'korea', 'korean', 'seoul', 'samsung', 'hyundai', 'lg', 'sk', 'kospi', 'kosdaq',
-      'hallyu', 'k-pop', 'kpop', 'k-drama', 'kdrama', 'k-entertainment', 'kimchi',
-      'chaebol', 'won', 'krw', 'naver', 'kakao', 'hybe', 'bts', 'blackpink',
-      'webtoon', 'hanwha', 'posco', 'kia', 'lotte', 'cj', 'pangyo', 'gangnam',
-      'bibimbap', 'soju', 'hanbok', 'tteokbokki', 'busan', 'jeju', 'incheon',
+      'chaebol', 'won', 'krw', 'naver', 'kakao', 'hybe',
+      'hanwha', 'posco', 'kia', 'lotte', 'cj', 'pangyo', 'gangnam',
+      'busan', 'jeju', 'incheon',
       'chaebols', 'kbank', 'toss', 'coupang', 'baemin', 'daum', 'musinsa',
+      // Korean stock market / finance terms
+      'krx', 'dart', 'bok', 'bank of korea', 'fsc', 'fss',
+      'sk hynix', 'samsung electronics', 'lg energy', 'samsung sdi',
+      'celltrion', 'samsung biologics', 'naver', 'kakao',
+      'hyundai motor', 'kia', 'hd hyundai', 'posco holdings',
+      'doosan', 'hanwha aerospace', 'lig nex1',
+      'kodex', 'tiger', 'arirang', // Korean ETF brands
+      'kis', 'kiwoom', 'mirae asset', 'samsung securities', 'kb securities',
+      'interpark', 'koscom',
+      // Trading/quant terms associated with Korean market
+      'hbm', 'dram', 'nand', 'foundry', // semiconductor
+      'ev battery', 'cathode', 'anode', 'solid state battery',
+      'biosimilar', 'cdmo', // biotech
+      'vi', 'volatility interruption', // Korean market specific
+      'dividend', 'ex-dividend', '배당',
+      'rsi', 'macd', 'bollinger', 'technical analysis',
+      'algorithmic trading', 'backtesting', 'quant',
       // K-Beauty brands — must pass Korea relevance for skincare/beauty keywords
       'cosrx', 'anua', 'laneige', 'innisfree', 'sulwhasoo', 'missha', 'etude',
       'skin1004', 'torriden', 'beauty of joseon', 'medicube', 'isntree',
