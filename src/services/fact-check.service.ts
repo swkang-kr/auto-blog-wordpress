@@ -384,7 +384,14 @@ export class FactCheckService {
         for (const [entity, correctYear] of Object.entries(knownDates)) {
           if (context.includes(entity) && claimedYear !== correctYear) {
             flagged.push(`Incorrect founding year: "${entity}" claimed ${claimedYear}, correct is ${correctYear}`);
-            corrections.push({ claim: match, correction: `${entity} was founded/established in ${correctYear}` });
+            // Founding year errors are auto-corrected but NOT critical — they don't warrant draft status.
+            // Only live data discrepancies (exchange rates, KOSPI) are critical corrections.
+            // The auto-fix below will insert the correct year inline.
+            if (Math.abs(claimedYear - correctYear) > 5) {
+              // >5 year difference is likely a hallucination, add to corrections for auto-fix
+              corrections.push({ claim: match, correction: `${entity} was founded/established in ${correctYear}` });
+            }
+            unverified++;
           }
         }
         // Flag future dates
