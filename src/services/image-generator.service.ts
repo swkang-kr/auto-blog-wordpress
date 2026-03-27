@@ -93,11 +93,11 @@ export class ImageGeneratorService {
       resultKB = result.length / 1024;
     }
 
-    // If still too large, resize down
+    // If still too large, resize down (but never below 1200px for Google Discover eligibility)
     if (resultKB > TARGET_MAX_KB) {
       const meta = await sharp(buffer).metadata();
       const scale = Math.sqrt(TARGET_MAX_KB / resultKB);
-      const newWidth = Math.round((meta.width || 1200) * scale);
+      const newWidth = Math.max(1200, Math.round((meta.width || 1200) * scale));
       result = await sharp(buffer).resize(newWidth).webp({ quality: 75 }).toBuffer();
       resultKB = result.length / 1024;
     }
@@ -122,10 +122,11 @@ export class ImageGeneratorService {
       resultKB = result.length / 1024;
     }
 
+    // Never resize below 1200px (Google Discover minimum width)
     if (resultKB > TARGET_MAX_KB) {
       const meta = await sharp(buffer).metadata();
       const scale = Math.sqrt(TARGET_MAX_KB / resultKB);
-      const newWidth = Math.round((meta.width || 1200) * scale);
+      const newWidth = Math.max(1200, Math.round((meta.width || 1200) * scale));
       result = await sharp(buffer).resize(newWidth).avif({ quality: 60 }).toBuffer();
       resultKB = result.length / 1024;
     }
