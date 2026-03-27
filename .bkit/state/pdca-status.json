@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-03-27T07:23:16.941Z",
+  "lastUpdated": "2026-03-27T07:34:28.746Z",
   "activeFeatures": [
     "auto-blog-wordpress",
     "config",
@@ -43,9 +43,9 @@
       },
       "phaseNumber": 3,
       "doCompleted": true,
-      "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/utils/korean-calendar.ts",
+      "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/index.ts",
       "timestamps": {
-        "lastUpdated": "2026-03-27T07:23:16.941Z"
+        "lastUpdated": "2026-03-27T07:34:28.746Z"
       }
     },
     "config": {
@@ -83,7 +83,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-09T02:04:01.095Z",
-        "lastUpdated": "2026-03-27T05:50:55.276Z"
+        "lastUpdated": "2026-03-27T07:33:09.315Z"
       },
       "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/wordpress.service.ts"
     },
@@ -135,7 +135,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-09T02:22:20.309Z",
-        "lastUpdated": "2026-03-27T02:23:22.297Z"
+        "lastUpdated": "2026-03-27T07:33:51.171Z"
       },
       "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/image-generator.service.ts"
     },
@@ -161,7 +161,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-09T03:34:22.189Z",
-        "lastUpdated": "2026-03-19T04:38:55.425Z"
+        "lastUpdated": "2026-03-27T07:31:21.159Z"
       },
       "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/pages.service.ts"
     },
@@ -278,7 +278,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-10T04:15:37.066Z",
-        "lastUpdated": "2026-03-27T00:01:25.975Z"
+        "lastUpdated": "2026-03-27T07:29:01.190Z"
       },
       "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/fact-check.service.ts"
     },
@@ -382,7 +382,7 @@
   "session": {
     "startedAt": "2026-02-24T10:12:24.092Z",
     "onboardingCompleted": true,
-    "lastActivity": "2026-03-27T07:23:16.941Z"
+    "lastActivity": "2026-03-27T07:34:28.746Z"
   },
   "history": [
     {
@@ -12912,6 +12912,102 @@
     },
     {
       "timestamp": "2026-03-27T07:23:16.941Z",
+      "feature": "auto-blog-wordpress",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:25:35.591Z",
+      "feature": "fact-check.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:28:24.698Z",
+      "feature": "fact-check.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:29:01.190Z",
+      "feature": "fact-check.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:31:07.998Z",
+      "feature": "pages.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:31:15.281Z",
+      "feature": "pages.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:31:21.159Z",
+      "feature": "pages.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:31:37.138Z",
+      "feature": "image-generator.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:31:47.627Z",
+      "feature": "image-generator.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:31:56.486Z",
+      "feature": "image-generator.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:32:15.831Z",
+      "feature": "auto-blog-wordpress",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:32:38.688Z",
+      "feature": "auto-blog-wordpress",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:32:59.945Z",
+      "feature": "wordpress.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:33:09.315Z",
+      "feature": "wordpress.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:33:44.857Z",
+      "feature": "image-generator.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:33:51.171Z",
+      "feature": "image-generator.service.ts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-27T07:34:28.746Z",
       "feature": "auto-blog-wordpress",
       "phase": "do",
       "action": "updated"

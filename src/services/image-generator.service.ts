@@ -148,100 +148,100 @@ export class ImageGeneratorService {
   ): Promise<Buffer | null> {
     // Detect niche from prompt content for category-appropriate styling
     const promptLower = prompt.toLowerCase();
-    const isKBeauty = /skincare|k-beauty|serum|moisturizer|sunscreen|toner|cleanser|glass skin|olive young/i.test(promptLower);
-    const isKEntertainment = /k-pop|idol|k-drama|concert|comeback|fandom|lightstick|k-hip-?hop|k-r&?b|rapper|hip\s*hop/i.test(promptLower);
+    const isKoreanStock = /stock|kospi|kosdaq|samsung|sk hynix|invest|dividend|earnings|dart|bok|interest rate|exchange rate|etf|ipo/i.test(promptLower);
+    const isAITrading = /trading|algorithm|backtest|rsi|macd|bollinger|python|quant|risk management|sharpe|drawdown|strategy/i.test(promptLower);
 
     // K-Entertainment sub-category differentiation
-    const isKHipHopRnB = isKEntertainment && /hip\s*hop|rapper|k-r&?b|k-rnb|r&b|dean|crush|zion\.?t|jay\s*park|ph-1|epik\s*high|dpr\s*live|heize|colde|lee\s*hi|aomg|h1ghr/i.test(promptLower);
-    const isKDrama = isKEntertainment && /k-drama|korean\s*drama|netflix.*drama|streaming.*drama|kdrama|sageuk|webtoon.*adapt/i.test(promptLower);
+    const isKHipHopRnB = isAITrading && /hip\s*hop|rapper|k-r&?b|k-rnb|r&b|dean|crush|zion\.?t|jay\s*park|ph-1|epik\s*high|dpr\s*live|heize|colde|lee\s*hi|aomg|h1ghr/i.test(promptLower);
+    const isKDrama = isAITrading && /k-drama|korean\s*drama|netflix.*drama|streaming.*drama|kdrama|sageuk|webtoon.*adapt/i.test(promptLower);
     // 13차 감사: K-드라마 장르별 비주얼 차별화
     const isKDramaRomance = isKDrama && /romance|love|wedding|relationship|dating|rom-com/i.test(promptLower);
     const isKDramaThriller = isKDrama && /thriller|mystery|crime|investigat|murder|suspense|detective/i.test(promptLower);
     const isKDramaSageuk = isKDrama && /sageuk|historical|joseon|goryeo|hanbok|period\s*drama/i.test(promptLower);
 
     // K-Beauty sub-category differentiation for richer visual variety
-    const isKBeautyMakeup = isKBeauty && /makeup|foundation|cushion|lip\s*tint|blush|eyeshadow|mascara|eyeliner|rom.nd|clio|fwee|hince/i.test(promptLower);
-    const isKBeautyHairCare = isKBeauty && /hair|shampoo|scalp|daeng gi|ryo|masil/i.test(promptLower);
-    const isKBeautyHanbang = isKBeauty && /sulwhasoo|whoo|hanbang|hanyul|ginseng|herbal|luxury\s*korean|premium\s*korean/i.test(promptLower);
-    const isKBeautyLedMask = isKBeauty && /led\s*mask|cellreturn|lg\s*pra\.?l|light\s*therapy\s*mask/i.test(promptLower);
-    const isKBeautyTools = isKBeauty && /gua\s*sha|ice\s*roller|microcurrent|device|tool|facial\s*massage|derma\s*roller/i.test(promptLower);
-    const isKBeautyBarrierRepair = isKBeauty && /barrier\s*(?:repair|cream|restore)|ceramide|damaged\s*barrier|skin\s*barrier/i.test(promptLower);
-    const isKBeautyBodyCare = isKBeauty && /body\s*(?:care|lotion|cream|scrub|exfoli)|italy\s*towel|glass\s*body|spf\s*body/i.test(promptLower);
-    const isKBeautyTonerPad = isKBeauty && /toner\s*pad|sun\s*pad|exfoliat.*pad|선패드/i.test(promptLower);
-    const isKBeautyAmpoule = isKBeauty && /ampoule|앰플|concentrated\s*(?:serum|essence)/i.test(promptLower);
-    const isKBeautyTexture = isKBeauty && /texture|발림성|swatch|consistency|application/i.test(promptLower);
-    const isKBeautyNailArt = isKBeauty && /nail\s*art|gel\s*nail|press[- ]on\s*nail|manicure|nail\s*sticker|ohora|dashing\s*diva|cat\s*eye\s*nail|magnet\s*nail|aurora\s*nail/i.test(promptLower);
-    const isKMusical = isKEntertainment && /musical|theater|theatre|broadway|k-musical/i.test(promptLower);
-    const isKBeautyGiftSet = isKBeauty && /gift\s*set|advent\s*calendar|subscription\s*box|holiday\s*set|선물\s*세트|기프트/i.test(promptLower);
-    const isKBeautyMens = isKBeauty && /\bmen(?:'?s)?\b|male\s*skincare|grooming/i.test(promptLower);
-    const isKBeautyPregnancy = isKBeauty && /pregnan|prenatal|baby\s*safe|expecting\s*mom/i.test(promptLower);
-    const isKBeautyFragrance = isKBeauty && /fragrance|perfume|body\s*mist|tamburins|nonfiction|granhand|eau\s*de|cologne|scent/i.test(promptLower);
-    const isKPopFanCulture = isKEntertainment && /photocard|lightstick|light\s*stick|unboxing|album\s*(?:haul|collection)|fan\s*(?:merch|merchandise|collect)/i.test(promptLower);
-    const isKDramaOST = isKEntertainment && /(?:drama|kdrama).*ost|ost.*(?:drama|kdrama)|soundtrack.*(?:korean|k-drama)/i.test(promptLower);
-    const isKVarietyShow = isKEntertainment && /variety\s*show|running\s*man|knowing\s*bros|web\s*(?:variety|entertainment)|youtube\s*variety/i.test(promptLower);
+    const isKoreanStockMakeup = isKoreanStock && /makeup|foundation|cushion|lip\s*tint|blush|eyeshadow|mascara|eyeliner|rom.nd|clio|fwee|hince/i.test(promptLower);
+    const isKoreanStockHairCare = isKoreanStock && /hair|shampoo|scalp|daeng gi|ryo|masil/i.test(promptLower);
+    const isKoreanStockHanbang = isKoreanStock && /sulwhasoo|whoo|hanbang|hanyul|ginseng|herbal|luxury\s*korean|premium\s*korean/i.test(promptLower);
+    const isKoreanStockLedMask = isKoreanStock && /led\s*mask|cellreturn|lg\s*pra\.?l|light\s*therapy\s*mask/i.test(promptLower);
+    const isKoreanStockTools = isKoreanStock && /gua\s*sha|ice\s*roller|microcurrent|device|tool|facial\s*massage|derma\s*roller/i.test(promptLower);
+    const isKoreanStockBarrierRepair = isKoreanStock && /barrier\s*(?:repair|cream|restore)|ceramide|damaged\s*barrier|skin\s*barrier/i.test(promptLower);
+    const isKoreanStockBodyCare = isKoreanStock && /body\s*(?:care|lotion|cream|scrub|exfoli)|italy\s*towel|glass\s*body|spf\s*body/i.test(promptLower);
+    const isKoreanStockTonerPad = isKoreanStock && /toner\s*pad|sun\s*pad|exfoliat.*pad|선패드/i.test(promptLower);
+    const isKoreanStockAmpoule = isKoreanStock && /ampoule|앰플|concentrated\s*(?:serum|essence)/i.test(promptLower);
+    const isKoreanStockTexture = isKoreanStock && /texture|발림성|swatch|consistency|application/i.test(promptLower);
+    const isKoreanStockNailArt = isKoreanStock && /nail\s*art|gel\s*nail|press[- ]on\s*nail|manicure|nail\s*sticker|ohora|dashing\s*diva|cat\s*eye\s*nail|magnet\s*nail|aurora\s*nail/i.test(promptLower);
+    const isKMusical = isAITrading && /musical|theater|theatre|broadway|k-musical/i.test(promptLower);
+    const isKoreanStockGiftSet = isKoreanStock && /gift\s*set|advent\s*calendar|subscription\s*box|holiday\s*set|선물\s*세트|기프트/i.test(promptLower);
+    const isKoreanStockMens = isKoreanStock && /\bmen(?:'?s)?\b|male\s*skincare|grooming/i.test(promptLower);
+    const isKoreanStockPregnancy = isKoreanStock && /pregnan|prenatal|baby\s*safe|expecting\s*mom/i.test(promptLower);
+    const isKoreanStockFragrance = isKoreanStock && /fragrance|perfume|body\s*mist|tamburins|nonfiction|granhand|eau\s*de|cologne|scent/i.test(promptLower);
+    const isKPopFanCulture = isAITrading && /photocard|lightstick|light\s*stick|unboxing|album\s*(?:haul|collection)|fan\s*(?:merch|merchandise|collect)/i.test(promptLower);
+    const isKDramaOST = isAITrading && /(?:drama|kdrama).*ost|ost.*(?:drama|kdrama)|soundtrack.*(?:korean|k-drama)/i.test(promptLower);
+    const isKVarietyShow = isAITrading && /variety\s*show|running\s*man|knowing\s*bros|web\s*(?:variety|entertainment)|youtube\s*variety/i.test(promptLower);
     // 20차 감사: 리얼리티 데이팅 쇼 + 요리 예능 비주얼
-    const isKDatingShow = isKEntertainment && /dating\s*show|single.*inferno|heart\s*signal|exchange|transit\s*love|love\s*catcher|i\s*am\s*solo|reality.*dating|연애/i.test(promptLower);
-    const isKCookingVariety = isKEntertainment && /cooking|food\s*(?:show|variety)|youn.*kitchen|3\s*meals|kang.*kitchen|mukbang|new\s*journey|삼시세끼|윤식당/i.test(promptLower);
-    const isKVirtualIdol = isKEntertainment && /virtual\s*idol|plave|metaverse.*idol|ai\s*idol|virtual\s*avatar|3d\s*idol/i.test(promptLower);
-    const isKStreetDance = isKEntertainment && /street\s*(?:woman|man|dance)\s*fighter|swf|smf|dance\s*crew|street\s*dance/i.test(promptLower);
+    const isKDatingShow = isAITrading && /dating\s*show|single.*inferno|heart\s*signal|exchange|transit\s*love|love\s*catcher|i\s*am\s*solo|reality.*dating|연애/i.test(promptLower);
+    const isKCookingVariety = isAITrading && /cooking|food\s*(?:show|variety)|youn.*kitchen|3\s*meals|kang.*kitchen|mukbang|new\s*journey|삼시세끼|윤식당/i.test(promptLower);
+    const isKVirtualIdol = isAITrading && /virtual\s*idol|plave|metaverse.*idol|ai\s*idol|virtual\s*avatar|3d\s*idol/i.test(promptLower);
+    const isKStreetDance = isAITrading && /street\s*(?:woman|man|dance)\s*fighter|swf|smf|dance\s*crew|street\s*dance/i.test(promptLower);
     // 8차 감사 추가
-    const isKBeautyBaby = isKBeauty && /baby|infant|newborn|kids?\s*(?:skincare|sunscreen|lotion)|child(?:ren)?\s*(?:skincare|cosmetic)/i.test(promptLower);
-    const isKMovie = isKEntertainment && /korean\s*(?:film|movie|cinema)|blue\s*dragon|grand\s*bell|biff|film\s*festival|(?:bong|hwang|yeon|park\s*chan)\s*(?:joon|dong|sang|wook)/i.test(promptLower);
-    const isKSurvivalShow = isKEntertainment && /survival\s*show|audition|i-?land|produce\s*101|r\s*u\s*next|boys?\s*planet|girls?\s*planet/i.test(promptLower);
+    const isKoreanStockBaby = isKoreanStock && /baby|infant|newborn|kids?\s*(?:skincare|sunscreen|lotion)|child(?:ren)?\s*(?:skincare|cosmetic)/i.test(promptLower);
+    const isKMovie = isAITrading && /korean\s*(?:film|movie|cinema)|blue\s*dragon|grand\s*bell|biff|film\s*festival|(?:bong|hwang|yeon|park\s*chan)\s*(?:joon|dong|sang|wook)/i.test(promptLower);
+    const isKSurvivalShow = isAITrading && /survival\s*show|audition|i-?land|produce\s*101|r\s*u\s*next|boys?\s*planet|girls?\s*planet/i.test(promptLower);
     // 10차 감사 추가
-    const isKBandIdol = isKEntertainment && /day6|band\s*idol|밴드돌|live\s*(?:band|instrument)|qwer.*band/i.test(promptLower);
-    const isKIdolFashion = isKEntertainment && /airport\s*fashion|idol\s*fashion|best\s*dressed|luxury\s*(?:brand|outfit)/i.test(promptLower);
+    const isKBandIdol = isAITrading && /day6|band\s*idol|밴드돌|live\s*(?:band|instrument)|qwer.*band/i.test(promptLower);
+    const isKIdolFashion = isAITrading && /airport\s*fashion|idol\s*fashion|best\s*dressed|luxury\s*(?:brand|outfit)/i.test(promptLower);
     // 23차 감사: 트로트/발라드, 웹툰→애니, 립오일 비주얼
-    const isKTrotBallad = isKEntertainment && /trot|트로트|mr\.?\s*trot|miss\s*trot|lim\s*young|임영웅|young\s*tak|song\s*ga|ballad\s*(?:singer|artist)|발라드/i.test(promptLower);
-    const isKWebtoonAnime = isKEntertainment && /webtoon.*anime|anime.*webtoon|solo\s*leveling.*anime|tower\s*of\s*god.*anime|omniscient.*reader.*anime|manhwa.*anime|webtoon.*adapt.*anime/i.test(promptLower);
-    const isKBeautyLipOil = isKBeauty && /lip\s*(?:oil|serum|treatment|gloss)|glass\s*lip|plumping\s*lip/i.test(promptLower);
+    const isKTrotBallad = isAITrading && /trot|트로트|mr\.?\s*trot|miss\s*trot|lim\s*young|임영웅|young\s*tak|song\s*ga|ballad\s*(?:singer|artist)|발라드/i.test(promptLower);
+    const isKWebtoonAnime = isAITrading && /webtoon.*anime|anime.*webtoon|solo\s*leveling.*anime|tower\s*of\s*god.*anime|omniscient.*reader.*anime|manhwa.*anime|webtoon.*adapt.*anime/i.test(promptLower);
+    const isKoreanStockLipOil = isKoreanStock && /lip\s*(?:oil|serum|treatment|gloss)|glass\s*lip|plumping\s*lip/i.test(promptLower);
     // 30차 감사: 누락 K-Beauty 서브카테고리
-    const isKBeautySheetMask = isKBeauty && /sheet\s*mask|hydrogel|bio[- ]?cellulose|mask\s*pack|sleeping\s*mask|overnight\s*mask/i.test(promptLower);
-    const isKBeautyCushion = isKBeauty && /cushion\s*(?:foundation|compact|refill)|쿠션/i.test(promptLower);
+    const isKoreanStockSheetMask = isKoreanStock && /sheet\s*mask|hydrogel|bio[- ]?cellulose|mask\s*pack|sleeping\s*mask|overnight\s*mask/i.test(promptLower);
+    const isKoreanStockCushion = isKoreanStock && /cushion\s*(?:foundation|compact|refill)|쿠션/i.test(promptLower);
 
     // 30차 감사: sheet mask / cushion foundation 비주얼 서브카테고리
-    const nicheSuffix = isKBeautySheetMask
+    const nicheSuffix = isKoreanStockSheetMask
       ? ', Korean sheet mask flat lay photography, hydrogel or bio-cellulose mask unfolded, dewy translucent texture, serene spa-like atmosphere, soft blue and white tones, clean minimal surface, skincare ritual aesthetic, close-up mask application detail'
-      : isKBeautyCushion
+      : isKoreanStockCushion
       ? ', Korean cushion foundation product photography, compact mirror reflection, puff applicator with product visible, dewy luminous finish swatch, clean vanity setting, soft warm lighting, makeup editorial, close-up cushion compact open view'
-      : isKBeautyNailArt
+      : isKoreanStockNailArt
       ? ', Korean nail art close-up photography, trendy gel nail designs, cat eye magnet nail aurora gradient mirror chrome finish, 3D embedded nail art details, elegant hand pose, salon-quality macro detail, soft pink and lavender tones, clean minimal background, beauty editorial'
       : isKMusical
       ? ', Korean musical theater stage aesthetic, dramatic spotlight on performer, rich red curtain backdrop, warm golden stage lighting, Broadway-style grandeur with Korean sensibility, emotional theatrical atmosphere, cinematic wide shot composition'
-      : isKBeautyGiftSet
+      : isKoreanStockGiftSet
       ? ', Korean beauty gift set flat lay photography, beautifully wrapped boxes with ribbon, pastel and gold packaging, holiday aesthetic, curated skincare collection, festive warm lighting, premium unboxing experience, elegant arrangement on marble surface'
-      : isKBeautyFragrance
+      : isKoreanStockFragrance
       ? ', Korean niche perfume bottle photography, amber and frosted glass bottles, botanical ingredients arrangement, warm diffused golden lighting, luxury minimalist shelf display, clean composition, soft bokeh background'
-      : isKBeautyMens
+      : isKoreanStockMens
       ? ', men grooming product photography, dark tones with navy and charcoal accents, minimalist modern bathroom, clean geometric composition, masculine skincare bottles, matte finish products, subtle warm lighting'
-      : isKBeautyBaby
+      : isKoreanStockBaby
       ? ', baby skincare product photography, soft pastel pink and mint, gentle safe ingredients, plush cotton texture, warm nursery setting, clean minimal composition, soft natural daylight'
-      : isKBeautyPregnancy
+      : isKoreanStockPregnancy
       ? ', gentle motherhood skincare aesthetic, soft cream and sage green tones, natural organic ingredients flat lay, warm morning light, calm serene composition, botanical elements, safe gentle products on wooden tray'
-      : isKBeautyLedMask
+      : isKoreanStockLedMask
       ? ', Korean LED light therapy mask close-up, red and blue LED wavelength illumination visible, neon glow effect on skin, modern clinical aesthetic, futuristic skincare technology, dark ambient background with LED light reflections, home beauty device editorial'
-      : isKBeautyBarrierRepair
+      : isKoreanStockBarrierRepair
       ? ', Korean barrier repair skincare editorial, cream and ceramide product close-up, dewy hydrated skin texture, soft warm tones, glass bottle with rich cream consistency, clean minimal composition, soothing calming aesthetic'
-      : isKBeautyTools
+      : isKoreanStockTools
       ? ', Korean beauty tool product photography, clean clinical aesthetic, soft white background, modern bathroom counter, sleek gua sha ice roller flat lay, wellness spa minimalist composition'
-      : isKBeautyBodyCare
+      : isKoreanStockBodyCare
         ? ', Korean body care editorial, bright bathroom setting, glass body aesthetic, body products flat lay, soft natural lighting, spa-like atmosphere, luxurious texture display'
-        : isKBeautyTonerPad
+        : isKoreanStockTonerPad
           ? ', Korean toner pad close-up product photography, cotton round pad texture visible, clean glass jar packaging, soft pink and white tones, hydrating dewy aesthetic, minimal clean background'
-          : isKBeautyAmpoule
+          : isKoreanStockAmpoule
             ? ', Korean ampoule product photography, small glass dropper bottle close-up, golden serum droplet on dropper tip, clean minimal background, concentrated formula aesthetic, luxury skincare editorial, warm amber lighting'
-            : isKBeautyTexture
+            : isKoreanStockTexture
               ? ', Korean skincare texture swatch photography, product spread on glass surface, creamy gel texture close-up, dewy translucent consistency, finger swatch application, clean white marble background, macro lens detail'
-              : isKBeautyHanbang
+              : isKoreanStockHanbang
       ? ', luxurious Korean Hanbang aesthetic, gold and deep burgundy accents, traditional Korean botanical motifs, ginseng root and mugwort leaf elements, porcelain bottle packaging, heritage luxury cosmetic editorial, dark wood vanity, warm amber ambient lighting'
-      : isKBeautyMakeup
+      : isKoreanStockMakeup
         ? ', K-beauty makeup flat lay, vibrant coral and pink tones, mirror reflections, beauty editorial style, bright studio lighting, clean modern vanity, texture swatches visible'
-        : isKBeautyHairCare
+        : isKoreanStockHairCare
           ? ', Korean hair care editorial, sleek flowing hair texture, salon-quality lighting, minimalist bathroom setting, amber and warm tones, scalp care products arranged neatly'
-          : isKBeautyLipOil
+          : isKoreanStockLipOil
             ? ', Korean lip oil close-up macro photography, glossy dewy lip texture, luminous glass lip finish, serum droplet on applicator tip, plump volumized lips, warm soft lighting, luxury lip care editorial, pink and coral tones'
-            : isKBeauty
-            ? ', soft pastel aesthetic, Korean beauty product photography, clean white or cream background, glass bottles, subtle gradient lighting, editorial K-beauty style, dewy skin texture'
+            : isKoreanStock
+            ? ', professional financial data visualization, stock market chart with candlestick patterns, Korean stock exchange aesthetic, dark blue and green color scheme, modern trading terminal display, clean data dashboard composition'
             : isKVirtualIdol
               ? ', futuristic virtual idol aesthetic, holographic 3D character, neon cyan and purple glow, digital matrix background, metaverse stage, ethereal translucent effects, sci-fi concert atmosphere'
               : isKMovie
@@ -279,8 +279,8 @@ export class ImageGeneratorService {
                     ? ', Korean romance drama aesthetic, warm soft-focus lighting, pastel color palette, intimate emotional scene, cherry blossom or cafe setting, gentle bokeh background, cozy Seoul atmosphere'
                     : isKDrama
                       ? ', Korean drama cinematic aesthetic, warm emotional lighting, indoor intimate scene, romantic or dramatic atmosphere, soft bokeh background, Seoul cityscape through window, cozy living room or cafe setting'
-                      : isKEntertainment
-                        ? ', K-pop aesthetic, vibrant stage lighting, bold graphic design, dynamic composition, Seoul urban style'
+                      : isAITrading
+                        ? ', algorithmic trading visualization, Python code on dark terminal screen, financial data streams, modern fintech aesthetic, neon blue accent lighting, trading bot dashboard'
                         : '';
 
     const styleSuffix = index === 0

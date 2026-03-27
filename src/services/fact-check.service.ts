@@ -121,258 +121,85 @@ export class FactCheckService {
       }
     }
 
-    // 6. Category-specific checks
-    if (category === 'K-Beauty') {
-      // Check for health claims that need disclaimers
-      const healthClaims = /(?:cures?|treats?|heals?|prevents?|eliminates?)\s+(?:acne|wrinkles|aging|dark spots|hyperpigmentation)/gi;
-      const healthMatches = plainText.match(healthClaims) || [];
-      for (const match of healthMatches) {
-        flagged.push(`Medical claim detected: "${match}" — use softer language (helps reduce/may improve) per FTC guidelines`);
-      }
-
-      // Check for ingredient percentage claims without sources
-      const ingredientPctRegex = /(\d+(?:\.\d+)?%)\s+(?:niacinamide|retinol|retinal|vitamin c|ascorbic acid|hyaluronic acid|salicylic acid|aha|bha|pha|centella|snail mucin|tranexamic acid|glutathione|bakuchiol|polyglutamic acid|pga|madecassoside|asiaticoside|adenosine)/gi;
-      const ingredientMatches = plainText.match(ingredientPctRegex) || [];
-      for (const match of ingredientMatches) {
-        const hasCitation = /(?:according to|per the|per manufacturer|official|clinically|dermatologist)/i.test(
-          plainText.slice(Math.max(0, plainText.indexOf(match) - 100), plainText.indexOf(match) + match.length + 100),
-        );
-        if (!hasCitation) {
-          flagged.push(`Ingredient percentage without source: "${match}" — cite manufacturer data or clinical study`);
-          unverified++;
-        }
-      }
-
-      // 11차 감사: MFDS 기능성 화장품 인증 없이 치료 주장 감지
-      const treatmentClaims = /(?:removes?|eliminates?|erases?|treats?|corrects?)\s+(?:wrinkles?|aging|fine\s*lines|dark\s*spots|hyperpigmentation|acne|breakouts?|melasma|blemish)/gi;
-      const treatmentMatches = plainText.match(treatmentClaims) || [];
-      for (const tm of treatmentMatches) {
-        const tmIdx = plainText.indexOf(tm);
-        const tmContext = plainText.slice(Math.max(0, tmIdx - 150), tmIdx + tm.length + 150);
-        const isFunctionalMarked = /(?:MFDS|기능성\s*화장품|functional\s*cosmetic).{0,50}(?:certif|approv|register)/i.test(tmContext);
-        if (!isFunctionalMarked) {
-          flagged.push(
-            `Treatment claim without MFDS functional cosmetic certification: "${tm}" — ` +
-            `only MFDS-certified 기능성 화장품 (brightening/anti-wrinkle/sunscreen) can make treatment claims. ` +
-            `Use hedged language ("helps reduce", "may improve").`,
-          );
-          unverified++;
-        }
-      }
-
-      // 11차 감사: 성분 농도 범위 이상치 감지 (niacinamide 2-10%, retinol 0.025-1.0%, vitamin C 5-20%)
-      const concentrationRanges: Record<string, { min: number; max: number; label: string }> = {
-        niacinamide: { min: 2, max: 10, label: 'niacinamide (typical 2-10%)' },
-        retinol: { min: 0.01, max: 1.0, label: 'retinol (typical 0.01-1.0%)' },
-        'vitamin c': { min: 5, max: 20, label: 'vitamin C / ascorbic acid (typical 5-20%)' },
-        'ascorbic acid': { min: 5, max: 20, label: 'ascorbic acid (typical 5-20%)' },
-        'salicylic acid': { min: 0.5, max: 2, label: 'salicylic acid (typical 0.5-2%)' },
-        // 15차 감사: 누락 성분 농도 범위
-        retinal: { min: 0.005, max: 0.1, label: 'retinal/retinaldehyde (cosmetic 0.005-0.1% — ~11x more potent than retinol)' },
-        retinaldehyde: { min: 0.005, max: 0.1, label: 'retinaldehyde (cosmetic 0.005-0.1%)' },
-        'glycolic acid': { min: 3, max: 10, label: 'glycolic acid (cosmetic leave-on 3-10%; 10%+ = peel, not daily use)' },
-        'lactic acid': { min: 5, max: 12, label: 'lactic acid (cosmetic 5-12%)' },
-        'mandelic acid': { min: 2, max: 10, label: 'mandelic acid (cosmetic 2-10%)' },
-        madecassoside: { min: 0.1, max: 5, label: 'madecassoside (cosmetic 0.1-5%)' },
-        adenosine: { min: 0.04, max: 0.2, label: 'adenosine (MFDS functional cosmetic min 0.04%, typical 0.04-0.1%)' },
-        // 28차 감사: 누락 성분 농도 범위
-        'azelaic acid': { min: 5, max: 20, label: 'azelaic acid (cosmetic 5-10%, prescription 15-20%)' },
-        'tranexamic acid': { min: 2, max: 5, label: 'tranexamic acid (cosmetic topical 2-5%)' },
-        'copper peptide': { min: 0.001, max: 1, label: 'copper peptide / GHK-Cu (cosmetic 0.001-1%)' },
-        ceramide: { min: 0.1, max: 5, label: 'ceramide (cosmetic 0.1-5% — higher concentrations in pharmaceutical creams)' },
-        arbutin: { min: 1, max: 7, label: 'arbutin / alpha-arbutin (cosmetic 1-7%; >7% may cause paradoxical darkening)' },
-      };
-      for (const [ingredient, range] of Object.entries(concentrationRanges)) {
-        const concRegex = new RegExp(`(\\d+(?:\\.\\d+)?)%\\s*${ingredient.replace(/\s+/g, '\\s*')}`, 'gi');
-        const concMatches = plainText.match(concRegex) || [];
-        for (const cm of concMatches) {
-          const pctMatch = cm.match(/(\d+(?:\.\d+)?)%/);
-          if (pctMatch) {
-            const pctVal = parseFloat(pctMatch[1]);
-            if (pctVal < range.min || pctVal > range.max) {
-              flagged.push(
-                `Unusual ${range.label} concentration: ${pctVal}% — ` +
-                `typical cosmetic range is ${range.min}-${range.max}%. Verify with manufacturer data.`,
-              );
-              unverified++;
-            }
-          }
-        }
-      }
-
-      // 11차 감사: 의약품/의약외품 경계 — 피부과 질환 치료 주장 감지
-      const medicalClaimsRegex = /(?:heals?|cures?|treats?|relieves?|alleviates?|eliminates?)\s+(?:eczema|dermatitis|acne\s*vulgaris|rosacea|psoriasis|fungal|infection|inflammation|wound)/gi;
-      const medicalMatches = plainText.match(medicalClaimsRegex) || [];
-      for (const mm of medicalMatches) {
-        flagged.push(
-          `Medical claim detected: "${mm}" — MFDS classifies this as a medicine/quasi-drug (의약품/의약외품), ` +
-          `not a cosmetic. Revise to "supports skin health" or "may help calm" instead.`,
-        );
+    // 6. Category-specific checks (Finance pivot)
+    if (category === 'Korean-Stock') {
+      // Check for specific investment recommendations (YMYL violation)
+      const investAdvice = /(?:you should|must|definitely|guaranteed to)\s+(?:buy|sell|invest in|short|avoid)/gi;
+      const adviceMatches = plainText.match(investAdvice) || [];
+      for (const match of adviceMatches) {
+        flagged.push(`Direct investment advice detected: "${match}" — use hedged language ("may consider", "based on analysis", "investors could evaluate")`);
         unverified++;
+      }
+
+      // Check for guaranteed return claims
+      const guaranteedReturns = /(?:guaranteed|certain|risk[- ]free|sure[- ]fire|100%)\s+(?:return|profit|gain|income)/gi;
+      const guaranteedMatches = plainText.match(guaranteedReturns) || [];
+      for (const match of guaranteedMatches) {
+        flagged.push(`Guaranteed return claim: "${match}" — ALL investments carry risk. Remove "guaranteed" language.`);
+        unverified++;
+      }
+
+      // Check stock price claims without date qualifier
+      const priceRegex = /(?:Samsung|SK Hynix|Hyundai|NAVER|Kakao|POSCO|Celltrion|LG Energy)\s+(?:stock|share)\s+(?:price|at|trading)\s+(?:₩|KRW)?\s*([\d,]+)/gi;
+      const priceMatches = plainText.match(priceRegex) || [];
+      for (const match of priceMatches) {
+        const hasDateRef = /(?:as of|on|in \w+ \d{4}|at the time|current|recent|latest)/i.test(
+          plainText.slice(Math.max(0, plainText.indexOf(match) - 80), plainText.indexOf(match) + match.length + 80),
+        );
+        if (!hasDateRef) {
+          flagged.push(`Stock price without date qualifier: "${match.slice(0, 60)}" — add "as of [date]" since prices change daily`);
+          unverified++;
+        }
       }
     }
 
-    if (category === 'K-Entertainment') {
-      // Check for specific revenue/earnings claims
-      const revRegex = /(?:HYBE|SM|JYP|YG|CJ ENM|Kakao Entertainment|THEBLACKLABEL|BELIFT LAB|Starship Entertainment|FNC Entertainment|MODHAUS|SOURCE MUSIC)\s+(?:revenue|earnings|profit|sales|income)\s+(?:of|at|reached|hit|was)\s+(?:₩|KRW|USD|\$)?\s*([\d.,]+)\s*(?:billion|million|trillion)/gi;
-      const revMatches = plainText.match(revRegex) || [];
-      for (const match of revMatches) {
-        const hasSource = /(?:annual report|quarterly|fiscal|reported|DART|filing|earnings call)/i.test(
+    if (category === 'AI-Trading') {
+      // Check backtest claims without caveats
+      const backtestClaims = /(?:backtest|backtested)\s+(?:showed|returned|achieved|generated)\s+(\d+(?:\.\d+)?%?\s+(?:return|profit|annual|CAGR))/gi;
+      const backtestMatches = plainText.match(backtestClaims) || [];
+      for (const match of backtestMatches) {
+        const hasCaveat = /(?:past performance|does not guarantee|slippage|transaction cost|out[- ]of[- ]sample|walk[- ]forward)/i.test(
+          plainText.slice(Math.max(0, plainText.indexOf(match) - 150), plainText.indexOf(match) + match.length + 150),
+        );
+        if (!hasCaveat) {
+          flagged.push(`Backtest result without disclaimer: "${match.slice(0, 60)}" — add "past performance does not guarantee future results" caveat`);
+          unverified++;
+        }
+      }
+
+      // Check for claims about AI prediction accuracy without source
+      const aiAccuracy = /(?:AI|machine learning|model)\s+(?:predicts?|accuracy|correct)\s+(\d+(?:\.\d+)?%)/gi;
+      const aiMatches = plainText.match(aiAccuracy) || [];
+      for (const match of aiMatches) {
+        const hasSource = /(?:paper|study|research|published|dataset|validation)/i.test(
           plainText.slice(Math.max(0, plainText.indexOf(match) - 100), plainText.indexOf(match) + match.length + 100),
         );
         if (!hasSource) {
-          flagged.push(`Revenue claim without source: "${match.slice(0, 80)}" — cite DART filings or earnings reports`);
-          unverified++;
-        }
-      }
-
-      // Check for streaming/view count claims
-      const viewRegex = /(\d[\d,.]*)\s*(?:billion|million)\s+(?:views|streams|downloads|subscribers|listeners)/gi;
-      const viewMatches = plainText.match(viewRegex) || [];
-      for (const match of viewMatches) {
-        const hasTimeRef = /(?:as of|in \d{4}|to date|cumulative|total|current)/i.test(
-          plainText.slice(Math.max(0, plainText.indexOf(match) - 60), plainText.indexOf(match) + match.length + 60),
-        );
-        if (!hasTimeRef) {
-          flagged.push(`View/stream count without date context: "${match.slice(0, 60)}" — add "as of [date]" or "to date"`);
-          unverified++;
-        }
-      }
-
-      // 15차 감사: OTT vs broadcast rating format validation
-      const ratingPctRegex = /(\d{1,2}(?:\.\d+)?)\s*%\s*(?:rating|viewership|시청률)/gi;
-      const ratingMatches = plainText.match(ratingPctRegex) || [];
-      for (const match of ratingMatches) {
-        const nearbyText = plainText.slice(
-          Math.max(0, plainText.indexOf(match) - 80),
-          plainText.indexOf(match) + match.length + 80,
-        );
-        const isOttContext = /Netflix|TVING|Disney\+|Coupang\s*Play|Wavve|Viki|Apple\s*TV/i.test(nearbyText);
-        if (isOttContext) {
-          flagged.push(
-            `OTT platform paired with percentage rating: "${match.slice(0, 40)}" — OTT platforms use view hours/completion rate, NOT household %. ` +
-            `Percentage ratings apply only to broadcast networks (AGB Nielsen). Revise metric or note it is a broadcast-only measurement.`,
-          );
-          unverified++;
-        }
-      }
-
-      // 15차 감사: Wavve-as-standalone-platform flag (merged with TVING in 2025)
-      if (/\bWavve\b/.test(plainText)) {
-        const wavveContext = plainText.slice(
-          Math.max(0, plainText.indexOf('Wavve') - 100),
-          plainText.indexOf('Wavve') + 200,
-        );
-        const treatsAsActive = /Wavve\s+(?:offers|has|features|provides|original|exclusive|new|subscribers|users)/i.test(wavveContext);
-        const hasMergerNote = /merge|absorbed|TVING.*Wavve|Wavve.*TVING.*(?:merge|combined|integrated)/i.test(wavveContext);
-        if (treatsAsActive && !hasMergerNote) {
-          flagged.push(
-            `Wavve referenced as active standalone platform — Wavve merged with TVING in 2025. Use "TVING (which absorbed Wavve in 2025)" on first reference.`,
-          );
-          unverified++;
-        }
-      }
-
-      // 15차 감사: K-drama episode count validation for Netflix Originals
-      const netflixEpRegex = /Netflix\s*Original[^.]{0,60}(\d{2,3})\s*episode/i;
-      const netflixEpMatch = netflixEpRegex.exec(plainText);
-      if (netflixEpMatch) {
-        const epCount = parseInt(netflixEpMatch[1]);
-        if (epCount > 16) {
-          flagged.push(
-            `Netflix Korea Original claimed as ${epCount} episodes — Netflix Korea originals are nearly exclusively 8-12 episodes (max 16). ` +
-            `Verify: a ${epCount}-episode drama is likely a Korean network drama with Netflix distribution rights, NOT a Netflix Original.`,
-          );
-          unverified++;
-        }
-      }
-
-      // 27차 감사: Apple TV+ / Disney+ Korea Original 에피소드 카운트 검증
-      const ottEpRegex = /(?:Apple\s*TV\+?|Disney\+?)\s*(?:Korea\s*)?Original[^.]{0,60}(\d{2,3})\s*episode/i;
-      const ottEpMatch = ottEpRegex.exec(plainText);
-      if (ottEpMatch) {
-        const epCount = parseInt(ottEpMatch[1]);
-        if (epCount > 16) {
-          flagged.push(
-            `OTT Korea Original claimed as ${epCount} episodes — Apple TV+/Disney+ Korea originals are typically 6-12 episodes (max 16). ` +
-            `Verify: a ${epCount}-episode drama may be a network drama with OTT distribution rights, NOT an OTT Original.`,
-          );
+          flagged.push(`AI accuracy claim without source: "${match.slice(0, 60)}" — cite research paper or validation methodology`);
           unverified++;
         }
       }
     }
+
 
     // 7. Cross-category: Check historical date claims
     const dateClaimRegex = /(?:founded|established|launched|started|opened|created|introduced)\s+in\s+(\d{4})/gi;
     const dateClaims = plainText.match(dateClaimRegex) || [];
     const knownDates: Record<string, number> = {
-      // Korean conglomerates
-      samsung: 1938, 'sk hynix': 1983, hyundai: 1967, lg: 1958, naver: 1999, kakao: 2010,
-      coupang: 2010,
-      // K-Entertainment labels (multiple key forms for matching)
-      hybe: 2005, 'big hit': 2005,
-      'sm entertainment': 1995, sm: 1995,
-      'jyp entertainment': 1997, jyp: 1997,
-      'yg entertainment': 1996, yg: 1996,
-      'belift lab': 2019, 'starship entertainment': 2008, 'fnc entertainment': 2006,
-      'source music': 2009, 'pledis entertainment': 2010,
-      // K-Entertainment groups
-      bts: 2013, blackpink: 2016, aespa: 2020, twice: 2015, exo: 2012,
-      seventeen: 2015, 'stray kids': 2018, ive: 2021, 'le sserafim': 2022,
-      enhypen: 2020, txt: 2019, ateez: 2018,
-      // 11차 감사: 레거시/3세대/3.5세대 그룹 데뷔 연도 추가
-      shinee: 2008, 'red velvet': 2014, got7: 2014, mamamoo: 2014,
-      day6: 2015, btob: 2012, 'the boyz': 2017, treasure: 2020,
-      itzy: 2019, '(g)i-dle': 2018, nmixx: 2022, 'kiss of life': 2023,
-      'newjeans': 2022, 'babymonster': 2023, riize: 2023, illit: 2024,
-      qwer: 2023, plave: 2023,
-      // 15차 감사: 2023-2025 데뷔 그룹 추가
-      zerobaseone: 2023, zb1: 2023, boynextdoor: 2023, xikers: 2023,
-      'n.ssign': 2023, 'young posse': 2023, '8turn': 2023, 'ampers&one': 2023,
-      tws: 2024, 'nct wish': 2024, meovv: 2024, whiplash: 2024,
-      katseye: 2024, unis: 2024, izna: 2024,
-      // 27차 감사: 누락 그룹/아티스트 데뷔 연도
-      'fifty fifty': 2022, 'h1-key': 2022, 'purple kiss': 2020,
-      'xdinary heroes': 2021, 'vcha': 2023, nexz: 2024,
-      'dreamcatcher': 2017, 'fromis_9': 2018,
-      '2ne1': 2009, bigbang: 2006,
-      'g-dragon': 2006, // BIGBANG 멤버로 데뷔 (솔로 데뷔 2009)
-      badvillain: 2024, evnne: 2023,
-      // 19차 감사: 인디밴드 데뷔 연도 + 플랫폼 설립 연도
-      'wave to earth': 2019, hyukoh: 2014, 'the rose': 2017, lucy: 2020,
-      'silica gel': 2012, 'lim young-woong': 2020, // 미스터트롯 우승 데뷔 기준
-      // K-Beauty brands (common AI dating errors)
-      cosrx: 2013, 'beauty of joseon': 2010, tirtir: 2019, laneige: 1994,
-      sulwhasoo: 1997, innisfree: 2000, missha: 2000, 'etude house': 1995,
-      etude: 1995, // 리브랜딩: Etude House → Etude (2024)
-      amorepacific: 1945, numbuzin: 2020, biodance: 2018, "d'alba": 2015,
-      'round lab': 2018, isntree: 2009, 'haruharu wonder': 2018, mixsoon: 2019,
-      'some by mi': 2016, abib: 2014, 'ma:nyo': 2012, nacific: 2015,
-      illiyoon: 2006, aestura: 2003, purito: 2015, jumiso: 2018,
-      benton: 2011, 'vt cosmetics': 2018, fwee: 2020, rovectin: 2013,
-      "ample:n": 2016, 'dr.g': 2003, klavuu: 2015,
-      // 11차 감사: 누락 K-Beauty 브랜드 창립 연도 추가 (rovectin/benton/jumiso는 위에 이미 있음)
-      'pyunkang yul': 2010, acwell: 2005, apieu: 2014,
-      'dashing diva': 2001, ohora: 2018, 'gelato factory': 2019,
-      tamburins: 2017, nonfiction: 2019, granhand: 2015,
-      'daeng gi meo ri': 1970, ryo: 2008, masil: 2019,
-      // 15차 감사: 누락 K-Beauty 브랜드 추가
-      anua: 2019, torriden: 2021, skin1004: 2013, klairs: 2010,
-      medicube: 2014, 'axis-y': 2019, 'by wishtrend': 2014,
-      "i'm from": 2012, hince: 2019, 'skin&lab': 2016, cnp: 2000,
-      heimish: 2015, 'cos de baha': 2017, goodal: 2012, skinfood: 2004,
-      'peach c': 2019, wakemake: 2019, 'jung saem mool': 2015,
-      // 27차 감사: 누락 K-Beauty 브랜드 창립 연도
-      peripera: 2014, 'holika holika': 2010, 'tony moly': 2006, 'banila co': 2006,
-      'glow recipe': 2014, // NOTE: Glow Recipe는 한국계 미국 브랜드 (Christine Chang + Sarah Lee)
-      'laka': 2018,
-      // 28차 감사: 누락 K-Beauty 브랜드
-      'rom&nd': 2016, romand: 2016, // 롬앤 — Min Saerom 설립, 립틴트·블러셔 글로벌 베스트셀러
-      'clio': 2012, // 클리오 — Kill Cover 쿠션, BLACKPINK Jisoo 앰배서더 (2020~)
-      skintific: 2020, // NOTE: 인도네시아 브랜드, NOT Korean — Korean-inspired formulations
+      // Korean conglomerates / listed companies
+      samsung: 1938, 'samsung electronics': 1969, 'sk hynix': 1983, hyundai: 1967,
+      'hyundai motor': 1967, lg: 1958, 'lg energy solution': 2020, naver: 1999, kakao: 2010,
+      coupang: 2010, 'posco holdings': 1968, posco: 1968, kia: 1944,
+      'samsung sdi': 1970, 'samsung biologics': 2011, celltrion: 2002,
+      'hd hyundai': 2023, // HD현대 — 현대중공업 지주사 전환 (2023)
+      'hanwha aerospace': 1977, 'doosan enerbility': 1962,
+      'lg chem': 1947, 'sk innovation': 1962, 'sk telecom': 1984,
+      'kb financial': 2008, 'shinhan financial': 2001, 'hana financial': 2005,
+      // Brokerages / exchanges
+      'korea exchange': 2005, krx: 2005, 'mirae asset': 2000, kiwoom: 2000,
+      'samsung securities': 1982, 'kb securities': 2016,
       // Institutions
-      'bank of korea': 1950, 'korea exchange': 2005, 'olive young': 1999,
-      'korea tourism organization': 1962,
+      'bank of korea': 1950, 'korea tourism organization': 1962,
     };
     for (const match of dateClaims) {
       const yearMatch = match.match(/(\d{4})/);
