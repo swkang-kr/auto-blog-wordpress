@@ -52,9 +52,19 @@ export class FacebookService {
       logger.info(`Facebook post published: ${postId} — "${content.title}"`);
       return postId;
     } catch (error) {
-      const msg = axios.isAxiosError(error)
-        ? JSON.stringify(error.response?.data)
-        : String(error);
+      const status = axios.isAxiosError(error) ? error.response?.status : 0;
+      const msg = axios.isAxiosError(error) ? JSON.stringify(error.response?.data) : String(error);
+      // Retry once on transient errors (503, 429, network timeout)
+      if (status === 503 || status === 429 || msg.includes('ETIMEDOUT') || msg.includes('ECONNRESET')) {
+        logger.info('Facebook: Retrying after transient error...');
+        await new Promise(r => setTimeout(r, 5000));
+        try {
+          const retryRes = await axios.post(`${GRAPH_API}/${this.pageId}/feed`, { message, link: utmUrl }, { params: { access_token: this.accessToken } });
+          const retryId: string = retryRes.data.id;
+          logger.info(`Facebook post published (retry): ${retryId} — "${content.title}"`);
+          return retryId;
+        } catch { /* retry failed, fall through */ }
+      }
       logger.warn(`Facebook post failed (non-critical): ${msg}`);
       return null;
     }

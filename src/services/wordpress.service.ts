@@ -11,6 +11,14 @@ import type { ContentType } from '../types/index.js';
 const POSTS_CACHE_FILE = join(dirname(new URL(import.meta.url).pathname), '../../.cache/posts-cache.json');
 const POSTS_CACHE_TTL_MS = 1 * 60 * 60 * 1000; // 1 hour
 
+/** Amazon Associates affiliate tag — configurable via env to avoid 81+ hardcoded references */
+const AMAZON_TAG = process.env.AMAZON_AFFILIATE_TAG || 'trendhunt2007-20';
+
+/** Replace __AMAZON_TAG__ placeholder in affiliate URLs with actual tag */
+function resolveAffiliateUrl(url: string): string {
+  return url.replace('__AMAZON_TAG__', AMAZON_TAG);
+}
+
 export class WordPressService {
   private api: AxiosInstance;
   private wpUrl: string;
@@ -1145,7 +1153,8 @@ ${socialHtml}
     if (products.length === 0) return '';
 
     const rows = products.map((p, i) => {
-      const affiliateUrl = affiliateMap[p.category] || affiliateMap[p.name.toLowerCase()];
+      const rawUrl = affiliateMap[p.category] || affiliateMap[p.name.toLowerCase()];
+      const affiliateUrl = rawUrl ? resolveAffiliateUrl(rawUrl) : '';
       const nameCell = affiliateUrl
         ? `<a href="${this.escapeHtml(affiliateUrl)}" target="_blank" rel="noopener noreferrer sponsored" style="color:#0066FF; text-decoration:underline; font-weight:600;">${this.escapeHtml(p.name)}</a>`
         : `<strong>${this.escapeHtml(p.name)}</strong>`;
@@ -1212,7 +1221,7 @@ ${rows}
         'cleansing balm', 'starter kit', 'beginner set', 'skincare gift set', 'skincare set',
         'azelaic acid', 'double cleanse',
       ],
-      defaultUrl: 'https://www.amazon.com/s?k=korean+skincare&tag=trendhunt2007-20',
+      defaultUrl: 'https://www.amazon.com/s?k=korean+skincare&tag=__AMAZON_TAG__',
     },
     'K-Entertainment': {
       keywords: [
@@ -1259,7 +1268,7 @@ ${rows}
         'Korean musical', 'musical theater', 'Elisabeth musical', 'Phantom Opera Korean',
         'Hince', 'lip oil',
       ],
-      defaultUrl: 'https://www.amazon.com/s?k=kpop+merchandise&tag=trendhunt2007-20',
+      defaultUrl: 'https://www.amazon.com/s?k=kpop+merchandise&tag=__AMAZON_TAG__',
     },
   };
 
@@ -1289,7 +1298,7 @@ ${rows}
         );
         const match = pattern.exec(result);
         if (match) {
-          const url = affiliateMap[keyword.toLowerCase()] || categoryAffiliateUrl || productDb.defaultUrl;
+          const url = resolveAffiliateUrl(affiliateMap[keyword.toLowerCase()] || categoryAffiliateUrl || productDb.defaultUrl);
           const replacement = `<a href="${this.escapeHtml(url)}" target="_blank" rel="noopener noreferrer sponsored" style="color:#0066FF; text-decoration:underline;">${match[1]}</a>`;
           result = result.slice(0, match.index) + replacement + result.slice(match.index + match[0].length);
           injectedCount++;
@@ -1451,97 +1460,97 @@ ${ga4TrackingScript}`;
    */
   private static readonly CATEGORY_AFFILIATE_KEYWORDS: Record<string, Record<string, string>> = {
     'K-Beauty': {
-      'COSRX': 'https://www.amazon.com/s?k=COSRX&tag=trendhunt2007-20',
-      'Laneige': 'https://www.amazon.com/s?k=Laneige&tag=trendhunt2007-20',
-      'Innisfree': 'https://www.amazon.com/s?k=Innisfree&tag=trendhunt2007-20',
-      'Sulwhasoo': 'https://www.amazon.com/s?k=Sulwhasoo&tag=trendhunt2007-20',
-      'Beauty of Joseon': 'https://www.amazon.com/s?k=Beauty+of+Joseon&tag=trendhunt2007-20',
-      'Missha': 'https://www.amazon.com/s?k=Missha&tag=trendhunt2007-20',
-      'SKIN1004': 'https://www.amazon.com/s?k=SKIN1004&tag=trendhunt2007-20',
-      'Anua': 'https://www.amazon.com/s?k=Anua+skincare&tag=trendhunt2007-20',
-      'Torriden': 'https://www.amazon.com/s?k=Torriden&tag=trendhunt2007-20',
-      'Etude': 'https://www.amazon.com/s?k=Etude+House&tag=trendhunt2007-20',
-      'Olive Young': 'https://www.amazon.com/s?k=korean+skincare+best+seller&tag=trendhunt2007-20',
+      'COSRX': 'https://www.amazon.com/s?k=COSRX&tag=__AMAZON_TAG__',
+      'Laneige': 'https://www.amazon.com/s?k=Laneige&tag=__AMAZON_TAG__',
+      'Innisfree': 'https://www.amazon.com/s?k=Innisfree&tag=__AMAZON_TAG__',
+      'Sulwhasoo': 'https://www.amazon.com/s?k=Sulwhasoo&tag=__AMAZON_TAG__',
+      'Beauty of Joseon': 'https://www.amazon.com/s?k=Beauty+of+Joseon&tag=__AMAZON_TAG__',
+      'Missha': 'https://www.amazon.com/s?k=Missha&tag=__AMAZON_TAG__',
+      'SKIN1004': 'https://www.amazon.com/s?k=SKIN1004&tag=__AMAZON_TAG__',
+      'Anua': 'https://www.amazon.com/s?k=Anua+skincare&tag=__AMAZON_TAG__',
+      'Torriden': 'https://www.amazon.com/s?k=Torriden&tag=__AMAZON_TAG__',
+      'Etude': 'https://www.amazon.com/s?k=Etude+House&tag=__AMAZON_TAG__',
+      'Olive Young': 'https://www.amazon.com/s?k=korean+skincare+best+seller&tag=__AMAZON_TAG__',
       // Breakout brands 2025-2026
-      'MEDICUBE': 'https://www.amazon.com/s?k=MEDICUBE&tag=trendhunt2007-20',
-      'Numbuzin': 'https://www.amazon.com/s?k=Numbuzin&tag=trendhunt2007-20',
-      'TIRTIR': 'https://www.amazon.com/s?k=TIRTIR&tag=trendhunt2007-20',
-      'Mixsoon': 'https://www.amazon.com/s?k=Mixsoon&tag=trendhunt2007-20',
-      'Haruharu Wonder': 'https://www.amazon.com/s?k=Haruharu+Wonder&tag=trendhunt2007-20',
-      'Round Lab': 'https://www.amazon.com/s?k=Round+Lab+skincare&tag=trendhunt2007-20',
-      'Biodance': 'https://www.amazon.com/s?k=Biodance&tag=trendhunt2007-20',
-      "d'Alba": 'https://www.amazon.com/s?k=d%27Alba&tag=trendhunt2007-20',
-      'ABIB': 'https://www.amazon.com/s?k=ABIB+skincare&tag=trendhunt2007-20',
-      'Some By Mi': 'https://www.amazon.com/s?k=Some+By+Mi&tag=trendhunt2007-20',
-      'Klairs': 'https://www.amazon.com/s?k=Dear+Klairs&tag=trendhunt2007-20',
-      'Isntree': 'https://www.amazon.com/s?k=Isntree&tag=trendhunt2007-20',
-      'PURITO': 'https://www.amazon.com/s?k=PURITO&tag=trendhunt2007-20',
+      'MEDICUBE': 'https://www.amazon.com/s?k=MEDICUBE&tag=__AMAZON_TAG__',
+      'Numbuzin': 'https://www.amazon.com/s?k=Numbuzin&tag=__AMAZON_TAG__',
+      'TIRTIR': 'https://www.amazon.com/s?k=TIRTIR&tag=__AMAZON_TAG__',
+      'Mixsoon': 'https://www.amazon.com/s?k=Mixsoon&tag=__AMAZON_TAG__',
+      'Haruharu Wonder': 'https://www.amazon.com/s?k=Haruharu+Wonder&tag=__AMAZON_TAG__',
+      'Round Lab': 'https://www.amazon.com/s?k=Round+Lab+skincare&tag=__AMAZON_TAG__',
+      'Biodance': 'https://www.amazon.com/s?k=Biodance&tag=__AMAZON_TAG__',
+      "d'Alba": 'https://www.amazon.com/s?k=d%27Alba&tag=__AMAZON_TAG__',
+      'ABIB': 'https://www.amazon.com/s?k=ABIB+skincare&tag=__AMAZON_TAG__',
+      'Some By Mi': 'https://www.amazon.com/s?k=Some+By+Mi&tag=__AMAZON_TAG__',
+      'Klairs': 'https://www.amazon.com/s?k=Dear+Klairs&tag=__AMAZON_TAG__',
+      'Isntree': 'https://www.amazon.com/s?k=Isntree&tag=__AMAZON_TAG__',
+      'PURITO': 'https://www.amazon.com/s?k=PURITO&tag=__AMAZON_TAG__',
       // Nail art brands
-      'ohora': 'https://www.amazon.com/s?k=ohora+gel+nail&tag=trendhunt2007-20',
-      'Dashing Diva': 'https://www.amazon.com/s?k=Dashing+Diva+nail&tag=trendhunt2007-20',
+      'ohora': 'https://www.amazon.com/s?k=ohora+gel+nail&tag=__AMAZON_TAG__',
+      'Dashing Diva': 'https://www.amazon.com/s?k=Dashing+Diva+nail&tag=__AMAZON_TAG__',
       // 7차 감사: Stylevana 어필리에이트 추가
-      'Stylevana': 'https://www.amazon.com/s?k=korean+skincare+best+seller&tag=trendhunt2007-20',
+      'Stylevana': 'https://www.amazon.com/s?k=korean+skincare+best+seller&tag=__AMAZON_TAG__',
     },
     'K-Entertainment': {
-      'BTS': 'https://www.amazon.com/s?k=BTS+album&tag=trendhunt2007-20',
-      'BLACKPINK': 'https://www.amazon.com/s?k=BLACKPINK+album&tag=trendhunt2007-20',
-      'Stray Kids': 'https://www.amazon.com/s?k=Stray+Kids+album&tag=trendhunt2007-20',
-      'NewJeans': 'https://www.amazon.com/s?k=NewJeans+album&tag=trendhunt2007-20',
-      'SEVENTEEN': 'https://www.amazon.com/s?k=SEVENTEEN+kpop&tag=trendhunt2007-20',
-      'aespa': 'https://www.amazon.com/s?k=aespa+album&tag=trendhunt2007-20',
-      'lightstick': 'https://www.amazon.com/s?k=kpop+lightstick&tag=trendhunt2007-20',
+      'BTS': 'https://www.amazon.com/s?k=BTS+album&tag=__AMAZON_TAG__',
+      'BLACKPINK': 'https://www.amazon.com/s?k=BLACKPINK+album&tag=__AMAZON_TAG__',
+      'Stray Kids': 'https://www.amazon.com/s?k=Stray+Kids+album&tag=__AMAZON_TAG__',
+      'NewJeans': 'https://www.amazon.com/s?k=NewJeans+album&tag=__AMAZON_TAG__',
+      'SEVENTEEN': 'https://www.amazon.com/s?k=SEVENTEEN+kpop&tag=__AMAZON_TAG__',
+      'aespa': 'https://www.amazon.com/s?k=aespa+album&tag=__AMAZON_TAG__',
+      'lightstick': 'https://www.amazon.com/s?k=kpop+lightstick&tag=__AMAZON_TAG__',
       // K-Hip-Hop / K-R&B artists
-      'Jay Park': 'https://www.amazon.com/s?k=Jay+Park+album&tag=trendhunt2007-20',
-      'Crush': 'https://www.amazon.com/s?k=Crush+krnb+album&tag=trendhunt2007-20',
-      'DEAN': 'https://www.amazon.com/s?k=DEAN+krnb&tag=trendhunt2007-20',
+      'Jay Park': 'https://www.amazon.com/s?k=Jay+Park+album&tag=__AMAZON_TAG__',
+      'Crush': 'https://www.amazon.com/s?k=Crush+krnb+album&tag=__AMAZON_TAG__',
+      'DEAN': 'https://www.amazon.com/s?k=DEAN+krnb&tag=__AMAZON_TAG__',
       // OST / Soundtrack
-      'K-drama OST': 'https://www.amazon.com/s?k=korean+drama+ost&tag=trendhunt2007-20',
+      'K-drama OST': 'https://www.amazon.com/s?k=korean+drama+ost&tag=__AMAZON_TAG__',
       // 7차 감사: 주요 4세대 그룹 개별 어필리에이트 링크 추가
-      'ENHYPEN': 'https://www.amazon.com/s?k=ENHYPEN+album&tag=trendhunt2007-20',
-      'TXT': 'https://www.amazon.com/s?k=TXT+kpop+album&tag=trendhunt2007-20',
-      'LE SSERAFIM': 'https://www.amazon.com/s?k=LE+SSERAFIM+album&tag=trendhunt2007-20',
-      'ATEEZ': 'https://www.amazon.com/s?k=ATEEZ+album&tag=trendhunt2007-20',
-      'IVE': 'https://www.amazon.com/s?k=IVE+kpop+album&tag=trendhunt2007-20',
-      'TWICE': 'https://www.amazon.com/s?k=TWICE+album&tag=trendhunt2007-20',
-      'ITZY': 'https://www.amazon.com/s?k=ITZY+album&tag=trendhunt2007-20',
-      '(G)I-DLE': 'https://www.amazon.com/s?k=G+I-DLE+album&tag=trendhunt2007-20',
+      'ENHYPEN': 'https://www.amazon.com/s?k=ENHYPEN+album&tag=__AMAZON_TAG__',
+      'TXT': 'https://www.amazon.com/s?k=TXT+kpop+album&tag=__AMAZON_TAG__',
+      'LE SSERAFIM': 'https://www.amazon.com/s?k=LE+SSERAFIM+album&tag=__AMAZON_TAG__',
+      'ATEEZ': 'https://www.amazon.com/s?k=ATEEZ+album&tag=__AMAZON_TAG__',
+      'IVE': 'https://www.amazon.com/s?k=IVE+kpop+album&tag=__AMAZON_TAG__',
+      'TWICE': 'https://www.amazon.com/s?k=TWICE+album&tag=__AMAZON_TAG__',
+      'ITZY': 'https://www.amazon.com/s?k=ITZY+album&tag=__AMAZON_TAG__',
+      '(G)I-DLE': 'https://www.amazon.com/s?k=G+I-DLE+album&tag=__AMAZON_TAG__',
       // 10차 감사: 3세대 + 레거시 그룹 개별 어필리에이트 (generic fallback → 개별 전환율 향상)
-      'SHINee': 'https://www.amazon.com/s?k=SHINee+album&tag=trendhunt2007-20',
-      'Red Velvet': 'https://www.amazon.com/s?k=Red+Velvet+kpop+album&tag=trendhunt2007-20',
-      'GOT7': 'https://www.amazon.com/s?k=GOT7+album&tag=trendhunt2007-20',
-      'MAMAMOO': 'https://www.amazon.com/s?k=MAMAMOO+album&tag=trendhunt2007-20',
-      'EXO': 'https://www.amazon.com/s?k=EXO+album&tag=trendhunt2007-20',
-      'DAY6': 'https://www.amazon.com/s?k=DAY6+album&tag=trendhunt2007-20',
-      'THE BOYZ': 'https://www.amazon.com/s?k=THE+BOYZ+kpop+album&tag=trendhunt2007-20',
-      'TREASURE': 'https://www.amazon.com/s?k=TREASURE+kpop+album&tag=trendhunt2007-20',
-      'BTOB': 'https://www.amazon.com/s?k=BTOB+album&tag=trendhunt2007-20',
+      'SHINee': 'https://www.amazon.com/s?k=SHINee+album&tag=__AMAZON_TAG__',
+      'Red Velvet': 'https://www.amazon.com/s?k=Red+Velvet+kpop+album&tag=__AMAZON_TAG__',
+      'GOT7': 'https://www.amazon.com/s?k=GOT7+album&tag=__AMAZON_TAG__',
+      'MAMAMOO': 'https://www.amazon.com/s?k=MAMAMOO+album&tag=__AMAZON_TAG__',
+      'EXO': 'https://www.amazon.com/s?k=EXO+album&tag=__AMAZON_TAG__',
+      'DAY6': 'https://www.amazon.com/s?k=DAY6+album&tag=__AMAZON_TAG__',
+      'THE BOYZ': 'https://www.amazon.com/s?k=THE+BOYZ+kpop+album&tag=__AMAZON_TAG__',
+      'TREASURE': 'https://www.amazon.com/s?k=TREASURE+kpop+album&tag=__AMAZON_TAG__',
+      'BTOB': 'https://www.amazon.com/s?k=BTOB+album&tag=__AMAZON_TAG__',
       // 17차 감사: 누락 그룹 + 어필리에이트 카테고리 확장
-      'NMIXX': 'https://www.amazon.com/s?k=NMIXX+album&tag=trendhunt2007-20',
-      'PLAVE': 'https://www.amazon.com/s?k=PLAVE+album&tag=trendhunt2007-20',
-      'RIIZE': 'https://www.amazon.com/s?k=RIIZE+album&tag=trendhunt2007-20',
-      'BOYNEXTDOOR': 'https://www.amazon.com/s?k=BOYNEXTDOOR+album&tag=trendhunt2007-20',
-      'KISS OF LIFE': 'https://www.amazon.com/s?k=KISS+OF+LIFE+kpop+album&tag=trendhunt2007-20',
-      'BABYMONSTER': 'https://www.amazon.com/s?k=BABYMONSTER+album&tag=trendhunt2007-20',
-      'ZeroBaseOne': 'https://www.amazon.com/s?k=ZeroBaseOne+album&tag=trendhunt2007-20',
-      'Dreamcatcher': 'https://www.amazon.com/s?k=Dreamcatcher+kpop+album&tag=trendhunt2007-20',
-      'fromis_9': 'https://www.amazon.com/s?k=fromis_9+album&tag=trendhunt2007-20',
-      'QWER': 'https://www.amazon.com/s?k=QWER+kpop+album&tag=trendhunt2007-20',
-      'G-Dragon': 'https://www.amazon.com/s?k=G-Dragon+album&tag=trendhunt2007-20',
+      'NMIXX': 'https://www.amazon.com/s?k=NMIXX+album&tag=__AMAZON_TAG__',
+      'PLAVE': 'https://www.amazon.com/s?k=PLAVE+album&tag=__AMAZON_TAG__',
+      'RIIZE': 'https://www.amazon.com/s?k=RIIZE+album&tag=__AMAZON_TAG__',
+      'BOYNEXTDOOR': 'https://www.amazon.com/s?k=BOYNEXTDOOR+album&tag=__AMAZON_TAG__',
+      'KISS OF LIFE': 'https://www.amazon.com/s?k=KISS+OF+LIFE+kpop+album&tag=__AMAZON_TAG__',
+      'BABYMONSTER': 'https://www.amazon.com/s?k=BABYMONSTER+album&tag=__AMAZON_TAG__',
+      'ZeroBaseOne': 'https://www.amazon.com/s?k=ZeroBaseOne+album&tag=__AMAZON_TAG__',
+      'Dreamcatcher': 'https://www.amazon.com/s?k=Dreamcatcher+kpop+album&tag=__AMAZON_TAG__',
+      'fromis_9': 'https://www.amazon.com/s?k=fromis_9+album&tag=__AMAZON_TAG__',
+      'QWER': 'https://www.amazon.com/s?k=QWER+kpop+album&tag=__AMAZON_TAG__',
+      'G-Dragon': 'https://www.amazon.com/s?k=G-Dragon+album&tag=__AMAZON_TAG__',
       // 어필리에이트 카테고리: 콘서트 티켓, 스트리밍, 포토카드
-      'photocard': 'https://www.amazon.com/s?k=kpop+photocard+binder&tag=trendhunt2007-20',
-      'K-pop album': 'https://www.amazon.com/s?k=kpop+album+2026&tag=trendhunt2007-20',
-      'concert merchandise': 'https://www.amazon.com/s?k=kpop+concert+merch&tag=trendhunt2007-20',
-      'K-drama OST album': 'https://www.amazon.com/s?k=korean+drama+ost+album&tag=trendhunt2007-20',
+      'photocard': 'https://www.amazon.com/s?k=kpop+photocard+binder&tag=__AMAZON_TAG__',
+      'K-pop album': 'https://www.amazon.com/s?k=kpop+album+2026&tag=__AMAZON_TAG__',
+      'concert merchandise': 'https://www.amazon.com/s?k=kpop+concert+merch&tag=__AMAZON_TAG__',
+      'K-drama OST album': 'https://www.amazon.com/s?k=korean+drama+ost+album&tag=__AMAZON_TAG__',
       // K-Beauty 17차 감사: 누락 브랜드 (rom&nd, Laka, VT, Holika Holika, JUNG SAEM MOOL)
-      "rom&nd": 'https://www.amazon.com/s?k=romand+lip+tint&tag=trendhunt2007-20',
-      'Laka': 'https://www.amazon.com/s?k=Laka+Korean+beauty&tag=trendhunt2007-20',
-      'VT Cosmetics': 'https://www.amazon.com/s?k=VT+Cosmetics&tag=trendhunt2007-20',
-      'JUNG SAEM MOOL': 'https://www.amazon.com/s?k=JUNG+SAEM+MOOL&tag=trendhunt2007-20',
-      'Peripera': 'https://www.amazon.com/s?k=Peripera+lip+tint&tag=trendhunt2007-20',
-      'lip tint': 'https://www.amazon.com/s?k=korean+lip+tint&tag=trendhunt2007-20',
-      'lip oil': 'https://www.amazon.com/s?k=korean+lip+oil&tag=trendhunt2007-20',
-      'sunscreen stick': 'https://www.amazon.com/s?k=korean+sunscreen+stick&tag=trendhunt2007-20',
-      'body sunscreen': 'https://www.amazon.com/s?k=korean+body+sunscreen&tag=trendhunt2007-20',
+      "rom&nd": 'https://www.amazon.com/s?k=romand+lip+tint&tag=__AMAZON_TAG__',
+      'Laka': 'https://www.amazon.com/s?k=Laka+Korean+beauty&tag=__AMAZON_TAG__',
+      'VT Cosmetics': 'https://www.amazon.com/s?k=VT+Cosmetics&tag=__AMAZON_TAG__',
+      'JUNG SAEM MOOL': 'https://www.amazon.com/s?k=JUNG+SAEM+MOOL&tag=__AMAZON_TAG__',
+      'Peripera': 'https://www.amazon.com/s?k=Peripera+lip+tint&tag=__AMAZON_TAG__',
+      'lip tint': 'https://www.amazon.com/s?k=korean+lip+tint&tag=__AMAZON_TAG__',
+      'lip oil': 'https://www.amazon.com/s?k=korean+lip+oil&tag=__AMAZON_TAG__',
+      'sunscreen stick': 'https://www.amazon.com/s?k=korean+sunscreen+stick&tag=__AMAZON_TAG__',
+      'body sunscreen': 'https://www.amazon.com/s?k=korean+body+sunscreen&tag=__AMAZON_TAG__',
     },
   };
 
@@ -1598,7 +1607,7 @@ ${ga4TrackingScript}`;
       );
       const match = pattern.exec(result);
       if (match && injectedCount < maxLinks) { // Max affiliate links per post
-        const replacement = `<a href="${affiliateUrl}" target="_blank" rel="noopener noreferrer sponsored" data-affiliate="true" style="color:#0066FF; text-decoration:underline;">${match[1]}</a>`;
+        const replacement = `<a href="${resolveAffiliateUrl(affiliateUrl)}" target="_blank" rel="noopener noreferrer sponsored" data-affiliate="true" style="color:#0066FF; text-decoration:underline;">${match[1]}</a>`;
         result = result.slice(0, match.index) + replacement + result.slice(match.index + match[0].length);
         injectedCount++;
         logger.debug(`Affiliate link injected for "${keyword}"`);

@@ -147,7 +147,14 @@ async function main(): Promise<void> {
       ? new FacebookService(config.FB_ACCESS_TOKEN, config.FB_PAGE_ID)
       : null;
   if (facebookService) {
-    logger.info('Facebook Page promotion service enabled');
+    // Pre-flight token validation: verify FB token is not expired before batch starts
+    try {
+      await axios.get(`https://graph.facebook.com/${process.env.FACEBOOK_GRAPH_API_VERSION || 'v22.0'}/me?access_token=${config.FB_ACCESS_TOKEN}`, { timeout: 5000 });
+      logger.info('Facebook Page promotion service enabled (token valid)');
+    } catch (fbErr) {
+      const fbMsg = axios.isAxiosError(fbErr) ? `${fbErr.response?.status} ${JSON.stringify(fbErr.response?.data)?.slice(0, 100)}` : String(fbErr);
+      logger.warn(`Facebook token validation failed: ${fbMsg} — Facebook posting will likely fail this batch. Regenerate token at https://developers.facebook.com/tools/explorer/`);
+    }
   } else {
     logger.info('FB_ACCESS_TOKEN not set, skipping Facebook promotion');
   }
@@ -157,7 +164,14 @@ async function main(): Promise<void> {
       ? new ThreadsService(config.THREADS_ACCESS_TOKEN, config.THREADS_USER_ID)
       : null;
   if (threadsService) {
-    logger.info('Threads promotion service enabled');
+    // Pre-flight token validation for Threads
+    try {
+      await axios.get(`https://graph.threads.net/v1.0/me?access_token=${config.THREADS_ACCESS_TOKEN}`, { timeout: 5000 });
+      logger.info('Threads promotion service enabled (token valid)');
+    } catch (thErr) {
+      const thMsg = axios.isAxiosError(thErr) ? `${thErr.response?.status}` : String(thErr);
+      logger.warn(`Threads token validation failed: ${thMsg} — Threads posting will likely fail. Regenerate at Meta Developer portal.`);
+    }
   } else {
     logger.info('THREADS_ACCESS_TOKEN not set, skipping Threads promotion');
   }

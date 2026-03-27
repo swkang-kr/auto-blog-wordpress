@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { logger } from '../utils/logger.js';
 import { getGoogleAccessToken } from '../utils/google-auth.js';
+import { circuitBreakers } from '../utils/retry.js';
 
 export interface GSCQueryData {
   query: string;
@@ -56,6 +57,7 @@ export class GSCAnalyticsService {
       );
 
       const rows = (data as { rows?: Array<{ keys: string[]; clicks: number; impressions: number; ctr: number; position: number }> }).rows || [];
+      this.recordGscResult(true);
       return rows.map(row => ({
         query: row.keys[0],
         clicks: row.clicks,
@@ -64,6 +66,7 @@ export class GSCAnalyticsService {
         position: row.position,
       }));
     } catch (error) {
+      this.recordGscResult(false);
       logger.warn(`GSC top queries fetch failed: ${error instanceof Error ? error.message : error}`);
       return [];
     }
@@ -718,7 +721,20 @@ export class GSCAnalyticsService {
   }
 
   private async getAccessToken(): Promise<string> {
+    // Circuit breaker: skip all GSC calls if API is consistently failing
+    if (circuitBreakers.gsc?.isOpen()) {
+      throw new Error('GSC circuit breaker OPEN — skipping API call');
+    }
     return getGoogleAccessToken(this.saKey, 'https://www.googleapis.com/auth/webmasters.readonly');
+  }
+
+  /** Record GSC API success/failure for circuit breaker */
+  private recordGscResult(success: boolean): void {
+    if (success) {
+      circuitBreakers.gsc?.recordSuccess();
+    } else {
+      circuitBreakers.gsc?.recordFailure();
+    }
   }
 
   /**
