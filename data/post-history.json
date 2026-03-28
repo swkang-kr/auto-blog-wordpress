@@ -328,7 +328,7 @@
       "publishedAt": "2026-02-25T06:26:30.726Z",
       "niche": "personal-finance",
       "contentType": "best-x-for-y",
-      "engagementScore": 60,
+      "engagementScore": 0,
       "estimatedRpm": 3,
       "estimatedRevenue": 0.006
     },
@@ -341,7 +341,7 @@
       "publishedAt": "2026-02-25T06:58:17.257Z",
       "niche": "personal-finance",
       "contentType": "how-to",
-      "engagementScore": 31,
+      "engagementScore": 2,
       "estimatedRpm": 3,
       "estimatedRevenue": 0.003
     },
@@ -354,7 +354,7 @@
       "publishedAt": "2026-02-25T07:07:21.563Z",
       "niche": "ai-tools-review",
       "contentType": "best-x-for-y",
-      "engagementScore": 32,
+      "engagementScore": 26,
       "estimatedRpm": 3,
       "estimatedRevenue": 0.015
     },
@@ -367,7 +367,7 @@
       "publishedAt": "2026-02-25T09:09:23.035Z",
       "niche": "personal-finance",
       "contentType": "how-to",
-      "engagementScore": 31,
+      "engagementScore": 2,
       "estimatedRpm": 3,
       "estimatedRevenue": 0.006
     },
@@ -395,7 +395,7 @@
       "contentType": "how-to",
       "engagementScore": 11,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0.009000000000000001
+      "estimatedRevenue": 0.012
     },
     {
       "keyword": "best way to save money",
@@ -886,9 +886,15 @@
           "position": 64.66666666666666,
           "clicks": 0,
           "impressions": 3
+        },
+        {
+          "date": "2026-03-28",
+          "position": 64,
+          "clicks": 0,
+          "impressions": 2
         }
       ],
-      "lastPosition": 64.66666666666666,
+      "lastPosition": 64,
       "engagementScore": 31,
       "estimatedRpm": 3,
       "estimatedRevenue": 0.015,
@@ -1626,7 +1632,7 @@
         }
       ],
       "lastPosition": 50,
-      "engagementScore": 16,
+      "engagementScore": 0,
       "estimatedRpm": 3,
       "estimatedRevenue": 0.051000000000000004,
       "titleTestPhaseBStarted": true,
@@ -1892,7 +1898,11 @@
       "lastPosition": 50,
       "engagementScore": 32,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0.006
+      "estimatedRevenue": 0.006,
+      "titleTestPhaseBStarted": true,
+      "titleTestPhaseBTitle": "Korean Dating Shows Ranked 2026: Which One Should You Watch First?",
+      "titleTestWinner": "7 Best Korean Dating Shows Ranked: Single's Inferno & More (2026)",
+      "titleTestResolved": true
     },
     {
       "keyword": "how to do Korean makeup style step by step",
@@ -1915,7 +1925,11 @@
       "seriesPart": 12,
       "engagementScore": 34,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0.018000000000000002
+      "estimatedRevenue": 0.018000000000000002,
+      "titleTestPhaseBStarted": true,
+      "titleTestPhaseBTitle": "Korean No-Makeup Makeup Look: Step-by-Step 2026 Guide",
+      "titleTestWinner": "How to Do Korean Makeup Style Step by Step (2026)",
+      "titleTestResolved": true
     },
     {
       "keyword": "K-pop agency tour Seoul HYBE Insight SM Artium JYP complete guide 2026",
@@ -1938,7 +1952,11 @@
       "seriesPart": 1,
       "engagementScore": 44,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0.021
+      "estimatedRevenue": 0.021,
+      "titleTestPhaseBStarted": true,
+      "titleTestPhaseBTitle": "Inside HYBE Insight, SM Artium & JYP: Seoul Fan Tour Guide 2026",
+      "titleTestWinner": "K-Pop Agency Tours Seoul: HYBE, SM & JYP Fan Guide (2026)",
+      "titleTestResolved": true
     },
     {
       "keyword": "best Korean lip oil for glass lips ranked 2026",
@@ -2120,7 +2138,7 @@
       "qualityScore": 74,
       "seriesId": "k-entertainment-business-best-korean-dramas-on-netflix-",
       "seriesPart": 12,
-      "engagementScore": 9,
+      "engagementScore": 39,
       "estimatedRpm": 3,
       "estimatedRevenue": 0.018000000000000002
     },
@@ -2161,9 +2179,9 @@
       "featuredImageMediaId": 88941,
       "affiliateLinkCount": 0,
       "qualityScore": 75,
-      "engagementScore": 16,
+      "engagementScore": 45,
       "estimatedRpm": 8,
-      "estimatedRevenue": 0.096
+      "estimatedRevenue": 0.112
     },
     {
       "keyword": "AI 자동매매 vs 수동매매 비교 어떤게 유리할까",
@@ -2200,10 +2218,46 @@
       "featuredImageMediaId": 88992,
       "affiliateLinkCount": 0,
       "qualityScore": 71
+    },
+    {
+      "keyword": "Python 백테스트 프레임워크 만들기 가이드",
+      "postId": 89010,
+      "postUrl": "https://trendhunt.net/python-backtest-framework-kospi-kosdaq-guide-2026/",
+      "publishedAt": "2026-03-28T14:50:41.241Z",
+      "niche": "ai-trading-quant",
+      "contentType": "how-to",
+      "titleCandidates": [
+        "KOSPI 백테스트 Python 2026: T+2·슬리피지·DART 완전 구현",
+        "한국 주식 Python 백테스트: 과최적화 없는 전략 검증 방법"
+      ],
+      "originalTitle": "Python 백테스트 프레임워크 만들기: KOSPI·KOSDAQ 완전 가이드 2026",
+      "searchIntent": "informational",
+      "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/python-featured-2026.webp",
+      "featuredImageMediaId": 89007,
+      "affiliateLinkCount": 0,
+      "qualityScore": 79
+    },
+    {
+      "keyword": "미국 FOMC 금리 결정 한국 주식 영향 분석",
+      "postId": 89021,
+      "postUrl": "https://trendhunt.net/fomc-%ea%b8%88%eb%a6%ac%ea%b2%b0%ec%a0%95-%ed%95%9c%ea%b5%ad%ec%a3%bc%ec%8b%9d-%ec%98%81%ed%96%a5-%eb%b6%84%ec%84%9d-2026/",
+      "publishedAt": "2026-03-28T14:53:01.595Z",
+      "niche": "korean-stock-analysis",
+      "contentType": "analysis",
+      "titleCandidates": [
+        "FOMC 금리 인상·인하·동결: KOSPI 섹터별 반응 완전 분석 2026",
+        "원달러 환율·외국인 순매수로 보는 FOMC 한국 주식 영향 2026"
+      ],
+      "originalTitle": "FOMC 금리 결정이 한국 주식시장에 미치는 영향 2026: 시나리오별 완전 분석",
+      "searchIntent": "commercial-investigation",
+      "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/fomc-featured-2026.webp",
+      "featuredImageMediaId": 89016,
+      "affiliateLinkCount": 0,
+      "qualityScore": 84
     }
   ],
-  "lastRunAt": "2026-03-27T15:20:34.595Z",
-  "totalPosts": 71,
+  "lastRunAt": "2026-03-28T15:00:34.736Z",
+  "totalPosts": 73,
   "categoryLastPublished": {
     "korean-food-cooking": "2026-03-09T14:49:00.731Z",
     "korean-tech-ai": "2026-03-13T14:58:36.162Z",
@@ -2211,7 +2265,7 @@
     "k-beauty-skincare": "2026-03-26T15:15:40.979Z",
     "korea-travel-guide": "2026-03-12T15:04:37.207Z",
     "k-entertainment-business": "2026-03-26T15:13:08.946Z",
-    "korean-stock-analysis": "2026-03-27T15:12:19.162Z",
-    "ai-trading-quant": "2026-03-27T15:10:07.432Z"
+    "korean-stock-analysis": "2026-03-28T14:53:01.593Z",
+    "ai-trading-quant": "2026-03-28T14:50:41.238Z"
   }
 }
