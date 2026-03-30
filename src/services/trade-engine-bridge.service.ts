@@ -291,6 +291,30 @@ export class TradeEngineBridge {
         result.aiHoldings = aiPicks.holdings || [];
       }
 
+      // 장중 라이브 워치리스트 (15:25 저장, 가장 최신)
+      const liveWl = this.readJson<{ watchlist: Array<{ stock_code: string; stock_name: string; score: number; confidence: number; signal_count: number; sector: string }> }>('live_watchlist.json');
+      if (liveWl?.watchlist?.length) {
+        // ai_picks에 없는 종목만 추가
+        const existingCodes = new Set(result.aiPicks.map(p => p.stock_code));
+        for (const w of liveWl.watchlist) {
+          if (!existingCodes.has(w.stock_code)) {
+            result.aiPicks.push({
+              stock_code: w.stock_code,
+              stock_name: w.stock_name,
+              sector: w.sector || '',
+              signal_count: w.signal_count || 1,
+              avg_confidence: w.confidence || 0,
+              strategies: [],
+              reason: `장중 워치리스트 score=${w.score.toFixed(2)}`,
+              price_at_signal: 0,
+              signal_time: '',
+              status: '장중 워치리스트',
+            });
+          }
+        }
+        logger.info(`Live watchlist: ${liveWl.watchlist.length}종목 병합 (총 ${result.aiPicks.length} 추천주)`);
+      }
+
       result.isStale = result.dataAge > 24;
 
       if (result.isStale) {

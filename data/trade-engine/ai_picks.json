@@ -1,22 +1,7 @@
 {
-  "exported_at": "2026-03-30T06:05:26.460606+00:00",
-  "total_candidates": 1,
+  "exported_at": "2026-03-30T06:09:24.595346+00:00",
+  "total_candidates": 0,
   "total_holdings": 0,
-  "candidates": [
-    {
-      "stock_code": "206650",
-      "stock_name": "유바이오로직스",
-      "sector": "",
-      "signal_count": 1,
-      "avg_confidence": 0.2633,
-      "strategies": [
-        "dart_momentum"
-      ],
-      "reason": "공시: 주요사항보고서(자기주식취득신탁계약체결결정) | 감성점수: 0.62 | 거래량급증: True",
-      "price_at_signal": 0,
-      "signal_time": "2026-03-27T06:07:33.804714",
-      "status": "매수 시그널"
-    }
-  ],
+  "candidates": [],
   "holdings": []
 }
