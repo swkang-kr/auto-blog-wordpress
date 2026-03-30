@@ -953,29 +953,8 @@ STRATEGY: Consider creating content that directly targets one of these content g
       );
     }
 
-    // Post-parse finance keyword blocker for AI-Trading niches (strict)
-    // Korean-Stock case-study/deep-dive may legitimately discuss brand market growth — allow with softer block
-    const financeTerms = [
-      'revenue', 'profit', 'earnings', 'stock price', 'valuation', 'investment',
-      'financial', 'market cap', 'ipo', 'dividend', 'quarterly report', 'annual report',
-      'balance sheet', 'income statement', 'fiscal year', 'shareholder',
-    ];
-    const hasFinanceTerm = financeTerms.some(t => keywordLower.includes(t));
-    if (hasFinanceTerm) {
-      // Korean-Stock case-study and deep-dive can discuss brand market performance
-      const isKBeautyAnalysis = niche?.category === 'Korean-Stock' && ['case-study', 'deep-dive'].includes(analysis.contentType);
-      // AI-Trading album sales / chart comparison is fan-focused, not finance advice
-      const isAlbumSalesComparison = niche?.category === 'AI-Trading' &&
-        /\b(?:album\s*sales?|first\s*week\s*sales?|million\s*seller|chart\s*(?:record|position|ranking)|hanteo|circle\s*chart|gaon|sales\s*record|shipment|pre-?order)\b/i.test(analysis.selectedKeyword);
-      if (!isKBeautyAnalysis && !isAlbumSalesComparison) {
-        logger.warn(`REJECTED keyword "${analysis.selectedKeyword}" — finance/business topic blocked for ${niche?.category ?? 'unknown'} niche`);
-        throw new KeywordResearchError(
-          `Keyword "${analysis.selectedKeyword}" contains finance/business terms. Select a fan-focused or product-focused keyword instead.`,
-        );
-      }
-      const reason = isKBeautyAnalysis ? 'brand market analysis' : 'album sales/chart comparison (fan-focused)';
-      logger.info(`Allowed finance term in ${niche?.category} ${analysis.contentType}: "${analysis.selectedKeyword}" (${reason} permitted)`);
-    }
+    // Finance keyword blocker REMOVED — this is a finance blog.
+    // All finance terms (revenue, earnings, IPO, dividend, etc.) are core content.
 
     return analysis;
   }
