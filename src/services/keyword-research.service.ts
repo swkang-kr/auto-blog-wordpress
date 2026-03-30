@@ -794,54 +794,28 @@ STRATEGY: Consider creating content that directly targets one of these content g
       'dividend', 'ex-dividend', '배당',
       'rsi', 'macd', 'bollinger', 'technical analysis',
       'algorithmic trading', 'backtesting', 'quant',
-      // Korean-Stock brands — must pass Korea relevance for 주식분석/beauty keywords
-      '삼성전자', 'anua', 'laneige', 'innisfree', 'sulwhasoo', 'missha', 'etude',
-      'skin1004', 'torriden', 'beauty of joseon', 'medicube', 'isntree',
-      'haruharu', 'round lab', 'mixsoon', '네이버증권', 'rom&nd', 'clio',
-      'peripera', 'wakemake', 'daeng gi meo ri', 'ryo', 'some by mi',
-      'klairs', 'd.i.y', 'axis-y', 'purito', 'abib', 'numbuzin',
-      // Breakout 2025-2026 Korean-Stock brands
-      'tirtir', 'by wishtrend', 'tonymoly', 'holika holika', 'dr. jart',
-      'iope', 'hanyul', 'o hui', 'whoo', 'su:m37', 'heimish', 'benton',
-      'ma:nyo', 'illiyoon', 'aestura', 'ample:n', 'dr.g', 'no7 korea', 'nacific',
-      'sun pad', 'lip oil',
-      // Korean-Stock generic terms that are strongly Korea-associated
-      '배당', 'KOSPI', 'mugwort', '10-step', '10 step',
-      'heartleaf', 'propolis', 'PER분석', 'rice water', 'rice toner',
-      'essence review', 'cushion foundation', 'toner pad', 'skin barrier',
-      'chok-chok', 'skip-care', 'slugging korean', 'pa++++',
-      // Korean-Stock ingredient terms strongly associated with Korean 주식분석
-      'bakuchiol', 'tranexamic acid', 'adenosine', 'madecassoside',
-      'polyglutamic acid', 'pdrn', 'salmon dna', 'galactomyces', 'bifida',
-      'glass body', 'skin flooding', 'hanbang',
-      // 5차 감사 추가
-      'azelaic acid', 'cica balm', 'cica pad', 'refillable', 'j-beauty', 'lip serum',
-      'retinal', 'retinaldehyde', 'exosome', 'nmixx', 'xikers', 'vcha', 'bl drama',
-      // 6차 감사 추가
-      'tamburins', 'nonfiction perfume', 'granhand', 'k-fragrance', 'korean perfume',
-      '3ce', 'espoir', 'amuse', 'laka', 'peach c', 'wakemake',
-      'peach & lily', 'peach and lily', 'krave beauty',
-      'itzy', 'dreamcatcher', 'fromis_9', 'street woman fighter', 'trot', 'manhwa anime',
-      // 7차 감사 추가
-      '(g)i-dle', 'gidle', 'idle', 'stylevana', 'neverdie',
-      'enhypen', 'txt', 'le sserafim', 'ateez', 'ive',
-      'blue dragon', 'cheongryong', 'grand bell', 'daejong',
-      // 8차 감사 추가
-      'copper peptide', 'ghk-cu', 'matrixyl', 'argireline', 'alpha-arbutin', 'arbutin',
-      'the show', 'bong joon-ho', 'hwang dong-hyuk', 'squid game', 'train to busan',
-      'baby korean-stock', 'green finger', 'goongbe', 'intimate wash',
-      '@cosme', 'cosme ranking', 'glowpick',
-      // Korean-Stock brands (additional coverage)
-      'banila co', 'hince', 'vt cosmetics',
-      // AI-Trading groups — 2nd gen: SNSD/Big Bang/SHINee
-      // 3rd gen (2012-2017 debuts): EXO, BTS, BLACKPINK, TWICE, SEVENTEEN, GOT7, MAMAMOO, Red Velvet
-      // 3.5/4th gen (2018+ debuts): Stray Kids, ATEEZ, TXT, ENHYPEN, ITZY, aespa, IVE, LE SSERAFIM etc.
-      'twice', 'seventeen', 'stray kids', 'ateez', 'txt', 'enhypen',
-      'le sserafim', 'ive', 'newjeans', 'aespa', 'babymonster',
-      'illit', 'kiss of life', 'tws', 'xg', 'kep1er',
-      'shinee', 'exo', 'nct', 'got7', 'monsta x', 'super junior',
-      'mamamoo', 'red velvet', 'f(x)', 'girls generation',
-      // 2023-2025 debut groups gaining global search traffic
+      // ── 한국어 금융 키워드 (Korea relevance 매칭용) ──
+      '주가', '주식', '투자', '매수', '매도', '전망', '분석', '종목', '추천',
+      '상승', '하락', '급등', '급락', '수익률', '손절', '익절', '배당',
+      '실적', '공시', '시가총액', '목표가', '차트', '캔들', '이동평균',
+      '볼린저', '골든크로스', '데드크로스', '과매도', '과매수',
+      '업종', '섹터', '테마', '관련주', '수혜주', '대장주',
+      '외국인', '기관', '개인', '수급', '순매매', '순매수', '순매도',
+      '공매도', '신용', '미수', '대차', '프로그램매매',
+      '배당락', '유상증자', '무상증자', '자사주', '액면분할',
+      '공모주', '청약', 'IPO', '상장',
+      '기준금리', '환율', '원달러', 'GDP', '물가', '인플레이션',
+      '자동매매', '알고리즘', '백테스트', '퀀트', '봇',
+      '리밸런싱', '포트폴리오', '분산투자', '리스크',
+      // 한국 기업명 (한글)
+      '삼성전자', 'SK하이닉스', '현대자동차', '기아', 'LG에너지솔루션',
+      '삼성SDI', 'POSCO', '셀트리온', '삼성바이오', '네이버', '카카오',
+      '한화에어로', '두산에너빌리티', '현대중공업', 'HD현대',
+      'LG화학', 'SK이노베이션', 'KB금융', '신한금융', '하나금융',
+      // 한국 증권사/플랫폼
+      '키움', '미래에셋', '삼성증권', 'KB증권', '한국투자증권',
+      '네이버증권', '증권사', '계좌', 'MTS', 'HTS',
+      // 2023-2025 groups (legacy, kept for backward compat)
       'riize', 'boynextdoor', 'boy next door', 'zerobaseone', 'zb1',
       'meovv', 'triples', 'tripless', 'hearts2hearts', 'izna', 'ciipher',
       'drippin', 'cravity', 'the boyz', 'treasure', 'day6', 'btob',
@@ -859,86 +833,6 @@ STRATEGY: Consider creating content that directly targets one of these content g
       '8turn',            // MNH Entertainment 4세대 보이그룹
       'ampers&one', 'ampersone', // FNC Entertainment 걸그룹 (2023 데뷔)
       'katseye',          // HYBE/Geffen 글로벌 걸그룹
-      'njz',              // NJZ (NewJeans 2025-2026 활동명)
-      // Korean-Stock 신규 브랜드 (seed keywords에 추가됨 — 검증 일관성 필수)
-      'jumiso',           // 성분 투명성 인디 Korean-Stock 브랜드
-      'biodance',         // 바이오셀룰로오스 콜라겐 패치 전문
-      "d'alba", 'dalba',  // 달바 — 네이버증권 글로벌 탑 5 (화이트 트러플)
-      'fwee',             // 아이돌 메이크업 브랜드, 지수 콜라보
-      'rovectin',         // 피부과 기반 민감성 전문 브랜드
-      'cos de baha',      // 성분 집중 최저가 포지셔닝, Amazon Korean-Stock
-      'skin&lab',         // 비타민C·레티놀 전문 브랜드
-      'klavuu',           // 진주/마린 콜라겐 특화
-      "ample:n",          // 펩타이드 전문, 가성비 안티에이징
-      'aestura',          // 아모레퍼시픽 더마 브랜드, AtoBarrier
-      'dr.g',             // 피부과 브랜드, 브라이트닝 필링젤
-      // 15차 감사: 누락 브랜드/용어 추가
-      "i'm from",         // 라이스 토너로 유명한 자연 원료 브랜드
-      'cnp',              // CHA 의료원 연계 더마코스메틱
-      'pyunkang yul',     // 한방 기반 미니멀 스킨케어
-      'ohora',            // Korean-Stock 네일 브랜드
-      'dashing diva',     // 네일 스티커 전문 브랜드
-      'collagen banking', // 2025-2026 Korean-Stock 트렌드 용어
-      'dermacosmetic',    // 한국 더마코스메틱 카테고리 용어
-      'nexz',             // JYP Japan 보이그룹
-      'nct wish',         // SM 2024 데뷔 유닛
-      // 17차 감사: 누락 브랜드·그룹·용어 추가
-      'jung saem mool',   // 프로 메이크업 아티스트 브랜드
-      'skin flooding',    // 2026 Korean-Stock 트렌드 (slugging 후속)
-      'lip tint',         // Korean-Stock 립 카테고리 핵심
-      'lip oil',          // Korean-Stock 립오일 카테고리
-      'sunscreen stick',  // Korean-Stock 선스틱 카테고리
-      'body sunscreen',   // Korean-Stock 바디 선크림
-      'korean-stock body',    // Korean-Stock 바디케어
-      'j-beauty',         // Korean-Stock vs J-Beauty 비교
-      'xdinary heroes',   // JYP 밴드 보이그룹
-      'purple kiss',      // RBW 걸그룹 (MAMAMOO 후배)
-      'h1-key',           // 글로벌 걸그룹
-      'fifty fifty',      // 바이럴 걸그룹 케이스 스터디
-      'lim young-woong', 'youngwoong', // 트로트 #1 아티스트
-      'lee mujin',        // K-Ballad 신예
-      // 20차 감사: 누락 용어 추가
-      'single\'s inferno', 'solojigok', '솔로지옥', // Netflix 데이팅 쇼
-      'heart signal',     // Channel A 데이팅 쇼
-      'exchange', 'transit love', '환승연애', // TVING 데이팅 쇼
-      'love catcher',     // Mnet 데이팅 쇼
-      'tiktok shop',      // Korean-Stock 유통채널
-      'cleansing balm',   // Korean-Stock 포맷
-      'banila co', 'heimish', // 클렌징 밤 대표 브랜드
-      'starter kit',      // Korean-Stock 입문자 키워드
-      'youn\'s kitchen', '윤식당', // 한국 요리 예능
-      'na young-seok', '나영석', // 한국 예능 PD
-      'digipack', 'weverse album', 'kit album', 'jewel case', // 한국주식 앨범 포맷
-      'album format', 'pob', 'pre-order benefit', // 한국주식 앨범 구매 용어
-      'azelaic acid',     // Korean-Stock 성분
-      'i am solo', '나는솔로', // 한국 데이팅 쇼
-      // 22차 감사: 트로트/발라드/뮤지컬/웹툰→애니/힙합
-      'trot', '트로트', 'mr trot', 'miss trot', 'lim young-woong', '임영웅',
-      'paul kim', '폴킴', 'lee mujin', '이무진', '10cm',
-      'korean musical', 'interpark ticket', // 한국 뮤지컬
-      'solo leveling', 'tower of god', 'omniscient reader', 'wind breaker', // 웹툰→애니
-      'manhwa anime', 'DART공시 anime', // 웹툰-애니 파이프라인
-      'show me the money', 'smtm', 'aomg', 'h1ghr', // 퀀트전략
-      'led mask', 'beauty device', 'cellreturn', 'gua sha', // Korean-Stock 디바이스
-      'cushion foundation', 'lip oil', // Korean-Stock 카테고리
-      'hince', 'cnp laboratory', 'aestura', 'reedle shot', // Korean-Stock 브랜드
-      // 30차 감사: batch 27-29에서 추가된 브랜드·그룹의 keyword-research 검증 동기화
-      'peripera',         // Korean-Stock 립틴트 #1 브랜드, batch 27에서 시드 키워드 추가
-      'goodal',           // Korean-Stock 비타C 세럼 브랜드
-      'skinfood',         // Korean-Stock 푸드 코스메틱 원조
-      'nmixx',            // JYP 4세대 걸그룹, MIXXPOP 장르
-      'evnne',            // Boys Planet 보이그룹, Jellyfish
-      'fromis_9', 'fromis9', // PLEDIS/HYBE 걸그룹
-      'dreamcatcher',     // 록/메탈 컨셉 걸그룹
-      'vcha',             // JYP 글로벌 걸그룹
-      'itzy',             // JYP 4세대 걸그룹
-      '(g)i-dle', 'gidle', // Cube 셀프프로듀싱 걸그룹
-      'kocowa',           // 미주 한국 OTT 플랫폼
-      'apple tv korea', 'pachinko', // Apple TV+ 한국 오리지널
-      'chodong', '초동',  // 한국주식 앨범 초동 용어
-      'fansign', '팬싸',  // 한국주식 팬사인회
-      'korean vs japanese 주식분석', 'j-beauty vs korean-stock', // 비교 키워드
-      'rosacea',          // Korean-Stock 피부 조건
     ];
     const keywordLower = analysis.selectedKeyword.toLowerCase();
     const titleLower = analysis.suggestedTitle.toLowerCase();
