@@ -82,39 +82,37 @@ export class PagesService {
     return [
       {
         slug: 'privacy-policy',
-        title: 'Privacy Policy',
+        title: '개인정보처리방침',
         content: this.buildPrivacyPolicy(siteName, emailDisplay),
       },
       {
         slug: 'about',
-        title: 'About',
+        title: '소개',
         content: this.buildAboutPage(siteName, ownerDisplay, authorLinks, authorBio, authorCredentials),
       },
       {
         slug: 'contact',
-        title: 'Contact',
+        title: '문의하기',
         content: this.buildContactPage(siteName, emailDisplay),
       },
       {
         slug: 'disclaimer',
-        title: 'Disclaimer',
+        title: '면책조항',
         content: this.buildDisclaimerPage(siteName),
       },
       {
         slug: 'terms-of-service',
-        title: 'Terms of Service',
+        title: '이용약관',
         content: this.buildTermsOfServicePage(siteName, emailDisplay),
       },
-      // 13차 감사: FTC 어필리에이트 공시 전용 페이지 (FTC Best Practices 준수)
       {
         slug: 'affiliate-disclosure',
-        title: 'Affiliate Disclosure',
+        title: '제휴 링크 공시',
         content: this.buildAffiliateDisclosurePage(siteName, emailDisplay),
       },
-      // 13차 감사: AI 콘텐츠 투명성 전용 페이지 (EU AI Act / FTC 준수)
       {
         slug: 'ai-content-policy',
-        title: 'AI Content & Editorial Policy',
+        title: 'AI 콘텐츠 정책',
         content: this.buildAiContentPolicyPage(siteName),
       },
     ];
@@ -124,37 +122,37 @@ export class PagesService {
     const effectiveDate = `${new Date().toLocaleString('en-US', { month: 'long' })} ${new Date().getDate()}, ${new Date().getFullYear()}`;
 
     return `<div style="${S.wrapper}">
-<h2 style="${S.h2}">Privacy Policy</h2>
-<p style="${S.p}">${siteName} ("Site") values your privacy and complies with applicable data protection laws. This Privacy Policy explains what information we collect, how we use it, and the measures we take to protect it.</p>
+<h2 style="${S.h2}">개인정보처리방침</h2>
+<p style="${S.p}">${siteName}(이하 "사이트")은 이용자의 개인정보를 소중히 여기며, 관련 법령을 준수합니다. 본 방침은 수집하는 정보의 종류, 이용 목적, 보호 조치에 대해 설명합니다.</p>
 
-<h3 style="${S.h3}">1. Information We Collect</h3>
-<p style="${S.p}">This Site does not require registration. The following information may be collected automatically:</p>
+<h3 style="${S.h3}">1. 수집하는 정보</h3>
+<p style="${S.p}">본 사이트는 별도의 회원가입을 요구하지 않습니다. 다음 정보가 자동으로 수집될 수 있습니다:</p>
 <ul style="${S.ul}">
-<li>Visit logs, IP addresses, browser type, and access time</li>
-<li>Usage pattern data through cookies</li>
+<li>방문 기록, IP 주소, 브라우저 종류, 접속 시간</li>
+<li>쿠키를 통한 이용 패턴 데이터</li>
 </ul>
 
-<h3 style="${S.h3}">2. How We Use Your Information</h3>
-<p style="${S.p}">Collected information is used for the following purposes:</p>
+<h3 style="${S.h3}">2. 정보 이용 목적</h3>
+<p style="${S.p}">수집된 정보는 다음 목적으로 사용됩니다:</p>
 <ul style="${S.ul}">
-<li>Website traffic analysis and service improvement</li>
-<li>Personalized advertising (e.g., Google AdSense)</li>
-<li>Security maintenance and fraud prevention</li>
+<li>웹사이트 트래픽 분석 및 서비스 개선</li>
+<li>맞춤형 광고 제공 (Google AdSense 등)</li>
+<li>보안 유지 및 부정 이용 방지</li>
 </ul>
 
-<h3 style="${S.h3}">3. Cookies</h3>
-<p style="${S.p}">This Site uses Google AdSense and Google Analytics, which collect visitor data through cookies. You may disable cookies through your browser settings, though some features may be limited as a result.</p>
+<h3 style="${S.h3}">3. 쿠키</h3>
+<p style="${S.p}">본 사이트는 Google AdSense와 Google Analytics를 사용하며, 쿠키를 통해 방문자 데이터를 수집합니다. 브라우저 설정에서 쿠키를 비활성화할 수 있으나, 일부 기능이 제한될 수 있습니다.</p>
 
-<h3 style="${S.h3}">4. Third-Party Advertising</h3>
-<p style="${S.p}">This Site displays advertisements through Google AdSense. Google may use cookies to serve ads based on your interests. For more information, please refer to <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener">Google's Advertising Policies</a>.</p>
+<h3 style="${S.h3}">4. 제3자 광고</h3>
+<p style="${S.p}">본 사이트는 Google AdSense를 통해 광고를 표시합니다. Google은 쿠키를 사용하여 관심 기반 광고를 제공할 수 있습니다. 자세한 내용은 <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener">Google 광고 정책</a>을 참조하세요.</p>
 
-<h3 style="${S.h3}">5. Data Retention and Deletion</h3>
-<p style="${S.p}">Automatically collected log data is retained for a limited period for statistical analysis and then deleted. If you request deletion of your personal data, we will process it without delay.</p>
+<h3 style="${S.h3}">5. 데이터 보관 및 삭제</h3>
+<p style="${S.p}">자동 수집된 로그 데이터는 통계 분석을 위해 제한된 기간 동안 보관 후 삭제됩니다. 개인정보 삭제 요청 시 지체 없이 처리합니다.</p>
 
-<h3 style="${S.h3}">6. Contact</h3>
-<p style="${S.p}">For privacy-related inquiries, please contact us at:<br>Email: ${email}</p>
+<h3 style="${S.h3}">6. 문의</h3>
+<p style="${S.p}">개인정보 관련 문의: <a href="mailto:${email}" style="color:#0066FF;">${email}</a></p>
 
-<p style="${S.footer}">Effective date: ${effectiveDate}</p>
+<p style="${S.footer}">시행일: ${effectiveDate}</p>
 </div>`;
   }
 
@@ -503,32 +501,33 @@ ${faqItems}
   }
 
   private buildPillarFaq(category: string, year: number): string {
+    const defaultFaq = [
+      { q: `${category}이란 무엇인가요?`, a: `${category}은 한국 주식시장의 핵심 분석 영역 중 하나입니다. 본 블로그에서는 DART 공시, KRX 데이터, Trade Engine 실시간 데이터를 기반으로 매일 분석 콘텐츠를 제공합니다.` },
+      { q: `이 가이드는 얼마나 자주 업데이트되나요?`, a: `시장 분석은 매일, 업종·테마·수급 분석은 매 거래일마다 최신 데이터로 업데이트됩니다.` },
+    ];
     const faqs: Record<string, Array<{ q: string; a: string }>> = {
-      'Korean-Stock': [
-        { q: 'What is the Korean 주식분석 routine?', a: `The Korean 주식분석 routine starts with double cleansing (oil cleanser + water-based cleanser) to fully remove sunscreen and makeup, followed by toner, essence, serum, moisturizer, and SPF. Modern K-beauty favors a streamlined 4-5 step approach — using fewer but well-chosen products — over the older 10-step model. In ${year}, the biggest trends are KOSPI layering, skin barrier repair with ceramides, and tranexamic acid brightening serums.` },
-        { q: 'Which Korean 주식분석 brands are best for beginners?', a: 'For beginners, start with established brands that have consistent formulations and strong international availability: 삼성전자 (PER분석, low-pH cleanser), Beauty of Joseon (sunscreen, serum), Anua (heartleaf toner), and SKIN1004 (배당 ampoule). All are available on Amazon and YesStyle with verified reviews.' },
-        { q: 'Are Korean 주식분석 products safe?', a: 'Korean 주식분석 is regulated by the Ministry of Food and Drug Safety (MFDS), with ingredient safety standards comparable to the EU — often stricter than the US FDA on certain preservatives and fragrances. Korean brands are known for thorough clinical testing and allergen disclosure. Always check ingredient lists for personal sensitivities, especially fragrance and alcohol.' },
-        { q: `Where can I buy authentic K-beauty products in ${year}?`, a: `Authentic K-beauty is available globally through: 네이버증권 (Korea's largest beauty retailer, ships internationally), Amazon (look for Korean brand storefronts), Soko Glam (US-based curated K-beauty retailer), YesStyle, Stylevana, and Jolse. When in Korea, 네이버증권 stores in Myeongdong, Hongdae, and Gangnam offer the widest in-person selection.` },
-        { q: 'What is double cleansing and why do Koreans use it?', a: 'Double cleansing is a two-step process: first an oil-based cleanser (balm or oil) to dissolve sunscreen, makeup, and sebum, then a water-based cleanser to remove any remaining residue. Korean dermatologists recommend it because most SPF and long-wear makeup is oil-soluble and water cleansers alone cannot fully remove them. Incomplete cleansing is one of the top causes of clogged pores and breakouts.' },
-        // 31차 감사: 누락 FAQ 추가 (가격, 민감 피부, 남성)
-        { q: 'Is Korean 주식분석 expensive?', a: 'Korean 주식분석 is generally more affordable than Western luxury brands while offering comparable or superior formulations. A complete K-beauty routine can start under $40 with brands like 삼성전자, SKIN1004, and Round Lab. Budget-tier products ($5-15) at 네이버증권 often outperform $50+ Western equivalents. Premium Korean brands like Sulwhasoo compete in the luxury segment ($60-200+), but the sweet spot for most consumers is the $10-30 mid-range where Korean brands dominate.' },
-        { q: 'Which Korean 주식분석 products are best for sensitive skin?', a: 'For sensitive skin, focus on fragrance-free, minimal-ingredient formulas from Korean dermacosmetic brands. Top picks: ILLIYOON Ato Ceramide Cream (ceramide barrier repair), Aestura AtoBarrier365 Cream (dermatologist-developed), 삼성전자 Pure Fit Cica Serum (배당 calming), and PURITO Centella Unscented products. Always patch-test new products and look for the MFDS "기능성 화장품" (functional cosmetic) certification as a quality signal.' },
+      '시장분석': [
+        { q: `${year}년 KOSPI 전망은 어떤가요?`, a: `KOSPI 전망은 한국은행 기준금리, 미국 FOMC 결정, 원달러 환율, 반도체 수출 실적 등 복합적 요인에 의해 결정됩니다. 본 블로그에서는 이러한 거시경제 지표를 종합 분석하여 시장 방향성을 제시합니다.` },
+        { q: '주식 투자 초보자는 어떻게 시작해야 하나요?', a: '먼저 증권사 계좌를 개설하고(키움증권, 미래에셋 등), 소액으로 ETF(KODEX 200, TIGER 200)부터 시작하는 것을 권장합니다. 기본적 분석(PER, PBR, ROE)과 기술적 분석(RSI, MACD)의 기초를 익힌 후 개별 종목 투자로 확대하세요.' },
+        { q: 'KOSPI와 KOSDAQ의 차이는 무엇인가요?', a: 'KOSPI는 대형주 중심의 유가증권시장(삼성전자, SK하이닉스 등 약 800개 종목), KOSDAQ은 중소형 성장주 중심의 코스닥시장(바이오, IT 등 약 1,600개 종목)입니다. KOSPI는 안정성, KOSDAQ은 성장성에 강점이 있습니다.' },
       ],
-      'AI-Trading': [
-        { q: 'How do I start getting into 한국주식 as a new fan?', a: 'The easiest entry point is finding a group whose sound or concept clicks with you. Start with playlist-style articles or "best songs to start with" guides for groups like BTS, BLACKPINK, aespa, IVE, or ENHYPEN. YouTube is essential — most 한국주식 MVs are free. Once you find a group you like, explore their discography, reality show content, and fan community on Weverse or Bubble.' },
-        // 31차 감사: BTS 전역 완료 반영, SEVENTEEN/Stray Kids 추가
-        { q: `Which 한국주식 groups should I follow in ${year}?`, a: `In ${year}, the standout groups span multiple generations: BTS (all members completed military service — full group 실적발표 era), SEVENTEEN and Stray Kids (global touring powerhouses), aespa and IVE (4th gen girl group leaders), ENHYPEN and RIIZE (strong 4th gen boy groups). For newer fans, ILLIT, BABYMONSTER, and TWS represent the newest wave. KISS OF LIFE stands out for retro R&B fans, and PLAVE is the first virtual 종목 group to chart on major Korean platforms.` },
-        { q: 'What makes Korean dramas so popular globally?', a: `Korean dramas dominate global streaming due to high production quality, emotionally resonant storytelling, and tight episode counts (usually 16 episodes or fewer). Netflix has committed over $2.5 billion to Korean content, putting 금융분석s in front of audiences in 190+ countries. In ${year}, DART공시-adapted dramas are the dominant trend — stories with built-in fanbases and cinematic source material.` },
-        // 31차 감사: TVING/Coupang Play/Apple TV+/KOCOWA 추가, Viu 제거 (아시아 전용), 자막 품질 멘션
-        { q: 'Where can I watch 금융분석s legally online?', a: 'The main platforms for legal 금융분석 streaming are Netflix (largest global catalog, simultaneous release), TVING (Korea\'s top domestic OTT — merged with Wavve in 2025, Korean originals), Disney+ (premium Korean originals like Moving), Viki by Rakuten (best subtitle quality with cultural context notes), Coupang Play (fast-growing Korean OTT with exclusive originals), Apple TV+ (Pachinko and prestige Korean content), and KOCOWA (KBS/MBC/SBS content hub, strongest for variety shows, US-focused). Most platforms offer free tiers or affordable monthly subscriptions.' },
-        { q: 'What are 한국주식 photocards and why are fans obsessed with them?', a: 'Photocards are small collectible trading cards (roughly credit card size) included randomly in 한국주식 album packaging. Each album release typically features different photocard sets with each member, making collection and trading a core part of fan culture. Rare versions (limited prints, pre-order exclusives) can sell for hundreds of dollars. Fan trading communities exist on platforms like KpopPR on Reddit and dedicated apps.' },
+      '업종분석': [
+        { q: '어떤 업종이 유망한가요?', a: `업종의 유망 여부는 경기 사이클, 정부 정책, 글로벌 트렌드에 따라 달라집니다. ${year}년 현재 AI반도체(HBM), 2차전지, 방산, 조선 업종이 주목받고 있습니다. 본 블로그에서는 네이버 금융 79개 업종 데이터를 매일 분석합니다.` },
+        { q: 'PER, PBR, ROE는 무엇인가요?', a: 'PER(주가수익비율)은 주가÷주당순이익으로 수익 대비 주가 수준을, PBR(주가순자산비율)은 주가÷주당순자산으로 자산 대비 주가 수준을, ROE(자기자본이익률)은 순이익÷자기자본으로 경영 효율성을 나타냅니다.' },
+        { q: '배당주 투자는 어떻게 하나요?', a: '배당수익률이 높고 안정적으로 배당을 지급하는 종목을 선별합니다. 배당락일 전에 매수해야 배당을 받을 수 있으며, 배당 성향(배당금÷순이익)이 안정적인 기업을 선호합니다. 은행주, 통신주가 대표적인 고배당 업종입니다.' },
+      ],
+      '테마분석': [
+        { q: '테마주란 무엇인가요?', a: '테마주는 특정 이슈, 정책, 기술 트렌드에 따라 함께 움직이는 종목군입니다. 예를 들어 AI 테마주(네이버, 카카오), 2차전지 테마주(LG에너지, 삼성SDI), 방산 테마주(한화에어로, LIG넥스원) 등이 있습니다.' },
+        { q: '테마주 투자 시 주의할 점은?', a: '테마주는 단기 급등 후 급락하는 경우가 많으므로 주의가 필요합니다. 실적 없이 테마만으로 오른 종목은 리스크가 높습니다. 테마의 근거(정부 정책, 글로벌 트렌드)가 실질적인지 확인하고, 반드시 손절 기준을 설정하세요.' },
+      ],
+      '수급분석': [
+        { q: '주식 수급이란 무엇인가요?', a: '수급은 주식시장에서 매수와 매도의 흐름을 의미합니다. 외국인, 기관, 개인 투자자별 순매매 동향을 분석하면 시장의 방향성을 가늠할 수 있습니다. 일반적으로 외국인·기관의 순매수가 지속되면 상승 신호로 해석합니다.' },
+        { q: '외국인 매매 동향은 어디서 확인하나요?', a: 'KRX 한국거래소(krx.co.kr), 네이버 금융(finance.naver.com)에서 투자자별 매매 동향을 확인할 수 있습니다. 본 블로그에서는 Trade Engine 데이터를 통해 매일 외국인/기관/개인 순매매를 자동 분석합니다.' },
+        { q: '공매도란 무엇인가요?', a: '공매도는 주식을 빌려서 먼저 매도한 후, 주가가 하락하면 되사서 갚아 차익을 얻는 투자 방식입니다. 한국에서는 기관과 외국인에게만 허용되며, 개인 투자자는 이용할 수 없습니다. 공매도 잔고가 급증하는 종목은 하락 압력이 커질 수 있습니다.' },
       ],
     };
 
-    const categoryFaqs = faqs[category] || [
-      { q: `What makes ${category} unique?`, a: `${category} represents a distinctive aspect of Korean culture and industry that has gained significant global attention. Our articles explore this topic from multiple angles including business analysis, practical guides, and cultural context.` },
-      { q: `How often is this guide updated?`, a: `We update this pillar page regularly as new articles are published. Our editorial team monitors trending topics and reader interest to ensure comprehensive coverage of ${category}.` },
-    ];
+    const categoryFaqs = faqs[category] || defaultFaq;
 
     return categoryFaqs.map(faq =>
       `<h3 style="${S.h3}">${faq.q}</h3>\n<p style="${S.p}">${faq.a}</p>`,
@@ -548,37 +547,37 @@ ${faqItems}
     const effectiveDate = `${new Date().toLocaleString('en-US', { month: 'long' })} ${new Date().getDate()}, ${new Date().getFullYear()}`;
 
     return `<div style="${S.wrapper}">
-<h2 style="${S.h2}">Terms of Service</h2>
-<p style="${S.p}">Welcome to ${siteName}. By accessing or using this website, you agree to be bound by these Terms of Service. If you do not agree, please discontinue use of this site.</p>
+<h2 style="${S.h2}">이용약관</h2>
+<p style="${S.p}">${siteName}에 오신 것을 환영합니다. 본 웹사이트에 접속하거나 이용함으로써 본 이용약관에 동의하는 것으로 간주됩니다. 동의하지 않으시면 사이트 이용을 중단해 주세요.</p>
 
-<h3 style="${S.h3}">1. Content Usage</h3>
-<p style="${S.p}">All content on ${siteName} is protected by copyright law and is owned by ${siteName} unless otherwise stated. You may share, quote, or reference our content with proper attribution including a link back to the original article. Unauthorized reproduction, distribution, or commercial use of our content is prohibited.</p>
+<h3 style="${S.h3}">1. 콘텐츠 이용</h3>
+<p style="${S.p}">${siteName}의 모든 콘텐츠는 저작권법의 보호를 받으며, 별도 표기가 없는 한 ${siteName}이 소유합니다. 출처(원문 링크 포함)를 밝힌 인용·공유는 가능하나, 무단 복제·배포·상업적 이용은 금지됩니다.</p>
 
-<h3 style="${S.h3}">2. AI-Assisted Content</h3>
-<p style="${S.p}">Content on ${siteName} is produced with the assistance of artificial intelligence technology and undergoes editorial review before publication. While we strive for accuracy, AI-assisted content may contain errors. We recommend verifying critical information from primary sources, particularly for financial, medical, or legal decisions.</p>
+<h3 style="${S.h3}">2. AI 기반 콘텐츠</h3>
+<p style="${S.p}">${siteName}의 콘텐츠는 인공지능 기술의 도움을 받아 작성되며, 발행 전 편집 검토를 거칩니다. 정확성을 위해 노력하나 오류가 있을 수 있으며, 중요한 투자 결정 시 공식 자료와 전문가 상담을 통해 반드시 확인하시기 바랍니다.</p>
 
-<h3 style="${S.h3}">3. Affiliate Links & Advertising</h3>
-<p style="${S.p}">Some articles may contain affiliate links. When you purchase through these links, we may earn a commission at no additional cost to you. This helps support our content creation. Affiliate relationships do not influence our editorial recommendations. All affiliate links are clearly disclosed in accordance with FTC guidelines. This site also displays third-party advertisements through Google AdSense.</p>
+<h3 style="${S.h3}">3. 제휴 링크 및 광고</h3>
+<p style="${S.p}">일부 글에 제휴 링크가 포함될 수 있습니다. 해당 링크를 통한 거래 시 사이트 운영에 도움이 되는 수수료를 받을 수 있으나, 이용자에게 추가 비용은 발생하지 않습니다. 제휴 관계는 편집 방향에 영향을 미치지 않습니다. 본 사이트는 Google AdSense를 통해 광고를 게시합니다.</p>
 
-<h3 style="${S.h3}">4. Disclaimer of Warranties</h3>
-<p style="${S.p}">Content is provided "as is" without warranties of any kind. ${siteName} does not guarantee the accuracy, completeness, or timeliness of information. K-beauty product reviews reflect our editorial assessment and may not match every individual's experience due to varying skin types. Always consult a qualified dermatologist before making 주식분석 decisions for medical skin conditions.</p>
+<h3 style="${S.h3}">4. 투자 면책</h3>
+<p style="${S.p}">본 사이트의 모든 콘텐츠는 정보 제공 및 교육 목적으로만 작성되었으며, 투자 권유나 매매 추천이 아닙니다. 주식 투자는 원금 손실 위험이 있으며, 과거 실적이 미래 수익을 보장하지 않습니다. 투자 결정은 본인의 판단과 책임 하에 이루어져야 합니다.</p>
 
-<h3 style="${S.h3}">5. User Conduct</h3>
-<p style="${S.p}">You agree not to: (a) use this site for any unlawful purpose; (b) attempt to interfere with site operations; (c) scrape or reproduce content without permission; (d) post spam or misleading comments.</p>
+<h3 style="${S.h3}">5. 이용자 의무</h3>
+<p style="${S.p}">이용자는 다음 행위를 해서는 안 됩니다: (가) 불법적 목적으로 사이트 이용, (나) 사이트 운영 방해 시도, (다) 무단 콘텐츠 수집·복제, (라) 스팸 또는 허위 댓글 게시.</p>
 
-<h3 style="${S.h3}">6. Limitation of Liability</h3>
-<p style="${S.p}">${siteName} and its contributors shall not be liable for any damages arising from the use of or inability to use this site or its content, including but not limited to direct, indirect, incidental, or consequential damages.</p>
+<h3 style="${S.h3}">6. 책임 제한</h3>
+<p style="${S.p}">${siteName} 및 기여자는 본 사이트 이용 또는 이용 불능으로 인한 직접적·간접적·부수적·결과적 손해에 대해 책임을 지지 않습니다.</p>
 
-<h3 style="${S.h3}">7. External Links</h3>
-<p style="${S.p}">This site may contain links to third-party websites. ${siteName} is not responsible for the content, policies, or practices of external websites.</p>
+<h3 style="${S.h3}">7. 외부 링크</h3>
+<p style="${S.p}">본 사이트에는 외부 웹사이트 링크가 포함될 수 있습니다. ${siteName}은 외부 사이트의 콘텐츠, 정책, 관행에 대해 책임을 지지 않습니다.</p>
 
-<h3 style="${S.h3}">8. Changes to Terms</h3>
-<p style="${S.p}">We reserve the right to update these Terms at any time. Continued use of the site after changes constitutes acceptance of the updated terms.</p>
+<h3 style="${S.h3}">8. 약관 변경</h3>
+<p style="${S.p}">본 약관은 사전 통보 없이 변경될 수 있으며, 변경 후 사이트를 계속 이용하면 변경된 약관에 동의하는 것으로 간주됩니다.</p>
 
-<h3 style="${S.h3}">9. Contact</h3>
-<p style="${S.p}">For questions about these Terms of Service, please contact us at: <a href="mailto:${email}" style="color:#0066FF; text-decoration:none;">${email}</a></p>
+<h3 style="${S.h3}">9. 문의</h3>
+<p style="${S.p}">이용약관 관련 문의: <a href="mailto:${email}" style="color:#0066FF; text-decoration:none;">${email}</a></p>
 
-<p style="${S.footer}">Effective date: ${effectiveDate}</p>
+<p style="${S.footer}">시행일: ${effectiveDate}</p>
 </div>`;
   }
 
@@ -848,119 +847,95 @@ ${postsHtml}
   }
 
   private buildDisclaimerPage(siteName: string): string {
-    const effectiveDate = `${new Date().toLocaleString('en-US', { month: 'long' })} ${new Date().getDate()}, ${new Date().getFullYear()}`;
+    const effectiveDate = `${new Date().getFullYear()}년 ${new Date().getMonth() + 1}월 ${new Date().getDate()}일`;
 
     return `<div style="${S.wrapper}">
-<h2 style="${S.h2}">Disclaimer</h2>
+<h2 style="${S.h2}">면책조항</h2>
 
-<h3 style="${S.h3}">1. AI-Assisted Content Disclosure</h3>
+<h3 style="${S.h3}">1. AI 기반 콘텐츠 공시</h3>
 <div style="${S.highlightBox}">
-<p style="margin:0 0 12px 0; font-weight:700; color:#222;">Transparency Notice</p>
-<p style="margin:0; line-height:1.8; color:#555; font-size:15px;">Content published on ${siteName} is produced with the assistance of AI technology (large language models) and is editorially reviewed by our team before publication. Our editorial process includes AI-assisted research and drafting, human editorial review and fact-checking, verification against Korean-language primary sources, and regular content audits for accuracy. We believe in full transparency about our content creation process in compliance with FTC guidelines and the EU AI Act.</p>
+<p style="margin:0 0 12px 0; font-weight:700; color:#222;">투명성 공지</p>
+<p style="margin:0; line-height:1.8; color:#555; font-size:15px;">${siteName}에 게시되는 콘텐츠는 AI 기술(대규모 언어 모델)의 도움을 받아 작성되며, 발행 전 편집 검토를 거칩니다. AI 기반 리서치 및 초안 작성, 사실 검증(DART 공시, KRX 데이터 대조), 정기적인 콘텐츠 정확성 감사를 포함합니다.</p>
 </div>
 
-<h3 style="${S.h3}">2. Content Notice</h3>
-<p style="${S.p}">The content published on ${siteName} is based on trending information and publicly available Korean-language sources. All content is created for informational purposes only and does not constitute professional financial, investment, or legal advice.</p>
+<h3 style="${S.h3}">2. 콘텐츠 안내</h3>
+<p style="${S.p}">${siteName}에 게시되는 콘텐츠는 공개된 시장 데이터와 DART 공시 자료를 기반으로 합니다. 모든 콘텐츠는 정보 제공 목적으로만 작성되었으며, 전문적인 투자 자문이나 법률 조언이 아닙니다.</p>
 
-<h3 style="${S.h3}">3. Accuracy of Information</h3>
-<p style="${S.p}">While we strive to provide accurate information sourced from reputable Korean institutions and media, we do not guarantee the completeness, accuracy, or reliability of our content. Any decisions or actions taken based on the information provided are at your own risk.</p>
+<h3 style="${S.h3}">3. 정보의 정확성</h3>
+<p style="${S.p}">정확한 정보 제공을 위해 노력하지만, 콘텐츠의 완전성, 정확성, 신뢰성을 보장하지 않습니다. 제공된 정보에 기반한 결정이나 행동은 이용자 본인의 책임입니다.</p>
 
-<h3 style="${S.h3}">4. Not Professional 주식분석 or Medical Advice</h3>
-<p style="${S.p}">K-beauty product reviews and 주식분석 routine guides on ${siteName} are for informational purposes only. They do not constitute medical or dermatological advice. Individual skin types and sensitivities vary. Always perform a patch test before using new products and consult a qualified dermatologist if you have persistent skin concerns or conditions.</p>
+<h3 style="${S.h3}">4. 투자 면책</h3>
+<p style="${S.p}">${siteName}의 종목 분석, 시장 전망, 투자 전략 콘텐츠는 정보 제공 목적으로만 작성되었으며, 투자 권유나 매매 추천이 아닙니다. 주식 투자는 원금 손실 위험이 있으며, 과거 실적이 미래 수익을 보장하지 않습니다. 투자 결정은 반드시 본인의 판단과 전문가 상담을 거쳐야 합니다.</p>
 
-<h3 style="${S.h3}">5. External Links</h3>
-<p style="${S.p}">External links on this Site are provided for reference purposes only. ${siteName} is not responsible for the content of external websites.</p>
+<h3 style="${S.h3}">5. 외부 링크</h3>
+<p style="${S.p}">본 사이트의 외부 링크는 참고 목적으로만 제공됩니다. ${siteName}은 외부 웹사이트의 콘텐츠에 대해 책임을 지지 않습니다.</p>
 
-<h3 style="${S.h3}">6. Advertising</h3>
-<p style="${S.p}">${siteName} displays advertisements through third-party services such as Google AdSense. Advertisements do not reflect ${siteName}'s opinions or endorsements. Responsibility for advertised products and services lies with the respective advertisers.</p>
+<h3 style="${S.h3}">6. 광고</h3>
+<p style="${S.p}">${siteName}은 Google AdSense 등 제3자 서비스를 통해 광고를 게시합니다. 광고는 ${siteName}의 의견이나 추천을 반영하지 않습니다.</p>
 
-<h3 style="${S.h3}">7. Copyright</h3>
-<p style="${S.p}">All content on this Site is protected by copyright law. Unauthorized reproduction, distribution, or modification is prohibited. Please credit the source when quoting.</p>
+<h3 style="${S.h3}">7. 저작권</h3>
+<p style="${S.p}">본 사이트의 모든 콘텐츠는 저작권법의 보호를 받습니다. 무단 복제, 배포, 수정은 금지되며, 인용 시 출처를 밝혀 주세요.</p>
 
-<p style="${S.footer}">Effective date: ${effectiveDate}</p>
+<p style="${S.footer}">시행일: ${effectiveDate}</p>
 </div>`;
   }
 
-  // 13차 감사: FTC 어필리에이트 공시 전용 페이지
   private buildAffiliateDisclosurePage(siteName: string, email: string): string {
     const year = new Date().getFullYear();
     return `<div style="${S.wrapper}">
-<h2 style="${S.h2}">Affiliate Disclosure & Partnerships</h2>
-<p style="${S.p}">${siteName} participates in various affiliate programs. When you click a link and make a purchase, we may earn a small commission at no additional cost to you. This helps support our content creation and keeps the site running.</p>
+<h2 style="${S.h2}">제휴 링크 공시</h2>
+<p style="${S.p}">${siteName}은 제휴 프로그램에 참여하고 있습니다. 제휴 링크를 통해 거래가 이루어지면 사이트 운영에 도움이 되는 소정의 수수료를 받을 수 있으며, 이용자에게 추가 비용은 발생하지 않습니다.</p>
 
-<h3 style="${S.h3}">Korean-Stock Affiliate Partners</h3>
+<h3 style="${S.h3}">제휴 파트너</h3>
 <ul style="${S.ul}">
-<li>Amazon Associates Program (product links, 주식분석 recommendations)</li>
-<li>YesStyle (K-beauty retailer)</li>
-<li>네이버증권 Global (Korean beauty marketplace)</li>
-<li>Stylevana (K-beauty products)</li>
+<li>Amazon Associates Program (관련 서적, 투자 도구 등)</li>
+<li>증권사 제휴 (계좌 개설 링크 등)</li>
 </ul>
 
-<h3 style="${S.h3}">AI-Trading Affiliate Partners</h3>
-<ul style="${S.ul}">
-<li>Amazon Associates (한국주식 albums, lightsticks, merchandise)</li>
-<li>Interpark Ticket (Korean concert and musical tickets)</li>
-<li>Streaming service links (Netflix, TVING, Viki, Coupang Play)</li>
-</ul>
+<h3 style="${S.h3}">제휴 링크 작동 방식</h3>
+<p style="${S.p}">제휴 링크는 HTML에서 <code>rel="sponsored"</code>로 표시됩니다. 해당 링크를 클릭하여 거래가 이루어지면 판매 금액의 일정 비율을 수수료로 받습니다. 이용자가 지불하는 금액은 제휴 링크 사용 여부와 관계없이 동일합니다.</p>
 
-<h3 style="${S.h3}">How Affiliate Links Work</h3>
-<p style="${S.p}">Affiliate links are marked with <code>rel="sponsored"</code> in our HTML. When you click these links and make a purchase within the merchant's cookie window, we receive a percentage of the sale. The price you pay remains exactly the same whether you use our link or go directly to the merchant.</p>
+<h3 style="${S.h3}">편집 독립성</h3>
+<p style="${S.p}">제휴 관계는 편집 방향에 영향을 미치지 않습니다. 콘텐츠는 데이터와 분석에 기반하여 작성되며, 수수료율에 따라 내용이 변경되지 않습니다.</p>
 
-<h3 style="${S.h3}">Our Editorial Independence</h3>
-<p style="${S.p}">Affiliate relationships do NOT influence our editorial decisions. We recommend products based on research, testing, and community feedback — not commission rates. Products that pay higher commissions are not given favorable reviews. If we dislike a product, we say so regardless of affiliate status.</p>
-
-<h3 style="${S.h3}">FTC Compliance</h3>
-<p style="${S.p}">This disclosure is made in accordance with the Federal Trade Commission's (FTC) Guides Concerning the Use of Endorsements and Testimonials in Advertising (16 CFR Part 255).</p>
-
-<p style="${S.footer}">Last updated: ${year}. Questions? Contact us at ${email}.</p>
+<p style="${S.footer}">최종 업데이트: ${year}년. 문의: ${email}</p>
 </div>`;
   }
 
-  // 13차 감사: AI 콘텐츠 투명성 전용 페이지 (EU AI Act / FTC)
   private buildAiContentPolicyPage(siteName: string): string {
     const year = new Date().getFullYear();
     return `<div style="${S.wrapper}">
-<h2 style="${S.h2}">AI Content & Editorial Policy</h2>
-<p style="${S.p}">${siteName} uses artificial intelligence tools to assist in content creation. We believe in full transparency about our process.</p>
+<h2 style="${S.h2}">AI 콘텐츠 정책</h2>
+<p style="${S.p}">${siteName}은 콘텐츠 작성에 AI 기술을 활용합니다. 콘텐츠 제작 과정에 대한 완전한 투명성을 지향합니다.</p>
 
-<h3 style="${S.h3}">Our Content Creation Process</h3>
+<h3 style="${S.h3}">콘텐츠 제작 프로세스</h3>
 <ol style="${S.ul}">
-<li><strong>Research:</strong> AI-powered keyword research and trend analysis using Google Trends API and industry data sources</li>
-<li><strong>Drafting:</strong> AI-assisted content generation using Claude API (Anthropic) for text and Gemini API (Google) for images</li>
-<li><strong>Fact-Checking:</strong> Automated verification against known databases (founding dates, chart positions, ingredient data)</li>
-<li><strong>Quality Scoring:</strong> Multi-factor quality assessment including E-E-A-T compliance, niche accuracy, and content structure</li>
-<li><strong>Publication:</strong> Automated publishing with SEO optimization and structured data markup</li>
+<li><strong>리서치:</strong> Trade Engine 실시간 데이터 + Google Trends API 기반 키워드 연구 및 트렌드 분석</li>
+<li><strong>초안 작성:</strong> Claude API(Anthropic)를 활용한 AI 기반 콘텐츠 생성, Gemini API(Google)를 통한 이미지 생성</li>
+<li><strong>사실 검증:</strong> DART 공시, KRX 데이터, 기업 설립 연도 등 자동 팩트체크</li>
+<li><strong>품질 평가:</strong> E-E-A-T 준수, 정보 밀도, 가독성 등 다중 요소 품질 점수 산출</li>
+<li><strong>발행:</strong> SEO 최적화 및 구조화 데이터 마크업을 포함한 자동 발행</li>
 </ol>
 
-<h3 style="${S.h3}">AI Tools We Use</h3>
+<h3 style="${S.h3}">사용하는 AI 도구</h3>
 <ul style="${S.ul}">
-<li><strong>Claude API (Anthropic):</strong> Content generation, Korean localization, and editorial assistance</li>
-<li><strong>Gemini API (Google):</strong> Featured image and inline image generation</li>
-<li><strong>Google Trends API:</strong> Keyword research and trend identification</li>
+<li><strong>Claude API (Anthropic):</strong> 콘텐츠 생성, 한국어 작성, 편집 지원</li>
+<li><strong>Gemini API (Google):</strong> 대표 이미지 및 본문 이미지 생성</li>
+<li><strong>Trade Engine:</strong> 실시간 시장/업종/테마/수급 데이터 제공</li>
 </ul>
 
-<h3 style="${S.h3}">Korean-Stock Content Verification</h3>
-<p style="${S.p}">For 주식분석 and beauty product content, our system verifies:</p>
+<h3 style="${S.h3}">콘텐츠 검증 항목</h3>
 <ul style="${S.ul}">
-<li>Ingredient data against INCI standards and CosDNA/INCIDecoder databases</li>
-<li>MFDS (Korea FDA) functional cosmetic certification claims</li>
-<li>Product pricing against 네이버증권 and Amazon listings</li>
-<li>Brand founding dates and ownership accuracy</li>
+<li>기업 설립 연도, 상장일 — DART 공시 데이터 대조</li>
+<li>주가 데이터 인용 시 날짜 명시 여부 검증</li>
+<li>투자 면책조항 포함 여부 자동 확인</li>
+<li>백테스트 결과 인용 시 과거 실적 면책 포함 여부</li>
 </ul>
 
-<h3 style="${S.h3}">AI-Trading Content Verification</h3>
-<p style="${S.p}">For 한국주식, 금융분석, and entertainment content, our system verifies:</p>
-<ul style="${S.ul}">
-<li>Group member counts, label affiliations, and debut dates</li>
-<li>Chart data against Hanteo Chart and Circle Chart official records</li>
-<li>Streaming platform availability and attribution accuracy</li>
-<li>Award show names, categories, and results</li>
-</ul>
+<h3 style="${S.h3}">한계</h3>
+<p style="${S.p}">검증 시스템에도 불구하고 AI 생성 콘텐츠에 부정확한 정보가 포함될 수 있습니다. 오류를 발견하시면 문의 페이지를 통해 알려주시면 신속히 수정하겠습니다. AI 생성 이미지는 실제 인물을 묘사하지 않습니다.</p>
 
-<h3 style="${S.h3}">Limitations</h3>
-<p style="${S.p}">AI-generated content may occasionally contain inaccuracies despite our verification systems. If you notice an error, please contact us so we can correct it promptly. AI-generated images are clearly labeled and do not depict real individuals.</p>
-
-<p style="${S.footer}">This policy complies with the EU AI Act transparency requirements and FTC guidance on AI-generated content. Last updated: ${year}.</p>
+<p style="${S.footer}">최종 업데이트: ${year}년</p>
 </div>`;
   }
 }
