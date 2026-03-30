@@ -137,15 +137,23 @@ export interface WatchlistByNiche {
 export interface AiPick {
   stock_code: string;
   stock_name: string;
+  sector: string;
+  signal_count: number;
+  avg_confidence: number;
+  strategies: string[];
+  reason: string;
+  price_at_signal: number;
+  signal_time: string;
+  status: string;
+}
+
+export interface AiHolding {
+  stock_code: string;
+  stock_name: string;
+  quantity: number;
+  avg_price: number;
   strategy: string;
-  buy_price: number;
-  buy_quantity: number;
-  buy_reason: string;
-  buy_date: string;
-  sell_price: number | null;
-  sell_date: string | null;
-  pnl: number | null;
-  pnl_rate: number | null;
+  entry_date: string;
   status: string;
 }
 
@@ -178,9 +186,9 @@ export interface TradeEngineData {
   // 워치리스트 (니치별)
   watchlistByNiche: WatchlistByNiche | null;
   watchlistAll: WatchlistItem[];
-  // AI 추천주 (실제 매수 종목)
-  aiPicks: AiPick[];
-  aiPicksPerformance: { completed_trades: number; win_count: number; win_rate: number; total_pnl: number } | null;
+  // 오늘의 추천주 (워치리스트 매수 시그널 + 보유 종목)
+  aiPicks: AiPick[];       // 매수 시그널 발생 종목 (내일의 매수 후보)
+  aiHoldings: AiHolding[]; // 현재 보유 종목
   dataAge: number;
   isStale: boolean;
 }
@@ -211,7 +219,7 @@ export class TradeEngineBridge {
       watchlistByNiche: null,
       watchlistAll: [],
       aiPicks: [],
-      aiPicksPerformance: null,
+      aiHoldings: [],
       dataAge: Infinity,
       isStale: true,
     };
@@ -276,11 +284,11 @@ export class TradeEngineBridge {
         result.watchlistByNiche = watchlist.by_niche || null;
       }
 
-      // AI 추천주 (실제 매수 종목)
-      const aiPicks = this.readJson<{ picks: AiPick[]; performance: typeof result.aiPicksPerformance }>('ai_picks.json');
+      // 오늘의 추천주 (워치리스트 + 보유 종목)
+      const aiPicks = this.readJson<{ candidates: AiPick[]; holdings: AiHolding[] }>('ai_picks.json');
       if (aiPicks) {
-        result.aiPicks = aiPicks.picks || [];
-        result.aiPicksPerformance = aiPicks.performance || null;
+        result.aiPicks = aiPicks.candidates || [];
+        result.aiHoldings = aiPicks.holdings || [];
       }
 
       result.isStale = result.dataAge > 24;
@@ -420,17 +428,22 @@ export class TradeEngineBridge {
       );
     }
 
-    // AI 추천주 (실제 매수 종목)
+    // 오늘의 추천주 (매수 시그널 발생 종목)
     if (data.aiPicks.length > 0) {
-      parts.push('### AI 자동매매 실제 매수 종목\n');
-      if (data.aiPicksPerformance) {
-        const p = data.aiPicksPerformance;
-        parts.push(`성과: ${p.completed_trades}건 완료, 승률 ${p.win_rate}%, 총 손익 ${p.total_pnl >= 0 ? '+' : ''}${p.total_pnl.toLocaleString()}원\n`);
-      }
+      parts.push('### 오늘의 추천주 — AI 매수 시그널 발생 종목\n');
       for (const pick of data.aiPicks.slice(0, 8)) {
-        const pnl = pick.pnl != null ? ` → ${pick.pnl >= 0 ? '✅' : '❌'} ${pick.pnl >= 0 ? '+' : ''}${pick.pnl.toLocaleString()}원 (${pick.pnl_rate?.toFixed(1)}%)` : ` [${pick.status}]`;
-        parts.push(`- ${pick.stock_name}(${pick.stock_code}): ${pick.buy_date} 매수 @ ${pick.buy_price.toLocaleString()}원 ${pick.buy_quantity}주 — ${pick.strategy}${pnl}`);
-        if (pick.buy_reason) parts.push(`  근거: ${pick.buy_reason.slice(0, 100)}`);
+        parts.push(`- ${pick.stock_name}(${pick.stock_code}): 시그널 ${pick.signal_count}회, 신뢰도 ${(pick.avg_confidence * 100).toFixed(0)}%, 전략: ${pick.strategies.join('/')}, 업종: ${pick.sector || '미분류'}`);
+        if (pick.reason) parts.push(`  근거: ${pick.reason.slice(0, 100)}`);
+        if (pick.price_at_signal) parts.push(`  시그널 발생 가격: ${pick.price_at_signal.toLocaleString()}원`);
+      }
+      parts.push('');
+    }
+
+    // 현재 보유 종목
+    if (data.aiHoldings.length > 0) {
+      parts.push('### 현재 보유 종목 (스윙)\n');
+      for (const h of data.aiHoldings) {
+        parts.push(`- ${h.stock_name}(${h.stock_code}): ${h.quantity}주 @ ${h.avg_price.toLocaleString()}원 [${h.strategy}] 진입일: ${h.entry_date}`);
       }
       parts.push('');
     }
@@ -514,13 +527,10 @@ export class TradeEngineBridge {
       }
     }
 
-    // AI 추천주 기반 키워드
+    // 오늘의 추천주 키워드 (매수 시그널 발생 종목)
     for (const pick of data.aiPicks.slice(0, 3)) {
-      suggestions.push(`${pick.stock_name} AI 자동매매 매수 분석 ${pick.strategy} 시그널`);
-      if (pick.pnl != null) {
-        const result = pick.pnl >= 0 ? '수익' : '손절';
-        suggestions.push(`${pick.stock_name} AI 매매 ${result} 사례 분석 실전 리뷰`);
-      }
+      suggestions.push(`${pick.stock_name} AI 매수 시그널 분석 ${pick.strategies[0] || ''} 진입 근거`);
+      suggestions.push(`${pick.stock_name} 기술적 분석 매수 타이밍 오늘의 추천주`);
     }
 
     // 워치리스트 기반 키워드 (니치별)
