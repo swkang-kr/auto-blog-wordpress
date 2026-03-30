@@ -155,12 +155,15 @@ export interface NicheConfig {
 }
 
 /** Per-category optimal publish timing (override GA4 when no data available) */
+/** 카테고리별 발행 시간 — 현재 즉시 발행 모드(MANUAL_REVIEW_THRESHOLD=0)에서는
+ * 배치 실행 시간(23:00 KST)에 5개 포스트가 순차 즉시 발행됨.
+ * 이 설정은 GA4 기반 최적 발행 시간 계산의 fallback으로만 사용. */
 export const CATEGORY_PUBLISH_TIMING: Record<string, { optimalHour: number; bestDays: number[] }> = {
-  '시장분석': { optimalHour: 7, bestDays: [1, 2, 3, 4, 5] },
-  '업종분석': { optimalHour: 8, bestDays: [1, 2, 3, 4, 5] },
-  '테마분석': { optimalHour: 9, bestDays: [1, 2, 3, 4, 5] },
-  '수급분석': { optimalHour: 10, bestDays: [1, 2, 3, 4, 5] },
-  '추천주': { optimalHour: 11, bestDays: [1, 2, 3, 4, 5] },
+  '시장분석': { optimalHour: 23, bestDays: [1, 2, 3, 4, 5] },
+  '업종분석': { optimalHour: 23, bestDays: [1, 2, 3, 4, 5] },
+  '테마분석': { optimalHour: 23, bestDays: [1, 2, 3, 4, 5] },
+  '수급분석': { optimalHour: 23, bestDays: [1, 2, 3, 4, 5] },
+  '추천주': { optimalHour: 23, bestDays: [1, 2, 3, 4, 5] },
 };
 
 /** Niche-specific disclaimer templates for legal compliance */
