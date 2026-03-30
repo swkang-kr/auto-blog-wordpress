@@ -666,16 +666,31 @@ add_action('init', function() {
 
     const phpCode = `
 // Daum 웹마스터 인증 + 사이트맵 추가 (robots.txt)
-add_filter('robots_txt', function(\$output) {
-    \$daum_verify = base64_decode('${daumBase64}');
+// Hook into both WordPress core and Rank Math robots.txt filters
+\$daum_line = base64_decode('${daumBase64}');
+\$sitemap_line = 'Sitemap: ${sitemapUrl}';
+
+// WordPress core filter
+add_filter('robots_txt', function(\$output) use (\$daum_line, \$sitemap_line) {
     if (strpos(\$output, 'DaumWebMasterTool') === false) {
-        \$output = rtrim(\$output) . PHP_EOL . PHP_EOL . \$daum_verify . PHP_EOL;
+        \$output = rtrim(\$output) . "\\n\\n" . \$daum_line . "\\n";
     }
     if (strpos(\$output, 'Sitemap:') === false) {
-        \$output = rtrim(\$output) . PHP_EOL . 'Sitemap: ${sitemapUrl}' . PHP_EOL;
+        \$output = rtrim(\$output) . "\\n" . \$sitemap_line . "\\n";
     }
     return \$output;
-});`.trim();
+}, 999);
+
+// Rank Math robots.txt filter (if Rank Math is active)
+add_filter('rank_math/robots_txt', function(\$output) use (\$daum_line, \$sitemap_line) {
+    if (strpos(\$output, 'DaumWebMasterTool') === false) {
+        \$output = rtrim(\$output) . "\\n\\n" . \$daum_line . "\\n";
+    }
+    if (strpos(\$output, 'Sitemap:') === false) {
+        \$output = rtrim(\$output) . "\\n" . \$sitemap_line . "\\n";
+    }
+    return \$output;
+}, 999);`.trim();
 
     const installed = await this.upsertCodeSnippet(ROBOTS_SNIPPET_TITLE, phpCode);
     if (installed) {
