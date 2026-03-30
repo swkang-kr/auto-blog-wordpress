@@ -195,6 +195,45 @@ export const NICHES: NicheConfig[] = [
       'DART 공시 분석으로 수급 읽는 법',
     ],
   },
+
+  // ── 5. AI 추천주 ──
+  {
+    id: 'ai-stock-picks',
+    name: 'AI 추천주',
+    category: '추천주',
+    broadTerm: `AI 추천주 ${Y}`,
+    broadTermsExtra: ['자동매매 종목추천'],
+    seedKeywords: [
+      `AI 자동매매 추천주 오늘의 매수 종목 ${Y}`,
+      'AI 트레이딩 봇 매수 종목 실전 성과 분석',
+      'RSI MACD 매수 시그널 발생 종목 분석',
+      '알고리즘 트레이딩 실전 매매 종목 리뷰',
+      '자동매매 봇 수익률 실전 성과 공개',
+      '기술적 분석 매수 시그널 오늘의 추천주',
+      'DART 공시 기반 모멘텀 매수 종목 분석',
+      'AI 매매 시그널 기반 종목 추천 리뷰',
+      '퀀트 전략 매수 종목 백테스트 실전 비교',
+      '자동매매 실전 매매일지 수익 분석',
+      `이번 주 AI 매수 종목 성과 리뷰 ${Y}`,
+      '알고리즘 매매 시그널 정확도 분석 리뷰',
+      'AI 트레이딩 봇 실전 운용 보고서',
+      '자동매매 종목 선정 기준 전략 해설',
+      'RSI 과매도 반등 매수 종목 실전 결과',
+      'MACD 골든크로스 발생 종목 매수 분석',
+      '볼린저밴드 하단 매수 종목 실전 리뷰',
+      '거래량 급증 매수 시그널 종목 분석',
+      'AI 매매 시스템 주간 성과 보고서',
+      '자동매매 손절 익절 실전 사례 분석',
+    ],
+    contentTypes: ['analysis', 'listicle', 'case-study', 'news-explainer', 'deep-dive', 'how-to'],
+    adSenseRpm: 'high',
+    pillarTopics: [
+      'AI 자동매매 추천주 완벽 가이드: 시그널 분석법',
+      '자동매매 실전 성과 보고서: 수익률 분석',
+      'RSI MACD 매수 시그널 활용 가이드',
+      'AI 트레이딩 봇 종목 선정 기준 해설',
+    ],
+  },
 ];
 
 export function getSeasonalContentSuggestions(): Array<{

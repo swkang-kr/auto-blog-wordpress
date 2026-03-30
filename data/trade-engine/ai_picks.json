@@ -1,0 +1,69 @@
+{
+  "exported_at": "2026-03-30T05:19:18.653629+00:00",
+  "period": "7d",
+  "total_picks": 4,
+  "performance": {
+    "completed_trades": 4,
+    "win_count": 1,
+    "win_rate": 25.0,
+    "total_pnl": 14416.0
+  },
+  "picks": [
+    {
+      "stock_code": "038110",
+      "stock_name": "에코플라스틱",
+      "strategy": "RSI+MACD(swing)",
+      "buy_price": 3635.0,
+      "buy_quantity": 235,
+      "buy_reason": "MACD히스토그램↑ | 거래량36.3x | 거래량3x+ | MA정배열",
+      "buy_date": "2026-03-25",
+      "sell_price": 3515.0,
+      "sell_date": "2026-03-25",
+      "pnl": -31031.04,
+      "pnl_rate": -3.6327,
+      "status": "매도 완료"
+    },
+    {
+      "stock_code": "006360",
+      "stock_name": "GS건설",
+      "strategy": "RSI+MACD(swing)",
+      "buy_price": 28250.0,
+      "buy_quantity": 30,
+      "buy_reason": "거래량4.9x | 거래량3x+ | MA정배열",
+      "buy_date": "2026-03-25",
+      "sell_price": 26950.0,
+      "sell_date": "2026-03-25",
+      "pnl": -41780.1,
+      "pnl_rate": -4.9298,
+      "status": "매도 완료"
+    },
+    {
+      "stock_code": "028050",
+      "stock_name": "삼성E&A",
+      "strategy": "RSI+MACD(swing)",
+      "buy_price": 33850.0,
+      "buy_quantity": 20,
+      "buy_reason": "거래량4.3x | 거래량3x+ | MA정배열",
+      "buy_date": "2026-03-25",
+      "sell_price": 32800.0,
+      "sell_date": "2026-03-26",
+      "pnl": -23247.2,
+      "pnl_rate": -3.4339,
+      "status": "매도 완료"
+    },
+    {
+      "stock_code": "009580",
+      "stock_name": "무림P&P",
+      "strategy": "RSI+MACD(swing)",
+      "buy_price": 2695.0,
+      "buy_quantity": 409,
+      "buy_reason": "2일연속상승 | MACD히스토그램↑ | 거래량37.9x | 거래량3x+ | MA정배열",
+      "buy_date": "2026-03-24",
+      "sell_price": 2975.0,
+      "sell_date": "2026-03-26",
+      "pnl": 110474.58,
+      "pnl_rate": 10.0226,
+      "status": "매도 완료"
+    }
+  ]
+}

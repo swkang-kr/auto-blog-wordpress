@@ -112,6 +112,7 @@ export const NICHE_AUTHOR_PERSONAS: Record<string, AuthorProfile[]> = {
   '업종분석': [NICHE_AUTHOR_PROFILES['업종분석']],
   '테마분석': [NICHE_AUTHOR_PROFILES['테마분석']],
   '수급분석': [NICHE_AUTHOR_PROFILES['수급분석']],
+  '추천주': [NICHE_AUTHOR_PROFILES['수급분석']],  // 수급분석 전문가가 추천주도 담당
 };
 
 /** Content-type to persona voice mapping */
@@ -159,6 +160,7 @@ export const CATEGORY_PUBLISH_TIMING: Record<string, { optimalHour: number; best
   '업종분석': { optimalHour: 8, bestDays: [1, 2, 3, 4, 5] },
   '테마분석': { optimalHour: 9, bestDays: [1, 2, 3, 4, 5] },
   '수급분석': { optimalHour: 10, bestDays: [1, 2, 3, 4, 5] },
+  '추천주': { optimalHour: 11, bestDays: [1, 2, 3, 4, 5] },
 };
 
 /** Niche-specific disclaimer templates for legal compliance */
@@ -168,6 +170,7 @@ export const NICHE_DISCLAIMERS: Record<string, string> = {
   '업종분석': FINANCE_DISCLAIMER,
   '테마분석': FINANCE_DISCLAIMER,
   '수급분석': FINANCE_DISCLAIMER,
+  '추천주': FINANCE_DISCLAIMER,
 };
 
 /** Search intent to valid content type mapping for enforcement */

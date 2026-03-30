@@ -1,48 +1,42 @@
 {
-  "exported_at": "2026-03-30T05:10:03.968582+00:00",
+  "exported_at": "2026-03-30T05:19:18.179616+00:00",
   "date": "20260330",
   "top_gainers": [
     {
       "stock_name": "애경케미칼",
       "stock_code": "161000",
       "change_rate": 30.0,
-      "volume": 12423596
+      "volume": 12425211
     },
     {
       "stock_name": "인바이오젠",
       "stock_code": "101140",
-      "change_rate": 24.46,
-      "volume": 93059
-    },
-    {
-      "stock_name": "태경케미컬",
-      "stock_code": "006890",
-      "change_rate": 22.44,
-      "volume": 7652897
+      "change_rate": 26.61,
+      "volume": 114472
     },
     {
       "stock_name": "한미글로벌",
       "stock_code": "053690",
-      "change_rate": 17.05,
-      "volume": 1936016
+      "change_rate": 18.39,
+      "volume": 2367378
+    },
+    {
+      "stock_name": "태경케미컬",
+      "stock_code": "006890",
+      "change_rate": 19.93,
+      "volume": 7788013
     },
     {
       "stock_name": "삼성 레버리지 WTI원유 선물 ETN",
       "stock_code": "530031",
-      "change_rate": 16.3,
-      "volume": 4801098
+      "change_rate": 15.96,
+      "volume": 4820529
     },
     {
       "stock_name": "신한 블룸버그 레버리지 WTI원유선물 ETN B",
       "stock_code": "500093",
-      "change_rate": 16.49,
-      "volume": 9814
-    },
-    {
-      "stock_name": "한투 블룸버그레버리지WTI원유선물 ETN B",
-      "stock_code": "570116",
-      "change_rate": 15.89,
-      "volume": 53268
+      "change_rate": 16.09,
+      "volume": 10185
     },
     {
       "stock_name": "KB 레버리지 2차전지 TOP 10 TR ETN",
@@ -51,102 +45,108 @@
       "volume": 1506
     },
     {
-      "stock_name": "KB S&P 레버리지 WTI원유 선물 ETN B",
-      "stock_code": "580068",
-      "change_rate": 15.91,
-      "volume": 41128
-    },
-    {
       "stock_name": "하나 S&P 레버리지 WTI원유 선물 ETN B",
       "stock_code": "700029",
       "change_rate": 15.96,
       "volume": 7221
     },
     {
+      "stock_name": "한투 블룸버그레버리지WTI원유선물 ETN B",
+      "stock_code": "570116",
+      "change_rate": 15.84,
+      "volume": 56967
+    },
+    {
+      "stock_name": "삼성 블룸버그 레버리지 WTI원유선물 ETN B",
+      "stock_code": "530133",
+      "change_rate": 15.83,
+      "volume": 64598
+    },
+    {
       "stock_name": "애경케미칼",
       "stock_code": "161000",
       "change_rate": 30.0,
-      "volume": 12423596
+      "volume": 12425211
     },
     {
       "stock_name": "인바이오젠",
       "stock_code": "101140",
-      "change_rate": 24.46,
-      "volume": 93059
+      "change_rate": 26.61,
+      "volume": 114472
     },
     {
       "stock_name": "태경케미컬",
       "stock_code": "006890",
-      "change_rate": 22.44,
-      "volume": 7652897
-    },
-    {
-      "stock_name": "신한 블룸버그 레버리지 WTI원유선물 ETN B",
-      "stock_code": "500093",
-      "change_rate": 16.49,
-      "volume": 9814
+      "change_rate": 19.93,
+      "volume": 7788013
     },
     {
       "stock_name": "한미글로벌",
       "stock_code": "053690",
-      "change_rate": 17.05,
-      "volume": 1936016
+      "change_rate": 18.39,
+      "volume": 2367378
+    },
+    {
+      "stock_name": "삼성 레버리지 WTI원유 선물 ETN",
+      "stock_code": "530031",
+      "change_rate": 15.96,
+      "volume": 4820529
     }
   ],
   "top_losers": [
     {
       "stock_name": "하나 S&P 인버스 2X WTI원유 선물 ETN B",
       "stock_code": "700030",
-      "change_rate": -14.03,
-      "volume": 279576
+      "change_rate": -14.13,
+      "volume": 280076
     },
     {
       "stock_name": "삼성 블룸버그 인버스2X WTI원유선물 ETN B",
       "stock_code": "530134",
-      "change_rate": -14.45,
-      "volume": 2853823
+      "change_rate": -13.82,
+      "volume": 2868793
     },
     {
       "stock_name": "메리츠 인버스 2X WTI원유 선물 ETN(H)",
       "stock_code": "610089",
-      "change_rate": -14.27,
-      "volume": 1244805
+      "change_rate": -13.84,
+      "volume": 1260021
     },
     {
       "stock_name": "한투 블룸버그인버스2XWTI원유선물 ETN B",
       "stock_code": "570117",
-      "change_rate": -13.39,
-      "volume": 784080
-    },
-    {
-      "stock_name": "신한 블룸버그 인버스2X WTI원유선물 ETN B",
-      "stock_code": "500094",
-      "change_rate": -13.48,
-      "volume": 451663
-    },
-    {
-      "stock_name": "미래에셋 인버스 2X 원유선물혼합 ETN(H)",
-      "stock_code": "520050",
-      "change_rate": -13.0,
-      "volume": 820616
+      "change_rate": -13.5,
+      "volume": 789070
     },
     {
       "stock_name": "한세예스24홀딩스",
       "stock_code": "016450",
-      "change_rate": -13.11,
-      "volume": 160624
+      "change_rate": -13.21,
+      "volume": 160753
+    },
+    {
+      "stock_name": "미래에셋 인버스 2X 원유선물혼합 ETN(H)",
+      "stock_code": "520050",
+      "change_rate": -12.84,
+      "volume": 827205
+    },
+    {
+      "stock_name": "신한 블룸버그 인버스2X WTI원유선물 ETN B",
+      "stock_code": "500094",
+      "change_rate": -12.62,
+      "volume": 463628
     },
     {
       "stock_name": "대덕",
       "stock_code": "008060",
-      "change_rate": -13.03,
-      "volume": 263051
+      "change_rate": -12.69,
+      "volume": 265662
     },
     {
       "stock_name": "KB S&P 인버스 2X WTI원유 선물 ETN B",
       "stock_code": "580069",
-      "change_rate": -12.88,
-      "volume": 608161
+      "change_rate": -12.57,
+      "volume": 608397
     },
     {
       "stock_name": "대덕1우",
@@ -157,32 +157,32 @@
     {
       "stock_name": "하나 S&P 인버스 2X WTI원유 선물 ETN B",
       "stock_code": "700030",
-      "change_rate": -14.03,
-      "volume": 279576
-    },
-    {
-      "stock_name": "삼성 블룸버그 인버스2X WTI원유선물 ETN B",
-      "stock_code": "530134",
-      "change_rate": -14.45,
-      "volume": 2853823
+      "change_rate": -14.13,
+      "volume": 280076
     },
     {
       "stock_name": "메리츠 인버스 2X WTI원유 선물 ETN(H)",
       "stock_code": "610089",
-      "change_rate": -14.27,
-      "volume": 1244805
+      "change_rate": -13.84,
+      "volume": 1260021
+    },
+    {
+      "stock_name": "삼성 블룸버그 인버스2X WTI원유선물 ETN B",
+      "stock_code": "530134",
+      "change_rate": -13.82,
+      "volume": 2868793
     },
     {
       "stock_name": "한투 블룸버그인버스2XWTI원유선물 ETN B",
       "stock_code": "570117",
-      "change_rate": -13.39,
-      "volume": 784080
+      "change_rate": -13.5,
+      "volume": 789070
     },
     {
-      "stock_name": "신한 블룸버그 인버스2X WTI원유선물 ETN B",
-      "stock_code": "500094",
-      "change_rate": -13.48,
-      "volume": 451663
+      "stock_name": "한세예스24홀딩스",
+      "stock_code": "016450",
+      "change_rate": -13.21,
+      "volume": 160753
     }
   ]
 }
