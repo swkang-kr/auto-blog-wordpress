@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-03-30T00:58:55.127Z",
+  "lastUpdated": "2026-03-30T01:15:42.985Z",
   "activeFeatures": [
     "auto-blog-wordpress",
     "config",
@@ -71,9 +71,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-09T01:26:04.863Z",
-        "lastUpdated": "2026-03-30T00:07:02.617Z"
+        "lastUpdated": "2026-03-30T01:15:42.984Z"
       },
-      "lastFile": "/home/trendhunt/workspace/trade-engine/scripts/export_blog_data.py"
+      "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/scripts/remove-all-noindex.ts"
     },
     "wordpress.service.ts": {
       "phase": "do",
@@ -396,7 +396,7 @@
   "session": {
     "startedAt": "2026-02-24T10:12:24.092Z",
     "onboardingCompleted": true,
-    "lastActivity": "2026-03-30T00:58:55.127Z"
+    "lastActivity": "2026-03-30T01:15:42.985Z"
   },
   "history": [
     {
@@ -13287,6 +13287,12 @@
     {
       "timestamp": "2026-03-30T00:58:55.127Z",
       "feature": "auto-blog-wordpress",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T01:15:42.984Z",
+      "feature": "scripts",
       "phase": "do",
       "action": "updated"
     }
