@@ -16,7 +16,7 @@ const SITE_NAME = process.env.SITE_NAME || 'TrendHunt';
 const token = Buffer.from(`${WP_USERNAME}:${WP_APP_PASSWORD}`).toString('base64');
 const headers = { Authorization: `Basic ${token}` };
 
-const TAGLINE = 'Your Guide to Korean-Stock, 한국주식 & 금융분석 Trends';
+const TAGLINE = '한국 주식 시장 분석 · 업종 · 테마 · 수급';
 
 async function main() {
   console.log(`Site: ${WP_URL}\n`);

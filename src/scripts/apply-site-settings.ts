@@ -27,7 +27,7 @@ async function main() {
   console.log(`Categories: ${categories.join(', ')}`);
 
   console.log('\n=== 1. Site Title & Tagline ===');
-  await seoService.ensureSiteTitle(SITE_NAME, categories, 'Your Guide to Korean-Stock, 한국주식 & 금융분석 Trends');
+  await seoService.ensureSiteTitle(SITE_NAME, categories, '한국 주식 시장 분석 · 업종 · 테마 · 수급');
 
   console.log('\n=== 2. Navigation Menu ===');
   await seoService.ensureNavigationMenu(categories);
