@@ -998,13 +998,29 @@ async function main(): Promise<void> {
   const tradeEngineData = tradeEngineBridge.loadData();
   const tradeEngineContext = tradeEngineBridge.buildContentContext(tradeEngineData);
   if (!tradeEngineData.isStale) {
-    // Inject Trade Engine keyword suggestions into niche seed keywords
+    // Inject Trade Engine watchlist keywords per niche (니치별 워치리스트 매핑)
+    const wl = tradeEngineData.watchlistByNiche;
+    for (const niche of activeNiches) {
+      const nicheWatchlist = wl?.[niche.category as keyof typeof wl] || [];
+      if (nicheWatchlist.length > 0) {
+        const watchlistKeywords = nicheWatchlist.slice(0, 3).map((w: { stock_name: string; sector: string }) => {
+          if (niche.category === '시장분석') return `${w.stock_name} 주가 전망 시장 영향 분석 ${new Date().getFullYear()}`;
+          if (niche.category === '업종분석') return `${w.stock_name} ${w.sector || '업종'} 분석 투자 전망`;
+          if (niche.category === '테마분석') return `${w.stock_name} 테마주 관련주 매수 시그널 분석`;
+          return `${w.stock_name} 수급 분석 매매 시그널 추적`;
+        });
+        niche.seedKeywords = [...watchlistKeywords, ...niche.seedKeywords];
+        logger.info(`Trade Engine 워치리스트 [${niche.category}]: ${nicheWatchlist.slice(0, 3).map((w: { stock_name: string }) => w.stock_name).join(', ')} 주입`);
+      }
+    }
+
+    // Inject general suggestions (시장/수급 데이터 기반)
     const teSuggestions = tradeEngineBridge.generateKeywordSuggestions(tradeEngineData);
     if (teSuggestions.length > 0) {
       for (const niche of activeNiches) {
-        niche.seedKeywords = [...teSuggestions.slice(0, 5), ...niche.seedKeywords];
+        niche.seedKeywords = [...teSuggestions.slice(0, 3), ...niche.seedKeywords];
       }
-      logger.info(`Trade Engine: Injected ${Math.min(teSuggestions.length, 5)} data-driven keywords per niche`);
+      logger.info(`Trade Engine: ${teSuggestions.length}개 데이터 기반 키워드 주입`);
     }
   }
 

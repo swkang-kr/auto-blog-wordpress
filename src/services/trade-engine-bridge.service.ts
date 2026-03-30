@@ -114,6 +114,26 @@ export interface ThemeData {
   change_rate: number;
 }
 
+export interface WatchlistItem {
+  stock_code: string;
+  stock_name: string;
+  market: string;
+  sector: string;
+  signal_count: number;
+  avg_confidence: number;
+  strategies: string[];
+  latest_reason: string;
+  latest_price: number;
+  latest_at: string;
+}
+
+export interface WatchlistByNiche {
+  시장분석: WatchlistItem[];
+  업종분석: WatchlistItem[];
+  테마분석: WatchlistItem[];
+  수급분석: WatchlistItem[];
+}
+
 export interface SupplyDemand {
   period: string;
   summary: {
@@ -140,6 +160,9 @@ export interface TradeEngineData {
   hotThemes: ThemeData[];
   coldThemes: ThemeData[];
   supplyDemand: SupplyDemand | null;
+  // 워치리스트 (니치별)
+  watchlistByNiche: WatchlistByNiche | null;
+  watchlistAll: WatchlistItem[];
   dataAge: number;
   isStale: boolean;
 }
@@ -167,6 +190,8 @@ export class TradeEngineBridge {
       hotThemes: [],
       coldThemes: [],
       supplyDemand: null,
+      watchlistByNiche: null,
+      watchlistAll: [],
       dataAge: Infinity,
       isStale: true,
     };
@@ -223,6 +248,13 @@ export class TradeEngineBridge {
       // 수급
       const supply = this.readJson<SupplyDemand>('supply_demand.json');
       if (supply) result.supplyDemand = supply;
+
+      // 워치리스트
+      const watchlist = this.readJson<{ watchlist_all: WatchlistItem[]; by_niche: WatchlistByNiche }>('watchlist.json');
+      if (watchlist) {
+        result.watchlistAll = watchlist.watchlist_all || [];
+        result.watchlistByNiche = watchlist.by_niche || null;
+      }
 
       result.isStale = result.dataAge > 24;
 
@@ -361,6 +393,19 @@ export class TradeEngineBridge {
       );
     }
 
+    // 워치리스트 (니치별)
+    if (data.watchlistByNiche) {
+      parts.push('### 워치리스트 (Trade Engine BUY 시그널 기반)\n');
+      for (const [niche, items] of Object.entries(data.watchlistByNiche)) {
+        if (items.length === 0) continue;
+        parts.push(`**${niche}:**`);
+        for (const w of items.slice(0, 5)) {
+          parts.push(`  - ${w.stock_name}(${w.stock_code}): 시그널 ${w.signal_count}회, 신뢰도 ${(w.avg_confidence * 100).toFixed(0)}%, 전략: ${w.strategies.join('/')}, 업종: ${w.sector || '미분류'}`);
+        }
+      }
+      parts.push('');
+    }
+
     return parts.join('\n');
   }
 
@@ -424,6 +469,23 @@ export class TradeEngineBridge {
         suggestions.push(`KOSPI 하락 원인 분석 대응 전략 ${new Date().getFullYear()}`);
       } else if (m.kospi_change > 1) {
         suggestions.push(`KOSPI 상승 랠리 분석 추가 상승 가능성 전망`);
+      }
+    }
+
+    // 워치리스트 기반 키워드 (니치별)
+    if (data.watchlistByNiche) {
+      for (const [niche, items] of Object.entries(data.watchlistByNiche)) {
+        for (const w of items.slice(0, 2)) {
+          if (niche === '시장분석') {
+            suggestions.push(`${w.stock_name} 주가 전망 시장 영향 분석 ${new Date().getFullYear()}`);
+          } else if (niche === '업종분석') {
+            suggestions.push(`${w.stock_name} ${w.sector} 업종 분석 투자 전망 ${new Date().getFullYear()}`);
+          } else if (niche === '테마분석') {
+            suggestions.push(`${w.stock_name} 테마주 관련주 분석 매수 시그널`);
+          } else if (niche === '수급분석') {
+            suggestions.push(`${w.stock_name} 수급 분석 매매 시그널 추적 전략`);
+          }
+        }
       }
     }
 

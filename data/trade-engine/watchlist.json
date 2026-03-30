@@ -1,0 +1,56 @@
+{
+  "exported_at": "2026-03-30T05:01:15.864379+00:00",
+  "total_stocks": 1,
+  "watchlist_all": [
+    {
+      "stock_code": "206650",
+      "stock_name": "206650",
+      "market": "",
+      "sector": "",
+      "signal_count": 1,
+      "avg_confidence": 0.2633,
+      "strategies": [
+        "dart_momentum"
+      ],
+      "latest_reason": "공시: 주요사항보고서(자기주식취득신탁계약체결결정) | 감성점수: 0.62 | 거래량급증: True",
+      "latest_price": 0,
+      "latest_at": "2026-03-27T06:07:33.804714"
+    }
+  ],
+  "by_niche": {
+    "시장분석": [],
+    "업종분석": [],
+    "테마분석": [
+      {
+        "stock_code": "206650",
+        "stock_name": "206650",
+        "market": "",
+        "sector": "",
+        "signal_count": 1,
+        "avg_confidence": 0.2633,
+        "strategies": [
+          "dart_momentum"
+        ],
+        "latest_reason": "공시: 주요사항보고서(자기주식취득신탁계약체결결정) | 감성점수: 0.62 | 거래량급증: True",
+        "latest_price": 0,
+        "latest_at": "2026-03-27T06:07:33.804714"
+      }
+    ],
+    "수급분석": [
+      {
+        "stock_code": "206650",
+        "stock_name": "206650",
+        "market": "",
+        "sector": "",
+        "signal_count": 1,
+        "avg_confidence": 0.2633,
+        "strategies": [
+          "dart_momentum"
+        ],
+        "latest_reason": "공시: 주요사항보고서(자기주식취득신탁계약체결결정) | 감성점수: 0.62 | 거래량급증: True",
+        "latest_price": 0,
+        "latest_at": "2026-03-27T06:07:33.804714"
+      }
+    ]
+  }
+}
