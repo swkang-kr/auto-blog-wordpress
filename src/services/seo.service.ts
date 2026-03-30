@@ -661,11 +661,14 @@ add_action('init', function() {
     const daumLine = daumCode.startsWith('#') ? daumCode : `#${daumCode}`;
     const sitemapUrl = `${this.wpUrl}/sitemap_index.xml`;
 
+    // Base64 encode the daum verification line to avoid PHP string escaping issues
+    const daumBase64 = Buffer.from(daumLine, 'utf-8').toString('base64');
+
     const phpCode = `
 // Daum 웹마스터 인증 + 사이트맵 추가 (robots.txt)
 add_filter('robots_txt', function(\$output, \$public) {
-    // Daum 웹마스터 인증 코드
-    \$daum_verify = '${daumLine.replace(/'/g, "\\'")}';
+    // Daum 웹마스터 인증 코드 (base64 decoded to avoid escaping issues)
+    \$daum_verify = base64_decode('${daumBase64}');
     if (strpos(\$output, 'DaumWebMasterTool') === false) {
         \$output .= "\\n" . \$daum_verify . "\\n";
     }
