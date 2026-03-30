@@ -87,7 +87,7 @@ export interface DisclosureItem {
 export interface TopMover {
   stock_code: string;
   stock_name: string;
-  close: number;
+  close?: number;
   change_rate: number;
   volume: number;
 }
@@ -419,13 +419,15 @@ export class TradeEngineBridge {
       if (data.topGainers.length > 0) {
         parts.push('Top Gainers:');
         for (const g of data.topGainers.slice(0, 5)) {
-          parts.push(`  - ${g.stock_name}: +${g.change_rate.toFixed(1)}% (${g.close.toLocaleString()}원)`);
+          const price = g.close ? ` (${g.close.toLocaleString()}원)` : '';
+          parts.push(`  - ${g.stock_name}: +${g.change_rate.toFixed(1)}%${price}`);
         }
       }
       if (data.topLosers.length > 0) {
         parts.push('Top Losers:');
         for (const l of data.topLosers.slice(0, 5)) {
-          parts.push(`  - ${l.stock_name}: ${l.change_rate.toFixed(1)}% (${l.close.toLocaleString()}원)`);
+          const price = l.close ? ` (${l.close.toLocaleString()}원)` : '';
+          parts.push(`  - ${l.stock_name}: ${l.change_rate.toFixed(1)}%${price}`);
         }
       }
       parts.push('');
