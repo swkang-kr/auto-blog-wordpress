@@ -136,11 +136,12 @@ export class SeoService {
   async ensureHeaderScripts(options: {
     googleCode?: string;
     naverCode?: string;
+    daumCode?: string;
     gaMeasurementId?: string;
     adsensePubId?: string;
     clarityProjectId?: string;
   }): Promise<void> {
-    const { googleCode, naverCode, gaMeasurementId, adsensePubId, clarityProjectId } = options;
+    const { googleCode, naverCode, daumCode, gaMeasurementId, adsensePubId, clarityProjectId } = options;
 
     const parts: string[] = [];
 
@@ -166,7 +167,7 @@ export class SeoService {
     // Referrer-Policy: send origin only on cross-origin (protects query strings, preserves affiliate attribution)
     parts.push(`<meta name="referrer" content="strict-origin-when-cross-origin" />`);
     // OG locale for social media language detection (Facebook, LinkedIn preview language)
-    parts.push(`<meta property="og:locale" content="en_US" />`);
+    parts.push(`<meta property="og:locale" content="ko_KR" />`);  // 한국어 콘텐츠
 
     // AdSense Auto Ads script (requires publisher ID)
     if (adsensePubId) {
@@ -177,6 +178,7 @@ export class SeoService {
     // Verification meta tags
     if (googleCode) parts.push(`<meta name="google-site-verification" content="${googleCode}" />`);
     if (naverCode) parts.push(`<meta name="naver-site-verification" content="${naverCode}" />`);
+    if (daumCode) parts.push(`<meta name="verify-v1" content="${daumCode}" />`);  // Daum 웹마스터 인증
 
     // Google Analytics 4
     if (gaMeasurementId) {

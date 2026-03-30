@@ -258,6 +258,7 @@ async function main(): Promise<void> {
     seoService.ensureHeaderScripts({
       googleCode: config.GOOGLE_SITE_VERIFICATION,
       naverCode: config.NAVER_SITE_VERIFICATION,
+      daumCode: config.DAUM_SITE_VERIFICATION || undefined,
       gaMeasurementId: config.GA_MEASUREMENT_ID,
       adsensePubId: config.ADSENSE_PUB_ID || undefined,
       clarityProjectId: config.CLARITY_PROJECT_ID || undefined,

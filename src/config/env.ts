@@ -19,6 +19,7 @@ const envSchema = z.object({
   GA_MEASUREMENT_ID: z.string().default(''),
   GOOGLE_SITE_VERIFICATION: z.string().default(''),
   NAVER_SITE_VERIFICATION: z.string().default(''),
+  DAUM_SITE_VERIFICATION: z.string().default(''),
   INDEXNOW_KEY: z.string().default(''),
   CLAUDE_MODEL: z.string().default('claude-sonnet-4-6'),
   // Separate model for keyword research (cost optimization: use haiku for research, sonnet for content)
