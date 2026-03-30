@@ -125,6 +125,8 @@ const envSchema = z.object({
   THREADS_APP_ID: z.string().default(''),
   THREADS_APP_SECRET: z.string().default(''),
   THREADS_USER_ID: z.string().default(''),
+  // Trade Engine PostgreSQL DB URL — enables direct watchlist query instead of JSON files
+  TRADE_ENGINE_DB_URL: z.string().default(''),
 });
 
 export type AppConfig = z.infer<typeof envSchema>;
