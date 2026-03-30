@@ -1,0 +1,44 @@
+name: Apply robots.txt
+
+on:
+  workflow_dispatch:
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Apply Daum verification to robots.txt
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USERNAME: ${{ secrets.WP_USERNAME }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          DAUM_SITE_VERIFICATION: ${{ secrets.DAUM_SITE_VERIFICATION }}
+          NAVER_SITE_VERIFICATION: ${{ secrets.NAVER_SITE_VERIFICATION }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          node --import tsx/esm -e "
+            import { SeoService } from './src/services/seo.service.js';
+            const seo = new SeoService(
+              process.env.WP_URL,
+              process.env.WP_USERNAME,
+              process.env.WP_APP_PASSWORD,
+              { indexNowKey: '' }
+            );
+            await seo.ensureRobotsTxtCustomization(process.env.DAUM_SITE_VERIFICATION);
+            await seo.ensureHeaderScripts({
+              naverCode: process.env.NAVER_SITE_VERIFICATION,
+              daumCode: process.env.DAUM_SITE_VERIFICATION,
+            });
+            console.log('Done. Verifying robots.txt...');
+            const res = await fetch(process.env.WP_URL + '/robots.txt');
+            const txt = await res.text();
+            console.log(txt);
+          "
