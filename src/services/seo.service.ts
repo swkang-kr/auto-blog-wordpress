@@ -661,23 +661,21 @@ add_action('init', function() {
     const daumLine = daumCode.startsWith('#') ? daumCode : `#${daumCode}`;
     const sitemapUrl = `${this.wpUrl}/sitemap_index.xml`;
 
-    // Base64 encode the daum verification line to avoid PHP string escaping issues
+    // Base64 encode to avoid PHP string escaping issues with #, +, /, = characters
     const daumBase64 = Buffer.from(daumLine, 'utf-8').toString('base64');
 
     const phpCode = `
 // Daum 웹마스터 인증 + 사이트맵 추가 (robots.txt)
-add_filter('robots_txt', function(\$output, \$public) {
-    // Daum 웹마스터 인증 코드 (base64 decoded to avoid escaping issues)
+add_filter('robots_txt', function(\$output) {
     \$daum_verify = base64_decode('${daumBase64}');
     if (strpos(\$output, 'DaumWebMasterTool') === false) {
-        \$output .= "\\n" . \$daum_verify . "\\n";
+        \$output = rtrim(\$output) . PHP_EOL . PHP_EOL . \$daum_verify . PHP_EOL;
     }
-    // 사이트맵 URL (네이버/다음 크롤러용)
     if (strpos(\$output, 'Sitemap:') === false) {
-        \$output .= "\\nSitemap: ${sitemapUrl}\\n";
+        \$output = rtrim(\$output) . PHP_EOL . 'Sitemap: ${sitemapUrl}' . PHP_EOL;
     }
     return \$output;
-}, 10, 2);`.trim();
+});`.trim();
 
     const installed = await this.upsertCodeSnippet(ROBOTS_SNIPPET_TITLE, phpCode);
     if (installed) {
