@@ -12,7 +12,6 @@
 
 import { readFileSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
-import pg from 'pg';
 import { logger } from '../utils/logger.js';
 
 const DATA_DIR = join(dirname(new URL(import.meta.url).pathname), '../../data/trade-engine');
@@ -135,6 +134,20 @@ export interface WatchlistByNiche {
   수급분석: WatchlistItem[];
 }
 
+export interface DbWatchlistItem {
+  stock_code: string;
+  stock_name: string;
+  market: string;
+  sector: string;
+  target_buy_price: number | null;
+  target_price: number | null;
+  stop_loss: number | null;
+  priority: number;
+  memo: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface AiPick {
   stock_code: string;
   stock_name: string;
@@ -196,15 +209,13 @@ export interface TradeEngineData {
 
 export class TradeEngineBridge {
   private dataDir: string;
-  private dbUrl: string | null;
 
-  constructor(dataDir?: string, dbUrl?: string) {
+  constructor(dataDir?: string) {
     this.dataDir = dataDir || DATA_DIR;
-    this.dbUrl = dbUrl || process.env.TRADE_ENGINE_DB_URL || null;
   }
 
-  /** Load all trade engine data files (with optional DB watchlist) */
-  async loadData(): Promise<TradeEngineData> {
+  /** Load all trade engine data files */
+  loadData(): TradeEngineData {
     const result: TradeEngineData = {
       dailySummary: null,
       signals: [],
@@ -280,70 +291,64 @@ export class TradeEngineBridge {
       const supply = this.readJson<SupplyDemand>('supply_demand.json');
       if (supply) result.supplyDemand = supply;
 
-      // 워치리스트 — DB 직접 조회 (fallback: JSON 파일)
-      const dbWatchlist = await this.loadWatchlistFromDb();
-      if (dbWatchlist.length > 0) {
-        result.watchlistAll = dbWatchlist;
-        result.watchlistByNiche = this.classifyByNiche(dbWatchlist);
-        logger.info(`Watchlist loaded from DB: ${dbWatchlist.length}종목`);
-      } else {
-        const watchlist = this.readJson<{ watchlist_all: WatchlistItem[]; by_niche: WatchlistByNiche }>('watchlist.json');
-        if (watchlist) {
-          result.watchlistAll = watchlist.watchlist_all || [];
-          result.watchlistByNiche = watchlist.by_niche || null;
-        }
+      // 워치리스트 (시그널 기반)
+      const watchlist = this.readJson<{ watchlist_all: WatchlistItem[]; by_niche: WatchlistByNiche }>('watchlist.json');
+      if (watchlist) {
+        result.watchlistAll = watchlist.watchlist_all || [];
+        result.watchlistByNiche = watchlist.by_niche || null;
       }
 
-      // 오늘의 추천주 (워치리스트 → aiPicks 변환 + 보유 종목)
+      // 오늘의 추천주 (워치리스트 + 보유 종목)
       const aiPicks = this.readJson<{ candidates: AiPick[]; holdings: AiHolding[] }>('ai_picks.json');
       if (aiPicks) {
         result.aiPicks = aiPicks.candidates || [];
         result.aiHoldings = aiPicks.holdings || [];
       }
 
-      // DB 워치리스트를 aiPicks에 병합
-      if (dbWatchlist.length > 0) {
+      // DB 워치리스트 (watchList 테이블 — trade-engine에서 export)
+      const dbWl = this.readJson<{ items: DbWatchlistItem[] }>('db_watchlist.json');
+      if (dbWl?.items?.length) {
         const existingCodes = new Set(result.aiPicks.map(p => p.stock_code));
-        for (const w of dbWatchlist) {
+        for (const w of dbWl.items) {
           if (!existingCodes.has(w.stock_code)) {
             result.aiPicks.push({
               stock_code: w.stock_code,
               stock_name: w.stock_name,
               sector: w.sector || '',
-              signal_count: w.signal_count,
-              avg_confidence: w.avg_confidence,
-              strategies: w.strategies,
-              reason: w.latest_reason,
-              price_at_signal: w.latest_price,
-              signal_time: w.latest_at,
+              signal_count: 1,
+              avg_confidence: (w.priority || 0) / 10,
+              strategies: w.memo ? [w.memo.split(/[,\s]/)[0]] : [],
+              reason: w.memo || `목표매수=${w.target_buy_price || '?'}, TP=${w.target_price || '?'}, SL=${w.stop_loss || '?'}`,
+              price_at_signal: w.target_buy_price || 0,
+              signal_time: w.updated_at || '',
               status: 'DB 워치리스트',
             });
           }
         }
-        logger.info(`DB watchlist → aiPicks 병합 완료 (총 ${result.aiPicks.length} 추천주)`);
-      } else {
-        // DB 없으면 기존 live_watchlist.json fallback
-        const liveWl = this.readJson<{ watchlist: Array<{ stock_code: string; stock_name: string; score: number; confidence: number; signal_count: number; sector: string }> }>('live_watchlist.json');
-        if (liveWl?.watchlist?.length) {
-          const existingCodes = new Set(result.aiPicks.map(p => p.stock_code));
-          for (const w of liveWl.watchlist) {
-            if (!existingCodes.has(w.stock_code)) {
-              result.aiPicks.push({
-                stock_code: w.stock_code,
-                stock_name: w.stock_name,
-                sector: w.sector || '',
-                signal_count: w.signal_count || 1,
-                avg_confidence: w.confidence || 0,
-                strategies: [],
-                reason: `장중 워치리스트 score=${w.score.toFixed(2)}`,
-                price_at_signal: 0,
-                signal_time: '',
-                status: '장중 워치리스트',
-              });
-            }
+        logger.info(`DB watchlist: ${dbWl.items.length}종목 로드, aiPicks 병합 완료 (총 ${result.aiPicks.length} 추천주)`);
+      }
+
+      // 장중 라이브 워치리스트 (15:25 저장, 가장 최신)
+      const liveWl = this.readJson<{ watchlist: Array<{ stock_code: string; stock_name: string; score: number; confidence: number; signal_count: number; sector: string }> }>('live_watchlist.json');
+      if (liveWl?.watchlist?.length) {
+        const existingCodes = new Set(result.aiPicks.map(p => p.stock_code));
+        for (const w of liveWl.watchlist) {
+          if (!existingCodes.has(w.stock_code)) {
+            result.aiPicks.push({
+              stock_code: w.stock_code,
+              stock_name: w.stock_name,
+              sector: w.sector || '',
+              signal_count: w.signal_count || 1,
+              avg_confidence: w.confidence || 0,
+              strategies: [],
+              reason: `장중 워치리스트 score=${w.score.toFixed(2)}`,
+              price_at_signal: 0,
+              signal_time: '',
+              status: '장중 워치리스트',
+            });
           }
-          logger.info(`Live watchlist fallback: ${liveWl.watchlist.length}종목 병합 (총 ${result.aiPicks.length} 추천주)`);
         }
+        logger.info(`Live watchlist: ${liveWl.watchlist.length}종목 병합 (총 ${result.aiPicks.length} 추천주)`);
       }
 
       result.isStale = result.dataAge > 24;
@@ -606,58 +611,6 @@ export class TradeEngineBridge {
     }
 
     return suggestions;
-  }
-
-  /** Query watchlist table from trade-engine PostgreSQL */
-  private async loadWatchlistFromDb(): Promise<WatchlistItem[]> {
-    if (!this.dbUrl) return [];
-
-    const client = new pg.Client({ connectionString: this.dbUrl.replace('postgresql+asyncpg://', 'postgresql://') });
-    try {
-      await client.connect();
-      const { rows } = await client.query(`
-        SELECT stock_code, stock_name, market, target_buy_price, target_price,
-               stop_loss, priority, memo, is_active, created_at, updated_at
-        FROM watchlist
-        WHERE is_active = true
-        ORDER BY priority DESC, updated_at DESC
-      `);
-      return rows.map((r: Record<string, unknown>) => ({
-        stock_code: r.stock_code as string,
-        stock_name: r.stock_name as string || '',
-        market: r.market as string || 'KRX',
-        sector: '',
-        signal_count: 1,
-        avg_confidence: (r.priority as number || 0) / 10,
-        strategies: r.memo ? [(r.memo as string).split(/[,\s]/)[0]] : [],
-        latest_reason: (r.memo as string) || `target=${r.target_buy_price || '?'}, TP=${r.target_price || '?'}, SL=${r.stop_loss || '?'}`,
-        latest_price: Number(r.target_buy_price) || 0,
-        latest_at: (r.updated_at as Date)?.toISOString() || '',
-      }));
-    } catch (error) {
-      logger.warn(`Watchlist DB query failed (falling back to JSON): ${error instanceof Error ? error.message : error}`);
-      return [];
-    } finally {
-      await client.end().catch(() => {});
-    }
-  }
-
-  /** Classify watchlist items into niches based on sector/memo */
-  private classifyByNiche(items: WatchlistItem[]): WatchlistByNiche {
-    const result: WatchlistByNiche = { 시장분석: [], 업종분석: [], 테마분석: [], 수급분석: [] };
-    for (const item of items) {
-      const memo = (item.latest_reason || '').toLowerCase();
-      if (memo.includes('수급') || memo.includes('외국인') || memo.includes('기관')) {
-        result.수급분석.push(item);
-      } else if (memo.includes('테마') || memo.includes('theme')) {
-        result.테마분석.push(item);
-      } else if (memo.includes('업종') || memo.includes('sector') || item.sector) {
-        result.업종분석.push(item);
-      } else {
-        result.시장분석.push(item);
-      }
-    }
-    return result;
   }
 
   private readJson<T>(filename: string): T | null {

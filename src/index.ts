@@ -995,7 +995,7 @@ async function main(): Promise<void> {
 
   // ── Trade Engine Data Bridge ──────────────────────────────────────────
   const tradeEngineBridge = new TradeEngineBridge();
-  const tradeEngineData = await tradeEngineBridge.loadData();
+  const tradeEngineData = tradeEngineBridge.loadData();
   const tradeEngineContext = tradeEngineBridge.buildContentContext(tradeEngineData);
   if (!tradeEngineData.isStale) {
     // Inject Trade Engine watchlist keywords per niche (니치별 워치리스트 매핑)
