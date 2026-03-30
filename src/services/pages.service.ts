@@ -159,122 +159,122 @@ export class PagesService {
   }
 
   private buildAboutPage(siteName: string, owner: string, authorLinks?: { linkedin?: string; twitter?: string }, authorBio?: string, authorCredentials?: string): string {
-    // Build Person schema.org JSON-LD for author E-E-A-T
     const sameAs = [authorLinks?.linkedin, authorLinks?.twitter].filter(Boolean);
-    const credentials = authorCredentials || 'Korean-Stock & AI-Trading Specialist';
-    const bio = authorBio || `${owner} is a Korea-focused writer covering Korean-Stock 주식분석, 한국주식, 금융분석, and 한국시장 culture for an international audience.`;
+    const credentials = authorCredentials || '한국 주식시장 분석 전문가';
+    const bio = authorBio || `${owner}은(는) KOSPI/KOSDAQ 시장 분석, 업종·테마 분석, 투자자 수급 동향을 다루는 한국 주식시장 전문 블로그를 운영합니다.`;
     const personJsonLd = JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'Person',
       name: owner,
       jobTitle: credentials,
       description: bio,
-      knowsAbout: ['Korean 주식분석', 'K-beauty ingredient science', '삼성전자', '네이버증권', '한국주식 투자자 culture', '금융분석 recommendations', 'Korean beauty brands', '한국시장 wave', '한국주식 실적발표s', 'Korean entertainment industry'],
-      knowsLanguage: ['English', 'Korean'],
+      knowsAbout: ['한국 주식시장', 'KOSPI', 'KOSDAQ', '기술적 분석', 'DART 공시', '투자자 수급', '업종 분석', '테마주', 'AI 자동매매', '퀀트 투자'],
+      knowsLanguage: ['Korean', 'English'],
       ...(sameAs.length > 0 ? { sameAs } : {}),
     });
 
     return `<script type="application/ld+json">${personJsonLd}</script>
 <div style="${S.wrapper}">
-<h2 style="${S.h2}">About ${siteName}</h2>
-<p style="${S.p}">Welcome to ${siteName} -- your go-to English source for Korean 주식분석 reviews, 한국주식 coverage, and 금융분석 recommendations. We cover Korean-Stock and AI-Trading for a global audience that wants honest, expert-level content without the language barrier.</p>
+<h2 style="${S.h2}">${siteName} 소개</h2>
+<p style="${S.p}">${siteName}에 오신 것을 환영합니다. 한국 주식시장의 시장 흐름, 업종 동향, 테마주 분석, 투자자 수급을 매일 분석하여 개인 투자자에게 데이터 기반의 투자 인사이트를 제공합니다.</p>
 
-<h3 style="${S.h3}">What We Cover</h3>
+<h3 style="${S.h3}">다루는 주제</h3>
 <ul style="${S.ul}">
-<li><strong>Korean-Stock</strong> -- Product reviews, ingredient deep-dives, 주식분석 routines, brand comparisons, and shopping guides for Korean 주식분석 and makeup. From 삼성전자 to Biodance, 네이버증권 to Amazon.</li>
-<li><strong>AI-Trading</strong> -- 한국주식 실적발표 guides, group and artist spotlights, 금융분석 recommendations, streaming platform guides, award show coverage, and fan culture explained for global audiences.</li>
+<li><strong>시장 분석</strong> — KOSPI/KOSDAQ 시장 전망, 금리·환율 영향, 거시경제 지표 분석, ETF 투자 전략</li>
+<li><strong>업종 분석</strong> — 반도체, 2차전지, 바이오, 방산 등 핵심 업종의 종목 분석과 실적 전망</li>
+<li><strong>테마 분석</strong> — AI, 로봇, 우주항공, 수소 등 성장 테마의 관련주 발굴과 분석</li>
+<li><strong>수급 분석</strong> — 외국인·기관·개인 투자자별 매매 동향, 공매도, MSCI 리밸런싱 영향</li>
 </ul>
 
-<h3 style="${S.h3}">Our Mission</h3>
-<p style="${S.p}">Korean beauty science and Korean pop culture move fast. The best product reviews are in Korean. The most accurate chart data is on Korean sites. The freshest 실적발표 news breaks in Korean first. ${siteName} translates that -- not just the words, but the context and the nuance -- into clear, actionable English content for K-beauty shoppers and K-culture fans worldwide.</p>
+<h3 style="${S.h3}">운영 목적</h3>
+<p style="${S.p}">한국 주식시장은 매일 변합니다. DART 공시, 기관 수급, 테마 순환이 빠르게 움직이는 시장에서 개인 투자자가 합리적인 판단을 내릴 수 있도록 — 데이터에 기반한 객관적 분석을 제공하는 것이 ${siteName}의 목표입니다.</p>
 <ul style="${S.ul}">
-<li>Ingredient-honest K-beauty reviews with concentration data and pH where available</li>
-<li>Fan-first K-entertainment coverage that respects the 투자자 perspective</li>
-<li>Sourced from Korean-language primary media, 네이버증권, Circle Chart, and Soompi</li>
-<li>Regularly updated as products, 실적발표s, and dramas evolve</li>
+<li>DART 공시와 재무제표 기반 기업 분석</li>
+<li>기술적 분석 (RSI, MACD, 볼린저밴드) 활용 매매 전략</li>
+<li>외국인·기관 수급 데이터 기반 투자 인사이트</li>
+<li>실적 시즌, FOMC, 한국은행 금리 결정 등 이벤트 분석</li>
 </ul>
 
-<h3 style="${S.h3}">About the Author</h3>
+<h3 style="${S.h3}">운영자 소개</h3>
 <div itemscope itemtype="https://schema.org/Person" style="${S.infoBox}">
-<p style="${S.p}"><strong itemprop="name">${owner}</strong> is a <span itemprop="jobTitle">${credentials}</span> specializing in Korean 주식분석 formulations, 한국주식 투자자 culture, and 금융분석 storytelling.</p>
+<p style="${S.p}"><strong itemprop="name">${owner}</strong> — <span itemprop="jobTitle">${credentials}</span></p>
 <p style="${S.p}">${bio}</p>
-<meta itemprop="knowsLanguage" content="English" />
 <meta itemprop="knowsLanguage" content="Korean" />
-${authorLinks?.linkedin ? `<p style="margin:0 0 8px 0;"><a href="${authorLinks.linkedin}" target="_blank" rel="noopener noreferrer" itemprop="sameAs" style="color:#0066FF; text-decoration:none;">LinkedIn Profile</a></p>` : ''}
-${authorLinks?.twitter ? `<p style="margin:0;"><a href="${authorLinks.twitter}" target="_blank" rel="noopener noreferrer" itemprop="sameAs" style="color:#0066FF; text-decoration:none;">X (Twitter) Profile</a></p>` : ''}
+<meta itemprop="knowsLanguage" content="English" />
+${authorLinks?.linkedin ? `<p style="margin:0 0 8px 0;"><a href="${authorLinks.linkedin}" target="_blank" rel="noopener noreferrer" itemprop="sameAs" style="color:#0066FF; text-decoration:none;">LinkedIn</a></p>` : ''}
+${authorLinks?.twitter ? `<p style="margin:0;"><a href="${authorLinks.twitter}" target="_blank" rel="noopener noreferrer" itemprop="sameAs" style="color:#0066FF; text-decoration:none;">X (Twitter)</a></p>` : ''}
 </div>
 
-<h3 style="${S.h3}">Editorial Standards</h3>
+<h3 style="${S.h3}">콘텐츠 기준</h3>
 <ul style="${S.ul}">
-<li><strong>Ingredient Transparency</strong> -- K-beauty reviews cite active concentrations and pH levels where known, sourced from INCI Decoder, Skinsort, and brand official data</li>
-<li><strong>Fan-Accurate AI-Trading</strong> -- Group facts (member count, label, debut date) are verified against official agency announcements and Circle Chart / Hanteo data</li>
-<li><strong>No Fabricated Claims</strong> -- We do not invent statistics. All numerical data includes a named source and date</li>
-<li><strong>Affiliate Disclosure</strong> -- Product links may be affiliate links (Amazon Associates). This is always disclosed and does not affect our ratings</li>
-<li><strong>Regular Updates</strong> -- K-beauty rankings and K-entertainment guides are reviewed quarterly as new products launch and 실적발표 schedules change</li>
+<li><strong>데이터 기반</strong> — 모든 종목 분석은 DART 공시, KRX 데이터, 네이버 금융 데이터를 기반으로 합니다</li>
+<li><strong>투자 면책</strong> — 본 블로그의 모든 콘텐츠는 정보 제공 목적이며, 투자 권유가 아닙니다</li>
+<li><strong>사실 검증</strong> — 기업 설립 연도, 주가 데이터, 재무 지표는 자동 팩트체크를 거칩니다</li>
+<li><strong>정기 업데이트</strong> — 시장 분석은 매일, 업종·테마 분석은 주 단위로 업데이트됩니다</li>
 </ul>
 
-<h3 style="${S.h3}">Sources We Rely On</h3>
+<h3 style="${S.h3}">참고 자료</h3>
 <ul style="${S.ul}">
-<li><strong>Korean-Stock</strong> -- 네이버증권, Vogue Korea, Allure Korea, Harper's Bazaar Korea, INCI Decoder, Skinsort, Amazon brand storefronts</li>
-<li><strong>AI-Trading</strong> -- Soompi, Weverse Magazine, Circle Chart, Hanteo, Melon, official agency announcements (HYBE, SM, JYP, YG)</li>
-<li><strong>Korean Media</strong> -- Naver News, Koreaboo (English aggregator), Korea Creative Content Agency (KOCCA)</li>
+<li><strong>공시·재무</strong> — DART 전자공시, KRX 한국거래소, 금융감독원 FISIS</li>
+<li><strong>시장 데이터</strong> — 네이버 금융, 한국은행 ECOS, 통계청 KOSIS</li>
+<li><strong>뉴스·리서치</strong> — 한국투자증권, 미래에셋증권, 삼성증권 리서치 리포트</li>
 </ul>
 
 <div style="${S.highlightBox}">
-<p style="margin:0; line-height:1.7; color:#555;">Questions, product tips, or collaboration inquiries? Reach us through our <a href="/contact" style="color:#0066FF; text-decoration:none;">Contact page</a> -- we read every message.</p>
+<p style="margin:0; line-height:1.7; color:#555;">궁금한 점이나 제안이 있으시면 <a href="/contact" style="color:#0066FF; text-decoration:none;">문의 페이지</a>를 통해 연락해 주세요.</p>
 </div>
 </div>`;
   }
 
   private buildContactPage(siteName: string, email: string): string {
     return `<div style="${S.wrapper}">
-<h2 style="${S.h2}">Contact Us</h2>
-<p style="${S.p}">If you have any questions or inquiries about ${siteName}, please get in touch using the information below.</p>
+<h2 style="${S.h2}">문의하기</h2>
+<p style="${S.p}">${siteName}에 관한 질문이나 문의 사항이 있으시면 아래를 통해 연락해 주세요.</p>
 
 <div style="${S.infoBox}">
-<h3 style="font-size:18px; color:#0066FF; margin:0 0 15px 0;">How to Reach Us</h3>
-<p style="margin:0 0 10px 0; line-height:1.8; color:#333; font-size:16px;">Email: <a href="mailto:${email}" style="color:#0066FF; text-decoration:none;">${email}</a></p>
-<p style="margin:0; line-height:1.8; color:#888; font-size:14px;">We will respond within 1-3 business days.</p>
+<h3 style="font-size:18px; color:#0066FF; margin:0 0 15px 0;">연락처</h3>
+<p style="margin:0 0 10px 0; line-height:1.8; color:#333; font-size:16px;">이메일: <a href="mailto:${email}" style="color:#0066FF; text-decoration:none;">${email}</a></p>
+<p style="margin:0; line-height:1.8; color:#888; font-size:14px;">1-3 영업일 내 답변드리겠습니다.</p>
 </div>
 
-<h3 style="${S.h3}">Send Us a Message</h3>
+<h3 style="${S.h3}">메시지 보내기</h3>
 <div style="background:#f8f9fa; border-radius:12px; padding:24px; margin:20px 0;">
 <form action="mailto:${email}" method="POST" enctype="text/plain" style="display:flex; flex-direction:column; gap:16px;">
 <div>
-<label style="display:block; font-weight:600; color:#333; margin-bottom:6px; font-size:14px;">Your Name</label>
-<input type="text" name="name" required placeholder="Enter your name" style="width:100%; padding:10px 14px; border:1px solid #ddd; border-radius:8px; font-size:15px; box-sizing:border-box;" />
+<label style="display:block; font-weight:600; color:#333; margin-bottom:6px; font-size:14px;">이름</label>
+<input type="text" name="name" required placeholder="이름을 입력하세요" style="width:100%; padding:10px 14px; border:1px solid #ddd; border-radius:8px; font-size:15px; box-sizing:border-box;" />
 </div>
 <div>
-<label style="display:block; font-weight:600; color:#333; margin-bottom:6px; font-size:14px;">Your Email</label>
+<label style="display:block; font-weight:600; color:#333; margin-bottom:6px; font-size:14px;">이메일</label>
 <input type="email" name="email" required placeholder="your@email.com" style="width:100%; padding:10px 14px; border:1px solid #ddd; border-radius:8px; font-size:15px; box-sizing:border-box;" />
 </div>
 <div>
-<label style="display:block; font-weight:600; color:#333; margin-bottom:6px; font-size:14px;">Subject</label>
+<label style="display:block; font-weight:600; color:#333; margin-bottom:6px; font-size:14px;">문의 유형</label>
 <select name="subject" style="width:100%; padding:10px 14px; border:1px solid #ddd; border-radius:8px; font-size:15px; background:#fff; box-sizing:border-box;">
-<option value="Content Feedback">Content Feedback</option>
-<option value="Business Partnership">Advertising &amp; Business Partnership</option>
-<option value="Copyright">Copyright Inquiry</option>
-<option value="Privacy">Privacy Request</option>
-<option value="Tip">Korean-Stock Product Tip or AI-Trading Content Request</option>
-<option value="Other">Other</option>
+<option value="콘텐츠 피드백">콘텐츠 피드백</option>
+<option value="광고/제휴">광고 및 비즈니스 제휴</option>
+<option value="저작권">저작권 관련 문의</option>
+<option value="개인정보">개인정보 관련 요청</option>
+<option value="종목 제안">종목 분석 요청 / 콘텐츠 제안</option>
+<option value="기타">기타</option>
 </select>
 </div>
 <div>
-<label style="display:block; font-weight:600; color:#333; margin-bottom:6px; font-size:14px;">Message</label>
-<textarea name="message" required rows="5" placeholder="How can we help you?" style="width:100%; padding:10px 14px; border:1px solid #ddd; border-radius:8px; font-size:15px; resize:vertical; box-sizing:border-box;"></textarea>
+<label style="display:block; font-weight:600; color:#333; margin-bottom:6px; font-size:14px;">메시지</label>
+<textarea name="message" required rows="5" placeholder="문의 내용을 입력하세요" style="width:100%; padding:10px 14px; border:1px solid #ddd; border-radius:8px; font-size:15px; resize:vertical; box-sizing:border-box;"></textarea>
 </div>
-<button type="submit" style="background:#0066FF; color:#fff; border:none; padding:12px 24px; border-radius:8px; font-size:16px; font-weight:600; cursor:pointer; align-self:flex-start;">Send Message</button>
+<button type="submit" style="background:#0066FF; color:#fff; border:none; padding:12px 24px; border-radius:8px; font-size:16px; font-weight:600; cursor:pointer; align-self:flex-start;">보내기</button>
 </form>
-<p style="margin:12px 0 0; color:#888; font-size:13px;">Alternatively, email us directly at <a href="mailto:${email}" style="color:#0066FF;">${email}</a>. We respond within 1-3 business days.</p>
+<p style="margin:12px 0 0; color:#888; font-size:13px;">이메일로 직접 문의하실 수도 있습니다: <a href="mailto:${email}" style="color:#0066FF;">${email}</a></p>
 </div>
 
-<h3 style="${S.h3}">What You Can Contact Us About</h3>
+<h3 style="${S.h3}">문의 가능 사항</h3>
 <ul style="${S.ul}">
-<li>Content inquiries and feedback</li>
-<li>Advertising and business partnership inquiries</li>
-<li>Copyright-related inquiries</li>
-<li>Privacy-related requests</li>
-<li>Tips on Korean market developments</li>
+<li>콘텐츠 관련 질문 및 피드백</li>
+<li>광고 및 비즈니스 제휴 문의</li>
+<li>저작권 관련 문의</li>
+<li>개인정보 관련 요청</li>
+<li>종목 분석 요청 및 시장 정보 제안</li>
 </ul>
 </div>`;
   }
