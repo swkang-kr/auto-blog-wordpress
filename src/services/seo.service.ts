@@ -650,6 +650,39 @@ add_action('init', function() {
   }
 
   /**
+   * Add Daum verification + Naver sitemap to robots.txt via WordPress filter.
+   */
+  async ensureRobotsTxtCustomization(daumCode?: string): Promise<void> {
+    if (!daumCode) return;
+
+    const ROBOTS_SNIPPET_TITLE = 'Auto-Blog: robots.txt Daum Verification';
+
+    // Daum verification format: the entire string goes into robots.txt as-is
+    const daumLine = daumCode.startsWith('#') ? daumCode : `#${daumCode}`;
+    const sitemapUrl = `${this.wpUrl}/sitemap_index.xml`;
+
+    const phpCode = `
+// Daum 웹마스터 인증 + 사이트맵 추가 (robots.txt)
+add_filter('robots_txt', function(\$output, \$public) {
+    // Daum 웹마스터 인증 코드
+    \$daum_verify = '${daumLine.replace(/'/g, "\\'")}';
+    if (strpos(\$output, 'DaumWebMasterTool') === false) {
+        \$output .= "\\n" . \$daum_verify . "\\n";
+    }
+    // 사이트맵 URL (네이버/다음 크롤러용)
+    if (strpos(\$output, 'Sitemap:') === false) {
+        \$output .= "\\nSitemap: ${sitemapUrl}\\n";
+    }
+    return \$output;
+}, 10, 2);`.trim();
+
+    const installed = await this.upsertCodeSnippet(ROBOTS_SNIPPET_TITLE, phpCode);
+    if (installed) {
+      logger.info('robots.txt: Daum verification + sitemap snippet installed');
+    }
+  }
+
+  /**
    * Fetch robots.txt and warn if User-agent: * has Disallow: / (blocks all crawlers).
    * Sets indexingBlocked=true if crawlers are blocked — requestIndexing() will be skipped.
    */

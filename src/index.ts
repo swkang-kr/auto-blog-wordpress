@@ -321,6 +321,7 @@ async function main(): Promise<void> {
   }
 
   // 2.11. Check robots.txt + WordPress indexing settings + sitemap
+  await seoService.ensureRobotsTxtCustomization(config.DAUM_SITE_VERIFICATION || undefined);
   await seoService.checkRobotsTxt();
   await seoService.checkAndFixIndexingSettings();
   await seoService.verifySitemap();
