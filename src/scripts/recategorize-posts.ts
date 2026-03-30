@@ -228,7 +228,7 @@ async function getOrCreateCategory(name: string): Promise<number> {
   try {
     const { data } = await api.post('/categories', {
       name,
-      description: `Explore in-depth guides, tips, and analysis on ${name}. Updated regularly with trending topics.`,
+      description: `${name} — 매일 업데이트되는 데이터 기반 한국 주식시장 분석 콘텐츠`,
     });
     return data.id as number;
   } catch (error) {

@@ -27,7 +27,7 @@ async function main() {
   console.log(`Categories: ${categories.join(', ')}`);
 
   console.log('\n=== 1. Site Title & Tagline ===');
-  await seoService.ensureSiteTitle(SITE_NAME, categories, '한국 주식 시장 분석 · 업종 · 테마 · 수급');
+  await seoService.ensureSiteTitle(SITE_NAME, categories, '매일 업데이트되는 한국 주식시장 분석 — 시장 · 업종 · 테마 · 수급 데이터 기반 투자 인사이트');
 
   console.log('\n=== 2. Navigation Menu ===');
   await seoService.ensureNavigationMenu(categories);
