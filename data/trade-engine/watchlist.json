@@ -1,13 +1,319 @@
 {
-  "exported_at": "2026-03-30T05:01:15.864379+00:00",
-  "total_stocks": 1,
+  "exported_at": "2026-03-30T05:05:08.081421+00:00",
+  "total_stocks": 21,
   "watchlist_all": [
+    {
+      "stock_code": "028050",
+      "stock_name": "삼성E&A",
+      "market": "",
+      "sector": "",
+      "signal_count": 125,
+      "buy_count": 125,
+      "sell_count": 0,
+      "avg_confidence": 0.788,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "2일연속상승 | MACD골든크로스 | 거래량3.3x | 거래량3x+",
+      "latest_price": 0,
+      "latest_at": "2026-03-24T00:08:17.958163"
+    },
+    {
+      "stock_code": "009580",
+      "stock_name": "무림P&P",
+      "market": "",
+      "sector": "",
+      "signal_count": 44,
+      "buy_count": 44,
+      "sell_count": 0,
+      "avg_confidence": 1.0,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "2일연속상승 | MACD히스토그램↑ | 거래량37.9x | 거래량3x+ | MA정배열",
+      "latest_price": 0,
+      "latest_at": "2026-03-24T05:47:36.649565"
+    },
+    {
+      "stock_code": "006360",
+      "stock_name": "GS건설",
+      "market": "",
+      "sector": "",
+      "signal_count": 43,
+      "buy_count": 34,
+      "sell_count": 9,
+      "avg_confidence": 0.5603418604651161,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "RSI과매수(79)",
+      "latest_price": 0,
+      "latest_at": "2026-03-24T00:08:17.958172"
+    },
+    {
+      "stock_code": "069540",
+      "stock_name": "빛과전자",
+      "market": "",
+      "sector": "",
+      "signal_count": 40,
+      "buy_count": 0,
+      "sell_count": 40,
+      "avg_confidence": 0.8229524999999999,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "RSI과매수(82)",
+      "latest_price": 0,
+      "latest_at": "2026-03-24T00:13:19.042471"
+    },
+    {
+      "stock_code": "038110",
+      "stock_name": "에코플라스틱",
+      "market": "",
+      "sector": "",
+      "signal_count": 31,
+      "buy_count": 27,
+      "sell_count": 4,
+      "avg_confidence": 0.6800161290322578,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "MACD히스토그램↑ | 거래량36.3x | 거래량3x+ | MA정배열",
+      "latest_price": 0,
+      "latest_at": "2026-03-25T00:06:57.421870"
+    },
+    {
+      "stock_code": "001510",
+      "stock_name": "SK증권",
+      "market": "",
+      "sector": "",
+      "signal_count": 28,
+      "buy_count": 28,
+      "sell_count": 0,
+      "avg_confidence": 0.5357214285714287,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "MACD히스토그램↑ | 거래량3.2x | 거래량3x+ | MA정배열",
+      "latest_price": 0,
+      "latest_at": "2026-03-24T05:47:36.649571"
+    },
+    {
+      "stock_code": "014970",
+      "stock_name": "삼륭물산",
+      "market": "",
+      "sector": "",
+      "signal_count": 19,
+      "buy_count": 0,
+      "sell_count": 19,
+      "avg_confidence": 0.7738736842105263,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "RSI과매수(76)",
+      "latest_price": 0,
+      "latest_at": "2026-03-24T00:18:19.709050"
+    },
+    {
+      "stock_code": "089150",
+      "stock_name": "케이씨티",
+      "market": "",
+      "sector": "",
+      "signal_count": 15,
+      "buy_count": 0,
+      "sell_count": 15,
+      "avg_confidence": 0.7716999999999998,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "RSI과매수(77)",
+      "latest_price": 0,
+      "latest_at": "2026-03-24T04:23:03.352017"
+    },
+    {
+      "stock_code": "072130",
+      "stock_name": "유엔젤",
+      "market": "",
+      "sector": "",
+      "signal_count": 12,
+      "buy_count": 12,
+      "sell_count": 0,
+      "avg_confidence": 0.6666999999999997,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "MACD히스토그램↑ | 거래량4.4x | 거래량3x+ | MA정배열",
+      "latest_price": 0,
+      "latest_at": "2026-03-25T01:21:53.835833"
+    },
+    {
+      "stock_code": "037030",
+      "stock_name": "파워넷",
+      "market": "",
+      "sector": "",
+      "signal_count": 12,
+      "buy_count": 0,
+      "sell_count": 12,
+      "avg_confidence": 0.7691666666666666,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "RSI과매수(75)",
+      "latest_price": 0,
+      "latest_at": "2026-03-24T00:08:17.958175"
+    },
+    {
+      "stock_code": "066310",
+      "stock_name": "큐에스아이",
+      "market": "",
+      "sector": "",
+      "signal_count": 6,
+      "buy_count": 0,
+      "sell_count": 6,
+      "avg_confidence": 0.83875,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "RSI과매수(84)",
+      "latest_price": 0,
+      "latest_at": "2026-03-25T00:31:57.891866"
+    },
+    {
+      "stock_code": "036930",
+      "stock_name": "주성엔지니어링",
+      "market": "",
+      "sector": "",
+      "signal_count": 6,
+      "buy_count": 6,
+      "sell_count": 0,
+      "avg_confidence": 0.6667,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "MACD골든크로스 | 거래량2.5x | MA정배열",
+      "latest_price": 0,
+      "latest_at": "2026-03-24T05:47:36.649569"
+    },
+    {
+      "stock_code": "065530",
+      "stock_name": "와이어블",
+      "market": "",
+      "sector": "",
+      "signal_count": 5,
+      "buy_count": 0,
+      "sell_count": 5,
+      "avg_confidence": 0.8543000000000001,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "RSI과매수(85)",
+      "latest_price": 0,
+      "latest_at": "2026-03-25T04:08:25.589773"
+    },
+    {
+      "stock_code": "017900",
+      "stock_name": "광전자",
+      "market": "",
+      "sector": "",
+      "signal_count": 5,
+      "buy_count": 1,
+      "sell_count": 4,
+      "avg_confidence": 0.7341599999999999,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "MACD히스토그램↑ | 거래량2.9x | MA정배열",
+      "latest_price": 0,
+      "latest_at": "2026-03-24T01:33:22.274947"
+    },
+    {
+      "stock_code": "062970",
+      "stock_name": "한국첨단소재",
+      "market": "",
+      "sector": "",
+      "signal_count": 4,
+      "buy_count": 0,
+      "sell_count": 4,
+      "avg_confidence": 0.8863,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "RSI과매수(89)",
+      "latest_price": 0,
+      "latest_at": "2026-03-27T06:07:33.804736"
+    },
+    {
+      "stock_code": "003000",
+      "stock_name": "부광약품",
+      "market": "",
+      "sector": "",
+      "signal_count": 4,
+      "buy_count": 0,
+      "sell_count": 4,
+      "avg_confidence": 0.8094,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "RSI과매수(81)",
+      "latest_price": 0,
+      "latest_at": "2026-03-27T06:07:33.804734"
+    },
+    {
+      "stock_code": "010170",
+      "stock_name": "대한광통신",
+      "market": "",
+      "sector": "",
+      "signal_count": 4,
+      "buy_count": 0,
+      "sell_count": 4,
+      "avg_confidence": 0.7571,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "RSI과매수(76)",
+      "latest_price": 0,
+      "latest_at": "2026-03-27T06:07:33.804727"
+    },
+    {
+      "stock_code": "066970",
+      "stock_name": "엘앤에프",
+      "market": "",
+      "sector": "",
+      "signal_count": 4,
+      "buy_count": 4,
+      "sell_count": 0,
+      "avg_confidence": 0.5,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "MACD골든크로스 | MA정배열",
+      "latest_price": 0,
+      "latest_at": "2026-03-25T00:06:57.421877"
+    },
+    {
+      "stock_code": "037230",
+      "stock_name": "한국팩키지",
+      "market": "",
+      "sector": "",
+      "signal_count": 3,
+      "buy_count": 0,
+      "sell_count": 3,
+      "avg_confidence": 0.7611666666666667,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "RSI과매수(77)",
+      "latest_price": 0,
+      "latest_at": "2026-03-24T04:08:18.300697"
+    },
     {
       "stock_code": "206650",
       "stock_name": "206650",
       "market": "",
       "sector": "",
       "signal_count": 1,
+      "buy_count": 1,
+      "sell_count": 0,
       "avg_confidence": 0.2633,
       "strategies": [
         "dart_momentum"
@@ -15,41 +321,510 @@
       "latest_reason": "공시: 주요사항보고서(자기주식취득신탁계약체결결정) | 감성점수: 0.62 | 거래량급증: True",
       "latest_price": 0,
       "latest_at": "2026-03-27T06:07:33.804714"
+    },
+    {
+      "stock_code": "332570",
+      "stock_name": "332570",
+      "market": "",
+      "sector": "",
+      "signal_count": 1,
+      "buy_count": 1,
+      "sell_count": 0,
+      "avg_confidence": 0.2886,
+      "strategies": [
+        "dart_momentum"
+      ],
+      "latest_reason": "공시: 주요사항보고서(자기주식취득신탁계약체결결정) | 감성점수: 0.68 | 거래량급증: True",
+      "latest_price": 0,
+      "latest_at": "2026-03-25T00:06:57.421874"
     }
   ],
   "by_niche": {
     "시장분석": [],
-    "업종분석": [],
-    "테마분석": [
+    "업종분석": [
       {
-        "stock_code": "206650",
-        "stock_name": "206650",
+        "stock_code": "028050",
+        "stock_name": "삼성E&A",
         "market": "",
         "sector": "",
-        "signal_count": 1,
-        "avg_confidence": 0.2633,
+        "signal_count": 125,
+        "buy_count": 125,
+        "sell_count": 0,
+        "avg_confidence": 0.788,
         "strategies": [
-          "dart_momentum"
+          "RSI+MACD(swing)"
         ],
-        "latest_reason": "공시: 주요사항보고서(자기주식취득신탁계약체결결정) | 감성점수: 0.62 | 거래량급증: True",
+        "latest_reason": "2일연속상승 | MACD골든크로스 | 거래량3.3x | 거래량3x+",
         "latest_price": 0,
-        "latest_at": "2026-03-27T06:07:33.804714"
+        "latest_at": "2026-03-24T00:08:17.958163"
+      },
+      {
+        "stock_code": "009580",
+        "stock_name": "무림P&P",
+        "market": "",
+        "sector": "",
+        "signal_count": 44,
+        "buy_count": 44,
+        "sell_count": 0,
+        "avg_confidence": 1.0,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "2일연속상승 | MACD히스토그램↑ | 거래량37.9x | 거래량3x+ | MA정배열",
+        "latest_price": 0,
+        "latest_at": "2026-03-24T05:47:36.649565"
+      },
+      {
+        "stock_code": "006360",
+        "stock_name": "GS건설",
+        "market": "",
+        "sector": "",
+        "signal_count": 43,
+        "buy_count": 34,
+        "sell_count": 9,
+        "avg_confidence": 0.5603418604651161,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "RSI과매수(79)",
+        "latest_price": 0,
+        "latest_at": "2026-03-24T00:08:17.958172"
+      },
+      {
+        "stock_code": "069540",
+        "stock_name": "빛과전자",
+        "market": "",
+        "sector": "",
+        "signal_count": 40,
+        "buy_count": 0,
+        "sell_count": 40,
+        "avg_confidence": 0.8229524999999999,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "RSI과매수(82)",
+        "latest_price": 0,
+        "latest_at": "2026-03-24T00:13:19.042471"
+      },
+      {
+        "stock_code": "038110",
+        "stock_name": "에코플라스틱",
+        "market": "",
+        "sector": "",
+        "signal_count": 31,
+        "buy_count": 27,
+        "sell_count": 4,
+        "avg_confidence": 0.6800161290322578,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "MACD히스토그램↑ | 거래량36.3x | 거래량3x+ | MA정배열",
+        "latest_price": 0,
+        "latest_at": "2026-03-25T00:06:57.421870"
+      },
+      {
+        "stock_code": "001510",
+        "stock_name": "SK증권",
+        "market": "",
+        "sector": "",
+        "signal_count": 28,
+        "buy_count": 28,
+        "sell_count": 0,
+        "avg_confidence": 0.5357214285714287,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "MACD히스토그램↑ | 거래량3.2x | 거래량3x+ | MA정배열",
+        "latest_price": 0,
+        "latest_at": "2026-03-24T05:47:36.649571"
+      },
+      {
+        "stock_code": "014970",
+        "stock_name": "삼륭물산",
+        "market": "",
+        "sector": "",
+        "signal_count": 19,
+        "buy_count": 0,
+        "sell_count": 19,
+        "avg_confidence": 0.7738736842105263,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "RSI과매수(76)",
+        "latest_price": 0,
+        "latest_at": "2026-03-24T00:18:19.709050"
+      },
+      {
+        "stock_code": "089150",
+        "stock_name": "케이씨티",
+        "market": "",
+        "sector": "",
+        "signal_count": 15,
+        "buy_count": 0,
+        "sell_count": 15,
+        "avg_confidence": 0.7716999999999998,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "RSI과매수(77)",
+        "latest_price": 0,
+        "latest_at": "2026-03-24T04:23:03.352017"
+      },
+      {
+        "stock_code": "072130",
+        "stock_name": "유엔젤",
+        "market": "",
+        "sector": "",
+        "signal_count": 12,
+        "buy_count": 12,
+        "sell_count": 0,
+        "avg_confidence": 0.6666999999999997,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "MACD히스토그램↑ | 거래량4.4x | 거래량3x+ | MA정배열",
+        "latest_price": 0,
+        "latest_at": "2026-03-25T01:21:53.835833"
+      },
+      {
+        "stock_code": "037030",
+        "stock_name": "파워넷",
+        "market": "",
+        "sector": "",
+        "signal_count": 12,
+        "buy_count": 0,
+        "sell_count": 12,
+        "avg_confidence": 0.7691666666666666,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "RSI과매수(75)",
+        "latest_price": 0,
+        "latest_at": "2026-03-24T00:08:17.958175"
+      }
+    ],
+    "테마분석": [
+      {
+        "stock_code": "028050",
+        "stock_name": "삼성E&A",
+        "market": "",
+        "sector": "",
+        "signal_count": 125,
+        "buy_count": 125,
+        "sell_count": 0,
+        "avg_confidence": 0.788,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "2일연속상승 | MACD골든크로스 | 거래량3.3x | 거래량3x+",
+        "latest_price": 0,
+        "latest_at": "2026-03-24T00:08:17.958163"
+      },
+      {
+        "stock_code": "009580",
+        "stock_name": "무림P&P",
+        "market": "",
+        "sector": "",
+        "signal_count": 44,
+        "buy_count": 44,
+        "sell_count": 0,
+        "avg_confidence": 1.0,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "2일연속상승 | MACD히스토그램↑ | 거래량37.9x | 거래량3x+ | MA정배열",
+        "latest_price": 0,
+        "latest_at": "2026-03-24T05:47:36.649565"
+      },
+      {
+        "stock_code": "006360",
+        "stock_name": "GS건설",
+        "market": "",
+        "sector": "",
+        "signal_count": 43,
+        "buy_count": 34,
+        "sell_count": 9,
+        "avg_confidence": 0.5603418604651161,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "RSI과매수(79)",
+        "latest_price": 0,
+        "latest_at": "2026-03-24T00:08:17.958172"
+      },
+      {
+        "stock_code": "069540",
+        "stock_name": "빛과전자",
+        "market": "",
+        "sector": "",
+        "signal_count": 40,
+        "buy_count": 0,
+        "sell_count": 40,
+        "avg_confidence": 0.8229524999999999,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "RSI과매수(82)",
+        "latest_price": 0,
+        "latest_at": "2026-03-24T00:13:19.042471"
+      },
+      {
+        "stock_code": "038110",
+        "stock_name": "에코플라스틱",
+        "market": "",
+        "sector": "",
+        "signal_count": 31,
+        "buy_count": 27,
+        "sell_count": 4,
+        "avg_confidence": 0.6800161290322578,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "MACD히스토그램↑ | 거래량36.3x | 거래량3x+ | MA정배열",
+        "latest_price": 0,
+        "latest_at": "2026-03-25T00:06:57.421870"
+      },
+      {
+        "stock_code": "001510",
+        "stock_name": "SK증권",
+        "market": "",
+        "sector": "",
+        "signal_count": 28,
+        "buy_count": 28,
+        "sell_count": 0,
+        "avg_confidence": 0.5357214285714287,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "MACD히스토그램↑ | 거래량3.2x | 거래량3x+ | MA정배열",
+        "latest_price": 0,
+        "latest_at": "2026-03-24T05:47:36.649571"
+      },
+      {
+        "stock_code": "014970",
+        "stock_name": "삼륭물산",
+        "market": "",
+        "sector": "",
+        "signal_count": 19,
+        "buy_count": 0,
+        "sell_count": 19,
+        "avg_confidence": 0.7738736842105263,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "RSI과매수(76)",
+        "latest_price": 0,
+        "latest_at": "2026-03-24T00:18:19.709050"
+      },
+      {
+        "stock_code": "089150",
+        "stock_name": "케이씨티",
+        "market": "",
+        "sector": "",
+        "signal_count": 15,
+        "buy_count": 0,
+        "sell_count": 15,
+        "avg_confidence": 0.7716999999999998,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "RSI과매수(77)",
+        "latest_price": 0,
+        "latest_at": "2026-03-24T04:23:03.352017"
+      },
+      {
+        "stock_code": "072130",
+        "stock_name": "유엔젤",
+        "market": "",
+        "sector": "",
+        "signal_count": 12,
+        "buy_count": 12,
+        "sell_count": 0,
+        "avg_confidence": 0.6666999999999997,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "MACD히스토그램↑ | 거래량4.4x | 거래량3x+ | MA정배열",
+        "latest_price": 0,
+        "latest_at": "2026-03-25T01:21:53.835833"
+      },
+      {
+        "stock_code": "037030",
+        "stock_name": "파워넷",
+        "market": "",
+        "sector": "",
+        "signal_count": 12,
+        "buy_count": 0,
+        "sell_count": 12,
+        "avg_confidence": 0.7691666666666666,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "RSI과매수(75)",
+        "latest_price": 0,
+        "latest_at": "2026-03-24T00:08:17.958175"
       }
     ],
     "수급분석": [
       {
-        "stock_code": "206650",
-        "stock_name": "206650",
+        "stock_code": "028050",
+        "stock_name": "삼성E&A",
         "market": "",
         "sector": "",
-        "signal_count": 1,
-        "avg_confidence": 0.2633,
+        "signal_count": 125,
+        "buy_count": 125,
+        "sell_count": 0,
+        "avg_confidence": 0.788,
         "strategies": [
-          "dart_momentum"
+          "RSI+MACD(swing)"
         ],
-        "latest_reason": "공시: 주요사항보고서(자기주식취득신탁계약체결결정) | 감성점수: 0.62 | 거래량급증: True",
+        "latest_reason": "2일연속상승 | MACD골든크로스 | 거래량3.3x | 거래량3x+",
         "latest_price": 0,
-        "latest_at": "2026-03-27T06:07:33.804714"
+        "latest_at": "2026-03-24T00:08:17.958163"
+      },
+      {
+        "stock_code": "009580",
+        "stock_name": "무림P&P",
+        "market": "",
+        "sector": "",
+        "signal_count": 44,
+        "buy_count": 44,
+        "sell_count": 0,
+        "avg_confidence": 1.0,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "2일연속상승 | MACD히스토그램↑ | 거래량37.9x | 거래량3x+ | MA정배열",
+        "latest_price": 0,
+        "latest_at": "2026-03-24T05:47:36.649565"
+      },
+      {
+        "stock_code": "006360",
+        "stock_name": "GS건설",
+        "market": "",
+        "sector": "",
+        "signal_count": 43,
+        "buy_count": 34,
+        "sell_count": 9,
+        "avg_confidence": 0.5603418604651161,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "RSI과매수(79)",
+        "latest_price": 0,
+        "latest_at": "2026-03-24T00:08:17.958172"
+      },
+      {
+        "stock_code": "069540",
+        "stock_name": "빛과전자",
+        "market": "",
+        "sector": "",
+        "signal_count": 40,
+        "buy_count": 0,
+        "sell_count": 40,
+        "avg_confidence": 0.8229524999999999,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "RSI과매수(82)",
+        "latest_price": 0,
+        "latest_at": "2026-03-24T00:13:19.042471"
+      },
+      {
+        "stock_code": "038110",
+        "stock_name": "에코플라스틱",
+        "market": "",
+        "sector": "",
+        "signal_count": 31,
+        "buy_count": 27,
+        "sell_count": 4,
+        "avg_confidence": 0.6800161290322578,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "MACD히스토그램↑ | 거래량36.3x | 거래량3x+ | MA정배열",
+        "latest_price": 0,
+        "latest_at": "2026-03-25T00:06:57.421870"
+      },
+      {
+        "stock_code": "001510",
+        "stock_name": "SK증권",
+        "market": "",
+        "sector": "",
+        "signal_count": 28,
+        "buy_count": 28,
+        "sell_count": 0,
+        "avg_confidence": 0.5357214285714287,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "MACD히스토그램↑ | 거래량3.2x | 거래량3x+ | MA정배열",
+        "latest_price": 0,
+        "latest_at": "2026-03-24T05:47:36.649571"
+      },
+      {
+        "stock_code": "014970",
+        "stock_name": "삼륭물산",
+        "market": "",
+        "sector": "",
+        "signal_count": 19,
+        "buy_count": 0,
+        "sell_count": 19,
+        "avg_confidence": 0.7738736842105263,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "RSI과매수(76)",
+        "latest_price": 0,
+        "latest_at": "2026-03-24T00:18:19.709050"
+      },
+      {
+        "stock_code": "089150",
+        "stock_name": "케이씨티",
+        "market": "",
+        "sector": "",
+        "signal_count": 15,
+        "buy_count": 0,
+        "sell_count": 15,
+        "avg_confidence": 0.7716999999999998,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "RSI과매수(77)",
+        "latest_price": 0,
+        "latest_at": "2026-03-24T04:23:03.352017"
+      },
+      {
+        "stock_code": "072130",
+        "stock_name": "유엔젤",
+        "market": "",
+        "sector": "",
+        "signal_count": 12,
+        "buy_count": 12,
+        "sell_count": 0,
+        "avg_confidence": 0.6666999999999997,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "MACD히스토그램↑ | 거래량4.4x | 거래량3x+ | MA정배열",
+        "latest_price": 0,
+        "latest_at": "2026-03-25T01:21:53.835833"
+      },
+      {
+        "stock_code": "037030",
+        "stock_name": "파워넷",
+        "market": "",
+        "sector": "",
+        "signal_count": 12,
+        "buy_count": 0,
+        "sell_count": 12,
+        "avg_confidence": 0.7691666666666666,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "RSI과매수(75)",
+        "latest_price": 0,
+        "latest_at": "2026-03-24T00:08:17.958175"
       }
     ]
   }
