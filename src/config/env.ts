@@ -23,7 +23,7 @@ const envSchema = z.object({
   CLAUDE_MODEL: z.string().default('claude-sonnet-4-6'),
   // Separate model for keyword research (cost optimization: use haiku for research, sonnet for content)
   CLAUDE_RESEARCH_MODEL: z.string().default(''),
-  POST_COUNT: z.coerce.number().int().min(1).default(1),
+  POST_COUNT: z.coerce.number().int().min(1).default(4), // 시장/업종/테마/수급 4개 니치 × 1포스트
   // X (Twitter) - optional, all four must be set to enable promotion
   X_API_KEY: z.string().default(''),
   X_API_SECRET: z.string().default(''),

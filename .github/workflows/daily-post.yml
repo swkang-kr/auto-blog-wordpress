@@ -6,9 +6,9 @@ on:
   workflow_dispatch:          # Manual trigger
     inputs:
       post_count:
-        description: 'Number of niches to post (1-5)'
+        description: 'Number of niches to post (1-4: 시장/업종/테마/수급)'
         required: false
-        default: '3'
+        default: '4'
 
 permissions:
   contents: write

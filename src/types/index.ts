@@ -10,29 +10,29 @@ export const KOREAN_SEASONAL_EVENTS: Array<{
   relevantNiches: string[];
   contentAngles: string[];
 }> = [
-  { name: 'Q4 Earnings Season Korea', startMonth: 1, startDay: 15, endMonth: 2, endDay: 15, leadTimeDays: 30, relevantNiches: ['Korean-Stock'], contentAngles: ['Korean stock Q4 earnings preview', 'Samsung SK Hynix earnings impact'] },
-  { name: 'Q1 Earnings Season Korea', startMonth: 4, startDay: 15, endMonth: 5, endDay: 15, leadTimeDays: 30, relevantNiches: ['Korean-Stock'], contentAngles: ['Korean stock Q1 earnings preview', 'semiconductor earnings outlook'] },
-  { name: 'Q2 Earnings Season Korea', startMonth: 7, startDay: 15, endMonth: 8, endDay: 15, leadTimeDays: 30, relevantNiches: ['Korean-Stock'], contentAngles: ['Korean stock Q2 mid-year review'] },
-  { name: 'Q3 Earnings Season Korea', startMonth: 10, startDay: 15, endMonth: 11, endDay: 15, leadTimeDays: 30, relevantNiches: ['Korean-Stock'], contentAngles: ['Korean stock Q3 earnings preview'] },
-  { name: 'BOK Rate Decision (Jan)', startMonth: 1, startDay: 10, endMonth: 1, endDay: 20, leadTimeDays: 14, relevantNiches: ['Korean-Stock'], contentAngles: ['Bank of Korea rate decision analysis'] },
-  { name: 'BOK Rate Decision (Apr)', startMonth: 4, startDay: 1, endMonth: 4, endDay: 15, leadTimeDays: 14, relevantNiches: ['Korean-Stock'], contentAngles: ['BOK April rate impact analysis'] },
-  { name: 'BOK Rate Decision (Jul)', startMonth: 7, startDay: 1, endMonth: 7, endDay: 15, leadTimeDays: 14, relevantNiches: ['Korean-Stock'], contentAngles: ['BOK July rate decision analysis'] },
-  { name: 'BOK Rate Decision (Oct)', startMonth: 10, startDay: 1, endMonth: 10, endDay: 15, leadTimeDays: 14, relevantNiches: ['Korean-Stock'], contentAngles: ['BOK October rate decision analysis'] },
-  { name: 'FOMC Meeting (Mar)', startMonth: 3, startDay: 15, endMonth: 3, endDay: 25, leadTimeDays: 14, relevantNiches: ['Korean-Stock', 'AI-Trading'], contentAngles: ['FOMC March Korean market impact'] },
-  { name: 'FOMC Meeting (Jun)', startMonth: 6, startDay: 10, endMonth: 6, endDay: 20, leadTimeDays: 14, relevantNiches: ['Korean-Stock', 'AI-Trading'], contentAngles: ['FOMC June Korean market forecast'] },
-  { name: 'FOMC Meeting (Sep)', startMonth: 9, startDay: 15, endMonth: 9, endDay: 25, leadTimeDays: 14, relevantNiches: ['Korean-Stock', 'AI-Trading'], contentAngles: ['FOMC September Korean stock analysis'] },
-  { name: 'FOMC Meeting (Dec)', startMonth: 12, startDay: 10, endMonth: 12, endDay: 20, leadTimeDays: 14, relevantNiches: ['Korean-Stock', 'AI-Trading'], contentAngles: ['FOMC December year-end impact'] },
-  { name: 'Korean Dividend Season', startMonth: 12, startDay: 1, endMonth: 12, endDay: 31, leadTimeDays: 45, relevantNiches: ['Korean-Stock'], contentAngles: ['Korean high dividend stocks year-end'] },
-  { name: 'MSCI Rebalancing (May)', startMonth: 5, startDay: 20, endMonth: 6, endDay: 5, leadTimeDays: 30, relevantNiches: ['Korean-Stock'], contentAngles: ['MSCI rebalancing Korean stock impact'] },
-  { name: 'MSCI Rebalancing (Nov)', startMonth: 11, startDay: 10, endMonth: 11, endDay: 30, leadTimeDays: 30, relevantNiches: ['Korean-Stock'], contentAngles: ['MSCI November Korean rebalancing'] },
-  { name: 'CES', startMonth: 1, startDay: 5, endMonth: 1, endDay: 12, leadTimeDays: 30, relevantNiches: ['Korean-Stock', 'AI-Trading'], contentAngles: ['CES Korean tech Samsung LG stock impact'] },
-  { name: 'Year-End Tax Loss Selling', startMonth: 11, startDay: 15, endMonth: 12, endDay: 28, leadTimeDays: 30, relevantNiches: ['Korean-Stock'], contentAngles: ['Korean stock tax loss selling strategy'] },
-  { name: 'Korean IPO Season (Spring)', startMonth: 3, startDay: 1, endMonth: 5, endDay: 31, leadTimeDays: 30, relevantNiches: ['Korean-Stock'], contentAngles: ['upcoming Korean IPO stocks guide'] },
-  { name: 'Korean IPO Season (Fall)', startMonth: 9, startDay: 1, endMonth: 11, endDay: 30, leadTimeDays: 30, relevantNiches: ['Korean-Stock'], contentAngles: ['fall Korean IPO pipeline analysis'] },
-  { name: 'Options Expiry (Mar)', startMonth: 3, startDay: 8, endMonth: 3, endDay: 15, leadTimeDays: 7, relevantNiches: ['Korean-Stock', 'AI-Trading'], contentAngles: ['Korean options expiry volatility impact'] },
-  { name: 'Options Expiry (Jun)', startMonth: 6, startDay: 8, endMonth: 6, endDay: 15, leadTimeDays: 7, relevantNiches: ['Korean-Stock', 'AI-Trading'], contentAngles: ['Korean options expiry June impact'] },
-  { name: 'Options Expiry (Sep)', startMonth: 9, startDay: 8, endMonth: 9, endDay: 15, leadTimeDays: 7, relevantNiches: ['Korean-Stock', 'AI-Trading'], contentAngles: ['Korean options expiry September'] },
-  { name: 'Options Expiry (Dec)', startMonth: 12, startDay: 8, endMonth: 12, endDay: 15, leadTimeDays: 7, relevantNiches: ['Korean-Stock', 'AI-Trading'], contentAngles: ['year-end options expiry Korean market'] },
+  { name: 'Q4 Earnings Season Korea', startMonth: 1, startDay: 15, endMonth: 2, endDay: 15, leadTimeDays: 30, relevantNiches: ['시장분석'], contentAngles: ['Korean stock Q4 earnings preview', 'Samsung SK Hynix earnings impact'] },
+  { name: 'Q1 Earnings Season Korea', startMonth: 4, startDay: 15, endMonth: 5, endDay: 15, leadTimeDays: 30, relevantNiches: ['시장분석'], contentAngles: ['Korean stock Q1 earnings preview', 'semiconductor earnings outlook'] },
+  { name: 'Q2 Earnings Season Korea', startMonth: 7, startDay: 15, endMonth: 8, endDay: 15, leadTimeDays: 30, relevantNiches: ['시장분석'], contentAngles: ['Korean stock Q2 mid-year review'] },
+  { name: 'Q3 Earnings Season Korea', startMonth: 10, startDay: 15, endMonth: 11, endDay: 15, leadTimeDays: 30, relevantNiches: ['시장분석'], contentAngles: ['Korean stock Q3 earnings preview'] },
+  { name: 'BOK Rate Decision (Jan)', startMonth: 1, startDay: 10, endMonth: 1, endDay: 20, leadTimeDays: 14, relevantNiches: ['시장분석'], contentAngles: ['Bank of Korea rate decision analysis'] },
+  { name: 'BOK Rate Decision (Apr)', startMonth: 4, startDay: 1, endMonth: 4, endDay: 15, leadTimeDays: 14, relevantNiches: ['시장분석'], contentAngles: ['BOK April rate impact analysis'] },
+  { name: 'BOK Rate Decision (Jul)', startMonth: 7, startDay: 1, endMonth: 7, endDay: 15, leadTimeDays: 14, relevantNiches: ['시장분석'], contentAngles: ['BOK July rate decision analysis'] },
+  { name: 'BOK Rate Decision (Oct)', startMonth: 10, startDay: 1, endMonth: 10, endDay: 15, leadTimeDays: 14, relevantNiches: ['시장분석'], contentAngles: ['BOK October rate decision analysis'] },
+  { name: 'FOMC Meeting (Mar)', startMonth: 3, startDay: 15, endMonth: 3, endDay: 25, leadTimeDays: 14, relevantNiches: ['시장분석', '수급분석'], contentAngles: ['FOMC March Korean market impact'] },
+  { name: 'FOMC Meeting (Jun)', startMonth: 6, startDay: 10, endMonth: 6, endDay: 20, leadTimeDays: 14, relevantNiches: ['시장분석', '수급분석'], contentAngles: ['FOMC June Korean market forecast'] },
+  { name: 'FOMC Meeting (Sep)', startMonth: 9, startDay: 15, endMonth: 9, endDay: 25, leadTimeDays: 14, relevantNiches: ['시장분석', '수급분석'], contentAngles: ['FOMC September Korean stock analysis'] },
+  { name: 'FOMC Meeting (Dec)', startMonth: 12, startDay: 10, endMonth: 12, endDay: 20, leadTimeDays: 14, relevantNiches: ['시장분석', '수급분석'], contentAngles: ['FOMC December year-end impact'] },
+  { name: 'Korean Dividend Season', startMonth: 12, startDay: 1, endMonth: 12, endDay: 31, leadTimeDays: 45, relevantNiches: ['시장분석'], contentAngles: ['Korean high dividend stocks year-end'] },
+  { name: 'MSCI Rebalancing (May)', startMonth: 5, startDay: 20, endMonth: 6, endDay: 5, leadTimeDays: 30, relevantNiches: ['시장분석'], contentAngles: ['MSCI rebalancing Korean stock impact'] },
+  { name: 'MSCI Rebalancing (Nov)', startMonth: 11, startDay: 10, endMonth: 11, endDay: 30, leadTimeDays: 30, relevantNiches: ['시장분석'], contentAngles: ['MSCI November Korean rebalancing'] },
+  { name: 'CES', startMonth: 1, startDay: 5, endMonth: 1, endDay: 12, leadTimeDays: 30, relevantNiches: ['시장분석', '수급분석'], contentAngles: ['CES Korean tech Samsung LG stock impact'] },
+  { name: 'Year-End Tax Loss Selling', startMonth: 11, startDay: 15, endMonth: 12, endDay: 28, leadTimeDays: 30, relevantNiches: ['시장분석'], contentAngles: ['Korean stock tax loss selling strategy'] },
+  { name: 'Korean IPO Season (Spring)', startMonth: 3, startDay: 1, endMonth: 5, endDay: 31, leadTimeDays: 30, relevantNiches: ['시장분석'], contentAngles: ['upcoming Korean IPO stocks guide'] },
+  { name: 'Korean IPO Season (Fall)', startMonth: 9, startDay: 1, endMonth: 11, endDay: 30, leadTimeDays: 30, relevantNiches: ['시장분석'], contentAngles: ['fall Korean IPO pipeline analysis'] },
+  { name: 'Options Expiry (Mar)', startMonth: 3, startDay: 8, endMonth: 3, endDay: 15, leadTimeDays: 7, relevantNiches: ['시장분석', '수급분석'], contentAngles: ['Korean options expiry volatility impact'] },
+  { name: 'Options Expiry (Jun)', startMonth: 6, startDay: 8, endMonth: 6, endDay: 15, leadTimeDays: 7, relevantNiches: ['시장분석', '수급분석'], contentAngles: ['Korean options expiry June impact'] },
+  { name: 'Options Expiry (Sep)', startMonth: 9, startDay: 8, endMonth: 9, endDay: 15, leadTimeDays: 7, relevantNiches: ['시장분석', '수급분석'], contentAngles: ['Korean options expiry September'] },
+  { name: 'Options Expiry (Dec)', startMonth: 12, startDay: 8, endMonth: 12, endDay: 15, leadTimeDays: 7, relevantNiches: ['시장분석', '수급분석'], contentAngles: ['year-end options expiry Korean market'] },
 ];
 /** 콘텐츠 유형 */
 export type ContentType = 'how-to' | 'best-x-for-y' | 'x-vs-y' | 'analysis' | 'deep-dive' | 'news-explainer' | 'listicle' | 'case-study' | 'product-review';
@@ -73,47 +73,45 @@ export interface AuthorProfile {
 
 /** Niche-specific author profiles for visible E-E-A-T bio sections (primary persona) */
 export const NICHE_AUTHOR_PROFILES: Record<string, AuthorProfile> = {
-  'Korean-Stock': {
+  '시장분석': {
     name: 'Daniel Park',
-    title: 'Korean Stock Market Analyst',
-    bio: 'Seoul-based equity analyst tracking KOSPI/KOSDAQ daily. Analyzes Samsung, SK Hynix, and Korean semiconductor supply chains using DART filings, KRX data, and technical indicators. 8+ years covering Korean capital markets.',
-    expertise: ['Korean equity analysis', 'Semiconductor stocks', 'DART disclosure analysis', 'Technical analysis', 'Korean macroeconomics', 'Foreign investor regulations'],
-    credentials: ['CFA Level III Candidate', 'Korean Capital Market Analyst'],
+    title: '시장 분석 전문가',
+    bio: 'KOSPI/KOSDAQ 시장 흐름을 매일 추적하는 시장 분석가. 거시경제 지표, 금리 정책, 환율 변동이 한국 주식시장에 미치는 영향을 분석합니다.',
+    expertise: ['KOSPI/KOSDAQ 시장 분석', '거시경제 지표', '금리 정책 영향', '환율 분석', 'ETF 투자 전략'],
+    credentials: ['시장분석 전문가', 'CFA Level III'],
     yearsExperience: 8,
   },
-  'AI-Trading': {
+  '업종분석': {
+    name: 'Jiwon Lee',
+    title: '업종 분석 전문가',
+    bio: '반도체, 2차전지, 바이오 등 핵심 업종의 실적과 밸류에이션을 분석합니다. DART 공시와 재무제표 기반 기업 분석을 제공합니다.',
+    expertise: ['섹터 로테이션', '기업 재무 분석', 'DART 공시 분석', 'PER PBR ROE 밸류에이션', '배당주 분석'],
+    credentials: ['업종분석 전문가', '재무분석사'],
+    yearsExperience: 7,
+  },
+  '테마분석': {
     name: 'Alex Kwon',
-    title: 'Quantitative Trading Strategist',
-    bio: 'Building and deploying algorithmic trading systems for Korean stock markets. Specializes in RSI/MACD-based strategies, DART disclosure momentum, and Claude AI-powered trade analysis.',
-    expertise: ['Algorithmic trading systems', 'Python quantitative finance', 'Backtesting and validation', 'Risk management', 'KIS API integration', 'AI/ML stock prediction'],
-    credentials: ['Quantitative Developer', 'AI Trading Systems Architect'],
+    title: '테마주 분석 전문가',
+    bio: 'AI, 2차전지, 로봇, 우주항공 등 성장 테마의 관련주를 발굴하고 분석합니다. 정책 변화와 글로벌 트렌드가 테마주에 미치는 영향을 추적합니다.',
+    expertise: ['테마주 발굴', 'AI 관련주', '2차전지 관련주', '정책 수혜주', '글로벌 트렌드 분석'],
+    credentials: ['테마분석 전문가', '투자 전략가'],
     yearsExperience: 6,
+  },
+  '수급분석': {
+    name: 'Sungho Choi',
+    title: '수급 분석 전문가',
+    bio: '외국인, 기관, 개인 투자자의 매매 동향을 추적하고 수급 데이터 기반 투자 전략을 제시합니다. 공매도, 프로그램 매매, MSCI 리밸런싱 분석을 전문으로 합니다.',
+    expertise: ['투자자별 수급 분석', '외국인 매매 추적', '공매도 분석', '프로그램 매매', 'MSCI 리밸런싱'],
+    credentials: ['수급분석 전문가', '퀀트 애널리스트'],
+    yearsExperience: 7,
   },
 };
 
 export const NICHE_AUTHOR_PERSONAS: Record<string, AuthorProfile[]> = {
-  'Korean-Stock': [
-    NICHE_AUTHOR_PROFILES['Korean-Stock'],
-    {
-      name: 'Jiwon Lee',
-      title: 'Korean Market Macro Strategist',
-      bio: 'Tracking BOK rate decisions, Korean won dynamics, and cross-border capital flows. Focused on how global macro shifts impact Korean equity markets.',
-      expertise: ['Macroeconomic analysis', 'BOK monetary policy', 'Currency impact analysis', 'Cross-border flows'],
-      credentials: ['Economics Researcher', 'Fixed Income Analyst'],
-      yearsExperience: 5,
-    },
-  ],
-  'AI-Trading': [
-    NICHE_AUTHOR_PROFILES['AI-Trading'],
-    {
-      name: 'Sungho Choi',
-      title: 'Trading Systems Engineer',
-      bio: 'Designing production-grade trading infrastructure — WebSocket feeds, order execution pipelines, and risk management systems for Korean stock markets.',
-      expertise: ['Trading system architecture', 'Real-time data processing', 'Order execution', 'System reliability'],
-      credentials: ['Backend Systems Engineer', 'Trading Infrastructure Specialist'],
-      yearsExperience: 7,
-    },
-  ],
+  '시장분석': [NICHE_AUTHOR_PROFILES['시장분석']],
+  '업종분석': [NICHE_AUTHOR_PROFILES['업종분석']],
+  '테마분석': [NICHE_AUTHOR_PROFILES['테마분석']],
+  '수급분석': [NICHE_AUTHOR_PROFILES['수급분석']],
 };
 
 /** Content-type to persona voice mapping */
@@ -157,14 +155,19 @@ export interface NicheConfig {
 
 /** Per-category optimal publish timing (override GA4 when no data available) */
 export const CATEGORY_PUBLISH_TIMING: Record<string, { optimalHour: number; bestDays: number[] }> = {
-  'Korean-Stock': { optimalHour: 7, bestDays: [1, 2, 3, 4, 5] },   // Weekday mornings KST (pre-market)
-  'AI-Trading': { optimalHour: 9, bestDays: [1, 2, 3, 4, 5] },     // Weekday morning (market open)
+  '시장분석': { optimalHour: 7, bestDays: [1, 2, 3, 4, 5] },
+  '업종분석': { optimalHour: 8, bestDays: [1, 2, 3, 4, 5] },
+  '테마분석': { optimalHour: 9, bestDays: [1, 2, 3, 4, 5] },
+  '수급분석': { optimalHour: 10, bestDays: [1, 2, 3, 4, 5] },
 };
 
 /** Niche-specific disclaimer templates for legal compliance */
+const FINANCE_DISCLAIMER = '<div class="ab-disclaimer-finance" style="margin:0 0 24px 0; padding:16px 20px; background:#fff8f0; border:1px solid #fed7aa; border-radius:8px; font-size:13px; color:#666; line-height:1.6;"><strong>투자 면책조항:</strong> 본 콘텐츠는 정보 제공 및 교육 목적으로만 작성되었으며, 투자 권유가 아닙니다. 주식 투자는 원금 손실 위험이 있습니다. 과거 실적이 미래 수익을 보장하지 않습니다. 투자 결정 시 반드시 본인의 판단과 전문가 상담을 거치시기 바랍니다.</div>';
 export const NICHE_DISCLAIMERS: Record<string, string> = {
-  'Korean-Stock': '<div class="ab-disclaimer-finance" style="margin:0 0 24px 0; padding:16px 20px; background:#fff8f0; border:1px solid #fed7aa; border-radius:8px; font-size:13px; color:#666; line-height:1.6;"><strong>Investment Disclaimer:</strong> This content is for informational and educational purposes only, not investment advice. Stock market investments carry risk of loss. Past performance does not guarantee future results. Always conduct your own research and consult a qualified financial advisor before making investment decisions. The author may hold positions in securities discussed.</div>',
-  'AI-Trading': '<div class="ab-disclaimer-trading" style="margin:0 0 24px 0; padding:16px 20px; background:#f0f4ff; border:1px solid #c6d6f6; border-radius:8px; font-size:13px; color:#666; line-height:1.6;"><strong>Trading Disclaimer:</strong> Algorithmic trading involves substantial risk. Backtested results do not guarantee live trading performance. This content describes trading concepts for educational purposes and does not constitute a recommendation to trade. You may lose more than your initial investment.</div>',
+  '시장분석': FINANCE_DISCLAIMER,
+  '업종분석': FINANCE_DISCLAIMER,
+  '테마분석': FINANCE_DISCLAIMER,
+  '수급분석': FINANCE_DISCLAIMER,
 };
 
 /** Search intent to valid content type mapping for enforcement */
