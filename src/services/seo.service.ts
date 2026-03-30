@@ -970,10 +970,11 @@ add_action('wp_footer', function() {
    * Uses Code Snippets to register menu and assign items programmatically.
    */
   async ensureNavigationMenu(categories: string[]): Promise<void> {
-    // Build PHP menu items from niche categories
+    // Build PHP menu items from niche categories (한글 카테고리 지원)
     const categoryItems = categories
       .map((cat) => {
-        const slug = cat.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        // 한글 카테고리: URL encode for WordPress category slug
+        const slug = encodeURIComponent(cat);
         return `    ['label' => '${cat}', 'url' => home_url('/category/${slug}/')],`;
       })
       .join('\n');
@@ -1002,9 +1003,9 @@ ${categoryItems}
     $menu_id = wp_create_nav_menu($menu_name);
     if (is_wp_error($menu_id)) return;
 
-    // Home
+    // 홈
     wp_update_nav_menu_item($menu_id, 0, [
-        'menu-item-title' => 'Home',
+        'menu-item-title' => '홈',
         'menu-item-url' => home_url('/'),
         'menu-item-status' => 'publish',
         'menu-item-type' => 'custom',
@@ -1030,7 +1031,7 @@ ${categoryItems}
     $about = get_page_by_path('about');
     if ($about) {
         wp_update_nav_menu_item($menu_id, 0, [
-            'menu-item-title' => 'About',
+            'menu-item-title' => '소개',
             'menu-item-object-id' => $about->ID,
             'menu-item-object' => 'page',
             'menu-item-status' => 'publish',
@@ -1043,7 +1044,7 @@ ${categoryItems}
     $faq = get_page_by_path('faq');
     if ($faq) {
         wp_update_nav_menu_item($menu_id, 0, [
-            'menu-item-title' => 'FAQ',
+            'menu-item-title' => '자주 묻는 질문',
             'menu-item-object-id' => $faq->ID,
             'menu-item-object' => 'page',
             'menu-item-status' => 'publish',
