@@ -611,9 +611,9 @@ Use them as your primary source for keyword selection. You may:
           ).join('\n');
       } else if (fallbackTrendsData.length > 0) {
         // SEED-ONLY mode: Trends API was down, provide seed keywords directly
-        trendsContext = `## SEED-ONLY MODE (Google Trends API unavailable)\nSelect the best keyword from these curated seed topics. Use your SEO expertise to pick the one with highest likely search demand and lowest competition:\n` +
+        trendsContext = `## SEED-ONLY 모드 (Google Trends API 사용 불가)\n아래 시드 키워드 중 가장 적합한 한국어 키워드를 선택하세요. 검색 수요가 높고 경쟁이 낮은 키워드를 선택:\n` +
           fallbackTrendsData.map((t) => `- "${t.keyword}"`).join('\n') +
-          `\n\nIMPORTANT: Since Trends data is unavailable, prioritize EVERGREEN topics (how-to, guides, comparisons) over time-sensitive news. Choose keywords that are likely to have consistent search volume.`;
+          `\n\n중요: Trends 데이터 없으므로 에버그린 주제(가이드, 비교, 분석) 우선. 한국어 키워드만 선택.`;
       } else {
         trendsContext = 'No trends data available. Use your knowledge to select the best keyword from the seed keywords.';
       }
@@ -638,10 +638,10 @@ ${postedKeywords.length > 0 ? postedKeywords.map((k) => `- ${k}`).join('\n') : '
 CRITICAL ANTI-CANNIBALIZATION RULES:
 1. Do NOT just avoid exact matches — avoid ANY topic that covers the same core subject, even with different wording.
 2. Examples of FORBIDDEN overlaps (if the first is posted, ALL others must be avoided):
-   - "best Korean toner for dry skin" → "Korean toner dry skin recommendations", "which Korean toner for dehydrated skin", "top Korean hydrating toners ranked"
-   - "best Korean 주식분석 routine" → "Korean 주식분석 routine for beginners", "how to do Korean 주식분석", "K-beauty 주식분석 steps"
-   - "BTS 실적발표 2026 what to expect" → "BTS 2026 return date", "BTS new album 2026 guide", "when is BTS coming back 2026"
-   - "삼성전자 PER분석 review" → "삼성전자 snail essence before after", "is 삼성전자 PER분석 worth it", "삼성전자 PER분석 results"
+   - "삼성전자 주가 전망 분석" → "삼성전자 목표가 예측", "삼성전자 매수 타이밍", "삼성전자 투자 분석"
+   - "RSI MACD 매매 전략" → "RSI 매매법 주식", "MACD 활용법 가이드", "기술적 분석 초보"
+   - "배당주 추천 2026" → "고배당주 순위 정리", "배당 투자 방법", "배당수익률 높은 종목"
+   - "Python 자동매매 봇 만들기" → "파이썬 주식 자동매매", "KIS API 연동 가이드", "알고리즘 트레이딩 입문"
 3. The test: if a reader searching for your keyword would find an existing post equally relevant, your keyword is TOO SIMILAR.
 4. Choose a GENUINELY DIFFERENT subtopic within the niche — not the same topic reworded.
 ${this.performanceInsights}
@@ -651,57 +651,45 @@ ${this.getSeasonalSection(niche.category)}
 ${recentContentTypes && recentContentTypes.length > 0 ? `## Content Type Diversity (IMPORTANT)\nRecent content types for this niche: ${recentContentTypes.join(', ')}\nAvoid overusing the same content type. If "${recentContentTypes[recentContentTypes.length - 1]}" was used recently, PREFER a different type to maintain reader variety.\n` : ''}
 ${this.serpFormatHint ? `\n## SERP Format Intelligence\n${this.serpFormatHint}\nThe content type MUST match the dominant SERP format unless there's a compelling reason to differentiate.` : ''}
 ${this.paaQuestions.length > 0 ? `\n## People Also Ask (PAA) Questions\nThese questions appear in Google's PAA box for related queries — HIGH VALUE for FAQ sections:\n${this.paaQuestions.map(q => `- ${q}`).join('\n')}\nInclude answers to at least 3 of these in your FAQ section for featured snippet targeting.` : ''}
-## Instructions
-1. Select the best keyword to target — MUST be a long-tail keyword (4+ words).
-2. Choose the best content type from: ${niche.contentTypes.join(', ')}
-   - analysis: Multi-angle analysis with data and market context
-   - deep-dive: Comprehensive single-topic exploration with historical context
-   - news-explainer: Recent Korean event breakdown for international readers
-   - how-to: Step-by-step guide
-   - best-x-for-y: Ranked list with comparisons
-   - x-vs-y: Comparison analysis
-   - listicle: Curated list of 10-20 items with brief descriptions per item
-   - case-study: Real-world example analysis (Background → Challenge → Strategy → Results → Lessons)
-   - product-review: In-depth product/service review with pros, cons, rating, and Korean market context
-3. Suggest a unique angle that differentiates from existing content
-4. Generate a suggestedTitle that is search-intent-first. Rules for suggestedTitle:
-   - MUST contain the selectedKeyword verbatim or within 1-2 filler words
-   - MUST include "Korea", "Korean", or a specific Korean brand/entity
-   - Choose the pattern matching the content type:
-     * how-to / explainer: "[How/What] [Korea topic] [qualifier]" or "[Primary Keyword] ([Year] Guide)"
-       e.g. "How to Build a Korean KOSPI Routine (2026 Guide)"
-     * best-x-for-y / x-vs-y: "[Number] Best [thing] for [audience] in [Year]" or "[X] vs [Y]: [insight]"
-       e.g. "7 Best Korean Toner Pads for Sensitive Skin in 2026"
-     * analysis / deep-dive / news-explainer: "[Korea topic]: [what the analysis reveals]"
-       e.g. "한국주식 Training System: How Idols Are Made From Audition to Debut"
-   - Target 50-65 characters total
-   - NEVER use: "changing everything", "things you need to know", "the real reason X matters"
-5. Identify the search intent and competition level
-6. List 5-8 LSI (related) keywords to naturally include in the content
+## 지시사항 (모든 출력은 한국어로)
+1. 가장 적합한 **한국어** 키워드를 선택하세요 — 반드시 한국어 롱테일 키워드 (3단어 이상).
+2. 콘텐츠 유형 선택: ${niche.contentTypes.join(', ')}
+   - analysis: 데이터 기반 다각도 분석
+   - deep-dive: 단일 주제 심층 탐구
+   - news-explainer: 최근 시장 이벤트 해설
+   - how-to: 단계별 가이드
+   - best-x-for-y: 비교 순위 리스트
+   - x-vs-y: 비교 분석
+   - listicle: 10-20개 항목 큐레이션 리스트
+   - case-study: 실전 사례 분석 (배경 → 전략 → 결과 → 교훈)
+3. 기존 콘텐츠와 차별화되는 독창적 앵글 제안
+4. suggestedTitle 규칙 (한국어로 작성):
+   - selectedKeyword를 그대로 포함
+   - 한국어로 20-35자
+   - 콘텐츠 유형별 패턴:
+     * how-to: "[주제] 방법 완벽 가이드 [연도]" (예: "주식 차트 보는 법 완벽 가이드 2026")
+     * best-x-for-y: "[주제] 추천 [수량]선 비교 [연도]" (예: "배당주 추천 TOP 7 비교 분석 2026")
+     * analysis: "[종목/지표] 분석: [핵심 발견]" (예: "삼성전자 PER 분석: 저평가 구간인가?")
+   - 금지: "~의 모든 것", "완벽 정리", "꼭 알아야 할"
+5. 검색 의도와 경쟁도 판단
+6. LSI(관련) 키워드 5-8개 (한국어)
 
-CRITICAL keyword selection rules — follow in strict priority order:
-1. PRIORITISE rising queries — they have real search momentum and growing demand
-2. KOREA FOCUS MANDATORY: The keyword MUST relate to South Korea, Korean companies, Korean markets, 한국주식/금융분석, or Korean industry. Keywords without clear Korea relevance are NOT acceptable.
-3. MUST be low competition (estimatedCompetition: "low")
-4. MUST be long-tail (4+ words). Short head terms are NOT acceptable.
-5. PREFER question-based keywords ("how to", "what is", "best way to")
-6. PREFER keywords with clear informational or commercial investigation intent
-7. MUST be different from already posted keywords
-8. AVOID head terms dominated by high-authority sites
-9. TARGET global English-speaking audience interested in Korea (K-culture fans, K-beauty shoppers, 금융분석 viewers)
-10. EXCLUDED TOPICS — NEVER select keywords about: business models, revenue, profits, earnings, stock prices, investments, financial analysis, company valuations, money-making, economic forecasts, or any finance/economics angle. This blog focuses on CULTURE and PRODUCTS, not business/finance.
+핵심 키워드 선택 규칙 (우선순위 순):
+1. 상승 트렌드 키워드 우선 — 실제 검색 수요가 증가 중인 키워드
+2. 한국 금융/투자 주제 필수: 한국 주식, 종목 분석, 투자 전략, DART 공시, 기술적 분석, 자동매매 등
+3. 낮은 경쟁도 (estimatedCompetition: "low")
+4. 롱테일 키워드 (한국어 3단어 이상, 예: "삼성전자 주가 전망 분석")
+5. 한국어 키워드 우선. 영문 키워드 선택 금지.
+6. 기존 발행 키워드와 중복 금지
+7. 타겟 독자: 한국인 개인 투자자 (네이버 증권, 키움증권 사용자)
 
-7. Estimate keyword difficulty (0-100) based on:
-   - SERP competition (are top results from high-DA sites like Wikipedia, Forbes?)
-   - Content saturation (how many dedicated articles exist for this exact query?)
-   - Commercial intent (higher intent = more competition)
-   Target keywords with difficulty < 40 for best ranking potential.
-8. Estimate monthly search volume as a number (rough estimate based on niche knowledge)
-9. Classify search intent precisely: informational, commercial, commercial-investigation, transactional, or navigational
-   - commercial-investigation: User is comparing options before purchase (e.g., "삼성전자 vs Anua toner which is better", "Numbuzin vs TIRTIR cushion comparison")
-   - commercial: User wants to buy/find a product (e.g., "best Korean sunscreen for dark skin")
-   - transactional: User is ready to act (e.g., "where to buy Anua toner online", "buy 삼성전자 PER분석 Amazon")
-10. CRITICAL intent-type alignment:
+7. 키워드 난이도 추정 (0-100)
+8. 월간 검색량 추정 (네이버 기준 한국어 검색량)
+9. 검색 의도 분류: informational, commercial, commercial-investigation, transactional, navigational
+   - commercial-investigation: 비교 검색 (예: "삼성전자 vs SK하이닉스 비교", "KODEX vs TIGER ETF")
+   - commercial: 구매 의도 (예: "배당주 추천 2026", "국내 ETF 추천")
+   - transactional: 행동 의도 (예: "키움증권 계좌 개설 방법", "공모주 청약 방법")
+10. 의도-유형 정합성:
    - transactional intent → MUST use: product-review, best-x-for-y, or how-to
    - commercial intent → MUST use: best-x-for-y, x-vs-y, product-review, listicle, or analysis
    - commercial-investigation intent → MUST use: x-vs-y, best-x-for-y, product-review, analysis, listicle, or deep-dive
@@ -709,8 +697,8 @@ CRITICAL keyword selection rules — follow in strict priority order:
    - navigational intent → MUST use: deep-dive, news-explainer, or how-to
 11. Generate 3-5 long-tail keyword variants related to your selected keyword for satellite content strategy
 
-Respond with pure JSON only. No markdown code blocks.
-{"selectedKeyword":"...","contentType":"analysis|deep-dive|news-explainer|how-to|best-x-for-y|x-vs-y|listicle|case-study|product-review","suggestedTitle":"...","uniqueAngle":"...","searchIntent":"informational|commercial|commercial-investigation|transactional|navigational","estimatedCompetition":"low|medium|high","keywordDifficulty":25,"volumeEstimate":"high|medium|low|minimal","estimatedMonthlySearches":1500,"reasoning":"...","relatedKeywordsToInclude":["...","..."],"longTailVariants":["variant 1","variant 2","variant 3"]}`;
+순수 JSON만 응답. 마크다운 코드 블록 금지. selectedKeyword, suggestedTitle, uniqueAngle, reasoning, relatedKeywordsToInclude, longTailVariants 모두 한국어로 작성.
+{"selectedKeyword":"삼성전자 주가 전망 분석 2026","contentType":"analysis|deep-dive|news-explainer|how-to|best-x-for-y|x-vs-y|listicle|case-study|product-review","suggestedTitle":"삼성전자 주가 전망: PER 12배의 의미와 매수 타이밍 분석","uniqueAngle":"한국어로 작성","searchIntent":"informational|commercial|commercial-investigation|transactional|navigational","estimatedCompetition":"low|medium|high","keywordDifficulty":25,"volumeEstimate":"high|medium|low|minimal","estimatedMonthlySearches":1500,"reasoning":"한국어로 이유 설명","relatedKeywordsToInclude":["관련 키워드 1","관련 키워드 2"],"longTailVariants":["롱테일 변형 1","롱테일 변형 2","롱테일 변형 3"]}`;
 
     try {
       const response = await this.client.messages.create({
