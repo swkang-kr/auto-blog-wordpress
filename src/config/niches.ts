@@ -9,9 +9,9 @@ export function getSeasonallyOrderedNiches(): NicheConfig[] {
 
   const EVENTS_NICHE_MAP: Record<string, string[]> = {
     'Earnings Season': ['시장분석', '업종분석'],
-    'FOMC': ['시장분석', '수급분석'],
+    'FOMC': ['시장분석'],
     'BOK Rate Decision': ['시장분석'],
-    'MSCI Rebalancing': ['수급분석', '업종분석'],
+    'MSCI Rebalancing': ['업종분석'],
     'Dividend': ['업종분석'],
     'Options Expiry': ['시장분석'],
     'CES': ['테마분석', '업종분석'],
@@ -157,46 +157,7 @@ export const NICHES: NicheConfig[] = [
     ],
   },
 
-  // ── 4. 수급 분석 ──
-  {
-    id: 'supply-demand-analysis',
-    name: '수급 분석',
-    category: '수급분석',
-    broadTerm: `주식 수급 ${Y}`,
-    broadTermsExtra: ['외국인 매매 동향'],
-    seedKeywords: [
-      `외국인 매수 종목 분석 수급 추적 전략 ${Y}`,
-      '기관 매수 종목 분석 수급 추적 전략',
-      '개인 투자자 매매 동향 분석 전략',
-      '외국인 순매매 동향 코스피 영향 분석',
-      '기관 순매도 이유 분석 투자 전략',
-      '프로그램 매매 차익 비차익 영향 분석',
-      '공매도 현황 분석 공매도 잔고 확인 방법',
-      '대차거래 잔고 분석 공매도 전략',
-      '신용잔고 추이 분석 투자 심리 지표',
-      '연기금 매매 동향 국민연금 투자 분석',
-      'MSCI 리밸런싱 외국인 수급 영향 분석',
-      '외국인 선물 옵션 포지션 분석 전략',
-      '수급 분석 방법 주식 매매 가이드',
-      '거래량 분석 매매 전략 가이드',
-      '기관 외국인 동시 매수 종목 찾기',
-      `배당락일 수급 변화 분석 전략 ${Y}`,
-      '블록딜 대량 매매 영향 분석 전략',
-      '자사주 매입 공시 수급 영향 분석',
-      'ETF 자금 유입 유출 분석 투자 전략',
-      'DART 공시 보는 법 수급 분석 활용',
-    ],
-    contentTypes: ['analysis', 'news-explainer', 'how-to', 'deep-dive', 'listicle', 'best-x-for-y'],
-    adSenseRpm: 'high',
-    pillarTopics: [
-      '주식 수급 분석 완벽 가이드: 외국인 기관 개인',
-      '외국인 매매 동향 추적 투자 전략',
-      '공매도 분석 가이드: 잔고 확인과 전략',
-      'DART 공시 분석으로 수급 읽는 법',
-    ],
-  },
-
-  // ── 5. 오늘의 추천주 (워치리스트 기반) ──
+  // ── 4. 오늘의 추천주 (워치리스트 기반) ──
   {
     id: 'ai-stock-picks',
     name: '오늘의 추천주',

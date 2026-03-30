@@ -42,7 +42,7 @@ jobs:
           WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
           TRENDS_GEO: US
           LOG_LEVEL: info
-          POST_COUNT: ${{ inputs.post_count || '5' }}
+          POST_COUNT: ${{ inputs.post_count || '4' }}
 
           # Site identity & E-E-A-T
           SITE_NAME: ${{ secrets.SITE_NAME }}

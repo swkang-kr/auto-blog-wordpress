@@ -1031,16 +1031,6 @@ async function main(): Promise<void> {
         for (const t of tradeEngineData.hotThemes.slice(0, 5)) {
           injected.push(`${t.name} 테마주 관련주 정리 분석 ${Y}`);
         }
-      } else if (niche.category === '수급분석') {
-        // 투자자 수급 기반
-        if (tradeEngineData.supplyDemand?.summary) {
-          const sd = tradeEngineData.supplyDemand.summary;
-          injected.push(`${sd.dominant_buyer} 순매매 동향 분석 주식 수급 전략 ${Y}`);
-          if (sd.foreign_net_total > 0) injected.push(`외국인 매수 종목 분석 수급 추적 전략`);
-          else injected.push(`외국인 순매도 이유 분석 영향 전망 ${Y}`);
-          if (sd.institution_net_total > 0) injected.push(`기관 매수 종목 분석 수급 추적 전략`);
-          else injected.push(`기관 순매도 종목 분석 수급 변화 전망`);
-        }
       }
       // 추천주는 DB 워치리스트 + aiPicks 기반 (기존 유지)
 
