@@ -998,29 +998,67 @@ async function main(): Promise<void> {
   const tradeEngineData = tradeEngineBridge.loadData();
   const tradeEngineContext = tradeEngineBridge.buildContentContext(tradeEngineData);
   if (!tradeEngineData.isStale) {
-    // Inject Trade Engine watchlist keywords per niche (니치별 워치리스트 매핑)
-    const wl = tradeEngineData.watchlistByNiche;
+    const Y = new Date().getFullYear();
+
+    // 네이버금융 데이터 기반 키워드 주입 (니치별)
     for (const niche of activeNiches) {
-      const nicheWatchlist = wl?.[niche.category as keyof typeof wl] || [];
-      if (nicheWatchlist.length > 0) {
-        const watchlistKeywords = nicheWatchlist.slice(0, 3).map((w: { stock_name: string; sector: string }) => {
-          if (niche.category === '시장분석') return `${w.stock_name} 주가 전망 시장 영향 분석 ${new Date().getFullYear()}`;
-          if (niche.category === '업종분석') return `${w.stock_name} ${w.sector || '업종'} 분석 투자 전망`;
-          if (niche.category === '테마분석') return `${w.stock_name} 테마주 관련주 매수 시그널 분석`;
-          return `${w.stock_name} 수급 분석 매매 시그널 추적`;
-        });
-        niche.seedKeywords = [...watchlistKeywords, ...niche.seedKeywords];
-        logger.info(`Trade Engine 워치리스트 [${niche.category}]: ${nicheWatchlist.slice(0, 3).map((w: { stock_name: string }) => w.stock_name).join(', ')} 주입`);
+      const injected: string[] = [];
+
+      if (niche.category === '시장분석') {
+        // 급등/급락 종목 기반
+        for (const g of tradeEngineData.topGainers.slice(0, 3)) {
+          injected.push(`${g.stock_name} 급등 이유 분석 전망 ${Y}`);
+        }
+        for (const l of tradeEngineData.topLosers.slice(0, 2)) {
+          injected.push(`${l.stock_name} 하락 원인 분석 반등 가능성`);
+        }
+        // 시장 지수
+        if (tradeEngineData.marketOverview.length > 0) {
+          const m = tradeEngineData.marketOverview[0];
+          if (m.kospi_change < -1) injected.push(`KOSPI 하락 원인 분석 대응 전략 ${Y}`);
+          else if (m.kospi_change > 1) injected.push(`KOSPI 상승 랠리 분석 추가 상승 전망`);
+        }
+      } else if (niche.category === '업종분석') {
+        // 강세/약세 업종 기반
+        for (const s of tradeEngineData.topSectors.slice(0, 3)) {
+          injected.push(`${s.name} 업종 강세 이유 관련주 분석 ${Y}`);
+        }
+        for (const s of tradeEngineData.bottomSectors.slice(0, 2)) {
+          injected.push(`${s.name} 업종 약세 원인 반등 전망 분석`);
+        }
+      } else if (niche.category === '테마분석') {
+        // 핫 테마 기반
+        for (const t of tradeEngineData.hotThemes.slice(0, 5)) {
+          injected.push(`${t.name} 테마주 관련주 정리 분석 ${Y}`);
+        }
+      } else if (niche.category === '수급분석') {
+        // 투자자 수급 기반
+        if (tradeEngineData.supplyDemand?.summary) {
+          const sd = tradeEngineData.supplyDemand.summary;
+          injected.push(`${sd.dominant_buyer} 순매매 동향 분석 주식 수급 전략 ${Y}`);
+          if (sd.foreign_net_total > 0) injected.push(`외국인 매수 종목 분석 수급 추적 전략`);
+          else injected.push(`외국인 순매도 이유 분석 영향 전망 ${Y}`);
+          if (sd.institution_net_total > 0) injected.push(`기관 매수 종목 분석 수급 추적 전략`);
+          else injected.push(`기관 순매도 종목 분석 수급 변화 전망`);
+        }
+      }
+      // 추천주는 DB 워치리스트 + aiPicks 기반 (기존 유지)
+
+      if (injected.length > 0) {
+        niche.seedKeywords = [...injected, ...niche.seedKeywords];
+        logger.info(`네이버금융 [${niche.category}]: ${injected.slice(0, 3).join(' | ')} 등 ${injected.length}개 키워드 주입`);
       }
     }
 
-    // Inject general suggestions (시장/수급 데이터 기반)
-    const teSuggestions = tradeEngineBridge.generateKeywordSuggestions(tradeEngineData);
-    if (teSuggestions.length > 0) {
-      for (const niche of activeNiches) {
-        niche.seedKeywords = [...teSuggestions.slice(0, 3), ...niche.seedKeywords];
+    // 추천주 니치에 aiPicks/DB워치리스트 키워드 주입
+    for (const niche of activeNiches) {
+      if (niche.category === '추천주' && tradeEngineData.aiPicks.length > 0) {
+        const pickKeywords = tradeEngineData.aiPicks.slice(0, 3).map(p =>
+          `${p.stock_name} AI 매수 시그널 분석 ${p.strategies?.[0] || ''} 진입 근거`
+        );
+        niche.seedKeywords = [...pickKeywords, ...niche.seedKeywords];
+        logger.info(`추천주 [${niche.category}]: ${tradeEngineData.aiPicks.slice(0, 3).map(p => p.stock_name).join(', ')} 주입`);
       }
-      logger.info(`Trade Engine: ${teSuggestions.length}개 데이터 기반 키워드 주입`);
     }
   }
 
