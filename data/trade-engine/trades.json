@@ -1,5 +1,5 @@
 {
-  "exported_at": "2026-03-27T07:41:22.316560+00:00",
+  "exported_at": "2026-03-30T00:09:47.629200+00:00",
   "trades": [
     {
       "stock_code": "009580",
@@ -96,18 +96,6 @@
       "strategy": "RSI+MACD(swing)",
       "reason": "2일연속상승 | MACD히스토그램↑ | 거래량37.9x | 거래량3x+ | MA정배열",
       "filled_at": "2026-03-24T06:11:58.647449"
-    },
-    {
-      "stock_code": "090710",
-      "stock_name": "휴림로봇",
-      "side": "sell",
-      "quantity": 49,
-      "price": 13810.0,
-      "pnl": -9656.63,
-      "pnl_rate": -1.4117,
-      "strategy": "swing_regime_exit(KOSPI=-4.3%,net=-1.3%)",
-      "reason": "swing_regime_exit(KOSPI=-4.3%,net=-1.3%)",
-      "filled_at": "2026-03-23T00:05:17.629608"
     }
   ]
 }

@@ -92,6 +92,39 @@ export interface TopMover {
   volume: number;
 }
 
+export interface MarketOverview {
+  date: string;
+  kospi_change: number;
+  kosdaq_change: number;
+  foreign_net: number;
+  institution_net: number;
+  individual_net: number;
+  hot_theme_count: number;
+  momentum_count: number;
+  crash_count: number;
+}
+
+export interface SectorData {
+  name: string;
+  change_rate: number;
+}
+
+export interface ThemeData {
+  name: string;
+  change_rate: number;
+}
+
+export interface SupplyDemand {
+  period: string;
+  summary: {
+    foreign_net_total: number;
+    institution_net_total: number;
+    individual_net_total: number;
+    dominant_buyer: string;
+  };
+  daily: Array<{ date: string; foreign_net: number; institution_net: number; individual_net: number }>;
+}
+
 export interface TradeEngineData {
   dailySummary: DailySummary | null;
   signals: TradeSignal[];
@@ -100,8 +133,15 @@ export interface TradeEngineData {
   disclosures: DisclosureItem[];
   topGainers: TopMover[];
   topLosers: TopMover[];
-  dataAge: number; // hours since last export
-  isStale: boolean; // true if data is >24h old
+  // 시장/업종/테마/수급
+  marketOverview: MarketOverview[];
+  topSectors: SectorData[];
+  bottomSectors: SectorData[];
+  hotThemes: ThemeData[];
+  coldThemes: ThemeData[];
+  supplyDemand: SupplyDemand | null;
+  dataAge: number;
+  isStale: boolean;
 }
 
 export class TradeEngineBridge {
@@ -121,6 +161,12 @@ export class TradeEngineBridge {
       disclosures: [],
       topGainers: [],
       topLosers: [],
+      marketOverview: [],
+      topSectors: [],
+      bottomSectors: [],
+      hotThemes: [],
+      coldThemes: [],
+      supplyDemand: null,
       dataAge: Infinity,
       isStale: true,
     };
@@ -156,12 +202,34 @@ export class TradeEngineBridge {
         result.topLosers = movers.top_losers || [];
       }
 
+      // 시장 개요
+      const market = this.readJson<{ market_daily: MarketOverview[] }>('market_overview.json');
+      if (market) result.marketOverview = market.market_daily || [];
+
+      // 업종
+      const sectors = this.readJson<{ top_sectors: SectorData[]; bottom_sectors: SectorData[] }>('sectors.json');
+      if (sectors) {
+        result.topSectors = sectors.top_sectors || [];
+        result.bottomSectors = sectors.bottom_sectors || [];
+      }
+
+      // 테마
+      const themes = this.readJson<{ hot_themes: ThemeData[]; cold_themes: ThemeData[] }>('themes.json');
+      if (themes) {
+        result.hotThemes = themes.hot_themes || [];
+        result.coldThemes = themes.cold_themes || [];
+      }
+
+      // 수급
+      const supply = this.readJson<SupplyDemand>('supply_demand.json');
+      if (supply) result.supplyDemand = supply;
+
       result.isStale = result.dataAge > 24;
 
       if (result.isStale) {
         logger.warn(`Trade Engine data is ${result.dataAge.toFixed(0)}h old (stale). Content will use general market context.`);
       } else {
-        logger.info(`Trade Engine data loaded: ${result.signals.length} signals, ${result.holdings.length} holdings, ${result.trades.length} trades, ${result.disclosures.length} disclosures`);
+        logger.info(`Trade Engine data loaded: ${result.signals.length} signals, ${result.holdings.length} holdings, ${result.topSectors.length} sectors, ${result.hotThemes.length} themes`);
       }
     } catch (error) {
       logger.warn(`Trade Engine data load failed: ${error instanceof Error ? error.message : error}`);
@@ -238,12 +306,59 @@ export class TradeEngineBridge {
 
     // Recent trades (top 5)
     if (data.trades.length > 0) {
-      parts.push('### Recent Trades\n');
+      parts.push('### 최근 거래 내역\n');
       for (const t of data.trades.slice(0, 5)) {
-        const pnl = t.pnl != null ? ` → P&L: ${t.pnl >= 0 ? '+' : ''}${t.pnl.toLocaleString()}원 (${t.pnl_rate?.toFixed(1)}%)` : '';
-        parts.push(`- [${t.side.toUpperCase()}] ${t.stock_name} ${t.quantity}주 @ ${t.price.toLocaleString()}원${pnl} — ${t.strategy}`);
+        const pnl = t.pnl != null ? ` → 손익: ${t.pnl >= 0 ? '+' : ''}${t.pnl.toLocaleString()}원 (${t.pnl_rate?.toFixed(1)}%)` : '';
+        parts.push(`- [${t.side === 'buy' ? '매수' : '매도'}] ${t.stock_name} ${t.quantity}주 @ ${t.price.toLocaleString()}원${pnl} — ${t.strategy}`);
       }
       parts.push('');
+    }
+
+    // 시장 개요 (최근 거래일)
+    if (data.marketOverview.length > 0) {
+      const latest = data.marketOverview[0];
+      parts.push(
+        `### 시장 개요 (${latest.date})\n` +
+        `- KOSPI: ${latest.kospi_change >= 0 ? '+' : ''}${latest.kospi_change.toFixed(2)}%\n` +
+        `- KOSDAQ: ${latest.kosdaq_change >= 0 ? '+' : ''}${latest.kosdaq_change.toFixed(2)}%\n` +
+        `- 급등 종목: ${latest.momentum_count}개 | 급락 종목: ${latest.crash_count}개 | 핫 테마: ${latest.hot_theme_count}개\n`,
+      );
+    }
+
+    // 업종별 등락 (상위/하위 5)
+    if (data.topSectors.length > 0) {
+      parts.push('### 업종 강세/약세\n강세 업종:');
+      for (const s of data.topSectors.slice(0, 5)) {
+        parts.push(`  - ${s.name}: +${s.change_rate.toFixed(2)}%`);
+      }
+      if (data.bottomSectors.length > 0) {
+        parts.push('약세 업종:');
+        for (const s of data.bottomSectors.slice(0, 5)) {
+          parts.push(`  - ${s.name}: ${s.change_rate.toFixed(2)}%`);
+        }
+      }
+      parts.push('');
+    }
+
+    // 핫 테마
+    if (data.hotThemes.length > 0) {
+      parts.push('### 핫 테마\n');
+      for (const t of data.hotThemes.slice(0, 8)) {
+        parts.push(`- ${t.name}: +${t.change_rate.toFixed(2)}%`);
+      }
+      parts.push('');
+    }
+
+    // 수급 동향
+    if (data.supplyDemand?.summary) {
+      const sd = data.supplyDemand.summary;
+      parts.push(
+        `### 투자자 수급 (${data.supplyDemand.period})\n` +
+        `- 외국인 순매매: ${sd.foreign_net_total >= 0 ? '+' : ''}${sd.foreign_net_total.toLocaleString()}억원\n` +
+        `- 기관 순매매: ${sd.institution_net_total >= 0 ? '+' : ''}${sd.institution_net_total.toLocaleString()}억원\n` +
+        `- 개인 순매매: ${sd.individual_net_total >= 0 ? '+' : ''}${sd.individual_net_total.toLocaleString()}억원\n` +
+        `- 주도 매수 주체: ${sd.dominant_buyer}\n`,
+      );
     }
 
     return parts.join('\n');
@@ -275,6 +390,41 @@ export class TradeEngineBridge {
     }
     for (const l of data.topLosers.slice(0, 2)) {
       suggestions.push(`${l.stock_name} 하락 원인 분석 반등 가능성`);
+    }
+
+    // 업종 기반 키워드
+    for (const s of data.topSectors.slice(0, 2)) {
+      suggestions.push(`${s.name} 업종 강세 이유 관련주 분석 ${new Date().getFullYear()}`);
+    }
+    for (const s of data.bottomSectors.slice(0, 1)) {
+      suggestions.push(`${s.name} 업종 약세 원인 반등 전망 분석`);
+    }
+
+    // 테마 기반 키워드
+    for (const t of data.hotThemes.slice(0, 3)) {
+      suggestions.push(`${t.name} 테마주 관련주 정리 분석 ${new Date().getFullYear()}`);
+    }
+
+    // 수급 기반 키워드
+    if (data.supplyDemand?.summary) {
+      const buyer = data.supplyDemand.summary.dominant_buyer;
+      suggestions.push(`${buyer} 순매매 동향 분석 주식 수급 전략 ${new Date().getFullYear()}`);
+      if (data.supplyDemand.summary.foreign_net_total > 0) {
+        suggestions.push(`외국인 매수 종목 분석 수급 추적 전략`);
+      }
+      if (data.supplyDemand.summary.institution_net_total > 0) {
+        suggestions.push(`기관 매수 종목 분석 수급 추적 전략`);
+      }
+    }
+
+    // 시장 상황 기반 키워드
+    if (data.marketOverview.length > 0) {
+      const m = data.marketOverview[0];
+      if (m.kospi_change < -1) {
+        suggestions.push(`KOSPI 하락 원인 분석 대응 전략 ${new Date().getFullYear()}`);
+      } else if (m.kospi_change > 1) {
+        suggestions.push(`KOSPI 상승 랠리 분석 추가 상승 가능성 전망`);
+      }
     }
 
     return suggestions;
