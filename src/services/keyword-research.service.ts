@@ -17,7 +17,7 @@ function stratifiedSample(seeds: string[], maxSample: number): string[] {
   if (seeds.length <= maxSample) return [...seeds];
 
   // Cluster by first meaningful word (skip common prefixes like "best", "how", "top", "korean")
-  const SKIP_WORDS = new Set(['best', 'how', 'top', 'korean', 'k-pop', 'korean-stock', 'k-drama', 'the', 'a', 'what', 'why', 'where', 'when', 'complete', 'guide', 'ultimate']);
+  const SKIP_WORDS = new Set(['best', 'how', 'top', 'korean', 'kospi', 'kosdaq', 'the', 'a', 'what', 'why', 'where', 'when', 'complete', 'guide', 'ultimate']);
   const clusters = new Map<string, string[]>();
 
   for (const seed of seeds) {
@@ -944,7 +944,7 @@ STRATEGY: Consider creating content that directly targets one of these content g
     }
 
     // 5. Korea-specific niche discount (Korea topics have less English competition)
-    const koreaTerms = ['korea', 'korean', 'k-pop', 'korean-stock', 'kospi', 'seoul'];
+    const koreaTerms = ['korea', 'korean', 'kospi', 'kosdaq', 'seoul', '한국', '주식', '종목'];
     if (koreaTerms.some(t => keyword.toLowerCase().includes(t))) {
       difficulty -= 10;
     }

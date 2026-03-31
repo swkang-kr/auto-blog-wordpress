@@ -188,26 +188,15 @@ export class WordPressService {
       return caption;
     }
 
-    // 13차 감사: Korean-Stock/AI-Trading 카테고리별 alt 텍스트 최적화
-    if (keyword && category === 'Korean-Stock') {
-      const kbSuffixes = [
-        ` — ${keyword} Korean 주식분석 product`,
-        ` — Korean-Stock ingredient texture and application`,
-        ` — Korean beauty routine step`,
-        ` — Korean-Stock product comparison`,
+    // 카테고리별 alt 텍스트 최적화
+    if (keyword && category === '종목분석') {
+      const suffixes = [
+        ` — ${keyword} 기술적 분석 차트`,
+        ` — 한국 주식 종목 분석`,
+        ` — RSI MACD 기술적 지표`,
+        ` — 주식 차트 패턴 분석`,
       ];
-      const suffix = kbSuffixes[Math.min(imageIndex || 0, kbSuffixes.length - 1)];
-      const combined = caption + suffix;
-      return combined.length > 125 ? caption.slice(0, 122) + '...' : combined;
-    }
-    if (keyword && category === 'AI-Trading') {
-      const keSuffixes = [
-        ` — ${keyword} 한국주식 and Korean entertainment`,
-        ` — Korean music and drama culture`,
-        ` — AI-Trading fan community`,
-        ` — Korean pop culture overview`,
-      ];
-      const suffix = keSuffixes[Math.min(imageIndex || 0, keSuffixes.length - 1)];
+      const suffix = suffixes[Math.min(imageIndex || 0, suffixes.length - 1)];
       const combined = caption + suffix;
       return combined.length > 125 ? caption.slice(0, 122) + '...' : combined;
     }
@@ -299,44 +288,14 @@ export class WordPressService {
     return { valid: true };
   }
 
-  /** Korean-Stock affiliate platform configurations */
+  /** Korean stock market affiliate platform configurations */
   private static readonly KOREANSTOCK_AFFILIATE_PLATFORMS: Record<string, { baseUrl: string; tag: string; searchParam: string }> = {
     amazon: {
       baseUrl: 'https://www.amazon.com/s',
       tag: 'koreanstockblog-20',
       searchParam: 'k'
     },
-    yesstyle: {
-      baseUrl: 'https://www.yesstyle.com/en/search.html',
-      tag: 'koreanstock',
-      searchParam: 'keyword'
-    },
-    oliveyoung: {
-      baseUrl: 'https://global.oliveyoung.com/search',
-      tag: '',
-      searchParam: 'query'
-    }
   };
-
-  static buildKBeautyAffiliateUrl(productName: string, platform: 'amazon' | 'yesstyle' | 'oliveyoung'): string {
-    const config = WordPressService.KOREANSTOCK_AFFILIATE_PLATFORMS[platform];
-    const params = new URLSearchParams({ [config.searchParam]: productName });
-    if (config.tag) params.append('tag', config.tag);
-    return `${config.baseUrl}?${params.toString()}`;
-  }
-
-  static buildKEntertainmentAffiliateUrl(item: string, type: 'album' | 'merch' | 'ticket'): string {
-    if (type === 'album') {
-      const params = new URLSearchParams({ k: item, tag: 'kpopblog-20' });
-      return `https://www.amazon.com/s?${params.toString()}`;
-    }
-    if (type === 'merch') {
-      return `https://weverseshop.io/search?query=${encodeURIComponent(item)}`;
-    }
-    // ticket - Ticketmaster
-    const params = new URLSearchParams({ q: item });
-    return `https://www.ticketmaster.com/search?${params.toString()}`;
-  }
 
   /** Source registry: maps cite data-source keys to verified URLs */
   private static readonly SOURCE_REGISTRY: Record<string, { domain: string; paths: Record<string, string>; label: string }> = {
@@ -365,37 +324,10 @@ export class WordPressService {
     nikkei:    { domain: 'https://asia.nikkei.com', paths: { default: '/', business: '/Business/', economy: '/Economy/', tech: '/Business/Tech/', markets: '/Business/Markets/' }, label: 'Nikkei Asia' },
     statista:  { domain: 'https://www.statista.com', paths: { default: '/', korea: '/topics/5730/south-korea/', ai: '/topics/3104/artificial-intelligence-ai/', semiconductors: '/topics/3617/semiconductor-industry/' }, label: 'Statista' },
     worldbank: { domain: 'https://www.worldbank.org', paths: { default: '/', data: '/en/country/korea/', indicators: '/en/data/', research: '/en/research/' }, label: 'World Bank' },
-    // Entertainment agencies
-    hybe:              { domain: 'https://www.hybecorp.com', paths: { default: '/', ir: '/eng/ir/', artists: '/eng/artists/', earnings: '/eng/ir/financial/' }, label: 'HYBE' },
-    'sm-entertainment': { domain: 'https://www.smentertainment.com', paths: { default: '/', artists: '/artists/', ir: '/ir/' }, label: 'SM Entertainment' },
-    jyp:               { domain: 'https://www.jype.com', paths: { default: '/', artists: '/artists/', ir: '/ir/' }, label: 'JYP Entertainment' },
-    // AI-Trading fan/industry sources
-    hanteo:              { domain: 'https://www.hanteochart.com', paths: { default: '/', chart: '/chart/', album: '/chart/album/' }, label: 'Hanteo Chart' },
-    'circle-chart':      { domain: 'https://circlechart.kr', paths: { default: '/', chart: '/page_chart/onoff.circle' }, label: 'Circle Chart' },
-    'billboard-korea':   { domain: 'https://www.billboard.com', paths: { default: '/charts/', 'k-pop': '/charts/k-pop-hot-100/' }, label: 'Billboard 한국주식' },
-    kbs:                 { domain: 'https://www.kbs.co.kr', paths: { default: '/', entertainment: '/enter/' }, label: 'KBS' },
-    mnet:                { domain: 'https://www.mnet.com', paths: { default: '/', schedule: '/schedule/' }, label: 'Mnet' },
-    'weverse-magazine':  { domain: 'https://weversemagazine.com', paths: { default: '/', artists: '/artists/' }, label: 'Weverse Magazine' },
-    melon:               { domain: 'https://www.melon.com', paths: { default: '/', chart: '/chart/index.htm' }, label: 'Melon Chart' },
-    bugs:                { domain: 'https://music.bugs.co.kr', paths: { default: '/', chart: '/chart/rise' }, label: 'Bugs Music' },
-    // K-Film / K-Musical sources
-    kofic:               { domain: 'https://www.kobis.or.kr', paths: { default: '/', boxoffice: '/kobis/business/stat/boxs/findFormerBoxOfficeList.do' }, label: 'KOFIC (영진위)' },
-    kmdb:                { domain: 'https://www.kmdb.or.kr', paths: { default: '/', search: '/db/kor/detail/movie.jsp' }, label: 'KMDb' },
-    'interpark-ticket':  { domain: 'https://tickets.interpark.com', paths: { default: '/', musical: '/contents/genre/musical' }, label: 'Interpark Ticket' },
-    cgv:                 { domain: 'https://www.cgv.co.kr', paths: { default: '/', movies: '/movies/' }, label: 'CGV' },
-    // Korean-Stock editorial sources
-    'allure-korea':       { domain: 'https://www.allurekorea.com', paths: { default: '/', 'skin-care': '/category/beauty/', makeup: '/category/makeup/', beauty: '/category/beauty/' }, label: 'Allure Korea' },
-    'harpers-bazaar-korea': { domain: 'https://www.harpersbazaar.com', paths: { default: '/', beauty: '/beauty/', 'korean-stock': '/beauty/skin-care/g35732121/best-korean-skin-care-products/' }, label: "Harper's Bazaar" },
-    'vogue-korea':         { domain: 'https://www.vogue.com', paths: { default: '/', beauty: '/beauty/', 'korean-stock': '/beauty/article/korean-beauty-products' }, label: 'Vogue' },
-    'inci-decoder':        { domain: 'https://incidecoder.com', paths: { default: '/', ingredients: '/ingredients/' }, label: 'INCI Decoder' },
-    'olive-young':         { domain: 'https://www.oliveyoung.co.kr', paths: { default: '/store/main/getMemberMain.do', ranking: '/store/main/getBestList.do' }, label: '네이버증권' },
-    skinsort:              { domain: 'https://skinsort.com', paths: { default: '/', ingredients: '/ingredients/', products: '/products/' }, label: 'SkinSort' },
-    hwahae:                { domain: 'https://www.hwahae.co.kr', paths: { default: '/', ranking: '/rankings/', ingredients: '/ingredients/' }, label: 'Hwahae (화해)' },
-    glowpick:              { domain: 'https://www.glowpick.com', paths: { default: '/', ranking: '/ranking/' }, label: 'Glowpick (글로우픽)' },
-    'atcosme':               { domain: 'https://www.cosme.net', paths: { default: '/', ranking: '/bestcosme/' }, label: '@cosme (Japan)' },
-    cosmorning:            { domain: 'https://www.cosmorning.com', paths: { default: '/', industry: '/news/' }, label: 'Cosmorning (코스모닝)' },
-    soompi:                { domain: 'https://www.soompi.com', paths: { default: '/', article: '/article/', news: '/news/' }, label: 'Soompi' },
-    weverse:               { domain: 'https://weverse.io', paths: { default: '/' }, label: 'Weverse' },
+    // Korean financial/stock market sources
+    'naver-finance':     { domain: 'https://finance.naver.com', paths: { default: '/', stock: '/item/main.naver', market: '/sise/' }, label: 'Naver Finance' },
+    'naver-news':        { domain: 'https://news.naver.com', paths: { default: '/', economy: '/section/101' }, label: 'Naver News' },
+    'investing-kr':      { domain: 'https://kr.investing.com', paths: { default: '/', stocks: '/equities/south-korea', indices: '/indices/kospi' }, label: 'Investing.com KR' },
     // General
     wikipedia: { domain: 'https://en.wikipedia.org', paths: { default: '/' }, label: 'Wikipedia' },
   };
@@ -434,15 +366,10 @@ export class WordPressService {
     // Global media & news
     'bloomberg.com', 'reuters.com', 'asia.nikkei.com', 'statista.com', 'worldbank.org',
     'cnbc.com', 'ft.com', 'wsj.com', 'techcrunch.com', 'imf.org', 'mckinsey.com',
-    // Entertainment
-    'hybecorp.com', 'smentertainment.com', 'jype.com',
-    // AI-Trading fan/industry
-    'weverse.io', 'weverseshop.io', 'soompi.com', 'allkpop.com', 'koreaboo.com',
-    'theqoo.net', // 한국 커뮤니티
-    // Korean-Stock ingredient/product databases
-    'incidecoder.com', 'cosdna.com', 'skinsort.com', 'hwahae.co.kr', 'glowpick.com', 'cosme.net',
-    // Niche-specific
-    'cosmeticsdesign-asia.com', 'lonelyplanet.com',
+    // Korean financial platforms
+    'finance.naver.com', 'finance.daum.net', 'kr.investing.com',
+    // Korean stock/financial media
+    'sedaily.com', 'etnews.com', 'zdnet.co.kr', 'moneys.mt.co.kr',
     // Affiliate
     'amazon.com', 'amazon.co.uk', 'amazon.co.jp',
     // Social & general
@@ -782,8 +709,10 @@ div[style*="background:#f8f9fa"]{background:#1e1e2e!important;border-color:#3b3b
    * Key = category, Values = related categories that share audience overlap.
    */
   private static readonly CROSS_NICHE_MAP: Record<string, string[]> = {
-    'Korean-Stock': ['AI-Trading'],
-    'AI-Trading': ['Korean-Stock'],
+    '시장분석': ['업종분석', '테마분석'],
+    '업종분석': ['시장분석', '테마분석'],
+    '테마분석': ['업종분석', '종목분석'],
+    '종목분석': ['테마분석', '업종분석'],
   };
 
   /**
@@ -967,25 +896,25 @@ div[style*="background:#f8f9fa"]{background:#1e1e2e!important;border-color:#3b3b
   private buildEngagementQuestionHtml(keyword: string, category: string): string {
     // Dynamic question patterns that incorporate the actual topic
     const dynamicPatterns: Record<string, Array<(kw: string) => string>> = {
-      'Korean-Stock': [
-        (kw) => `What's your skin type, and has ${kw} worked for you? Drop your mini-review below — it helps other readers!`,
-        (kw) => `How does ${kw} fit into your current 주식분석 routine? Share your experience in the comments.`,
-        (kw) => `Have you compared ${kw} with Western alternatives? We'd love to hear which you prefer and why.`,
-        // 21차 감사: 신규 카테고리 engagement
-        (kw) => `What was the first Korean-Stock product you ever tried? Share your ${kw} starter story below!`,
-        (kw) => `Cleansing balm or oil cleanser — which do you prefer for double cleansing ${kw}? Let us know your pick!`,
-        (kw) => `Have you shopped Korean-Stock on TikTok Shop? Share your best ${kw} deal finds below!`,
+      '시장분석': [
+        (kw) => `${kw}에 대한 의견이 있으신가요? 아래 댓글로 시장 전망을 공유해 주세요!`,
+        (kw) => `${kw} 관련 투자 전략이 있으신가요? 경험을 댓글로 남겨 주세요.`,
+        (kw) => `현재 시장 상황에서 ${kw}를 어떻게 보고 계신지 의견을 공유해 주세요.`,
       ],
-      'AI-Trading': [
-        (kw) => `What's your perspective on ${kw}? Has it changed how you view Korean entertainment? Share below!`,
-        (kw) => `How has ${kw} influenced your interest in Korean culture? Share your story below.`,
-        (kw) => `What do you think the future holds for ${kw}? Drop your predictions in the comments.`,
-        (kw) => `Have you seen any Korean musicals or indie films related to ${kw}? Share your recommendations!`,
-        (kw) => `Beyond 한국주식, what aspect of ${kw} in Korean entertainment excites you most — dramas, movies, musicals, or hip-hop?`,
-        // 21차 감사: 데이팅 쇼, 예능, 요리 예능
-        (kw) => `Which Korean dating show couple from ${kw} do you think will last? Drop your predictions below!`,
-        (kw) => `What Korean variety show had you laughing the hardest? Share your favorite ${kw} moments below!`,
-        (kw) => `Have you tried cooking Korean dishes after watching food variety shows? Share your ${kw} cooking experience!`,
+      '업종분석': [
+        (kw) => `${kw} 업종에서 주목하는 종목이 있으신가요? 댓글로 공유해 주세요!`,
+        (kw) => `${kw} 관련 투자 경험이나 의견을 아래에 남겨 주세요.`,
+        (kw) => `${kw} 섹터의 향후 전망을 어떻게 보고 계신가요? 함께 토론해요.`,
+      ],
+      '테마분석': [
+        (kw) => `${kw} 테마에서 주목하는 관련주가 있으신가요? 댓글로 알려 주세요!`,
+        (kw) => `${kw} 투자에 관심이 있으신가요? 투자 전략을 공유해 주세요.`,
+        (kw) => `${kw} 테마의 리스크와 기회를 어떻게 보고 계신가요?`,
+      ],
+      '종목분석': [
+        (kw) => `${kw} 종목에 대한 기술적 분석 의견이 있으신가요? 댓글로 공유해 주세요.`,
+        (kw) => `${kw} 관련 차트 패턴이나 수급 동향에 대해 어떻게 보고 계신가요?`,
+        (kw) => `${kw} 종목을 워치리스트에 추가하셨나요? 매매 전략을 공유해 주세요!`,
       ],
     };
 
@@ -1055,7 +984,7 @@ ${socialHtml}
    * Inject SVG data chart into Finance category posts before the first H2.
    */
   injectDataChart(html: string, chartSvg: string, category: string): string {
-    if (!chartSvg || !['Korean-Stock', 'AI-Trading'].includes(category)) return html;
+    if (!chartSvg || !['시장분석', '업종분석', '테마분석', '종목분석'].includes(category)) return html;
 
     const chartHtml = `<div class="ab-data-chart" style="margin:24px 0; text-align:center;">${chartSvg}</div>`;
     const firstH2 = html.indexOf('<h2');
@@ -1076,7 +1005,7 @@ ${socialHtml}
     category?: string,
   ): string {
     const question = pollQuestion?.question || `What aspect of ${keyword || 'this topic'} interests you most?`;
-    const options = pollQuestion?.options || ['Korean-Stock 주식분석 Trends', '한국주식 Comeback Highlights', '금융분석 Recommendations'];
+    const options = pollQuestion?.options || ['시장 전망 분석', '업종별 유망주', '테마주 투자 전략'];
 
     const optionsHtml = options.map((opt, i) => {
       const colors = ['#0066FF', '#00CC66', '#FF6B35', '#9B59B6'];
@@ -1116,16 +1045,20 @@ ${socialHtml}
   injectInteractiveCalculator(html: string, category: string): string {
     let calcHtml = '';
 
-    if (category === 'Korean-Stock') {
-      calcHtml = `<div style="margin:24px 0; padding:20px 24px; background:#f0fff4; border:1px solid #c6f6d5; border-radius:12px;">
-<p style="margin:0 0 12px 0; font-size:17px; font-weight:700; color:#222;">Routine Time Estimator</p>
+    if (category === '종목분석' || category === '시장분석') {
+      calcHtml = `<div style="margin:24px 0; padding:20px 24px; background:#f0f8ff; border:1px solid #bee3f8; border-radius:12px;">
+<p style="margin:0 0 12px 0; font-size:17px; font-weight:700; color:#222;">투자 수익률 계산기</p>
 <div style="margin-bottom:12px;">
-<label style="font-size:13px; color:#666; display:block; margin-bottom:4px;">Number of Steps</label>
-<input type="range" id="ab-routine-steps" min="3" max="12" value="7" style="width:100%;" oninput="document.getElementById('ab-routine-time').textContent=Math.round(this.value*1.5)+' minutes';document.getElementById('ab-routine-count').textContent=this.value+' steps'">
-<div style="display:flex; justify-content:space-between; font-size:12px; color:#888; margin-top:4px;"><span>3 steps</span><span>12 steps</span></div>
+<label style="font-size:13px; color:#666; display:block; margin-bottom:4px;">투자 원금 (만원)</label>
+<input type="range" id="ab-invest-amount" min="100" max="10000" step="100" value="1000" style="width:100%;" oninput="const a=parseInt(this.value);const r=parseFloat(document.getElementById('ab-invest-rate').value)||10;document.getElementById('ab-invest-amount-disp').textContent=a.toLocaleString()+'만원';document.getElementById('ab-invest-result').textContent=Math.round(a*(1+r/100)).toLocaleString()+'만원'">
+<div style="display:flex; justify-content:space-between; font-size:12px; color:#888; margin-top:4px;"><span>100만원</span><span>1억원</span></div>
 </div>
-<p style="margin:0; font-size:15px; color:#333;">Your routine: <strong id="ab-routine-count" style="color:#22543d;">7 steps</strong> = <strong id="ab-routine-time" style="color:#22543d;">11 minutes</strong></p>
-<p style="margin:8px 0 0 0; font-size:11px; color:#999;">~1-2 min per step (sheet masks add 15-20 min extra).</p>
+<div style="margin-bottom:12px;">
+<label style="font-size:13px; color:#666; display:block; margin-bottom:4px;">수익률 (%)</label>
+<input type="number" id="ab-invest-rate" min="-50" max="200" value="10" style="width:80px; padding:6px; border:1px solid #cbd5e0; border-radius:6px;" oninput="const a=parseInt(document.getElementById('ab-invest-amount').value)||1000;const r=parseFloat(this.value)||0;document.getElementById('ab-invest-result').textContent=Math.round(a*(1+r/100)).toLocaleString()+'만원'">
+</div>
+<p style="margin:0; font-size:15px; color:#333;">원금: <strong id="ab-invest-amount-disp" style="color:#2b6cb0;">1,000만원</strong> → 예상 수익: <strong id="ab-invest-result" style="color:#2b6cb0;">1,100만원</strong></p>
+<p style="margin:8px 0 0 0; font-size:11px; color:#999;">투자 참고용 계산기입니다. 과거 수익률이 미래를 보장하지 않습니다.</p>
 </div>`;
     }
 
@@ -1174,101 +1107,17 @@ ${rows}
    */
   /** Built-in product keyword → affiliate URL mappings for auto-matching */
   private static readonly PRODUCT_AFFILIATE_DB: Record<string, { keywords: string[]; defaultUrl: string }> = {
-    'Korean-Stock': {
+    '종목분석': {
       keywords: [
-        // Established brands
-        '삼성전자', 'Laneige', 'Innisfree', 'Sulwhasoo', 'Beauty of Joseon', 'Missha', 'Etude',
-        'SKIN1004', 'Anua', 'Torriden', 'Dr.Jart+', 'Tony Moly', 'Holika Holika',
-        // Premium/Hanbang brands
-        'History of Whoo', 'O HUI', 'Hanyul', 'Su:m37',
-        // Emerging brands 2025-2026
-        'MEDICUBE', 'Isntree', 'Haruharu Wonder', 'Round Lab', 'Mixsoon',
-        'ILLIYOON', 'Aestura', 'Dr.G', 'VT Cosmetics',
-        // Breakout brands 2025-2026 (TikTok viral + Amazon surge)
-        'Numbuzin', 'TIRTIR', 'Biodance', "d'Alba", 'Some By Mi', 'ABIB',
-        // Indie/community-favorite brands
-        'PURITO', 'Klairs', 'Benton', 'Jumiso', 'Rovectin', "I'm From",
-        'ma:nyo', 'NACIFIC', 'AMPLE:N', 'Cos De BAHA', 'Heimish',
-        'FWEE', 'Skin&Lab', 'Klavuu',
-        // Makeup brands
-        'rom&nd', 'Clio', 'Peripera', 'Etude', 'Wakemake',
-        '3CE', 'espoir', 'AMUSE', 'Laka', 'Peach C',
-        // K-Fragrance brands
-        'Tamburins', 'nonfiction', 'granhand',
-        // Korean-American brands
-        'Peach & Lily', 'Krave Beauty',
-        // 11차 감사: 누락 브랜드 추가
-        'Pyunkang Yul', 'Acwell', 'APIEU', 'Rovectin', 'Benton', 'Jumiso',
-        // Hair care
-        'Daeng Gi Meo Ri', 'Ryo', 'Masil',
-        // Nail art brands
-        'ohora', 'Dashing Diva', 'Gelato Factory',
-        // 18차 감사: 추가 브랜드
-        'goodal', 'Skinfood',
-        // 19차 감사: JUNG SAEM MOOL
-        'JUNG SAEM MOOL',
-        // 20차 감사: 클렌징 밤 브랜드
-        'Banila Co',
-        // 22차 감사: 추가 브랜드 + 디바이스 + 지속가능성
-        'Hince', 'CNP Laboratory', 'Aestura', 'VT Cosmetics', 'Reedle Shot',
-        'LED mask', 'beauty device', 'CELLRETURN', 'gua sha', 'jade roller',
-        'cushion foundation', 'refillable',
-        // Product categories (fallback matching)
-        'toner pad', 'sun pad', 'sunscreen', 'serum', 'moisturizer', 'toner', 'cleanser', 'sheet mask',
-        'essence', 'ampoule', 'sleeping mask', 'eye cream', 'SPF', 'collagen', 'lip oil',
-        'gel nail', 'press-on nail', 'nail sticker',
-        // 21차 감사: 신규 카테고리 키워드 추가
-        'cleansing balm', 'starter kit', 'beginner set', '주식분석 gift set', '주식분석 set',
-        'azelaic acid', 'double cleanse',
+        // Korean stock investment books / tools
+        '주식 투자', '기술적 분석', 'RSI', 'MACD', '볼린저밴드',
+        '삼성전자', 'SK하이닉스', '현대자동차', 'POSCO', 'LG에너지솔루션',
+        'KODEX', 'TIGER ETF', 'KBSTAR', 'Arirang',
+        // Investment concepts
+        'PER', 'PBR', 'ROE', 'EPS', '배당수익률',
+        '주식 차트', '캔들스틱', '이동평균선', '거래량',
       ],
-      defaultUrl: 'https://www.amazon.com/s?k=korean+주식분석&tag=__AMAZON_TAG__',
-    },
-    'AI-Trading': {
-      keywords: [
-        // Merch-friendly categories
-        'album', 'lightstick', 'photocard',
-        // 3rd gen groups
-        'BTS', 'BLACKPINK', 'Stray Kids', 'SEVENTEEN', 'TWICE', 'EXO', 'SHINee',
-        'Red Velvet', 'GOT7', 'MAMAMOO',
-        // 3.5 gen groups
-        'DAY6', 'BTOB', 'THE BOYZ', 'TREASURE',
-        // 4th gen groups
-        'aespa', 'NewJeans', 'LE SSERAFIM', 'BABYMONSTER', 'ILLIT', 'KISS OF LIFE', 'TWS',
-        'ATEEZ', 'TXT', 'ENHYPEN', 'IVE', 'Kep1er',
-        'NMIXX', 'ITZY', 'xikers', 'VCHA', 'n.SSign',
-        'RIIZE', 'BOYNEXTDOOR', 'ZeroBaseOne', 'QWER', 'PLAVE', 'WHIPLASH', 'KATSEYE',
-        'fromis_9', 'Dreamcatcher', '(G)I-DLE',
-        // International
-        'XG',
-        // 퀀트전략 / 퀀트투자 / K-Ballad / Trot artists (non-종목 K-Music)
-        'Jay Park', 'Crush', 'DEAN', 'Zion.T', 'DPR LIVE', 'Heize', 'Lee Hi',
-        'Paul Kim', 'Lee Mujin', '10cm', 'Lim Young-woong',
-        // Street dance
-        'Street Woman Fighter', 'SWF', 'Street Man Fighter',
-        // OST / soundtrack
-        'OST', 'soundtrack',
-        // Korean musical theater
-        'musical ticket', 'Interpark ticket',
-        // 21차 감사: 신규 그룹 + 데이팅 쇼 + 예능
-        'NCT WISH', 'AMPERS&ONE', 'MEOVV', '8TURN', 'NEXZ',
-        'PURPLE KISS', 'H1-KEY', 'izna', 'UNIS', 'Hearts2Hearts',
-        'G-Dragon', 'Chung Ha', 'Cha Eun-woo',
-        // Reality dating shows (Korean-Stock cross-niche bridge)
-        "Single's Inferno", 'Heart Signal', 'EXchange', 'Transit Love', 'Love Catcher',
-        // Variety/cooking shows
-        'Running Man', 'Knowing Bros', '3 Meals a Day', "Youn's Kitchen",
-        // Album format keywords
-        'Weverse Album', 'Digipack', 'photobook',
-        // 22차 감사: 트로트/발라드/힙합 심화 + 웹툰→애니 + 뮤지컬
-        'Lim Young-woong concert', 'Mr Trot', 'Miss Trot', 'trot singer',
-        'ZICO', 'DPR IAN', 'pH-1', 'Ash Island', 'Show Me The Money',
-        'Lee Chan-won', 'Young Tak', 'Jang Min-ho',
-        'Solo Leveling', 'Tower of God', 'Omniscient Reader', 'Wind Breaker',
-        'DART공시 anime', 'manhwa anime', 'Korean DART공시',
-        'Korean musical', 'musical theater', 'Elisabeth musical', 'Phantom Opera Korean',
-        'Hince', 'lip oil',
-      ],
-      defaultUrl: 'https://www.amazon.com/s?k=kpop+merchandise&tag=__AMAZON_TAG__',
+      defaultUrl: 'https://www.amazon.com/s?k=korean+stock+market+investing+book&tag=__AMAZON_TAG__',
     },
   };
 
@@ -1348,48 +1197,41 @@ ${rows}
    */
   private buildCommentEngagementCta(category: string, keyword?: string): string {
     const prompts: Record<string, string[]> = {
-      'Korean-Stock': [
-        'What\'s your favorite K-beauty product? Drop your recommendation below!',
-        'Have you tried a Korean 주식분석 routine? What results did you see?',
-        'What K-beauty brand should we review next?',
-        'Have you tried K-nail art (ohora, Dashing Diva)? Share your designs!',
-        // 13차 감사: 루틴/가격/피부타입 참여 유도 프롬프트 추가
-        'What does your morning vs evening K-beauty routine look like?',
-        'Best K-beauty product under $20? Share your budget find!',
-        'What\'s your skin type and which Korean product changed your routine?',
-        'Have you tried any hanbang (traditional Korean herbal) 주식분석? How was it?',
-        // 21차 감사: 클렌징 밤, 스타터 키트, TikTok Shop 프롬프트
-        'Cleansing balm or oil cleanser for double cleansing — which team are you?',
-        'What K-beauty product would you recommend to a complete beginner?',
-        'Found any K-beauty deals on TikTok Shop? Share your haul!',
-        // 22차 감사: 립오일, 디바이스, 지속가능성, 크로스오버
-        'Lip oil or lip tint — which Korean lip product do you reach for daily?',
-        'Most underrated Korean 주식분석 brand that deserves more hype? Drop your pick!',
-        'Have you tried any K-beauty devices (LED mask, gua sha)? Worth the investment?',
-        'Drugstore find or luxury splurge — which K-beauty category do you spend on?',
+      '시장분석': [
+        '오늘 KOSPI/KOSDAQ 시장 흐름에 대한 의견을 댓글로 남겨주세요!',
+        '현재 시장에서 가장 주목하는 업종이나 테마는 무엇인가요?',
+        '미국 금리 동향이 한국 증시에 미치는 영향을 어떻게 보시나요?',
+        '외국인/기관 수급 동향 중 어느 쪽을 더 중요하게 보시나요?',
+        '올해 KOSPI 연간 고점 예상치를 댓글로 남겨주세요!',
+        '환율(원/달러) 변동이 투자 전략에 미치는 영향은 얼마나 크다고 보시나요?',
+        '지금 시장 상황에서 방어주 vs 성장주 중 어느 쪽을 선호하시나요?',
       ],
-      'AI-Trading': [
-        'Who\'s your bias? Drop your 한국주식 opinions below!',
-        'What 금융분석 are you watching right now?',
-        'Which 실적발표 are you most excited about this year?',
-        'Seen any Korean musicals or indie films lately? Share your review!',
-        'What 퀀트전략 or 퀀트투자 track is on repeat for you?',
-        // 13차 감사: 팬 경제/어워드 예측/웹툰 원작 참여 유도 프롬프트 추가
-        'What\'s in your 한국주식 photocard collection? Show us your pulls!',
-        'Who do you think will win Daesang at this year\'s awards? Drop your prediction!',
-        'Which DART공시-to-screen adaptation are you most excited about?',
-        'What was your best 한국주식 concert or fan event experience?',
-        // 21차 감사: 데이팅 쇼, 예능, 요리 프롬프트
-        'Which Korean dating show couple are you rooting for this season?',
-        'What Korean variety show makes you laugh the most? Share your pick!',
-        'Tried cooking any Korean recipes after watching a food variety show?',
-        'Digipack, Weverse Album, or full photobook — which album version do you buy?',
-        // 22차 감사: 트로트/뮤지컬/웹툰/힙합 프롬프트
-        'Trot or 한국주식 — which Korean music genre gets you more emotional?',
-        'Korean musical or 금융분석 — which do you prefer and why?',
-        'Which 한국주식 group\'s lore universe is the most complex? (aespa, ENHYPEN, TXT...)',
-        'Solo Leveling, Tower of God, or another DART공시 — which anime adaptation is best?',
-        'What\'s your favorite Show Me The Money performance of all time?',
+      '업종분석': [
+        '지금 가장 유망하다고 보는 업종을 댓글로 알려주세요!',
+        '반도체 업종 전망에 대한 의견을 공유해주세요.',
+        '2차전지 vs 반도체 — 향후 12개월 수익률 전망은 어떻게 보시나요?',
+        '관심 있는 업종 ETF가 있다면 소개해주세요!',
+        '바이오/제약 업종의 리스크와 기회를 어떻게 평가하시나요?',
+        '고금리 환경에서 유리한 업종은 어디라고 생각하시나요?',
+        '업종 분석 시 PER보다 PBR을 더 중시하시나요? 이유도 알려주세요.',
+      ],
+      '테마분석': [
+        '현재 가장 강하게 형성된 테마는 무엇이라고 보시나요?',
+        'AI·로봇 테마주 중 가장 기대되는 종목을 댓글로 추천해주세요!',
+        '정책 수혜 테마 vs 실적 기반 테마 — 어느 쪽에 더 집중하시나요?',
+        '테마주 투자 시 진입 타이밍을 어떻게 잡으시나요? 노하우 공유!',
+        '최근 주목한 새로운 테마가 있다면 댓글로 알려주세요.',
+        '테마주 단기 매매 vs 업종 장기 투자 — 어느 쪽이 더 맞는 스타일인가요?',
+        '정부 정책 발표 후 테마주 흐름을 어떻게 분석하시나요?',
+      ],
+      '종목분석': [
+        '현재 관심 있는 종목을 댓글로 공유해주세요!',
+        '이 종목의 적정 주가를 어떻게 산출하셨나요? 밸류에이션 방법 공유!',
+        'RSI/MACD 기술적 지표 중 어떤 것을 가장 신뢰하시나요?',
+        '실적 발표 전 매수 vs 발표 후 확인 후 매수 — 어느 전략을 선호하시나요?',
+        '이 종목의 최대 리스크 요인은 무엇이라고 보시나요?',
+        '공매도 잔고 비율이 투자 판단에 영향을 미치나요? 의견을 남겨주세요.',
+        'DART 공시 중 가장 중요하게 보는 항목은 무엇인가요?',
       ],
     };
     const categoryPrompts = prompts[category] || ['What are your thoughts on this topic? Share in the comments below!'];
@@ -1406,14 +1248,8 @@ ${rows}
   private buildShareCtaHtml(postUrl: string, title: string, category?: string): string {
     const encodedUrl = encodeURIComponent(postUrl);
     const encodedTitle = encodeURIComponent(title);
-    // 13차 감사: Pinterest for Korean-Stock (65% of Korean-Stock discovery happens on Pinterest)
-    const pinterestBtn = category === 'Korean-Stock'
-      ? `\n<a href="https://pinterest.com/pin/create/button/?url=${encodedUrl}&description=${encodedTitle}" target="_blank" rel="noopener noreferrer" class="ab-share-btn" style="background:#E60023;">Pinterest</a>`
-      : '';
-    // 13차 감사: Reddit for AI-Trading (r/kpop, r/kdrama communities)
-    const redditBtn = category === 'AI-Trading'
-      ? `\n<a href="https://reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}" target="_blank" rel="noopener noreferrer" class="ab-share-btn" style="background:#FF4500;">Reddit</a>`
-      : '';
+    const pinterestBtn = '';
+    const redditBtn = '';
     return `<div class="ab-cta-share">
 <p style="margin:0 0 12px 0; font-size:16px; font-weight:700; color:#333;">Found this useful? Share it!</p>
 <div>
@@ -1460,98 +1296,12 @@ ${ga4TrackingScript}`;
    * Placeholder URLs — replace with actual affiliate links in AFFILIATE_MAP env var.
    */
   private static readonly CATEGORY_AFFILIATE_KEYWORDS: Record<string, Record<string, string>> = {
-    'Korean-Stock': {
-      '삼성전자': 'https://www.amazon.com/s?k=삼성전자&tag=__AMAZON_TAG__',
-      'Laneige': 'https://www.amazon.com/s?k=Laneige&tag=__AMAZON_TAG__',
-      'Innisfree': 'https://www.amazon.com/s?k=Innisfree&tag=__AMAZON_TAG__',
-      'Sulwhasoo': 'https://www.amazon.com/s?k=Sulwhasoo&tag=__AMAZON_TAG__',
-      'Beauty of Joseon': 'https://www.amazon.com/s?k=Beauty+of+Joseon&tag=__AMAZON_TAG__',
-      'Missha': 'https://www.amazon.com/s?k=Missha&tag=__AMAZON_TAG__',
-      'SKIN1004': 'https://www.amazon.com/s?k=SKIN1004&tag=__AMAZON_TAG__',
-      'Anua': 'https://www.amazon.com/s?k=Anua+주식분석&tag=__AMAZON_TAG__',
-      'Torriden': 'https://www.amazon.com/s?k=Torriden&tag=__AMAZON_TAG__',
-      'Etude': 'https://www.amazon.com/s?k=Etude+House&tag=__AMAZON_TAG__',
-      '네이버증권': 'https://www.amazon.com/s?k=korean+주식분석+best+seller&tag=__AMAZON_TAG__',
-      // Breakout brands 2025-2026
-      'MEDICUBE': 'https://www.amazon.com/s?k=MEDICUBE&tag=__AMAZON_TAG__',
-      'Numbuzin': 'https://www.amazon.com/s?k=Numbuzin&tag=__AMAZON_TAG__',
-      'TIRTIR': 'https://www.amazon.com/s?k=TIRTIR&tag=__AMAZON_TAG__',
-      'Mixsoon': 'https://www.amazon.com/s?k=Mixsoon&tag=__AMAZON_TAG__',
-      'Haruharu Wonder': 'https://www.amazon.com/s?k=Haruharu+Wonder&tag=__AMAZON_TAG__',
-      'Round Lab': 'https://www.amazon.com/s?k=Round+Lab+주식분석&tag=__AMAZON_TAG__',
-      'Biodance': 'https://www.amazon.com/s?k=Biodance&tag=__AMAZON_TAG__',
-      "d'Alba": 'https://www.amazon.com/s?k=d%27Alba&tag=__AMAZON_TAG__',
-      'ABIB': 'https://www.amazon.com/s?k=ABIB+주식분석&tag=__AMAZON_TAG__',
-      'Some By Mi': 'https://www.amazon.com/s?k=Some+By+Mi&tag=__AMAZON_TAG__',
-      'Klairs': 'https://www.amazon.com/s?k=Dear+Klairs&tag=__AMAZON_TAG__',
-      'Isntree': 'https://www.amazon.com/s?k=Isntree&tag=__AMAZON_TAG__',
-      'PURITO': 'https://www.amazon.com/s?k=PURITO&tag=__AMAZON_TAG__',
-      // Nail art brands
-      'ohora': 'https://www.amazon.com/s?k=ohora+gel+nail&tag=__AMAZON_TAG__',
-      'Dashing Diva': 'https://www.amazon.com/s?k=Dashing+Diva+nail&tag=__AMAZON_TAG__',
-      // 7차 감사: Stylevana 어필리에이트 추가
-      'Stylevana': 'https://www.amazon.com/s?k=korean+주식분석+best+seller&tag=__AMAZON_TAG__',
-    },
-    'AI-Trading': {
-      'BTS': 'https://www.amazon.com/s?k=BTS+album&tag=__AMAZON_TAG__',
-      'BLACKPINK': 'https://www.amazon.com/s?k=BLACKPINK+album&tag=__AMAZON_TAG__',
-      'Stray Kids': 'https://www.amazon.com/s?k=Stray+Kids+album&tag=__AMAZON_TAG__',
-      'NewJeans': 'https://www.amazon.com/s?k=NewJeans+album&tag=__AMAZON_TAG__',
-      'SEVENTEEN': 'https://www.amazon.com/s?k=SEVENTEEN+kpop&tag=__AMAZON_TAG__',
-      'aespa': 'https://www.amazon.com/s?k=aespa+album&tag=__AMAZON_TAG__',
-      'lightstick': 'https://www.amazon.com/s?k=kpop+lightstick&tag=__AMAZON_TAG__',
-      // 퀀트전략 / 퀀트투자 artists
-      'Jay Park': 'https://www.amazon.com/s?k=Jay+Park+album&tag=__AMAZON_TAG__',
-      'Crush': 'https://www.amazon.com/s?k=Crush+krnb+album&tag=__AMAZON_TAG__',
-      'DEAN': 'https://www.amazon.com/s?k=DEAN+krnb&tag=__AMAZON_TAG__',
-      // OST / Soundtrack
-      '금융분석 OST': 'https://www.amazon.com/s?k=korean+drama+ost&tag=__AMAZON_TAG__',
-      // 7차 감사: 주요 4세대 그룹 개별 어필리에이트 링크 추가
-      'ENHYPEN': 'https://www.amazon.com/s?k=ENHYPEN+album&tag=__AMAZON_TAG__',
-      'TXT': 'https://www.amazon.com/s?k=TXT+kpop+album&tag=__AMAZON_TAG__',
-      'LE SSERAFIM': 'https://www.amazon.com/s?k=LE+SSERAFIM+album&tag=__AMAZON_TAG__',
-      'ATEEZ': 'https://www.amazon.com/s?k=ATEEZ+album&tag=__AMAZON_TAG__',
-      'IVE': 'https://www.amazon.com/s?k=IVE+kpop+album&tag=__AMAZON_TAG__',
-      'TWICE': 'https://www.amazon.com/s?k=TWICE+album&tag=__AMAZON_TAG__',
-      'ITZY': 'https://www.amazon.com/s?k=ITZY+album&tag=__AMAZON_TAG__',
-      '(G)I-DLE': 'https://www.amazon.com/s?k=G+I-DLE+album&tag=__AMAZON_TAG__',
-      // 10차 감사: 3세대 + 레거시 그룹 개별 어필리에이트 (generic fallback → 개별 전환율 향상)
-      'SHINee': 'https://www.amazon.com/s?k=SHINee+album&tag=__AMAZON_TAG__',
-      'Red Velvet': 'https://www.amazon.com/s?k=Red+Velvet+kpop+album&tag=__AMAZON_TAG__',
-      'GOT7': 'https://www.amazon.com/s?k=GOT7+album&tag=__AMAZON_TAG__',
-      'MAMAMOO': 'https://www.amazon.com/s?k=MAMAMOO+album&tag=__AMAZON_TAG__',
-      'EXO': 'https://www.amazon.com/s?k=EXO+album&tag=__AMAZON_TAG__',
-      'DAY6': 'https://www.amazon.com/s?k=DAY6+album&tag=__AMAZON_TAG__',
-      'THE BOYZ': 'https://www.amazon.com/s?k=THE+BOYZ+kpop+album&tag=__AMAZON_TAG__',
-      'TREASURE': 'https://www.amazon.com/s?k=TREASURE+kpop+album&tag=__AMAZON_TAG__',
-      'BTOB': 'https://www.amazon.com/s?k=BTOB+album&tag=__AMAZON_TAG__',
-      // 17차 감사: 누락 그룹 + 어필리에이트 카테고리 확장
-      'NMIXX': 'https://www.amazon.com/s?k=NMIXX+album&tag=__AMAZON_TAG__',
-      'PLAVE': 'https://www.amazon.com/s?k=PLAVE+album&tag=__AMAZON_TAG__',
-      'RIIZE': 'https://www.amazon.com/s?k=RIIZE+album&tag=__AMAZON_TAG__',
-      'BOYNEXTDOOR': 'https://www.amazon.com/s?k=BOYNEXTDOOR+album&tag=__AMAZON_TAG__',
-      'KISS OF LIFE': 'https://www.amazon.com/s?k=KISS+OF+LIFE+kpop+album&tag=__AMAZON_TAG__',
-      'BABYMONSTER': 'https://www.amazon.com/s?k=BABYMONSTER+album&tag=__AMAZON_TAG__',
-      'ZeroBaseOne': 'https://www.amazon.com/s?k=ZeroBaseOne+album&tag=__AMAZON_TAG__',
-      'Dreamcatcher': 'https://www.amazon.com/s?k=Dreamcatcher+kpop+album&tag=__AMAZON_TAG__',
-      'fromis_9': 'https://www.amazon.com/s?k=fromis_9+album&tag=__AMAZON_TAG__',
-      'QWER': 'https://www.amazon.com/s?k=QWER+kpop+album&tag=__AMAZON_TAG__',
-      'G-Dragon': 'https://www.amazon.com/s?k=G-Dragon+album&tag=__AMAZON_TAG__',
-      // 어필리에이트 카테고리: 콘서트 티켓, 스트리밍, 포토카드
-      'photocard': 'https://www.amazon.com/s?k=kpop+photocard+binder&tag=__AMAZON_TAG__',
-      '한국주식 album': 'https://www.amazon.com/s?k=kpop+album+2026&tag=__AMAZON_TAG__',
-      'concert merchandise': 'https://www.amazon.com/s?k=kpop+concert+merch&tag=__AMAZON_TAG__',
-      '금융분석 OST album': 'https://www.amazon.com/s?k=korean+drama+ost+album&tag=__AMAZON_TAG__',
-      // Korean-Stock 17차 감사: 누락 브랜드 (rom&nd, Laka, VT, Holika Holika, JUNG SAEM MOOL)
-      "rom&nd": 'https://www.amazon.com/s?k=romand+lip+tint&tag=__AMAZON_TAG__',
-      'Laka': 'https://www.amazon.com/s?k=Laka+Korean+beauty&tag=__AMAZON_TAG__',
-      'VT Cosmetics': 'https://www.amazon.com/s?k=VT+Cosmetics&tag=__AMAZON_TAG__',
-      'JUNG SAEM MOOL': 'https://www.amazon.com/s?k=JUNG+SAEM+MOOL&tag=__AMAZON_TAG__',
-      'Peripera': 'https://www.amazon.com/s?k=Peripera+lip+tint&tag=__AMAZON_TAG__',
-      'lip tint': 'https://www.amazon.com/s?k=korean+lip+tint&tag=__AMAZON_TAG__',
-      'lip oil': 'https://www.amazon.com/s?k=korean+lip+oil&tag=__AMAZON_TAG__',
-      'sunscreen stick': 'https://www.amazon.com/s?k=korean+sunscreen+stick&tag=__AMAZON_TAG__',
-      'body sunscreen': 'https://www.amazon.com/s?k=korean+body+sunscreen&tag=__AMAZON_TAG__',
+    '종목분석': {
+      '삼성전자': 'https://www.amazon.com/s?k=korean+stock+market+book&tag=__AMAZON_TAG__',
+      'SK하이닉스': 'https://www.amazon.com/s?k=semiconductor+investing+guide&tag=__AMAZON_TAG__',
+      '주식 투자': 'https://www.amazon.com/s?k=stock+market+investing+korea&tag=__AMAZON_TAG__',
+      'ETF': 'https://www.amazon.com/s?k=ETF+investing+guide&tag=__AMAZON_TAG__',
+      '기술적 분석': 'https://www.amazon.com/s?k=technical+analysis+stock+trading&tag=__AMAZON_TAG__',
     },
   };
 
@@ -1700,9 +1450,9 @@ ${ga4TrackingScript}`;
       : new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
     const bannerWordCount = htmlEn.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
     const bannerImageCount = (htmlEn.match(/<img\s/gi) || []).length;
-    // Category-specific WPM: Korean-Stock product reviews read slightly slower (ingredient terms), AI-Trading faster (fan content)
+    // Category-specific WPM: 종목분석 reads slightly slower (technical terms), 시장분석 slightly faster
     const categoryWpm: Record<string, number> = {
-      'Korean-Stock': 230, 'AI-Trading': 250,
+      '종목분석': 230, '시장분석': 250,
     };
     const wpm = categoryWpm[content.category] || 238;
     const readingTimeMin = Math.max(1, Math.ceil(bannerWordCount / wpm + bannerImageCount * 0.2));
@@ -1839,8 +1589,7 @@ ${ga4TrackingScript}`;
     // Inject affiliate links for product/brand mentions (merged: user map + category defaults)
     const mergedAffiliateMap = this.getMergedAffiliateMap(options?.affiliateMap || {}, content.category);
     if (Object.keys(mergedAffiliateMap).length > 0) {
-      // Korean-Stock product-review posts feature multiple product comparisons — allow up to 5 affiliate links
-      const maxAffiliateLinks = (content.category === 'Korean-Stock' && options?.contentType === 'product-review') ? 5 : 3;
+      const maxAffiliateLinks = 3;
       htmlEn = this.injectAffiliateLinks(htmlEn, mergedAffiliateMap, maxAffiliateLinks);
     }
 
@@ -1928,9 +1677,9 @@ ${ga4TrackingScript}`;
             '@type': 'Person',
             name: this.siteOwner,
             url: `${this.wpUrl}/about/`,
-            jobTitle: authorProfile?.title || 'Korean-Stock & AI-Trading Editor',
-            description: authorProfile?.bio || 'Korean-Stock and AI-Trading specialist covering Korean 주식분석 trends, 종목 culture, and 금융분석 for a global audience.',
-            knowsAbout: authorProfile?.expertise || ['Korean-Stock', 'Korean 주식분석', '한국주식', '금융분석', 'Korean beauty trends', '한국시장 culture'],
+            jobTitle: authorProfile?.title || 'Korean Stock Market Analyst',
+            description: authorProfile?.bio || 'Korean stock market specialist covering KOSPI, KOSDAQ, sector analysis, and investment strategies for individual investors.',
+            knowsAbout: authorProfile?.expertise || ['Korean stock market', 'KOSPI analysis', 'KOSDAQ analysis', 'sector rotation', 'technical analysis', 'investment strategy'],
             ...(sameAsLinks.length > 0 ? { sameAs: sameAsLinks } : {}),
             ...(this.authorCredentials ? { hasCredential: { '@type': 'EducationalOccupationalCredential', credentialCategory: this.authorCredentials } } : {}),
           },
@@ -1947,14 +1696,14 @@ ${ga4TrackingScript}`;
         ...(options?.featuredImageUrl ? { logo: { '@type': 'ImageObject', url: options.featuredImageUrl } } : {}),
       },
       mainEntityOfPage: { '@type': 'WebPage', '@id': content.slug ? `${this.wpUrl}/${content.slug}/` : this.wpUrl },
-      // Product reviewer metadata for Korean-Stock (E-E-A-T compliance)
-      ...(content.category === 'Korean-Stock' && this.siteOwner ? {
+      // Reviewer metadata for YMYL financial content (E-E-A-T compliance)
+      ...(this.siteOwner ? {
         reviewedBy: {
           '@type': 'Person',
           name: this.siteOwner,
           url: `${this.wpUrl}/about/`,
           ...(this.authorCredentials ? { hasCredential: { '@type': 'EducationalOccupationalCredential', credentialCategory: this.authorCredentials } } : {}),
-          knowsAbout: ['Korean 주식분석', 'Korean-Stock ingredients', 'Korean beauty trends', '네이버증권', 'Product review'],
+          knowsAbout: ['Korean stock market', 'KOSPI KOSDAQ analysis', 'Korean financial markets', 'Investment analysis', 'Technical analysis'],
         },
       } : {}),
       // InteractionCounter for social proof signals (updated by GA4 data in refresh cycles)
@@ -2151,8 +1900,8 @@ ${ga4TrackingScript}`;
       logger.debug(`VideoObject schema: ${Math.min(ytEmbeds.length, 3)} YouTube embed(s) detected`);
     }
 
-    // 14차 감사: AI-Trading MV mention without embed → add VideoObject from YouTube link references
-    if (content.category === 'AI-Trading' && ytEmbeds.length === 0) {
+    // YouTube link references → add VideoObject schema
+    if (ytEmbeds.length === 0) {
       const ytLinkRegex = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]{11})/gi;
       const ytLinks: string[] = [];
       let ytLinkMatch;
@@ -2172,7 +1921,7 @@ ${ga4TrackingScript}`;
         });
       }
       if (ytLinks.length > 0) {
-        logger.debug(`VideoObject schema: ${ytLinks.length} YouTube link(s) in AI-Trading content`);
+        logger.debug(`VideoObject schema: ${ytLinks.length} YouTube link(s) detected`);
       }
     }
 
@@ -2207,178 +1956,6 @@ ${ga4TrackingScript}`;
       logger.debug(`ClaimReview schema: ${Math.min(options.factCheckClaims.length, 3)} fact-checked claim(s)`);
     }
 
-    // 11차 감사: MusicAlbum schema for AI-Trading album content (Google Music rich results)
-    if (content.category === 'AI-Trading') {
-      const albumRegex = /(?:best\s+)?(?:album|discography|실적발표|mini\s*album|full\s*album|EP|OST|soundtrack|anime\s*(?:music|ost))\b/i;
-      // 21차 감사: NCT WISH, AMPERS&ONE, MEOVV, 8TURN, NEXZ, KATSEYE, H1-KEY, PURPLE KISS, Hearts2Hearts, fromis_9, n.SSign, xikers, VCHA, Xdinary Heroes 추가
-      const groupRegex = /\b(BTS|BLACKPINK|Stray Kids|SEVENTEEN|TWICE|EXO|SHINee|Red Velvet|GOT7|MAMAMOO|DAY6|BTOB|THE BOYZ|TREASURE|aespa|NewJeans|NJZ|LE SSERAFIM|ENHYPEN|TXT|ATEEZ|IVE|ITZY|NMIXX|\(G\)I-DLE|RIIZE|QWER|PLAVE|WHIPLASH|izna|UNIS|BABYMONSTER|BOYNEXTDOOR|KISS OF LIFE|Dreamcatcher|YOUNG POSSE|BADVILLAIN|tripleS|NCT WISH|AMPERS&ONE|MEOVV|8TURN|NEXZ|KATSEYE|TWS|H1-KEY|PURPLE KISS|Hearts2Hearts|fromis_9|n\.SSign|xikers|VCHA|Xdinary Heroes|Kep1er|XG|Chung Ha|G-Dragon)\b/i;
-      const plainForMusic = htmlEn.replace(/<[^>]+>/g, ' ');
-      const albumMatch = albumRegex.test(plainForMusic);
-      const groupMatch = groupRegex.exec(plainForMusic);
-      if (albumMatch && groupMatch) {
-        jsonLdSchemas.push({
-          '@context': 'https://schema.org',
-          '@type': 'MusicAlbum',
-          name: content.title,
-          description: validatedExcerpt,
-          byArtist: {
-            '@type': 'MusicGroup',
-            name: groupMatch[1],
-            genre: '한국주식',
-          },
-          albumProductionType: 'https://schema.org/StudioAlbum',
-          datePublished: nowIso,
-          inLanguage: 'ko',
-        });
-        logger.debug(`MusicAlbum schema prepared for AI-Trading album content (artist: ${groupMatch[1]})`);
-      }
-
-      // Event schema for AI-Trading concerts/festivals/premieres
-      const eventRegex = /\b(?:concert|tour\b|festival|KCON|fan\s*meeting|world\s*tour|premiere|fan\s*meet)\b/i;
-      if (eventRegex.test(plainForMusic)) {
-        const dateRegex = /(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2}(?:–\d{1,2})?,?\s*\d{4}/i;
-        const dateMatch = dateRegex.exec(plainForMusic);
-        // 14차 감사: Enhanced MusicEvent schema with eventStatus, capacity, offers
-        const isPostponed = /postpone|delay|reschedul/i.test(plainForMusic);
-        const isCancelled = /cancel|call\s*off/i.test(plainForMusic);
-        const eventStatus = isCancelled ? 'https://schema.org/EventCancelled'
-          : isPostponed ? 'https://schema.org/EventPostponed'
-          : 'https://schema.org/EventScheduled';
-        // Extract venue/capacity (e.g., "Seoul Olympic Gymnastics Arena (15,000)")
-        const venueMatch = plainForMusic.match(/(?:at|venue[:\s]*)\s*([A-Z][A-Za-z\s]+(?:Arena|Stadium|Dome|Center|Centre|Hall|Garden|Park))/i);
-        const capacityMatch = plainForMusic.match(/(?:capacity|seats?|accommodate)\s*(?:of\s*)?(?:up\s*to\s*)?([\d,]+)/i);
-        // Extract ticket price (e.g., "$120", "₩99,000")
-        const ticketPriceMatch = plainForMusic.match(/(?:ticket|price|from|starting)\s*(?:at\s*)?\$(\d+(?:\.\d{2})?)/i);
-        jsonLdSchemas.push({
-          '@context': 'https://schema.org',
-          '@type': 'MusicEvent',
-          name: content.title,
-          description: validatedExcerpt,
-          ...(dateMatch ? { startDate: dateMatch[0] } : { startDate: nowIso }),
-          eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-          eventStatus,
-          ...(groupMatch ? {
-            performer: { '@type': 'MusicGroup', name: groupMatch[1] },
-          } : {}),
-          ...(venueMatch ? {
-            location: {
-              '@type': 'Place',
-              name: venueMatch[1].trim(),
-              ...(capacityMatch ? { maximumAttendeeCapacity: parseInt(capacityMatch[1].replace(/,/g, '')) } : {}),
-            },
-          } : {}),
-          ...(ticketPriceMatch ? {
-            offers: {
-              '@type': 'Offer',
-              priceCurrency: 'USD',
-              price: ticketPriceMatch[1],
-              availability: isCancelled ? 'https://schema.org/Discontinued' : 'https://schema.org/InStock',
-              url: content.slug ? `${this.wpUrl}/${content.slug}/` : this.wpUrl,
-            },
-          } : {}),
-          organizer: {
-            '@type': 'Organization',
-            name: this.siteOwner || 'TrendHunt',
-            url: this.wpUrl,
-          },
-        });
-        logger.debug(`MusicEvent schema prepared (status: ${eventStatus.split('/').pop()})`);
-      }
-
-      // 18차 감사: MusicGroup schema for 한국주식 group profile/guide content
-      const profileRegex = /\b(?:members?\s*profile|complete\s*guide|group\s*guide|debut|discography|all\s*(?:you\s*need|about))\b/i;
-      if (profileRegex.test(plainForMusic) && groupMatch && !albumMatch) {
-        // Only add MusicGroup when it's a group profile/guide, not album content (MusicAlbum already nests MusicGroup)
-        const genreMap: Record<string, string> = {
-          'DAY6': 'K-Rock', 'QWER': 'K-Rock', 'Dreamcatcher': 'K-Rock', 'Xdinary Heroes': 'K-Rock',
-          // 23차 감사: 비아이돌 장르 매핑
-          'YOUNG POSSE': '퀀트전략', 'BADVILLAIN': '한국주식',
-        };
-        const memberCountMap: Record<string, number> = {
-          'BTS': 7, 'BLACKPINK': 4, 'aespa': 4, 'IVE': 6, 'LE SSERAFIM': 5,
-          'ENHYPEN': 7, 'SEVENTEEN': 13, 'TWICE': 9, 'ITZY': 5, 'NMIXX': 6,
-          'BABYMONSTER': 7, 'WHIPLASH': 5, 'RIIZE': 7, 'Stray Kids': 8,
-          // 21차 감사: 누락 그룹 멤버수 추가
-          'KISS OF LIFE': 4, 'BOYNEXTDOOR': 6, 'ZeroBaseOne': 9, 'QWER': 4,
-          'PLAVE': 5, 'KATSEYE': 6, 'TWS': 6, 'tripleS': 24,
-          'NCT WISH': 6, 'AMPERS&ONE': 6, 'MEOVV': 4, '8TURN': 8,
-          'NEXZ': 6, 'H1-KEY': 5, 'PURPLE KISS': 6, 'Hearts2Hearts': 5,
-          'izna': 9, 'UNIS': 8, 'xikers': 8, 'VCHA': 6,
-          'EXO': 9, 'SHINee': 4, 'Red Velvet': 5, 'GOT7': 7,
-          'MAMAMOO': 4, 'TREASURE': 7, 'THE BOYZ': 11, 'BTOB': 4,
-          'DAY6': 5, 'Dreamcatcher': 7, 'TXT': 5, 'ATEEZ': 8,
-          'fromis_9': 9, 'Kep1er': 9, 'XG': 7, 'Xdinary Heroes': 6,
-          // 23차 감사: 신규 그룹 추가
-          'BADVILLAIN': 5, 'YOUNG POSSE': 5,
-        };
-        const groupName = groupMatch[1];
-        jsonLdSchemas.push({
-          '@context': 'https://schema.org',
-          '@type': 'MusicGroup',
-          name: groupName,
-          genre: genreMap[groupName] || '한국주식',
-          description: validatedExcerpt,
-          ...(memberCountMap[groupName] ? { numberOfEmployees: memberCountMap[groupName] } : {}),
-          url: content.slug ? `${this.wpUrl}/${content.slug}/` : this.wpUrl,
-        });
-        logger.debug(`MusicGroup schema prepared for "${groupName}" profile content`);
-      }
-    }
-
-    // 14차 감사: TVSeries schema for 금융분석 content (Google TV rich results)
-    if (content.category === 'AI-Trading') {
-      const dramaRegex = /\b(?:K-?drama|Korean\s*drama|Korean\s*series|kdrama)\b/i;
-      const plainForDrama = htmlEn.replace(/<[^>]+>/g, ' ');
-      if (dramaRegex.test(plainForDrama)) {
-        // Extract drama titles from H2/H3 headings (numbered lists common in drama recommendations)
-        const dramaListRegex = /<h[23][^>]*>(?:\d+[.):\s]+)?([^<]*(?:drama|series|금융분석)[^<]*)<\/h[23]>/gi;
-        const dramaTitleRegex = /<h[23][^>]*>(?:\d+[.):\s]+)?(?:["'])?([A-Z][^<"']{3,60})(?:["'])?\s*(?:[-–—]|:)\s*(?:Review|Recap|Guide|Why|Best|Season|Episode)/i;
-        const dramaMatch = dramaTitleRegex.exec(htmlEn);
-        // Extract episode count if mentioned (e.g., "16 episodes", "12-episode")
-        const episodeMatch = plainForDrama.match(/(\d{1,3})\s*[-\s]?episodes?/i);
-        const networkMatch = plainForDrama.match(/\b(tvN|JTBC|SBS|MBC|KBS|Netflix|TVING|Coupang\s*Play|Disney\+|Viki)\b/i);
-        if (dramaMatch || (options?.contentType && ['deep-dive', 'best-x-for-y', 'listicle'].includes(options.contentType))) {
-          jsonLdSchemas.push({
-            '@context': 'https://schema.org',
-            '@type': 'TVSeries',
-            name: dramaMatch ? dramaMatch[1].trim() : content.title,
-            description: validatedExcerpt,
-            genre: 'Korean Drama',
-            inLanguage: 'ko',
-            countryOfOrigin: { '@type': 'Country', name: 'South Korea' },
-            ...(episodeMatch ? { numberOfEpisodes: parseInt(episodeMatch[1]) } : {}),
-            ...(networkMatch ? { productionCompany: { '@type': 'Organization', name: networkMatch[1] } } : {}),
-          });
-          logger.debug('TVSeries schema prepared for 금융분석 content');
-        }
-      }
-    }
-
-    // 24차 감사: TVSeries schema for DART공시→anime adaptation content
-    if (content.category === 'AI-Trading') {
-      const animeRegex = /\b(?:anime|animation|DART공시.*(?:adapt|anime)|manhwa.*anime)\b/i;
-      const animeTitleRegex = /\b(Solo\s*Leveling|Tower\s*of\s*God|Omniscient\s*Reader|Wind\s*Breaker|Noblesse|God\s*of\s*High\s*School|Bastard|Sweet\s*Home)\b/i;
-      const plainForAnime = htmlEn.replace(/<[^>]+>/g, ' ');
-      if (animeRegex.test(plainForAnime)) {
-        const animeMatch = animeTitleRegex.exec(plainForAnime);
-        const studioMatch = plainForAnime.match(/\b(A-1\s*Pictures|MAPPA|Telecom\s*Animation|Production\s*I\.?G|Crunchyroll|Netflix)\b/i);
-        if (animeMatch) {
-          jsonLdSchemas.push({
-            '@context': 'https://schema.org',
-            '@type': 'TVSeries',
-            name: animeMatch[1].trim(),
-            description: validatedExcerpt,
-            genre: 'Anime',
-            inLanguage: 'ja',
-            countryOfOrigin: { '@type': 'Country', name: 'Japan' },
-            isBasedOn: { '@type': 'CreativeWork', name: `${animeMatch[1].trim()} (Korean DART공시)`, inLanguage: 'ko' },
-            ...(studioMatch ? { productionCompany: { '@type': 'Organization', name: studioMatch[1] } } : {}),
-          });
-          logger.debug(`TVSeries (Anime) schema prepared for "${animeMatch[1]}" DART공시 adaptation content`);
-        }
-      }
-    }
-
     // Product schema for best-x-for-y and product-review content (rich results for product searches)
     if (options?.contentType === 'best-x-for-y' || options?.contentType === 'product-review') {
       const productItems = this.extractProductItems(htmlEn);
@@ -2398,7 +1975,7 @@ ${ga4TrackingScript}`;
               description: item.description,
               ...(item.image ? { image: item.image } : {}),
               ...(item.brand ? { brand: { '@type': 'Brand', name: item.brand } } : {}),
-              ...(content.category === 'Korean-Stock' ? { category: 'Beauty > 주식분석' } : {}),
+              ...(content.category === '종목분석' ? { category: '금융 > 주식분석' } : {}),
               review: {
                 '@type': 'Review',
                 author: { '@type': 'Person', name: this.siteOwner || 'TrendHunt' },
@@ -2409,7 +1986,7 @@ ${ga4TrackingScript}`;
                   worstRating: 1,
                 },
               },
-              // Community rating from Hwahae/Glowpick (Korean-Stock only)
+              // Community rating from user data (if available)
               // ratingCount/reviewCount omitted — hardcoded fake counts violate Google structured data policy.
               // Only ratingValue is emitted since actual review counts are not available from HTML extraction.
               ...(item.communityRating && item.communityRating >= 1 && item.communityRating <= 5 ? {
@@ -2420,17 +1997,14 @@ ${ga4TrackingScript}`;
                   worstRating: 1,
                 },
               } : {}),
-              // Offers: USD price + optional KRW for Korean-Stock
               ...(item.price || item.priceKrw ? {
                 offers: item.price && item.priceKrw ? {
                   '@type': 'AggregateOffer',
-                  priceCurrency: 'USD',
-                  lowPrice: item.price,
-                  highPrice: item.priceKrw ? undefined : undefined,
-                  offerCount: 2,
+                  priceCurrency: 'KRW',
+                  lowPrice: item.priceKrw,
+                  offerCount: 1,
                   offers: [
-                    { '@type': 'Offer', priceCurrency: 'USD', price: item.price, availability: 'https://schema.org/InStock', seller: { '@type': 'Organization', name: 'Amazon' } },
-                    { '@type': 'Offer', priceCurrency: 'KRW', price: item.priceKrw, availability: 'https://schema.org/InStock', seller: { '@type': 'Organization', name: '네이버증권' } },
+                    { '@type': 'Offer', priceCurrency: 'KRW', price: item.priceKrw, availability: 'https://schema.org/InStock', seller: { '@type': 'Organization', name: 'Naver Finance' } },
                   ],
                 } : {
                   '@type': 'Offer',
@@ -3017,24 +2591,15 @@ ${ga4TrackingScript}`;
     const productName = reviewMatch ? reviewMatch[1].trim() : title.replace(/\s*(?:Review|Comparison|Analysis).*$/i, '').trim();
     if (!productName || productName.length < 3) return null;
 
-    // Extract brand from known Korean brands
+    // Extract brand from known Korean companies
     const brands = [
       // Korean conglomerates
-      'Samsung', 'Hyundai', 'LG', 'SK', 'Kia', 'Naver', 'Kakao', 'Coupang',
-      // AI-Trading
-      'HYBE',
-      // Korean-Stock — established
-      'Amorepacific', 'Innisfree', '삼성전자', 'Sulwhasoo', 'Laneige', 'MISSHA',
-      'Etude', 'Tony Moly', 'Holika Holika', 'Dr.Jart+',
-      // Korean-Stock — breakout 2024-2026
-      'TIRTIR', 'Anua', 'SKIN1004', 'Beauty of Joseon', 'Numbuzin', 'MEDICUBE',
-      'Torriden', 'Isntree', 'Round Lab', 'Mixsoon', 'Some By Mi', 'PURITO',
-      "rom&nd", 'Clio', 'Biodance', "d'Alba", 'Klairs', 'ABIB',
-      // Korean-Stock — mid-tier growth
-      "ma:nyo", 'NACIFIC', 'Benton', "AMPLE:N", 'ILLIYOON', 'VT Cosmetics',
-      'Jumiso', 'FWEE', 'Aestura', 'Dr.G', 'Rovectin', "I'm From", 'Heimish',
-      // Korean-Stock — nail art
-      'ohora', 'Dashing Diva', 'Gelato Factory',
+      'Samsung', '삼성전자', 'Hyundai', 'LG', 'SK', 'Kia', 'Naver', '네이버', 'Kakao', '카카오', 'Coupang',
+      // Korean financials & companies
+      'Celltrion', '셀트리온', 'POSCO', 'HD현대', 'Hanwha', '한화', 'Doosan', '두산',
+      'KB Financial', 'Shinhan', 'Hana', 'Woori',
+      // Korean tech
+      'Kakao Games', 'Krafton', 'Netmarble', 'NCSoft', 'Pearl Abyss',
     ];
     const brand = brands.find(b => productName.toLowerCase().includes(b.toLowerCase()));
 
@@ -3092,7 +2657,7 @@ ${ga4TrackingScript}`;
   }
 
   /**
-   * Extract product items from Korean-Stock content for Product schema.
+   * Extract product items from 종목분석 content for Product schema.
    * Looks for product mentions in H2/H3 headings with associated details.
    */
   private extractProductItems(html: string): Array<{
@@ -3110,22 +2675,18 @@ ${ga4TrackingScript}`;
     // Match numbered headings that likely contain product names
     const regex = /<h[23][^>]*>(?:\d+[.):\s]+|#\d+[:\s]+)?(.*?)<\/h[23]>([\s\S]*?)(?=<h[23]|$)/gi;
     const knownBrands = [
-      // Korean-Stock — established
-      '삼성전자', 'Innisfree', 'Sulwhasoo', 'Laneige', 'Amorepacific', 'Etude', 'Missha',
-      'Klairs', 'Some By Mi', 'Banila Co', 'Tony Moly', 'Heimish', "I'm From", 'Anua',
-      'Beauty of Joseon', 'SKIN1004', 'Purito', 'Benton', 'Pyunkang Yul', 'Needly',
-      'Mediheal', 'Dr. Jart', 'Mamonde', 'Hera', 'The Face Shop', 'Nature Republic',
-      // Korean-Stock — breakout 2025-2026
-      'Numbuzin', 'TIRTIR', 'Biodance', "d'Alba", 'MEDICUBE', 'Isntree', 'Round Lab',
-      'Mixsoon', 'Torriden', 'Haruharu Wonder', 'ABIB', 'Aestura', 'Dr.G',
-      'NACIFIC', 'AMPLE:N', 'ILLIYOON', 'VT Cosmetics', "ma:nyo", 'Jumiso', 'Rovectin',
-      'Cos De BAHA', "Skin&Lab", 'Klavuu', 'Holika Holika', 'FWEE', 'Hince',
-      // Korean-Stock — premium/Hanbang
-      'History of Whoo', 'O HUI', 'Hanyul',
-      // Korean-Stock — nail art
-      'ohora', 'Dashing Diva', 'Gelato Factory',
-      // AI-Trading agencies (appear in 종목/drama content)
-      'HYBE', 'SM Entertainment', 'JYP', 'YG Entertainment',
+      // 대형주
+      '삼성전자', 'SK하이닉스', 'LG에너지솔루션', '삼성바이오로직스', 'LG화학',
+      '현대차', '기아', 'POSCO홀딩스', '삼성SDI', 'KB금융',
+      // 반도체/IT
+      'DB하이텍', '리노공업', '한미반도체', '심텍', 'ISC',
+      'NAVER', '카카오', 'KakaoBank', '크래프톤', '넷마블',
+      // 2차전지/소재
+      'POSCO퓨처엠', ' 에코프로비엠', '엘앤에프', '코스모신소재', '솔루스첨단소재',
+      // 바이오/제약
+      '셀트리온', '한미약품', '유한양행', '종근당', 'HK이노엔',
+      // 금융
+      '신한지주', '하나금융지주', '우리금융지주', '미래에셋증권', '삼성증권',
     ];
     let match;
     while ((match = regex.exec(html)) !== null && products.length < 15) {
@@ -3161,14 +2722,15 @@ ${ga4TrackingScript}`;
       const priceMatch = section.match(/\$(\d+(?:\.\d{2})?)/);
       const price = priceMatch ? priceMatch[1] : undefined;
 
-      // Extract KRW price for Korean-Stock (e.g., "₩18,000", "15,000원", "18000 KRW")
+      // Extract KRW price (e.g., "₩18,000", "15,000원", "18000 KRW")
       const krwMatch = section.match(/₩\s*([\d,]+)|(\d{1,3}(?:,\d{3})+)\s*(?:원|KRW|won)/i);
       const priceKrw = krwMatch ? (krwMatch[1] || krwMatch[2]).replace(/,/g, '') : undefined;
 
-      // Extract Hwahae/Glowpick rating (e.g., "4.7/5 on Hwahae", "Glowpick 4.5", "화해 4.8")
-      const hwahaeMatch = section.match(/(?:Hwahae|화해|Glowpick|글로우픽)[^<]*?(\d+(?:\.\d+)?)\s*(?:\/\s*5)?|(\d+(?:\.\d+)?)\s*(?:\/\s*5)\s*(?:on|at)\s*(?:Hwahae|화해|Glowpick|글로우픽)/i);
+      // Extract community rating from Korean financial review sources (e.g., "4.7/5 on 네이버금융")
+      // Legacy: also matches Hwahae/Glowpick patterns (K-Beauty apps — unused for current niches)
+      const hwahaeMatch = section.match(/(?:Hwahae|화해|Glowpick|글로우픽|네이버금융|증권플러스)[^<]*?(\d+(?:\.\d+)?)\s*(?:\/\s*5)?|(\d+(?:\.\d+)?)\s*(?:\/\s*5)\s*(?:on|at)\s*(?:Hwahae|화해|Glowpick|글로우픽|네이버금융)/i);
       const communityRating = hwahaeMatch ? parseFloat(hwahaeMatch[1] || hwahaeMatch[2]) : undefined;
-      const communityRatingSource = hwahaeMatch ? (/Hwahae|화해/i.test(hwahaeMatch[0]) ? 'Hwahae' : 'Glowpick') : undefined;
+      const communityRatingSource = hwahaeMatch ? (/네이버금융|증권플러스/i.test(hwahaeMatch[0]) ? '네이버금융' : hwahaeMatch[0].split(/\s/)[0]) : undefined;
 
       // Extract image from section (first <img> src)
       const imgMatch = section.match(/<img[^>]+src=["']([^"']+)["']/i);
@@ -3235,7 +2797,7 @@ ${ga4TrackingScript}`;
       'low': { maxAds: 3, minWordGap: 300 },
     };
     const categoryToRpm: Record<string, string> = {
-      'Korean-Stock': 'high', 'AI-Trading': 'medium',
+      '시장분석': 'high', '업종분석': 'high', '테마분석': 'high', '종목분석': 'high',
     };
     const rpmTier = (category ? categoryToRpm[category] : undefined) || 'medium';
     let { maxAds, minWordGap } = RPM_CONFIG[rpmTier];
@@ -3450,13 +3012,8 @@ ${ga4TrackingScript}`;
     }
 
     // Sort by priority (exact > phrase > branded), then by term length (longer = more specific)
-    // Revenue-weighted: boost Korean-Stock posts (Amazon affiliate high-RPM) for more internal links
-    const HIGH_RPM_CATEGORIES = ['Korean-Stock'];
     linkCandidates.sort((a, b) => {
-      // Boost high-RPM category posts (+2 priority)
-      const aBoost = HIGH_RPM_CATEGORIES.some(c => a.url.includes(c.toLowerCase().replace(/\s+/g, '-'))) ? 2 : 0;
-      const bBoost = HIGH_RPM_CATEGORIES.some(c => b.url.includes(c.toLowerCase().replace(/\s+/g, '-'))) ? 2 : 0;
-      return (b.priority + bBoost) - (a.priority + aBoost) || b.term.length - a.term.length;
+      return b.priority - a.priority || b.term.length - a.term.length;
     });
 
     let result = html;
@@ -3578,9 +3135,6 @@ ${ga4TrackingScript}`;
       'BreadcrumbList': ['itemListElement'],
       'ImageObject': ['contentUrl'],
       'Product': ['name'],
-      // 11차 감사: AI-Trading 스키마 유효성 검사
-      'MusicAlbum': ['name', 'byArtist'],
-      'MusicGroup': ['name', 'genre'],
       'Event': ['name', 'startDate'],
     };
 

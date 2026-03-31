@@ -181,7 +181,7 @@ async function main() {
       const pinBody = {
         board_id: boardId,
         title: wpPost.title.substring(0, 100),
-        description: `${wpPost.excerpt}\n\nSave this pin for later! Click through for the full guide.\n\n#Korea #SouthKorea #KBeauty #Korean주식분석 #GlassSkin`.substring(0, 500),
+        description: `${wpPost.excerpt}\n\nSave this pin for later! Click through for the full guide.\n\n#Korea #한국주식 #KOSPI #시장분석 #KoreanStocks`.substring(0, 500),
         link: `${wpPost.link}?utm_source=pinterest&utm_medium=social&utm_campaign=test`,
         media_source: {
           source_type: 'image_url',
