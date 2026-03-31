@@ -1330,14 +1330,15 @@ ${rows}
     const escapedTitle = this.escapeHtml(title);
     const year = new Date().getFullYear();
     const siteName = this.siteOwner || 'TrendHunt';
-    const citation = `${escapedTitle}. ${siteName}, ${year}. Available at: ${postUrl}`;
+    const displayUrl = decodeURIComponent(postUrl);
+    const urlLink = `<a href="${postUrl}" style="color:#0066FF; text-decoration:none; word-break:break-all;">${displayUrl}</a>`;
 
     return `<details style="margin:24px 0; border:1px solid #e5e7eb; border-radius:8px; overflow:hidden;">
-<summary style="padding:12px 20px; font-weight:600; font-size:14px; color:#555; cursor:pointer; background:#f8f9fa; list-style:none;">Cite This Article</summary>
+<summary style="padding:12px 20px; font-weight:600; font-size:14px; color:#555; cursor:pointer; background:#f8f9fa; list-style:none;">이 글 인용하기</summary>
 <div style="padding:16px 20px;">
-<p style="margin:0 0 12px 0; font-size:13px; color:#666; line-height:1.6;"><strong>APA:</strong> ${escapedTitle}. (${year}). <em>${siteName}</em>. ${postUrl}</p>
-<p style="margin:0 0 12px 0; font-size:13px; color:#666; line-height:1.6;"><strong>Plain text:</strong> ${citation}</p>
-<p style="margin:0; font-size:12px; color:#999;">Copy and paste the citation above to reference this article in your work.</p>
+<p style="margin:0 0 12px 0; font-size:13px; color:#666; line-height:1.6;"><strong>APA:</strong> ${escapedTitle}. (${year}). <em>${siteName}</em>. ${urlLink}</p>
+<p style="margin:0 0 12px 0; font-size:13px; color:#666; line-height:1.6;"><strong>일반:</strong> ${escapedTitle}. ${siteName}, ${year}. ${urlLink}</p>
+<p style="margin:0; font-size:12px; color:#999;">위 인용을 복사하여 참고 문헌에 활용하세요.</p>
 </div></details>`;
   }
 
