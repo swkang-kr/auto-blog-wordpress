@@ -291,17 +291,31 @@ export class TradeEngineBridge {
       const supply = this.readJson<SupplyDemand>('supply_demand.json');
       if (supply) result.supplyDemand = supply;
 
-      // 워치리스트 (시그널 기반)
+      // 워치리스트 (시그널 기반) — 오늘 시그널이 있을 때만 사용
+      const todayStr = new Date().toISOString().slice(0, 10); // "2026-03-31"
       const watchlist = this.readJson<{ watchlist_all: WatchlistItem[]; by_niche: WatchlistByNiche }>('watchlist.json');
       if (watchlist) {
-        result.watchlistAll = watchlist.watchlist_all || [];
-        result.watchlistByNiche = watchlist.by_niche || null;
+        const hasTodaySignals = (watchlist.watchlist_all || []).some(
+          w => w.latest_at && w.latest_at.startsWith(todayStr)
+        );
+        if (hasTodaySignals) {
+          result.watchlistAll = watchlist.watchlist_all || [];
+          result.watchlistByNiche = watchlist.by_niche || null;
+        } else {
+          logger.info(`Watchlist skipped: no today's signals (latest: ${watchlist.watchlist_all?.[0]?.latest_at?.slice(0, 10) ?? 'none'})`);
+        }
       }
 
-      // 종목분석 (워치리스트 + 보유 종목)
+      // 종목분석 (워치리스트 + 보유 종목) — 오늘 시그널이 있을 때만 candidates 사용
       const aiPicks = this.readJson<{ candidates: AiPick[]; holdings: AiHolding[] }>('ai_picks.json');
       if (aiPicks) {
-        result.aiPicks = aiPicks.candidates || [];
+        const todayCandidates = (aiPicks.candidates || []).filter(
+          c => c.signal_time && c.signal_time.startsWith(todayStr)
+        );
+        if (todayCandidates.length < aiPicks.candidates?.length) {
+          logger.info(`ai_picks filtered: ${todayCandidates.length}/${aiPicks.candidates?.length ?? 0} today's candidates`);
+        }
+        result.aiPicks = todayCandidates;
         result.aiHoldings = aiPicks.holdings || [];
       }
 
