@@ -33,35 +33,36 @@ const CATEGORY_READABILITY_TARGETS: Record<string, [number, number]> = {
   'Korean-Stock': [55, 70],          // Consumer-friendly but some science
 };
 
-/** Per-category minimum quality scores — raised across the board for HCU compliance */
+/** Per-category minimum quality scores — raised for AdSense compliance */
 const CATEGORY_MIN_QUALITY: Record<string, number> = {
-  'AI-Trading': 60,
-  // Korean-Stock product-review/best-x-for-y = purchase-intent (YMYL-adjacent) → stricter bar
-  'Korean-Stock': 65,
+  'AI-Trading': 75,
+  // Korean-Stock = YMYL financial content → highest quality bar
+  'Korean-Stock': 78,
 };
 
-/** Content type-specific minimum word counts — lowered for information density over padding */
+/** Content type-specific minimum word counts — Korean stock YMYL requires substantial depth */
 const CONTENT_TYPE_MIN_WORDS: Record<string, number> = {
-  'deep-dive': 3000,
-  'analysis': 1800,
-  'case-study': 1800,
-  'how-to': 1600,
-  'product-review': 1600,
-  'best-x-for-y': 1500,
-  'x-vs-y': 1500,
-  'news-explainer': 1500,
-  'listicle': 1400,
+  'deep-dive': 3500,
+  'analysis': 2500,
+  'case-study': 2500,
+  'how-to': 2000,
+  'product-review': 2000,
+  'best-x-for-y': 2000,
+  'x-vs-y': 2000,
+  'news-explainer': 1800,
+  'listicle': 1800,
 };
 
 /** Per-category overrides for content type word counts (category → contentType → minWords) */
 const CATEGORY_CONTENT_TYPE_MIN_WORDS: Record<string, Record<string, number>> = {
   'AI-Trading': {
-    'news-explainer': 1200, // Fan 실적발표 news needs personality, not academic depth
-    'listicle': 1200,       // Fan listicles are snackable format
-    'analysis': 2000,       // 27차 감사: 팬 대상 분석 — 2500자 불필요, content-generator 오버라이드와 동기화
+    'news-explainer': 1800,
+    'listicle': 1800,
+    'analysis': 2500,
   },
   'Korean-Stock': {
-    'news-explainer': 1200, // 27차 감사: 바이럴 뷰티 뉴스는 핵심 전달 우선 (기존 content-generator와 동기화)
+    'analysis': 2500,
+    'deep-dive': 3500,
   },
 };
 

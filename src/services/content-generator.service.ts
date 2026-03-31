@@ -147,17 +147,17 @@ function getVariantDirectives(variant: LayoutVariant): string {
   }
 }
 
-/** Word count targets per content type — optimised for information density over padding (HCU-compliant) */
+/** Word count targets per content type — Korean stock market YMYL requires depth (AdSense-compliant) */
 const WORD_COUNT_TARGETS: Record<string, { min: number; target: number; continuation: number; rejection: number }> = {
-  'how-to':          { min: 1600, target: 2200, continuation: 1400, rejection: 1200 },
-  'best-x-for-y':   { min: 1500, target: 2200, continuation: 1300, rejection: 1100 },
-  'x-vs-y':         { min: 1500, target: 2200, continuation: 1300, rejection: 1100 },
-  'analysis':        { min: 1800, target: 2500, continuation: 1600, rejection: 1400 },
-  'deep-dive':       { min: 3000, target: 3500, continuation: 2500, rejection: 2200 },
-  'news-explainer':  { min: 1500, target: 1800, continuation: 1200, rejection: 1000 },
-  'listicle':        { min: 1400, target: 2000, continuation: 1200, rejection: 1000 },
-  'case-study':      { min: 1800, target: 2500, continuation: 1600, rejection: 1400 },
-  'product-review':  { min: 1600, target: 2200, continuation: 1400, rejection: 1200 },
+  'how-to':          { min: 2000, target: 2800, continuation: 1800, rejection: 1500 },
+  'best-x-for-y':   { min: 2000, target: 2800, continuation: 1800, rejection: 1500 },
+  'x-vs-y':         { min: 2000, target: 2800, continuation: 1800, rejection: 1500 },
+  'analysis':        { min: 2500, target: 3500, continuation: 2200, rejection: 1800 },
+  'deep-dive':       { min: 3500, target: 4500, continuation: 3000, rejection: 2500 },
+  'news-explainer':  { min: 1800, target: 2200, continuation: 1500, rejection: 1200 },
+  'listicle':        { min: 1800, target: 2500, continuation: 1500, rejection: 1200 },
+  'case-study':      { min: 2500, target: 3500, continuation: 2200, rejection: 1800 },
+  'product-review':  { min: 2000, target: 2800, continuation: 1800, rejection: 1500 },
 };
 
 /**
@@ -187,9 +187,9 @@ function getWordCountTargets(contentType: string, searchIntent?: string, nicheCa
     rejection: Math.round(base.rejection * multiplier),
   };
 
-  // news-explainer: 시의성 높은 뉴스 콘텐츠는 간결하게
+  // news-explainer: 시의성 높은 뉴스 콘텐츠 — 최소 깊이 유지
   if (contentType === 'news-explainer') {
-    result = { min: 1200, target: 1600, continuation: 1100, rejection: 950 };
+    result = { min: 1800, target: 2200, continuation: 1500, rejection: 1200 };
   }
 
   return result;
