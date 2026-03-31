@@ -1,6 +1,6 @@
 {
-  "exported_at": "2026-03-31T07:33:51.524840+00:00",
-  "total_stocks": 17,
+  "exported_at": "2026-03-31T07:36:15.371875+00:00",
+  "total_stocks": 19,
   "watchlist_all": [
     {
       "stock_code": "028050",
@@ -273,6 +273,40 @@
       "latest_reason": "공시: 주요사항보고서(자기주식취득신탁계약체결결정) | 감성점수: 0.68 | 거래량급증: True",
       "latest_price": 0,
       "latest_at": "2026-03-25T00:06:57.421874"
+    },
+    {
+      "stock_code": "054920",
+      "stock_name": "한컴위드",
+      "market": "KOSDAQ",
+      "sector": "비철금속",
+      "signal_count": 1,
+      "buy_count": 1,
+      "sell_count": 0,
+      "avg_confidence": 0.7,
+      "strategies": [
+        "swing"
+      ],
+      "latest_reason": "2일연속상승 | MACD골든크로스 | RSI반등",
+      "latest_price": 5050.0,
+      "latest_at": "2026-03-31T06:15:00",
+      "swing_score": 7.0
+    },
+    {
+      "stock_code": "004140",
+      "stock_name": "동방",
+      "market": "KOSPI",
+      "sector": "항공화물운송과물류",
+      "signal_count": 1,
+      "buy_count": 1,
+      "sell_count": 0,
+      "avg_confidence": 0.6,
+      "strategies": [
+        "swing"
+      ],
+      "latest_reason": "MACD골든크로스 | 거래량급증",
+      "latest_price": 2850.0,
+      "latest_at": "2026-03-31T06:15:00",
+      "swing_score": 6.0
     }
   ],
   "by_niche": {
