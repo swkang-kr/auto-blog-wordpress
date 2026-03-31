@@ -985,18 +985,28 @@ add_action('after_setup_theme', function() {
     register_nav_menus(['primary' => 'Primary Menu']);
 });
 
-// Rebuild menu only once per deploy (transient-guarded, runs on admin_init for reliability)
-add_action('admin_init', function() {
+// Rebuild menu (transient-guarded, runs on init for frontend+admin)
+add_action('init', function() {
     $menu_hash = md5(serialize([
 ${categoryItems}
     ]));
     $transient_key = 'trendhunt_nav_built_' . $menu_hash;
-    if (get_transient($transient_key)) return;
 
     $menu_name = 'TrendHunt Main';
     $menu_exists = wp_get_nav_menu_object($menu_name);
 
-    // Delete entire menu and recreate to prevent item accumulation
+    // Ensure menu is always assigned to primary location (fixes page-list fallback)
+    if ($menu_exists) {
+        $locations = get_theme_mod('nav_menu_locations', []);
+        if (empty($locations['primary']) || $locations['primary'] != $menu_exists->term_id) {
+            $locations['primary'] = $menu_exists->term_id;
+            set_theme_mod('nav_menu_locations', $locations);
+        }
+        // If already built with same hash, skip rebuild
+        if (get_transient($transient_key)) return;
+    }
+
+    // Delete and recreate to prevent item accumulation
     if ($menu_exists) {
         wp_delete_nav_menu($menu_exists->term_id);
     }
@@ -1058,7 +1068,6 @@ ${categoryItems}
     $locations['primary'] = $menu_id;
     set_theme_mod('nav_menu_locations', $locations);
 
-    // Mark as built — expires in 30 days (rebuild on next deploy or niche change)
     set_transient($transient_key, true, 30 * DAY_IN_SECONDS);
 });`.trim();
 
