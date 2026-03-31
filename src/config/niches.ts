@@ -157,13 +157,13 @@ export const NICHES: NicheConfig[] = [
     ],
   },
 
-  // ── 4. 오늘의 추천주 (워치리스트 기반) ──
+  // ── 4. 종목분석 (워치리스트 기반) ──
   {
     id: 'ai-stock-picks',
-    name: '오늘의 추천주',
-    category: '추천주',
-    broadTerm: `오늘의 관심 종목 분석 ${Y}`,
-    broadTermsExtra: ['기술적 분석 관심 종목'],
+    name: '종목분석',
+    category: '종목분석',
+    broadTerm: `종목분석 기술적 분석 ${Y}`,
+    broadTermsExtra: ['종목분석 참고'],
     seedKeywords: [
       `오늘 기술적 지표 관심 종목 분석 검토 ${Y}`,
       'RSI 과매도 구간 진입 종목 기술적 분석',
@@ -187,7 +187,7 @@ export const NICHES: NicheConfig[] = [
       'AI 자동매매 워치리스트 가이드: 시그널 분석법',
       'RSI MACD 매수 시그널 활용 가이드',
       'AI 트레이딩 봇 종목 선정 기준 해설',
-      '오늘의 추천주 분석: 매수 시그널 해석법',
+      '종목분석 활용법: 기술적 지표 해석 가이드',
     ],
   },
 ];

@@ -1042,7 +1042,7 @@ async function main(): Promise<void> {
 
     // 추천주 니치에 aiPicks/DB워치리스트 키워드 주입 (종목별 다양한 앵글)
     for (const niche of activeNiches) {
-      if (niche.category === '추천주' && tradeEngineData.aiPicks.length > 0) {
+      if (niche.category === '종목분석' && tradeEngineData.aiPicks.length > 0) {
         const pickKeywords: string[] = [];
         for (const p of tradeEngineData.aiPicks.slice(0, 5)) {
           const today = new Date();
@@ -1054,7 +1054,7 @@ async function main(): Promise<void> {
           if (p.reason) pickKeywords.push(`${p.stock_name} ${p.reason.slice(0, 20)} 분석 참고`);
         }
         niche.seedKeywords = [...pickKeywords, ...niche.seedKeywords];
-        logger.info(`추천주 [${niche.category}]: ${tradeEngineData.aiPicks.slice(0, 3).map(p => p.stock_name).join(', ')} 주입 (${pickKeywords.length}개 키워드)`);
+        logger.info(`종목분석 [${niche.category}]: ${tradeEngineData.aiPicks.slice(0, 3).map(p => p.stock_name).join(', ')} 주입 (${pickKeywords.length}개 키워드)`);
       }
     }
   }

@@ -97,7 +97,7 @@ export const NICHE_AUTHOR_PROFILES: Record<string, AuthorProfile> = {
     credentials: ['테마분석 전문가', '투자 전략가'],
     yearsExperience: 6,
   },
-  '추천주': {
+  '종목분석': {
     name: 'Sungho Choi',
     title: '수급 분석 전문가',
     bio: '외국인, 기관, 개인 투자자의 매매 동향을 추적하고 수급 데이터 기반 투자 전략을 제시합니다. 공매도, 프로그램 매매, MSCI 리밸런싱 분석을 전문으로 합니다.',
@@ -111,7 +111,7 @@ export const NICHE_AUTHOR_PERSONAS: Record<string, AuthorProfile[]> = {
   '시장분석': [NICHE_AUTHOR_PROFILES['시장분석']],
   '업종분석': [NICHE_AUTHOR_PROFILES['업종분석']],
   '테마분석': [NICHE_AUTHOR_PROFILES['테마분석']],
-  '추천주': [NICHE_AUTHOR_PROFILES['추천주']],
+  '종목분석': [NICHE_AUTHOR_PROFILES['종목분석']],
 };
 
 /** Content-type to persona voice mapping */
@@ -162,7 +162,7 @@ export const CATEGORY_PUBLISH_TIMING: Record<string, { optimalHour: number; best
   '업종분석': { optimalHour: 23, bestDays: [1, 2, 3, 4, 5] },
   '테마분석': { optimalHour: 23, bestDays: [1, 2, 3, 4, 5] },
   '수급분석': { optimalHour: 23, bestDays: [1, 2, 3, 4, 5] },
-  '추천주': { optimalHour: 23, bestDays: [1, 2, 3, 4, 5] },
+  '종목분석': { optimalHour: 23, bestDays: [1, 2, 3, 4, 5] },
 };
 
 /** Niche-specific disclaimer templates for legal compliance */
@@ -172,7 +172,7 @@ export const NICHE_DISCLAIMERS: Record<string, string> = {
   '업종분석': FINANCE_DISCLAIMER,
   '테마분석': FINANCE_DISCLAIMER,
   '수급분석': FINANCE_DISCLAIMER,
-  '추천주': FINANCE_DISCLAIMER,
+  '종목분석': FINANCE_DISCLAIMER,
 };
 
 /** Search intent to valid content type mapping for enforcement */

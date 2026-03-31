@@ -200,7 +200,7 @@ export interface TradeEngineData {
   // 워치리스트 (니치별)
   watchlistByNiche: WatchlistByNiche | null;
   watchlistAll: WatchlistItem[];
-  // 오늘의 추천주 (워치리스트 매수 시그널 + 보유 종목)
+  // 종목분석 (워치리스트 매수 시그널 + 보유 종목)
   aiPicks: AiPick[];       // 매수 시그널 발생 종목 (내일의 매수 후보)
   aiHoldings: AiHolding[]; // 현재 보유 종목
   dataAge: number;
@@ -298,7 +298,7 @@ export class TradeEngineBridge {
         result.watchlistByNiche = watchlist.by_niche || null;
       }
 
-      // 오늘의 추천주 (워치리스트 + 보유 종목)
+      // 종목분석 (워치리스트 + 보유 종목)
       const aiPicks = this.readJson<{ candidates: AiPick[]; holdings: AiHolding[] }>('ai_picks.json');
       if (aiPicks) {
         result.aiPicks = aiPicks.candidates || [];
@@ -325,7 +325,7 @@ export class TradeEngineBridge {
             });
           }
         }
-        logger.info(`DB watchlist: ${dbWl.items.length}종목 로드, aiPicks 병합 완료 (총 ${result.aiPicks.length} 추천주)`);
+        logger.info(`DB watchlist: ${dbWl.items.length}종목 로드, aiPicks 병합 완료 (총 ${result.aiPicks.length} 종목)`);
       }
 
       // 장중 라이브 워치리스트 (15:25 저장, 가장 최신)
@@ -348,7 +348,7 @@ export class TradeEngineBridge {
             });
           }
         }
-        logger.info(`Live watchlist: ${liveWl.watchlist.length}종목 병합 (총 ${result.aiPicks.length} 추천주)`);
+        logger.info(`Live watchlist: ${liveWl.watchlist.length}종목 병합 (총 ${result.aiPicks.length} 종목)`);
       }
 
       result.isStale = result.dataAge > 24;
@@ -490,9 +490,9 @@ export class TradeEngineBridge {
       );
     }
 
-    // 오늘의 추천주 (매수 시그널 발생 종목)
+    // 종목분석 (기술적 분석 발생 종목)
     if (data.aiPicks.length > 0) {
-      parts.push('### 오늘의 추천주 — AI 매수 시그널 발생 종목\n');
+      parts.push('### 종목분석 — 기술적 분석 관심 종목\n');
       for (const pick of data.aiPicks.slice(0, 8)) {
         parts.push(`- ${pick.stock_name}(${pick.stock_code}): 시그널 ${pick.signal_count}회, 신뢰도 ${(pick.avg_confidence * 100).toFixed(0)}%, 전략: ${pick.strategies.join('/')}, 업종: ${pick.sector || '미분류'}`);
         if (pick.reason) parts.push(`  근거: ${pick.reason.slice(0, 100)}`);
@@ -592,7 +592,7 @@ export class TradeEngineBridge {
     // 오늘의 추천주 키워드 (매수 시그널 발생 종목)
     for (const pick of data.aiPicks.slice(0, 3)) {
       suggestions.push(`${pick.stock_name} AI 매수 시그널 분석 ${pick.strategies[0] || ''} 진입 근거`);
-      suggestions.push(`${pick.stock_name} 기술적 분석 매수 타이밍 오늘의 추천주`);
+      suggestions.push(`${pick.stock_name} 기술적 분석 기술적 분석 참고`);
     }
 
     // 워치리스트 기반 키워드 (니치별)
