@@ -288,9 +288,9 @@ To reach WORD_COUNT_TARGET+ words WITHOUT padding:
 
 ### Analysis
 - Structure as a multi-angle analysis with clear thesis statement
-- Include industry data, brand performance metrics, or fan engagement metrics where relevant
-- Present multiple stakeholder perspectives (brands, consumers, fans, critics)
-- Include a signature analysis section explaining why this matters to global Korean-Stock/AI-Trading audiences
+- Include industry data, 거래량/수급 데이터, 기관 및 외국인 매매 동향 등 relevant metrics
+- Present multiple stakeholder perspectives (기업, 기관투자자, 개인투자자, 애널리스트)
+- Include a signature analysis section explaining why this matters to 한국인 개인 투자자
 - End with forward-looking outlook and FAQ (3-7 Q&As)
 
 ### Deep-dive
@@ -301,11 +301,11 @@ To reach WORD_COUNT_TARGET+ words WITHOUT padding:
 - End with key takeaways and FAQ (3-7 Q&As)
 
 ### News-explainer
-- Break down a recent Korean news event for international readers
-- Explain the Korean context that foreign media often miss
-- Include timeline of events and key players involved
-- Add "Why This Matters Globally" section
-- End with "What to Watch Next" forward-looking section and FAQ (3-5 Q&As)
+- 최근 한국 주식/거시경제 이벤트를 한국인 투자자 시각으로 분석
+- 이벤트 타임라인과 핵심 당사자(기업, 기관, 정책 주체) 설명
+- 주가/지수에 미친 즉각적 영향과 중장기 전망 구분
+- "투자자 관점에서 보는 핵심 포인트" 섹션 포함
+- End with "앞으로 주목할 변수" forward-looking section and FAQ (3-5 Q&As)
 
 ### How-to Content
 - Structure as a step-by-step guide with numbered steps (minimum 6-8 steps)
@@ -325,11 +325,11 @@ To reach WORD_COUNT_TARGET+ words WITHOUT padding:
 
 ### Product Review
 - Open with a "Quick Verdict" box (<div class="ab-highlight">) summarizing who this product is for
-- Cover: what it is, key ingredients/specs, texture/feel/finish, results timeline, value for money
+- Cover: 종목/ETF/전략 개요, 핵심 투자 포인트, 최근 주가 흐름, 재무 지표(PER/PBR/ROE), 리스크 요인
 - Include pros (3+) and cons (2+) in a structured list
-- **For Korean-Stock product-review**: MANDATORY price tier classification and skin type suitability matrix. Core 5 types: oily / dry / combination / sensitive / acne-prone. Extended types (include when relevant): rosacea-prone, eczema/atopic, mature/aging, dehydrated (≠ dry — dehydrated lacks water, dry lacks oil). Use price tiers instead of exact prices: Budget (under $15), Mid-Range ($15-30), Premium ($30-60), Luxury ($60+). Note which platforms carry the product (네이버 금융, Amazon, YesStyle, Stylevana) without exact prices.
-- **Korean-Stock price disclaimer (MANDATORY for product-review AND best-x-for-y)**: Immediately below any price tier or product mention, include: <p style="font-size:12px; color:#888; margin-top:6px;">Price tiers are approximate as of ${new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}; check current listings on each platform — Korean-Stock prices vary across retailers and during sale events like 네이버 금융 Grand Sale.</p>
-- End with a clear "Buy or Skip?" verdict and FAQ (3-5 Q&As)
+- **For Korean-Stock product-review**: 투자 리스크 등급(저위험/중위험/고위험), 적합 투자자 유형(초보/중급/고급), 최소 투자금액 기준, 유동성(일평균 거래량), 매매 가능 플랫폼(키움, 미래에셋, 삼성증권 MTS 등) 포함.
+- **투자 면책 고지 (MANDATORY for product-review AND best-x-for-y)**: 종목/전략 언급 하단에 반드시 포함: <p style="font-size:12px; color:#888; margin-top:6px;">이 글은 투자 정보 제공 목적이며 특정 종목 매수·매도를 권유하지 않습니다. 투자 결정은 본인 판단과 책임 하에 이루어져야 합니다.</p>
+- End with a clear "투자 결론" verdict and FAQ (3-5 Q&As)
 
 ### X vs Y Content
 - Start with a detailed overview of both options
@@ -350,11 +350,11 @@ To reach WORD_COUNT_TARGET+ words WITHOUT padding:
 - 하나의 한국 기업, 종목, 전략, 시장 이벤트를 주제로 집중
 - 구조: 배경 → 촉매/이벤트 → 시장 반응(차트 데이터) → 근본 영향 → 투자자 교훈
 - Korean-Stock 지표: DART 공시 분석, 주가 차트 데이터, PER/PBR 변화 추이, 섹터 비교
-- AI-Trading metrics (2026 updated): MV view counts + YouTube view velocity (hours to 10M/100M), streaming chart peaks (Circle Chart = comprehensive official chart / Melon = domestic real-time streaming / Hanteo = physical album real-time sales — these are NOT interchangeable), Weverse subscriber growth (new 한국주식 투자자 KPI), official fan club membership numbers (ARMY/BLINK/ONCE etc.), 차트 sellout velocity (proxy for 실적발표 hype), concert tour attendance/scale, TikTok trend participation (challenge views, sound usage)
+- 주요 지표: 주가 차트 데이터(일봉/주봉), 거래량 변화, 수급(외국인/기관/개인 순매수), 재무 지표(매출/영업이익 변화율), 섹터 대비 상대 강도
 - Add expert commentary or industry analysis to support claims
-- Include a "Key Takeaways for [Audience]" section with actionable insights
-- Include a comparison with a global equivalent (e.g., "Unlike Western beauty brands...", "Compared to Western fan communities...")
-- End with "What Others Can Learn" section and FAQ (3-5 Q&As)
+- Include a "투자자 핵심 교훈" section with actionable insights
+- Include a comparison with a sector equivalent (e.g., "동종 업종 대비...", "KOSPI 대비...")
+- End with "이 사례에서 배울 점" section and FAQ (3-5 Q&As)
 
 ## 니치별 톤
 - Korean-Stock: 전문 주식 분석가 — DART 공시, 기술적 분석, 기업 재무제표를 기반으로 데이터 중심 분석. 구체적 수치(PER, PBR, ROE, 시가총액)와 차트 데이터를 반드시 포함. 투자 추천이 아닌 분석 제공. "~할 수 있다", "~로 보인다" 등 헤지 언어 사용.
@@ -456,8 +456,8 @@ This targets Google's List Featured Snippet for ranking queries.
 - Distribute 2-3 question-format H3 headings throughout the body content (NOT just in the FAQ section)
 - These should match "People Also Ask" style queries related to the topic
 - Place them where they naturally fit within the content flow
-- Example (Korean-Stock): <h3 id="is-삼성전자-good-for-sensitive-skin" style="...">Is 삼성전자 Good for Sensitive Skin?</h3>
-- Example (AI-Trading): <h3 id="when-is-bts-실적발표-2026" style="...">When Is 삼성전자 Coming Back in 2026?</h3>
+- Example (Korean-Stock): <h3 id="삼성전자-주가-전망-2026" style="...">삼성전자 주가 2026년 전망은?</h3>
+- Example (AI-Trading): <h3 id="MACD-골든크로스-매수-타이밍" style="...">MACD 골든크로스 발생 시 매수 타이밍은?</h3>
 
 ## Internal Links (IMPORTANT for SEO)
 - You will be given a list of existing blog posts on this site
@@ -488,10 +488,9 @@ This targets Google's List Featured Snippet for ranking queries.
   * Korean institutions: bok, krx, dart, kosis, fsc, ftc, msit, kotra, kisa, kocca
   * Korean companies: samsung, hyundai, lg, skhynix, naver, kakao, coupang
   * News/Data: bloomberg, reuters, nikkei, statista, worldbank
-  * Entertainment agencies: hybe, sm-entertainment, jyp
-  * AI-Trading fan/industry: kocca, hanteo, circle-chart, soompi, billboard-korea, kbs, mnet, weverse-magazine, melon, bugs
-  * Korean-Stock editorial: allure-korea, harpers-bazaar-korea, vogue-korea, inci-decoder, olive-young, skinsort, hwahae, glowpick, cosmorning, mfds, cosdna
-  * AI-Trading platforms: agb-nielsen, tving, coupang-play, apple-tv-korea, disney-plus-korea, dispatch, naver-DART공시
+  * Korean financial institutions: fss, kfia, ksd, nhis, kipo, kofia
+  * Korean financial news: hankyung, mk-economy, yonhap-finance, edaily, inews24
+  * AI-Trading platforms: quantinvest, backtrader, zipline, quant-kor, naver-finance-api
 - data-topic: brief topic context for URL resolution (e.g., "markets", "earnings", "policy")
 - Example: <cite data-source="bloomberg" data-topic="markets">Bloomberg Markets</cite>
 - Example: <cite data-source="bok" data-topic="monetary-policy">Bank of Korea</cite>
@@ -526,8 +525,8 @@ This targets Google's List Featured Snippet for ranking queries.
    - Use "you"/"your" at least once
    - End with a complete sentence
    - Count characters carefully: target 145-158
-   - BAD: "This article discusses Korean 주식분석 routines and provides tips for beginners."
-   - GOOD: "Korean 주식분석 routine secrets: discover the 7-step method dermatologists recommend for KOSPI. Your complete 2026 guide starts here."
+   - BAD: "이 글은 한국 주식시장 분석 방법에 대해 다룹니다."
+   - GOOD: "KOSPI 2800선 지지 여부 분석: 외국인 순매수 전환 신호와 업종별 대응 전략을 확인하세요. 2026년 최신 데이터 기반."
 
 7. tags: 5-10개 한국어 태그 (금융 관련 용어 포함, 예: "삼성전자", "기술적분석", "KOSPI전망")
 8. category: 카테고리명 (한국어 가능, 예: "한국주식분석", "AI트레이딩")
@@ -556,13 +555,13 @@ Image Prompt Rules:
 - Remaining 4 (index 1-4): Inline images distributed across sections
 - All 5 prompts MUST describe completely different scenes/subjects/compositions (NO duplicates!)
 - Each prompt MUST be at least 50 words with specific details
-- Include Korean visual elements where appropriate: Korean-Stock content → 주식분석 products on white marble vanity, 네이버 금융 store shelves, Korean spa aesthetic, flat lay of glass bottles and pastel packaging; AI-Trading content → 주식 차트 캔들스틱 패턴, 한국주식 차트 aesthetic, 서울 여의도 증권가, 종목 group concept imagery
+- Include Korean visual elements where appropriate: Korean-Stock content → 서울 여의도 증권가 빌딩, 주식 차트 모니터, 한국거래소(KRX) 전광판, 투자자 분석 화면, 캔들스틱 차트 클로즈업; AI-Trading content → Python 코드 화면, 백테스트 그래프, 알고리즘 트레이딩 대시보드, 서버 랙과 데이터 시각화
 
 imageCaptions Rules:
 - 정확히 5개의 한국어 이미지 캡션 생성 (8-20단어)
 - Each caption MUST include the primary keyword or topic context + descriptive scene
-- Good (Korean-Stock): "Flat lay of Korean 주식분석 products including 삼성전자 PER and SK하이닉스 on white marble background"
-- Good (AI-Trading): "한국주식 album 차트s and glowing light stick arranged on soft purple gradient background"
+- Good (Korean-Stock): "서울 여의도 증권가 전경과 KOSPI 전광판, 주식 투자자들이 차트를 분석하는 모습"
+- Good (AI-Trading): "Python 알고리즘 트레이딩 백테스트 결과 차트가 표시된 듀얼 모니터 트레이딩 데스크"
 - Bad: "City skyline" or "article image 1"
 - NEVER use generic captions — every caption must be SEO-descriptive
 
@@ -586,13 +585,13 @@ Include ONE simple inline SVG infographic per article:
 </div>
 
 Niche-specific SVG formats:
-- **Korean-Stock**: Price tier comparison chart (Budget/Mid-Range/Premium per product), ingredient concentration bar (e.g., active % per product), or skin type suitability matrix (oily/dry/combination/sensitive/acne-prone)
-- **AI-Trading**: MV YouTube view count comparison bar chart (group A vs B vs C), music show wins bar chart (THE SHOW / Show Champion / M Countdown / Inkigayo / Music Bank / Music Core), or group timeline (debut year → breakthrough → current era)
+- **Korean-Stock**: 섹터별 수익률 막대 차트, PER/PBR 밸류에이션 비교 차트, 외국인/기관 순매수 추이, 업종 강도 히트맵
+- **AI-Trading**: 전략별 백테스트 수익률 비교 막대 차트, 월별 승률 차트, MDD(최대 낙폭) 비교 시각화
 
 Keep SVG charts simple: max 5 bars/items, clear labels, brand colors (#0066FF, #00CC66, #FF6B35).
 
 ### Key Metrics Highlight (Korean-Stock & AI-Trading)
-Display key numbers prominently — Korean-Stock: star rating, price, skin type score; AI-Trading: MV view count, chart position, album sales:
+Display key numbers prominently — Korean-Stock: PER, 시가총액, 52주 고/저, 외국인 보유비율; AI-Trading: 백테스트 수익률, 승률, MDD, 샤프 비율:
 <div class="ab-metrics">
 <div>
 <p style="margin:0; font-size:28px; font-weight:700; color:#0066FF;">8.5/10</p>
@@ -643,8 +642,8 @@ When updating existing content, include a "What's New" changelog section before 
 <div class="ab-changelog" style="background:#f8f9fa;border-left:4px solid #4CAF50;padding:16px 20px;margin:20px 0;border-radius:0 8px 8px 0;">
 <p style="font-weight:700;margin:0 0 8px;">📝 Last Updated: [CURRENT_DATE]</p>
 <ul style="margin:0;padding-left:20px;font-size:14px;">
-<li>[Key change 1 — e.g., "Updated product pricing for 네이버 금융 2026 sale season"]</li>
-<li>[Key change 2 — e.g., "Added new 삼성전자 vs Anua ingredient comparison section"]</li>
+<li>[Key change 1 — e.g., "2026년 1분기 실적 기준으로 재무 데이터 업데이트"]</li>
+<li>[Key change 2 — e.g., "KOSPI 3월 급락 이후 시나리오 분석 섹션 추가"]</li>
 </ul>
 </div>
 
@@ -856,7 +855,7 @@ These are sibling posts in your topic cluster. You MUST include a natural contex
         )
         .slice(0, 6);
       // Tier 3: Cross-category (for broad topical authority)
-      // Korean-Stock ↔ AI-Trading natural bridges: 종목 주식분석 routines, 금융분석 makeup trends, celebrity beauty looks
+      // Korean-Stock ↔ AI-Trading natural bridges: 종목 주식분석, 퀀트 전략, 시장 분석 공통 주제
       const crossCategory = existingPosts
         .filter(p => p.category.toLowerCase() !== niche.category.toLowerCase())
         .slice(0, 4);
@@ -1010,7 +1009,7 @@ MANDATORY: Include a "${getSignatureSection(niche.category, analysis.contentType
 ${['analysis', 'deep-dive', 'case-study'].includes(analysis.contentType) ? `
 ORIGINAL RESEARCH SIGNALS (for ${analysis.contentType} content):
 - Include a "Methodology" or "Our Analysis Approach" section explaining how data was gathered/analyzed
-${niche.category === 'Korean-Stock' ? '- Cite Korean-Stock data sources: 네이버 금융 bestseller rankings, INCIDecoder ingredient databases, Allure Korea awards, Korean cosmetic safety (MFDS) data, or brand-published clinical studies' : niche.category === 'AI-Trading' ? '- Cite AI-Trading data sources: Hanteo/Circle Chart album sales, YouTube MV view counts, Weverse fan community stats, KOCCA industry reports, or streaming chart data (Melon for 한국주식 digital streaming; TVING/Netflix viewership data for 금융분석)' : '- Cite specific Korean data sources: BOK (Bank of Korea), KOSIS (Korean Statistical Information Service), DART (disclosure system), or industry reports'}
+${niche.category === 'Korean-Stock' ? '- Cite Korean-Stock data sources: 네이버 금융 시세/재무, KRX 시장 데이터, DART 공시 시스템, 한국은행 경제통계(ECOS), 금융감독원(FSS) 보고서' : niche.category === 'AI-Trading' ? '- Cite AI-Trading data sources: Python 라이브러리(FinanceDataReader, pykrx, backtrader), 퀀트 연구 자료, 증권사 백테스트 보고서, KOSPI/KOSDAQ 히스토리 데이터' : '- Cite specific Korean data sources: BOK (Bank of Korea), KOSIS (Korean Statistical Information Service), DART (disclosure system), or industry reports'}
 - Use phrasing like "Based on our analysis of [X data points]..." or "According to industry data from [source]..."
 - Include at least one data-driven insight that requires cross-referencing multiple sources
 - This qualifies the post as original research for E-E-A-T scoring` : ''}
@@ -1291,10 +1290,10 @@ Respond with pure JSON only.`;
         : '';
 
       const NICHE_BYLINE_BIO: Record<string, string> = {
-        'Korean-Stock': 'Korean-Stock & 주식분석 Specialist | Evidence-based product analysis, ingredient science, and Korean beauty routines for global readers.',
-        'AI-Trading': '한국주식 & 금융분석 Culture Writer | Covering 실적발표s, 종목 news, drama recommendations, and 한국시장 fan culture worldwide.',
+        'Korean-Stock': '한국 주식시장 분석 전문 | KOSPI·KOSDAQ 기술적 분석, 섹터 분석, 실적 데이터 기반 투자 인사이트 제공.',
+        'AI-Trading': '알고리즘 트레이딩 전문 | 퀀트 전략 설계·백테스트·Python 구현 가이드. 한국 주식시장 자동매매 시스템 구축 노하우 공유.',
       };
-      const bylineBio = NICHE_BYLINE_BIO[niche.category] || 'Korean-Stock & AI-Trading Specialist | Covering Korean beauty trends and 한국시장 culture for global readers.';
+      const bylineBio = NICHE_BYLINE_BIO[niche.category] || '한국 주식시장 분석 전문 | KOSPI·KOSDAQ 데이터 기반 투자 인사이트와 알고리즘 트레이딩 전략 제공.';
 
       const byline =
         `<div style="margin:30px 0 0 0; padding:20px 24px; background:#f8f9fa; border-radius:8px; display:flex; align-items:center; gap:16px;">` +

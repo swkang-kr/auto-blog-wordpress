@@ -816,24 +816,11 @@ STRATEGY: Consider creating content that directly targets one of these content g
       // 한국 증권사/플랫폼
       '키움', '미래에셋', '삼성증권', 'KB증권', '한국투자증권',
       '네이버증권', '증권사', '계좌', 'MTS', 'HTS',
-      // 2023-2025 groups (legacy, kept for backward compat)
-      'riize', 'boynextdoor', 'boy next door', 'zerobaseone', 'zb1',
-      'meovv', 'triples', 'tripless', 'hearts2hearts', 'izna', 'ciipher',
-      'drippin', 'cravity', 'the boyz', 'treasure', 'day6', 'btob',
-      // 퀀트전략 / 퀀트투자 아티스트 — 아이돌 외 K-Music 커버리지 확장
-      'dean', 'crush', 'zion.t', 'ph-1', 'jay park', 'epik high',
-      'dpr live', 'offonoff', 'colde', 'heize', 'lee hi',
-      'k-rnb', 'k-hiphop', 'korean rnb', 'korean hip hop',
-      // 2024-2025 신규 걸그룹 (누락 보완)
-      'young posse', 'badvillain', 'unis',
-      // 2024-2026 신규 그룹/아티스트 (seed keywords에 추가됨 — 검증 일관성 필수)
-      'plave',            // 버추얼 아이돌, VLAST 소속 (팬덤명 ASTERDOM)
-      'g-dragon', 'gdragon', 'kwon jiyong', // YG 솔로 아티스트, BIGBANG 멤버
-      'qwer',             // 밴드돌 걸그룹, Million Market/밀리언마켓 (팬덤명 AUBE)
-      'whiplash',         // SM Entertainment 4세대 보이그룹 (2024 데뷔)
-      '8turn',            // MNH Entertainment 4세대 보이그룹
-      'ampers&one', 'ampersone', // FNC Entertainment 걸그룹 (2023 데뷔)
-      'katseye',          // HYBE/Geffen 글로벌 걸그룹
+      // 2024-2026 추가 한국 기업/ETF/섹터 키워드
+      '코스피', '코스닥', '코스피200', '코스닥150',
+      '반도체', '이차전지', '바이오', '방산', '조선', '자동차', '금융',
+      '리츠', 'REIT', '배당주', '성장주', '가치주', '우선주',
+      'TIGER', 'KODEX', 'ARIRANG', 'KBSTAR', 'HANARO',
     ];
     const keywordLower = analysis.selectedKeyword.toLowerCase();
     const titleLower = analysis.suggestedTitle.toLowerCase();
