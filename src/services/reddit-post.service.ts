@@ -4,8 +4,10 @@ import { buildUtmUrl, extractSlugFromUrl } from '../utils/utm.js';
 
 /** Niche → subreddit mapping for auto-posting */
 const NICHE_SUBREDDITS: Record<string, string[]> = {
-  'Korean-Stock': ['AsianBeauty', '주식분석Addiction', 'korea'],
-  'AI-Trading': ['kpop', 'KDRAMA', 'korea'],
+  '시장분석': ['koreafinance', 'investing', 'stocks'],
+  '업종분석': ['koreafinance', 'stocks', 'investing'],
+  '테마분석': ['koreafinance', 'stocks'],
+  '종목분석': ['koreafinance', 'stocks'],
 };
 
 /**

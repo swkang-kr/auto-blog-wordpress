@@ -56,9 +56,8 @@ export class PostHistory {
     money: ['finance', 'financial', 'cash', 'funds'],
     stock: ['stocks', 'equity', 'equities', 'shares'],
     etf: ['index fund', 'fund', 'funds'],
-    makeup: ['cosmetics', 'beauty', 'cosmetic'],
-    drama: ['kdrama', 'k-drama', 'series', 'show'],
-    kpop: ['k-pop', '종목', '종목s'],
+    sector: ['업종', 'industry', 'industries'],
+    theme: ['테마', 'theme', 'trend'],
   };
 
   /**
@@ -317,13 +316,13 @@ export class PostHistory {
 
   /** Predefined series patterns: niche → series ID → keyword patterns */
   private static readonly MANUAL_SERIES: Record<string, Record<string, string[]>> = {
-    'korean-stock-주식분석': {
-      '주식분석-routine-guide': ['routine', '주식분석', 'KOSPI', 'step', 'regimen'],
-      'ingredient-deep-dive': ['ingredient', 'niacinamide', 'retinol', 'vitamin c', 'hyaluronic', '배당'],
+    'market-analysis': {
+      'kospi-outlook': ['KOSPI', '전망', '시장', 'market', 'outlook'],
+      'macro-analysis': ['금리', '환율', 'FOMC', 'BOK', 'GDP', 'macro'],
     },
-    'ai-trading-business': {
-      'kpop-business-analysis': ['kpop', 'k-pop', 'hybe', 'sm entertainment', 'jyp', 'yg'],
-      'kdrama-streaming': ['kdrama', 'k-drama', 'netflix', 'streaming', 'DART공시'],
+    'sector-analysis': {
+      'semiconductor-guide': ['반도체', 'semiconductor', 'HBM', 'AI chip', 'SK하이닉스', '삼성전자'],
+      'battery-ev-guide': ['2차전지', 'battery', 'EV', '전기차', 'LG에너지'],
     },
   };
 
