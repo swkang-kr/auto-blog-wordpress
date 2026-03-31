@@ -2280,8 +2280,10 @@ add_filter('comment_form_defaults', function(\$defaults) {
 
     // Category-specific comment prompts (more specific CTAs per niche)
     \$prompts = array(
-        'Korean-Stock' => 'What\\'s your skin type and current routine? Tell us which K-beauty products transformed your 주식분석...',
-        'AI-Trading' => 'Who\\'s your ult bias or current 금융분석 obsession? Drop your hot takes and recommendations...',
+        '시장분석' => '오늘 KOSPI/KOSDAQ 시장 흐름에 대한 의견을 댓글로 남겨주세요! 어떤 종목이 주목받고 있나요?',
+        '업종분석' => '관심 있는 업종과 주목하는 종목을 댓글로 공유해주세요!',
+        '테마분석' => '이 테마에서 주목하는 수혜주나 의견을 댓글로 남겨주세요!',
+        '종목분석' => '이 종목에 대한 투자 의견이나 목표주가를 댓글로 공유해주세요!',
     );
 
     \$placeholder = isset(\$prompts[\$category]) ? \$prompts[\$category] : 'Share your thoughts, experience, or questions about this topic...';

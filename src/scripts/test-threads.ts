@@ -12,18 +12,18 @@ import { ThreadsService } from '../services/threads.service.js';
 import type { BlogContent, PublishedPost } from '../types/index.js';
 
 const TEST_CONTENT: BlogContent = {
-  title: 'BTS Comeback 2026: Everything Fans Need to Know',
+  title: 'KOSPI 시황 분석: 반도체 업종 주도 상승 흐름 지속',
   html: '',
-  excerpt: 'BTS is back! All members have completed military service and the group is gearing up for their highly anticipated 2026 실적발표. Here\'s everything ARMY needs to know about the reunion era.',
-  tags: ['BTS', 'KPop', 'KEntertainment'],
-  category: 'AI-Trading',
+  excerpt: '오늘 KOSPI는 반도체 업종 강세로 상승 마감. 삼성전자·SK하이닉스 외국인 순매수 유입. 시장 전망과 주요 지지/저항 레벨을 분석합니다.',
+  tags: ['KOSPI', '시장분석', '반도체', '삼성전자', 'SKhynix'],
+  category: '시장분석',
   imagePrompts: [],
   imageCaptions: [],
 };
 
 const TEST_POST: PublishedPost = {
   postId: 99999,
-  url: 'https://trendhunt.net/bts-실적발표-2026/',
+  url: 'https://trendhunt.net/kospi-시황-반도체-분석/',
   title: TEST_CONTENT.title,
   featuredImageId: 0,
 };

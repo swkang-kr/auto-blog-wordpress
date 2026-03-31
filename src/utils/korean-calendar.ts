@@ -13,47 +13,47 @@ interface SeasonalEvent {
 
 const KOREAN_EVENTS: SeasonalEvent[] = [
   // Earnings seasons
-  { name: 'Q4 Earnings Season Korea', months: [1, 2], days: [15, 15], niches: ['Korean-Stock'], suggestions: ['Korean stock Q4 earnings preview analysis', 'Samsung SK Hynix earnings investment impact', 'Korean corporate earnings strategy guide'] },
-  { name: 'Q1 Earnings Season Korea', months: [4, 5], days: [15, 15], niches: ['Korean-Stock'], suggestions: ['Korean stock Q1 earnings preview', 'semiconductor earnings outlook Samsung SK Hynix'] },
-  { name: 'Q2 Earnings Season Korea', months: [7, 8], days: [15, 15], niches: ['Korean-Stock'], suggestions: ['Korean stock Q2 earnings analysis', 'mid-year market review investment outlook'] },
-  { name: 'Q3 Earnings Season Korea', months: [10, 11], days: [15, 15], niches: ['Korean-Stock'], suggestions: ['Korean stock Q3 earnings preview semiconductor', 'Korean tech earnings AI chip outlook'] },
+  { name: 'Q4 Earnings Season Korea', months: [1, 2], days: [15, 15], niches: ['시장분석', '종목분석'], suggestions: ['Korean stock Q4 earnings preview analysis', 'Samsung SK Hynix earnings investment impact', 'Korean corporate earnings strategy guide'] },
+  { name: 'Q1 Earnings Season Korea', months: [4, 5], days: [15, 15], niches: ['시장분석', '종목분석'], suggestions: ['Korean stock Q1 earnings preview', 'semiconductor earnings outlook Samsung SK Hynix'] },
+  { name: 'Q2 Earnings Season Korea', months: [7, 8], days: [15, 15], niches: ['시장분석', '종목분석'], suggestions: ['Korean stock Q2 earnings analysis', 'mid-year market review investment outlook'] },
+  { name: 'Q3 Earnings Season Korea', months: [10, 11], days: [15, 15], niches: ['시장분석', '종목분석'], suggestions: ['Korean stock Q3 earnings preview semiconductor', 'Korean tech earnings AI chip outlook'] },
 
   // BOK rate decisions
-  { name: 'BOK Rate Decision', months: [1, 1], days: [10, 20], niches: ['Korean-Stock'], suggestions: ['Bank of Korea interest rate decision analysis', 'BOK rate impact stock market forecast'] },
-  { name: 'BOK Rate Decision (Apr)', months: [4, 4], days: [1, 15], niches: ['Korean-Stock'], suggestions: ['Bank of Korea April rate decision analysis'] },
-  { name: 'BOK Rate Decision (Jul)', months: [7, 7], days: [1, 15], niches: ['Korean-Stock'], suggestions: ['Bank of Korea July rate decision analysis'] },
-  { name: 'BOK Rate Decision (Oct)', months: [10, 10], days: [1, 15], niches: ['Korean-Stock'], suggestions: ['Bank of Korea October rate decision analysis'] },
+  { name: 'BOK Rate Decision', months: [1, 1], days: [10, 20], niches: ['시장분석', '업종분석'], suggestions: ['Bank of Korea interest rate decision analysis', 'BOK rate impact stock market forecast'] },
+  { name: 'BOK Rate Decision (Apr)', months: [4, 4], days: [1, 15], niches: ['시장분석', '업종분석'], suggestions: ['Bank of Korea April rate decision analysis'] },
+  { name: 'BOK Rate Decision (Jul)', months: [7, 7], days: [1, 15], niches: ['시장분석', '업종분석'], suggestions: ['Bank of Korea July rate decision analysis'] },
+  { name: 'BOK Rate Decision (Oct)', months: [10, 10], days: [1, 15], niches: ['시장분석', '업종분석'], suggestions: ['Bank of Korea October rate decision analysis'] },
 
   // FOMC (US Fed — impacts Korean market)
-  { name: 'FOMC Meeting', months: [3, 3], days: [15, 25], niches: ['Korean-Stock', 'AI-Trading'], suggestions: ['FOMC March decision Korean stock market impact', 'US rate decision Korean won stock impact'] },
-  { name: 'FOMC Meeting (Jun)', months: [6, 6], days: [10, 20], niches: ['Korean-Stock', 'AI-Trading'], suggestions: ['FOMC June meeting Korean market impact forecast'] },
-  { name: 'FOMC Meeting (Sep)', months: [9, 9], days: [15, 25], niches: ['Korean-Stock', 'AI-Trading'], suggestions: ['FOMC September Korean stock market analysis'] },
-  { name: 'FOMC Meeting (Dec)', months: [12, 12], days: [10, 20], niches: ['Korean-Stock', 'AI-Trading'], suggestions: ['FOMC December year-end Korean market impact'] },
+  { name: 'FOMC Meeting', months: [3, 3], days: [15, 25], niches: ['시장분석', '종목분석'], suggestions: ['FOMC March decision Korean stock market impact', 'US rate decision Korean won stock impact'] },
+  { name: 'FOMC Meeting (Jun)', months: [6, 6], days: [10, 20], niches: ['시장분석', '종목분석'], suggestions: ['FOMC June meeting Korean market impact forecast'] },
+  { name: 'FOMC Meeting (Sep)', months: [9, 9], days: [15, 25], niches: ['시장분석', '종목분석'], suggestions: ['FOMC September Korean stock market analysis'] },
+  { name: 'FOMC Meeting (Dec)', months: [12, 12], days: [10, 20], niches: ['시장분석', '종목분석'], suggestions: ['FOMC December year-end Korean market impact'] },
 
   // Dividend season
-  { name: 'Korean Dividend Season', months: [12, 12], days: [1, 31], niches: ['Korean-Stock'], suggestions: ['Korean stock best dividend stocks year-end picks', 'ex-dividend date calendar Korean stocks', 'Korean high dividend yield stocks guide'] },
+  { name: 'Korean Dividend Season', months: [12, 12], days: [1, 31], niches: ['종목분석', '시장분석'], suggestions: ['Korean stock best dividend stocks year-end picks', 'ex-dividend date calendar Korean stocks', 'Korean high dividend yield stocks guide'] },
 
   // MSCI/FTSE rebalancing
-  { name: 'MSCI Rebalancing', months: [5, 6], days: [20, 5], niches: ['Korean-Stock'], suggestions: ['MSCI rebalancing Korean stock additions deletions impact', 'MSCI Korea index weight changes analysis'] },
-  { name: 'MSCI Rebalancing (Nov)', months: [11, 11], days: [10, 30], niches: ['Korean-Stock'], suggestions: ['MSCI November rebalancing Korean stock impact'] },
+  { name: 'MSCI Rebalancing', months: [5, 6], days: [20, 5], niches: ['시장분석'], suggestions: ['MSCI rebalancing Korean stock additions deletions impact', 'MSCI Korea index weight changes analysis'] },
+  { name: 'MSCI Rebalancing (Nov)', months: [11, 11], days: [10, 30], niches: ['시장분석'], suggestions: ['MSCI November rebalancing Korean stock impact'] },
 
   // Tech events
-  { name: 'CES', months: [1, 1], days: [5, 12], niches: ['Korean-Stock', 'AI-Trading'], suggestions: ['CES Korean tech companies Samsung LG stock impact', 'CES AI chip Korean semiconductor analysis'] },
-  { name: 'MWC', months: [2, 2], days: [24, 28], niches: ['Korean-Stock'], suggestions: ['MWC Korean tech stocks Samsung SK Telecom impact'] },
-  { name: 'InterBattery Korea', months: [3, 3], days: [10, 12], niches: ['Korean-Stock'], suggestions: ['InterBattery battery stocks LG Samsung SDI analysis'] },
+  { name: 'CES', months: [1, 1], days: [5, 12], niches: ['테마분석', '업종분석'], suggestions: ['CES Korean tech companies Samsung LG stock impact', 'CES AI chip Korean semiconductor analysis'] },
+  { name: 'MWC', months: [2, 2], days: [24, 28], niches: ['테마분석', '업종분석'], suggestions: ['MWC Korean tech stocks Samsung SK Telecom impact'] },
+  { name: 'InterBattery Korea', months: [3, 3], days: [10, 12], niches: ['테마분석', '업종분석'], suggestions: ['InterBattery battery stocks LG Samsung SDI analysis'] },
 
   // Year-end tax selling
-  { name: 'Year-End Tax Loss Selling', months: [11, 12], days: [15, 28], niches: ['Korean-Stock'], suggestions: ['Korean stock tax loss selling strategy year-end', 'Korean stock capital gains tax guide', 'year-end portfolio rebalancing strategy'] },
+  { name: 'Year-End Tax Loss Selling', months: [11, 12], days: [15, 28], niches: ['시장분석', '종목분석'], suggestions: ['Korean stock tax loss selling strategy year-end', 'Korean stock capital gains tax guide', 'year-end portfolio rebalancing strategy'] },
 
   // IPO seasons
-  { name: 'Korean IPO Season (Spring)', months: [3, 5], days: [1, 31], niches: ['Korean-Stock'], suggestions: ['upcoming Korean IPO stocks what to watch', 'Korean IPO investing guide how to apply'] },
-  { name: 'Korean IPO Season (Fall)', months: [9, 11], days: [1, 30], niches: ['Korean-Stock'], suggestions: ['fall Korean IPO pipeline analysis', 'how to invest in Korean IPOs guide'] },
+  { name: 'Korean IPO Season (Spring)', months: [3, 5], days: [1, 31], niches: ['종목분석', '시장분석'], suggestions: ['upcoming Korean IPO stocks what to watch', 'Korean IPO investing guide how to apply'] },
+  { name: 'Korean IPO Season (Fall)', months: [9, 11], days: [1, 30], niches: ['종목분석', '시장분석'], suggestions: ['fall Korean IPO pipeline analysis', 'how to invest in Korean IPOs guide'] },
 
   // Options expiry (quarterly)
-  { name: 'Options Expiry', months: [3, 3], days: [8, 15], niches: ['Korean-Stock', 'AI-Trading'], suggestions: ['Korean stock options expiry volatility impact', 'quad witching day Korean market strategy'] },
-  { name: 'Options Expiry (Jun)', months: [6, 6], days: [8, 15], niches: ['Korean-Stock', 'AI-Trading'], suggestions: ['Korean stock options expiry June impact'] },
-  { name: 'Options Expiry (Sep)', months: [9, 9], days: [8, 15], niches: ['Korean-Stock', 'AI-Trading'], suggestions: ['Korean stock options expiry September impact'] },
-  { name: 'Options Expiry (Dec)', months: [12, 12], days: [8, 15], niches: ['Korean-Stock', 'AI-Trading'], suggestions: ['year-end options expiry Korean stock impact'] },
+  { name: 'Options Expiry', months: [3, 3], days: [8, 15], niches: ['종목분석', '시장분석'], suggestions: ['Korean stock options expiry volatility impact', 'quad witching day Korean market strategy'] },
+  { name: 'Options Expiry (Jun)', months: [6, 6], days: [8, 15], niches: ['종목분석', '시장분석'], suggestions: ['Korean stock options expiry June impact'] },
+  { name: 'Options Expiry (Sep)', months: [9, 9], days: [8, 15], niches: ['종목분석', '시장분석'], suggestions: ['Korean stock options expiry September impact'] },
+  { name: 'Options Expiry (Dec)', months: [12, 12], days: [8, 15], niches: ['종목분석', '시장분석'], suggestions: ['year-end options expiry Korean stock impact'] },
 ];
 
 export interface SeasonalContext {

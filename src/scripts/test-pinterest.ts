@@ -5,7 +5,7 @@
  * 단계별 검증:
  *  1. Access Token 유효성 (GET /v5/user_account)
  *  2. Board 목록 조회 (GET /v5/boards)
- *  3. Board 생성/확인 (Korean-Stock & 주식분석)
+ *  3. Board 생성/확인 (시장분석 & 한국주식)
  *  4. 실제 Pin 생성 테스트 (최근 WP 포스트 1개 사용)
  *
  * Usage: npx tsx src/scripts/test-pinterest.ts [--dry-run] [--pin]
@@ -98,8 +98,8 @@ async function main() {
     process.exit(1);
   }
 
-  // ── Step 3: Ensure Korean-Stock board exists ──
-  const targetBoard = 'Korean-Stock & 주식분석';
+  // ── Step 3: Ensure 시장분석 board exists ──
+  const targetBoard = 'Korean Stock Market Analysis';
   console.log(`\n[Step 3] Ensure board "${targetBoard}" exists`);
   let boardId: string | null = null;
   const existing = boards.find(b => b.name.toLowerCase() === targetBoard.toLowerCase());
@@ -187,7 +187,7 @@ async function main() {
           source_type: 'image_url',
           url: wpPost.imageUrl,
         },
-        alt_text: `${wpPost.title} — Korean-Stock guide`.substring(0, 500),
+        alt_text: `${wpPost.title} — 한국 주식시장 분석 가이드`.substring(0, 500),
       };
       info(`POST /v5/pins — board=${boardId}`);
       const { data: pin, status } = await axios.post(

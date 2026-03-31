@@ -18,8 +18,10 @@ interface RedditTrend {
 
 /** Subreddits relevant to Korea-focused content */
 const KOREA_SUBREDDITS: Record<string, string[]> = {
-  'Korean-Stock': ['korea', 'investing', 'stocks', 'algotrading', 'financialindependence'],
-  'AI-Trading': ['algotrading', 'quantfinance', 'python', 'learnpython', 'machinelearning'],
+  '시장분석': ['korea', 'investing', 'stocks', 'worldnews', 'Economics'],
+  '업종분석': ['investing', 'stocks', 'StockMarket', 'semiconductors', 'EVs'],
+  '테마분석': ['investing', 'stocks', 'SecurityAnalysis', 'theinvestmentclub'],
+  '종목분석': ['algotrading', 'quantfinance', 'python', 'learnpython', 'SecurityAnalysis'],
 };
 
 /**
@@ -79,8 +81,8 @@ export class RedditTrendsService {
         const koreaRelevant = posts.filter(p => {
           const title = p.title.toLowerCase();
           return title.includes('korea') || title.includes('korean') ||
-            title.includes('seoul') || title.includes('kpop') || title.includes('k-pop') ||
-            title.includes('samsung') || title.includes('hyundai') ||
+            title.includes('seoul') || title.includes('kospi') || title.includes('kosdaq') ||
+            title.includes('samsung') || title.includes('hyundai') || title.includes('sk hynix') ||
             broadTerm.toLowerCase().split(/\s+/).some(w => w.length > 3 && title.includes(w));
         });
 

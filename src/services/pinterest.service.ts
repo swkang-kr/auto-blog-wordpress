@@ -5,14 +5,18 @@ import type { BlogContent, PublishedPost } from '../types/index.js';
 
 /** Pinterest-eligible categories for auto-pinning */
 const PINTEREST_CATEGORIES = new Set([
-  'Korean-Stock',
-  'AI-Trading',
+  '시장분석',
+  '업종분석',
+  '테마분석',
+  '종목분석',
 ]);
 
 /** Map blog categories to Pinterest board names */
 const CATEGORY_BOARD_MAP: Record<string, string> = {
-  'Korean-Stock': 'Korean Stock Market & Investing',
-  'AI-Trading': 'AI Trading & Quant Strategy',
+  '시장분석': 'Korean Stock Market Analysis',
+  '업종분석': 'Korean Sector & Industry Analysis',
+  '테마분석': 'Korean Theme & Trend Investing',
+  '종목분석': 'Korean Stock Picks & Quant Strategy',
 };
 
 export class PinterestService {
@@ -104,12 +108,12 @@ export class PinterestService {
     // Extract primary keyword from tags or title
     const primaryKeyword = content.tags[0] || content.title.split(':')[0].trim();
 
-    // 30차 감사: Pinterest-optimized structure with niche-aware opening
-    // Korean-Stock: lead with ingredient/product for purchase-intent audience
-    // AI-Trading: lead with artist/group for fan-engagement audience
+    // Pinterest-optimized structure with niche-aware opening
     const nichePrefix: Record<string, string> = {
-      'Korean-Stock': 'Korean 주식분석 Guide: ',
-      'AI-Trading': '한국주식 & 금융분석: ',
+      '시장분석': '한국 시장분석 Guide: ',
+      '업종분석': '한국 업종분석 Guide: ',
+      '테마분석': '한국 테마분석 Guide: ',
+      '종목분석': '한국 종목분석 Guide: ',
     };
     const keywordOpening = `${nichePrefix[content.category] || ''}${primaryKeyword} — `;
     const valueExcerpt = content.excerpt.slice(0, 250 - keywordOpening.length);
@@ -117,8 +121,10 @@ export class PinterestService {
 
     // Add niche-aware CTA for Pinterest engagement
     const nicheCta: Record<string, string> = {
-      'Korean-Stock': '\n\nSave for your next K-beauty haul! Tap for the full product guide.',
-      'AI-Trading': '\n\nSave for later! Tap for the full guide and fan recommendations.',
+      '시장분석': '\n\nSave for later! Tap for full Korean market analysis.',
+      '업종분석': '\n\nSave for later! Tap for full Korean sector analysis.',
+      '테마분석': '\n\nSave for later! Tap for full Korean theme investing guide.',
+      '종목분석': '\n\nSave for later! Tap for the full stock analysis and strategy.',
     };
     const cta = nicheCta[content.category] || '\n\nSave this pin for later! Click through for the full guide.';
 
@@ -130,12 +136,12 @@ export class PinterestService {
    * Category-specific hashtags for Pinterest discoverability.
    */
   private getCategoryHashtags(category: string): string[] {
-    const base = ['#Korea', '#SouthKorea'];
+    const base = ['#한국주식', '#KoreanStocks', '#KOSPI', '#KOSDAQ'];
     const categoryTags: Record<string, string[]> = {
-      'Korean-Stock': ['#KoreanStocks', '#KOSPI', '#Investing', '#StockMarket',
-        '#Samsung', '#SKHynix', '#KoreanInvesting', '#StockAnalysis'],
-      'AI-Trading': ['#AlgoTrading', '#QuantTrading', '#PythonTrading', '#AIInvesting',
-        '#TradingStrategy', '#Backtesting', '#TechAnalysis', '#FinTech'],
+      '시장분석': ['#시장분석', '#StockMarket', '#KoreanMarket', '#Investing', '#MarketAnalysis'],
+      '업종분석': ['#업종분석', '#SectorAnalysis', '#KoreanSectors', '#Samsung', '#SKHynix'],
+      '테마분석': ['#테마분석', '#ThemeInvesting', '#KoreanThemes', '#TechStocks', '#Battery'],
+      '종목분석': ['#종목분석', '#AlgoTrading', '#QuantTrading', '#StockAnalysis', '#KoreanInvesting'],
     };
     return [...base, ...(categoryTags[category] || [])];
   }

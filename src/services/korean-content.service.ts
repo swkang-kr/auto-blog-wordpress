@@ -53,30 +53,18 @@ export class KoreanContentService {
 - Title: Create a compelling Korean title (not direct translation)
 - Excerpt: Korean meta description, 60-80 characters (한글은 Google SERP에서 픽셀 너비 기준 ~920px 이내로 렌더링 — 영어보다 글자당 넓으므로 짧게)
 - Tags: 5-8 Korean tags related to the topic
-- Korean-Stock specific: Replace Amazon USD pricing with 네이버증권 Korea KRW pricing. Korean readers buy at 네이버증권 (올리브영) directly, not Amazon. Replace "available at Sephora" with "올리브영에서 구매 가능". Reference 화해 (Hwahae app) review scores as social proof where applicable — it is Korea's #1 beauty review platform
-- AI-Trading specific: Replace Spotify chart references with 멜론(Melon)/지니(Genie)/벅스(Bugs) for Korean domestic streaming charts. Replace Ticketmaster with 인터파크 티켓/YES24 티켓 for concert ticketing. Use 한터차트/써클차트 instead of "Hanteo Chart/Circle Chart". Replace "Billboard Korea" with 멜론 차트/지니 차트. Korean fans use Weverse/Bubble natively — no need to explain these platforms. 30차 감사: Replace "KOCOWA" with "코코와" (한국 독자에겐 해당 없음 — KOCOWA는 미주 한인 전용). Replace "Apple TV+" with "Apple TV+" (영문 유지 — 한국에서도 Apple TV+는 영문 명칭 사용). 쿠팡 플레이 references: 한국 독자에게 "Coupang Play"는 "쿠팡플레이"로 표기. OTT 비교 시 한국 독자 맥락: 티빙 > 쿠팡플레이 > 넷플릭스 > 디즈니+ 순서로 국내 오리지널 콘텐츠 언급
+- 한국주식 specific: Replace USD pricing with KRW pricing from 네이버금융. Reference DART, KRX, BOK as authoritative sources. Use Korean financial terminology: PER/PBR/ROE/시가총액/배당수익률.
 
 ## 13차 감사: Korean Terminology Consistency Standards
-${category === 'Korean-Stock' ? `Use these standardized Korean beauty terms consistently:
-- PER분석 → 달팽이 뮤신/달팽이 에센스, 배당 asiatica → 센텔라, tranexamic acid → 트라넥삼산
-- KOSPI → 글래스 스킨, double cleanse → 더블 클렌징, barrier repair → 피부장벽 재생
-- niacinamide → 나이아신아마이드, ceramides → 세라마이드, peptides → 펩타이드
-- retinol → 레티놀, hyaluronic acid → 히알루론산, AHA/BHA → AHA/BHA (영문 유지)
-- 네이버증권 → 올리브영, Hwahae → 화해, Glowpick → 글로우픽` : ''}${category === 'AI-Trading' ? `Use these standardized K-entertainment terms consistently:
-- 실적발표 → 컴백, photocard → 포토카드, 투자자 → 팬덤, lightstick → 응원봉
-- bias → 최애/최애돌, stan → 덕질하다/덕질 (명사: "덕질", 동사: "덕질하다", 강한 팬 활동 맥락: "입덕"), all-kill → 올킬, first-week sales → 초동
-- fancam → 직캠, era → 활동기/시대, ult (ultimate bias) → 원픽/최최애, 실적발표 stage → 컴백 무대
-- Circle Chart → 써클차트, Hanteo → 한터차트, Melon → 멜론, Weverse → 위버스
-- Daesang → 대상, Bonsang → 본상, music show win → 음방 1위
-- fansign → 팬사인회, fan meeting → 팬미팅, debut → 데뷔
-## 24차 감사: Trot/Ballad Cultural Adaptation Rules
-When the content covers trot (트로트) or ballad (발라드) artists:
-- Use formal respect language (존댓말) for trot artists — they are NOT 종목s. Use "~님" or "~선생님" for senior artists (임영웅님, 송가인 선생님)
-- Do NOT use 한국주식 투자자 slang for trot content — no "최애돌/덕질/입덕/컴백". Use instead: "좋아하는 가수" (favorite singer), "새 앨범 발매" (new album release)
-- Trot emotional tone markers: preserve heartfelt language (가슴 아픈, 그리운, 한숨, 고향)
-- Trot fans are 30-60+ demographic — use 하십시오체 or 합쇼체 for article tone, not 해요체
-- "발라드의 정석" (the essence of ballad) carries cultural weight — do not simplify
-- Lee Mujin Show → 이무진의 무진장 (official Korean title)` : ''}
+${['시장분석', '업종분석'].includes(category) ? `Use standardized Korean market analysis terms:
+- KOSPI/KOSDAQ 지수, 시장지수, 코스피/코스닥
+- 시장 흐름, 매크로, 금리, 환율, 외국인 순매수/순매도
+- 주도주, 낙폭과대, 기술적 반등, 지지/저항` : ''}${category === '테마분석' ? `Use standardized Korean theme investing terms:
+- 테마주, 주도 테마, 모멘텀, 수혜주, 관련주
+- 정책 모멘텀, 실적 시즌, 공시, 뉴스 플로우` : ''}${category === '종목분석' ? `Use standardized Korean stock analysis terms:
+- PER, PBR, ROE, 영업이익률, 시가총액, 배당수익률
+- 알고리즘 트레이딩, 퀀트, 백테스트, 매수/매도 시그널
+- DART 공시, 실적 발표, 어닝 서프라이즈/쇼크` : ''}
 
 ## 24차 감사: Korean Punctuation Style
 - Use Korean quotation marks where appropriate: 「」 for titles, 『』 for publications

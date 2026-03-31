@@ -121,8 +121,8 @@ export class FactCheckService {
       }
     }
 
-    // 6. Category-specific checks (Finance pivot)
-    if (category === 'Korean-Stock') {
+    // 6. Category-specific checks (Korean stock market niches)
+    if (['시장분석', '업종분석', '테마분석', '종목분석'].includes(category || '')) {
       // Check for specific investment recommendations (YMYL violation)
       const investAdvice = /(?:you should|must|definitely|guaranteed to)\s+(?:buy|sell|invest in|short|avoid)/gi;
       const adviceMatches = plainText.match(investAdvice) || [];
@@ -153,7 +153,7 @@ export class FactCheckService {
       }
     }
 
-    if (category === 'AI-Trading') {
+    if (category === '종목분석') {
       // Check backtest claims without caveats
       const backtestClaims = /(?:backtest|backtested)\s+(?:showed|returned|achieved|generated)\s+(\d+(?:\.\d+)?%?\s+(?:return|profit|annual|CAGR))/gi;
       const backtestMatches = plainText.match(backtestClaims) || [];
@@ -244,35 +244,18 @@ export class FactCheckService {
 
     // 9. (Reserved for future niche-specific checks)
 
-    // 10. Korean-Stock: Check for recalled or discontinued product claims
-    if (category === 'Korean-Stock') {
-      // Check sunscreen SPF claims — MFDS caps Korean sunscreen at SPF 50+
-      const spfRegex = /SPF\s*(\d+)/gi;
-      const spfMatches = plainText.match(spfRegex) || [];
-      for (const match of spfMatches) {
-        const spfVal = parseInt(match.replace(/SPF\s*/i, ''));
-        if (spfVal > 100) {
-          flagged.push(`Unlikely SPF claim: "${match}" — SPF above 100 is not recognized by MFDS or FDA`);
-          unverified++;
-        } else if (spfVal > 50 && /(?:korean|korean-stock|MFDS|olive\s*young|amorepacific|innisfree|beauty\s*of\s*joseon|삼성전자|isntree|round\s*lab)/i.test(plainText)) {
-          flagged.push(
-            `SPF ${spfVal} stated for Korean product — MFDS caps sunscreen labeling at SPF 50+ (최대 표시). ` +
-            `Korean-market products must display as "SPF 50+" regardless of actual protection level.`,
-          );
-          unverified++;
-        }
-      }
-
-      // 네이버증권 ranking claims — flag if missing date qualifier
-      const oliveYoungRankRegex = /(?:네이버증권|올리브영)\s*(?:best\s*seller|#\d+|number\s*\d+|ranked?\s*#?\d+|top\s*\d+)/gi;
-      const oliveYoungMatches = plainText.match(oliveYoungRankRegex) || [];
-      for (const match of oliveYoungMatches) {
+    // 10. Korean stock market: Check for stale price/data claims
+    if (['시장분석', '업종분석', '테마분석', '종목분석'].includes(category || '')) {
+      // 네이버금융 / KRX data ranking claims — flag if missing date qualifier
+      const naverFinRankRegex = /(?:네이버금융|KRX|코스피|코스닥)\s*(?:시가총액\s*\d+위|상위\s*\d+|top\s*\d+)/gi;
+      const naverFinMatches = plainText.match(naverFinRankRegex) || [];
+      for (const match of naverFinMatches) {
         const surroundingText = plainText.slice(
           Math.max(0, plainText.indexOf(match) - 80),
           plainText.indexOf(match) + match.length + 80,
         );
-        if (!/as of|updated|current|202\d|checked/i.test(surroundingText)) {
-          flagged.push(`네이버증권 ranking claim without date qualifier: "${match}" — add "as of [Month Year]" since rankings change frequently`);
+        if (!/as of|기준|updated|current|202\d/i.test(surroundingText)) {
+          flagged.push(`Market data claim without date qualifier: "${match}" — add "as of [날짜] 기준" since market data changes daily`);
           unverified++;
         }
       }

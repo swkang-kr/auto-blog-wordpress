@@ -12,15 +12,25 @@ import { NICHES } from '../config/niches.js';
 import { logger } from '../utils/logger.js';
 
 const LEAD_MAGNET_PROMPTS: Record<string, { title: string; type: string; description: string }> = {
-  'Korean-Stock': {
-    title: 'Korean 주식분석 Routine Builder Workbook',
-    type: 'workbook',
-    description: 'A printable workbook for building a personalized Korean 주식분석 routine, with ingredient guides, product recommendations, and tracking sheets.',
+  '시장분석': {
+    title: 'KOSPI/KOSDAQ 시황 분석 체크리스트',
+    type: 'checklist',
+    description: 'A daily market analysis checklist covering KOSPI/KOSDAQ key levels, BOK policy, foreign net buying, and macro indicators for Korean stock investors.',
   },
-  'AI-Trading': {
-    title: '한국주식 Business Analysis Toolkit',
+  '업종분석': {
+    title: '한국 업종별 투자 전략 가이드',
+    type: 'guide',
+    description: 'Sector rotation guide for Korean stocks — semiconductors, batteries, bio, internet, and financial sectors with earnings cycle maps.',
+  },
+  '테마분석': {
+    title: '한국 테마주 발굴 워크시트',
+    type: 'workbook',
+    description: 'A structured workbook for identifying theme stocks (테마주): policy catalysts, beneficiary companies, entry timing, and risk checklist.',
+  },
+  '종목분석': {
+    title: '한국 주식 종목 분석 툴킷',
     type: 'toolkit',
-    description: 'Industry analysis frameworks for understanding 한국주식 agencies, revenue models, and entertainment stock valuations.',
+    description: 'Fundamental + technical analysis toolkit for Korean stocks: PER/PBR/ROE templates, DART disclosure reading guide, and quant scoring framework.',
   },
 };
 

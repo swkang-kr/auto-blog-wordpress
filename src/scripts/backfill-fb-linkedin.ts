@@ -101,7 +101,12 @@ async function main() {
 
     const url = wpPost.link;
     const excerpt = stripHtml(wpPost.content).substring(0, 300);
-    const category = entry.niche === 'korean-stock-주식분석' ? 'Korean-Stock' : 'AI-Trading';
+    const NICHE_TO_CAT: Record<string, string> = {
+      'market-analysis': '시장분석', 'sector-analysis': '업종분석',
+      'theme-analysis': '테마분석', 'stock-analysis': '종목분석',
+      'korean-stock': '시장분석', 'ai-trading': '종목분석',
+    };
+    const category = (entry.niche ? NICHE_TO_CAT[entry.niche] : null) || '시장분석';
 
     const blogContent: BlogContent = {
       title: wpPost.title,

@@ -6,9 +6,9 @@ import type { BlogContent, PublishedPost } from '../types/index.js';
 
 const HASHNODE_GQL = 'https://gql.hashnode.com';
 
-/** Hashnode syndicates all content categories for maximum reach */
+/** Hashnode syndicates all Korean stock market content categories */
 const HASHNODE_ALLOWED_CATEGORIES = new Set([
-  'Korean-Stock', 'AI-Trading',
+  '시장분석', '업종분석', '테마분석', '종목분석',
 ]);
 
 export class HashnodeService {

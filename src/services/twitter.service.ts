@@ -152,8 +152,10 @@ export class TwitterService {
   /** Build category-aware hashtags for better discoverability */
   private buildHashtags(tags: string[], category: string): string {
     const categoryHashtags: Record<string, string[]> = {
-      'Korean-Stock': ['#KBeauty', '#주식분석', '#KoreanBeauty'],
-      'AI-Trading': ['#KPop', '#KDrama', '#한국시장', '#KHipHop'],
+      '시장분석': ['#한국주식', '#KOSPI', '#시장분석'],
+      '업종분석': ['#업종분석', '#KoreanSectors', '#KOSDAQ'],
+      '테마분석': ['#테마주', '#테마분석', '#KoreanThemes'],
+      '종목분석': ['#종목분석', '#알고트레이딩', '#KoreanStocks'],
     };
     const catTags = categoryHashtags[category] || [];
     const contentTags = tags.slice(0, 2).map((t) => `#${t.replace(/\s+/g, '')}`);

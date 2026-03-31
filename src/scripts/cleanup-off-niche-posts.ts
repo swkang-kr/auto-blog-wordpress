@@ -37,10 +37,10 @@ const NICHE_CATEGORIES = new Set(NICHES.map((n) => n.category));
 
 // ── Korea-related keywords (keep these posts even if not in a niche category yet) ──
 const KOREA_FILTER = [
-  'korea', 'korean', '한국', 'seoul', 'busan', 'k-pop', 'kpop', 'k-drama', 'kdrama',
-  '한국시장', 'samsung', 'naver', 'kakao', 'hyundai', 'sk hynix', 'lg ', 'kospi', 'kosdaq',
-  'won ', 'krw', 'hybe', 'sm entertainment', 'jyp', 'DART공시', 'chaebol',
-  'bank of korea', 'pangyo', 'gangnam',
+  'korea', 'korean', '한국', 'seoul', 'kospi', 'kosdaq',
+  'samsung', 'naver', 'kakao', 'hyundai', 'sk hynix', 'lg ', 'posco',
+  'won ', 'krw', 'dart', 'bok', 'bank of korea', 'krx',
+  '주식', '종목', '시장', '업종', '테마', '반도체', '2차전지', '배터리',
 ];
 
 // ── Types ──
@@ -251,7 +251,7 @@ async function updateAuthorDisplayName(): Promise<void> {
       first_name: SITE_OWNER,
       last_name: '',
       nickname: SITE_OWNER,
-      description: me.description || `Editor at ${SITE_NAME}. Covering Korean-Stock 주식분석 and AI-Trading (한국주식, 금융분석, 한국시장 culture).`,
+      description: me.description || `Editor at ${SITE_NAME}. Covering Korean stock market analysis: KOSPI·KOSDAQ 시황분석, 업종분석, 테마주, 종목분석.`,
     });
     console.log(`✅ Updated display name to "${SITE_OWNER}"`);
   } catch (err: any) {

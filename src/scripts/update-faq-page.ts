@@ -1,6 +1,6 @@
 /**
  * update-faq-page.ts
- * FAQ 페이지를 현재 니치(Korean-Stock, AI-Trading)에 맞게 즉시 업데이트합니다.
+ * FAQ 페이지를 현재 니치(시장분석, 업종분석, 테마분석, 종목분석)에 맞게 즉시 업데이트합니다.
  *
  * Usage: npx tsx src/scripts/update-faq-page.ts
  */

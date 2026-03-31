@@ -35,10 +35,10 @@ const NICHE_CATEGORY_MAP: Record<string, string> = {};
 for (const n of NICHES) {
   NICHE_CATEGORY_MAP[n.id] = n.category;
 }
-// Legacy niche IDs from old config
+// Legacy niche IDs from old config (mapped to new category names)
 const LEGACY_NICHE_MAP: Record<string, string> = {
-  'korean-stock': 'Korean-Stock',
-  'ai-trading': 'AI-Trading',
+  'korean-stock': '시장분석',
+  'ai-trading': '종목분석',
 };
 
 function resolveCategory(nicheId?: string): string {

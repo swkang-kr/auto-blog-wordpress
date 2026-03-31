@@ -1,6 +1,6 @@
 /**
  * recategorize-posts.ts
- * 기존 포스트를 니치 카테고리(Korean-Stock, AI-Trading)에 재분류합니다.
+ * 기존 포스트를 니치 카테고리(시장분석, 업종분석, 테마분석, 종목분석)에 재분류합니다.
  * 제목/태그/콘텐츠 키워드 기반으로 자동 매칭 후 카테고리를 업데이트합니다.
  *
  * Usage: npx tsx src/scripts/recategorize-posts.ts [--dry-run]
@@ -28,22 +28,21 @@ const api: AxiosInstance = axios.create({
 
 // Keyword patterns for each niche
 const NICHE_KEYWORDS: Record<string, string[]> = {
-  'Korean-Stock': [
-    '주식분석', 'beauty', 'cosmetic', 'moisturizer', 'serum', 'sunscreen', 'spf',
-    'toner', 'cleanser', 'mask', 'essence', 'ampoule', 'korean-stock', 'koreanstock',
-    '삼성전자', 'laneige', 'innisfree', 'sulwhasoo', 'missha', 'etude', 'tirtir',
-    'numbuzin', 'biodance', 'anua', 'torriden', 'skin1004', '네이버증권',
-    'KOSPI', 'korean 주식분석', 'routine', 'ingredient', 'niacinamide',
-    'retinol', 'PER분석', '배당', 'hyaluronic', 'collagen',
+  '시장분석': [
+    'kospi', 'kosdaq', '시장', 'market', 'fomc', 'bok', '금리', '환율', 'gdp',
+    '주식시장', '시장분석', 'etf', 'ipo', '공모주', '배당', 'vix',
   ],
-  'AI-Trading': [
-    'k-pop', 'kpop', 'k pop', 'k-drama', 'kdrama', 'k drama', 'bts', 'blackpink',
-    '한국시장', 'korean wave', '종목', 'entertainment', 'music', 'drama', 'movie', 'film',
-    'DART공시', 'manhwa', 'netflix', 'streaming', 'concert', 'album',
-    'hybe', 'sm entertainment', 'jyp', 'yg', 'agency', 'debut', '실적발표',
-    'variety show', 'reality', 'celebrity', 'fan', '투자자', 'ost', 'soundtrack',
-    'korean culture', 'squid game', 'oscar', 'award', 'box office',
-    'aespa', 'le sserafim', 'ive', 'newjeans', 'stray kids', '(g)i-dle',
+  '업종분석': [
+    '반도체', 'semiconductor', '2차전지', 'battery', '전기차', 'ev', '바이오', 'bio',
+    '방산', 'defense', '조선', '철강', '섹터', '업종', 'sector', 'rotation',
+  ],
+  '테마분석': [
+    '테마주', '테마', 'theme', 'ai 관련', '로봇', '수소', '우주', 'smr', '원전',
+    '전고체', 'saaS', 'cloud', '사이버', '정책 수혜',
+  ],
+  '종목분석': [
+    'rsi', 'macd', '볼린저', 'bollinger', '기술적 분석', '차트', '워치리스트',
+    '수급', '외국인', '기관', '순매수', '종목분석',
   ],
 };
 
@@ -72,12 +71,10 @@ function decodeHtml(text: string): string {
 
 // Posts must mention Korea-related terms to be eligible for niche categorization
 const KOREA_FILTER = [
-  'korea', 'korean', '한국', 'seoul', 'busan', 'k-pop', 'kpop', 'k-drama', 'kdrama',
-  '한국시장', 'samsung', 'naver', 'kakao', 'hyundai', 'sk hynix', 'lg ', 'kospi', 'kosdaq',
-  'won ', 'krw', 'hybe', 'sm entertainment', 'sm 복귀', 'jyp', 'DART공시', 'chaebol',
-  'bank of korea', 'pangyo', 'gangnam',
-  // Korean entertainment names
-  '빅플래닛', '태민', '샤이니', '가왕', '복면가왕', '현역가왕',
+  'korea', 'korean', '한국', 'seoul', 'kospi', 'kosdaq',
+  'samsung', 'naver', 'kakao', 'hyundai', 'sk hynix', 'lg ', 'posco',
+  'won ', 'krw', 'dart', 'bok', 'bank of korea', 'krx', '주식', '종목',
+  '시장', '업종', '테마', '반도체', '2차전지', '배터리', '방산', '바이오',
 ];
 
 // Exclude food/recipe posts — they don't fit any niche

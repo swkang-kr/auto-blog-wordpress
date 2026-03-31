@@ -18,21 +18,21 @@ export const KOREAN_SEASONAL_EVENTS: Array<{
   { name: 'BOK Rate Decision (Apr)', startMonth: 4, startDay: 1, endMonth: 4, endDay: 15, leadTimeDays: 14, relevantNiches: ['시장분석'], contentAngles: ['BOK April rate impact analysis'] },
   { name: 'BOK Rate Decision (Jul)', startMonth: 7, startDay: 1, endMonth: 7, endDay: 15, leadTimeDays: 14, relevantNiches: ['시장분석'], contentAngles: ['BOK July rate decision analysis'] },
   { name: 'BOK Rate Decision (Oct)', startMonth: 10, startDay: 1, endMonth: 10, endDay: 15, leadTimeDays: 14, relevantNiches: ['시장분석'], contentAngles: ['BOK October rate decision analysis'] },
-  { name: 'FOMC Meeting (Mar)', startMonth: 3, startDay: 15, endMonth: 3, endDay: 25, leadTimeDays: 14, relevantNiches: ['시장분석', '수급분석'], contentAngles: ['FOMC March Korean market impact'] },
-  { name: 'FOMC Meeting (Jun)', startMonth: 6, startDay: 10, endMonth: 6, endDay: 20, leadTimeDays: 14, relevantNiches: ['시장분석', '수급분석'], contentAngles: ['FOMC June Korean market forecast'] },
-  { name: 'FOMC Meeting (Sep)', startMonth: 9, startDay: 15, endMonth: 9, endDay: 25, leadTimeDays: 14, relevantNiches: ['시장분석', '수급분석'], contentAngles: ['FOMC September Korean stock analysis'] },
-  { name: 'FOMC Meeting (Dec)', startMonth: 12, startDay: 10, endMonth: 12, endDay: 20, leadTimeDays: 14, relevantNiches: ['시장분석', '수급분석'], contentAngles: ['FOMC December year-end impact'] },
+  { name: 'FOMC Meeting (Mar)', startMonth: 3, startDay: 15, endMonth: 3, endDay: 25, leadTimeDays: 14, relevantNiches: ['시장분석', '종목분석'], contentAngles: ['FOMC March Korean market impact'] },
+  { name: 'FOMC Meeting (Jun)', startMonth: 6, startDay: 10, endMonth: 6, endDay: 20, leadTimeDays: 14, relevantNiches: ['시장분석', '종목분석'], contentAngles: ['FOMC June Korean market forecast'] },
+  { name: 'FOMC Meeting (Sep)', startMonth: 9, startDay: 15, endMonth: 9, endDay: 25, leadTimeDays: 14, relevantNiches: ['시장분석', '종목분석'], contentAngles: ['FOMC September Korean stock analysis'] },
+  { name: 'FOMC Meeting (Dec)', startMonth: 12, startDay: 10, endMonth: 12, endDay: 20, leadTimeDays: 14, relevantNiches: ['시장분석', '종목분석'], contentAngles: ['FOMC December year-end impact'] },
   { name: 'Korean Dividend Season', startMonth: 12, startDay: 1, endMonth: 12, endDay: 31, leadTimeDays: 45, relevantNiches: ['시장분석'], contentAngles: ['Korean high dividend stocks year-end'] },
   { name: 'MSCI Rebalancing (May)', startMonth: 5, startDay: 20, endMonth: 6, endDay: 5, leadTimeDays: 30, relevantNiches: ['시장분석'], contentAngles: ['MSCI rebalancing Korean stock impact'] },
   { name: 'MSCI Rebalancing (Nov)', startMonth: 11, startDay: 10, endMonth: 11, endDay: 30, leadTimeDays: 30, relevantNiches: ['시장분석'], contentAngles: ['MSCI November Korean rebalancing'] },
-  { name: 'CES', startMonth: 1, startDay: 5, endMonth: 1, endDay: 12, leadTimeDays: 30, relevantNiches: ['시장분석', '수급분석'], contentAngles: ['CES Korean tech Samsung LG stock impact'] },
+  { name: 'CES', startMonth: 1, startDay: 5, endMonth: 1, endDay: 12, leadTimeDays: 30, relevantNiches: ['시장분석', '테마분석'], contentAngles: ['CES Korean tech Samsung LG stock impact'] },
   { name: 'Year-End Tax Loss Selling', startMonth: 11, startDay: 15, endMonth: 12, endDay: 28, leadTimeDays: 30, relevantNiches: ['시장분석'], contentAngles: ['Korean stock tax loss selling strategy'] },
   { name: 'Korean IPO Season (Spring)', startMonth: 3, startDay: 1, endMonth: 5, endDay: 31, leadTimeDays: 30, relevantNiches: ['시장분석'], contentAngles: ['upcoming Korean IPO stocks guide'] },
   { name: 'Korean IPO Season (Fall)', startMonth: 9, startDay: 1, endMonth: 11, endDay: 30, leadTimeDays: 30, relevantNiches: ['시장분석'], contentAngles: ['fall Korean IPO pipeline analysis'] },
-  { name: 'Options Expiry (Mar)', startMonth: 3, startDay: 8, endMonth: 3, endDay: 15, leadTimeDays: 7, relevantNiches: ['시장분석', '수급분석'], contentAngles: ['Korean options expiry volatility impact'] },
-  { name: 'Options Expiry (Jun)', startMonth: 6, startDay: 8, endMonth: 6, endDay: 15, leadTimeDays: 7, relevantNiches: ['시장분석', '수급분석'], contentAngles: ['Korean options expiry June impact'] },
-  { name: 'Options Expiry (Sep)', startMonth: 9, startDay: 8, endMonth: 9, endDay: 15, leadTimeDays: 7, relevantNiches: ['시장분석', '수급분석'], contentAngles: ['Korean options expiry September'] },
-  { name: 'Options Expiry (Dec)', startMonth: 12, startDay: 8, endMonth: 12, endDay: 15, leadTimeDays: 7, relevantNiches: ['시장분석', '수급분석'], contentAngles: ['year-end options expiry Korean market'] },
+  { name: 'Options Expiry (Mar)', startMonth: 3, startDay: 8, endMonth: 3, endDay: 15, leadTimeDays: 7, relevantNiches: ['시장분석', '종목분석'], contentAngles: ['Korean options expiry volatility impact'] },
+  { name: 'Options Expiry (Jun)', startMonth: 6, startDay: 8, endMonth: 6, endDay: 15, leadTimeDays: 7, relevantNiches: ['시장분석', '종목분석'], contentAngles: ['Korean options expiry June impact'] },
+  { name: 'Options Expiry (Sep)', startMonth: 9, startDay: 8, endMonth: 9, endDay: 15, leadTimeDays: 7, relevantNiches: ['시장분석', '종목분석'], contentAngles: ['Korean options expiry September'] },
+  { name: 'Options Expiry (Dec)', startMonth: 12, startDay: 8, endMonth: 12, endDay: 15, leadTimeDays: 7, relevantNiches: ['시장분석', '종목분석'], contentAngles: ['year-end options expiry Korean market'] },
 ];
 /** 콘텐츠 유형 */
 export type ContentType = 'how-to' | 'best-x-for-y' | 'x-vs-y' | 'analysis' | 'deep-dive' | 'news-explainer' | 'listicle' | 'case-study' | 'product-review';
@@ -57,7 +57,7 @@ export const CONTENT_FRESHNESS_MAP: Record<ContentType, FreshnessClass> = {
 export const FRESHNESS_UPDATE_INTERVALS: Record<FreshnessClass, number> = {
   'evergreen': 180,       // Semi-annual review
   'seasonal': 60,         // Bi-monthly update
-  'time-sensitive': 30,   // AI-Trading 실적발표 news expires in 30 days; archive/update promptly to avoid stale content
+  'time-sensitive': 30,   // 시장분석/종목분석 시황 news expires in 30 days; archive/update promptly to avoid stale content
 };
 
 /** Author profile for E-E-A-T credibility signals */
@@ -127,9 +127,7 @@ export const CONTENT_TYPE_PERSONA_MAP: Record<string, 'primary' | 'secondary' | 
   'product-review': 'secondary',
 };
 
-// Finance pivot: Korean-Stock/AI-Trading tertiary keywords removed
-
-// Finance pivot: AI-Trading tertiary keywords removed
+// Finance pivot: legacy niche tertiary keywords removed
 
 /** 니치 설정 */
 export interface NicheConfig {
@@ -138,7 +136,7 @@ export interface NicheConfig {
   category: string;
   /** Broad 1-2 word term used for Google Trends rising query discovery */
   broadTerm: string;
-  /** Additional broad terms for multi-topic niches (e.g., AI-Trading covers 한국주식 + 금융분석 + K-movie) */
+  /** Additional broad terms for multi-topic niches (e.g., 시장분석 covers KOSPI + KOSDAQ + macro) */
   broadTermsExtra?: string[];
   /** Fallback seed keywords used when Trends API returns no rising queries */
   seedKeywords: string[];
@@ -161,7 +159,6 @@ export const CATEGORY_PUBLISH_TIMING: Record<string, { optimalHour: number; best
   '시장분석': { optimalHour: 23, bestDays: [1, 2, 3, 4, 5] },
   '업종분석': { optimalHour: 23, bestDays: [1, 2, 3, 4, 5] },
   '테마분석': { optimalHour: 23, bestDays: [1, 2, 3, 4, 5] },
-  '수급분석': { optimalHour: 23, bestDays: [1, 2, 3, 4, 5] },
   '종목분석': { optimalHour: 23, bestDays: [1, 2, 3, 4, 5] },
 };
 
@@ -171,7 +168,6 @@ export const NICHE_DISCLAIMERS: Record<string, string> = {
   '시장분석': FINANCE_DISCLAIMER,
   '업종분석': FINANCE_DISCLAIMER,
   '테마분석': FINANCE_DISCLAIMER,
-  '수급분석': FINANCE_DISCLAIMER,
   '종목분석': FINANCE_DISCLAIMER,
 };
 

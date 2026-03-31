@@ -101,7 +101,12 @@ export class ContentRefreshService {
           if (rpmByCategory) {
             const entry = freshnessData.find(f => f.postUrl && (slug.includes(f.postUrl.replace(/^https?:\/\/[^/]+/, '').replace(/\/+$/, '')) || f.postUrl.includes(p.url.replace(/^\//, ''))));
             if (entry?.niche) {
-              const nicheCategory = entry.niche.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()).replaceAll('K Beauty', 'Korean-Stock').replaceAll('K Entertainment', 'AI-Trading');
+              const NICHE_CAT_MAP: Record<string, string> = {
+                'market-analysis': '시장분석', 'sector-analysis': '업종분석',
+                'theme-analysis': '테마분석', 'stock-analysis': '종목분석',
+                'korean-stock': '시장분석', 'ai-trading': '종목분석', // legacy
+              };
+              const nicheCategory = NICHE_CAT_MAP[entry.niche] || entry.niche;
               const rpm = rpmByCategory[nicheCategory] || 5;
               // High RPM posts get negative boost (lower score = higher priority)
               revenueBoost = -(rpm / 15) * 10; // Max ~-8 for $12 RPM categories
@@ -900,36 +905,36 @@ Return JSON only: {"title":"new title","metaDescription":"new meta description",
 
     // Detect niche from title and content for context-aware rewrite instructions
     const titleAndContent = (post.title.rendered + ' ' + contentPreview).toLowerCase();
-    const isKBeauty = ['삼성전자', 'anua', 'laneige', 'innisfree', 'skin1004', 'medicube', 'isntree',
-      'haruharu', '주식분석', 'korean-stock', 'korean 주식분석', 'sunscreen', 'serum', 'toner pad',
-      'moisturizer', '네이버증권', 'beauty of joseon', 'torriden', 'rom&nd', 'clio'].some(t => titleAndContent.includes(t));
-    const isKEntertainment = ['kpop', 'k-pop', 'k-drama', 'kdrama', '종목', '실적발표', 'bts',
-      'blackpink', 'twice', 'aespa', 'illit', 'newjeans', 'le sserafim', 'ateez', 'stray kids',
-      'seventeen', 'drama', 'netflix korea', '한국시장', 'weverse', 'hanteo',
-      'shinee', 'red velvet', 'got7', 'day6', 'the boyz', 'treasure', 'btob',
-      'ive', 'nmixx', 'itzy', 'enhypen', 'txt', 'babymonster', 'plave'].some(t => titleAndContent.includes(t));
+    const isMarketAnalysis = ['kospi', 'kosdaq', '시장분석', 'fomc', 'bok', '금리', '환율', 'vix', 'gdp'].some(t => titleAndContent.includes(t));
+    const isSectorAnalysis = ['반도체', '2차전지', '배터리', '전기차', '바이오', '방산', '조선', '섹터', '업종분석'].some(t => titleAndContent.includes(t));
+    const isThemeAnalysis = ['테마주', '테마분석', 'ai 관련주', '로봇', '수소', '우주', 'smr'].some(t => titleAndContent.includes(t));
+    const isStockPick = ['종목분석', 'rsi', 'macd', '볼린저', '기술적 분석', '워치리스트', '수급'].some(t => titleAndContent.includes(t));
 
-    const nicheRewriteRules = isKBeauty ? `
-NICHE-SPECIFIC RULES — Korean-Stock:
-- Include active ingredient concentration (%) and pH where known (high E-E-A-T signal)
-- Add or update pricing table: 네이버증권 KRW / Amazon USD / YesStyle (if product review)
-- Update 네이버증권 bestseller ranking positions with "as of [Month Year]" qualifier — rankings change frequently
-- Note whether products are 네이버증권 exclusive or globally available (Amazon/YesStyle)
-- Add or update skin type suitability matrix (oily / dry / combination / sensitive)
-- Reference emerging 2025-2026 brands where relevant: MEDICUBE, Isntree, Haruharu Wonder
-- Cite editorial sources: Allure, Harper's Bazaar Korea, INCI Decoder for credibility
-- Check for discontinued or reformulated products — Korean brands iterate formulations frequently` : isKEntertainment ? `
-NICHE-SPECIFIC RULES — AI-Trading:
-- Use fan-friendly language: 실적발표, era, stan, bias, ult, 투자자
-- Include fan-relevant metrics where available: MV view counts (YouTube), Melon/Circle Chart positions
-- Update group/member status to ${currentYear} (실적발표s, hiatuses, military enlistment)
-- Cover 4th-gen groups if relevant: ILLIT, KISS OF LIFE, TWS, ATEEZ, LE SSERAFIM
-- Reference Weverse, photocard culture, or fan community dynamics for depth
-- Cite industry sources: Hanteo Chart, Circle Chart, Billboard Korea
-- 12차 감사: COMEBACK CYCLE CHECK — 한국주식 groups release every 6-8 months; if post is about a group's discography/best songs and a new album has likely dropped since publishing, refresh with latest 실적발표 data
-- 12차 감사: CONTRACT CYCLE CHECK — Korean entertainment contracts are typically 7 years from debut. If a group is near 7-year mark, note contract renewal status or independent activities. Groups at 7-year mark: GOT7 (independent 2021), MAMAMOO (independent 2023), Red Velvet (renewed 2021), BTOB (renewed 2019). Newer groups approaching: SEVENTEEN (2022 renewed early), Stray Kids (2025 area), ATEEZ (2025 area)
-- 12차 감사: AWARD SHOW FRESHNESS — prediction posts should be updated to recap after ceremony airs; check if award results have been announced since original publish date
-- 12차 감사: CHART DATA STALENESS — any chart position cited (Hanteo, Circle, Melon) older than 4 weeks should be refreshed or hedged with "as of [date]"` : '';
+    const nicheRewriteRules = isMarketAnalysis ? `
+NICHE-SPECIFIC RULES — 시장분석:
+- Update KOSPI/KOSDAQ index levels and percentage changes with "as of [Month Year]" qualifier
+- Cite recent FOMC or BOK rate decisions with exact dates and basis point changes
+- Include exchange rate (USD/KRW) context where relevant
+- Reference institutional net buy/sell data from KRX statistics
+- Cite sources: BOK (bok.or.kr), KRX, KOSIS, DART for credibility` : isSectorAnalysis ? `
+NICHE-SPECIFIC RULES — 업종분석:
+- Update individual stock price levels with "as of [Month Year]" qualifier
+- Include consensus target price and analyst ratings where available
+- Update Q/Q and Y/Y earnings data (EPS, revenue) with latest quarterly results
+- Note any recent material events: earnings beat/miss, product launches, partnerships
+- Cite sources: DART disclosures, Bloomberg, Naver Finance` : isThemeAnalysis ? `
+NICHE-SPECIFIC RULES — 테마분석:
+- Update related stock list with current market cap and YTD performance
+- Check if any theme stocks have been added/removed from major indices
+- Reference policy developments or industry events that support the theme
+- Add risk factors: theme stocks carry higher volatility than blue chips
+- Cite sources: industry reports, MSIT, government policy announcements` : isStockPick ? `
+NICHE-SPECIFIC RULES — 종목분석:
+- Update technical indicator readings (RSI, MACD) — these change daily; note data date
+- Refresh watchlist with current price action context
+- Note any DART disclosures since original publish date that affect the analysis
+- Emphasize that technical analysis is for reference only, not investment advice
+- Add investment disclaimer if missing` : '';
 
 
     const prompt = `You are rewriting an underperforming blog post to improve reader engagement and reduce bounce rate. The post exists at ${post.link} and must keep its URL/slug unchanged.

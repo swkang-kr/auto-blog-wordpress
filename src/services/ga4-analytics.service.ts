@@ -445,9 +445,13 @@ Favor top-performing content types when choosing format for each niche.`;
         if (!entry?.niche) continue;
 
         // Find category for this niche
-        const category = entry.niche.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
-          .replace('K Beauty', 'Korean-Stock')
-          .replace('K Entertainment', 'AI-Trading');
+        // Map niche ID to category name
+        const NICHE_ID_TO_CATEGORY: Record<string, string> = {
+          'market-analysis': '시장분석', 'sector-analysis': '업종분석',
+          'theme-analysis': '테마분석', 'stock-analysis': '종목분석',
+          'korean-stock': '시장분석', 'ai-trading': '종목분석', // legacy
+        };
+        const category = NICHE_ID_TO_CATEGORY[entry.niche] || entry.niche;
         const rpm = rpmByCategory[category] || 3; // Default RPM $3 if unknown
         const estimatedRevenue = (post.pageviews / 1000) * rpm;
 

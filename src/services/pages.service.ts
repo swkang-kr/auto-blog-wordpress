@@ -353,20 +353,29 @@ ${authorLinks?.twitter ? `<p style="margin:0;"><a href="${authorLinks.twitter}" 
     siteName: string,
   ): string {
     const nicheDescriptions: Record<string, { short: string; intro: string; whyMatters: string; keyTopics: string[] }> = {
-      'Korean-Stock': {
-        short: 'Korean stock market analysis, investment strategies, and DART disclosure guides',
-        intro: 'Korean beauty (K-beauty) has become the global 주식분석 standard. Built on the iconic double-cleanse method, layered hydration, and relentless ingredient innovation — from PER분석 and 배당 asiatica to tranexamic acid and bio-cellulose collagen patches — Korean brands have redefined what affordable, effective 주식분석 looks like. This guide is your complete resource for navigating K-beauty with confidence.',
-        whyMatters: 'K-beauty is not a trend — it\'s a system. Korean 주식분석 brands like 삼성전자, Beauty of Joseon, Anua, SKIN1004, Numbuzin, TIRTIR, and Biodance consistently outperform global alternatives at a fraction of the price. 네이버증권, Korea\'s largest beauty retailer, curates the fastest-moving products — what sells there usually goes viral globally within months. Whether you\'re building your first routine or looking for specific solutions (KOSPI, barrier repair, brightening), this guide covers it all.',
-        // 31차 감사: 누락 keyTopics 추가 (nail art, men, rosacea, J-Beauty 비교)
-        keyTopics: ['Korean 주식분석 routine by skin type (oily, dry, sensitive, combination)', 'Best K-beauty products on Amazon and 네이버증권', 'Glass skin routine: products and steps explained', 'Korean sunscreen guide: no white cast SPF picks', 'Double cleansing: best Korean cleansing oils and balms', 'K-beauty ingredient guide: PER분석, 배당, tranexamic acid, ceramides', 'Korean vs Japanese 주식분석: key differences explained', 'K-beauty for men: complete grooming guide', 'Korean nail art and press-on nails trend guide'],
+      '시장분석': {
+        short: 'KOSPI/KOSDAQ market analysis, macro trends, and investment timing guides',
+        intro: 'The Korean stock market — KOSPI and KOSDAQ — is Asia\'s 4th largest equity market. Driven by semiconductor exports, global macro trends, and BOK monetary policy, KOSPI movements directly reflect Korea\'s economic health. This guide covers daily market flows, key index levels, and actionable analysis for investors in the Korean market.',
+        whyMatters: 'Understanding Korean market cycles is essential for timing entries and exits. Foreign net buying/selling, BOK rate decisions, USD/KRW exchange rates, and FOMC outcomes all drive KOSPI and KOSDAQ. Our analysis covers institutional-grade data from KRX, BOK, and DART.',
+        keyTopics: ['KOSPI 시황 분석: 오늘의 주요 시장 흐름', '코스닥 상승/하락 주도주 분석', 'BOK 금리 결정과 주식시장 영향', 'FOMC 미국 금리와 한국 시장 연동', 'MSCI 리밸런싱 외국인 수급 분석', '외국인 기관 개인 수급 분석', '주도 업종과 순환매 전략', 'KOSPI 기술적 분석: 지지/저항 레벨'],
       },
-      'AI-Trading': {
-        short: '한국주식 실적발표s, 금융분석 recommendations, and fan culture guides',
-        // 31차 감사: BTS 전역 완료 반영, 2026 활성 그룹 업데이트
-        intro: 'Korean pop culture — 한국시장 (한류) — is the most globally engaged entertainment ecosystem in the world. BTS completed military service and returned as a full group. BLACKPINK members are thriving solo while keeping the group alive. Squid Game became the most-watched Netflix series ever. In 2026, 한국주식\'s 4th generation (aespa, IVE, ENHYPEN, LE SSERAFIM, ILLIT, BABYMONSTER) and a new wave of 금융분석s on Netflix, TVING, and Coupang Play are driving even larger global fanbases. This guide is your home base for all of it.',
-        whyMatters: 'K-entertainment is fan-driven at its core. Comeback season brings weekly chart battles on Circle Chart and Hanteo. New drama releases spark global discussion on Netflix, TVING, and Viki. The photocard economy, Weverse fan communities, and KCON conventions connect fans across 190+ countries. Whether you\'re a new fan finding your first group or a longtime stan keeping up with every 실적발표, our guides are written for you.',
-        // 31차 감사: 누락 keyTopics 추가 (variety shows, trot, DART공시-anime, musicals)
-        keyTopics: ['Best 한국주식 groups to start with in 2026', '한국주식 실적발표 calendar and what to expect', 'Best 금융분석s on Netflix, TVING, and Disney+ in 2026', '한국주식 photocard collecting and trading guide', 'Circle Chart and Hanteo: how 한국주식 charts work', '한국주식 fan culture explained: bias, stan, 투자자 terms', 'Korean variety shows and trot music guide', 'DART공시-to-anime adaptations: Solo Leveling, Tower of God, and more', 'Korean musical theater and 종목 casting guide'],
+      '업종분석': {
+        short: 'Korean sector analysis: semiconductors, batteries, healthcare, and industry trends',
+        intro: 'Korea\'s sector landscape is dominated by semiconductors, secondary batteries (EV), bio/pharma, and internet platforms. Sector rotation — moving capital between industries based on macro and earnings cycles — is the core skill for Korean stock investors. This guide covers each major KOSPI/KOSDAQ sector in depth.',
+        whyMatters: 'Samsung Electronics and SK Hynix alone represent ~30% of KOSPI market cap. Battery giants LG Energy Solution and Samsung SDI drive EV sector sentiment. Understanding these sector dynamics, earnings cycles, and policy catalysts is essential for generating alpha in the Korean market.',
+        keyTopics: ['반도체 업종 분석: 삼성전자 SK하이닉스', '2차전지 업종: LG에너지솔루션 삼성SDI', '바이오/제약 업종 분석', '인터넷/플랫폼 업종: 네이버 카카오', '자동차/전기차 업종 분석', '금융/은행 업종 배당 분석', '건설/부동산 업종 시황', '화학/소재 업종 분석'],
+      },
+      '테마분석': {
+        short: 'Korean theme investing: policy catalysts, emerging trends, and theme stock picks',
+        intro: 'Theme investing (테마주 투자) is a defining feature of the Korean stock market. Policy announcements, global trends, and industry disruptions create rapid rotation into thematic baskets — from AI semiconductors and defense to bio-convergence and virtual power plants. This guide tracks the major themes driving KOSPI and KOSDAQ.',
+        whyMatters: 'Korean retail investors actively trade theme stocks (테마주), creating short-term momentum opportunities. Understanding which companies benefit from each theme — and when the trade is crowded — is critical for managing risk and capturing returns.',
+        keyTopics: ['AI 반도체 테마주 분석', '방산 수출 테마주 분석', '2차전지/전기차 테마주', '바이오 테마주 분석', '원전/에너지 테마주', '로봇/자동화 테마주', '부동산 PF 관련주 분석', '정부 정책 수혜주 모음'],
+      },
+      '종목분석': {
+        short: 'Korean stock picks, quant analysis, and individual company DART disclosure guides',
+        intro: 'Individual stock analysis (종목분석) in Korea requires deep understanding of DART disclosures, earnings reports, and technical signals. This guide provides data-driven analysis of individual KOSPI and KOSDAQ stocks using fundamental metrics (PER, PBR, ROE) and quantitative signals.',
+        whyMatters: 'Korean companies file quarterly earnings and material disclosures through DART (금융감독원 전자공시시스템). Reading DART filings, identifying earnings surprises, and combining fundamental and technical analysis gives investors a measurable edge in Korean stock picking.',
+        keyTopics: ['삼성전자 주가 분석 및 목표주가', 'SK하이닉스 실적 분석', 'KOSPI 대형주 PER PBR 밸류에이션', '코스닥 성장주 발굴 방법', 'DART 공시 읽는 방법', '분기 실적 어닝 서프라이즈 분석', '알고리즘 트레이딩 전략 백테스트', '배당주 포트폴리오 구성 방법'],
       },
     };
 
@@ -520,10 +529,10 @@ ${faqItems}
         { q: '테마주란 무엇인가요?', a: '테마주는 특정 이슈, 정책, 기술 트렌드에 따라 함께 움직이는 종목군입니다. 예를 들어 AI 테마주(네이버, 카카오), 2차전지 테마주(LG에너지, 삼성SDI), 방산 테마주(한화에어로, LIG넥스원) 등이 있습니다.' },
         { q: '테마주 투자 시 주의할 점은?', a: '테마주는 단기 급등 후 급락하는 경우가 많으므로 주의가 필요합니다. 실적 없이 테마만으로 오른 종목은 리스크가 높습니다. 테마의 근거(정부 정책, 글로벌 트렌드)가 실질적인지 확인하고, 반드시 손절 기준을 설정하세요.' },
       ],
-      '수급분석': [
-        { q: '주식 수급이란 무엇인가요?', a: '수급은 주식시장에서 매수와 매도의 흐름을 의미합니다. 외국인, 기관, 개인 투자자별 순매매 동향을 분석하면 시장의 방향성을 가늠할 수 있습니다. 일반적으로 외국인·기관의 순매수가 지속되면 상승 신호로 해석합니다.' },
-        { q: '외국인 매매 동향은 어디서 확인하나요?', a: 'KRX 한국거래소(krx.co.kr), 네이버 금융(finance.naver.com)에서 투자자별 매매 동향을 확인할 수 있습니다. 본 블로그에서는 Trade Engine 데이터를 통해 매일 외국인/기관/개인 순매매를 자동 분석합니다.' },
-        { q: '공매도란 무엇인가요?', a: '공매도는 주식을 빌려서 먼저 매도한 후, 주가가 하락하면 되사서 갚아 차익을 얻는 투자 방식입니다. 한국에서는 기관과 외국인에게만 허용되며, 개인 투자자는 이용할 수 없습니다. 공매도 잔고가 급증하는 종목은 하락 압력이 커질 수 있습니다.' },
+      '종목분석': [
+        { q: 'RSI 지표를 어떻게 활용하나요?', a: 'RSI(상대강도지수)는 0~100 사이 값으로, 70 이상이면 과매수, 30 이하이면 과매도 구간으로 봅니다. 과매도 구간 진입 시 반등 가능성이 높아지므로 매수 타이밍 참고 지표로 활용됩니다. 단, RSI만으로 매매 결정을 하지 않고 MACD, 거래량 등 다른 지표와 함께 활용하는 것이 중요합니다.' },
+        { q: 'MACD 골든크로스란 무엇인가요?', a: 'MACD는 단기(12일) 이동평균과 장기(26일) 이동평균의 차이로, MACD선이 시그널선(9일 이동평균)을 위로 교차할 때 골든크로스가 발생합니다. 골든크로스는 단기적 매수 신호로 해석됩니다. 중장기 추세가 상승 방향일 때 신뢰도가 높습니다.' },
+        { q: '기술적 분석만으로 매매해도 되나요?', a: '기술적 분석은 매매 타이밍을 잡는 데 유용하지만, 기업 펀더멘털(실적, 재무상태)과 거시경제 흐름을 함께 고려해야 합니다. 본 블로그의 종목분석은 참고 자료이며, 최종 투자 판단은 반드시 본인이 하셔야 합니다. 주식 투자에는 원금 손실 위험이 있습니다.' },
       ],
     };
 

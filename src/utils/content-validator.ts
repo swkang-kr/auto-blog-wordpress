@@ -29,15 +29,15 @@ export interface ContentIssue {
  */
 /** Per-category Flesch-Kincaid readability targets (category → [min, max]) */
 const CATEGORY_READABILITY_TARGETS: Record<string, [number, number]> = {
-  'AI-Trading': [60, 75],   // Casual audience expects easy reading
-  'Korean-Stock': [55, 70],          // Consumer-friendly but some science
+  '종목분석': [60, 75],   // Algorithmic/quant trading expects precision
+  '시장분석': [55, 70],   // Financial analysis — some technical terms
 };
 
 /** Per-category minimum quality scores — raised for AdSense compliance */
 const CATEGORY_MIN_QUALITY: Record<string, number> = {
-  'AI-Trading': 75,
-  // Korean-Stock = YMYL financial content → highest quality bar
-  'Korean-Stock': 78,
+  '종목분석': 75,
+  // 시장분석 = YMYL financial content → highest quality bar
+  '시장분석': 78,
 };
 
 /** Content type-specific minimum word counts — Korean stock YMYL requires substantial depth */
@@ -55,12 +55,12 @@ const CONTENT_TYPE_MIN_WORDS: Record<string, number> = {
 
 /** Per-category overrides for content type word counts (category → contentType → minWords) */
 const CATEGORY_CONTENT_TYPE_MIN_WORDS: Record<string, Record<string, number>> = {
-  'AI-Trading': {
+  '종목분석': {
     'news-explainer': 1800,
     'listicle': 1800,
     'analysis': 2500,
   },
-  'Korean-Stock': {
+  '시장분석': {
     'analysis': 2500,
     'deep-dive': 3500,
   },
@@ -93,33 +93,25 @@ function computeOriginalResearchBonus(plainText: string, html: string): number {
   if (hasMethodology) bonus += 2;
 
   // +2: Korean data source citations
-  // Korean-Stock/AI-Trading: Korean data sources for E-E-A-T credibility
-  // Korean-Stock: Allure Korea, Harpers Bazaar, Vogue Korea, INCI Decoder, 네이버증권
-  // AI-Trading: KOCCA, Hanteo, Circle Chart, Billboard Korea, Weverse Magazine
+  // 한국 금융/주식 데이터 소스 E-E-A-T 크레딧
   const koreanDataSources = [
-    // Korean government & statistics (general credibility)
-    'bok', 'kosis', 'dart', 'kotra', 'kisa', 'bank of korea', 'korean statistical',
-    // Korean-Stock editorial & ingredient sources
-    // NOTE: 'allure korea' (not plain 'allure') to avoid false-positive matches with US Allure
-    'allure korea', 'harpers bazaar korea', 'vogue korea', 'inci decoder', '네이버증권', 'kocca',
-    // Also accept abbreviated form that naturally occurs in Korean-Stock writing
-    'allure korea award', 'incidecoder', 'cosdna',
-    'hwahae',       // 화해 — Korea's #1 beauty review app (Korea-exclusive E-E-A-T signal)
-    'glowpick',     // 글로우픽 — Korea's #2 beauty review/ranking platform
-    // AI-Trading chart & industry sources
-    'hanteo', 'circle chart', 'billboard korea', 'weverse magazine', 'melon chart',
-    'youtube music chart', // 19차 감사: YouTube Music 한국 차트 영향력 급성장
-    'spotify korea',       // 19차 감사: Spotify Korea 2025-2026 차트 인용 증가
-    'genie chart',         // 19차 감사: 지니뮤직 차트 — Melon 다음 국내 2위 스트리밍
-    // system prompt에서 권장하나 validator에 미포함이었던 소스 (보너스 점수 일관성)
-    'soompi',       // AI-Trading 최대 영문 뉴스 아웃렛
-    'dispatch',     // 디스패치 — AI-Trading 주요 취재 매체
-    'cosmorning',   // 코스모닝 — 한국 화장품 산업 전문 뉴스
-    'skinsort',     // Korean-Stock 성분 분석 사이트 (cite 소스로 등록)
-    // 27차 감사: 누락 소스 추가
-    'kocowa',       // KOCOWA — 미주 한인 대상 금융분석/예능 OTT 스트리밍
-    'agb nielsen',  // AGB Nielsen Korea — 금융분석 시청률 공식 측정 기관
-    'naver DART공시', // 네이버 웹툰 — 웹툰→금융분석/애니 적응 소스
+    // Korean government & financial regulators (highest credibility)
+    'bok', 'bank of korea', '한국은행', 'krx', 'korea exchange', '한국거래소',
+    'dart', 'dart.fss', 'fss', '금융감독원', 'fsc', '금융위원회',
+    'kosis', 'korean statistical',
+    // Korean financial news & data
+    '네이버금융', '네이버 금융', 'naver finance', 'naver 금융',
+    '한국경제', 'hankyung', '매일경제', 'maeil business', '이데일리', 'edaily',
+    '서울경제', 'sedaily', '파이낸셜뉴스', '조선비즈', 'chosunbiz',
+    // Korean securities & research
+    'kis', '한국투자증권', '삼성증권', 'mirae asset', '미래에셋',
+    'korea investment', 'kb securities', '키움증권', 'kiwoom',
+    // International financial sources cited in Korean stock context
+    'bloomberg', 'reuters', 'ft.com', 'wsj.com', 'investing.com',
+    // Technical analysis & quant sources
+    'financedata', 'pykrx', 'backtrader', 'quantinvest',
+    // 코트라 등 산업 데이터
+    'kotra',
   ];
   const citedSources = koreanDataSources.filter(s => lower.includes(s)).length;
   if (citedSources >= 2) bonus += 2;
@@ -159,12 +151,12 @@ function computeExperienceScore(plainText: string): number {
   const koreanLocationPatterns = [
     'gangnam', 'pangyo', 'yeouido', 'mapo', 'itaewon', 'hongdae',
     'myeongdong', 'insadong', 'gwanghwamun', 'jamsil', 'songpa',
-    // Korean-Stock/AI-Trading 핵심 지역 (E-E-A-T 현장 경험 신호)
-    'cheongdam',   // 청담동 — 럭셔리 Korean-Stock 플래그십 + AI-Trading 사무소 밀집
-    'apgujeong',   // 압구정 — 성형외과·피부과 밀집, Korean-Stock 트렌드 발신지
-    'seongsu',     // 성수동 — Korean-Stock 팝업·AI-Trading 팬미팅 핫스팟 (2024-2026)
-    'coex',        // COEX — 한국주식 콘서트·팬사인회 주요 행사장
-    'sinchon',     // 신촌 — Korean-Stock 쇼핑·팬 이벤트 밀집
+    // 한국 금융·경제 핵심 지역 (E-E-A-T 현장 경험 신호)
+    'yeouido',     // 여의도 — 한국 금융/증권가 중심지, 증권사 본사 밀집
+    'cheongdam',   // 청담동 — 럭셔리 브랜드 + 금융 오피스 밀집
+    'pangyo',      // 판교 — IT·반도체 기업 클러스터 (카카오, 네이버, SK하이닉스)
+    'seongsu',     // 성수동 — 스타트업·핀테크 핫스팟 (2024-2026)
+    'coex',        // COEX — 한국거래소(KRX) 근처, 주요 금융 컨퍼런스 행사장
   ];
   const hasKoreanLocation = koreanLocationPatterns.some(p => lower.includes(p));
   const hasDateRef = /\b(?:january|february|march|april|may|june|july|august|september|october|november|december)\s+\d{4}\b/i.test(plainText);
@@ -667,21 +659,20 @@ export function validateContent(
     /KISA/i,
     /KOCCA/i,
     /Maeil Business|매일경제/i,
-    // AI-Trading sources (prevent unfair -5 penalty for entertainment content)
-    /Hanteo/i,
-    /Circle\s*Chart/i,
-    /Melon\s*(?:Chart|streaming)?/i,
-    /Soompi/i,
-    /Dispatch|디스패치/i,
-    /Weverse\s*Magazine/i,
-    /Billboard\s*Korea/i,
-    // Korean-Stock editorial sources (prevent unfair -5 penalty for beauty content)
-    /Allure\s*Korea/i,
-    /Vogue\s*Korea/i,
-    /Harper.?s?\s*Bazaar\s*Korea/i,
-    /Olive\s*Young|올리브영/i,
-    /Cosmorning|코스모닝/i,
-    /MFDS|식품의약품안전처/i,
+    // Korean financial news sources
+    /한국경제|Hankyung/i,
+    /매일경제|Maeil\s*Business/i,
+    /이데일리|Edaily/i,
+    /서울경제|Sedaily/i,
+    /파이낸셜뉴스|Financial\s*News/i,
+    /조선비즈|Chosunbiz/i,
+    // Korean securities / quant
+    /KIS|한국투자증권|Korea\s*Investment/i,
+    /Mirae\s*Asset|미래에셋/i,
+    /키움|Kiwoom/i,
+    // Korean market data
+    /네이버\s*금융|Naver\s*Finance/i,
+    /FinanceDataReader|pykrx/i,
   ];
   const koreanCitationCount = koreanSourcePatterns.filter(p => p.test(html)).length;
   if (koreanCitationCount === 0) {
@@ -714,13 +705,14 @@ export function validateContent(
       'statista.com', 'worldbank.org', 'imf.org', 'mckinsey.com', 'techcrunch.com',
       'samsung.com', 'hyundai.com', 'lgcorp.com', 'koreaherald.com', 'mk.co.kr',
       'wikipedia.org', 'google.com', 'youtube.com',
-      // AI-Trading trusted sources
-      'weverse.io', 'melon.com', 'hanteonews.com', 'circlechart.kr',
-      'soompi.com', 'billboard.com', 'sbs.co.kr', 'kbs.co.kr', 'mbc.co.kr',
-      // Korean-Stock trusted sources
-      'oliveyoung.co.kr', 'oliveyoung.com', 'allure.co.kr',
-      'incidecoder.com', 'cosdna.com', 'skinsort.com',
-      'hwahae.co.kr', 'glowpick.com', 'cosme.net',
+      // Korean financial news sources
+      'hankyung.com', 'mk.co.kr', 'edaily.co.kr', 'sedaily.com',
+      'fnews.co.kr', 'chosunbiz.com', 'news.einfomax.co.kr',
+      // Korean financial data & regulators
+      'dart.fss.or.kr', 'krx.co.kr', 'bok.or.kr', 'fss.or.kr', 'fsc.go.kr',
+      'finance.naver.com', 'stock.naver.com',
+      // Korean securities
+      'kiwoom.com', 'miraeasset.com', 'samsungpop.com',
     ];
     let nonTrustedCount = 0;
     for (const url of extLinkUrls) {
@@ -771,12 +763,12 @@ export function validateContent(
     eeatScore -= unsourcedClaims;
   }
 
-  // 8. Stricter Korean source requirement for Korean-Stock (YMYL-adjacent, need 2+ citations)
-  if (category === 'Korean-Stock') {
+  // 8. Stricter Korean source requirement for YMYL financial content (need 2+ citations)
+  if (['시장분석', '업종분석', '테마분석', '종목분석'].includes(category || '')) {
     if (koreanCitationCount === 1) {
       warnings.push({
         category: 'eeat',
-        message: `Only 1 Korean source for ${category} content (need 2+ for YMYL credibility)`,
+        message: `Only 1 Korean source for ${category} YMYL financial content (need 2+ for credibility)`,
         severity: 'warning',
       });
       eeatScore -= 2;
@@ -804,7 +796,8 @@ export function validateContent(
   const experienceScore = computeExperienceScore(plainText);
 
   // ── Niche-specific content accuracy checks ──
-  if (category === 'Korean-Stock') {
+  // Legacy K-Beauty checks (were for old 'Korean-Stock' niche) — guarded to never trigger on new Korean stock niches
+  if (category === '_legacy_kbeauty') {
     // 1. Sunscreen content MUST explain PA rating system (presence + explanation)
     const isSunscreenContent = /sunscreen|spf|sun\s*protection|uv\s*(?:a|b)|sun\s*block/i.test(plainText);
     if (isSunscreenContent && !/PA\+/i.test(plainText)) {
@@ -1255,9 +1248,10 @@ export function validateContent(
         }
       }
     }
-  }
+  } // end _legacy_kbeauty
 
-  if (category === 'AI-Trading') {
+  // Legacy K-Pop/K-Drama checks (were for old 'AI-Trading' niche) — guarded to never trigger on new Korean stock niches
+  if (category === '_legacy_kpop') {
     // 1. Group label accuracy checks (common AI errors)
     const labelErrors: Array<{ pattern: RegExp; correct: string }> = [
       { pattern: /IVE\b[^.]*\bHYBE\b/i, correct: 'IVE is under Starship Entertainment, NOT HYBE' },
@@ -1886,8 +1880,8 @@ export function validateContent(
     }
   }
 
-  // ── Cross-niche Korean-Stock accuracy checks ──
-  if (category === 'Korean-Stock') {
+  // ── Cross-niche legacy accuracy checks (dead code — legacy category never matches) ──
+  if (category === '_legacy_kbeauty_cross') {
     // MFDS vs FDA conflation check — Korean sunscreens are MFDS-approved, NOT FDA-approved
     if (/FDA.{0,30}(?:approv|certif|register).{0,30}(?:Korean|Korean-Stock|K-beauty)/i.test(plainText) ||
         /(?:Korean|Korean-Stock|K-beauty).{0,30}FDA.{0,30}(?:approv|certif|register)/i.test(plainText)) {
@@ -2411,7 +2405,7 @@ export function validateContent(
     }
 
     // 16차 감사 — 50. AHA/BHA optimal pH range validation (pH 3.0-4.0)
-    if (category === 'Korean-Stock' && /\b(?:AHA|BHA|glycolic|salicylic|lactic)\b/i.test(plainText) && /\bpH\b/i.test(plainText)) {
+    if ((category as string) === '_legacy_kbeauty' && /\b(?:AHA|BHA|glycolic|salicylic|lactic)\b/i.test(plainText) && /\bpH\b/i.test(plainText)) {
       const acidPhMatches = plainText.match(/\bpH\s*(?:of\s*)?([\d.]+)/gi) || [];
       for (const phMatch of acidPhMatches) {
         const phValue = parseFloat(phMatch.replace(/pH\s*(?:of\s*)?/i, ''));
@@ -2432,12 +2426,57 @@ export function validateContent(
     }
   }
 
-  // 16차 감사 — 49. Cross-niche cannibalization detection (AI-Trading 종목 주식분석 → Korean-Stock 영역 침범 방지)
-  if (category === 'AI-Trading' && /(?:종목|k-?pop)\s*(?:주식분석|skin\s*care|beauty\s*routine)/i.test(plainText)) {
+  // Cross-niche cannibalization detection (legacy)
+  if (category === '_legacy_kpop' && /(?:종목|k-?pop)\s*(?:주식분석|skin\s*care|beauty\s*routine)/i.test(plainText)) {
     const productRecommendations = (plainText.match(/(?:recommend|best|buy|purchase|apply|use)\s+(?:this|the|a)\s+(?:serum|cream|toner|moisturizer|sunscreen|cleanser|essence|ampoule)/gi) || []).length;
     if (productRecommendations >= 4) {
       warnings.push({ category: 'niche-accuracy', message: `AI-Trading article contains ${productRecommendations} product purchase recommendations — this may cannibalize Korean-Stock content. Idol 주식분석 articles should focus on routine descriptions and brand mentions, not detailed product reviews.`, severity: 'warning' });
       eeatScore -= 2;
+    }
+  }
+
+  // ── Korean stock market niche-accuracy checks ──
+  if (['시장분석', '업종분석', '테마분석', '종목분석'].includes(category || '')) {
+    // 1. YMYL: Investment disclaimer MUST be present
+    const hasInvestmentDisclaimer = /투자\s*(?:정보|분석|인사이트)[^.]*목적|투자\s*(?:권유|추천)\s*(?:아님|하지\s*않습니다)|본인\s*판단.*책임|이\s*글은.*투자.*정보|not\s*(?:a\s*)?(?:financial\s*)?advice|not\s*(?:a\s*)?(?:buy|sell)\s*(?:recommendation|signal)/i.test(html);
+    if (!hasInvestmentDisclaimer) {
+      issues.push({ category: 'niche-accuracy', message: 'YMYL: Korean stock content missing investment disclaimer — required for AdSense compliance and E-E-A-T', severity: 'error' });
+      eeatScore -= 3;
+    }
+
+    // 2. Financial metrics: must include specific data points
+    if (['analysis', 'deep-dive', 'case-study', 'product-review'].includes(contentType)) {
+      const hasFinancialMetrics = /PER|PBR|ROE|EPS|시가총액|KOSPI|KOSDAQ|DART|KRX|매출|영업이익|주가|52주/i.test(plainText);
+      if (!hasFinancialMetrics) {
+        warnings.push({ category: 'niche-accuracy', message: '한국 주식 분석 콘텐츠에 금융 지표(PER, PBR, ROE, 시가총액 등) 미포함 — 전문성 신호 부재', severity: 'warning' });
+        eeatScore -= 2;
+      }
+    }
+
+    // 3. x-vs-y must have comparison table
+    if (contentType === 'x-vs-y') {
+      const hasComparisonTable = /<table[\s>]/i.test(html) || /comparison\s*table|head.to.head|side.by.side|비교\s*표/i.test(plainText);
+      if (!hasComparisonTable) {
+        warnings.push({ category: 'niche-accuracy', message: '주식 비교 콘텐츠에 비교표 미포함 — 독자 기대 충족 필요', severity: 'warning' });
+        structureScore -= 2;
+      }
+    }
+
+    // 4. Price/data disclaimer required for product reviews
+    if (['product-review', 'best-x-for-y'].includes(contentType)) {
+      const hasPriceDisclaimer = /prices?\s*(?:verified|checked|as of)|prices?\s*vary|시세.*기준|기준일|종가\s*기준/i.test(plainText);
+      if (!hasPriceDisclaimer) {
+        warnings.push({ category: 'niche-accuracy', message: '주가/시세 정보 사용 시 기준일 명시 필요 ("YYYY년 MM월 DD일 기준")', severity: 'warning' });
+      }
+    }
+
+    // 5. DART citation for company-specific content
+    if (['analysis', 'deep-dive', 'case-study'].includes(contentType)) {
+      const hasDartOrKrx = /DART|dart\.fss|KRX|한국거래소|한국은행|BOK|KOSIS/i.test(plainText);
+      if (!hasDartOrKrx) {
+        warnings.push({ category: 'niche-accuracy', message: '한국 주식 심층 분석 콘텐츠에 DART/KRX/BOK 공식 데이터 소스 미인용 — E-E-A-T 신뢰도 저하', severity: 'warning' });
+        eeatScore -= 1;
+      }
     }
   }
 

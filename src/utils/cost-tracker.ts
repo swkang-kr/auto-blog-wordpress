@@ -143,8 +143,10 @@ export class CostTracker {
    * RPM = Revenue per 1000 pageviews (AdSense industry averages for English content).
    */
   static readonly NICHE_RPM_ESTIMATES: Record<string, number> = {
-    'Korean-Stock': 8.50,          // Beauty/주식분석 RPM (product-review + affiliate intent)
-    'AI-Trading': 4.00,   // Entertainment RPM (lowest)
+    '시장분석': 6.00,   // Korean market analysis — YMYL financial content
+    '업종분석': 6.50,   // Sector analysis — higher advertiser competition
+    '테마분석': 5.50,   // Theme investing — moderate RPM
+    '종목분석': 7.00,   // Individual stock analysis — highest intent/RPM
   };
 
   /**
@@ -152,8 +154,10 @@ export class CostTracker {
    * Month is 1-based (1=Jan, 12=Dec). Multipliers are applied to base RPM.
    */
   static readonly SEASONAL_RPM_MULTIPLIERS: Record<string, Record<number, number>> = {
-    'Korean-Stock': { 3: 1.3, 4: 1.5, 7: 1.3, 8: 1.3, 10: 1.5, 11: 2.0, 12: 1.8 }, // Spring routine + summer sunscreen restock + holiday gifting
-    'AI-Trading': { 11: 1.5, 12: 1.8 }, // Award season (MAMA, etc.)
+    '시장분석': { 1: 1.3, 4: 1.4, 7: 1.3, 10: 1.4 }, // Earnings seasons (Q4/Q1/Q2/Q3)
+    '업종분석': { 4: 1.5, 10: 1.5, 11: 1.3 }, // Peak earnings + MSCI rebalancing
+    '테마분석': { 3: 1.3, 9: 1.2, 12: 1.2 }, // Policy announcements + year-end
+    '종목분석': { 1: 1.4, 4: 1.5, 7: 1.4, 10: 1.5, 12: 1.3 }, // All earnings seasons + dividend season
   };
 
   /** Get RPM with seasonal multiplier applied */

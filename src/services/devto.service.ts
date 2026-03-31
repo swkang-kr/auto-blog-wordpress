@@ -6,9 +6,9 @@ import type { BlogContent, PublishedPost } from '../types/index.js';
 
 const DEVTO_API = 'https://dev.to/api';
 
-/** DEV.to syndicates tech-relevant content + lifestyle niches with tech-curious audiences */
+/** DEV.to syndicates quant/algo trading and market analysis content */
 const DEVTO_ALLOWED_CATEGORIES = new Set([
-  'Korean-Stock', 'AI-Trading',
+  '시장분석', '업종분석', '테마분석', '종목분석',
 ]);
 
 export class DevToService {

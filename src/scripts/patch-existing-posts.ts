@@ -52,7 +52,10 @@ const COMMENT_PROMPT = `<div class="ab-comment-prompt" style="margin:32px 0; pad
 const GENERAL_DISCLAIMER = `<p class="ab-disclaimer" style="margin:40px 0 0 0; padding-top:20px; border-top:1px solid #eee; font-size:13px; color:#999; line-height:1.6;">This article is AI-assisted and editorially reviewed. Content is based on trending information, Korean-language primary sources, and publicly available data. It is intended for informational purposes only. Please verify details through official sources.</p>`;
 
 const NICHE_DISCLAIMERS: Record<string, string> = {
-  'Korean-Stock': '<div class="ab-disclaimer-beauty" style="margin:0 0 24px 0; padding:16px 20px; background:#f0fff4; border:1px solid #c6f6d5; border-radius:8px; font-size:13px; color:#666; line-height:1.6;"><strong>주식분석 Disclaimer:</strong> Product recommendations are based on research and editorial analysis. Individual results may vary. Always patch-test new products and consult a dermatologist for specific skin concerns. This content is not medical advice.</div>',
+  '시장분석': '<div class="ab-disclaimer-finance" style="margin:0 0 24px 0; padding:16px 20px; background:#f0f8ff; border:1px solid #bee3f8; border-radius:8px; font-size:13px; color:#666; line-height:1.6;"><strong>투자 유의사항:</strong> 본 콘텐츠는 정보 제공 목적으로 작성되었으며, 투자 권유나 매매 신호가 아닙니다. 투자 판단의 책임은 투자자 본인에게 있으며, 투자 전 전문가 상담을 권장합니다.</div>',
+  '업종분석': '<div class="ab-disclaimer-finance" style="margin:0 0 24px 0; padding:16px 20px; background:#f0f8ff; border:1px solid #bee3f8; border-radius:8px; font-size:13px; color:#666; line-height:1.6;"><strong>투자 유의사항:</strong> 본 콘텐츠는 정보 제공 목적으로 작성되었으며, 투자 권유나 매매 신호가 아닙니다. 투자 판단의 책임은 투자자 본인에게 있으며, 투자 전 전문가 상담을 권장합니다.</div>',
+  '테마분석': '<div class="ab-disclaimer-finance" style="margin:0 0 24px 0; padding:16px 20px; background:#f0f8ff; border:1px solid #bee3f8; border-radius:8px; font-size:13px; color:#666; line-height:1.6;"><strong>투자 유의사항:</strong> 본 콘텐츠는 정보 제공 목적으로 작성되었으며, 투자 권유나 매매 신호가 아닙니다. 투자 판단의 책임은 투자자 본인에게 있으며, 투자 전 전문가 상담을 권장합니다.</div>',
+  '종목분석': '<div class="ab-disclaimer-finance" style="margin:0 0 24px 0; padding:16px 20px; background:#f0f8ff; border:1px solid #bee3f8; border-radius:8px; font-size:13px; color:#666; line-height:1.6;"><strong>투자 유의사항:</strong> 본 콘텐츠는 정보 제공 목적으로 작성되었으며, 투자 권유나 매매 신호가 아닙니다. 투자 판단의 책임은 투자자 본인에게 있으며, 투자 전 전문가 상담을 권장합니다.</div>',
 };
 
 // ── Ad placement logic (simplified from wordpress.service.ts) ──
@@ -72,7 +75,7 @@ function injectAdPlacements(html: string, category: string): string {
     'low': { maxAds: 2, minWordGap: 350 },
   };
   const categoryToRpm: Record<string, string> = {
-    'Korean-Stock': 'medium', 'AI-Trading': 'medium',
+    '시장분석': 'medium', '업종분석': 'medium', '테마분석': 'medium', '종목분석': 'high',
   };
   const rpmTier = categoryToRpm[category] || 'medium';
   const { maxAds, minWordGap } = RPM_CONFIG[rpmTier];
@@ -167,7 +170,7 @@ async function main() {
 
     // Determine category name
     const catName = post.categories.map((c) => catMap.get(c) || '').find((n) =>
-      ['Korean-Stock', 'AI-Trading'].includes(n)
+      ['시장분석', '업종분석', '테마분석', '종목분석'].includes(n)
     ) || '';
 
     // 1. Last Updated banner
