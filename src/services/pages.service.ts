@@ -693,17 +693,22 @@ ${recentPostsHtml || '<p style="' + S.p + '">Articles coming soon.</p>'}
     const allFaqs: Array<{ q: string; a: string; category: string }> = [];
 
     const nicheFaqs: Record<string, Array<{ q: string; a: string }>> = {
-      'Korean-Stock': [
-        { q: 'What is the Korean 주식분석 routine?', a: 'Korean 주식분석 starts with double cleansing (oil cleanser + water cleanser), followed by toner, essence, serum, moisturizer, and sunscreen. Modern K-beauty favors 4-5 targeted products over the older 10-step approach.' },
-        { q: 'Which Korean 주식분석 brands are best for beginners?', a: 'Start with 삼성전자, Beauty of Joseon, Anua, and SKIN1004 — all widely available on Amazon and YesStyle with strong track records for sensitive skin.' },
-        { q: 'Where can I buy authentic K-beauty products?', a: '네이버증권 (ships internationally), Amazon (Korean brand storefronts), Soko Glam, YesStyle, Stylevana, and Jolse. All offer genuine products with buyer protection.' },
-        { q: 'What K-beauty ingredients should I know about?', a: 'Key ingredients: PER분석 (repair and hydration), 배당 asiatica (calming and barrier support), tranexamic acid (brightening, top trend in 2025-2026), niacinamide (pore and oil control), and ceramides (barrier restoration).' },
+      '시장분석': [
+        { q: 'KOSPI와 KOSDAQ의 차이점은 무엇인가요?', a: 'KOSPI는 유가증권시장으로 삼성전자, SK하이닉스 등 대형 우량주가 상장되어 있고, KOSDAQ은 중소·벤처기업 중심의 시장입니다. KOSPI는 안정적 투자에, KOSDAQ은 성장주 투자에 적합합니다.' },
+        { q: '주식시장 전망은 어떻게 분석하나요?', a: '거시경제 지표(GDP, 금리, 환율), 기업 실적, 수급 동향(외국인·기관·개인 매매), 기술적 지표(KOSPI 지지선·저항선)를 종합적으로 분석합니다. 한국은행 기준금리와 미국 FOMC 결정도 중요한 변수입니다.' },
+        { q: '주식 초보자는 어떻게 시작하나요?', a: '증권사 계좌 개설(키움증권, 한국투자증권 등) → 소액으로 ETF 투자 시작 → 차트 읽는 법과 기본적 분석(PER, PBR, ROE) 학습 → 관심 종목 워치리스트 관리 순서로 진행하는 것을 추천합니다.' },
       ],
-      'AI-Trading': [
-        { q: 'How do I get into 한국주식 as a new fan?', a: 'Find a group whose sound appeals to you and start with a "best songs" guide. YouTube MVs are free. Top entry points: BTS, BLACKPINK, aespa, IVE, ENHYPEN. Once hooked, explore their discography and fan community on Weverse.' },
-        { q: 'Where can I watch 금융분석s legally online?', a: 'Netflix has the largest global catalog. Disney+ offers strong Korean originals. Viki (Rakuten) has fan-subbed classics. Viu covers Asia-focused content. Most offer free tiers or affordable subscriptions.' },
-        { q: 'What are 한국주식 photocards?', a: 'Small collectible trading cards randomly included in 한국주식 album packaging. Each member has different versions, making collection and trading a major part of fan culture. Rare versions can be highly valuable.' },
-        { q: 'What is Weverse?', a: 'Weverse is HYBE\'s fan community platform where artists post directly, share live content, and interact with fans globally. Most major HYBE artists (BTS, ENHYPEN, LE SSERAFIM, etc.) plus artists from other labels use it as their main fan communication channel.' },
+      '업종분석': [
+        { q: '섹터 로테이션이란 무엇인가요?', a: '경기 순환에 따라 강세를 보이는 업종이 바뀌는 현상입니다. 경기 확장기에는 IT·반도체, 회복기에는 건설·소재, 침체기에는 필수소비재·유틸리티가 강세를 보이는 경향이 있습니다.' },
+        { q: '업종별 대장주는 어떻게 찾나요?', a: '네이버 금융의 업종별 시가총액 순위를 확인하세요. 반도체(삼성전자, SK하이닉스), 2차전지(LG에너지솔루션), 바이오(삼성바이오로직스), 자동차(현대차) 등 각 업종을 대표하는 종목이 대장주입니다.' },
+      ],
+      '테마분석': [
+        { q: '테마주 투자 시 주의할 점은?', a: '테마주는 단기 급등락이 심하므로 분할 매수·매도, 손절선 설정이 필수입니다. 실적 기반 없는 순수 테마주는 피하고, 실제 매출과 연결되는 수혜주를 선별하세요. 거래량과 시가총액도 반드시 확인하세요.' },
+        { q: '관련주 정보는 어디서 확인하나요?', a: '네이버 금융 테마별 종목, DART 공시, 증권사 리포트(키움·한투·미래에셋), 그리고 TrendHunt의 매일 업데이트되는 테마 분석을 활용하세요.' },
+      ],
+      '추천주': [
+        { q: 'AI 매수 시그널은 어떻게 생성되나요?', a: 'RSI, MACD, 볼린저밴드 등 기술적 지표와 거래량 분석, 수급 데이터를 종합하여 AI가 매수 적기를 판단합니다. 다중 시그널이 동시에 발생하면 신뢰도가 높아집니다.' },
+        { q: '추천주는 반드시 매수해야 하나요?', a: '아닙니다. 추천주는 AI 분석 기반 참고 자료이며, 투자 결정은 본인의 판단과 책임 하에 이루어져야 합니다. 반드시 본인의 투자 성향과 리스크 허용 범위를 고려하세요.' },
       ],
     };
 
@@ -732,23 +737,23 @@ ${recentPostsHtml || '<p style="' + S.p + '">Articles coming soon.</p>'}
 
     const content = `<script type="application/ld+json">${faqSchema}</script>
 <div style="${S.wrapper}">
-<h2 style="${S.h2}">Frequently Asked Questions</h2>
-<p style="${S.p}">Find answers to the most common questions about Korean 주식분석, K-beauty products, 한국주식 실적발표s, and 금융분석 recommendations.</p>
+<h2 style="${S.h2}">자주 묻는 질문</h2>
+<p style="${S.p}">한국 주식시장 분석, 업종·테마 투자, AI 매매 시그널에 대해 자주 묻는 질문과 답변을 정리했습니다.</p>
 
 ${faqHtml}
 
 <div style="${S.highlightBox}">
-<p style="margin:0; line-height:1.7; color:#555;">Can't find what you're looking for? <a href="/contact" style="color:#0066FF; text-decoration:none;">Contact us</a> and we'll answer your question in a future article.</p>
+<p style="margin:0; line-height:1.7; color:#555;">찾는 내용이 없으신가요? <a href="/contact" style="color:#0066FF; text-decoration:none;">문의하기</a>를 통해 질문해 주시면 향후 콘텐츠에 반영하겠습니다.</p>
 </div>
 </div>`;
 
     try {
       const existingId = await this.getPageId(slug);
       if (existingId) {
-        await this.api.post(`/pages/${existingId}`, { title: `FAQ — ${siteName}`, content, status: 'publish' });
+        await this.api.post(`/pages/${existingId}`, { title: `자주 묻는 질문 — ${siteName}`, content, status: 'publish' });
         logger.info('FAQ page updated');
       } else {
-        await this.api.post('/pages', { title: `FAQ — ${siteName}`, slug, content, status: 'publish' });
+        await this.api.post('/pages', { title: `자주 묻는 질문 — ${siteName}`, slug, content, status: 'publish' });
         logger.info('FAQ page created');
       }
     } catch (error) {
