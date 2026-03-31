@@ -985,26 +985,28 @@ add_action('after_setup_theme', function() {
     register_nav_menus(['primary' => 'Primary Menu']);
 });
 
-// Rebuild menu (transient-guarded, runs on init for frontend+admin)
+// Ensure menu is always assigned to primary location (runs on every request, fast)
 add_action('init', function() {
+    $menu_name = 'TrendHunt Main';
+    $menu_obj = wp_get_nav_menu_object($menu_name);
+    if (!$menu_obj) return;
+    $locations = get_theme_mod('nav_menu_locations', []);
+    if (empty($locations['primary']) || $locations['primary'] != $menu_obj->term_id) {
+        $locations['primary'] = $menu_obj->term_id;
+        set_theme_mod('nav_menu_locations', $locations);
+    }
+});
+
+// Rebuild menu items (admin only, transient-guarded, no concurrency issue)
+add_action('admin_init', function() {
     $menu_hash = md5(serialize([
 ${categoryItems}
     ]));
     $transient_key = 'trendhunt_nav_built_' . $menu_hash;
+    if (get_transient($transient_key)) return;
 
     $menu_name = 'TrendHunt Main';
     $menu_exists = wp_get_nav_menu_object($menu_name);
-
-    // Ensure menu is always assigned to primary location (fixes page-list fallback)
-    if ($menu_exists) {
-        $locations = get_theme_mod('nav_menu_locations', []);
-        if (empty($locations['primary']) || $locations['primary'] != $menu_exists->term_id) {
-            $locations['primary'] = $menu_exists->term_id;
-            set_theme_mod('nav_menu_locations', $locations);
-        }
-        // If already built with same hash, skip rebuild
-        if (get_transient($transient_key)) return;
-    }
 
     // Delete and recreate to prevent item accumulation
     if ($menu_exists) {
