@@ -1007,16 +1007,16 @@ async function main(): Promise<void> {
       if (niche.category === '시장분석') {
         // 급등/급락 종목 기반
         for (const g of tradeEngineData.topGainers.slice(0, 3)) {
-          injected.push(`${g.stock_name} 급등 이유 분석 전망 ${Y}`);
+          injected.push(`${g.stock_name} 급등 배경 기술적 분석 참고 ${Y}`);
         }
         for (const l of tradeEngineData.topLosers.slice(0, 2)) {
-          injected.push(`${l.stock_name} 하락 원인 분석 반등 가능성`);
+          injected.push(`${l.stock_name} 하락 배경 분석 및 기술적 현황`);
         }
         // 시장 지수
         if (tradeEngineData.marketOverview.length > 0) {
           const m = tradeEngineData.marketOverview[0];
-          if (m.kospi_change < -1) injected.push(`KOSPI 하락 원인 분석 대응 전략 ${Y}`);
-          else if (m.kospi_change > 1) injected.push(`KOSPI 상승 랠리 분석 추가 상승 전망`);
+          if (m.kospi_change < -1) injected.push(`KOSPI 하락 배경 분석 및 시장 흐름 점검 ${Y}`);
+          else if (m.kospi_change > 1) injected.push(`KOSPI 상승 배경 분석 시장 흐름 점검`);
         }
       } else if (niche.category === '업종분석') {
         // 강세/약세 업종 기반
@@ -1048,9 +1048,10 @@ async function main(): Promise<void> {
           const today = new Date();
           const month = today.getMonth() + 1;
           const day = today.getDate();
-          pickKeywords.push(`${month}월 ${day}일 ${p.stock_name} 주가 전망 매수 분석`);
-          pickKeywords.push(`${p.stock_name} 기술적 분석 차트 매매 타이밍 ${Y}`);
-          if (p.reason) pickKeywords.push(`${p.stock_name} ${p.reason.slice(0, 20)} 분석`);
+          // 투자 권유가 아닌 분석/검토 관점 키워드 사용
+          pickKeywords.push(`${month}월 ${day}일 ${p.stock_name} 주가 기술적 분석 검토`);
+          pickKeywords.push(`${p.stock_name} 차트 분석 투자 판단 참고 ${Y}`);
+          if (p.reason) pickKeywords.push(`${p.stock_name} ${p.reason.slice(0, 20)} 분석 참고`);
         }
         niche.seedKeywords = [...pickKeywords, ...niche.seedKeywords];
         logger.info(`추천주 [${niche.category}]: ${tradeEngineData.aiPicks.slice(0, 3).map(p => p.stock_name).join(', ')} 주입 (${pickKeywords.length}개 키워드)`);

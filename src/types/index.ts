@@ -74,36 +74,36 @@ export interface AuthorProfile {
 /** Niche-specific author profiles for visible E-E-A-T bio sections (primary persona) */
 export const NICHE_AUTHOR_PROFILES: Record<string, AuthorProfile> = {
   '시장분석': {
-    name: 'Daniel Park',
-    title: '시장 분석 전문가',
-    bio: 'KOSPI/KOSDAQ 시장 흐름을 매일 추적하는 시장 분석가. 거시경제 지표, 금리 정책, 환율 변동이 한국 주식시장에 미치는 영향을 분석합니다.',
+    name: '강신완',
+    title: '시장 분석 에디터',
+    bio: 'KOSPI/KOSDAQ 시장 흐름을 매일 추적합니다. 거시경제 지표, 금리 정책, 환율 변동이 한국 주식시장에 미치는 영향을 데이터 기반으로 분석합니다.',
     expertise: ['KOSPI/KOSDAQ 시장 분석', '거시경제 지표', '금리 정책 영향', '환율 분석', 'ETF 투자 전략'],
-    credentials: ['시장분석 전문가', 'CFA Level III'],
-    yearsExperience: 8,
+    credentials: ['TrendHunt 시장분석 에디터'],
+    yearsExperience: 5,
   },
   '업종분석': {
-    name: 'Jiwon Lee',
-    title: '업종 분석 전문가',
-    bio: '반도체, 2차전지, 바이오 등 핵심 업종의 실적과 밸류에이션을 분석합니다. DART 공시와 재무제표 기반 기업 분석을 제공합니다.',
+    name: '강신완',
+    title: '업종 분석 에디터',
+    bio: '반도체, 2차전지, 바이오 등 핵심 업종의 실적과 밸류에이션을 분석합니다. DART 공시와 재무제표 기반 기업 분석 정보를 제공합니다.',
     expertise: ['섹터 로테이션', '기업 재무 분석', 'DART 공시 분석', 'PER PBR ROE 밸류에이션', '배당주 분석'],
-    credentials: ['업종분석 전문가', '재무분석사'],
-    yearsExperience: 7,
+    credentials: ['TrendHunt 업종분석 에디터'],
+    yearsExperience: 5,
   },
   '테마분석': {
-    name: 'Alex Kwon',
-    title: '테마주 분석 전문가',
-    bio: 'AI, 2차전지, 로봇, 우주항공 등 성장 테마의 관련주를 발굴하고 분석합니다. 정책 변화와 글로벌 트렌드가 테마주에 미치는 영향을 추적합니다.',
-    expertise: ['테마주 발굴', 'AI 관련주', '2차전지 관련주', '정책 수혜주', '글로벌 트렌드 분석'],
-    credentials: ['테마분석 전문가', '투자 전략가'],
-    yearsExperience: 6,
+    name: '강신완',
+    title: '테마주 분석 에디터',
+    bio: 'AI, 2차전지, 로봇, 우주항공 등 성장 테마의 관련주를 분석합니다. 정책 변화와 글로벌 트렌드가 테마주에 미치는 영향을 추적합니다.',
+    expertise: ['테마주 분석', 'AI 관련주', '2차전지 관련주', '정책 수혜주', '글로벌 트렌드 분석'],
+    credentials: ['TrendHunt 테마분석 에디터'],
+    yearsExperience: 5,
   },
-  '수급분석': {
-    name: 'Sungho Choi',
-    title: '수급 분석 전문가',
-    bio: '외국인, 기관, 개인 투자자의 매매 동향을 추적하고 수급 데이터 기반 투자 전략을 제시합니다. 공매도, 프로그램 매매, MSCI 리밸런싱 분석을 전문으로 합니다.',
-    expertise: ['투자자별 수급 분석', '외국인 매매 추적', '공매도 분석', '프로그램 매매', 'MSCI 리밸런싱'],
-    credentials: ['수급분석 전문가', '퀀트 애널리스트'],
-    yearsExperience: 7,
+  '추천주': {
+    name: '강신완',
+    title: '종목 분석 에디터',
+    bio: '기술적 지표(RSI, MACD, 볼린저밴드)와 수급 데이터를 결합해 주목할 종목을 분석합니다. 본 분석은 정보 제공 목적이며 투자 권유가 아닙니다.',
+    expertise: ['기술적 분석', '수급 분석', 'RSI/MACD 지표', '거래량 분석', '차트 패턴'],
+    credentials: ['TrendHunt 종목분석 에디터'],
+    yearsExperience: 5,
   },
 };
 
@@ -111,8 +111,7 @@ export const NICHE_AUTHOR_PERSONAS: Record<string, AuthorProfile[]> = {
   '시장분석': [NICHE_AUTHOR_PROFILES['시장분석']],
   '업종분석': [NICHE_AUTHOR_PROFILES['업종분석']],
   '테마분석': [NICHE_AUTHOR_PROFILES['테마분석']],
-  '수급분석': [NICHE_AUTHOR_PROFILES['수급분석']],
-  '추천주': [NICHE_AUTHOR_PROFILES['수급분석']],  // 수급분석 전문가가 추천주도 담당
+  '추천주': [NICHE_AUTHOR_PROFILES['추천주']],
 };
 
 /** Content-type to persona voice mapping */

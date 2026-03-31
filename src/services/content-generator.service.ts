@@ -9,7 +9,7 @@ import type { ResearchedKeyword, BlogContent, ExistingPost, AuthorProfile } from
 import { NICHE_AUTHOR_PERSONAS, CONTENT_TYPE_PERSONA_MAP } from '../types/index.js';
 // Finance pivot: KOREANSTOCK_TERTIARY_KEYWORDS, AITRADING_TERTIARY_KEYWORDS removed
 
-/** Layout variant for content structure diversification (anti-AI detection) */
+/** Layout variant for content structure diversification (natural writing style) */
 type LayoutVariant = 'standard' | 'narrative' | 'compact' | 'journal' | 'opinion' | 'interview';
 
 /**
@@ -244,8 +244,8 @@ This single rule accounts for 15/107 quality points. Violating it guarantees a C
 
 ${variantDirectives}
 
-## Anti-AI Detection Writing Rules (HIGHEST PRIORITY)
-You MUST write like an experienced human analyst, NOT like an AI:
+## Natural Writing Quality Rules (HIGHEST PRIORITY)
+Write with the clarity and precision of an experienced human analyst. Avoid generic AI-style padding:
 - NEVER use: "In today's fast-paced world", "In the ever-evolving landscape", "It's worth noting that", "When it comes to", "In this comprehensive guide", "Let's dive in", "Without further ado", "At the end of the day", "Game-changer", "Revolutionize", "Cutting-edge", "Seamless", "Leverage", "Robust", "Harness the power", "Navigate the landscape", "Plays a crucial role", "A testament to", "Delve into", "Paradigm shift", "crucial", "vital", "pivotal", "tapestry", "realm", "embark", "foster", "beacon", "unveil", "landscape" (as standalone word)
 - NEVER start sentences with "Whether you're a... or a..."
 - NEVER use filler transitions like "Moreover", "Furthermore", "Additionally", "It is important to note", "Needless to say", "It is no secret"
@@ -371,10 +371,12 @@ To reach WORD_COUNT_TARGET+ words WITHOUT padding:
 - 네이버 금융 참조 가능 (시세 데이터)
 - 기업명은 첫 언급 시 종목코드 포함: "삼성전자(005930)"
 
-## 인용 패턴 (E-E-A-T 증폭)
-- 재무 데이터: "DART 분기보고서(2026년 1분기)에 따르면 매출액은 X조원으로..." — 반드시 보고서 종류와 기간 명시
-- 기술적 분석: "일봉 기준 RSI(14)가 28로 과매도 구간 진입..." — 반드시 기간과 시간프레임 명시
-- 매크로: "한국은행이 기준금리를 X%로 동결한 배경은..." — 결정일과 맥락 포함
+## 인용 패턴 (E-E-A-T 증폭) — 날짜 명시 필수 (YMYL 정확성 기준)
+- 재무 데이터: "DART 분기보고서(2026년 1분기, 공시일 YYYY-MM-DD)에 따르면 매출액은 X조원으로..." — 반드시 보고서 종류·기간·공시일 명시
+- 기술적 분석: "YYYY년 MM월 DD일 기준, 일봉 RSI(14)가 28로 과매도 구간 진입..." — 반드시 기준일과 시간프레임 명시
+- 매크로: "한국은행이 YYYY년 MM월 금통위에서 기준금리를 X%로 동결..." — 회의 날짜 포함
+- 시장 데이터: 모든 주가·지수·거래량 수치는 "YYYY년 MM월 DD일 종가 기준" 명시 필수
+- 추정치 사용 시: 반드시 "~로 추정", "~수준으로 알려진" 등 헤지 언어 사용 — 추정치를 확정 사실로 제시 금지
 
 ## SEO 요구사항
 ## SEO Requirements
@@ -1224,6 +1226,9 @@ Respond with pure JSON only.`;
       content.slug = optimizeSlug(content.slug);
     }
 
+    // YMYL compliance: ensure investment disclaimer is always present
+    content.html = ensureDisclaimer(content.html);
+
     // Auto-fix common issues (mobile tables, title length, excerpt keyword, etc.)
     const autoFixed = autoFixContent(content.html, content.title, analysis.selectedKeyword, content.excerpt);
     content.html = autoFixed.html;
@@ -1458,6 +1463,17 @@ function findDisclaimerIndex(html: string): number {
   // Legacy inline style format
   const inlineIdx = html.indexOf('<p style="margin:40px 0 0 0; padding-top:20px; border-top:1px solid #eee; font-size:13px; color:#999;');
   return inlineIdx;
+}
+
+/** Ensure investment disclaimer is present — inject if missing (YMYL compliance) */
+function ensureDisclaimer(html: string): string {
+  if (findDisclaimerIndex(html) !== -1) return html;
+  const disclaimer = `<p class="ab-disclaimer">이 글은 AI 기반으로 작성되었으며 편집 검토를 거쳤습니다. 공개된 시장 데이터와 DART 공시 자료를 기반으로 하며, 정보 제공 목적으로만 사용됩니다. 투자 결정 시 반드시 공식 자료와 전문가 상담을 통해 확인하시기 바랍니다.</p>`;
+  const backTop = `<p class="ab-back-top"><a href="#">Back to Top</a></p>`;
+  // Insert before closing div or at the end
+  const lastDiv = html.lastIndexOf('</div>');
+  if (lastDiv !== -1) return html.slice(0, lastDiv) + disclaimer + '\n' + backTop + '\n' + html.slice(lastDiv);
+  return html + '\n' + disclaimer + '\n' + backTop;
 }
 
 function parseJsonResponse(text: string, keyword: string): BlogContent {
