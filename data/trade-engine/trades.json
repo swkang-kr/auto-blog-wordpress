@@ -1,5 +1,5 @@
 {
-  "exported_at": "2026-03-30T07:00:00.758925+00:00",
+  "exported_at": "2026-03-31T07:00:01.299312+00:00",
   "trades": [
     {
       "stock_code": "009580",
@@ -84,18 +84,6 @@
       "strategy": "RSI+MACD(swing)",
       "reason": "거래량4.3x | 거래량3x+ | MA정배열",
       "filled_at": "2026-03-25T00:42:14.207480"
-    },
-    {
-      "stock_code": "009580",
-      "stock_name": "무림P&P",
-      "side": "buy",
-      "quantity": 409,
-      "price": 2695.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량37.9x | 거래량3x+ | MA정배열",
-      "filled_at": "2026-03-24T06:11:58.647449"
     }
   ]
 }
