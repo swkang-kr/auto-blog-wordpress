@@ -15,7 +15,7 @@ import { ThreadsService } from '../services/threads.service.js';
 import { PostHistory } from '../utils/history.js';
 import type { BlogContent, PublishedPost } from '../types/index.js';
 
-const CURRENT_NICHES = ['korean-stock-주식분석', 'ai-trading-business'];
+const CURRENT_NICHES = ['market-analysis', 'sector-analysis', 'theme-analysis', 'ai-stock-picks'];
 const DELAY_MS = 10_000; // 10s between posts
 
 function stripHtml(html: string): string {
