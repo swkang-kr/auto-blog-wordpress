@@ -56,7 +56,7 @@ add_action('init', function() {
     \$desired = '${SITE_NAME} - ${TAGLINE}';
     if (is_array(\$rm_titles) && (!isset(\$rm_titles['homepage_title']) || \$rm_titles['homepage_title'] !== \$desired)) {
         \$rm_titles['homepage_title'] = \$desired;
-        \$rm_titles['homepage_description'] = 'Discover the latest Korean 주식분석, K-beauty product reviews, 한국주식 실적발표s, and 금융분석 recommendations. Your trusted source for Korean culture trends.';
+        \$rm_titles['homepage_description'] = '매일 업데이트되는 한국 주식시장 분석. KOSPI, KOSDAQ, 업종, 테마, AI 매수 시그널 기반 투자 인사이트를 제공합니다.';
         update_option('rank-math-options-titles', \$rm_titles);
     }
 });
