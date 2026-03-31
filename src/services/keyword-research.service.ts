@@ -440,7 +440,7 @@ export class KeywordResearchService {
       if (this.existingPosts.length > 0) {
         const candidateText = `${analysis.selectedKeyword} ${analysis.suggestedTitle} ${analysis.uniqueAngle}`;
         const similarPosts = this.findSimilarPosts(candidateText, 5);
-        const matchingPost = similarPosts.find(p => p.similarity > 0.55);
+        const matchingPost = similarPosts.find(p => p.similarity > 0.70);
         if (matchingPost) {
           logger.warn(
             `Attempt ${attempt}/${MAX_ATTEMPTS}: "${analysis.selectedKeyword}" too similar to existing "${matchingPost.post.title}" ` +
@@ -675,13 +675,14 @@ ${this.paaQuestions.length > 0 ? `\n## People Also Ask (PAA) Questions\nThese qu
 6. LSI(관련) 키워드 5-8개 (한국어)
 
 핵심 키워드 선택 규칙 (우선순위 순):
-1. 상승 트렌드 키워드 우선 — 실제 검색 수요가 증가 중인 키워드
-2. 한국 금융/투자 주제 필수: 한국 주식, 종목 분석, 투자 전략, DART 공시, 기술적 분석, 자동매매 등
-3. 낮은 경쟁도 (estimatedCompetition: "low")
-4. 롱테일 키워드 (한국어 3단어 이상, 예: "삼성전자 주가 전망 분석")
-5. 한국어 키워드 우선. 영문 키워드 선택 금지.
-6. 기존 발행 키워드와 중복 금지
-7. 타겟 독자: 한국인 개인 투자자 (네이버 증권, 키움증권 사용자)
+1. **종목명이 포함된 키워드 최우선** — seed에 구체적 종목명(예: 태림포장, 삼성전자 등)이 있으면 반드시 해당 종목을 키워드에 포함. 일반적인 "AI 매수 시그널", "스윙 매매" 같은 범용 키워드보다 "태림포장 주가 전망 분석" 같은 종목 특화 키워드 선택.
+2. 상승 트렌드 키워드 우선 — 실제 검색 수요가 증가 중인 키워드
+3. 한국 금융/투자 주제 필수: 한국 주식, 종목 분석, 투자 전략, DART 공시, 기술적 분석, 자동매매 등
+4. 낮은 경쟁도 (estimatedCompetition: "low")
+5. 롱테일 키워드 (한국어 3단어 이상, 예: "삼성전자 주가 전망 분석")
+6. 한국어 키워드 우선. 영문 키워드 선택 금지.
+7. 기존 발행 키워드와 중복 금지
+8. 타겟 독자: 한국인 개인 투자자 (네이버 증권, 키움증권 사용자)
 
 7. 키워드 난이도 추정 (0-100)
 8. 월간 검색량 추정 (네이버 기준 한국어 검색량)

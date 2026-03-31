@@ -1040,14 +1040,20 @@ async function main(): Promise<void> {
       }
     }
 
-    // 추천주 니치에 aiPicks/DB워치리스트 키워드 주입
+    // 추천주 니치에 aiPicks/DB워치리스트 키워드 주입 (종목별 다양한 앵글)
     for (const niche of activeNiches) {
       if (niche.category === '추천주' && tradeEngineData.aiPicks.length > 0) {
-        const pickKeywords = tradeEngineData.aiPicks.slice(0, 3).map(p =>
-          `${p.stock_name} AI 매수 시그널 분석 ${p.strategies?.[0] || ''} 진입 근거`
-        );
+        const pickKeywords: string[] = [];
+        for (const p of tradeEngineData.aiPicks.slice(0, 5)) {
+          const today = new Date();
+          const month = today.getMonth() + 1;
+          const day = today.getDate();
+          pickKeywords.push(`${month}월 ${day}일 ${p.stock_name} 주가 전망 매수 분석`);
+          pickKeywords.push(`${p.stock_name} 기술적 분석 차트 매매 타이밍 ${Y}`);
+          if (p.reason) pickKeywords.push(`${p.stock_name} ${p.reason.slice(0, 20)} 분석`);
+        }
         niche.seedKeywords = [...pickKeywords, ...niche.seedKeywords];
-        logger.info(`추천주 [${niche.category}]: ${tradeEngineData.aiPicks.slice(0, 3).map(p => p.stock_name).join(', ')} 주입`);
+        logger.info(`추천주 [${niche.category}]: ${tradeEngineData.aiPicks.slice(0, 3).map(p => p.stock_name).join(', ')} 주입 (${pickKeywords.length}개 키워드)`);
       }
     }
   }
