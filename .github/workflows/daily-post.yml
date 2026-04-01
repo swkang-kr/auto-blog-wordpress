@@ -2,7 +2,7 @@ name: Daily Blog Post
 
 on:
   schedule:
-    - cron: '0 14 * * 1-5'  # UTC 14:00 Mon-Fri only (주말 제외, KST 23:00)
+    - cron: '0 22 * * 0-4'  # UTC 22:00 Sun-Thu (주말 제외, KST 07:00 Mon-Fri)
   workflow_dispatch:          # Manual trigger
     inputs:
       post_count:
