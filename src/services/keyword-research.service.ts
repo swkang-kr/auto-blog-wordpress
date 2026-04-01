@@ -203,7 +203,8 @@ export class KeywordResearchService {
    */
   private textSimilarity(a: string, b: string): number {
     const stopWords = new Set(['the', 'a', 'an', 'in', 'on', 'at', 'to', 'for', 'of', 'and', 'or', 'is', 'are', 'was', 'were', 'be', 'been', 'how', 'what', 'why', 'your', 'you', 'this', 'that', 'with']);
-    const tokenize = (s: string) => s.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => w.length > 2 && !stopWords.has(w));
+    // Keep Korean Hangul syllables (\uAC00-\uD7A3) and compatibility jamo (\u3130-\u318F) alongside ASCII
+    const tokenize = (s: string) => s.toLowerCase().replace(/[^a-z0-9\s\uAC00-\uD7A3\u3130-\u318F]/g, '').split(/\s+/).filter(w => w.length > 1 && !stopWords.has(w));
 
     const wordsA = tokenize(a);
     const wordsB = tokenize(b);
@@ -241,7 +242,8 @@ export class KeywordResearchService {
     if (this.existingPosts.length === 0) return [];
 
     const stopWords = new Set(['the', 'a', 'an', 'in', 'on', 'at', 'to', 'for', 'of', 'and', 'or', 'is', 'are', 'was', 'were', 'be', 'been', 'how', 'what', 'why', 'your', 'you', 'this', 'that', 'with', 'best', 'top', 'guide', 'complete', 'ultimate']);
-    const tokenize = (s: string) => s.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => w.length > 2 && !stopWords.has(w));
+    // Keep Korean Hangul syllables (\uAC00-\uD7A3) and compatibility jamo (\u3130-\u318F) alongside ASCII
+    const tokenize = (s: string) => s.toLowerCase().replace(/[^a-z0-9\s\uAC00-\uD7A3\u3130-\u318F]/g, '').split(/\s+/).filter(w => w.length > 1 && !stopWords.has(w));
 
     // Build document frequency map (how many posts contain each word)
     const docFreq = new Map<string, number>();
