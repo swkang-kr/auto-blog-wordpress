@@ -1,5 +1,5 @@
 {
-  "exported_at": "2026-03-31T07:33:50.622437+00:00",
+  "exported_at": "2026-04-01T07:00:00.809482+00:00",
   "trades": [
     {
       "stock_code": "009580",
@@ -24,66 +24,6 @@
       "strategy": "swing_stop_loss(SL=32,834)",
       "reason": "swing_stop_loss(SL=32,834)",
       "filled_at": "2026-03-26T00:17:24.317109"
-    },
-    {
-      "stock_code": "038110",
-      "stock_name": "에코플라스틱",
-      "side": "sell",
-      "quantity": 235,
-      "price": 3515.0,
-      "pnl": -31031.04,
-      "pnl_rate": -3.6327,
-      "strategy": "swing_stop_loss(SL=3,526)",
-      "reason": "swing_stop_loss(SL=3,526)",
-      "filled_at": "2026-03-25T04:26:50.774664"
-    },
-    {
-      "stock_code": "038110",
-      "stock_name": "에코플라스틱",
-      "side": "buy",
-      "quantity": 235,
-      "price": 3635.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "MACD히스토그램↑ | 거래량36.3x | 거래량3x+ | MA정배열",
-      "filled_at": "2026-03-25T03:59:05.588035"
-    },
-    {
-      "stock_code": "006360",
-      "stock_name": "GS건설",
-      "side": "sell",
-      "quantity": 30,
-      "price": 26950.0,
-      "pnl": -41780.1,
-      "pnl_rate": -4.9298,
-      "strategy": "swing_stop_loss(SL=27,402)",
-      "reason": "swing_stop_loss(SL=27,402)",
-      "filled_at": "2026-03-25T03:58:44.735377"
-    },
-    {
-      "stock_code": "006360",
-      "stock_name": "GS건설",
-      "side": "buy",
-      "quantity": 30,
-      "price": 28250.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "거래량4.9x | 거래량3x+ | MA정배열",
-      "filled_at": "2026-03-25T02:02:14.268691"
-    },
-    {
-      "stock_code": "028050",
-      "stock_name": "삼성E&A",
-      "side": "buy",
-      "quantity": 20,
-      "price": 33850.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "거래량4.3x | 거래량3x+ | MA정배열",
-      "filled_at": "2026-03-25T00:42:14.207480"
     }
   ]
 }

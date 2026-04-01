@@ -1,88 +1,67 @@
 {
-  "exported_at": "2026-03-31T07:33:51.275676+00:00",
-  "date": "20260331",
+  "exported_at": "2026-04-01T07:00:01.308501+00:00",
+  "date": "20260401",
   "hot_themes": [
     {
-      "name": "해운",
-      "change_rate": 9.32
+      "name": "광통신(광케이블/광섬유 등)",
+      "change_rate": 20.12
     },
     {
-      "name": "비철금속",
-      "change_rate": 5.2
+      "name": "통신장비",
+      "change_rate": 14.8
     },
     {
-      "name": "리튬",
-      "change_rate": 1.35
+      "name": "5G(5세대 이동통신)",
+      "change_rate": 13.15
     },
     {
-      "name": "2026 상반기 신규상장",
-      "change_rate": 0.99
+      "name": "소캠(SOCAMM)",
+      "change_rate": 12.52
     },
     {
-      "name": "캐릭터상품",
-      "change_rate": 0.57
+      "name": "건설 대표주",
+      "change_rate": 11.68
     },
     {
-      "name": "태풍 및 장마",
-      "change_rate": 0.36
+      "name": "반도체 대표주(생산)",
+      "change_rate": 11.25
     },
     {
-      "name": "조선",
-      "change_rate": 0.27
+      "name": "스페이스X(SpaceX)",
+      "change_rate": 10.78
     },
     {
-      "name": "재난/안전(지진/화재 등)",
-      "change_rate": 0.25
+      "name": "뉴로모픽 반도체",
+      "change_rate": 10.5
     },
     {
-      "name": "김밥(냉동김밥 등)",
-      "change_rate": 0.15
+      "name": "우주항공산업(누리호/인공위성 등)",
+      "change_rate": 10.42
     },
     {
-      "name": "피팅(관이음쇠)/밸브",
-      "change_rate": 0.1
+      "name": "온디바이스 AI",
+      "change_rate": 10.37
+    },
+    {
+      "name": "유심(USIM)",
+      "change_rate": 9.81
+    },
+    {
+      "name": "CXL(컴퓨트익스프레스링크)",
+      "change_rate": 9.73
+    },
+    {
+      "name": "LED장비",
+      "change_rate": 9.18
+    },
+    {
+      "name": "항공기부품",
+      "change_rate": 8.82
+    },
+    {
+      "name": "HBM(고대역폭메모리)",
+      "change_rate": 8.7
     }
   ],
-  "cold_themes": [
-    {
-      "name": "게임",
-      "change_rate": -1.34
-    },
-    {
-      "name": "페라이트",
-      "change_rate": -1.32
-    },
-    {
-      "name": "여름",
-      "change_rate": -1.28
-    },
-    {
-      "name": "겨울",
-      "change_rate": -1.27
-    },
-    {
-      "name": "LNG(액화천연가스)",
-      "change_rate": -1.24
-    },
-    {
-      "name": "테마파크",
-      "change_rate": -1.18
-    },
-    {
-      "name": "주류업(주정, 에탄올 등)",
-      "change_rate": -1.14
-    },
-    {
-      "name": "광고",
-      "change_rate": -1.12
-    },
-    {
-      "name": "구제역/광우병 수혜",
-      "change_rate": -1.09
-    },
-    {
-      "name": "카카오뱅크(kakao BANK)",
-      "change_rate": -1.05
-    }
-  ]
+  "cold_themes": []
 }

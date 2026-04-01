@@ -1,7 +1,36 @@
 {
-  "exported_at": "2026-03-31T07:33:51.557585+00:00",
-  "total_candidates": 0,
+  "exported_at": "2026-04-01T07:00:01.520671+00:00",
+  "total_candidates": 2,
   "total_holdings": 0,
-  "candidates": [],
+  "candidates": [
+    {
+      "stock_code": "066970",
+      "stock_name": "엘앤에프",
+      "sector": "전기제품",
+      "signal_count": 3,
+      "avg_confidence": 0.6944333333333335,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "거래량2.1x | MA정배열 | 섹터강세(전기제품) | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-04-01T06:04:03.282247",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "001780",
+      "stock_name": "알루코",
+      "sector": "비철금속",
+      "signal_count": 3,
+      "avg_confidence": 1.0,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.7x | 거래량3x+ | MA정배열 | 섹터약세(비철금속) | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-04-01T06:04:03.282237",
+      "status": "매수 시그널"
+    }
+  ],
   "holdings": []
 }
