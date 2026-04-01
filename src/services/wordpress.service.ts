@@ -3593,6 +3593,19 @@ ${ga4TrackingScript}`;
       if (post.slug) slugMap.set(post.slug, post);
     }
 
+    // Fetch WP pages (pillar pages, static pages) to exclude from broken link detection
+    const validPageUrls = new Set<string>();
+    try {
+      const { data: pages } = await this.api.get('/pages', {
+        params: { per_page: 100, status: 'publish', _fields: 'link' },
+      });
+      for (const page of pages as Array<{ link: string }>) {
+        validPageUrls.add(page.link.replace(/\/$/, ''));
+      }
+    } catch {
+      // Non-fatal: page fetch failure just means pages won't be excluded
+    }
+
     let brokenCount = 0;
     let fixedCount = 0;
 
@@ -3610,11 +3623,12 @@ ${ga4TrackingScript}`;
         const slug = linkUrl.replace(this.wpUrl, '').replace(/^\/|\/$/g, '');
         if (!slug || slug.includes('?') || slug.startsWith('wp-')) continue;
 
-        // Check if this URL exists in our post list
-        const exists = existingPosts.some(p =>
+        // Check if this URL exists in our post list or page list
+        const existsAsPost = existingPosts.some(p =>
           p.url.replace(/\/$/, '') === linkUrl.replace(/\/$/, ''),
         );
-        if (exists) continue;
+        const existsAsPage = validPageUrls.has(linkUrl.replace(/\/$/, ''));
+        if (existsAsPost || existsAsPage) continue;
 
         // Try to find similar slug (Levenshtein-like matching)
         brokenCount++;
