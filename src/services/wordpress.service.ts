@@ -3703,6 +3703,12 @@ ${ga4TrackingScript}`;
         const fullExcerpt = (data.excerpt?.rendered || '') as string;
         const titleText = (data.title?.rendered || '') as string;
 
+        // Skip posts with empty/minimal content (deleted or placeholder posts)
+        if (fullContent.replace(/<[^>]*>/g, '').trim().length < 200) {
+          logger.debug(`Skipping refresh for "${post.title}" (ID=${post.postId}) — content too short, likely deleted`);
+          continue;
+        }
+
         const updates: Record<string, unknown> = {};
         const nowIso = new Date().toISOString();
         const dateFormatted = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
