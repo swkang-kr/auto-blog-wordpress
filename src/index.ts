@@ -3105,7 +3105,7 @@ async function main(): Promise<void> {
     logger.info(`Affiliate Links: ${totalAffLinks} total across ${postsWithAff}/${generated.length} posts (avg ${(totalAffLinks / generated.length).toFixed(1)}/post)`);
   }
 
-  for (const r of results) {
+  for (const r of finalResults) {
     if (r.success) {
       logger.info(`  [OK] [${r.niche}] "${r.keyword}" → ${r.postUrl} (${r.duration}ms)`);
     } else {
