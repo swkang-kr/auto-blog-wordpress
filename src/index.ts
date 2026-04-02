@@ -1152,9 +1152,10 @@ async function main(): Promise<void> {
         }
 
         // Cross-niche topic similarity: prevent same topic from being covered by multiple niches in one batch
-        const candidateWords = new Set(candidate.analysis.selectedKeyword.toLowerCase().split(/\s+/).filter(w => w.length > 3));
+        // Keep Korean words (≥2 chars) but exclude pure numbers (e.g. "2026") to avoid false overlaps
+        const candidateWords = new Set(candidate.analysis.selectedKeyword.toLowerCase().split(/\s+/).filter(w => w.length > 1 && !/^\d+$/.test(w)));
         const crossNicheDup = batchKeywords.find(bk => {
-          const bkWords = new Set(bk.toLowerCase().split(/\s+/).filter(w => w.length > 3));
+          const bkWords = new Set(bk.toLowerCase().split(/\s+/).filter(w => w.length > 1 && !/^\d+$/.test(w)));
           const overlap = [...candidateWords].filter(w => bkWords.has(w)).length;
           const minSize = Math.min(candidateWords.size, bkWords.size);
           return minSize > 0 && overlap / minSize >= 0.5; // 50%+ word overlap = topically similar

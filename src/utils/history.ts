@@ -121,9 +121,10 @@ export class PostHistory {
    */
   titleSimilarity(titleA: string, titleB: string): number {
     const stopWords = new Set(['a', 'an', 'the', 'in', 'on', 'at', 'to', 'for', 'of', 'and', 'or', 'is', 'are', 'was', 'were', 'your', 'you', 'how', 'what', 'why', 'best', 'top', 'way', 'ways', 'can', 'do', 'does', 'will', 'should', 'new', 'about', 'guide', 'complete', 'ultimate']);
-    const clean = (s: string) => s.toLowerCase().replace(/[^a-z0-9\s]/g, '');
-    const wordsA = clean(titleA).split(/\s+/).filter(w => w.length > 2 && !stopWords.has(w));
-    const wordsB = clean(titleB).split(/\s+/).filter(w => w.length > 2 && !stopWords.has(w));
+    // Keep Korean Hangul syllables alongside ASCII; exclude pure numbers to avoid year-based false matches
+    const clean = (s: string) => s.toLowerCase().replace(/[^a-z0-9\s\uAC00-\uD7A3\u3130-\u318F]/g, '');
+    const wordsA = clean(titleA).split(/\s+/).filter(w => w.length > 1 && !/^\d+$/.test(w) && !stopWords.has(w));
+    const wordsB = clean(titleB).split(/\s+/).filter(w => w.length > 1 && !/^\d+$/.test(w) && !stopWords.has(w));
     if (wordsA.length === 0 || wordsB.length === 0) return 0;
 
     const setA = new Set(wordsA);
