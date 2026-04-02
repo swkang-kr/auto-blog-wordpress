@@ -1,0 +1,78 @@
+{
+  "exported_at": "2026-04-02T15:25:00.004173+09:00",
+  "total": 6,
+  "watchlist": [
+    {
+      "stock_code": "012200",
+      "stock_name": "계양전기",
+      "score": 8.0,
+      "confidence": 0.8,
+      "signal_count": 14,
+      "sector": "",
+      "indicators": {
+        "reasons": "2일연속상승|MACD골든크로스|거래량4.6x|거래량3x+|MA역배열|주봉골든크로스|주봉MA20위|상대강도"
+      },
+      "ranked_score": 112.0
+    },
+    {
+      "stock_code": "001740",
+      "stock_name": "SK네트웍스",
+      "score": 8.0,
+      "confidence": 0.8,
+      "signal_count": 10,
+      "sector": "",
+      "indicators": {
+        "reasons": "2일연속상승|MACD골든크로스|거래량4.1x|거래량3x+|주봉골든크로스|주봉MA20위"
+      },
+      "ranked_score": 80.0
+    },
+    {
+      "stock_code": "001780",
+      "stock_name": "알루코",
+      "score": 6.0,
+      "confidence": 0.6,
+      "signal_count": 10,
+      "sector": "",
+      "indicators": {
+        "reasons": "MACD히스토그램↑|거래량23.9x|거래량3x+|MA정배열|주봉골든크로스|주봉MA20위"
+      },
+      "ranked_score": 60.0
+    },
+    {
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "score": 4.0,
+      "confidence": 0.4,
+      "signal_count": 13,
+      "sector": "",
+      "indicators": {
+        "reasons": "대형주급락(-5.30%)"
+      },
+      "ranked_score": 52.0
+    },
+    {
+      "stock_code": "000660",
+      "stock_name": "SK하이닉스",
+      "score": 4.0,
+      "confidence": 0.4,
+      "signal_count": 13,
+      "sector": "",
+      "indicators": {
+        "reasons": "대형주급락(-6.22%)"
+      },
+      "ranked_score": 52.0
+    },
+    {
+      "stock_code": "062970",
+      "stock_name": "한국첨단소재",
+      "score": 4.0,
+      "confidence": 0.4,
+      "signal_count": 10,
+      "sector": "",
+      "indicators": {
+        "reasons": "거래량2.5x|MA정배열|섹터강세(통신장비)|주봉골든크로스|주봉MA20위"
+      },
+      "ranked_score": 40.0
+    }
+  ]
+}

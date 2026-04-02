@@ -1,67 +1,84 @@
 {
-  "exported_at": "2026-04-01T07:00:01.308501+00:00",
-  "date": "20260401",
+  "exported_at": "2026-04-02T07:00:01.187458+00:00",
+  "date": "20260402",
   "hot_themes": [
     {
-      "name": "광통신(광케이블/광섬유 등)",
-      "change_rate": 20.12
+      "name": "자전거",
+      "change_rate": 22.36
+    },
+    {
+      "name": "해운",
+      "change_rate": 3.35
+    },
+    {
+      "name": "2026 상반기 신규상장",
+      "change_rate": 2.73
+    },
+    {
+      "name": "화학섬유",
+      "change_rate": 2.55
+    },
+    {
+      "name": "탈 플라스틱(친환경/생분해성 등)",
+      "change_rate": 2.27
+    },
+    {
+      "name": "윤활유",
+      "change_rate": 1.24
+    },
+    {
+      "name": "2차전지(생산)",
+      "change_rate": 0.94
+    },
+    {
+      "name": "LPG(액화석유가스)",
+      "change_rate": 0.61
+    },
+    {
+      "name": "아스콘(아스팔트 콘크리트)",
+      "change_rate": 0.18
+    }
+  ],
+  "cold_themes": [
+    {
+      "name": "방위산업/전쟁 및 테러",
+      "change_rate": -2.25
     },
     {
       "name": "통신장비",
-      "change_rate": 14.8
+      "change_rate": -2.23
     },
     {
-      "name": "5G(5세대 이동통신)",
-      "change_rate": 13.15
+      "name": "애플페이",
+      "change_rate": -2.2
     },
     {
-      "name": "소캠(SOCAMM)",
-      "change_rate": 12.52
+      "name": "렌터카",
+      "change_rate": -2.17
     },
     {
-      "name": "건설 대표주",
-      "change_rate": 11.68
+      "name": "리비안(RIVIAN)",
+      "change_rate": -2.16
     },
     {
-      "name": "반도체 대표주(생산)",
-      "change_rate": 11.25
+      "name": "비료",
+      "change_rate": -2.11
     },
     {
-      "name": "스페이스X(SpaceX)",
-      "change_rate": 10.78
+      "name": "수산",
+      "change_rate": -2.04
     },
     {
-      "name": "뉴로모픽 반도체",
-      "change_rate": 10.5
+      "name": "구제역/광우병 수혜",
+      "change_rate": -2.03
     },
     {
-      "name": "우주항공산업(누리호/인공위성 등)",
-      "change_rate": 10.42
+      "name": "피팅(관이음쇠)/밸브",
+      "change_rate": -2.01
     },
     {
-      "name": "온디바이스 AI",
-      "change_rate": 10.37
-    },
-    {
-      "name": "유심(USIM)",
-      "change_rate": 9.81
-    },
-    {
-      "name": "CXL(컴퓨트익스프레스링크)",
-      "change_rate": 9.73
-    },
-    {
-      "name": "LED장비",
-      "change_rate": 9.18
-    },
-    {
-      "name": "항공기부품",
-      "change_rate": 8.82
-    },
-    {
-      "name": "HBM(고대역폭메모리)",
-      "change_rate": 8.7
+      "name": "미디어(방송/신문)",
+      "change_rate": -1.96
     }
-  ],
-  "cold_themes": []
+  ]
 }

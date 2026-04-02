@@ -1,29 +1,4 @@
 {
-  "exported_at": "2026-04-01T07:00:00.809482+00:00",
-  "trades": [
-    {
-      "stock_code": "009580",
-      "stock_name": "무림P&P",
-      "side": "sell",
-      "quantity": 409,
-      "price": 2975.0,
-      "pnl": 110474.58,
-      "pnl_rate": 10.0226,
-      "strategy": "swing_stop_loss(SL=3,009)",
-      "reason": "swing_stop_loss(SL=3,009)",
-      "filled_at": "2026-03-26T00:55:59.838001"
-    },
-    {
-      "stock_code": "028050",
-      "stock_name": "삼성E&A",
-      "side": "sell",
-      "quantity": 20,
-      "price": 32800.0,
-      "pnl": -23247.2,
-      "pnl_rate": -3.4339,
-      "strategy": "swing_stop_loss(SL=32,834)",
-      "reason": "swing_stop_loss(SL=32,834)",
-      "filled_at": "2026-03-26T00:17:24.317109"
-    }
-  ]
+  "exported_at": "2026-04-02T07:00:00.727067+00:00",
+  "trades": []
 }

@@ -1,8 +1,74 @@
 {
-  "exported_at": "2026-04-01T07:00:01.520671+00:00",
-  "total_candidates": 2,
+  "exported_at": "2026-04-02T07:00:01.396243+00:00",
+  "total_candidates": 7,
   "total_holdings": 0,
   "candidates": [
+    {
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "sector": "",
+      "signal_count": 13,
+      "avg_confidence": 0.4,
+      "strategies": [],
+      "reason": "score=4.00, ranked_score=52.00",
+      "price_at_signal": 0,
+      "signal_time": "2026-04-02T15:25:00.004173+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "000660",
+      "stock_name": "SK하이닉스",
+      "sector": "",
+      "signal_count": 13,
+      "avg_confidence": 0.4,
+      "strategies": [],
+      "reason": "score=4.00, ranked_score=52.00",
+      "price_at_signal": 0,
+      "signal_time": "2026-04-02T15:25:00.004173+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "001780",
+      "stock_name": "알루코",
+      "sector": "비철금속",
+      "signal_count": 6,
+      "avg_confidence": 0.84375,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.7x | 거래량3x+ | MA정배열 | 섹터약세(비철금속) | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-04-01T06:04:03.282237",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "012200",
+      "stock_name": "계양전기",
+      "sector": "자동차부품",
+      "signal_count": 3,
+      "avg_confidence": 0.9791666666666666,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD골든크로스 | 거래량4.6x | 거래량3x+ | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+17.3%vsKOSPI-5.6%)",
+      "price_at_signal": 0,
+      "signal_time": "2026-04-02T06:02:29.745332",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "001740",
+      "stock_name": "SK네트웍스",
+      "sector": "",
+      "signal_count": 3,
+      "avg_confidence": 1.0,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD골든크로스 | 거래량4.1x | 거래량3x+ | 주봉골든크로스 | 주봉MA20위 | 상대강도(+3.2%vsKOSPI-5.6%)",
+      "price_at_signal": 0,
+      "signal_time": "2026-04-02T06:02:29.745322",
+      "status": "매수 시그널"
+    },
     {
       "stock_code": "066970",
       "stock_name": "엘앤에프",
@@ -18,17 +84,17 @@
       "status": "매수 시그널"
     },
     {
-      "stock_code": "001780",
-      "stock_name": "알루코",
-      "sector": "비철금속",
-      "signal_count": 3,
-      "avg_confidence": 1.0,
+      "stock_code": "062970",
+      "stock_name": "한국첨단소재",
+      "sector": "통신장비",
+      "signal_count": 1,
+      "avg_confidence": 0.5833,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.7x | 거래량3x+ | MA정배열 | 섹터약세(비철금속) | 주봉골든크로스 | 주봉MA20위",
+      "reason": "거래량2.5x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-04-01T06:04:03.282237",
+      "signal_time": "2026-04-02T06:15:10.323228",
       "status": "매수 시그널"
     }
   ],
