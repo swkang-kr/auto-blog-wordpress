@@ -691,9 +691,9 @@
       "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/kpop-idol-agency-contracts-work-trainees-featured-2026.webp",
       "featuredImageMediaId": 15067,
       "affiliateLinkCount": 0,
-      "engagementScore": 0,
+      "engagementScore": 1,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0.006,
+      "estimatedRevenue": 0.009000000000000001,
       "titleTestPhaseBStarted": true,
       "titleTestPhaseBTitle": "K-Pop Trainee Contracts: The Business Reality Behind the System (2026)",
       "titleTestWinner": "How K-Pop Idol Agency Contracts Work for Trainees (2026)",
@@ -762,7 +762,7 @@
       "affiliateLinkCount": 0,
       "engagementScore": 16,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0.006,
+      "estimatedRevenue": 0.009000000000000001,
       "titleTestPhaseBStarted": true,
       "titleTestPhaseBTitle": "Which Korean Skincare Ingredients Are Actually Proven? (2026)",
       "titleTestWinner": "Korean Skincare Ingredients That Actually Work (2026 Guide)",
@@ -1611,9 +1611,15 @@
           "position": 50,
           "clicks": 0,
           "impressions": 1
+        },
+        {
+          "date": "2026-04-03",
+          "position": 20,
+          "clicks": 0,
+          "impressions": 1
         }
       ],
-      "lastPosition": 50,
+      "lastPosition": 20,
       "engagementScore": 0,
       "estimatedRpm": 3,
       "estimatedRevenue": 0.009000000000000001,
@@ -2129,7 +2135,11 @@
       "seriesPart": 16,
       "engagementScore": 33,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0.006
+      "estimatedRevenue": 0.006,
+      "titleTestPhaseBStarted": true,
+      "titleTestPhaseBTitle": "Ceramide NP vs AP vs EOP: Which Korean Product Has the Best Formula?",
+      "titleTestWinner": "Ceramide Types NP, AP & EOP: Best Korean Products Ranked (2026)",
+      "titleTestResolved": true
     },
     {
       "keyword": "best Korean comfort healing dramas 2026 low stress feel good ranked guide",
@@ -2154,7 +2164,12 @@
       "estimatedRpm": 3,
       "estimatedRevenue": 0.018000000000000002,
       "titleTestPhaseACtr": 0,
-      "titleTestPhaseATitle": "best Korean comfort healing dramas 2026 low stress feel good ranked guide"
+      "titleTestPhaseATitle": "best Korean comfort healing dramas 2026 low stress feel good ranked guide",
+      "titleTestPhaseBStarted": true,
+      "titleTestPhaseBTitle": "Korean Healing Dramas Ranked by Emotional Need (2026 Guide)",
+      "titleTestPhaseBCtr": 0,
+      "titleTestWinner": "15 Best Korean Comfort Dramas to Watch in 2026",
+      "titleTestResolved": true
     },
     {
       "keyword": "Banila Co Clean It Zero vs Heimish All Clean Balm comparison which is better 2026",
@@ -2174,7 +2189,11 @@
       "affiliateLinkCount": 0,
       "qualityScore": 79,
       "seriesId": "skincare-routine-guide",
-      "seriesPart": 17
+      "seriesPart": 17,
+      "titleTestPhaseBStarted": true,
+      "titleTestPhaseBTitle": "Banila Co Clean It Zero vs Heimish: 2026 Skin-Type Verdict",
+      "titleTestWinner": "Banila Co vs Heimish Cleansing Balm: Which Is Better? (2026)",
+      "titleTestResolved": true
     },
     {
       "keyword": "KOSPI vs KOSDAQ which market to invest 2026",
@@ -2213,7 +2232,9 @@
       "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/ai-vs-featured-2026.webp",
       "featuredImageMediaId": 88986,
       "affiliateLinkCount": 0,
-      "qualityScore": 73
+      "qualityScore": 73,
+      "titleTestPhaseACtr": 0,
+      "titleTestPhaseATitle": "AI 자동매매 vs 수동매매 비교 어떤게 유리할까"
     },
     {
       "keyword": "한국은행 기준금리 결정 주식시장 영향 분석",
@@ -2271,7 +2292,7 @@
       "featuredImageMediaId": 89016,
       "affiliateLinkCount": 0,
       "qualityScore": 84,
-      "engagementScore": 32
+      "engagementScore": 34
     },
     {
       "keyword": "how to read Korean stock charts for beginners",
@@ -2360,7 +2381,7 @@
       "originalTitle": "4월 3일 POSCO vs 현대제철 철강주 비교 분석: 2026년 3중 악재 속 투자 판단 가이드",
       "searchIntent": "commercial-investigation",
       "qualityScore": 83,
-      "engagementScore": 0,
+      "engagementScore": 1,
       "estimatedRpm": 3,
       "estimatedRevenue": 0.03,
       "affiliateLinkCount": 0
@@ -2379,10 +2400,84 @@
       "estimatedRpm": 3,
       "estimatedRevenue": 0.03,
       "affiliateLinkCount": 0
+    },
+    {
+      "keyword": "바이오주 분석 유망 종목 파이프라인 2026",
+      "postId": 89267,
+      "postUrl": "https://trendhunt.net/%eb%b0%94%ec%9d%b4%ec%98%a4%ec%a3%bc-%eb%b6%84%ec%84%9d-%ec%9c%a0%eb%a7%9d-%ec%a2%85%eb%aa%a9-%ed%8c%8c%ec%9d%b4%ed%94%84%eb%9d%bc%ec%9d%b8-2026/",
+      "publishedAt": "2026-04-03T01:09:04.111Z",
+      "niche": "sector-analysis",
+      "contentType": "deep-dive",
+      "titleCandidates": [
+        "4월 3일 임상 3상 통과 종목 집중 분석: 2026년 바이오주 파이프라인 투자 완전 가이드",
+        "4월 3일 셀트리온·삼성바이오·유한양행 2026 파이프라인 비교: 언제 사야 하는가"
+      ],
+      "originalTitle": "4월 3일 바이오주 분석: 2026년 유망 종목과 파이프라인 투자 전략 완전 가이드",
+      "searchIntent": "commercial-investigation",
+      "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/04/2026-featured-2026.webp",
+      "featuredImageMediaId": 89263,
+      "affiliateLinkCount": 0,
+      "qualityScore": 76
+    },
+    {
+      "keyword": "금리 인하 수혜주 테마 분석 2026",
+      "postId": 89277,
+      "postUrl": "https://trendhunt.net/%ea%b8%88%eb%a6%ac-%ec%9d%b8%ed%95%98-%ec%88%98%ed%98%9c%ec%a3%bc-%ed%85%8c%eb%a7%88-%eb%b6%84%ec%84%9d-2026/",
+      "publishedAt": "2026-04-03T01:11:09.622Z",
+      "niche": "theme-analysis",
+      "contentType": "analysis",
+      "titleCandidates": [
+        "4월 3일 한국은행 금리 인하 수혜주 2026: 리츠·건설·성장주 섹터별 수혜 강도 완전 비교",
+        "4/3 이자보상배율로 찾는 금리 인하 수혜주 2026: 섹터별 스크리닝 실전 가이드"
+      ],
+      "originalTitle": "4월 3일 금리 인하 수혜주 테마 분석 2026: 정책 수혜 핵심 종목 정리",
+      "searchIntent": "commercial",
+      "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/04/2026-featured-2026-1.webp",
+      "featuredImageMediaId": 89273,
+      "affiliateLinkCount": 0,
+      "qualityScore": 75
+    },
+    {
+      "keyword": "삼성전자 주가 기술적 분석 2026",
+      "postId": 89286,
+      "postUrl": "https://trendhunt.net/%ec%82%bc%ec%84%b1%ec%a0%84%ec%9e%90-%ec%a3%bc%ea%b0%80-%ea%b8%b0%ec%88%a0%ec%a0%81-%eb%b6%84%ec%84%9d-rsi-macd-%eb%b3%bc%eb%a6%b0%ec%a0%80%eb%b0%b4%eb%93%9c-2026/",
+      "publishedAt": "2026-04-03T01:13:07.103Z",
+      "niche": "ai-stock-picks",
+      "contentType": "analysis",
+      "titleCandidates": [
+        "4월 3일 삼성전자 RSI·MACD·볼린저밴드 3중 교차 분석: score 4.00이 의미하는 것",
+        "삼성전자 복합 기술적 시그널 분석 2026: 과매도 구간 매수 타이밍 체크리스트"
+      ],
+      "originalTitle": "4월 3일 삼성전자 주가 기술적 분석: RSI·MACD·볼린저밴드 복합 시그널 점검 2026",
+      "searchIntent": "commercial-investigation",
+      "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/04/2026-featured-2026-2.webp",
+      "featuredImageMediaId": 89282,
+      "affiliateLinkCount": 0,
+      "qualityScore": 79
+    },
+    {
+      "keyword": "채권 ETF 추천 금리 변동 투자 전략",
+      "postId": 89296,
+      "postUrl": "https://trendhunt.net/%ec%b1%84%ea%b6%8c-etf-%ec%b6%94%ec%b2%9c-%ea%b8%88%eb%a6%ac-%eb%b3%80%eb%8f%99-%ed%88%ac%ec%9e%90-%ec%a0%84%eb%9e%b5-2026/",
+      "publishedAt": "2026-04-03T01:15:07.596Z",
+      "niche": "market-analysis",
+      "contentType": "best-x-for-y",
+      "titleCandidates": [
+        "4월 3일 금리 인하 수혜 채권 ETF TOP 7: 듀레이션별 2026 포트폴리오 전략",
+        "4월 3일 KODEX·TIGER 채권 ETF 비교: 2026 한국은행 인하 사이클 최적 배분"
+      ],
+      "originalTitle": "4월 3일 채권 ETF 추천 금리 변동 투자 전략: 2026 듀레이션별 최적 포트폴리오",
+      "searchIntent": "commercial",
+      "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/04/etf-featured-2026.webp",
+      "featuredImageMediaId": 89291,
+      "affiliateLinkCount": 0,
+      "qualityScore": 68,
+      "seriesId": "macro-analysis",
+      "seriesPart": 2
     }
   ],
-  "lastRunAt": "2026-04-01T01:09:41.096Z",
-  "totalPosts": 78,
+  "lastRunAt": "2026-04-03T01:18:05.230Z",
+  "totalPosts": 82,
   "categoryLastPublished": {
     "korean-food-cooking": "2026-03-09T14:49:00.731Z",
     "korean-tech-ai": "2026-03-13T14:58:36.162Z",
@@ -2392,7 +2487,9 @@
     "k-entertainment-business": "2026-03-26T15:13:08.946Z",
     "korean-stock-analysis": "2026-03-29T14:47:13.768Z",
     "ai-trading-quant": "2026-03-28T14:50:41.238Z",
-    "ai-stock-picks": "2026-03-31T01:17:58.831Z",
-    "market-analysis": "2026-04-01T01:08:10.472Z"
+    "ai-stock-picks": "2026-04-03T01:13:07.101Z",
+    "market-analysis": "2026-04-03T01:15:07.594Z",
+    "sector-analysis": "2026-04-03T01:09:04.109Z",
+    "theme-analysis": "2026-04-03T01:11:09.619Z"
   }
 }
