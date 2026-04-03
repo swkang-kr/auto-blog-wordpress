@@ -983,15 +983,9 @@ ${socialHtml}
   /**
    * Inject SVG data chart into Finance category posts before the first H2.
    */
-  injectDataChart(html: string, chartSvg: string, category: string): string {
-    if (!chartSvg || !['시장분석', '업종분석', '테마분석', '종목분석'].includes(category)) return html;
-
-    const chartHtml = `<div class="ab-data-chart" style="margin:24px 0; text-align:center;">${chartSvg}</div>`;
-    const firstH2 = html.indexOf('<h2');
-    if (firstH2 > 0) {
-      return html.slice(0, firstH2) + chartHtml + '\n' + html.slice(firstH2);
-    }
-    return chartHtml + '\n' + html;
+  injectDataChart(html: string, _chartSvg: string, _category: string): string {
+    // SVG infographic chart disabled — renders as broken HTML on mobile/RSS
+    return html;
   }
 
   /**
