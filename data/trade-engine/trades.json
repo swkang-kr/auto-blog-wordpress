@@ -1,4 +1,65 @@
 {
-  "exported_at": "2026-04-02T07:00:00.727067+00:00",
-  "trades": []
+  "exported_at": "2026-04-03T07:00:00.772951+00:00",
+  "trades": [
+    {
+      "stock_code": "012200",
+      "stock_name": "계양전기",
+      "side": "buy",
+      "quantity": 130,
+      "price": 6790.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "2일연속상승 | MACD골든크로스 | 거래량4.6x | 거래량3x+ | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+17.3%vsKOSPI+3.0%)",
+      "filled_at": "2026-04-03T06:15:29.057684"
+    },
+    {
+      "stock_code": "006110",
+      "stock_name": "삼아알미늄",
+      "side": "sell",
+      "quantity": 24,
+      "price": 35950.0,
+      "pnl": -6536.4,
+      "pnl_rate": -0.7544,
+      "strategy": "entry_guard_5min(drop=-4.8%,elapsed=272s)",
+      "reason": "entry_guard_5min(drop=-4.8%,elapsed=272s)",
+      "filled_at": "2026-04-03T06:08:35.550302"
+    },
+    {
+      "stock_code": "001740",
+      "stock_name": "SK네트웍스",
+      "side": "sell",
+      "quantity": 172,
+      "price": 5250.0,
+      "pnl": -4791.58,
+      "pnl_rate": -0.5296,
+      "strategy": "swing_stop_loss(SL=5,414)",
+      "reason": "swing_stop_loss(SL=5,414)",
+      "filled_at": "2026-04-03T06:08:28.822930"
+    },
+    {
+      "stock_code": "001740",
+      "stock_name": "SK네트웍스",
+      "side": "buy",
+      "quantity": 172,
+      "price": 5260.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "2일연속상승 | MACD골든크로스 | 거래량4.1x | 거래량3x+ | 주봉골든크로스 | 주봉MA20위",
+      "filled_at": "2026-04-03T06:04:26.203070"
+    },
+    {
+      "stock_code": "006110",
+      "stock_name": "삼아알미늄",
+      "side": "buy",
+      "quantity": 24,
+      "price": 36100.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "2일연속상승 | MACD골든크로스 | 거래량2.5x | 섹터강세(비철금속) | 주봉골든크로스 | 주봉MA20위 | 상대강도(+22.1%vsKOSPI+3.1%)",
+      "filled_at": "2026-04-03T06:03:57.038642"
+    }
+  ]
 }

@@ -1,78 +1,134 @@
 {
-  "exported_at": "2026-04-02T15:25:00.004173+09:00",
-  "total": 6,
+  "exported_at": "2026-04-03T15:25:00.008067+09:00",
+  "total": 4,
   "watchlist": [
+    {
+      "stock_code": "006110",
+      "stock_name": "삼아알미늄",
+      "score": 8.0,
+      "confidence": 1.0,
+      "signal_count": 19,
+      "sector": "비철금속",
+      "indicators": {
+        "rsi": 63.59,
+        "macd": 687.9385,
+        "macd_signal": 658.5628,
+        "bb_upper": 37598.0,
+        "bb_lower": 25412.0,
+        "close": 37800,
+        "timeframe": "1day",
+        "vol_surge": 2.48,
+        "_pre_dropna_atr": 2955.025313683544,
+        "sector_momentum": 1.7,
+        "weekly_ma5": 32640.0,
+        "weekly_ma20": 27935.0,
+        "weekly_rsi": 64.2,
+        "weekly_trend": "골든",
+        "atr_14": 3045.31,
+        "swing_score": 8.0,
+        "swing_mode": true,
+        "w52_position_pct": "100.0",
+        "w52_high": "37800.0000",
+        "w52_low": "17610.0000",
+        "volume_surge": 1.57,
+        "day_change_pct": 5.56,
+        "foreign_net_buy": 0,
+        "institution_net_buy": 0,
+        "individual_net_buy": 0,
+        "minute_vol_ratio": 3.15,
+        "swing_reasons": "2일연속상승 | MACD골든크로스 | 거래량2.5x | 섹터강세(비철금속) | 주봉골든크로스 | 주봉MA20위 | 상대강도(+22.1%vsKOSPI+2.7%)",
+        "market": "KOSPI"
+      },
+      "ranked_score": 152.0
+    },
     {
       "stock_code": "012200",
       "stock_name": "계양전기",
       "score": 8.0,
-      "confidence": 0.8,
-      "signal_count": 14,
-      "sector": "",
+      "confidence": 1.0,
+      "signal_count": 17,
+      "sector": "자동차부품",
       "indicators": {
-        "reasons": "2일연속상승|MACD골든크로스|거래량4.6x|거래량3x+|MA역배열|주봉골든크로스|주봉MA20위|상대강도"
+        "rsi": 54.55,
+        "macd": -476.3829,
+        "macd_signal": -543.2882,
+        "bb_upper": 8081.0,
+        "bb_lower": 5557.0,
+        "close": 7330,
+        "timeframe": "1day",
+        "vol_surge": 4.56,
+        "_pre_dropna_atr": 769.6506465924871,
+        "sector_momentum": 0.69,
+        "weekly_ma5": 6862.0,
+        "weekly_ma20": 6396.0,
+        "weekly_rsi": 53.7,
+        "weekly_trend": "골든",
+        "atr_14": 805.36,
+        "swing_score": 8.0,
+        "swing_mode": true,
+        "w52_position_pct": "54.1",
+        "w52_high": "12440.0000",
+        "w52_low": "1301.0000",
+        "volume_surge": 1.02,
+        "day_change_pct": -2.69,
+        "foreign_net_buy": 0,
+        "institution_net_buy": 0,
+        "individual_net_buy": 0,
+        "minute_vol_ratio": 0.88,
+        "early_volume_spike": true,
+        "swing_reasons": "2일연속상승 | MACD골든크로스 | 거래량4.6x | 거래량3x+ | MA역배열 | 섹터강세(자동차부) | 주봉골든크로스 | 주봉MA20위 | 상대강도(+17.3%vsKOSPI+2.8%)",
+        "market": "KOSPI"
       },
-      "ranked_score": 112.0
+      "ranked_score": 136.0
     },
     {
       "stock_code": "001740",
       "stock_name": "SK네트웍스",
-      "score": 8.0,
-      "confidence": 0.8,
-      "signal_count": 10,
+      "score": 8.5,
+      "confidence": 1.0,
+      "signal_count": 15,
       "sector": "",
       "indicators": {
-        "reasons": "2일연속상승|MACD골든크로스|거래량4.1x|거래량3x+|주봉골든크로스|주봉MA20위"
+        "rsi": 60.16,
+        "macd": 11.6113,
+        "macd_signal": -18.9265,
+        "bb_upper": 5714.0,
+        "bb_lower": 4929.0,
+        "close": 5760,
+        "timeframe": "1day",
+        "vol_surge": 4.12,
+        "_pre_dropna_atr": 341.0589899822524,
+        "weekly_ma5": 5296.0,
+        "weekly_ma20": 4977.0,
+        "weekly_rsi": 60.4,
+        "weekly_trend": "골든",
+        "atr_14": 341.06,
+        "swing_score": 8.5,
+        "swing_mode": true,
+        "w52_high": "5970.0000",
+        "w52_low": "4920.0000",
+        "volume_surge": 1.68,
+        "day_change_pct": -3.32,
+        "foreign_net_buy": 0,
+        "institution_net_buy": 0,
+        "individual_net_buy": 0,
+        "minute_vol_ratio": 1.47,
+        "swing_reasons": "2일연속상승 | MACD골든크로스 | 거래량4.1x | 거래량3x+ | 주봉골든크로스 | 주봉MA20위 | 상대강도(+3.2%vsKOSPI+1.7%)",
+        "market": "KOSPI"
       },
-      "ranked_score": 80.0
+      "ranked_score": 127.5
     },
     {
       "stock_code": "001780",
       "stock_name": "알루코",
-      "score": 6.0,
-      "confidence": 0.6,
-      "signal_count": 10,
+      "score": 4.5,
+      "confidence": 0.5,
+      "signal_count": 6,
       "sector": "",
       "indicators": {
-        "reasons": "MACD히스토그램↑|거래량23.9x|거래량3x+|MA정배열|주봉골든크로스|주봉MA20위"
+        "swing_reasons": "거래량22.6x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위"
       },
-      "ranked_score": 60.0
-    },
-    {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "score": 4.0,
-      "confidence": 0.4,
-      "signal_count": 13,
-      "sector": "",
-      "indicators": {
-        "reasons": "대형주급락(-5.30%)"
-      },
-      "ranked_score": 52.0
-    },
-    {
-      "stock_code": "000660",
-      "stock_name": "SK하이닉스",
-      "score": 4.0,
-      "confidence": 0.4,
-      "signal_count": 13,
-      "sector": "",
-      "indicators": {
-        "reasons": "대형주급락(-6.22%)"
-      },
-      "ranked_score": 52.0
-    },
-    {
-      "stock_code": "062970",
-      "stock_name": "한국첨단소재",
-      "score": 4.0,
-      "confidence": 0.4,
-      "signal_count": 10,
-      "sector": "",
-      "indicators": {
-        "reasons": "거래량2.5x|MA정배열|섹터강세(통신장비)|주봉골든크로스|주봉MA20위"
-      },
-      "ranked_score": 40.0
+      "ranked_score": 27.0
     }
   ]
 }

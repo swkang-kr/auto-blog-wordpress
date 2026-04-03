@@ -1,84 +1,67 @@
 {
-  "exported_at": "2026-04-02T07:00:01.187458+00:00",
-  "date": "20260402",
+  "exported_at": "2026-04-03T07:00:01.187323+00:00",
+  "date": "20260403",
   "hot_themes": [
     {
-      "name": "자전거",
-      "change_rate": 22.36
+      "name": "광통신(광케이블/광섬유 등)",
+      "change_rate": 7.94
     },
     {
-      "name": "해운",
-      "change_rate": 3.35
+      "name": "풍력에너지",
+      "change_rate": 6.31
     },
     {
-      "name": "2026 상반기 신규상장",
-      "change_rate": 2.73
+      "name": "반도체 대표주(생산)",
+      "change_rate": 6.23
     },
     {
-      "name": "화학섬유",
-      "change_rate": 2.55
+      "name": "강관업체(Steel pipe)",
+      "change_rate": 6.2
     },
     {
-      "name": "탈 플라스틱(친환경/생분해성 등)",
-      "change_rate": 2.27
-    },
-    {
-      "name": "윤활유",
-      "change_rate": 1.24
-    },
-    {
-      "name": "2차전지(생산)",
-      "change_rate": 0.94
-    },
-    {
-      "name": "LPG(액화석유가스)",
-      "change_rate": 0.61
-    },
-    {
-      "name": "아스콘(아스팔트 콘크리트)",
-      "change_rate": 0.18
-    }
-  ],
-  "cold_themes": [
-    {
-      "name": "방위산업/전쟁 및 테러",
-      "change_rate": -2.25
-    },
-    {
-      "name": "통신장비",
-      "change_rate": -2.23
-    },
-    {
-      "name": "애플페이",
-      "change_rate": -2.2
-    },
-    {
-      "name": "렌터카",
-      "change_rate": -2.17
-    },
-    {
-      "name": "리비안(RIVIAN)",
-      "change_rate": -2.16
-    },
-    {
-      "name": "비료",
-      "change_rate": -2.11
-    },
-    {
-      "name": "수산",
-      "change_rate": -2.04
-    },
-    {
-      "name": "구제역/광우병 수혜",
-      "change_rate": -2.03
+      "name": "조선기자재",
+      "change_rate": 5.94
     },
     {
       "name": "피팅(관이음쇠)/밸브",
-      "change_rate": -2.01
+      "change_rate": 5.78
     },
     {
-      "name": "미디어(방송/신문)",
-      "change_rate": -1.96
+      "name": "우주태양광(페로브스카이트 등)",
+      "change_rate": 5.65
+    },
+    {
+      "name": "태양광에너지",
+      "change_rate": 5.5
+    },
+    {
+      "name": "코로나19(음압병실/음압구급차)",
+      "change_rate": 5.42
+    },
+    {
+      "name": "통신장비",
+      "change_rate": 5.4
+    },
+    {
+      "name": "조선",
+      "change_rate": 5.25
+    },
+    {
+      "name": "종합상사",
+      "change_rate": 5.13
+    },
+    {
+      "name": "고체산화물 연료전지(SOFC)",
+      "change_rate": 5.0
+    },
+    {
+      "name": "방위산업/전쟁 및 테러",
+      "change_rate": 4.96
+    },
+    {
+      "name": "항공기부품",
+      "change_rate": 4.91
     }
-  ]
+  ],
+  "cold_themes": []
 }

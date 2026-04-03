@@ -1,7 +1,23 @@
 {
-  "exported_at": "2026-04-02T07:00:01.354419+00:00",
-  "total_stocks": 14,
+  "exported_at": "2026-04-03T07:00:01.359946+00:00",
+  "total_stocks": 9,
   "watchlist_all": [
+    {
+      "stock_code": "001740",
+      "stock_name": "SK네트웍스",
+      "market": "KOSPI",
+      "sector": "",
+      "signal_count": 6,
+      "buy_count": 6,
+      "sell_count": 0,
+      "avg_confidence": 1.0,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "2일연속상승 | MACD골든크로스 | 거래량4.1x | 거래량3x+ | 주봉골든크로스 | 주봉MA20위 | 상대강도(+3.2%vsKOSPI-5.6%)",
+      "latest_price": 0,
+      "latest_at": "2026-04-02T06:02:29.745322"
+    },
     {
       "stock_code": "001780",
       "stock_name": "알루코",
@@ -19,126 +35,14 @@
       "latest_at": "2026-04-01T06:04:03.282237"
     },
     {
-      "stock_code": "062970",
-      "stock_name": "한국첨단소재",
-      "market": "KOSDAQ",
-      "sector": "통신장비",
-      "signal_count": 5,
-      "buy_count": 1,
-      "sell_count": 4,
-      "avg_confidence": 0.8257,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "latest_reason": "RSI과매수(89)",
-      "latest_price": 0,
-      "latest_at": "2026-03-27T06:07:33.804736"
-    },
-    {
-      "stock_code": "065530",
-      "stock_name": "와이어블",
-      "market": "KOSDAQ",
-      "sector": "무선통신서비스",
-      "signal_count": 4,
-      "buy_count": 0,
-      "sell_count": 4,
-      "avg_confidence": 0.8544,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "latest_reason": "RSI과매수(85)",
-      "latest_price": 0,
-      "latest_at": "2026-03-27T06:07:33.804738"
-    },
-    {
-      "stock_code": "003000",
-      "stock_name": "부광약품",
-      "market": "KOSPI",
-      "sector": "제약",
-      "signal_count": 4,
-      "buy_count": 0,
-      "sell_count": 4,
-      "avg_confidence": 0.8094,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "latest_reason": "RSI과매수(81)",
-      "latest_price": 0,
-      "latest_at": "2026-03-27T06:07:33.804734"
-    },
-    {
-      "stock_code": "017900",
-      "stock_name": "광전자",
-      "market": "KOSPI",
-      "sector": "전자장비와기기",
-      "signal_count": 4,
-      "buy_count": 0,
-      "sell_count": 4,
-      "avg_confidence": 0.7927,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "latest_reason": "RSI과매수(79)",
-      "latest_price": 0,
-      "latest_at": "2026-03-27T06:07:33.804732"
-    },
-    {
-      "stock_code": "069540",
-      "stock_name": "빛과전자",
-      "market": "KOSDAQ",
-      "sector": "통신장비",
-      "signal_count": 4,
-      "buy_count": 0,
-      "sell_count": 4,
-      "avg_confidence": 0.8124,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "latest_reason": "RSI과매수(81)",
-      "latest_price": 0,
-      "latest_at": "2026-03-27T06:07:33.804730"
-    },
-    {
-      "stock_code": "010170",
-      "stock_name": "대한광통신",
-      "market": "KOSDAQ",
-      "sector": "통신장비",
-      "signal_count": 4,
-      "buy_count": 0,
-      "sell_count": 4,
-      "avg_confidence": 0.7571,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "latest_reason": "RSI과매수(76)",
-      "latest_price": 0,
-      "latest_at": "2026-03-27T06:07:33.804727"
-    },
-    {
-      "stock_code": "038110",
-      "stock_name": "에코플라스틱",
-      "market": "KOSDAQ",
-      "sector": "자동차부품",
-      "signal_count": 4,
-      "buy_count": 0,
-      "sell_count": 4,
-      "avg_confidence": 0.7699,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "latest_reason": "RSI과매수(77)",
-      "latest_price": 0,
-      "latest_at": "2026-03-27T06:07:33.804724"
-    },
-    {
       "stock_code": "012200",
       "stock_name": "계양전기",
       "market": "KOSPI",
       "sector": "자동차부품",
-      "signal_count": 3,
-      "buy_count": 3,
+      "signal_count": 4,
+      "buy_count": 4,
       "sell_count": 0,
-      "avg_confidence": 0.9791666666666666,
+      "avg_confidence": 0.984375,
       "strategies": [
         "RSI+MACD(swing)"
       ],
@@ -147,10 +51,26 @@
       "latest_at": "2026-04-02T06:02:29.745332"
     },
     {
-      "stock_code": "001740",
-      "stock_name": "SK네트웍스",
+      "stock_code": "003030",
+      "stock_name": "세아제강지주",
       "market": "KOSPI",
       "sector": "",
+      "signal_count": 3,
+      "buy_count": 0,
+      "sell_count": 3,
+      "avg_confidence": 0.7789,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "RSI과매수(78)",
+      "latest_price": 0,
+      "latest_at": "2026-04-03T06:03:35.165413"
+    },
+    {
+      "stock_code": "006110",
+      "stock_name": "삼아알미늄",
+      "market": "KOSPI",
+      "sector": "비철금속",
       "signal_count": 3,
       "buy_count": 3,
       "sell_count": 0,
@@ -158,9 +78,9 @@
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "latest_reason": "2일연속상승 | MACD골든크로스 | 거래량4.1x | 거래량3x+ | 주봉골든크로스 | 주봉MA20위 | 상대강도(+3.2%vsKOSPI-5.6%)",
+      "latest_reason": "2일연속상승 | MACD골든크로스 | 거래량2.5x | 섹터강세(비철금속) | 주봉골든크로스 | 주봉MA20위 | 상대강도(+22.1%vsKOSPI+3.1%)",
       "latest_price": 0,
-      "latest_at": "2026-04-02T06:02:29.745322"
+      "latest_at": "2026-04-03T06:03:35.165399"
     },
     {
       "stock_code": "058110",
@@ -211,26 +131,42 @@
       "latest_at": "2026-04-01T06:04:03.282247"
     },
     {
-      "stock_code": "206650",
-      "stock_name": "유바이오로직스",
-      "market": "",
-      "sector": "",
+      "stock_code": "062970",
+      "stock_name": "한국첨단소재",
+      "market": "KOSDAQ",
+      "sector": "통신장비",
       "signal_count": 1,
       "buy_count": 1,
       "sell_count": 0,
-      "avg_confidence": 0.2633,
+      "avg_confidence": 0.5833,
       "strategies": [
-        "dart_momentum"
+        "RSI+MACD(swing)"
       ],
-      "latest_reason": "공시: 주요사항보고서(자기주식취득신탁계약체결결정) | 감성점수: 0.62 | 거래량급증: True",
+      "latest_reason": "거래량2.5x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "latest_price": 0,
-      "latest_at": "2026-03-27T06:07:33.804714"
+      "latest_at": "2026-04-02T06:15:10.323228"
     }
   ],
   "by_niche": {
     "시장분석": [],
     "업종분석": [
       {
+        "stock_code": "001740",
+        "stock_name": "SK네트웍스",
+        "market": "KOSPI",
+        "sector": "",
+        "signal_count": 6,
+        "buy_count": 6,
+        "sell_count": 0,
+        "avg_confidence": 1.0,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "2일연속상승 | MACD골든크로스 | 거래량4.1x | 거래량3x+ | 주봉골든크로스 | 주봉MA20위 | 상대강도(+3.2%vsKOSPI-5.6%)",
+        "latest_price": 0,
+        "latest_at": "2026-04-02T06:02:29.745322"
+      },
+      {
         "stock_code": "001780",
         "stock_name": "알루코",
         "market": "KOSPI",
@@ -247,126 +183,14 @@
         "latest_at": "2026-04-01T06:04:03.282237"
       },
       {
-        "stock_code": "062970",
-        "stock_name": "한국첨단소재",
-        "market": "KOSDAQ",
-        "sector": "통신장비",
-        "signal_count": 5,
-        "buy_count": 1,
-        "sell_count": 4,
-        "avg_confidence": 0.8257,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "RSI과매수(89)",
-        "latest_price": 0,
-        "latest_at": "2026-03-27T06:07:33.804736"
-      },
-      {
-        "stock_code": "065530",
-        "stock_name": "와이어블",
-        "market": "KOSDAQ",
-        "sector": "무선통신서비스",
-        "signal_count": 4,
-        "buy_count": 0,
-        "sell_count": 4,
-        "avg_confidence": 0.8544,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "RSI과매수(85)",
-        "latest_price": 0,
-        "latest_at": "2026-03-27T06:07:33.804738"
-      },
-      {
-        "stock_code": "003000",
-        "stock_name": "부광약품",
-        "market": "KOSPI",
-        "sector": "제약",
-        "signal_count": 4,
-        "buy_count": 0,
-        "sell_count": 4,
-        "avg_confidence": 0.8094,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "RSI과매수(81)",
-        "latest_price": 0,
-        "latest_at": "2026-03-27T06:07:33.804734"
-      },
-      {
-        "stock_code": "017900",
-        "stock_name": "광전자",
-        "market": "KOSPI",
-        "sector": "전자장비와기기",
-        "signal_count": 4,
-        "buy_count": 0,
-        "sell_count": 4,
-        "avg_confidence": 0.7927,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "RSI과매수(79)",
-        "latest_price": 0,
-        "latest_at": "2026-03-27T06:07:33.804732"
-      },
-      {
-        "stock_code": "069540",
-        "stock_name": "빛과전자",
-        "market": "KOSDAQ",
-        "sector": "통신장비",
-        "signal_count": 4,
-        "buy_count": 0,
-        "sell_count": 4,
-        "avg_confidence": 0.8124,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "RSI과매수(81)",
-        "latest_price": 0,
-        "latest_at": "2026-03-27T06:07:33.804730"
-      },
-      {
-        "stock_code": "010170",
-        "stock_name": "대한광통신",
-        "market": "KOSDAQ",
-        "sector": "통신장비",
-        "signal_count": 4,
-        "buy_count": 0,
-        "sell_count": 4,
-        "avg_confidence": 0.7571,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "RSI과매수(76)",
-        "latest_price": 0,
-        "latest_at": "2026-03-27T06:07:33.804727"
-      },
-      {
-        "stock_code": "038110",
-        "stock_name": "에코플라스틱",
-        "market": "KOSDAQ",
-        "sector": "자동차부품",
-        "signal_count": 4,
-        "buy_count": 0,
-        "sell_count": 4,
-        "avg_confidence": 0.7699,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "RSI과매수(77)",
-        "latest_price": 0,
-        "latest_at": "2026-03-27T06:07:33.804724"
-      },
-      {
         "stock_code": "012200",
         "stock_name": "계양전기",
         "market": "KOSPI",
         "sector": "자동차부품",
-        "signal_count": 3,
-        "buy_count": 3,
+        "signal_count": 4,
+        "buy_count": 4,
         "sell_count": 0,
-        "avg_confidence": 0.9791666666666666,
+        "avg_confidence": 0.984375,
         "strategies": [
           "RSI+MACD(swing)"
         ],
@@ -375,10 +199,26 @@
         "latest_at": "2026-04-02T06:02:29.745332"
       },
       {
-        "stock_code": "001740",
-        "stock_name": "SK네트웍스",
+        "stock_code": "003030",
+        "stock_name": "세아제강지주",
         "market": "KOSPI",
         "sector": "",
+        "signal_count": 3,
+        "buy_count": 0,
+        "sell_count": 3,
+        "avg_confidence": 0.7789,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "RSI과매수(78)",
+        "latest_price": 0,
+        "latest_at": "2026-04-03T06:03:35.165413"
+      },
+      {
+        "stock_code": "006110",
+        "stock_name": "삼아알미늄",
+        "market": "KOSPI",
+        "sector": "비철금속",
         "signal_count": 3,
         "buy_count": 3,
         "sell_count": 0,
@@ -386,13 +226,77 @@
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "2일연속상승 | MACD골든크로스 | 거래량4.1x | 거래량3x+ | 주봉골든크로스 | 주봉MA20위 | 상대강도(+3.2%vsKOSPI-5.6%)",
+        "latest_reason": "2일연속상승 | MACD골든크로스 | 거래량2.5x | 섹터강세(비철금속) | 주봉골든크로스 | 주봉MA20위 | 상대강도(+22.1%vsKOSPI+3.1%)",
         "latest_price": 0,
-        "latest_at": "2026-04-02T06:02:29.745322"
+        "latest_at": "2026-04-03T06:03:35.165399"
+      },
+      {
+        "stock_code": "058110",
+        "stock_name": "멕아이씨에스",
+        "market": "KOSDAQ",
+        "sector": "건강관리장비와용품",
+        "signal_count": 3,
+        "buy_count": 0,
+        "sell_count": 3,
+        "avg_confidence": 0.8805,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "RSI과매수(88)",
+        "latest_price": 0,
+        "latest_at": "2026-04-01T06:04:03.282253"
+      },
+      {
+        "stock_code": "046970",
+        "stock_name": "우리로",
+        "market": "KOSDAQ",
+        "sector": "컴퓨터와주변기기",
+        "signal_count": 3,
+        "buy_count": 0,
+        "sell_count": 3,
+        "avg_confidence": 0.9742000000000001,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "RSI과매수(97)",
+        "latest_price": 0,
+        "latest_at": "2026-04-01T06:04:03.282251"
+      },
+      {
+        "stock_code": "066970",
+        "stock_name": "엘앤에프",
+        "market": "KOSPI",
+        "sector": "전기제품",
+        "signal_count": 3,
+        "buy_count": 3,
+        "sell_count": 0,
+        "avg_confidence": 0.6944333333333335,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "거래량2.1x | MA정배열 | 섹터강세(전기제품) | 주봉골든크로스 | 주봉MA20위",
+        "latest_price": 0,
+        "latest_at": "2026-04-01T06:04:03.282247"
       }
     ],
     "테마분석": [
       {
+        "stock_code": "001740",
+        "stock_name": "SK네트웍스",
+        "market": "KOSPI",
+        "sector": "",
+        "signal_count": 6,
+        "buy_count": 6,
+        "sell_count": 0,
+        "avg_confidence": 1.0,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "2일연속상승 | MACD골든크로스 | 거래량4.1x | 거래량3x+ | 주봉골든크로스 | 주봉MA20위 | 상대강도(+3.2%vsKOSPI-5.6%)",
+        "latest_price": 0,
+        "latest_at": "2026-04-02T06:02:29.745322"
+      },
+      {
         "stock_code": "001780",
         "stock_name": "알루코",
         "market": "KOSPI",
@@ -409,126 +313,14 @@
         "latest_at": "2026-04-01T06:04:03.282237"
       },
       {
-        "stock_code": "062970",
-        "stock_name": "한국첨단소재",
-        "market": "KOSDAQ",
-        "sector": "통신장비",
-        "signal_count": 5,
-        "buy_count": 1,
-        "sell_count": 4,
-        "avg_confidence": 0.8257,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "RSI과매수(89)",
-        "latest_price": 0,
-        "latest_at": "2026-03-27T06:07:33.804736"
-      },
-      {
-        "stock_code": "065530",
-        "stock_name": "와이어블",
-        "market": "KOSDAQ",
-        "sector": "무선통신서비스",
-        "signal_count": 4,
-        "buy_count": 0,
-        "sell_count": 4,
-        "avg_confidence": 0.8544,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "RSI과매수(85)",
-        "latest_price": 0,
-        "latest_at": "2026-03-27T06:07:33.804738"
-      },
-      {
-        "stock_code": "003000",
-        "stock_name": "부광약품",
-        "market": "KOSPI",
-        "sector": "제약",
-        "signal_count": 4,
-        "buy_count": 0,
-        "sell_count": 4,
-        "avg_confidence": 0.8094,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "RSI과매수(81)",
-        "latest_price": 0,
-        "latest_at": "2026-03-27T06:07:33.804734"
-      },
-      {
-        "stock_code": "017900",
-        "stock_name": "광전자",
-        "market": "KOSPI",
-        "sector": "전자장비와기기",
-        "signal_count": 4,
-        "buy_count": 0,
-        "sell_count": 4,
-        "avg_confidence": 0.7927,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "RSI과매수(79)",
-        "latest_price": 0,
-        "latest_at": "2026-03-27T06:07:33.804732"
-      },
-      {
-        "stock_code": "069540",
-        "stock_name": "빛과전자",
-        "market": "KOSDAQ",
-        "sector": "통신장비",
-        "signal_count": 4,
-        "buy_count": 0,
-        "sell_count": 4,
-        "avg_confidence": 0.8124,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "RSI과매수(81)",
-        "latest_price": 0,
-        "latest_at": "2026-03-27T06:07:33.804730"
-      },
-      {
-        "stock_code": "010170",
-        "stock_name": "대한광통신",
-        "market": "KOSDAQ",
-        "sector": "통신장비",
-        "signal_count": 4,
-        "buy_count": 0,
-        "sell_count": 4,
-        "avg_confidence": 0.7571,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "RSI과매수(76)",
-        "latest_price": 0,
-        "latest_at": "2026-03-27T06:07:33.804727"
-      },
-      {
-        "stock_code": "038110",
-        "stock_name": "에코플라스틱",
-        "market": "KOSDAQ",
-        "sector": "자동차부품",
-        "signal_count": 4,
-        "buy_count": 0,
-        "sell_count": 4,
-        "avg_confidence": 0.7699,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "RSI과매수(77)",
-        "latest_price": 0,
-        "latest_at": "2026-03-27T06:07:33.804724"
-      },
-      {
         "stock_code": "012200",
         "stock_name": "계양전기",
         "market": "KOSPI",
         "sector": "자동차부품",
-        "signal_count": 3,
-        "buy_count": 3,
+        "signal_count": 4,
+        "buy_count": 4,
         "sell_count": 0,
-        "avg_confidence": 0.9791666666666666,
+        "avg_confidence": 0.984375,
         "strategies": [
           "RSI+MACD(swing)"
         ],
@@ -537,10 +329,26 @@
         "latest_at": "2026-04-02T06:02:29.745332"
       },
       {
-        "stock_code": "001740",
-        "stock_name": "SK네트웍스",
+        "stock_code": "003030",
+        "stock_name": "세아제강지주",
         "market": "KOSPI",
         "sector": "",
+        "signal_count": 3,
+        "buy_count": 0,
+        "sell_count": 3,
+        "avg_confidence": 0.7789,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "RSI과매수(78)",
+        "latest_price": 0,
+        "latest_at": "2026-04-03T06:03:35.165413"
+      },
+      {
+        "stock_code": "006110",
+        "stock_name": "삼아알미늄",
+        "market": "KOSPI",
+        "sector": "비철금속",
         "signal_count": 3,
         "buy_count": 3,
         "sell_count": 0,
@@ -548,13 +356,77 @@
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "2일연속상승 | MACD골든크로스 | 거래량4.1x | 거래량3x+ | 주봉골든크로스 | 주봉MA20위 | 상대강도(+3.2%vsKOSPI-5.6%)",
+        "latest_reason": "2일연속상승 | MACD골든크로스 | 거래량2.5x | 섹터강세(비철금속) | 주봉골든크로스 | 주봉MA20위 | 상대강도(+22.1%vsKOSPI+3.1%)",
         "latest_price": 0,
-        "latest_at": "2026-04-02T06:02:29.745322"
+        "latest_at": "2026-04-03T06:03:35.165399"
+      },
+      {
+        "stock_code": "058110",
+        "stock_name": "멕아이씨에스",
+        "market": "KOSDAQ",
+        "sector": "건강관리장비와용품",
+        "signal_count": 3,
+        "buy_count": 0,
+        "sell_count": 3,
+        "avg_confidence": 0.8805,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "RSI과매수(88)",
+        "latest_price": 0,
+        "latest_at": "2026-04-01T06:04:03.282253"
+      },
+      {
+        "stock_code": "046970",
+        "stock_name": "우리로",
+        "market": "KOSDAQ",
+        "sector": "컴퓨터와주변기기",
+        "signal_count": 3,
+        "buy_count": 0,
+        "sell_count": 3,
+        "avg_confidence": 0.9742000000000001,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "RSI과매수(97)",
+        "latest_price": 0,
+        "latest_at": "2026-04-01T06:04:03.282251"
+      },
+      {
+        "stock_code": "066970",
+        "stock_name": "엘앤에프",
+        "market": "KOSPI",
+        "sector": "전기제품",
+        "signal_count": 3,
+        "buy_count": 3,
+        "sell_count": 0,
+        "avg_confidence": 0.6944333333333335,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "거래량2.1x | MA정배열 | 섹터강세(전기제품) | 주봉골든크로스 | 주봉MA20위",
+        "latest_price": 0,
+        "latest_at": "2026-04-01T06:04:03.282247"
       }
     ],
     "수급분석": [
       {
+        "stock_code": "001740",
+        "stock_name": "SK네트웍스",
+        "market": "KOSPI",
+        "sector": "",
+        "signal_count": 6,
+        "buy_count": 6,
+        "sell_count": 0,
+        "avg_confidence": 1.0,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "2일연속상승 | MACD골든크로스 | 거래량4.1x | 거래량3x+ | 주봉골든크로스 | 주봉MA20위 | 상대강도(+3.2%vsKOSPI-5.6%)",
+        "latest_price": 0,
+        "latest_at": "2026-04-02T06:02:29.745322"
+      },
+      {
         "stock_code": "001780",
         "stock_name": "알루코",
         "market": "KOSPI",
@@ -571,126 +443,14 @@
         "latest_at": "2026-04-01T06:04:03.282237"
       },
       {
-        "stock_code": "062970",
-        "stock_name": "한국첨단소재",
-        "market": "KOSDAQ",
-        "sector": "통신장비",
-        "signal_count": 5,
-        "buy_count": 1,
-        "sell_count": 4,
-        "avg_confidence": 0.8257,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "RSI과매수(89)",
-        "latest_price": 0,
-        "latest_at": "2026-03-27T06:07:33.804736"
-      },
-      {
-        "stock_code": "065530",
-        "stock_name": "와이어블",
-        "market": "KOSDAQ",
-        "sector": "무선통신서비스",
-        "signal_count": 4,
-        "buy_count": 0,
-        "sell_count": 4,
-        "avg_confidence": 0.8544,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "RSI과매수(85)",
-        "latest_price": 0,
-        "latest_at": "2026-03-27T06:07:33.804738"
-      },
-      {
-        "stock_code": "003000",
-        "stock_name": "부광약품",
-        "market": "KOSPI",
-        "sector": "제약",
-        "signal_count": 4,
-        "buy_count": 0,
-        "sell_count": 4,
-        "avg_confidence": 0.8094,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "RSI과매수(81)",
-        "latest_price": 0,
-        "latest_at": "2026-03-27T06:07:33.804734"
-      },
-      {
-        "stock_code": "017900",
-        "stock_name": "광전자",
-        "market": "KOSPI",
-        "sector": "전자장비와기기",
-        "signal_count": 4,
-        "buy_count": 0,
-        "sell_count": 4,
-        "avg_confidence": 0.7927,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "RSI과매수(79)",
-        "latest_price": 0,
-        "latest_at": "2026-03-27T06:07:33.804732"
-      },
-      {
-        "stock_code": "069540",
-        "stock_name": "빛과전자",
-        "market": "KOSDAQ",
-        "sector": "통신장비",
-        "signal_count": 4,
-        "buy_count": 0,
-        "sell_count": 4,
-        "avg_confidence": 0.8124,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "RSI과매수(81)",
-        "latest_price": 0,
-        "latest_at": "2026-03-27T06:07:33.804730"
-      },
-      {
-        "stock_code": "010170",
-        "stock_name": "대한광통신",
-        "market": "KOSDAQ",
-        "sector": "통신장비",
-        "signal_count": 4,
-        "buy_count": 0,
-        "sell_count": 4,
-        "avg_confidence": 0.7571,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "RSI과매수(76)",
-        "latest_price": 0,
-        "latest_at": "2026-03-27T06:07:33.804727"
-      },
-      {
-        "stock_code": "038110",
-        "stock_name": "에코플라스틱",
-        "market": "KOSDAQ",
-        "sector": "자동차부품",
-        "signal_count": 4,
-        "buy_count": 0,
-        "sell_count": 4,
-        "avg_confidence": 0.7699,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "RSI과매수(77)",
-        "latest_price": 0,
-        "latest_at": "2026-03-27T06:07:33.804724"
-      },
-      {
         "stock_code": "012200",
         "stock_name": "계양전기",
         "market": "KOSPI",
         "sector": "자동차부품",
-        "signal_count": 3,
-        "buy_count": 3,
+        "signal_count": 4,
+        "buy_count": 4,
         "sell_count": 0,
-        "avg_confidence": 0.9791666666666666,
+        "avg_confidence": 0.984375,
         "strategies": [
           "RSI+MACD(swing)"
         ],
@@ -699,10 +459,26 @@
         "latest_at": "2026-04-02T06:02:29.745332"
       },
       {
-        "stock_code": "001740",
-        "stock_name": "SK네트웍스",
+        "stock_code": "003030",
+        "stock_name": "세아제강지주",
         "market": "KOSPI",
         "sector": "",
+        "signal_count": 3,
+        "buy_count": 0,
+        "sell_count": 3,
+        "avg_confidence": 0.7789,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "RSI과매수(78)",
+        "latest_price": 0,
+        "latest_at": "2026-04-03T06:03:35.165413"
+      },
+      {
+        "stock_code": "006110",
+        "stock_name": "삼아알미늄",
+        "market": "KOSPI",
+        "sector": "비철금속",
         "signal_count": 3,
         "buy_count": 3,
         "sell_count": 0,
@@ -710,9 +486,73 @@
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "2일연속상승 | MACD골든크로스 | 거래량4.1x | 거래량3x+ | 주봉골든크로스 | 주봉MA20위 | 상대강도(+3.2%vsKOSPI-5.6%)",
+        "latest_reason": "2일연속상승 | MACD골든크로스 | 거래량2.5x | 섹터강세(비철금속) | 주봉골든크로스 | 주봉MA20위 | 상대강도(+22.1%vsKOSPI+3.1%)",
         "latest_price": 0,
-        "latest_at": "2026-04-02T06:02:29.745322"
+        "latest_at": "2026-04-03T06:03:35.165399"
+      },
+      {
+        "stock_code": "058110",
+        "stock_name": "멕아이씨에스",
+        "market": "KOSDAQ",
+        "sector": "건강관리장비와용품",
+        "signal_count": 3,
+        "buy_count": 0,
+        "sell_count": 3,
+        "avg_confidence": 0.8805,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "RSI과매수(88)",
+        "latest_price": 0,
+        "latest_at": "2026-04-01T06:04:03.282253"
+      },
+      {
+        "stock_code": "046970",
+        "stock_name": "우리로",
+        "market": "KOSDAQ",
+        "sector": "컴퓨터와주변기기",
+        "signal_count": 3,
+        "buy_count": 0,
+        "sell_count": 3,
+        "avg_confidence": 0.9742000000000001,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "RSI과매수(97)",
+        "latest_price": 0,
+        "latest_at": "2026-04-01T06:04:03.282251"
+      },
+      {
+        "stock_code": "066970",
+        "stock_name": "엘앤에프",
+        "market": "KOSPI",
+        "sector": "전기제품",
+        "signal_count": 3,
+        "buy_count": 3,
+        "sell_count": 0,
+        "avg_confidence": 0.6944333333333335,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "거래량2.1x | MA정배열 | 섹터강세(전기제품) | 주봉골든크로스 | 주봉MA20위",
+        "latest_price": 0,
+        "latest_at": "2026-04-01T06:04:03.282247"
+      },
+      {
+        "stock_code": "062970",
+        "stock_name": "한국첨단소재",
+        "market": "KOSDAQ",
+        "sector": "통신장비",
+        "signal_count": 1,
+        "buy_count": 1,
+        "sell_count": 0,
+        "avg_confidence": 0.5833,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "거래량2.5x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+        "latest_price": 0,
+        "latest_at": "2026-04-02T06:15:10.323228"
       }
     ]
   }
