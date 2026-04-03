@@ -16,7 +16,7 @@ permissions:
 jobs:
   post:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 65
 
     steps:
       - name: Checkout repository

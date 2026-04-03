@@ -3246,7 +3246,8 @@ export function detectBatchDuplicates(
 
 function batchTextSimilarity(a: string, b: string): number {
   const stopWords = new Set(['the', 'a', 'an', 'in', 'on', 'at', 'to', 'for', 'of', 'and', 'or', 'is', 'are', 'how', 'what', 'why', 'your', 'you', 'this', 'that', 'with']);
-  const tokenize = (s: string) => s.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => w.length > 2 && !stopWords.has(w));
+  // Keep Korean Hangul alongside ASCII; exclude pure numbers to avoid year-based false matches
+  const tokenize = (s: string) => s.toLowerCase().replace(/[^a-z0-9\s\uAC00-\uD7A3\u3130-\u318F]/g, '').split(/\s+/).filter(w => w.length > 1 && !/^\d+$/.test(w) && !stopWords.has(w));
 
   const wordsA = tokenize(a);
   const wordsB = tokenize(b);
