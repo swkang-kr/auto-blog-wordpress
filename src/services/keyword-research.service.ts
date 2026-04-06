@@ -5,6 +5,7 @@ import { GoogleTrendsService } from './google-trends.service.js';
 import { getSeasonalSuggestionsForNiche } from '../utils/korean-calendar.js';
 import { costTracker } from '../utils/cost-tracker.js';
 import { RedditTrendsService } from './reddit-trends.service.js';
+import { NaverFinanceThemesService } from './naver-finance-themes.service.js';
 import type { NicheConfig, TrendsData, RisingQuery, KeywordAnalysis, ResearchedKeyword, ExistingPost } from '../types/index.js';
 import { CONTENT_FRESHNESS_MAP, INTENT_CONTENT_TYPE_MAP, type ContentType, type FreshnessClass } from '../types/index.js';
 import type { GSCQueryData } from './gsc-analytics.service.js';
@@ -71,6 +72,7 @@ export class KeywordResearchService {
   private client: Anthropic;
   private trendsService: GoogleTrendsService;
   private redditService: RedditTrendsService;
+  private naverThemesService: NaverFinanceThemesService;
   private performanceInsights: string;
   private existingPosts: ExistingPost[];
   private existingPostTitles: string[];
@@ -85,6 +87,7 @@ export class KeywordResearchService {
     this.client = new Anthropic({ apiKey });
     this.trendsService = new GoogleTrendsService(geo, serpApiKey);
     this.redditService = new RedditTrendsService(redditCredentials?.clientId, redditCredentials?.clientSecret);
+    this.naverThemesService = new NaverFinanceThemesService();
     this.performanceInsights = '';
     this.existingPosts = [];
     this.existingPostTitles = [];
@@ -368,7 +371,25 @@ export class KeywordResearchService {
         logger.debug(`Reddit trends fetch failed: ${error instanceof Error ? error.message : error}`);
       }
 
-      // 2b. Fall back to seed keyword scanning if still empty
+      // 2b. For theme-analysis niche: fetch today's top-rising themes from Naver Finance
+      //     This gives fresh, market-driven seeds every day instead of a static list.
+      if (topQueries.length === 0 && niche.id === 'theme-analysis') {
+        try {
+          const naverSeeds = await this.naverThemesService.getTopSeedKeywords(25);
+          if (naverSeeds.length > 0) {
+            logger.info(`NaverFinance themes: ${naverSeeds.length} dynamic seeds for "${niche.name}" — top: ${naverSeeds.slice(0, 3).join(' / ')}`);
+            trendsSource = 'naver-finance';
+            // Push as top queries so they go straight to Claude selection (no extra Trends calls needed)
+            for (const seed of naverSeeds) {
+              topQueries.push({ query: seed, value: 0 });
+            }
+          }
+        } catch (error) {
+          logger.warn(`NaverFinance themes fallback failed: ${error instanceof Error ? error.message : error}`);
+        }
+      }
+
+      // 2c. Fall back to seed keyword scanning if still empty
       //     Sample up to MAX_SEED_SAMPLE random seeds + apply time budget to avoid batch timeout
       if (topQueries.length === 0) {
         const MAX_SEED_SAMPLE = 12; // Increased from 10: wider pool reduces duplicate collisions
