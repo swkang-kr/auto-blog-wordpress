@@ -371,8 +371,8 @@ export class KeywordResearchService {
       // 2b. Fall back to seed keyword scanning if still empty
       //     Sample up to MAX_SEED_SAMPLE random seeds + apply time budget to avoid batch timeout
       if (topQueries.length === 0) {
-        const MAX_SEED_SAMPLE = 10; // Reduced from 20 to lower API call count (each seed = 2 Trends API calls)
-        const SEED_TIME_BUDGET_MS = 2 * 60 * 1000; // 2 minutes per niche (reduced from 3)
+        const MAX_SEED_SAMPLE = 12; // Increased from 10: wider pool reduces duplicate collisions
+        const SEED_TIME_BUDGET_MS = 3.5 * 60 * 1000; // 3.5 minutes: Trends takes 60-90s/query so 2min only gave ~1-2 seeds
         const seedStart = Date.now();
 
         // Stratified sampling: cluster seeds by first significant word, then sample evenly across clusters
