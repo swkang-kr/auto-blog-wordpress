@@ -4,7 +4,6 @@ import { KeywordResearchError } from '../types/errors.js';
 import { GoogleTrendsService } from './google-trends.service.js';
 import { getSeasonalSuggestionsForNiche } from '../utils/korean-calendar.js';
 import { costTracker } from '../utils/cost-tracker.js';
-import { RedditTrendsService } from './reddit-trends.service.js';
 import { NaverFinanceThemesService } from './naver-finance-themes.service.js';
 import type { NicheConfig, TrendsData, RisingQuery, KeywordAnalysis, ResearchedKeyword, ExistingPost } from '../types/index.js';
 import { CONTENT_FRESHNESS_MAP, INTENT_CONTENT_TYPE_MAP, type ContentType, type FreshnessClass } from '../types/index.js';
@@ -71,7 +70,6 @@ interface SerpAnalysis {
 export class KeywordResearchService {
   private client: Anthropic;
   private trendsService: GoogleTrendsService;
-  private redditService: RedditTrendsService;
   private naverThemesService: NaverFinanceThemesService;
   private performanceInsights: string;
   private existingPosts: ExistingPost[];
@@ -86,7 +84,6 @@ export class KeywordResearchService {
   constructor(apiKey: string, geo: string, redditCredentials?: { clientId: string; clientSecret: string }, serpApiKey?: string) {
     this.client = new Anthropic({ apiKey });
     this.trendsService = new GoogleTrendsService(geo, serpApiKey);
-    this.redditService = new RedditTrendsService(redditCredentials?.clientId, redditCredentials?.clientSecret);
     this.naverThemesService = new NaverFinanceThemesService();
     this.performanceInsights = '';
     this.existingPosts = [];
@@ -353,25 +350,10 @@ export class KeywordResearchService {
       });
     }
 
-    // 2. Fall back to Reddit trends, then seed keywords if no rising queries found
+    // 2. Fall back to Naver Finance themes (theme-analysis) or seed keywords if no rising queries found
     const trendsData: TrendsData[] = [];
     if (risingQueries.length === 0 && topQueries.length === 0) {
-      // 2a. Try Reddit trends as secondary source
-      try {
-        const redditTrends = await this.redditService.fetchTrendingTopics(niche.category, niche.broadTerm);
-        if (redditTrends.length > 0) {
-          logger.info(`Reddit trends found ${redditTrends.length} topic(s) for "${niche.name}"`);
-          trendsSource = 'reddit';
-          // Convert Reddit trends to rising query format
-          for (const trend of redditTrends) {
-            topQueries.push({ query: trend.query, value: trend.score });
-          }
-        }
-      } catch (error) {
-        logger.debug(`Reddit trends fetch failed: ${error instanceof Error ? error.message : error}`);
-      }
-
-      // 2b. For theme-analysis niche: fetch today's top-rising themes from Naver Finance
+      // 2a. For theme-analysis niche: fetch today's top-rising themes from Naver Finance
       //     This gives fresh, market-driven seeds every day instead of a static list.
       if (topQueries.length === 0 && niche.id === 'theme-analysis') {
         try {
@@ -389,7 +371,7 @@ export class KeywordResearchService {
         }
       }
 
-      // 2c. Fall back to seed keyword scanning if still empty
+      // 2b. Fall back to seed keyword scanning if still empty
       //     Sample up to MAX_SEED_SAMPLE random seeds + apply time budget to avoid batch timeout
       if (topQueries.length === 0) {
         const MAX_SEED_SAMPLE = 12; // Increased from 10: wider pool reduces duplicate collisions
