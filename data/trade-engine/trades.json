@@ -1,6 +1,102 @@
 {
-  "exported_at": "2026-04-03T07:00:00.772951+00:00",
+  "exported_at": "2026-04-07T07:00:00.840681+00:00",
   "trades": [
+    {
+      "stock_code": "003850",
+      "stock_name": "보령",
+      "side": "buy",
+      "quantity": 54,
+      "price": 9490.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "거래량10.0x | 거래량3x+ | 캔들역해머(강) | 주봉골든크로스 | 주봉MA20위 | 상대강도(+5.3%vsKOSPI+0.8%)",
+      "filled_at": "2026-04-07T06:03:07.700727"
+    },
+    {
+      "stock_code": "020150",
+      "stock_name": "롯데에너지머티리얼즈",
+      "side": "sell",
+      "quantity": 18,
+      "price": 46050.0,
+      "pnl": 8891.1,
+      "pnl_rate": 1.088,
+      "strategy": "swing_macd_dead(MACD=-896.8,prev=+118.2)",
+      "reason": "swing_macd_dead(MACD=-896.8,prev=+118.2)",
+      "filled_at": "2026-04-07T00:12:33.591397"
+    },
+    {
+      "stock_code": "020150",
+      "stock_name": "롯데에너지머티리얼즈",
+      "side": "buy",
+      "quantity": 18,
+      "price": 45400.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량4.0x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+11.6%vsKOSPI+1.3%)",
+      "filled_at": "2026-04-06T06:15:44.620852"
+    },
+    {
+      "stock_code": "020150",
+      "stock_name": "롯데에너지머티리얼즈",
+      "side": "sell",
+      "quantity": 18,
+      "price": 45150.0,
+      "pnl": -1862.46,
+      "pnl_rate": -0.2294,
+      "strategy": "swing_macd_dead(MACD=-838.2,prev=+118.2)",
+      "reason": "swing_macd_dead(MACD=-838.2,prev=+118.2)",
+      "filled_at": "2026-04-06T06:08:29.851412"
+    },
+    {
+      "stock_code": "020150",
+      "stock_name": "롯데에너지머티리얼즈",
+      "side": "buy",
+      "quantity": 18,
+      "price": 45100.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량4.0x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+11.6%vsKOSPI+0.9%)",
+      "filled_at": "2026-04-06T06:03:46.408397"
+    },
+    {
+      "stock_code": "001740",
+      "stock_name": "SK네트웍스",
+      "side": "sell",
+      "quantity": 533,
+      "price": 5090.0,
+      "pnl": -94572.32,
+      "pnl_rate": -3.3797,
+      "strategy": "swing_stop_loss(SL=5,092)",
+      "reason": "swing_stop_loss(SL=5,092)",
+      "filled_at": "2026-04-06T03:23:20.174049"
+    },
+    {
+      "stock_code": "006110",
+      "stock_name": "삼아알미늄",
+      "side": "sell",
+      "quantity": 77,
+      "price": 37350.0,
+      "pnl": 111326.22,
+      "pnl_rate": 4.039,
+      "strategy": "swing",
+      "reason": "swing_trailing(peak=+4.2%,step=0.1%,trail_sl=+4.2%)",
+      "filled_at": "2026-04-06T01:26:18.889295"
+    },
+    {
+      "stock_code": "012200",
+      "stock_name": "계양전기",
+      "side": "sell",
+      "quantity": 130,
+      "price": 6530.0,
+      "pnl": -36713.3,
+      "pnl_rate": -4.1592,
+      "strategy": "swing_stop_loss(SL=6,586)",
+      "reason": "swing_stop_loss(SL=6,586)",
+      "filled_at": "2026-04-06T00:37:30.997441"
+    },
     {
       "stock_code": "012200",
       "stock_name": "계양전기",

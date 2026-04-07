@@ -1,6 +1,6 @@
 {
-  "exported_at": "2026-04-03T07:00:01.468315+00:00",
-  "total": 4,
+  "exported_at": "2026-04-07T07:00:01.584845+00:00",
+  "total": 6,
   "items": [
     {
       "stock_code": "001740",
@@ -40,6 +40,32 @@
       "memo": "AI APPROVE | conf=88% | qty_ratio=120% | AI skip: score≥7 강제매수 (7.5점)",
       "created_at": "2026-04-03T15:15:09.099842",
       "updated_at": "2026-04-03T15:15:09.099842"
+    },
+    {
+      "stock_code": "020150",
+      "stock_name": "롯데에너지머티리얼즈",
+      "market": "KRX",
+      "sector": "",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 85,
+      "memo": "AI APPROVE | conf=85% | qty_ratio=120% | AI skip: score≥7 강제매수 (8.5점)",
+      "created_at": "2026-04-06T15:03:13.661884",
+      "updated_at": "2026-04-06T15:15:06.301624"
+    },
+    {
+      "stock_code": "003850",
+      "stock_name": "보령",
+      "market": "KRX",
+      "sector": "",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 63,
+      "memo": "AI APPROVE | conf=64% | qty_ratio=90% | RSI 47.68로 과매수 아님, 거래량 10x 서지와 역해머 캔들로 강한 매수세 확인, 주봉 골든크로스+MA20 위 중기 상승 구조 유효. KOSPI +0.75% 안정적 환경에서 KOSPI 대비 +5.3% 상대강도 우위로 스윙 매수 적합.",
+      "created_at": "2026-04-07T15:02:24.655472",
+      "updated_at": "2026-04-07T15:02:24.655472"
     },
     {
       "stock_code": "011280",
