@@ -77,8 +77,6 @@ jobs:
           HASHNODE_TOKEN: ${{ secrets.HASHNODE_TOKEN }}
           HASHNODE_PUBLICATION_ID: ${{ secrets.HASHNODE_PUBLICATION_ID }}
 
-          # Pinterest
-          PINTEREST_ACCESS_TOKEN: ${{ secrets.PINTEREST_ACCESS_TOKEN }}
 
           # Author website
           AUTHOR_WEBSITE: ${{ secrets.AUTHOR_WEBSITE }}

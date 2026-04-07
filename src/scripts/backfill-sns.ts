@@ -4,7 +4,7 @@
  *
  * Retroactively posts all published blog posts to connected SNS platforms.
  * Reads from post-history.json, fetches full content from WordPress, and
- * distributes to: Twitter, LinkedIn, Pinterest, DEV.to, Hashnode, Medium, Reddit.
+ * distributes to: Twitter, LinkedIn, DEV.to, Hashnode, Medium, Reddit.
  *
  * Usage:
  *   npx tsx src/scripts/backfill-sns.ts                  # Dry run (preview only)
@@ -20,7 +20,6 @@ import { loadConfig } from '../config/env.js';
 import { NICHES } from '../config/niches.js';
 import { TwitterService } from '../services/twitter.service.js';
 import { LinkedInService } from '../services/linkedin.service.js';
-import { PinterestService } from '../services/pinterest.service.js';
 import { DevToService } from '../services/devto.service.js';
 import { HashnodeService } from '../services/hashnode.service.js';
 import { MediumService } from '../services/medium.service.js';
@@ -89,13 +88,6 @@ async function main() {
         ? new LinkedInService(config.LINKEDIN_ACCESS_TOKEN, config.LINKEDIN_PERSON_ID)
         : null,
     },
-    pinterest: {
-      name: 'Pinterest',
-      enabled: !!config.PINTEREST_ACCESS_TOKEN,
-      service: config.PINTEREST_ACCESS_TOKEN
-        ? new PinterestService(config.PINTEREST_ACCESS_TOKEN)
-        : null,
-    },
     devto: {
       name: 'DEV.to',
       enabled: !!config.DEVTO_API_KEY,
@@ -158,8 +150,8 @@ async function main() {
   // ── Process each post ──
   const results = {
     processed: 0,
-    success: { twitter: 0, linkedin: 0, pinterest: 0, devto: 0, hashnode: 0, medium: 0, reddit: 0 },
-    failed: { twitter: 0, linkedin: 0, pinterest: 0, devto: 0, hashnode: 0, medium: 0, reddit: 0 },
+    success: { twitter: 0, linkedin: 0, devto: 0, hashnode: 0, medium: 0, reddit: 0 },
+    failed: { twitter: 0, linkedin: 0, devto: 0, hashnode: 0, medium: 0, reddit: 0 },
     skipped: 0,
   };
 
@@ -238,22 +230,6 @@ async function main() {
       } catch (err) {
         console.log(`  ❌ LinkedIn: ${err instanceof Error ? err.message : err}`);
         results.failed.linkedin++;
-      }
-      await delay(2000);
-    }
-
-    // Pinterest
-    if (shouldPost('pinterest', services, onlyPlatform) && PinterestService.isEligible(blogContent.category)) {
-      try {
-        await services.pinterest.service.pinBlogPost(
-          blogContent, publishedPost,
-          entry.featuredImageUrl || '',
-        );
-        console.log('  ✅ Pinterest: pin created');
-        results.success.pinterest++;
-      } catch (err) {
-        console.log(`  ❌ Pinterest: ${err instanceof Error ? err.message : err}`);
-        results.failed.pinterest++;
       }
       await delay(2000);
     }
@@ -354,7 +330,6 @@ function getActivePlatforms(services: Record<string, any>, category: string, onl
   for (const [key, svc] of Object.entries(services)) {
     if (!svc.enabled) continue;
     if (onlyPlatform && key !== onlyPlatform) continue;
-    if (key === 'pinterest' && !PinterestService.isEligible(category)) continue;
     platforms.push(svc.name);
   }
   return platforms;

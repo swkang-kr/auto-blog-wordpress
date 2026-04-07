@@ -13,7 +13,6 @@ import { SeoService } from './services/seo.service.js';
 import { TwitterService } from './services/twitter.service.js';
 import { DevToService } from './services/devto.service.js';
 import { HashnodeService } from './services/hashnode.service.js';
-import { PinterestService } from './services/pinterest.service.js';
 import { GA4AnalyticsService } from './services/ga4-analytics.service.js';
 import { GSCAnalyticsService } from './services/gsc-analytics.service.js';
 import { PostHistory } from './utils/history.js';
@@ -216,14 +215,6 @@ async function main(): Promise<void> {
     logger.info('MEDIUM_TOKEN not set, skipping Medium syndication');
   }
 
-  const pinterestService = config.PINTEREST_ACCESS_TOKEN
-    ? new PinterestService(config.PINTEREST_ACCESS_TOKEN)
-    : null;
-  if (pinterestService) {
-    logger.info('Pinterest auto-pin service enabled');
-  } else {
-    logger.info('PINTEREST_ACCESS_TOKEN not set, skipping Pinterest');
-  }
 
   // 2.5. Ensure required pages exist (AdSense compliance)
   const pagesService = new PagesService(config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD);
@@ -1921,12 +1912,6 @@ async function main(): Promise<void> {
         logger.info(`Hashnode syndication: deferred 24h for canonical indexing (scheduled: ${syndicationScheduledAt})`);
       }
 
-      // B-8.5. Pinterest auto-pin
-      if (pinterestService && PinterestService.isEligible(niche.category)) {
-        await pinterestService.pinBlogPost(content, post, featuredMediaResult?.sourceUrl || '');
-      } else if (pinterestService) {
-        logger.debug(`Pinterest: Skipped — eligible=${PinterestService.isEligible(niche.category)}`);
-      }
 
       // B-8.5b. Reddit auto-posting
       if (redditPostService) {

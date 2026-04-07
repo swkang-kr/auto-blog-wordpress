@@ -66,8 +66,6 @@ const envSchema = z.object({
   // Auto-rewrite underperforming posts (0 = disabled)
   AUTO_REWRITE_COUNT: z.coerce.number().int().min(0).default(2),
   AUTO_REWRITE_MIN_AGE_DAYS: z.coerce.number().int().min(7).default(30),
-  // Pinterest - optional, enables auto-pinning for Korean stock market categories
-  PINTEREST_ACCESS_TOKEN: z.string().default(''),
   // Newsletter form URL (Mailchimp/ConvertKit) - optional, enables in-content email CTA
   NEWSLETTER_FORM_URL: z.string().default(''),
   // Affiliate settings - optional JSON mapping of category to affiliate program URLs
