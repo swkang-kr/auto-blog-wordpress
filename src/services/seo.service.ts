@@ -1845,7 +1845,7 @@ add_action('template_redirect', function() {
     echo '<?xml version="1.0" encoding="UTF-8"?>';
     echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">';
 
-    // Google News: include posts from last 48 hours (all types, not just news-explainer)
+    // Google News: include posts from last 48 hours; fallback to 7 days if empty (prevents blank sitemap)
     \$args = [
         'post_type' => 'post',
         'post_status' => 'publish',
@@ -1856,6 +1856,10 @@ add_action('template_redirect', function() {
     ];
 
     \$query = new WP_Query(\$args);
+    if (!\$query->have_posts()) {
+        \$args['date_query'] = [['after' => '7 days ago']];
+        \$query = new WP_Query(\$args);
+    }
     \$site_name = get_bloginfo('name');
 
     while (\$query->have_posts()) {
