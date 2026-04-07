@@ -3408,8 +3408,8 @@ process.on('uncaughtException', (error) => {
   process.exit(1);
 });
 
-// Batch-level timeout (60 min) — prevent exceeding GitHub Actions 65-min limit
-const BATCH_TIMEOUT_MS = 60 * 60 * 1000;
+// Batch-level timeout (80 min) — GH Actions is 90 min, leaving 10 min buffer
+const BATCH_TIMEOUT_MS = 80 * 60 * 1000;
 const batchTimer = setTimeout(() => {
   logger.error(`Batch timeout: exceeded ${BATCH_TIMEOUT_MS / 60000} minutes. Forcing exit.`);
   process.exit(1);
