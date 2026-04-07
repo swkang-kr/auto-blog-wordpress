@@ -1084,6 +1084,15 @@ async function main(): Promise<void> {
       continue;
     }
 
+    // Max batch cost guard: stop if total spend exceeds configured limit
+    if (config.MAX_BATCH_COST_USD > 0) {
+      const currentCost = costTracker.getTotalCost();
+      if (currentCost >= config.MAX_BATCH_COST_USD) {
+        logger.warn(`\n⚠️  Batch cost limit reached: $${currentCost.toFixed(4)} >= $${config.MAX_BATCH_COST_USD} (MAX_BATCH_COST_USD). Stopping early.`);
+        break;
+      }
+    }
+
     logger.info(`\n[Phase A] Niche: "${niche.name}"`);
 
     // Rate limit: 5s delay between niches to avoid Claude API throttling (except first)

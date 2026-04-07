@@ -185,15 +185,15 @@ function getVariantDirectives(variant: LayoutVariant): string {
 
 /** Word count targets per content type — Korean stock market YMYL requires depth (AdSense-compliant) */
 const WORD_COUNT_TARGETS: Record<string, { min: number; target: number; continuation: number; rejection: number }> = {
-  'how-to':          { min: 2000, target: 2800, continuation: 1800, rejection: 1500 },
-  'best-x-for-y':   { min: 2000, target: 2800, continuation: 1800, rejection: 1500 },
-  'x-vs-y':         { min: 2000, target: 2800, continuation: 1800, rejection: 1500 },
-  'analysis':        { min: 2500, target: 3500, continuation: 2200, rejection: 1800 },
-  'deep-dive':       { min: 3500, target: 4500, continuation: 3000, rejection: 2500 },
-  'news-explainer':  { min: 1800, target: 2200, continuation: 1500, rejection: 1200 },
-  'listicle':        { min: 1800, target: 2500, continuation: 1500, rejection: 1200 },
-  'case-study':      { min: 2500, target: 3500, continuation: 2200, rejection: 1800 },
-  'product-review':  { min: 2000, target: 2800, continuation: 1800, rejection: 1500 },
+  'how-to':          { min: 1800, target: 2400, continuation: 1600, rejection: 1300 },
+  'best-x-for-y':   { min: 1800, target: 2400, continuation: 1600, rejection: 1300 },
+  'x-vs-y':         { min: 1800, target: 2400, continuation: 1600, rejection: 1300 },
+  'analysis':        { min: 2000, target: 2800, continuation: 1800, rejection: 1500 },
+  'deep-dive':       { min: 2500, target: 3200, continuation: 2200, rejection: 1800 },
+  'news-explainer':  { min: 1600, target: 2000, continuation: 1400, rejection: 1100 },
+  'listicle':        { min: 1600, target: 2200, continuation: 1400, rejection: 1100 },
+  'case-study':      { min: 2000, target: 2800, continuation: 1800, rejection: 1500 },
+  'product-review':  { min: 1800, target: 2400, continuation: 1600, rejection: 1300 },
 };
 
 /**
@@ -981,44 +981,15 @@ CITE SOURCES: Use DART filings, KRX data, BOK statistics, Naver Finance (네이�
 
 ${analysis.contentType === 'case-study' ? 'CASE STUDY STRUCTURE: Focus on ONE stock, sector, or market event. Structure: Context & Background → Catalyst/Trigger → Market Reaction (with chart data) → Fundamental Impact → Lessons for Investors. Include specific dates, prices, and volume data.' : ''}`,
 
-      '종목분석': `NICHE VOICE: Write as an experienced algorithmic trader and Korean stock analyst. Include code snippets where relevant (Python with pandas, numpy, pandas_ta). Explain strategies with both theory AND implementation. Reference backtesting metrics (Sharpe ratio, max drawdown, win rate, profit factor).
+      '종목분석': `NICHE VOICE: Experienced algorithmic trader & Korean stock analyst. Include Python code (pandas, pandas_ta) where relevant. Theory + implementation. Cite Sharpe ratio, max drawdown, win rate, profit factor.
 
-TRADING SYSTEM DISCLAIMER: EVERY article MUST include the trading disclaimer div. Backtested results ≠ live results. Always note: "Past performance does not guarantee future results. Backtested strategies may not account for slippage, commissions, and market impact."
+DISCLAIMER: Include trading disclaimer div. "Past performance does not guarantee future results."
 
-TECHNICAL STRATEGY ACCURACY:
-- RSI Strategy: Buy when RSI(14) crosses below 30 from above (oversold recovery). Sell when RSI crosses above 70 from below. Korean stocks: RSI(14) on daily candles is standard.
-- MACD Strategy: Buy on MACD line crossing above signal line (golden cross). Sell on death cross. Parameters: fast=12, slow=26, signal=9.
-- Bollinger Band Strategy: Buy when price touches lower band and bounces. Sell at upper band. Width expansion = volatility increase (potential breakout).
-- Volume-Price Analysis: Confirm signals with volume. Breakout without volume = likely false breakout.
+TECHNICAL ACCURACY: RSI(14) daily — oversold<30, overbought>70. MACD(12,26,9) — golden/death cross. BB(20,2) — band touch bounces. Always confirm with volume.
 
-PYTHON CODE STANDARDS:
-- Use pandas for data manipulation, pandas_ta for technical indicators
-- KIS OpenAPI: Use websocket for real-time data, REST for historical
-- Show complete, runnable code examples (not pseudo-code)
-- Include error handling and rate limiting in API examples
-- Use asyncio for concurrent operations (Korean stock API is async-friendly)
+RISK MGMT: Fixed-fraction sizing (1-2% capital/trade). ATR-based stops. Max drawdown 10-15% for systematic strategies.
 
-BACKTESTING BEST PRACTICES:
-- Walk-forward optimization > in-sample-only testing
-- Report: Sharpe ratio, max drawdown, win rate, avg P&L per trade, profit factor
-- Account for slippage (0.1-0.3% for Korean stocks), commissions (0.015% KRX fee)
-- Minimum 2 years of data for statistical significance
-- Out-of-sample validation period: at least 20% of total data
-
-RISK MANAGEMENT RULES:
-- Position sizing: Kelly criterion or fixed-fraction (1-2% of capital per trade)
-- Stop-loss types: Fixed %, ATR-based, time-based (max holding period)
-- Maximum drawdown threshold: Recommend 10-15% for systematic strategies
-- Correlation-aware sizing: Reduce exposure when holding correlated positions
-
-KOREAN MARKET SPECIFIC:
-- KIS OpenAPI: REST + WebSocket, rate limit ~20 req/sec
-- DART OpenAPI: 100 req/min, authentication via API key
-- BOK ECOS API: Free, economic indicators and KOSPI index data
-- Market microstructure: VI (Volatility Interruption) at ±10% for KOSPI
-- Trading lot: 1 share (no fractional shares in Korea)
-
-${analysis.contentType === 'case-study' ? 'CASE STUDY STRUCTURE: Focus on ONE trading strategy or system. Structure: Strategy Hypothesis → Implementation (with code) → Backtest Results (with metrics) → Live Trading Observations → What Worked/Failed → Improvements Made. Include actual performance numbers.' : ''}`,
+KOREAN MARKET: KIS OpenAPI 20 req/sec. DART 100 req/min. VI at ±10%. T+1 settlement. No fractional shares.${analysis.contentType === 'case-study' ? '\nCASE STUDY: Strategy Hypothesis → Code → Backtest Results (metrics) → Live Observations → Lessons.' : ''}`,
     };
     // Map 업종분석/테마분석 to the shared 시장분석 voice directive (all Korean stock market context)
     nicheDirectives['업종분석'] = nicheDirectives['시장분석'];

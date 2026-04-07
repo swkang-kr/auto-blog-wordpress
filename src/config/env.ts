@@ -101,6 +101,8 @@ const envSchema = z.object({
   ADSENSE_ACCOUNT_ID: z.string().default(''),
   // AdSense publisher ID (e.g., "ca-pub-1234567890") — required for manual ad unit placement
   ADSENSE_PUB_ID: z.string().default(''),
+  // Max batch cost guard: stop batch if total API cost exceeds this USD amount (0 = disabled)
+  MAX_BATCH_COST_USD: z.coerce.number().min(0).default(3.0),
   // SerpAPI key — fallback for Google Trends when unofficial API fails
   SERPAPI_KEY: z.string().default(''),
   // Naver Blog auto-seeding — cross-post excerpts to Naver Blog for Korean traffic
