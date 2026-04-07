@@ -27,6 +27,7 @@ import { FactCheckService } from './services/fact-check.service.js';
 import { MediumService } from './services/medium.service.js';
 import { EmailAutomationService } from './services/email-automation.service.js';
 import { NaverBlogService } from './services/naver-blog.service.js';
+import { NaverMarketDataService } from './services/naver-market-data.service.js';
 import { LinkedInService } from './services/linkedin.service.js';
 import { FacebookService } from './services/facebook.service.js';
 import { ThreadsService } from './services/threads.service.js';
@@ -782,6 +783,13 @@ async function main(): Promise<void> {
   // setPerformanceInsights() is called after all insight-gathering loops (after line ~863)
 
   // 3.6. Fetch existing posts for internal linking + similarity dedup
+  // Fetch real-time market data (KOSPI/KOSDAQ/FX) for stock market content niches
+  const marketDataService = new NaverMarketDataService();
+  const marketSnapshot = await marketDataService.fetchMarketSnapshot();
+  if (marketSnapshot) {
+    contentService.setMarketData(marketSnapshot.promptContext);
+  }
+
   const existingPosts = await wpService.getRecentPosts(500);
   // Enrich existing posts with subNiche from history for topic cluster linking
   for (const post of existingPosts) {

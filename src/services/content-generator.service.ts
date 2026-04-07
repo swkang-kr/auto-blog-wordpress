@@ -752,6 +752,7 @@ export class ContentGeneratorService {
   private monetizationContext: string;
   private competitiveContext: string;
   private snippetContext: string;
+  private marketDataContext: string;
   constructor(apiKey: string, siteOwner?: string, siteUrl?: string, minQualityScore?: number, authorLinks?: { linkedin?: string; twitter?: string }) {
     this.client = new Anthropic({ apiKey });
     this.siteOwner = siteOwner || '';
@@ -762,6 +763,12 @@ export class ContentGeneratorService {
     this.monetizationContext = '';
     this.competitiveContext = '';
     this.snippetContext = '';
+    this.marketDataContext = '';
+  }
+
+  /** Set real-time market data (KOSPI/KOSDAQ/FX) for injection into stock market niches */
+  setMarketData(promptContext: string): void {
+    this.marketDataContext = promptContext ? `\n${promptContext}\n` : '';
   }
 
   /** Set monetization awareness for content generation (affiliate/newsletter CTA hints) */
@@ -1016,6 +1023,9 @@ ${analysis.contentType === 'case-study' ? 'CASE STUDY STRUCTURE: Focus on ONE tr
     nicheDirectives['테마분석'] = nicheDirectives['시장분석'];
     const nicheVoice = nicheDirectives[niche.category] || nicheDirectives['시장분석'] || '';
 
+    const STOCK_MARKET_CATEGORIES = new Set(['시장분석', '업종분석', '테마분석', '종목분석']);
+    const marketSection = STOCK_MARKET_CATEGORIES.has(niche.category) ? this.marketDataContext : '';
+
     const userPrompt = `Today's Date: ${today}
 Niche: "${niche.name}" (${niche.category})
 Content Type: ${analysis.contentType}
@@ -1024,7 +1034,7 @@ Suggested Title: "${analysis.suggestedTitle}"
 Unique Angle: ${analysis.uniqueAngle}
 Search Intent: ${analysis.searchIntent}
 Related Keywords to Include: ${analysis.relatedKeywordsToInclude.join(', ')}${pillarTopicsSection}${clusterLinksSection}${internalLinksSection}
-
+${marketSection}
 ${nicheVoice}${this.monetizationContext}${this.competitiveContext}${this.snippetContext}
 ${options?.similarPostTitles && options.similarPostTitles.length > 0 ? `
 IMPORTANT — CONTENT DIFFERENTIATION REQUIREMENT:
