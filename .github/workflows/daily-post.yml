@@ -6,9 +6,9 @@ on:
   workflow_dispatch:          # Manual trigger
     inputs:
       post_count:
-        description: 'Number of niches to post (1-5: 시장/업종/테마/수급/추천주)'
+        description: 'Number of niches to post (1-4: 시장/업종/테마/종목분석)'
         required: false
-        default: '5'
+        default: '3'
 
 permissions:
   contents: write
@@ -42,7 +42,10 @@ jobs:
           WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
           TRENDS_GEO: US
           LOG_LEVEL: info
-          POST_COUNT: ${{ inputs.post_count || '4' }}
+          POST_COUNT: ${{ inputs.post_count || '3' }}
+
+          # Claude model for keyword research (Haiku: 비용 절감)
+          CLAUDE_RESEARCH_MODEL: claude-haiku-4-5-20251001
 
           # Site identity & E-E-A-T
           SITE_NAME: ${{ secrets.SITE_NAME }}
