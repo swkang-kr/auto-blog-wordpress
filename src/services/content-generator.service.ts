@@ -859,8 +859,10 @@ export class ContentGeneratorService {
     const { niche, analysis } = researched;
     logger.info(`Generating content for: "${analysis.selectedKeyword}" [${niche.name} / ${analysis.contentType}]`);
 
-    const today = new Date().toISOString().split('T')[0];
-    const year = new Date().getFullYear();
+    // Use KST (UTC+9) date — batch runs at UTC 22:00 which is KST 07:00 next day
+    const kstNow = new Date(Date.now() + 9 * 60 * 60 * 1000);
+    const today = kstNow.toISOString().split('T')[0];
+    const year = kstNow.getUTCFullYear();
 
     // Build pillar topics section — guide Claude to link back to pillar hub pages
     let pillarTopicsSection = '';

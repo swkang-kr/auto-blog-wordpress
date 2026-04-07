@@ -564,8 +564,9 @@ export class KeywordResearchService {
     postedKeywords: string[],
     recentContentTypes?: string[],
   ): Promise<KeywordAnalysis> {
-    const today = new Date().toISOString().split('T')[0];
-    const year = new Date().getFullYear();
+    const kstNow = new Date(Date.now() + 9 * 60 * 60 * 1000);
+    const today = kstNow.toISOString().split('T')[0];
+    const year = kstNow.getUTCFullYear();
 
     // Build trends context
     let trendsContext: string;
