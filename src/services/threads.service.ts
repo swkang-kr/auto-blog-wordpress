@@ -144,10 +144,19 @@ export class ThreadsService {
 
     // Threads hard limit: 500 chars
     const suffix = `\n\n${hashtags}\n\n${url}`;
-    const maxBodyLen = 500 - suffix.length - emoji.length - 3; // 3 = " " + "\n\n"
-    const body = (content.excerpt || content.title).slice(0, maxBodyLen);
+    const maxBodyLen = 500 - suffix.length - emoji.length - 1; // 1 = " " separator
+    const body = (content.excerpt || content.title).slice(0, Math.max(0, maxBodyLen));
 
-    return `${emoji} ${body}${suffix}`;
+    let text = `${emoji} ${body}${suffix}`;
+
+    // Safety: if still over 500 (e.g. long URL or emoji width miscalculation), trim body
+    if (text.length > 500) {
+      const excess = text.length - 500;
+      const trimmedBody = body.slice(0, Math.max(0, body.length - excess - 3));
+      text = `${emoji} ${trimmedBody}…${suffix}`;
+    }
+
+    return text;
   }
 
   private nicheEmoji(category: string): string {
