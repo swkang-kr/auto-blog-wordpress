@@ -1149,7 +1149,11 @@ async function main(): Promise<void> {
         // WordPress meta fallback: check existing posts for keyword/title overlap
         const kwLower = candidate.analysis.selectedKeyword.toLowerCase();
         const wpDuplicate = existingPosts.find(p => {
-          const titleMatch = p.title.toLowerCase().includes(kwLower) || kwLower.includes(p.title.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim());
+          const pTitleLower = p.title.toLowerCase();
+          // Keep Korean characters in comparison — stripping them leaves only "2026" which causes false positives
+          const pTitleCleaned = pTitleLower.replace(/[^a-z0-9\s\uAC00-\uD7A3\u3130-\u318F]/g, '').trim();
+          const titleMatch = pTitleLower.includes(kwLower) ||
+            (pTitleCleaned.length >= 6 && kwLower.includes(pTitleCleaned));
           const keywordMatch = p.keyword && (p.keyword.toLowerCase() === kwLower || p.keyword.toLowerCase().includes(kwLower));
           return titleMatch || keywordMatch;
         });
