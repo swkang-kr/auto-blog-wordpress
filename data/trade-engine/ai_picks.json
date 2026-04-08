@@ -1,100 +1,88 @@
 {
-  "exported_at": "2026-04-02T07:00:01.396243+00:00",
-  "total_candidates": 7,
+  "exported_at": "2026-04-08T07:00:01.567494+00:00",
+  "total_candidates": 6,
   "total_holdings": 0,
   "candidates": [
     {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "sector": "",
-      "signal_count": 13,
-      "avg_confidence": 0.4,
-      "strategies": [],
-      "reason": "score=4.00, ranked_score=52.00",
-      "price_at_signal": 0,
-      "signal_time": "2026-04-02T15:25:00.004173+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "000660",
-      "stock_name": "SK하이닉스",
-      "sector": "",
-      "signal_count": 13,
-      "avg_confidence": 0.4,
-      "strategies": [],
-      "reason": "score=4.00, ranked_score=52.00",
-      "price_at_signal": 0,
-      "signal_time": "2026-04-02T15:25:00.004173+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
       "stock_code": "001780",
       "stock_name": "알루코",
+      "sector": "",
+      "signal_count": 27,
+      "avg_confidence": 0.5,
+      "strategies": [],
+      "reason": "score=4.50, ranked_score=121.50",
+      "price_at_signal": 0,
+      "signal_time": "2026-04-08T15:25:00.008771+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "006110",
+      "stock_name": "삼아알미늄",
       "sector": "비철금속",
-      "signal_count": 6,
-      "avg_confidence": 0.84375,
+      "signal_count": 5,
+      "avg_confidence": 0.82334,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.7x | 거래량3x+ | MA정배열 | 섹터약세(비철금속) | 주봉골든크로스 | 주봉MA20위",
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량2.3x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-04-01T06:04:03.282237",
+      "signal_time": "2026-04-07T06:02:24.596243",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "012200",
-      "stock_name": "계양전기",
-      "sector": "자동차부품",
-      "signal_count": 3,
-      "avg_confidence": 0.9791666666666666,
+      "stock_code": "023150",
+      "stock_name": "MH에탄올",
+      "sector": "",
+      "signal_count": 5,
+      "avg_confidence": 0.5,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | MACD골든크로스 | 거래량4.6x | 거래량3x+ | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+17.3%vsKOSPI-5.6%)",
+      "reason": "MACD히스토그램↑ | 거래량100.4x | 거래량3x+ | MA정배열 | 주봉데드크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-04-02T06:02:29.745332",
+      "signal_time": "2026-04-06T06:03:13.624821",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "001740",
-      "stock_name": "SK네트웍스",
+      "stock_code": "079900",
+      "stock_name": "전진건설로봇",
+      "sector": "",
+      "signal_count": 4,
+      "avg_confidence": 1.0,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량2.3x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-04-08T06:04:26.752442",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "020150",
+      "stock_name": "롯데에너지머티리얼즈",
       "sector": "",
       "signal_count": 3,
       "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | MACD골든크로스 | 거래량4.1x | 거래량3x+ | 주봉골든크로스 | 주봉MA20위 | 상대강도(+3.2%vsKOSPI-5.6%)",
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량4.0x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+11.6%vsKOSPI+0.9%)",
       "price_at_signal": 0,
-      "signal_time": "2026-04-02T06:02:29.745322",
+      "signal_time": "2026-04-06T06:03:13.624813",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "066970",
-      "stock_name": "엘앤에프",
-      "sector": "전기제품",
-      "signal_count": 3,
-      "avg_confidence": 0.6944333333333335,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "거래량2.1x | MA정배열 | 섹터강세(전기제품) | 주봉골든크로스 | 주봉MA20위",
-      "price_at_signal": 0,
-      "signal_time": "2026-04-01T06:04:03.282247",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "062970",
-      "stock_name": "한국첨단소재",
-      "sector": "통신장비",
+      "stock_code": "003850",
+      "stock_name": "보령",
+      "sector": "",
       "signal_count": 1,
-      "avg_confidence": 0.5833,
+      "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "거래량2.5x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "reason": "거래량10.0x | 거래량3x+ | 캔들역해머(강) | 주봉골든크로스 | 주봉MA20위 | 상대강도(+5.3%vsKOSPI+0.8%)",
       "price_at_signal": 0,
-      "signal_time": "2026-04-02T06:15:10.323228",
+      "signal_time": "2026-04-07T06:02:24.596235",
       "status": "매수 시그널"
     }
   ],

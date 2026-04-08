@@ -1,6 +1,18 @@
 {
-  "exported_at": "2026-04-07T07:00:00.840681+00:00",
+  "exported_at": "2026-04-08T07:00:00.713658+00:00",
   "trades": [
+    {
+      "stock_code": "003850",
+      "stock_name": "보령",
+      "side": "sell",
+      "quantity": 54,
+      "price": 9530.0,
+      "pnl": 412.02,
+      "pnl_rate": 0.0804,
+      "strategy": "swing_macd_dead(MACD=-46.6,prev=+19.6)",
+      "reason": "swing_macd_dead(MACD=-46.6,prev=+19.6)",
+      "filled_at": "2026-04-08T00:00:32.345820"
+    },
     {
       "stock_code": "003850",
       "stock_name": "보령",
