@@ -1492,42 +1492,14 @@ ${ga4TrackingScript}`;
       options?.keyword || content.title,
       content.category,
     );
-    const newsletterCta = this.buildNewsletterCtaHtml(content.category, options?.newsletterFormUrl);
-
     if (h2Positions.length >= 4) {
-      // Insert engagement CTA after ~75% of H2 sections, newsletter after ~40%
+      // Insert engagement CTA after ~75% of H2 sections
       const engagementIdx = Math.min(Math.floor(h2Positions.length * 0.75), h2Positions.length - 1);
-      const newsletterIdx = Math.min(Math.floor(h2Positions.length * 0.4), h2Positions.length - 1);
-      // Sort insertion positions descending to preserve earlier indices
-      const insertions = [
-        { pos: h2Positions[engagementIdx], html: engagementCta },
-        { pos: h2Positions[newsletterIdx], html: newsletterCta },
-      ].sort((a, b) => b.pos - a.pos);
-      for (const ins of insertions) {
-        htmlEn = htmlEn.slice(0, ins.pos) + '\n' + ins.html + '\n' + htmlEn.slice(ins.pos);
-      }
+      htmlEn = htmlEn.slice(0, h2Positions[engagementIdx]) + '\n' + engagementCta + '\n' + htmlEn.slice(h2Positions[engagementIdx]);
     } else if (h2Positions.length >= 2) {
-      // Fewer sections: engagement after 2nd, newsletter after 1st
-      const insertions = [
-        { pos: h2Positions[Math.min(1, h2Positions.length - 1)], html: engagementCta },
-        { pos: h2Positions[0], html: newsletterCta },
-      ].sort((a, b) => b.pos - a.pos);
-      for (const ins of insertions) {
-        htmlEn = htmlEn.slice(0, ins.pos) + '\n' + ins.html + '\n' + htmlEn.slice(ins.pos);
-      }
-    }
-
-    // Inject email newsletter subscription CTA (if configured)
-    if (options?.newsletterFormUrl) {
-      const emailCta = this.buildEmailNewsletterCta(content.category, options.newsletterFormUrl);
-      // Insert before the disclaimer section
-      const disclaimerIdx = htmlEn.indexOf('class="ab-disclaimer"');
-      if (disclaimerIdx !== -1) {
-        const insertAt = htmlEn.lastIndexOf('<p', disclaimerIdx);
-        if (insertAt !== -1) {
-          htmlEn = htmlEn.slice(0, insertAt) + '\n' + emailCta + '\n' + htmlEn.slice(insertAt);
-        }
-      }
+      // Fewer sections: engagement after 2nd H2
+      const insertPos = h2Positions[Math.min(1, h2Positions.length - 1)];
+      htmlEn = htmlEn.slice(0, insertPos) + '\n' + engagementCta + '\n' + htmlEn.slice(insertPos);
     }
 
     // Inject AI content transparency label (FTC/EU AI Act compliance)
