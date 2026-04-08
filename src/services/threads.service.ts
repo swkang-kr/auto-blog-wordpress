@@ -132,28 +132,38 @@ export class ThreadsService {
 
   /**
    * Build thread text within the 500-character Threads limit.
-   * Format: emoji + title + excerpt snippet + hashtags + url
+   * Korean slugs become percent-encoded URLs (250+ chars), so we progressively
+   * downgrade: full UTM url → base url (no UTM) → url only → hard truncate.
    */
-  private buildThreadText(content: BlogContent, url: string): string {
+  private buildThreadText(content: BlogContent, utmUrl: string): string {
+    const LIMIT = 500;
     const emoji = this.nicheEmoji(content.category);
-    const hashtags = [
+    const tags = [
       ...content.tags.slice(0, 3).map(t => `#${t.replace(/\s+/g, '')}`),
       `#${content.category.replace(/\s+/g, '')}`,
       '#TrendHunt',
     ].join(' ');
 
-    // Threads hard limit: 500 chars
-    const suffix = `\n\n${hashtags}\n\n${url}`;
-    const maxBodyLen = 500 - suffix.length - emoji.length - 1; // 1 = " " separator
+    // Progressively shorter suffixes: full UTM → base URL only → just URL
+    const baseUrl = utmUrl.split('?')[0];
+    const candidates = [
+      `\n\n${tags}\n\n${utmUrl}`,
+      `\n\n${tags}\n\n${baseUrl}`,
+      `\n\n${baseUrl}`,
+    ];
+
+    // Pick the longest suffix that still leaves room for emoji + space + "…"
+    const minOverhead = emoji.length + 2; // emoji + " " + at least 1 char
+    const suffix = candidates.find(s => minOverhead + s.length <= LIMIT) ?? candidates[candidates.length - 1];
+
+    const maxBodyLen = LIMIT - emoji.length - 1 - suffix.length;
     const body = (content.excerpt || content.title).slice(0, Math.max(0, maxBodyLen));
 
     let text = `${emoji} ${body}${suffix}`;
 
-    // Safety: if still over 500 (e.g. long URL or emoji width miscalculation), trim body
-    if (text.length > 500) {
-      const excess = text.length - 500;
-      const trimmedBody = body.slice(0, Math.max(0, body.length - excess - 3));
-      text = `${emoji} ${trimmedBody}…${suffix}`;
+    // Absolute safety net — hard truncate with ellipsis
+    if (text.length > LIMIT) {
+      text = text.slice(0, LIMIT - 1) + '…';
     }
 
     return text;
