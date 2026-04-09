@@ -154,6 +154,14 @@ export class WordPressService {
       const mediaId = response.data.id as number;
       const sourceUrl = (response.data.source_url ?? response.data.guid?.rendered ?? '') as string;
 
+      // Guard: WP sometimes returns 200 with no id (malformed response, auth issue, or proxy problem)
+      if (!mediaId) {
+        const preview = typeof response.data === 'string'
+          ? response.data.slice(0, 200)
+          : JSON.stringify(response.data).slice(0, 200);
+        throw new WordPressError(`Media upload returned no ID (status=${response.status}). WP response: ${preview}`, null);
+      }
+
       // Set ALT text for SEO
       if (altText) {
         try {
@@ -2132,6 +2140,14 @@ ${ga4TrackingScript}`;
         const resolvedUrl = (rawLink.includes('?p=') && resolvedSlug)
           ? `${this.wpUrl}/${resolvedSlug}/`
           : rawLink;
+
+        // Guard: WP sometimes returns 200/201 with no id (malformed response, auth issue, or proxy problem)
+        if (!response.data.id) {
+          const preview = typeof response.data === 'string'
+            ? response.data.slice(0, 200)
+            : JSON.stringify(response.data).slice(0, 200);
+          throw new WordPressError(`Post creation returned no ID (status=${response.status}). WP response: ${preview}`, null);
+        }
 
         const post: PublishedPost = {
           postId: response.data.id,
