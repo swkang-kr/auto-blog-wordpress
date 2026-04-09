@@ -108,15 +108,17 @@ export class WordPressService {
         }
       }
 
-      const posts = allPosts.map((p) => ({
-        title: p.title.rendered.replace(/&#8217;/g, "'").replace(/&#8211;/g, '-').replace(/&amp;/g, '&'),
-        url: p.link,
-        slug: p.slug,
-        category: catMap.get(p.categories[0]) || 'Uncategorized',
-        keyword: p.meta?.rank_math_focus_keyword || undefined,
-        postId: p.id,
-        publishedAt: p.date,
-      }));
+      const posts = allPosts
+        .filter((p) => p.title?.rendered != null)
+        .map((p) => ({
+          title: p.title.rendered.replace(/&#8217;/g, "'").replace(/&#8211;/g, '-').replace(/&amp;/g, '&'),
+          url: p.link,
+          slug: p.slug,
+          category: catMap.get(p.categories[0]) || 'Uncategorized',
+          keyword: p.meta?.rank_math_focus_keyword || undefined,
+          postId: p.id,
+          publishedAt: p.date,
+        }));
 
       // Write to local cache
       try {
