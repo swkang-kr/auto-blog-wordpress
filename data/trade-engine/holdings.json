@@ -1,4 +1,16 @@
 {
-  "exported_at": "2026-04-08T07:00:00.699426+00:00",
-  "holdings": []
+  "exported_at": "2026-04-09T07:00:02.201913+00:00",
+  "holdings": [
+    {
+      "stock_code": "298690",
+      "stock_name": "에어부산",
+      "quantity": 443,
+      "avg_price": 2130.0,
+      "current_price": 2170.0,
+      "unrealized_pnl": 14511.79,
+      "unrealized_pnl_rate": 1.5379,
+      "strategy": "news_trigger",
+      "entry_date": "2026-04-09T05:17:41.772299"
+    }
+  ]
 }
