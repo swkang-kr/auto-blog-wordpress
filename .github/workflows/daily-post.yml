@@ -42,7 +42,7 @@ jobs:
           WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
           TRENDS_GEO: US
           LOG_LEVEL: info
-          POST_COUNT: ${{ inputs.post_count || '3' }}
+          POST_COUNT: ${{ inputs.post_count || '4' }}
 
           # Claude model for keyword research (Haiku: 비용 절감)
           CLAUDE_RESEARCH_MODEL: claude-haiku-4-5-20251001
@@ -154,6 +154,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/post-history.json .cache/ || true
+          git add data/post-history.json || true
+          if [ -d .cache ]; then git add .cache/ || true; fi
           git diff --staged --quiet || git commit -m "chore: update post history [skip ci]"
           git push
