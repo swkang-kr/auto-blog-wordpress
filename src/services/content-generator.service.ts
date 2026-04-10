@@ -753,6 +753,7 @@ export class ContentGeneratorService {
   private competitiveContext: string;
   private snippetContext: string;
   private marketDataContext: string;
+  private stockDataContext: string;
   constructor(apiKey: string, siteOwner?: string, siteUrl?: string, minQualityScore?: number, authorLinks?: { linkedin?: string; twitter?: string }) {
     this.client = new Anthropic({ apiKey });
     this.siteOwner = siteOwner || '';
@@ -764,11 +765,21 @@ export class ContentGeneratorService {
     this.competitiveContext = '';
     this.snippetContext = '';
     this.marketDataContext = '';
+    this.stockDataContext = '';
   }
 
   /** Set real-time market data (KOSPI/KOSDAQ/FX) for injection into stock market niches */
   setMarketData(promptContext: string): void {
     this.marketDataContext = promptContext ? `\n${promptContext}\n` : '';
+  }
+
+  /** Set real-time individual stock data for 종목분석 posts. Call before generateContent, cleared after each generation. */
+  setStockContext(promptContext: string): void {
+    this.stockDataContext = promptContext ? `\n${promptContext}\n` : '';
+  }
+
+  clearStockContext(): void {
+    this.stockDataContext = '';
   }
 
   /** Set monetization awareness for content generation (affiliate/newsletter CTA hints) */
@@ -998,6 +1009,8 @@ KOREAN MARKET: KIS OpenAPI 20 req/sec. DART 100 req/min. VI at ±10%. T+1 settle
 
     const STOCK_MARKET_CATEGORIES = new Set(['시장분석', '업종분석', '테마분석', '종목분석']);
     const marketSection = STOCK_MARKET_CATEGORIES.has(niche.category) ? this.marketDataContext : '';
+    // 종목분석: append individual stock data after index data (cleared after generation)
+    const stockSection = niche.category === '종목분석' ? this.stockDataContext : '';
 
     const userPrompt = `Today's Date: ${today}
 Niche: "${niche.name}" (${niche.category})
@@ -1007,7 +1020,7 @@ Suggested Title: "${analysis.suggestedTitle}"
 Unique Angle: ${analysis.uniqueAngle}
 Search Intent: ${analysis.searchIntent}
 Related Keywords to Include: ${analysis.relatedKeywordsToInclude.join(', ')}${pillarTopicsSection}${clusterLinksSection}${internalLinksSection}
-${marketSection}
+${marketSection}${stockSection}
 ${nicheVoice}${this.monetizationContext}${this.competitiveContext}${this.snippetContext}
 ${options?.similarPostTitles && options.similarPostTitles.length > 0 ? `
 IMPORTANT — CONTENT DIFFERENTIATION REQUIREMENT:
@@ -1376,6 +1389,7 @@ Respond with pure JSON only.`;
     }
 
     logger.info(`Content generated: "${content.title}" (${content.html.length} chars)`);
+    this.stockDataContext = ''; // auto-clear after each generation (per-post stock data)
     return content;
   }
 

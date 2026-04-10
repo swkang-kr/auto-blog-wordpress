@@ -20,7 +20,24 @@ export interface MarketSnapshot {
 
 const NAVER_API = 'https://m.stock.naver.com/api/index';
 const NAVER_EXCHANGE_URL = 'https://finance.naver.com/marketindex/';
-const HEADERS = { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36' };
+const NAVER_STOCK_API = 'https://api.finance.naver.com/service/itemSummary.nhn';
+const HEADERS = { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36', 'Referer': 'https://finance.naver.com' };
+
+export interface StockSummary {
+  stockCode: string;
+  stockName: string;
+  price: number;       // 현재가 (원)
+  diff: number;        // 전일대비
+  rate: number;        // 등락률 (%)
+  high: number;        // 당일 고가
+  low: number;         // 당일 저가
+  marketCapBillionKRW: number; // 시가총액 (조원)
+  per: number | null;
+  pbr: number | null;
+  eps: number | null;
+  /** Pre-formatted string for prompt injection */
+  promptContext: string;
+}
 
 /**
  * Naver Market Data Service
@@ -98,6 +115,61 @@ export class NaverMarketDataService {
         direction: data.compareToPreviousPrice?.name ?? 'EVEN',
       };
     } catch {
+      return null;
+    }
+  }
+
+  /**
+   * Fetch real-time stock data for a specific stock code from Naver Finance.
+   * Returns structured summary for prompt injection into 종목분석 content.
+   */
+  async fetchStockSummary(stockCode: string, stockName: string): Promise<StockSummary | null> {
+    try {
+      const { data } = await axios.get<{
+        marketSum: number; per: number; eps: number; pbr: number;
+        now: number; diff: number; rate: number; high: number; low: number;
+      }>(NAVER_STOCK_API, { params: { itemcode: stockCode }, headers: HEADERS, timeout: 8_000 });
+
+      if (!data || !data.now) return null;
+
+      // marketSum unit: 백만원 → convert to 조원
+      const marketCapJo = data.marketSum / 1_000_000;
+      const priceFormatted = data.now.toLocaleString('ko-KR');
+      const diffSign = data.diff >= 0 ? '▲' : '▼';
+      const marketCapStr = marketCapJo >= 1
+        ? `${marketCapJo.toFixed(1)}조원`
+        : `${(marketCapJo * 1000).toFixed(0)}억원`;
+
+      const now = new Date();
+      const koreaTime = now.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+
+      const promptContext = `
+## 실시간 종목 데이터: ${stockName} (${stockCode}) — 네이버 금융 ${koreaTime} KST 기준
+⚠️ CRITICAL: 아래 수치만 사용하고, 시총/현재가/PER/PBR을 절대 임의로 생성하지 마세요.
+⚠️ 증권사 목표가는 아래에 제공되지 않으므로, 구체적인 수치를 생성하지 말고 "최신 증권사 리포트 참고 필요"로 기술하세요.
+
+| 항목 | 수치 |
+|------|------|
+| 현재가 | ${priceFormatted}원 (${diffSign}${Math.abs(data.diff).toLocaleString('ko-KR')}원, ${data.rate >= 0 ? '+' : ''}${data.rate}%) |
+| 시가총액 | 약 ${marketCapStr} |
+| 당일 고/저 | ${data.high.toLocaleString('ko-KR')}원 / ${data.low.toLocaleString('ko-KR')}원 |
+| PER | ${data.per ? `${data.per}배` : '해당없음'} |
+| PBR | ${data.pbr ? `${data.pbr}배` : '해당없음'} |
+| EPS | ${data.eps ? `${data.eps.toLocaleString('ko-KR')}원` : '해당없음'} |
+`.trim();
+
+      logger.info(`NaverStockData: ${stockName}(${stockCode}) 현재가=${priceFormatted}원, 시총=약${marketCapStr}`);
+
+      return {
+        stockCode, stockName,
+        price: data.now, diff: data.diff, rate: data.rate,
+        high: data.high, low: data.low,
+        marketCapBillionKRW: marketCapJo,
+        per: data.per ?? null, pbr: data.pbr ?? null, eps: data.eps ?? null,
+        promptContext,
+      };
+    } catch (err) {
+      logger.warn(`NaverStockData: ${stockName}(${stockCode}) fetch failed — ${err instanceof Error ? err.message : err}`);
       return null;
     }
   }

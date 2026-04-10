@@ -1228,6 +1228,25 @@ async function main(): Promise<void> {
         logger.info(`Found ${similarPostTitles.length} similar post(s) for differentiation: ${similarPostTitles.map(t => `"${t}"`).join(', ')}`);
       }
 
+      // 종목분석: 실시간 종목 데이터 주입 (시총/현재가/PER 등 — Claude 할루시네이션 방지)
+      if (niche.category === '종목분석') {
+        // Extract stock name from keyword; look up code from aiPicks + watchlist
+        const kwLower = researched.analysis.selectedKeyword;
+        const matchedPick = tradeEngineData.aiPicks.find(p => kwLower.includes(p.stock_name));
+        const matchedWatch = tradeEngineData.watchlistAll.find(w => kwLower.includes(w.stock_name));
+        const stockEntry = matchedPick
+          ? { stock_code: matchedPick.stock_code, stock_name: matchedPick.stock_name }
+          : matchedWatch
+            ? { stock_code: matchedWatch.stock_code, stock_name: matchedWatch.stock_name }
+            : null;
+        if (stockEntry) {
+          const stockData = await marketDataService.fetchStockSummary(stockEntry.stock_code, stockEntry.stock_name);
+          if (stockData) {
+            contentService.setStockContext(stockData.promptContext);
+          }
+        }
+      }
+
       const content = await contentService.generateContent(researched, filteredPosts, clusterLinksForPrompt, { postCount, rankingKeywords: gscRankingKeywords, similarPostTitles });
       generated.push({ niche, postStart, researched, content, fastTrack: hasBreakout, selectedPersona });
 
