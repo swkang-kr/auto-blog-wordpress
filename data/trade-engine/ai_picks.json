@@ -1,18 +1,42 @@
 {
-  "exported_at": "2026-04-09T07:00:02.983147+00:00",
-  "total_candidates": 9,
+  "exported_at": "2026-04-10T07:00:02.073534+00:00",
+  "total_candidates": 12,
   "total_holdings": 1,
   "candidates": [
     {
-      "stock_code": "001780",
-      "stock_name": "알루코",
+      "stock_code": "000660",
+      "stock_name": "SK하이닉스",
       "sector": "",
-      "signal_count": 27,
+      "signal_count": 38,
       "avg_confidence": 0.5,
       "strategies": [],
-      "reason": "score=4.50, ranked_score=121.50",
+      "reason": "score=4.50, ranked_score=171.00",
       "price_at_signal": 0,
-      "signal_time": "2026-04-08T15:25:00.008771+09:00",
+      "signal_time": "2026-04-10T15:25:00.197267+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "002710",
+      "stock_name": "TCC스틸",
+      "sector": "",
+      "signal_count": 31,
+      "avg_confidence": 0.5,
+      "strategies": [],
+      "reason": "score=4.00, ranked_score=124.00",
+      "price_at_signal": 0,
+      "signal_time": "2026-04-10T15:25:00.197267+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "001260",
+      "stock_name": "남광토건",
+      "sector": "",
+      "signal_count": 29,
+      "avg_confidence": 0.5,
+      "strategies": [],
+      "reason": "score=3.50, ranked_score=101.50",
+      "price_at_signal": 0,
+      "signal_time": "2026-04-10T15:25:00.197267+09:00",
       "status": "장중 워치리스트"
     },
     {
@@ -27,20 +51,6 @@
       "reason": "2일연속상승 | MACD히스토그램↑ | 거래량2.3x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
       "signal_time": "2026-04-08T06:04:26.752442",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "006110",
-      "stock_name": "삼아알미늄",
-      "sector": "비철금속",
-      "signal_count": 5,
-      "avg_confidence": 0.82334,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량2.3x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
-      "price_at_signal": 0,
-      "signal_time": "2026-04-07T06:02:24.596243",
       "status": "매수 시그널"
     },
     {
@@ -86,6 +96,20 @@
       "status": "매수 시그널"
     },
     {
+      "stock_code": "006110",
+      "stock_name": "삼아알미늄",
+      "sector": "비철금속",
+      "signal_count": 4,
+      "avg_confidence": 0.8,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "거래량2.2x | MA정배열 | 캔들상승장악형 | 섹터강세(비철금속) | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-04-08T06:04:26.752455",
+      "status": "매수 시그널"
+    },
+    {
       "stock_code": "010130",
       "stock_name": "고려아연",
       "sector": "",
@@ -97,6 +121,34 @@
       "reason": "MACD히스토그램↑ | 거래량6.3x | 거래량3x+ | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
       "signal_time": "2026-04-09T06:10:29.517982",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "009410",
+      "stock_name": "태영건설",
+      "sector": "건설",
+      "signal_count": 1,
+      "avg_confidence": 0.6667,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MACD히스토그램↑ | 거래량7.4x | 거래량3x+ | MA정배열 | 캔들하락장악형(약세) | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-04-10T06:15:11.288355",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "005810",
+      "stock_name": "풍산홀딩스",
+      "sector": "",
+      "signal_count": 1,
+      "avg_confidence": 0.75,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "거래량4.2x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-04-10T06:15:11.285259",
       "status": "매수 시그널"
     },
     {
@@ -112,30 +164,16 @@
       "price_at_signal": 0,
       "signal_time": "2026-04-09T06:10:29.517985",
       "status": "매수 시그널"
-    },
-    {
-      "stock_code": "003850",
-      "stock_name": "보령",
-      "sector": "",
-      "signal_count": 1,
-      "avg_confidence": 1.0,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "거래량10.0x | 거래량3x+ | 캔들역해머(강) | 주봉골든크로스 | 주봉MA20위 | 상대강도(+5.3%vsKOSPI+0.8%)",
-      "price_at_signal": 0,
-      "signal_time": "2026-04-07T06:02:24.596235",
-      "status": "매수 시그널"
     }
   ],
   "holdings": [
     {
-      "stock_code": "298690",
-      "stock_name": "에어부산",
-      "quantity": 443,
-      "avg_price": 2130.0,
+      "stock_code": "003160",
+      "stock_name": "디아이",
+      "quantity": 0,
+      "avg_price": 32181.0,
       "strategy": "news_trigger",
-      "entry_date": "2026-04-09",
+      "entry_date": "2026-04-10",
       "status": "보유 중"
     }
   ]

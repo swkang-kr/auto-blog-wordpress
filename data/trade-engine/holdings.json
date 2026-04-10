@@ -1,16 +1,16 @@
 {
-  "exported_at": "2026-04-09T07:00:02.201913+00:00",
+  "exported_at": "2026-04-10T07:00:01.257168+00:00",
   "holdings": [
     {
-      "stock_code": "298690",
-      "stock_name": "에어부산",
-      "quantity": 443,
-      "avg_price": 2130.0,
-      "current_price": 2170.0,
-      "unrealized_pnl": 14511.79,
-      "unrealized_pnl_rate": 1.5379,
+      "stock_code": "003160",
+      "stock_name": "디아이",
+      "quantity": 0,
+      "avg_price": 32181.0,
+      "current_price": 32300.0,
+      "unrealized_pnl": 642.17,
+      "unrealized_pnl_rate": 0.0287,
       "strategy": "news_trigger",
-      "entry_date": "2026-04-09T05:17:41.772299"
+      "entry_date": "2026-04-10T03:22:15.477900"
     }
   ]
 }

@@ -1,68 +1,150 @@
 {
-  "exported_at": "2026-04-08T15:25:00.008771+09:00",
-  "total": 3,
+  "exported_at": "2026-04-10T15:25:00.197267+09:00",
+  "total": 8,
   "watchlist": [
     {
       "stock_code": "079900",
       "stock_name": "전진건설로봇",
-      "score": 6.5,
+      "score": 6.0,
       "confidence": 1.0,
-      "signal_count": 24,
+      "signal_count": 49,
       "sector": "",
       "indicators": {
-        "rsi": 55.89,
-        "macd": 296.8682,
-        "macd_signal": 28.9463,
-        "bb_upper": 58244.0,
-        "bb_lower": 51296.0,
-        "close": 58000,
+        "rsi": 63.09,
+        "macd": 2904.3848,
+        "macd_signal": 1200.336,
+        "bb_upper": 68547.0,
+        "bb_lower": 45133.0,
+        "close": 68100,
         "timeframe": "1day",
-        "vol_surge": 2.25,
-        "_pre_dropna_atr": 3549.3038129712995,
-        "weekly_ma5": 57080.0,
-        "weekly_ma20": 53172.0,
-        "weekly_rsi": 65.2,
+        "vol_surge": 16.91,
+        "_pre_dropna_atr": 4708.0729077336,
+        "weekly_ma5": 58100.0,
+        "weekly_ma20": 53428.0,
+        "weekly_rsi": 68.5,
         "weekly_trend": "골든",
-        "atr_14": 3687.47,
-        "swing_score": 6.5,
+        "atr_14": 4594.64,
+        "swing_score": 6.0,
         "swing_mode": true,
-        "w52_position_pct": "74.1",
-        "w52_high": "65500.0000",
+        "w52_position_pct": "86.6",
+        "w52_high": "73000.0000",
         "w52_low": "36500.0000",
-        "volume_surge": 2.39,
-        "day_change_pct": 8.62,
+        "volume_surge": 11.19,
+        "day_change_pct": 0.0,
         "foreign_net_buy": 0,
         "institution_net_buy": 0,
         "individual_net_buy": 0,
-        "minute_vol_ratio": 0.76,
-        "swing_reasons": "2일연속상승 | MACD히스토그램↑ | 거래량2.3x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
-        "market": "KOSPI"
+        "minute_vol_ratio": 4.7
+      },
+      "ranked_score": 294.0
+    },
+    {
+      "stock_code": "010130",
+      "stock_name": "고려아연",
+      "score": 6.0,
+      "confidence": 1.0,
+      "signal_count": 39,
+      "sector": "",
+      "indicators": {
+        "rsi": 49.49,
+        "macd": -39512.6615,
+        "macd_signal": -51085.6894,
+        "bb_upper": 1673172.0,
+        "bb_lower": 1402828.0,
+        "close": 1569000,
+        "timeframe": "1day",
+        "vol_surge": 6.62,
+        "_pre_dropna_atr": 92196.52273721853,
+        "weekly_ma5": 1554400.0,
+        "weekly_ma20": 1541150.0,
+        "weekly_rsi": 56.9,
+        "weekly_trend": "골든",
+        "atr_14": 85063.62,
+        "swing_score": 6.0,
+        "swing_mode": true,
+        "w52_position_pct": "62.7",
+        "w52_high": "2115000.0000",
+        "w52_low": "653000.0000",
+        "volume_surge": 3.79,
+        "day_change_pct": 4.33,
+        "foreign_net_buy": 0,
+        "institution_net_buy": 0,
+        "individual_net_buy": 0,
+        "minute_vol_ratio": 2.73
+      },
+      "ranked_score": 234.0
+    },
+    {
+      "stock_code": "000660",
+      "stock_name": "SK하이닉스",
+      "score": 4.5,
+      "confidence": 0.5,
+      "signal_count": 38,
+      "sector": "",
+      "indicators": {
+        "swing_reasons": "MACD히스토그램↑ | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+3.6%vsKOSPI+2.3%)"
+      },
+      "ranked_score": 171.0
+    },
+    {
+      "stock_code": "009410",
+      "stock_name": "태영건설",
+      "score": 4.0,
+      "confidence": 0.5,
+      "signal_count": 39,
+      "sector": "건설",
+      "indicators": {
+        "swing_reasons": "MACD히스토그램↑ | 거래량7.4x | 거래량3x+ | MA정배열 | 캔들하락장악형(약세) | 주봉골든크로스 | 주봉MA20위"
       },
       "ranked_score": 156.0
     },
     {
-      "stock_code": "001780",
-      "stock_name": "알루코",
-      "score": 4.5,
+      "stock_code": "013580",
+      "stock_name": "계룡건설",
+      "score": 3.5,
       "confidence": 0.5,
-      "signal_count": 27,
+      "signal_count": 38,
       "sector": "",
       "indicators": {
-        "swing_reasons": "거래량4.1x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위"
+        "swing_reasons": "거래량2.1x | MA정배열 | 주봉골든크로스 | 주봉MA20위"
       },
-      "ranked_score": 121.5
+      "ranked_score": 133.0
     },
     {
-      "stock_code": "006110",
-      "stock_name": "삼아알미늄",
-      "score": 4.3,
+      "stock_code": "002710",
+      "stock_name": "TCC스틸",
+      "score": 4.0,
       "confidence": 0.5,
-      "signal_count": 20,
-      "sector": "비철금속",
+      "signal_count": 31,
+      "sector": "",
       "indicators": {
-        "swing_reasons": "거래량2.2x | MA정배열 | 캔들상승장악형 | 주봉골든크로스 | 주봉MA20위"
+        "swing_reasons": "2일연속상승 | MACD히스토그램↑ | 거래량3.9x | 거래량3x+ | 주봉데드크로스 | 주봉MA20위"
       },
-      "ranked_score": 103.2
+      "ranked_score": 124.0
+    },
+    {
+      "stock_code": "001260",
+      "stock_name": "남광토건",
+      "score": 3.5,
+      "confidence": 0.5,
+      "signal_count": 29,
+      "sector": "",
+      "indicators": {
+        "swing_reasons": "거래량6.0x | 거래량3x+ | 주봉골든크로스 | 주봉MA20위"
+      },
+      "ranked_score": 101.5
+    },
+    {
+      "stock_code": "005810",
+      "stock_name": "풍산홀딩스",
+      "score": 4.5,
+      "confidence": 0.5,
+      "signal_count": 2,
+      "sector": "",
+      "indicators": {
+        "swing_reasons": "거래량4.2x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위"
+      },
+      "ranked_score": 9.0
     }
   ]
 }
