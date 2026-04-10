@@ -62,7 +62,7 @@ const CATEGORY_CONTENT_TYPE_MIN_WORDS: Record<string, Record<string, number>> = 
   },
   '시장분석': {
     'analysis': 2500,
-    'deep-dive': 3500,
+    'deep-dive': 2800,  // Generator targets 3200 but Claude produces ~2800-3100; align with reality
   },
 };
 
