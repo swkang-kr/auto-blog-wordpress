@@ -152,7 +152,7 @@
         }
       ],
       "lastPosition": 50,
-      "engagementScore": 27
+      "engagementScore": 23
     },
     {
       "keyword": "홍지윤",
@@ -341,7 +341,7 @@
       "publishedAt": "2026-02-25T06:58:17.257Z",
       "niche": "personal-finance",
       "contentType": "how-to",
-      "engagementScore": 2,
+      "engagementScore": 0,
       "estimatedRpm": 3,
       "estimatedRevenue": 0.003
     },
@@ -356,7 +356,7 @@
       "contentType": "best-x-for-y",
       "engagementScore": 2,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0.015
+      "estimatedRevenue": 0.009000000000000001
     },
     {
       "keyword": "how to save money in college",
@@ -393,9 +393,9 @@
       "publishedAt": "2026-02-26T10:50:14.048Z",
       "niche": "ai-tools-review",
       "contentType": "how-to",
-      "engagementScore": 18,
+      "engagementScore": 21,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0.012
+      "estimatedRevenue": 0.009000000000000001
     },
     {
       "keyword": "best way to save money",
@@ -406,7 +406,7 @@
       "publishedAt": "2026-02-27T04:32:03.952Z",
       "niche": "personal-finance",
       "contentType": "best-x-for-y",
-      "engagementScore": 1,
+      "engagementScore": 0,
       "estimatedRpm": 3,
       "estimatedRevenue": 0.006
     },
@@ -441,9 +441,9 @@
       "publishedAt": "2026-03-06T04:49:21.186Z",
       "niche": "k-entertainment",
       "contentType": "deep-dive",
-      "engagementScore": 30,
+      "engagementScore": 25,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0.015
+      "estimatedRevenue": 0.009000000000000001
     },
     {
       "keyword": "how to invest in Korean stocks as a foreigner",
@@ -693,7 +693,7 @@
       "affiliateLinkCount": 0,
       "engagementScore": 1,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0.015,
+      "estimatedRevenue": 0.021,
       "titleTestPhaseBStarted": true,
       "titleTestPhaseBTitle": "K-Pop Trainee Contracts: The Business Reality Behind the System (2026)",
       "titleTestWinner": "How K-Pop Idol Agency Contracts Work for Trainees (2026)",
@@ -762,7 +762,7 @@
       "affiliateLinkCount": 0,
       "engagementScore": 16,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0.015,
+      "estimatedRevenue": 0.018000000000000002,
       "titleTestPhaseBStarted": true,
       "titleTestPhaseBTitle": "Which Korean Skincare Ingredients Are Actually Proven? (2026)",
       "titleTestWinner": "Korean Skincare Ingredients That Actually Work (2026 Guide)",
@@ -1812,7 +1812,7 @@
         }
       ],
       "lastPosition": 50,
-      "engagementScore": 14,
+      "engagementScore": 0,
       "estimatedRpm": 3,
       "estimatedRevenue": 0.018000000000000002,
       "titleTestPhaseBStarted": true,
@@ -2500,7 +2500,7 @@
       "featuredImageMediaId": 89282,
       "affiliateLinkCount": 0,
       "qualityScore": 79,
-      "engagementScore": 0,
+      "engagementScore": 4,
       "titleTestPhaseBStarted": true,
       "titleTestPhaseBTitle": "4월 3일 삼성전자 RSI·MACD·볼린저밴드 3중 교차 분석: score 4.00이 의미하는 것",
       "titleTestWinner": "4월 3일 삼성전자 주가 기술적 분석: RSI·MACD·볼린저밴드 복합 시그널 점검 2026",
@@ -2564,7 +2564,8 @@
       "searchIntent": "commercial-investigation",
       "featuredImageUrl": "",
       "affiliateLinkCount": 0,
-      "qualityScore": 77
+      "qualityScore": 77,
+      "engagementScore": 33
     },
     {
       "keyword": "RSI 과매도 구간 진입 종목 기술적 분석",
@@ -2581,7 +2582,7 @@
       "featuredImageUrl": "",
       "affiliateLinkCount": 0,
       "qualityScore": 66,
-      "engagementScore": 0
+      "engagementScore": 33
     },
     {
       "keyword": "무선통신서비스 업종 강세 이유 관련주 분석 2026",
@@ -2597,7 +2598,10 @@
       "searchIntent": "commercial-investigation",
       "featuredImageUrl": "",
       "affiliateLinkCount": 0,
-      "qualityScore": 69
+      "qualityScore": 69,
+      "engagementScore": 32,
+      "estimatedRpm": 8,
+      "estimatedRevenue": 0.04
     },
     {
       "keyword": "신성장 테마 테마분석 가이드 2026",
@@ -2652,10 +2656,82 @@
       "featuredImageMediaId": 89503,
       "affiliateLinkCount": 0,
       "qualityScore": 77
+    },
+    {
+      "keyword": "주식 초보 시작 가이드 계좌 개설 첫 매수",
+      "postId": 89564,
+      "postUrl": "https://trendhunt.net/%ec%a3%bc%ec%8b%9d-%ec%b4%88%eb%b3%b4-%ec%8b%9c%ec%9e%91-%ea%b0%80%ec%9d%b4%eb%93%9c-%ea%b3%84%ec%a2%8c%ea%b0%9c%ec%84%a4-%ec%b2%ab%eb%a7%a4%ec%88%98-2026/",
+      "publishedAt": "2026-04-12T23:40:48.016Z",
+      "niche": "market-analysis",
+      "contentType": "how-to",
+      "titleCandidates": [
+        "4/13 주식 계좌 개설부터 첫 매수까지: 2026 초보자 8단계 실전 가이드",
+        "2026 주식 초보 완전 정복: 키움·NH투자 계좌 개설 + 배당주 vs 성장주 첫 매수 선택법"
+      ],
+      "originalTitle": "4월 13일 주식 초보 시작 가이드: 계좌 개설부터 첫 매수까지 2026 완전판",
+      "searchIntent": "transactional",
+      "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/04/featured-2026-2.webp",
+      "featuredImageMediaId": 89563,
+      "affiliateLinkCount": 0,
+      "qualityScore": 84
+    },
+    {
+      "keyword": "실적 호전주 어닝 서프라이즈 테마 분석 2026",
+      "postId": 89573,
+      "postUrl": "https://trendhunt.net/%ec%8b%a4%ec%a0%81-%ed%98%b8%ec%a0%84%ec%a3%bc-%ec%96%b4%eb%8b%9d-%ec%84%9c%ed%94%84%eb%9d%bc%ec%9d%b4%ec%a6%88-%ed%85%8c%eb%a7%88-%eb%b6%84%ec%84%9d-2026/",
+      "publishedAt": "2026-04-12T23:42:35.586Z",
+      "niche": "theme-analysis",
+      "contentType": "deep-dive",
+      "titleCandidates": [
+        "4월 13일 어닝 서프라이즈 종목 찾기: DART 공시 + 컨센서스 괴리율 분석 실전 가이드 2026",
+        "4/13 실적 호전주 발굴법: 영업이익률 개선주 스크리닝 + PER 밸류에이션 비교 2026"
+      ],
+      "originalTitle": "4월 13일 실적 호전주 어닝 서프라이즈 테마 분석 2026: DART 공시 기반 스크리닝 완전 가이드",
+      "searchIntent": "commercial-investigation",
+      "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/04/2026-featured-2026-5.webp",
+      "featuredImageMediaId": 89572,
+      "affiliateLinkCount": 0,
+      "qualityScore": 88
+    },
+    {
+      "keyword": "2차전지 테마주 투자 가이드 2026",
+      "postId": 89582,
+      "postUrl": "https://trendhunt.net/2%ec%b0%a8%ec%a0%84%ec%a7%80-%ed%85%8c%eb%a7%88%ec%a3%bc-%ed%88%ac%ec%9e%90-%ea%b0%80%ec%9d%b4%eb%93%9c-lfp-%ec%a0%84%ea%b3%a0%ec%b2%b4-2026/",
+      "publishedAt": "2026-04-12T23:44:20.468Z",
+      "niche": "ai-stock-picks",
+      "contentType": "deep-dive",
+      "titleCandidates": [
+        "2026 LFP·전고체 배터리 관련주: 테마 사이클 시계열 투자 전략 완전 분석",
+        "전기차 배터리 테마주 추천 2026: LFP 수혜주 vs 전고체 선점주 비교 분석"
+      ],
+      "originalTitle": "4월 13일 2차전지 테마주 투자 가이드: LFP·전고체 관련주 기술·펀더멘탈 분석 2026",
+      "searchIntent": "commercial-investigation",
+      "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/04/2-2026-featured-2026.webp",
+      "featuredImageMediaId": 89581,
+      "affiliateLinkCount": 0,
+      "qualityScore": 81
+    },
+    {
+      "keyword": "섹터 로테이션 전략 업종순환 투자 방법 2026",
+      "postId": 89590,
+      "postUrl": "https://trendhunt.net/%ec%84%b9%ed%84%b0-%eb%a1%9c%ed%85%8c%ec%9d%b4%ec%85%98-%ec%a0%84%eb%9e%b5-%ec%97%85%ec%a2%85%ec%88%9c%ed%99%98-%ed%88%ac%ec%9e%90-%eb%b0%a9%eb%b2%95-2026/",
+      "publishedAt": "2026-04-12T23:46:01.541Z",
+      "niche": "sector-analysis",
+      "contentType": "deep-dive",
+      "titleCandidates": [
+        "4월 13일 2026년 금리 인하 사이클 업종순환 투자: KOSPI 4대 업종 로테이션 타이밍 분석",
+        "4월 13일 경기 사이클별 강세 업종 선택법: 반도체·방산·바이오 섹터 로테이션 실전 가이드 2026"
+      ],
+      "originalTitle": "4월 13일 섹터 로테이션 전략: 2026년 금리 사이클별 KOSPI 업종순환 투자 완전 가이드",
+      "searchIntent": "informational",
+      "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/04/2026-featured-2026-6.webp",
+      "featuredImageMediaId": 89589,
+      "affiliateLinkCount": 0,
+      "qualityScore": 88
     }
   ],
-  "lastRunAt": "2026-04-10T03:26:06.352Z",
-  "totalPosts": 89,
+  "lastRunAt": "2026-04-12T23:48:51.134Z",
+  "totalPosts": 93,
   "categoryLastPublished": {
     "korean-food-cooking": "2026-03-09T14:49:00.731Z",
     "korean-tech-ai": "2026-03-13T14:58:36.162Z",
@@ -2665,9 +2741,9 @@
     "k-entertainment-business": "2026-03-26T15:13:08.946Z",
     "korean-stock-analysis": "2026-03-29T14:47:13.768Z",
     "ai-trading-quant": "2026-03-28T14:50:41.238Z",
-    "ai-stock-picks": "2026-04-10T03:18:01.455Z",
-    "market-analysis": "2026-04-03T01:15:07.594Z",
-    "sector-analysis": "2026-04-10T03:20:06.196Z",
-    "theme-analysis": "2026-04-10T03:15:56.655Z"
+    "ai-stock-picks": "2026-04-12T23:44:20.466Z",
+    "market-analysis": "2026-04-12T23:40:48.013Z",
+    "sector-analysis": "2026-04-12T23:46:01.538Z",
+    "theme-analysis": "2026-04-12T23:42:35.583Z"
   }
 }
