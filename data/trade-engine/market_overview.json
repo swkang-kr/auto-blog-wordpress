@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-04-10T07:00:01.755802+00:00",
+  "exported_at": "2026-04-13T07:00:01.669463+00:00",
   "market_daily": [
+    {
+      "date": "20260413",
+      "kospi_change": -0.86,
+      "kosdaq_change": 0.57,
+      "foreign_net": -45.64,
+      "institution_net": -70.16,
+      "individual_net": 75.0,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260410",
       "kospi_change": 1.4,
       "kosdaq_change": 1.64,
       "foreign_net": 110.25,
-      "institution_net": -29.37,
-      "individual_net": -122.83,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "institution_net": -29.38,
+      "individual_net": -122.8,
+      "hot_theme_count": 40,
+      "momentum_count": 60,
+      "crash_count": 22
     },
     {
       "date": "20260409",
@@ -99,29 +110,18 @@
       "hot_theme_count": 2,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260330",
-      "kospi_change": -2.97,
-      "kosdaq_change": -3.02,
-      "foreign_net": -213.1,
-      "institution_net": 88.15,
-      "individual_net": 89.47,
-      "hot_theme_count": 2,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "[포토] 코스피 80.86포인트 상승한 5,858.87 마감",
-    "[포토] 코스피 5,858.87 마감",
-    "코스피, 휴전 기대감 속 1%대 상승…5850선 회복[마감시황]",
-    "뉴엔AI, K-AI 리더보드 1위 달성",
-    "[단독] 금융위원장, 4월 베트남 찾는다…K금융 세일즈",
-    "미·이란 휴전 협상 D-1…코스피 1% 넘게 올랐다 [시황]",
-    "코스피 완연한 상승세…휴전 협상 기대에 외인 조단위 순매수",
-    "코스피-코스닥, 1%대 상승 마감",
-    "\"이란 리스크 줄어든다\"...부활하는 코스피 [fn마감시황]",
-    "상승 마감한 코스피와 코스닥 지수"
+    "\"쌀 때 담자\"…개미들 1조 순매수에 코스피 5800선 사수",
+    "헥토파이낸셜, 서클 알레어 CEO와 회동…스테이블코인 결제 협력 지속",
+    "코스피 소폭 하락해 5800선 마감…코스닥은 올라",
+    "코스피 하락·국제유가 상승",
+    "스트레이 키즈 '두 잇' 뮤직비디오, 유튜브 1억뷰 돌파…통산 19번째",
+    "\"360만원이 720만원 됐다\"…무주 청년 43명 '두배통장' 혜택",
+    "코스피, 美·이란 협상 결렬에 0.86% 하락 마감…5800선은 사수",
+    "방탄소년단, 6월 부산 아시아드 주경기장서 완전체 공연",
+    "코스피 하락 마감",
+    "종전 협상 결렬에도 5800선 지킨 코스피"
   ]
 }

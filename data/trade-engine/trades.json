@@ -1,6 +1,42 @@
 {
-  "exported_at": "2026-04-10T07:00:01.283015+00:00",
+  "exported_at": "2026-04-13T07:00:01.138654+00:00",
   "trades": [
+    {
+      "stock_code": "019170",
+      "stock_name": "신풍제약",
+      "side": "buy",
+      "quantity": 16,
+      "price": 11040.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량3.9x | 거래량3x+ | 주봉데드크로스 | 주봉RSI과매도(26) | 주봉MA20아래 | 상대강도(+4.9%vsKOSPI-1.1%)",
+      "filled_at": "2026-04-13T06:15:32.117722"
+    },
+    {
+      "stock_code": "019170",
+      "stock_name": "신풍제약",
+      "side": "sell",
+      "quantity": 44,
+      "price": 11120.0,
+      "pnl": -5186.37,
+      "pnl_rate": -1.0524,
+      "strategy": "swing_vol_surge(ratio=3.4x,pnl=-1.1%)",
+      "reason": "swing_vol_surge(ratio=3.4x,pnl=-1.1%)",
+      "filled_at": "2026-04-13T00:50:23.319155"
+    },
+    {
+      "stock_code": "019170",
+      "stock_name": "신풍제약",
+      "side": "buy",
+      "quantity": 44,
+      "price": 11200.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "news_trigger",
+      "reason": "KIS급등 +6.5%",
+      "filled_at": "2026-04-13T00:30:34.379088"
+    },
     {
       "stock_code": "003160",
       "stock_name": "디아이",
@@ -564,42 +600,6 @@
       "strategy": "swing_trailing(peak=+2.2%,step=1.5%,trail_sl=+0.7%)",
       "reason": "swing_trailing(peak=+2.2%,step=1.5%,trail_sl=+0.7%)",
       "filled_at": "2026-04-10T01:00:53.086420"
-    },
-    {
-      "stock_code": "353200",
-      "stock_name": "대덕전자",
-      "side": "buy",
-      "quantity": 19,
-      "price": 91600.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "news_trigger",
-      "reason": "KIS급등 +5.1%",
-      "filled_at": "2026-04-10T00:42:46.810552"
-    },
-    {
-      "stock_code": "104700",
-      "stock_name": "한국철강",
-      "side": "buy",
-      "quantity": 1,
-      "price": 10290.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "news_trigger",
-      "reason": "KIS급등 +5.7%",
-      "filled_at": "2026-04-10T00:42:12.815923"
-    },
-    {
-      "stock_code": "108670",
-      "stock_name": "LX하우시스",
-      "side": "buy",
-      "quantity": 59,
-      "price": 30550.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "news_trigger",
-      "reason": "KIS급등 +6.3%",
-      "filled_at": "2026-04-10T00:41:49.771082"
     }
   ]
 }
