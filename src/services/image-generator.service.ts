@@ -11,9 +11,9 @@ const TARGET_MIN_KB = 100;
 
 /** Fallback image models in priority order */
 const GEMINI_MODELS = [
-  'gemini-2.5-flash-image',
-  'gemini-2.0-flash-exp',
-  'imagen-3.0-generate-002',
+  'gemini-2.0-flash-exp-image-generation', // primary: stable image gen model
+  'gemini-2.5-flash-image',                // secondary: newer model (may return blank — retried)
+  'imagen-3.0-generate-001',               // tertiary: imagen v1 (v2 deprecated)
 ] as const;
 
 export class ImageGeneratorService {
@@ -401,7 +401,7 @@ export class ImageGeneratorService {
   ): Promise<{ buffer: Buffer; filename: string } | null> {
     try {
       const model = this.client.getGenerativeModel({
-        model: 'gemini-2.5-flash-image',
+        model: GEMINI_MODELS[0],
         generationConfig: {
           responseModalities: ['IMAGE', 'TEXT'] as unknown as undefined,
         } as Record<string, unknown>,
