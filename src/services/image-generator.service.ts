@@ -11,9 +11,9 @@ const TARGET_MIN_KB = 100;
 
 /** Fallback image models in priority order */
 const GEMINI_MODELS = [
-  'gemini-2.0-flash-exp-image-generation', // primary: stable image gen model
-  'gemini-2.5-flash-image',                // secondary: newer model (may return blank — retried)
-  'imagen-3.0-generate-001',               // tertiary: imagen v1 (v2 deprecated)
+  'gemini-2.5-flash-image',                // primary: confirmed working (2026-04-13)
+  'imagen-3.0-generate-001',               // secondary: imagen v1 fallback
+  'gemini-2.0-flash-exp-image-generation', // tertiary: 404 as of 2026-04-13, kept for future
 ] as const;
 
 export class ImageGeneratorService {
