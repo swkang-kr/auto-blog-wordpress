@@ -254,13 +254,18 @@ export class ImageGeneratorService {
       } catch (error) {
         const detail = error instanceof Error ? error.message : String(error);
         const isRateLimit = detail.includes('429') || detail.includes('rate') || detail.includes('quota');
+        // 404/deprecated model errors are model-availability issues, not Gemini service failures.
+        // Don't trip circuit breaker for these — only trip on service-level failures.
+        const isModelError = detail.includes('404') || detail.includes('not found') || detail.includes('deprecated') || detail.includes('MODEL_NOT_FOUND');
         if (attempt < MAX_RETRIES && isRateLimit) {
           const delay = Math.pow(2, attempt) * 2000; // 4s, 8s for rate limits
           logger.warn(`Image ${index + 1} rate limited, retrying in ${delay / 1000}s...`);
           await new Promise(r => setTimeout(r, delay));
           continue;
         }
-        circuitBreakers.gemini.recordFailure();
+        if (!isModelError) {
+          circuitBreakers.gemini.recordFailure();
+        }
         logger.warn(new ImageGenerationError(`Image ${index + 1} generation failed: ${detail}`, error).message);
         return null;
       }
@@ -454,6 +459,9 @@ export class ImageGeneratorService {
   }
 
   async generateImages(prompts: string[]): Promise<ImageResult> {
+    // Reset model index per post so each post starts fresh from the primary model.
+    // Prevents a previous post's model fallback from persisting into the next post.
+    this.activeModelIndex = 0;
     logger.info(`Generating ${prompts.length} images (batch parallel, model: ${GEMINI_MODELS[this.activeModelIndex]})...`);
 
     let model = this.getImageModel();
@@ -463,10 +471,13 @@ export class ImageGeneratorService {
     // Generate featured image first (must succeed or fallback)
     results[0] = await this.generateSingleImage(model, prompts[0], 0, []);
 
-    // If featured image failed, try fallback models before giving up
+    // If featured image failed (null = all retries exhausted or blank/quality-fail),
+    // try fallback models before giving up.
     if (!results[0]) {
+      logger.warn(`Featured image failed with primary model (${GEMINI_MODELS[this.activeModelIndex]}), trying fallbacks...`);
       while (this.advanceModel()) {
         model = this.getImageModel();
+        logger.info(`Retrying featured image with fallback model: ${GEMINI_MODELS[this.activeModelIndex]}`);
         results[0] = await this.generateSingleImage(model, prompts[0], 0, []);
         if (results[0]) break;
       }
