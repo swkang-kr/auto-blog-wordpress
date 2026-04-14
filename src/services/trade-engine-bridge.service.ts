@@ -134,6 +134,38 @@ export interface WatchlistByNiche {
   수급분석: WatchlistItem[];
 }
 
+/** live_watchlist.json 아이템 — 실시간 지표 포함 */
+export interface LiveWatchlistItem {
+  stock_code: string;
+  stock_name: string;
+  score: number;
+  ranked_score: number;
+  confidence: number;
+  signal_count: number;
+  sector: string;
+  indicators: {
+    rsi: number;
+    macd: number;
+    macd_signal: number;
+    bb_upper: number;
+    bb_lower: number;
+    close: number;
+    atr_14: number;
+    vol_surge: number;
+    volume_surge?: number;
+    day_change_pct: string;
+    foreign_net_buy: number;
+    institution_net_buy: number;
+    individual_net_buy: number;
+    w52_high?: string;
+    w52_low?: string;
+    w52_position_pct?: string;
+    candle_pattern?: string;
+    swing_reasons: string;
+    market: string;
+  };
+}
+
 export interface DbWatchlistItem {
   stock_code: string;
   stock_name: string;
@@ -203,6 +235,8 @@ export interface TradeEngineData {
   // 종목분석 (워치리스트 매수 시그널 + 보유 종목)
   aiPicks: AiPick[];       // 매수 시그널 발생 종목 (내일의 매수 후보)
   aiHoldings: AiHolding[]; // 현재 보유 종목
+  // 오늘의 매수후보 — 실시간 지표 포함
+  liveWatchlist: LiveWatchlistItem[];
   dataAge: number;
   isStale: boolean;
 }
@@ -234,6 +268,7 @@ export class TradeEngineBridge {
       watchlistAll: [],
       aiPicks: [],
       aiHoldings: [],
+      liveWatchlist: [],
       dataAge: Infinity,
       isStale: true,
     };
@@ -342,9 +377,10 @@ export class TradeEngineBridge {
         logger.info(`DB watchlist: ${dbWl.items.length}종목 로드, aiPicks 병합 완료 (총 ${result.aiPicks.length} 종목)`);
       }
 
-      // 장중 라이브 워치리스트 (15:25 저장, 가장 최신)
-      const liveWl = this.readJson<{ watchlist: Array<{ stock_code: string; stock_name: string; score: number; confidence: number; signal_count: number; sector: string }> }>('live_watchlist.json');
+      // 장중 라이브 워치리스트 (15:25 저장, 가장 최신) — 전체 지표 포함
+      const liveWl = this.readJson<{ watchlist: LiveWatchlistItem[] }>('live_watchlist.json');
       if (liveWl?.watchlist?.length) {
+        result.liveWatchlist = liveWl.watchlist;
         const existingCodes = new Set(result.aiPicks.map(p => p.stock_code));
         for (const w of liveWl.watchlist) {
           if (!existingCodes.has(w.stock_code)) {
@@ -355,14 +391,14 @@ export class TradeEngineBridge {
               signal_count: w.signal_count || 1,
               avg_confidence: w.confidence || 0,
               strategies: [],
-              reason: `장중 워치리스트 score=${w.score.toFixed(2)}`,
-              price_at_signal: 0,
+              reason: w.indicators?.swing_reasons || `장중 워치리스트 score=${w.score.toFixed(2)}`,
+              price_at_signal: w.indicators?.close || 0,
               signal_time: '',
               status: '장중 워치리스트',
             });
           }
         }
-        logger.info(`Live watchlist: ${liveWl.watchlist.length}종목 병합 (총 ${result.aiPicks.length} 종목)`);
+        logger.info(`Live watchlist: ${liveWl.watchlist.length}종목 로드 (총 ${result.aiPicks.length} 종목)`);
       }
 
       result.isStale = result.dataAge > 24;
@@ -534,6 +570,76 @@ export class TradeEngineBridge {
           parts.push(`  - ${w.stock_name}(${w.stock_code}): 시그널 ${w.signal_count}회, 신뢰도 ${(w.avg_confidence * 100).toFixed(0)}%, 전략: ${w.strategies.join('/')}, 업종: ${w.sector || '미분류'}`);
         }
       }
+      parts.push('');
+    }
+
+    return parts.join('\n');
+  }
+
+  /**
+   * Build 오늘의 매수후보 context for content generation.
+   * Uses live_watchlist (full indicators) as primary data.
+   * @param sliceStart - start index for stock rotation across niches (0, 2, 4, 6...)
+   * @param sliceEnd - end index
+   */
+  buildBuyCandidateContext(data: TradeEngineData, sliceStart = 0, sliceEnd = 5): string {
+    const today = new Date().toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' });
+    const parts: string[] = [
+      `\n## 오늘의 매수후보 데이터 (Trade Engine, ${today} 기준)`,
+      '⚠️ CRITICAL: 아래 실시간 데이터를 기반으로 매수후보 분석 콘텐츠를 작성하세요. 수치를 임의로 생성하지 마세요.',
+      '',
+    ];
+
+    const source = data.liveWatchlist.length > 0 ? data.liveWatchlist : [];
+    const picks = source.slice(sliceStart, sliceEnd);
+
+    if (picks.length === 0) {
+      // Fallback: use aiPicks if live_watchlist is empty
+      const fallback = data.aiPicks.slice(sliceStart, sliceEnd);
+      if (fallback.length === 0) {
+        parts.push('⚠️ 오늘의 매수후보 데이터 없음 — 일반적인 기술적 분석 기반으로 작성하세요.');
+        return parts.join('\n');
+      }
+      parts.push('### 오늘의 매수후보 (시그널 기반)\n');
+      for (const p of fallback) {
+        parts.push(`**${p.stock_name} (${p.stock_code})** — ${p.sector || '미분류'} | 신뢰도 ${(p.avg_confidence * 100).toFixed(0)}%`);
+        parts.push(`  - 시그널 근거: ${p.reason}`);
+        if (p.price_at_signal) parts.push(`  - 시그널 발생 가격: ${p.price_at_signal.toLocaleString()}원`);
+        parts.push('');
+      }
+      return parts.join('\n');
+    }
+
+    parts.push('### 오늘의 매수후보 종목 (실시간 지표 포함)\n');
+    for (const w of picks) {
+      const ind = w.indicators;
+      const bbWidth = ind.bb_upper && ind.bb_lower ? ((ind.bb_upper - ind.bb_lower) / ind.close * 100).toFixed(1) : 'N/A';
+      const w52Pos = ind.w52_position_pct ? `${ind.w52_position_pct}%` : 'N/A';
+      const macdHist = (ind.macd - ind.macd_signal).toFixed(2);
+      const macdDir = ind.macd > ind.macd_signal ? '↑(골든)' : '↓(데드)';
+      const rsiLabel = ind.rsi < 30 ? '과매도' : ind.rsi > 70 ? '과매수' : '중립';
+
+      parts.push(`**${w.stock_name} (${w.stock_code})** — ${w.sector || '미분류'} | ${ind.market || 'KOSPI'} | 종합점수 ${w.score.toFixed(1)}점 (ranked ${w.ranked_score.toFixed(0)})`);
+      parts.push(`  - 현재가: ${ind.close ? ind.close.toLocaleString() : '?'}원 | 전일대비: +${ind.day_change_pct}%`);
+      parts.push(`  - RSI(14): ${ind.rsi.toFixed(1)} (${rsiLabel})`);
+      parts.push(`  - MACD: ${ind.macd.toFixed(2)} / 시그널: ${ind.macd_signal.toFixed(2)} / 히스토그램: ${macdHist} ${macdDir}`);
+      parts.push(`  - 볼린저밴드: 상단 ${ind.bb_upper.toLocaleString()}원 / 하단 ${ind.bb_lower.toLocaleString()}원 (밴드폭 ${bbWidth}%)`);
+      parts.push(`  - 거래량 급증: ${ind.vol_surge?.toFixed(1) || ind.volume_surge?.toFixed(1) || '?'}배 | ATR(14): ${ind.atr_14?.toFixed(0) || '?'}원`);
+      parts.push(`  - 52주 고/저: ${ind.w52_high || '?'}원 / ${ind.w52_low || '?'}원 (현재 위치: ${w52Pos})`);
+      if (ind.candle_pattern) parts.push(`  - 캔들 패턴: ${ind.candle_pattern}`);
+      parts.push(`  - 매수 근거: ${ind.swing_reasons}`);
+      if (ind.foreign_net_buy !== 0 || ind.institution_net_buy !== 0) {
+        parts.push(`  - 수급: 외국인 ${ind.foreign_net_buy >= 0 ? '+' : ''}${ind.foreign_net_buy.toLocaleString()}주 / 기관 ${ind.institution_net_buy >= 0 ? '+' : ''}${ind.institution_net_buy.toLocaleString()}주`);
+      }
+      parts.push('');
+    }
+
+    // Market context
+    if (data.marketOverview.length > 0) {
+      const m = data.marketOverview[0];
+      parts.push(`### 시장 컨텍스트 (${m.date})`);
+      parts.push(`- KOSPI: ${m.kospi_change >= 0 ? '+' : ''}${m.kospi_change.toFixed(2)}% | KOSDAQ: ${m.kosdaq_change >= 0 ? '+' : ''}${m.kosdaq_change.toFixed(2)}%`);
+      parts.push(`- 외국인 순매매: ${m.foreign_net >= 0 ? '+' : ''}${m.foreign_net.toLocaleString()}억원 | 기관: ${m.institution_net >= 0 ? '+' : ''}${m.institution_net.toLocaleString()}억원`);
       parts.push('');
     }
 

@@ -1041,21 +1041,32 @@ async function main(): Promise<void> {
       }
     }
 
-    // 추천주 니치에 aiPicks/DB워치리스트 키워드 주입 (종목별 다양한 앵글)
-    for (const niche of activeNiches) {
-      if (niche.category === '종목분석' && tradeEngineData.aiPicks.length > 0) {
+    // 모든 니치에 오늘의 매수후보 키워드 주입 (live_watchlist 기반, 니치별 다른 종목 슬라이스)
+    const todayKst = new Date();
+    const month = todayKst.getMonth() + 1;
+    const day = todayKst.getDate();
+    const liveList = tradeEngineData.liveWatchlist.length > 0
+      ? tradeEngineData.liveWatchlist
+      : tradeEngineData.aiPicks.map(p => ({ stock_code: p.stock_code, stock_name: p.stock_name, score: p.avg_confidence, ranked_score: 0, confidence: p.avg_confidence, signal_count: p.signal_count, sector: p.sector, indicators: { rsi: 0, macd: 0, macd_signal: 0, bb_upper: 0, bb_lower: 0, close: p.price_at_signal, atr_14: 0, vol_surge: 0, day_change_pct: '0', foreign_net_buy: 0, institution_net_buy: 0, individual_net_buy: 0, swing_reasons: p.reason, market: '' } }));
+
+    for (let i = 0; i < activeNiches.length; i++) {
+      const niche = activeNiches[i];
+      // 니치 인덱스에 따라 2종목씩 로테이션 (niche 0→picks[0-1], 1→picks[1-2], 2→picks[2-3], 3→picks[3-4])
+      const sliceStart = i;
+      const sliceEnd = Math.min(i + 3, liveList.length);
+      const nicheStocks = liveList.slice(sliceStart, sliceEnd);
+
+      if (nicheStocks.length > 0) {
         const pickKeywords: string[] = [];
-        for (const p of tradeEngineData.aiPicks.slice(0, 5)) {
-          const today = new Date();
-          const month = today.getMonth() + 1;
-          const day = today.getDate();
-          // 투자 권유가 아닌 분석/검토 관점 키워드 사용
-          pickKeywords.push(`${month}월 ${day}일 ${p.stock_name} 주가 기술적 분석 검토`);
-          pickKeywords.push(`${p.stock_name} 차트 분석 투자 판단 참고 ${Y}`);
-          if (p.reason) pickKeywords.push(`${p.stock_name} ${p.reason.slice(0, 20)} 분석 참고`);
+        for (const p of nicheStocks) {
+          pickKeywords.push(`${month}월 ${day}일 ${p.stock_name} 오늘의 매수후보 기술적 분석`);
+          pickKeywords.push(`${p.stock_name} 매수타이밍 RSI MACD 분석 참고`);
+          if (p.indicators?.swing_reasons) {
+            pickKeywords.push(`${p.stock_name} ${p.indicators.swing_reasons.slice(0, 30)} 분석`);
+          }
         }
         niche.seedKeywords = [...pickKeywords, ...niche.seedKeywords];
-        logger.info(`종목분석 [${niche.category}]: ${tradeEngineData.aiPicks.slice(0, 3).map(p => p.stock_name).join(', ')} 주입 (${pickKeywords.length}개 키워드)`);
+        logger.info(`매수후보 키워드 주입 [${niche.name}]: ${nicheStocks.map(p => p.stock_name).join(', ')} (${pickKeywords.length}개)`);
       }
     }
   }
@@ -1228,21 +1239,22 @@ async function main(): Promise<void> {
         logger.info(`Found ${similarPostTitles.length} similar post(s) for differentiation: ${similarPostTitles.map(t => `"${t}"`).join(', ')}`);
       }
 
-      // 종목분석: 실시간 종목 데이터 주입 (시총/현재가/PER 등 — Claude 할루시네이션 방지)
+      // 모든 종목분석 니치: live_watchlist 기반 오늘의 매수후보 컨텍스트 주입
+      // 니치 인덱스에 따라 다른 종목 슬라이스 → 4개 포스트가 서로 다른 종목 분석
       if (niche.category === '종목분석') {
-        // Extract stock name from keyword; look up code from aiPicks + watchlist
+        const sliceStart = nicheIdx;
+        const sliceEnd = Math.min(nicheIdx + 3, Math.max(tradeEngineData.liveWatchlist.length, tradeEngineData.aiPicks.length));
+        const buyCandidateCtx = tradeEngineBridge.buildBuyCandidateContext(tradeEngineData, sliceStart, sliceEnd);
+        contentService.setStockContext(buyCandidateCtx);
+
+        // 키워드에 종목명이 포함된 경우 Naver Finance 실시간 현재가도 추가 주입
         const kwLower = researched.analysis.selectedKeyword;
-        const matchedPick = tradeEngineData.aiPicks.find(p => kwLower.includes(p.stock_name));
-        const matchedWatch = tradeEngineData.watchlistAll.find(w => kwLower.includes(w.stock_name));
-        const stockEntry = matchedPick
-          ? { stock_code: matchedPick.stock_code, stock_name: matchedPick.stock_name }
-          : matchedWatch
-            ? { stock_code: matchedWatch.stock_code, stock_name: matchedWatch.stock_name }
-            : null;
-        if (stockEntry) {
-          const stockData = await marketDataService.fetchStockSummary(stockEntry.stock_code, stockEntry.stock_name);
+        const allStocks = [...tradeEngineData.liveWatchlist, ...tradeEngineData.aiPicks];
+        const matchedStock = allStocks.find(p => kwLower.includes(p.stock_name));
+        if (matchedStock && matchedStock.stock_code) {
+          const stockData = await marketDataService.fetchStockSummary(matchedStock.stock_code, matchedStock.stock_name);
           if (stockData) {
-            contentService.setStockContext(stockData.promptContext);
+            contentService.setStockContext(buyCandidateCtx + '\n' + stockData.promptContext);
           }
         }
       }
