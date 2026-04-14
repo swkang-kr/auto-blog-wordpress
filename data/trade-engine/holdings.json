@@ -1,6 +1,17 @@
 {
-  "exported_at": "2026-04-13T07:00:01.109107+00:00",
+  "exported_at": "2026-04-14T07:00:01.284129+00:00",
   "holdings": [
+    {
+      "stock_code": "020150",
+      "stock_name": "롯데에너지머티리얼즈",
+      "quantity": 7,
+      "avg_price": 45750.0,
+      "current_price": 46000.0,
+      "unrealized_pnl": 661.15,
+      "unrealized_pnl_rate": 0.2064,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-04-14T06:16:05.747908"
+    },
     {
       "stock_code": "003160",
       "stock_name": "디아이",
@@ -13,15 +24,37 @@
       "entry_date": "2026-04-10T03:22:15.477900"
     },
     {
-      "stock_code": "019170",
-      "stock_name": "신풍제약",
-      "quantity": 16,
-      "avg_price": 11040.0,
-      "current_price": 11060.0,
-      "unrealized_pnl": -280.58,
-      "unrealized_pnl_rate": -0.1588,
+      "stock_code": "004100",
+      "stock_name": "태양금속",
+      "quantity": 68,
+      "avg_price": 3470.0,
+      "current_price": 3480.0,
+      "unrealized_pnl": -122.26,
+      "unrealized_pnl_rate": -0.0518,
       "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-04-13T06:15:32.127953"
+      "entry_date": "2026-04-14T06:15:53.206145"
+    },
+    {
+      "stock_code": "001430",
+      "stock_name": "세아베스틸지주",
+      "quantity": 7,
+      "avg_price": 67600.0,
+      "current_price": 67600.0,
+      "unrealized_pnl": -1608.88,
+      "unrealized_pnl_rate": -0.34,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-04-14T06:01:00.954086"
+    },
+    {
+      "stock_code": "005880",
+      "stock_name": "대한해운",
+      "quantity": 138,
+      "avg_price": 2675.0,
+      "current_price": 2675.0,
+      "unrealized_pnl": -1255.11,
+      "unrealized_pnl_rate": -0.34,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-04-14T06:15:46.735596"
     }
   ]
 }

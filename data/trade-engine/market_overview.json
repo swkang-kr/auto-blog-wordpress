@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-04-13T07:00:01.669463+00:00",
+  "exported_at": "2026-04-14T07:00:02.080614+00:00",
   "market_daily": [
+    {
+      "date": "20260414",
+      "kospi_change": 2.74,
+      "kosdaq_change": 2.0,
+      "foreign_net": 82.82,
+      "institution_net": 125.42,
+      "individual_net": -239.17,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260413",
       "kospi_change": -0.86,
       "kosdaq_change": 0.57,
       "foreign_net": -45.64,
-      "institution_net": -70.16,
-      "individual_net": 75.0,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "institution_net": -70.15,
+      "individual_net": 74.96,
+      "hot_theme_count": 24,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260410",
@@ -99,29 +110,18 @@
       "hot_theme_count": 40,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260331",
-      "kospi_change": -4.26,
-      "kosdaq_change": -4.94,
-      "foreign_net": -383.83,
-      "institution_net": 102.47,
-      "individual_net": 244.02,
-      "hot_theme_count": 2,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "\"쌀 때 담자\"…개미들 1조 순매수에 코스피 5800선 사수",
-    "헥토파이낸셜, 서클 알레어 CEO와 회동…스테이블코인 결제 협력 지속",
-    "코스피 소폭 하락해 5800선 마감…코스닥은 올라",
-    "코스피 하락·국제유가 상승",
-    "스트레이 키즈 '두 잇' 뮤직비디오, 유튜브 1억뷰 돌파…통산 19번째",
-    "\"360만원이 720만원 됐다\"…무주 청년 43명 '두배통장' 혜택",
-    "코스피, 美·이란 협상 결렬에 0.86% 하락 마감…5800선은 사수",
-    "방탄소년단, 6월 부산 아시아드 주경기장서 완전체 공연",
-    "코스피 하락 마감",
-    "종전 협상 결렬에도 5800선 지킨 코스피"
+    "‘장중 6000피 터치’ 코스피, 5967.75 상승 마감…코스닥도 올라",
+    "실적 기대 속 상승 마감한 SK하이닉스",
+    "티엘엔지니어링, 폐수열 회수장치 특허 취득...장영실상도 수상",
+    "실적 기대 속 상승 마감한 SK하이닉스",
+    "미·이란 협상 기대감에 원/달러 환율 하락…1,481.2원",
+    "실적 기대 속 상승 마감한 SK하이닉스",
+    "코스피·코스닥, 중동 전쟁 협상 기대감에 상승 마감",
+    "코스피, 외인·기관 메수세로 6000선 턱밑 마감",
+    "코스피, '6천피' 찍고 5,960선 마감",
+    "코스피, 6000선 턱밑 5960선에서 마감…SK하닉 6%대 강세"
   ]
 }

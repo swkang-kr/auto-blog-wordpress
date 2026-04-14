@@ -1,7 +1,46 @@
 {
-  "exported_at": "2026-04-13T07:00:01.944185+00:00",
-  "total": 66,
+  "exported_at": "2026-04-14T07:00:02.390665+00:00",
+  "total": 75,
   "items": [
+    {
+      "stock_code": "062040",
+      "stock_name": "산일전기",
+      "market": "KRX",
+      "sector": "전기장비",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 100,
+      "memo": "AI APPROVE | conf=100% | qty_ratio=120% | AI skip: score≥6 강제매수 (8.0점)",
+      "created_at": "2026-04-10T10:56:39.319051",
+      "updated_at": "2026-04-14T15:15:14.243627"
+    },
+    {
+      "stock_code": "001430",
+      "stock_name": "세아베스틸지주",
+      "market": "KRX",
+      "sector": "",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 100,
+      "memo": "AI APPROVE | conf=100% | qty_ratio=120% | AI skip: score≥6 강제매수 (7.5점)",
+      "created_at": "2026-04-14T15:00:29.322683",
+      "updated_at": "2026-04-14T15:00:29.322683"
+    },
+    {
+      "stock_code": "004100",
+      "stock_name": "태양금속",
+      "market": "KRX",
+      "sector": "",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 91,
+      "memo": "AI APPROVE | conf=92% | qty_ratio=90% | AI skip: 15:15 무조건매수",
+      "created_at": "2026-04-10T10:14:41.440579",
+      "updated_at": "2026-04-14T15:15:14.243627"
+    },
     {
       "stock_code": "001740",
       "stock_name": "SK네트웍스",
@@ -120,16 +159,16 @@
       "updated_at": "2026-04-10T09:41:15.748337"
     },
     {
-      "stock_code": "017670",
-      "stock_name": "SK텔레콤",
+      "stock_code": "008350",
+      "stock_name": "남선알미늄",
       "market": "KRX",
-      "sector": "무선통신서비스",
+      "sector": "비철금속",
       "target_buy_price": null,
       "target_price": null,
       "stop_loss": null,
       "priority": 85,
       "memo": "AI APPROVE | conf=85% | qty_ratio=120% | AI skip: score≥7 강제매수 (8.0점)",
-      "created_at": "2026-04-09T10:12:50.457289",
+      "created_at": "2026-04-09T09:54:50.647034",
       "updated_at": "2026-04-09T14:16:33.345151"
     },
     {
@@ -146,16 +185,16 @@
       "updated_at": "2026-04-09T14:16:33.345151"
     },
     {
-      "stock_code": "008350",
-      "stock_name": "남선알미늄",
+      "stock_code": "017670",
+      "stock_name": "SK텔레콤",
       "market": "KRX",
-      "sector": "비철금속",
+      "sector": "무선통신서비스",
       "target_buy_price": null,
       "target_price": null,
       "stop_loss": null,
       "priority": 85,
       "memo": "AI APPROVE | conf=85% | qty_ratio=120% | AI skip: score≥7 강제매수 (8.0점)",
-      "created_at": "2026-04-09T09:54:50.647034",
+      "created_at": "2026-04-09T10:12:50.457289",
       "updated_at": "2026-04-09T14:16:33.345151"
     },
     {
@@ -198,6 +237,19 @@
       "updated_at": "2026-04-09T12:40:49.321251"
     },
     {
+      "stock_code": "063160",
+      "stock_name": "종근당바이오",
+      "market": "KRX",
+      "sector": "",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 78,
+      "memo": "AI APPROVE | conf=78% | qty_ratio=120% | AI skip: score≥6 강제매수 (8.0점)",
+      "created_at": "2026-04-14T15:00:29.322683",
+      "updated_at": "2026-04-14T15:15:14.243627"
+    },
+    {
       "stock_code": "322000",
       "stock_name": "HD현대에너지솔루션",
       "market": "KRX",
@@ -235,19 +287,6 @@
       "memo": "AI APPROVE | conf=75% | qty_ratio=120% | AI skip: score≥7 강제매수 (8.0점)",
       "created_at": "2026-04-10T12:46:29.711717",
       "updated_at": "2026-04-10T12:46:29.711717"
-    },
-    {
-      "stock_code": "003620",
-      "stock_name": "KG모빌리티",
-      "market": "KRX",
-      "sector": "",
-      "target_buy_price": null,
-      "target_price": null,
-      "stop_loss": null,
-      "priority": 75,
-      "memo": "AI APPROVE | conf=75% | qty_ratio=120% | AI skip: score≥7 강제매수 (8.0점)",
-      "created_at": "2026-04-10T11:58:12.933214",
-      "updated_at": "2026-04-10T11:58:12.933214"
     },
     {
       "stock_code": "004140",
@@ -302,6 +341,19 @@
       "updated_at": "2026-04-09T10:21:50.023572"
     },
     {
+      "stock_code": "010120",
+      "stock_name": "LS ELECTRIC",
+      "market": "KRX",
+      "sector": "전기장비",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 73,
+      "memo": "AI APPROVE | conf=73% | qty_ratio=120% | AI skip: score≥6 강제매수 (8.0점)",
+      "created_at": "2026-04-14T09:30:26.197830",
+      "updated_at": "2026-04-14T09:30:26.197830"
+    },
+    {
       "stock_code": "047040",
       "stock_name": "대우건설",
       "market": "KRX",
@@ -339,19 +391,6 @@
       "memo": "AI APPROVE | conf=70% | qty_ratio=120% | AI skip: score≥7 강제매수 (8.0점)",
       "created_at": "2026-04-10T09:09:14.694338",
       "updated_at": "2026-04-10T10:56:15.797323"
-    },
-    {
-      "stock_code": "020150",
-      "stock_name": "롯데에너지머티리얼즈",
-      "market": "KRX",
-      "sector": "",
-      "target_buy_price": null,
-      "target_price": null,
-      "stop_loss": null,
-      "priority": 70,
-      "memo": "AI APPROVE | conf=70% | qty_ratio=120% | AI skip: score≥7 강제매수 (8.0점)",
-      "created_at": "2026-04-06T15:03:13.661884",
-      "updated_at": "2026-04-10T10:14:41.440579"
     },
     {
       "stock_code": "011930",
@@ -458,19 +497,6 @@
       "updated_at": "2026-04-10T12:26:26.810320"
     },
     {
-      "stock_code": "004100",
-      "stock_name": "태양금속",
-      "market": "KRX",
-      "sector": "",
-      "target_buy_price": null,
-      "target_price": null,
-      "stop_loss": null,
-      "priority": 64,
-      "memo": "AI APPROVE | conf=65% | qty_ratio=120% | AI skip: score≥7 강제매수 (8.0점)",
-      "created_at": "2026-04-10T10:14:41.440579",
-      "updated_at": "2026-04-10T10:55:56.829152"
-    },
-    {
       "stock_code": "007210",
       "stock_name": "벽산",
       "market": "KRX",
@@ -484,16 +510,16 @@
       "updated_at": "2026-04-10T10:52:21.262672"
     },
     {
-      "stock_code": "010950",
-      "stock_name": "S-Oil",
+      "stock_code": "101140",
+      "stock_name": "인바이오젠",
       "market": "KRX",
-      "sector": "석유와가스",
+      "sector": "전자장비와기기",
       "target_buy_price": null,
       "target_price": null,
       "stop_loss": null,
       "priority": 64,
       "memo": "AI APPROVE | conf=65% | qty_ratio=120% | AI skip: score≥7 강제매수 (8.0점)",
-      "created_at": "2026-04-09T12:42:05.025228",
+      "created_at": "2026-04-09T14:16:33.345151",
       "updated_at": "2026-04-09T14:16:33.345151"
     },
     {
@@ -523,16 +549,16 @@
       "updated_at": "2026-04-09T14:16:33.345151"
     },
     {
-      "stock_code": "101140",
-      "stock_name": "인바이오젠",
+      "stock_code": "010950",
+      "stock_name": "S-Oil",
       "market": "KRX",
-      "sector": "전자장비와기기",
+      "sector": "석유와가스",
       "target_buy_price": null,
       "target_price": null,
       "stop_loss": null,
       "priority": 64,
       "memo": "AI APPROVE | conf=65% | qty_ratio=120% | AI skip: score≥7 강제매수 (8.0점)",
-      "created_at": "2026-04-09T14:16:33.345151",
+      "created_at": "2026-04-09T12:42:05.025228",
       "updated_at": "2026-04-09T14:16:33.345151"
     },
     {
@@ -547,6 +573,45 @@
       "memo": "AI APPROVE | conf=65% | qty_ratio=120% | AI skip: score≥7 강제매수 (8.0점)",
       "created_at": "2026-04-09T12:40:49.321251",
       "updated_at": "2026-04-09T12:43:15.297937"
+    },
+    {
+      "stock_code": "499790",
+      "stock_name": "GS피앤엘",
+      "market": "KRX",
+      "sector": "",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 63,
+      "memo": "AI APPROVE | conf=63% | qty_ratio=120% | AI skip: score≥6 강제매수 (8.0점)",
+      "created_at": "2026-04-14T09:32:47.830939",
+      "updated_at": "2026-04-14T09:32:47.830939"
+    },
+    {
+      "stock_code": "033240",
+      "stock_name": "자화전자",
+      "market": "KRX",
+      "sector": "",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 63,
+      "memo": "AI APPROVE | conf=63% | qty_ratio=120% | AI skip: score≥6 강제매수 (8.0점)",
+      "created_at": "2026-04-14T09:32:16.435260",
+      "updated_at": "2026-04-14T09:32:16.435260"
+    },
+    {
+      "stock_code": "000390",
+      "stock_name": "삼화페인트",
+      "market": "KRX",
+      "sector": "건축자재",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 63,
+      "memo": "AI APPROVE | conf=63% | qty_ratio=120% | AI skip: score≥6 강제매수 (8.0점)",
+      "created_at": "2026-04-14T09:30:26.199093",
+      "updated_at": "2026-04-14T09:30:26.199093"
     },
     {
       "stock_code": "003850",
@@ -586,6 +651,19 @@
       "memo": "AI APPROVE | conf=63% | qty_ratio=120% | AI skip: score≥7 강제매수 (8.0점)",
       "created_at": "2026-04-10T09:32:51.529311",
       "updated_at": "2026-04-10T09:32:51.529311"
+    },
+    {
+      "stock_code": "217590",
+      "stock_name": "티엠씨",
+      "market": "KRX",
+      "sector": "조선",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 60,
+      "memo": "AI APPROVE | conf=60% | qty_ratio=120% | AI skip: score≥6 강제매수 (8.0점)",
+      "created_at": "2026-04-14T10:29:14.638665",
+      "updated_at": "2026-04-14T10:29:14.638665"
     },
     {
       "stock_code": "079550",
@@ -640,19 +718,6 @@
       "updated_at": "2026-04-10T11:57:31.319595"
     },
     {
-      "stock_code": "062040",
-      "stock_name": "산일전기",
-      "market": "KRX",
-      "sector": "전기장비",
-      "target_buy_price": null,
-      "target_price": null,
-      "stop_loss": null,
-      "priority": 60,
-      "memo": "AI APPROVE | conf=60% | qty_ratio=120% | AI skip: score≥7 강제매수 (8.0점)",
-      "created_at": "2026-04-10T10:56:39.319051",
-      "updated_at": "2026-04-10T10:56:39.319051"
-    },
-    {
       "stock_code": "010820",
       "stock_name": "퍼스텍",
       "market": "KRX",
@@ -666,10 +731,10 @@
       "updated_at": "2026-04-10T10:55:56.829152"
     },
     {
-      "stock_code": "281820",
-      "stock_name": "케이씨텍",
+      "stock_code": "353200",
+      "stock_name": "대덕전자",
       "market": "KRX",
-      "sector": "",
+      "sector": "전자장비와기기",
       "target_buy_price": null,
       "target_price": null,
       "stop_loss": null,
@@ -679,10 +744,10 @@
       "updated_at": "2026-04-10T09:42:12.983046"
     },
     {
-      "stock_code": "353200",
-      "stock_name": "대덕전자",
+      "stock_code": "281820",
+      "stock_name": "케이씨텍",
       "market": "KRX",
-      "sector": "전자장비와기기",
+      "sector": "",
       "target_buy_price": null,
       "target_price": null,
       "stop_loss": null,
@@ -770,19 +835,6 @@
       "updated_at": "2026-04-09T14:15:45.212199"
     },
     {
-      "stock_code": "093370",
-      "stock_name": "후성",
-      "market": "KRX",
-      "sector": "",
-      "target_buy_price": null,
-      "target_price": null,
-      "stop_loss": null,
-      "priority": 60,
-      "memo": "AI APPROVE | conf=60% | qty_ratio=120% | AI skip: score≥7 강제매수 (8.0점)",
-      "created_at": "2026-04-09T11:35:04.104513",
-      "updated_at": "2026-04-09T14:15:45.212199"
-    },
-    {
       "stock_code": "008420",
       "stock_name": "문배철강",
       "market": "KRX",
@@ -848,6 +900,71 @@
       "updated_at": "2026-04-09T11:42:36.322173"
     },
     {
+      "stock_code": "093370",
+      "stock_name": "후성",
+      "market": "KRX",
+      "sector": "",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 58,
+      "memo": "AI APPROVE | conf=58% | qty_ratio=120% | AI skip: score≥6 강제매수 (8.0점)",
+      "created_at": "2026-04-09T11:35:04.104513",
+      "updated_at": "2026-04-14T09:31:17.177552"
+    },
+    {
+      "stock_code": "003620",
+      "stock_name": "KG모빌리티",
+      "market": "KRX",
+      "sector": "",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 55,
+      "memo": "AI APPROVE | conf=55% | qty_ratio=90% | AI skip: 15:15 무조건매수",
+      "created_at": "2026-04-10T11:58:12.933214",
+      "updated_at": "2026-04-14T15:20:04.760652"
+    },
+    {
+      "stock_code": "006800",
+      "stock_name": "미래에셋증권",
+      "market": "KRX",
+      "sector": "증권",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 55,
+      "memo": "AI APPROVE | conf=55% | qty_ratio=90% | AI skip: 15:15 무조건매수",
+      "created_at": "2026-04-14T15:15:14.243627",
+      "updated_at": "2026-04-14T15:20:04.760652"
+    },
+    {
+      "stock_code": "020150",
+      "stock_name": "롯데에너지머티리얼즈",
+      "market": "KRX",
+      "sector": "",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 55,
+      "memo": "AI APPROVE | conf=55% | qty_ratio=90% | AI skip: 15:15 무조건매수",
+      "created_at": "2026-04-06T15:03:13.661884",
+      "updated_at": "2026-04-14T15:15:14.243627"
+    },
+    {
+      "stock_code": "005880",
+      "stock_name": "대한해운",
+      "market": "KRX",
+      "sector": "해운사",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 50,
+      "memo": "AI APPROVE | conf=50% | qty_ratio=90% | AI skip: 15:15 무조건매수",
+      "created_at": "2026-04-14T15:15:14.243627",
+      "updated_at": "2026-04-14T15:15:14.243627"
+    },
+    {
       "stock_code": "011280",
       "stock_name": "태림포장",
       "market": "KRX",
@@ -855,10 +972,10 @@
       "target_buy_price": null,
       "target_price": null,
       "stop_loss": null,
-      "priority": 6,
-      "memo": "score=6 x19 | MACD히스토그램↑ 거래량43.3x MA정배열 주봉골든크로스 주봉MA20위 | 하락장 skip",
+      "priority": 50,
+      "memo": "AI APPROVE | conf=50% | qty_ratio=90% | AI skip: 15:15 무조건매수",
       "created_at": "2026-03-30T15:18:44.329725",
-      "updated_at": "2026-03-30T15:18:44.329725"
+      "updated_at": "2026-04-14T15:15:14.243627"
     }
   ]
 }

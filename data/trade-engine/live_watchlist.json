@@ -1,123 +1,194 @@
 {
-  "exported_at": "2026-04-13T15:25:00.026558+09:00",
-  "total": 6,
+  "exported_at": "2026-04-14T15:25:00.113060+09:00",
+  "total": 9,
   "watchlist": [
     {
-      "stock_code": "019170",
-      "stock_name": "신풍제약",
-      "score": 6.0,
+      "stock_code": "001430",
+      "stock_name": "세아베스틸지주",
+      "score": 8.0,
       "confidence": 1.0,
-      "signal_count": 25,
-      "sector": "",
-      "indicators": {
-        "rsi": 52.54,
-        "macd": -246.5672,
-        "macd_signal": -328.7311,
-        "bb_upper": 11307.0,
-        "bb_lower": 10039.0,
-        "close": 11060,
-        "timeframe": "1day",
-        "vol_surge": 3.91,
-        "_pre_dropna_atr": 501.4693818452669,
-        "atr_14": 481.79,
-        "swing_score": 6.0,
-        "swing_mode": true,
-        "w52_high": "14590.0000",
-        "w52_low": "10100.0000",
-        "volume_surge": 2.72,
-        "day_change_pct": "4.93",
-        "foreign_net_buy": 0,
-        "institution_net_buy": 0,
-        "individual_net_buy": 0,
-        "minute_vol_ratio": 1.84,
-        "swing_reasons": "2일연속상승 | MACD히스토그램↑ | 거래량3.9x | 거래량3x+ | 상대강도(+4.9%vsKOSPI-0.7%)",
-        "market": "KOSPI"
-      },
-      "ranked_score": 150.0
-    },
-    {
-      "stock_code": "016590",
-      "stock_name": "신대양제지",
-      "score": 5.041666666666666,
-      "confidence": 0.9166666666666666,
-      "signal_count": 25,
-      "sector": "포장재",
-      "indicators": {
-        "rsi": 54.61,
-        "macd": -94.7855,
-        "macd_signal": -130.3039,
-        "bb_upper": 13782.0,
-        "bb_lower": 11697.0,
-        "close": 13520,
-        "timeframe": "1day",
-        "vol_surge": 8.74,
-        "_pre_dropna_atr": 1075.3688761564808,
-        "candle_pattern": "슈팅스타",
-        "candle_strength": 0.7,
-        "atr_14": 1010.5,
-        "swing_score": 5.5,
-        "swing_mode": true,
-        "w52_position_pct": "69.3",
-        "w52_high": "16400.0000",
-        "w52_low": "7020.0000",
-        "volume_surge": 5.74,
-        "day_change_pct": "6.62",
-        "foreign_net_buy": 0,
-        "institution_net_buy": 0,
-        "individual_net_buy": 0,
-        "minute_vol_ratio": 6.67,
-        "swing_reasons": "2일연속상승 | MACD골든크로스 | 거래량8.7x | 거래량3x+ | 캔들슈팅스타(약세) | 상대강도(+6.6%vsKOSPI-0.7%)",
-        "market": "KOSPI"
-      },
-      "ranked_score": 126.04166666666666
-    },
-    {
-      "stock_code": "079900",
-      "stock_name": "전진건설로봇",
-      "score": 5.5,
-      "confidence": 0.5,
-      "signal_count": 22,
-      "sector": "",
-      "indicators": {
-        "swing_reasons": "MACD히스토그램↑ | 거래량18.3x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위"
-      },
-      "ranked_score": 121.0
-    },
-    {
-      "stock_code": "005810",
-      "stock_name": "풍산홀딩스",
-      "score": 4.5,
-      "confidence": 0.5,
       "signal_count": 26,
       "sector": "",
       "indicators": {
-        "swing_reasons": "거래량6.5x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위"
+        "rsi": 53.82,
+        "macd": -486.0793,
+        "macd_signal": -646.999,
+        "bb_upper": 73252.0,
+        "bb_lower": 61028.0,
+        "close": 70500,
+        "timeframe": "1day",
+        "vol_surge": 1.99,
+        "_pre_dropna_atr": 5403.646079520164,
+        "weekly_ma5": 66820.0,
+        "weekly_ma20": 63360.0,
+        "weekly_rsi": 54.1,
+        "weekly_trend": "골든",
+        "atr_14": 5279.59,
+        "swing_score": 8.0,
+        "swing_mode": true,
+        "w52_position_pct": "73.7",
+        "w52_high": "90300.0000",
+        "w52_low": "15140.0000",
+        "volume_surge": 1.39,
+        "day_change_pct": 6.3,
+        "foreign_net_buy": 0,
+        "institution_net_buy": 0,
+        "individual_net_buy": 0,
+        "minute_vol_ratio": 1.27,
+        "swing_reasons": "2일연속상승 | MACD골든크로스 | RSI모멘텀(54) | 주봉골든크로스 | 주봉MA20위 | 테마장(40개) | 상대강도(+11.0%vsKOSPI+3.0%)",
+        "market": "KOSPI"
       },
-      "ranked_score": 117.0
+      "ranked_score": 208.0
     },
     {
-      "stock_code": "044450",
-      "stock_name": "KSS해운",
+      "stock_code": "063160",
+      "stock_name": "종근당바이오",
+      "score": 6.5,
+      "confidence": 1.0,
+      "signal_count": 15,
+      "sector": "",
+      "indicators": {
+        "rsi": 60.75,
+        "macd": -195.0893,
+        "macd_signal": -335.1953,
+        "bb_upper": 19972.0,
+        "bb_lower": 18205.0,
+        "close": 20300,
+        "timeframe": "1day",
+        "vol_surge": 10.72,
+        "_pre_dropna_atr": 784.0715118207279,
+        "candle_pattern": "역해머",
+        "candle_strength": 0.7,
+        "weekly_ma5": 19272.0,
+        "weekly_ma20": 20312.0,
+        "weekly_rsi": 48.6,
+        "weekly_trend": "데드",
+        "atr_14": 733.26,
+        "swing_score": 6.5,
+        "swing_mode": true,
+        "w52_position_pct": "30.3",
+        "w52_high": "24500.0000",
+        "w52_low": "18470.0000",
+        "volume_surge": 6.86,
+        "day_change_pct": 3.67,
+        "foreign_net_buy": 0,
+        "institution_net_buy": 0,
+        "individual_net_buy": 0,
+        "minute_vol_ratio": 1.79,
+        "early_volume_spike": true
+      },
+      "ranked_score": 97.5
+    },
+    {
+      "stock_code": "004100",
+      "stock_name": "태양금속",
+      "score": 5.5,
+      "confidence": 0.5,
+      "signal_count": 16,
+      "sector": "",
+      "indicators": {
+        "swing_reasons": "MACD히스토그램↑ | RSI모멘텀(71) | 거래량2.4x | MA정배열 | 상대강도(+7.2%vsKOSPI+3.2%)"
+      },
+      "ranked_score": 88.0
+    },
+    {
+      "stock_code": "062040",
+      "stock_name": "산일전기",
+      "score": 9.0,
+      "confidence": 1.0,
+      "signal_count": 8,
+      "sector": "",
+      "indicators": {
+        "rsi": 63.11,
+        "macd": 3029.2011,
+        "macd_signal": -343.7387,
+        "bb_upper": 176640.0,
+        "bb_lower": 123770.0,
+        "close": 175800,
+        "timeframe": "1day",
+        "vol_surge": 2.22,
+        "_pre_dropna_atr": 11857.624106755871,
+        "sector_momentum": 8.1,
+        "weekly_ma5": 155760.0,
+        "weekly_ma20": 147185.0,
+        "weekly_rsi": 64.9,
+        "weekly_trend": "골든",
+        "atr_14": 11350.11,
+        "swing_score": 9.0,
+        "swing_mode": true,
+        "w52_position_pct": "100.0",
+        "w52_high": "175800.0000",
+        "w52_low": "44500.0000",
+        "volume_surge": 1.81,
+        "day_change_pct": 7.75,
+        "foreign_net_buy": 0,
+        "institution_net_buy": 0,
+        "individual_net_buy": 0,
+        "minute_vol_ratio": 2.62,
+        "swing_reasons": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(63) | 거래량2.2x | MA정배열 | 섹터강세(전기장비) | 주봉골든크로스 | 주봉MA20위 | 테마장(40개)",
+        "market": "KOSPI"
+      },
+      "ranked_score": 72.0
+    },
+    {
+      "stock_code": "020150",
+      "stock_name": "롯데에너지머티리얼즈",
+      "score": 3.0,
+      "confidence": 0.5,
+      "signal_count": 23,
+      "sector": "",
+      "indicators": {
+        "swing_reasons": "MA정배열 | 주봉골든크로스 | 주봉MA20위"
+      },
+      "ranked_score": 69.0
+    },
+    {
+      "stock_code": "011280",
+      "stock_name": "태림포장",
       "score": 4.0,
       "confidence": 0.5,
-      "signal_count": 10,
-      "sector": "해운사",
+      "signal_count": 17,
+      "sector": "",
       "indicators": {
-        "swing_reasons": "MACD히스토그램↑ | 거래량7.9x | 거래량3x+ | MA정배열"
+        "swing_reasons": "MACD히스토그램↑ | MA정배열 | 주봉골든크로스 | 주봉MA20위"
       },
-      "ranked_score": 40.0
+      "ranked_score": 68.0
     },
     {
-      "stock_code": "001530",
-      "stock_name": "DI동일",
-      "score": 4.5,
+      "stock_code": "003620",
+      "stock_name": "KG모빌리티",
+      "score": 3.5,
+      "confidence": 0.5,
+      "signal_count": 16,
+      "sector": "",
+      "indicators": {
+        "swing_reasons": "MACD히스토그램↑ | RSI모멘텀(64) | MA정배열"
+      },
+      "ranked_score": 56.0
+    },
+    {
+      "stock_code": "005880",
+      "stock_name": "대한해운",
+      "score": 4.0,
       "confidence": 0.5,
       "signal_count": 3,
       "sector": "",
       "indicators": {
-        "swing_reasons": "MACD히스토그램↑ | 거래량2.4x | MA정배열 | 주봉골든크로스 | 주봉MA20위"
+        "swing_reasons": "거래량2.4x | MA정배열 | 주봉골든크로스 | 주봉MA20위"
       },
-      "ranked_score": 13.5
+      "ranked_score": 12.0
+    },
+    {
+      "stock_code": "006800",
+      "stock_name": "미래에셋증권",
+      "score": 5.5,
+      "confidence": 0.5,
+      "signal_count": 2,
+      "sector": "",
+      "indicators": {
+        "swing_reasons": "MACD골든크로스 | RSI모멘텀(62) | MA정배열 | 상대강도(+12.9%vsKOSPI+2.7%)"
+      },
+      "ranked_score": 11.0
     }
   ]
 }
