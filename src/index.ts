@@ -2095,8 +2095,8 @@ async function main(): Promise<void> {
           while ((m = re.exec(html)) !== null) {
             if (!m[1].includes('youtube.com') && !m[1].includes('schema.org')) extLinks.push(m[1]);
           }
-          // Skip domains known to block HEAD requests from bots (false positives)
-          const BOT_BLOCKED_DOMAINS = ['amazon.com', 'amazon.co', 'kocca.kr', 'instagram.com', 'facebook.com', 'tiktok.com'];
+          // Skip domains known to block bot HEAD/GET requests (false positives)
+          const BOT_BLOCKED_DOMAINS = ['amazon.com', 'amazon.co', 'kocca.kr', 'instagram.com', 'facebook.com', 'tiktok.com', 'bloomberg.com', 'dart.fss.or.kr', 'reuters.com', 'ft.com', 'wsj.com', 'nytimes.com'];
           for (const link of [...new Set(extLinks)].slice(0, 5)) {
             try {
               const linkHost = new URL(link).hostname;
@@ -2116,7 +2116,7 @@ async function main(): Promise<void> {
               } else if (resp.status >= 400) {
                 brokenLinks.push({ postTitle: p.title, linkUrl: link, status: resp.status });
               }
-            } catch { brokenLinks.push({ postTitle: p.title, linkUrl: link, status: 0 }); }
+            } catch { /* Network error (timeout/ECONNREFUSED) — ambiguous, skip to avoid false positives */ }
           }
         } catch { /* skip individual post errors */ }
       }
