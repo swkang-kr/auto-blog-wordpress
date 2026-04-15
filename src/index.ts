@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import axios from 'axios';
 import { loadConfig } from './config/env.js';
-import { NICHES, getSeasonallyOrderedNiches, getSeasonalContentSuggestions } from './config/niches.js';
+import { NICHES, getSeasonallyOrderedNiches, getSeasonalContentSuggestions, buildStockNiches } from './config/niches.js';
 import { TradeEngineBridge } from './services/trade-engine-bridge.service.js';
 import { KeywordResearchService } from './services/keyword-research.service.js';
 import { ContentGeneratorService } from './services/content-generator.service.js';
@@ -32,7 +32,7 @@ import { FacebookService } from './services/facebook.service.js';
 import { ThreadsService } from './services/threads.service.js';
 import { RedditPostService } from './services/reddit-post.service.js';
 import { AdSenseApiService } from './services/adsense-api.service.js';
-import type { PostResult, BatchResult, MediaUploadResult } from './types/index.js';
+import type { PostResult, BatchResult, MediaUploadResult, NicheConfig } from './types/index.js';
 // CATEGORY_PUBLISH_TIMING available for future use (niche-specific timing)
 // import { CATEGORY_PUBLISH_TIMING } from './types/index.js';
 import { resolvePostUrl } from './utils/utm.js';
@@ -104,7 +104,7 @@ async function main(): Promise<void> {
   const calendarNiches = [...filteredNiches].sort((a, b) => {
     return stalenessOrder.indexOf(a.id) - stalenessOrder.indexOf(b.id);
   });
-  const activeNiches = calendarNiches.slice(0, config.POST_COUNT);
+  let activeNiches = calendarNiches.slice(0, config.POST_COUNT);
   const boostedNames = seasonalNiches.slice(0, config.POST_COUNT).filter((n, i) => {
     const origIdx = NICHES.findIndex(orig => orig.id === n.id);
     return origIdx !== i;
@@ -949,7 +949,7 @@ async function main(): Promise<void> {
   let skippedCount = 0;
 
   interface GeneratedPost {
-    niche: typeof NICHES[number];
+    niche: NicheConfig;
     postStart: number;
     researched: Awaited<ReturnType<typeof researchService.researchKeyword>>;
     content: Awaited<ReturnType<typeof contentService.generateContent>>;
@@ -998,83 +998,39 @@ async function main(): Promise<void> {
   const tradeEngineBridge = new TradeEngineBridge();
   const tradeEngineData = tradeEngineBridge.loadData();
   const tradeEngineContext = tradeEngineBridge.buildContentContext(tradeEngineData);
-  if (!tradeEngineData.isStale) {
-    const Y = new Date().getFullYear();
 
-    // 네이버금융 데이터 기반 키워드 주입 (니치별)
-    for (const niche of activeNiches) {
-      const injected: string[] = [];
+  // ── liveWatchlist 기반 종목별 니치 재구성 ────────────────────────────
+  // live_watchlist 종목이 있으면 각 종목이 개별 포스트(1종목 심층 분석)가 된다.
+  // 없으면 fallback: aiPicks → liveWatchlist 형식 변환 후 동일하게 처리.
+  const liveList = tradeEngineData.liveWatchlist.length > 0
+    ? tradeEngineData.liveWatchlist
+    : tradeEngineData.aiPicks.map(p => ({
+        stock_code: p.stock_code,
+        stock_name: p.stock_name,
+        score: p.avg_confidence,
+        ranked_score: 0,
+        confidence: p.avg_confidence,
+        signal_count: p.signal_count,
+        sector: p.sector,
+        indicators: {
+          rsi: 0, macd: 0, macd_signal: 0, bb_upper: 0, bb_lower: 0,
+          close: p.price_at_signal, atr_14: 0, vol_surge: 0,
+          day_change_pct: '0', foreign_net_buy: 0, institution_net_buy: 0,
+          individual_net_buy: 0, swing_reasons: p.reason, market: '',
+        },
+      }));
 
-      if (niche.category === '시장분석') {
-        // 급등/급락 종목 기반
-        for (const g of tradeEngineData.topGainers.slice(0, 3)) {
-          injected.push(`${g.stock_name} 급등 배경 기술적 분석 참고 ${Y}`);
-        }
-        for (const l of tradeEngineData.topLosers.slice(0, 2)) {
-          injected.push(`${l.stock_name} 하락 배경 분석 및 기술적 현황`);
-        }
-        // 시장 지수
-        if (tradeEngineData.marketOverview.length > 0) {
-          const m = tradeEngineData.marketOverview[0];
-          if (m.kospi_change < -1) injected.push(`KOSPI 하락 배경 분석 및 시장 흐름 점검 ${Y}`);
-          else if (m.kospi_change > 1) injected.push(`KOSPI 상승 배경 분석 시장 흐름 점검`);
-        }
-      } else if (niche.category === '업종분석') {
-        // 강세/약세 업종 기반
-        for (const s of tradeEngineData.topSectors.slice(0, 3)) {
-          injected.push(`${s.name} 업종 강세 이유 관련주 분석 ${Y}`);
-        }
-        for (const s of tradeEngineData.bottomSectors.slice(0, 2)) {
-          injected.push(`${s.name} 업종 약세 원인 반등 전망 분석`);
-        }
-      } else if (niche.category === '테마분석') {
-        // 핫 테마 기반
-        for (const t of tradeEngineData.hotThemes.slice(0, 5)) {
-          injected.push(`${t.name} 테마주 관련주 정리 분석 ${Y}`);
-        }
-      }
-      // 추천주는 DB 워치리스트 + aiPicks 기반 (기존 유지)
-
-      if (injected.length > 0) {
-        niche.seedKeywords = [...injected, ...niche.seedKeywords];
-        logger.info(`네이버금융 [${niche.category}]: ${injected.slice(0, 3).join(' | ')} 등 ${injected.length}개 키워드 주입`);
-      }
-    }
-
-    // 모든 니치에 오늘의 매수후보 키워드 주입 (live_watchlist 기반, 니치별 다른 종목 슬라이스)
-    const todayKst = new Date();
-    const month = todayKst.getMonth() + 1;
-    const day = todayKst.getDate();
-    const liveList = tradeEngineData.liveWatchlist.length > 0
-      ? tradeEngineData.liveWatchlist
-      : tradeEngineData.aiPicks.map(p => ({ stock_code: p.stock_code, stock_name: p.stock_name, score: p.avg_confidence, ranked_score: 0, confidence: p.avg_confidence, signal_count: p.signal_count, sector: p.sector, indicators: { rsi: 0, macd: 0, macd_signal: 0, bb_upper: 0, bb_lower: 0, close: p.price_at_signal, atr_14: 0, vol_surge: 0, day_change_pct: '0', foreign_net_buy: 0, institution_net_buy: 0, individual_net_buy: 0, swing_reasons: p.reason, market: '' } }));
-
-    for (let i = 0; i < activeNiches.length; i++) {
-      const niche = activeNiches[i];
-      // 니치 인덱스에 따라 2종목씩 로테이션 (niche 0→picks[0-1], 1→picks[1-2], 2→picks[2-3], 3→picks[3-4])
-      const sliceStart = i;
-      const sliceEnd = Math.min(i + 3, liveList.length);
-      const nicheStocks = liveList.slice(sliceStart, sliceEnd);
-
-      if (nicheStocks.length > 0) {
-        const pickKeywords: string[] = [];
-        for (const p of nicheStocks) {
-          pickKeywords.push(`${month}월 ${day}일 ${p.stock_name} 오늘의 매수후보 기술적 분석`);
-          pickKeywords.push(`${p.stock_name} 매수타이밍 RSI MACD 분석 참고`);
-          if (p.indicators?.swing_reasons) {
-            pickKeywords.push(`${p.stock_name} ${p.indicators.swing_reasons.slice(0, 30)} 분석`);
-          }
-        }
-        niche.seedKeywords = [...pickKeywords, ...niche.seedKeywords];
-        logger.info(`매수후보 키워드 주입 [${niche.name}]: ${nicheStocks.map(p => p.stock_name).join(', ')} (${pickKeywords.length}개)`);
-      }
-    }
+  if (liveList.length > 0) {
+    activeNiches = buildStockNiches(liveList, config.POST_COUNT);
+    logger.info(`종목별 니치 구성: ${activeNiches.map(n => n.name).join(' | ')}`);
+  } else {
+    logger.warn('live_watchlist/aiPicks 데이터 없음 — 기본 니치 유지');
   }
 
   // ── Phase A: Research + Content Generation ──────────────────────────────
   logger.info('\n=== Phase A: Research + Content Generation (prompt-cache optimised) ===');
   const generated: GeneratedPost[] = [];
-  const failedNiches: Array<{ niche: typeof NICHES[number]; resultIndex: number }> = [];
+  const failedNiches: Array<{ niche: NicheConfig; resultIndex: number }> = [];
 
   for (let nicheIdx = 0; nicheIdx < activeNiches.length; nicheIdx++) {
     const niche = activeNiches[nicheIdx];
@@ -1239,24 +1195,28 @@ async function main(): Promise<void> {
         logger.info(`Found ${similarPostTitles.length} similar post(s) for differentiation: ${similarPostTitles.map(t => `"${t}"`).join(', ')}`);
       }
 
-      // 모든 종목분석 니치: live_watchlist 기반 오늘의 매수후보 컨텍스트 주입
-      // 니치 인덱스에 따라 다른 종목 슬라이스 → 4개 포스트가 서로 다른 종목 분석
+      // 종목별 니치: 해당 종목 1개의 심층 분석 컨텍스트 주입
+      // niche.id = 'stock-{code}' → liveWatchlist에서 해당 종목 찾아 단독 주입
       if (niche.category === '종목분석') {
-        const sliceStart = nicheIdx;
-        const sliceEnd = Math.min(nicheIdx + 3, Math.max(tradeEngineData.liveWatchlist.length, tradeEngineData.aiPicks.length));
-        const buyCandidateCtx = tradeEngineBridge.buildBuyCandidateContext(tradeEngineData, sliceStart, sliceEnd);
+        const stockCode = niche.id.startsWith('stock-') ? niche.id.replace('stock-', '') : null;
+        const stockIdx = stockCode
+          ? liveList.findIndex(s => s.stock_code === stockCode)
+          : nicheIdx;
+        const effectiveIdx = stockIdx >= 0 ? stockIdx : nicheIdx;
+
+        // 단일 종목 컨텍스트 (슬라이스 크기=1)
+        const buyCandidateCtx = tradeEngineBridge.buildBuyCandidateContext(tradeEngineData, effectiveIdx, effectiveIdx + 1);
         contentService.setStockContext(buyCandidateCtx);
 
-        // 키워드에 종목명이 포함된 경우 Naver Finance 실시간 현재가도 추가 주입
-        const kwLower = researched.analysis.selectedKeyword;
-        const allStocks = [...tradeEngineData.liveWatchlist, ...tradeEngineData.aiPicks];
-        const matchedStock = allStocks.find(p => kwLower.includes(p.stock_name));
-        if (matchedStock && matchedStock.stock_code) {
-          const stockData = await marketDataService.fetchStockSummary(matchedStock.stock_code, matchedStock.stock_name);
+        // Naver Finance 실시간 현재가 추가 주입 (해당 종목 직접 fetch)
+        const targetStock = liveList[effectiveIdx];
+        if (targetStock?.stock_code) {
+          const stockData = await marketDataService.fetchStockSummary(targetStock.stock_code, targetStock.stock_name);
           if (stockData) {
             contentService.setStockContext(buyCandidateCtx + '\n' + stockData.promptContext);
           }
         }
+        logger.info(`단일 종목 컨텍스트 주입 [${niche.name}]: ${liveList[effectiveIdx]?.stock_name ?? 'unknown'}`);
       }
 
       const content = await contentService.generateContent(researched, filteredPosts, clusterLinksForPrompt, { postCount, rankingKeywords: gscRankingKeywords, similarPostTitles });

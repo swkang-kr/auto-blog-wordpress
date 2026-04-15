@@ -1,6 +1,7 @@
 import { getSeasonalContext } from '../utils/korean-calendar.js';
 import type { NicheConfig } from '../types/index.js';
 import { KOREAN_SEASONAL_EVENTS } from '../types/index.js';
+import type { LiveWatchlistItem } from '../services/trade-engine-bridge.service.js';
 
 export function getSeasonallyOrderedNiches(): NicheConfig[] {
   const { events, upcomingEvents } = getSeasonalContext();
@@ -215,4 +216,52 @@ export function getSeasonalContentSuggestions(): Array<{
     }
   }
   return suggestions;
+}
+
+/**
+ * liveWatchlist 종목별로 개별 NicheConfig 생성.
+ * 각 종목이 독립 포스트(심층 단일 종목 분석)로 발행된다.
+ */
+export function buildStockNiches(stocks: LiveWatchlistItem[], maxCount: number): NicheConfig[] {
+  const Y = new Date().getFullYear();
+  const today = new Date();
+  const M = today.getMonth() + 1;
+  const D = today.getDate();
+
+  return stocks.slice(0, maxCount).map((stock) => {
+    const name = stock.stock_name;
+    const code = stock.stock_code;
+    const rsiLabel = stock.indicators?.rsi ? `RSI${Math.round(stock.indicators.rsi)}` : 'RSI분석';
+    const swingSnippet = stock.indicators?.swing_reasons?.split('|')[0]?.trim().slice(0, 15) ?? '';
+
+    return {
+      id: `stock-${code}`,
+      name: `${name} 오늘의 매수후보 분석`,
+      category: '종목분석',
+      broadTerm: `${name} 매수후보 ${Y}`,
+      broadTermsExtra: [`${name} 매수타이밍`, `${name} 주가 전망`],
+      seedKeywords: [
+        `${M}월 ${D}일 ${name} 오늘의 매수후보 기술적 분석`,
+        `${name} 매수타이밍 RSI MACD 분석 ${Y}`,
+        `${name} 오늘의 매수후보 수급 분석`,
+        `${name} 오늘 매수해도 될까 분석 ${Y}`,
+        `${name} 단기 스윙 매수후보 손절선 목표가`,
+        `${name} ${rsiLabel} 매수 시그널 분석`,
+        `${name} 기술적 분석 매수타이밍 ${Y}`,
+        `${name} 외국인 기관 순매수 수급 분석`,
+        `${name} 볼린저밴드 매수후보 분석`,
+        ...(swingSnippet ? [`${name} ${swingSnippet} 매수후보`] : []),
+        `오늘의 매수후보 ${name} 종합 분석 ${Y}`,
+        `${name} 주가 매수 시점 ${M}월 ${D}일`,
+      ],
+      contentTypes: ['analysis', 'deep-dive', 'how-to', 'listicle'],
+      adSenseRpm: 'high',
+      pillarTopics: [
+        `${name} 매수후보 완전 분석: RSI MACD 수급 종합 가이드`,
+        `${name} 기술적 분석으로 매수타이밍 잡는 법`,
+        `${name} 단기 스윙 매매 전략 완벽 가이드`,
+        `${name} 손절선·목표가 설정 실전 가이드`,
+      ],
+    };
+  });
 }
