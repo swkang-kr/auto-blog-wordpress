@@ -1,170 +1,267 @@
 {
-  "exported_at": "2026-04-14T07:00:02.365012+00:00",
-  "total_candidates": 9,
-  "total_holdings": 5,
+  "exported_at": "2026-04-15T07:00:01.794596+00:00",
+  "total_candidates": 14,
+  "total_holdings": 10,
   "candidates": [
     {
-      "stock_code": "063160",
-      "stock_name": "종근당바이오",
-      "sector": "",
-      "signal_count": 6,
+      "stock_code": "001440",
+      "stock_name": "대한전선",
+      "sector": "전기장비",
+      "signal_count": 12,
       "avg_confidence": 1.0,
+      "strategies": [],
+      "reason": "score=9.00, ranked_score=108.00",
+      "price_at_signal": 0,
+      "signal_time": "2026-04-15T15:25:00.089447+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "000660",
+      "stock_name": "SK하이닉스",
+      "sector": "반도체",
+      "signal_count": 10,
+      "avg_confidence": 1.0,
+      "strategies": [],
+      "reason": "score=8.00, ranked_score=80.00",
+      "price_at_signal": 0,
+      "signal_time": "2026-04-15T15:25:00.089447+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "004710",
+      "stock_name": "한솔테크닉스",
+      "sector": "",
+      "signal_count": 10,
+      "avg_confidence": 1.0,
+      "strategies": [],
+      "reason": "score=6.00, ranked_score=60.00",
+      "price_at_signal": 0,
+      "signal_time": "2026-04-15T15:25:00.089447+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "001820",
+      "stock_name": "삼화콘덴서",
+      "sector": "",
+      "signal_count": 8,
+      "avg_confidence": 0.5,
+      "strategies": [],
+      "reason": "score=4.50, ranked_score=36.00",
+      "price_at_signal": 0,
+      "signal_time": "2026-04-15T15:25:00.089447+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "034220",
+      "stock_name": "LG디스플레이",
+      "sector": "디스플레이패널",
+      "signal_count": 8,
+      "avg_confidence": 0.5,
+      "strategies": [],
+      "reason": "score=3.50, ranked_score=28.00",
+      "price_at_signal": 0,
+      "signal_time": "2026-04-15T15:25:00.089447+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "025820",
+      "stock_name": "이구산업",
+      "sector": "비철금속",
+      "signal_count": 7,
+      "avg_confidence": 0.9166999999999998,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(61) | 거래량10.7x | 거래량3x+ | MA정배열 | 캔들역해머(강) | 주봉데드크로스 | 주봉MA20아래 | 상대강도(+7.9%vsKOSPI+3.0%)",
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(66) | 거래량2.1x | MA정배열 | 주봉데드크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-04-14T06:00:29.245952",
+      "signal_time": "2026-04-15T06:12:06.634402",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "001430",
-      "stock_name": "세아베스틸지주",
+      "stock_code": "018260",
+      "stock_name": "삼성에스디에스",
       "sector": "",
-      "signal_count": 5,
+      "signal_count": 7,
       "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | MACD골든크로스 | RSI모멘텀(54) | 주봉골든크로스 | 주봉MA20위 | 상대강도(+11.0%vsKOSPI+2.9%)",
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(67) | 거래량2.8x | MA정배열 | 주봉데드크로스 | 주봉MA20위 | 상대강도(+18.2%vsKOSPI+2.3%)",
       "price_at_signal": 0,
-      "signal_time": "2026-04-14T06:04:47.667974",
+      "signal_time": "2026-04-15T06:12:06.634400",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "014680",
+      "stock_name": "한솔케미칼",
+      "sector": "",
+      "signal_count": 7,
+      "avg_confidence": 1.0,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD골든크로스 | RSI모멘텀(53) | 주봉골든크로스 | 주봉MA20위 | 상대강도(+6.8%vsKOSPI+2.3%)",
+      "price_at_signal": 0,
+      "signal_time": "2026-04-15T06:12:06.634397",
       "status": "매수 시그널"
     },
     {
       "stock_code": "062040",
       "stock_name": "산일전기",
       "sector": "전기장비",
-      "signal_count": 5,
+      "signal_count": 7,
       "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(63) | 거래량2.2x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(69) | 거래량2.0x | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+5.0%vsKOSPI+2.3%)",
       "price_at_signal": 0,
-      "signal_time": "2026-04-14T06:04:47.667964",
+      "signal_time": "2026-04-15T06:12:06.634390",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "020150",
-      "stock_name": "롯데에너지머티리얼즈",
-      "sector": "",
-      "signal_count": 4,
-      "avg_confidence": 0.5,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위",
-      "price_at_signal": 0,
-      "signal_time": "2026-04-14T06:00:29.245958",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "004100",
-      "stock_name": "태양금속",
-      "sector": "",
-      "signal_count": 3,
-      "avg_confidence": 0.9167,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(71) | 거래량2.4x | MA정배열 | 상대강도(+7.2%vsKOSPI+2.7%)",
-      "price_at_signal": 0,
-      "signal_time": "2026-04-14T06:15:14.148671",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "011280",
-      "stock_name": "태림포장",
-      "sector": "포장재",
-      "signal_count": 3,
-      "avg_confidence": 0.6667,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MACD히스토그램↑ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
-      "price_at_signal": 0,
-      "signal_time": "2026-04-14T06:00:29.245955",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "003620",
-      "stock_name": "KG모빌리티",
+      "stock_code": "011690",
+      "stock_name": "와이투솔루션",
       "sector": "",
       "signal_count": 2,
-      "avg_confidence": 0.5833,
+      "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(64) | MA정배열",
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(59) | 거래량3.0x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-04-14T06:11:02.144875",
+      "signal_time": "2026-04-15T06:13:23.670130",
       "status": "매수 시그널"
     },
     {
       "stock_code": "006800",
       "stock_name": "미래에셋증권",
       "sector": "증권",
-      "signal_count": 1,
-      "avg_confidence": 0.9167,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MACD골든크로스 | RSI모멘텀(62) | MA정배열 | 상대강도(+12.9%vsKOSPI+2.7%)",
+      "signal_count": 2,
+      "avg_confidence": 0.5,
+      "strategies": [],
+      "reason": "score=3.50, ranked_score=7.00",
       "price_at_signal": 0,
-      "signal_time": "2026-04-14T06:15:14.148669",
-      "status": "매수 시그널"
+      "signal_time": "2026-04-15T15:25:00.089447+09:00",
+      "status": "장중 워치리스트"
     },
     {
-      "stock_code": "005880",
-      "stock_name": "대한해운",
-      "sector": "해운사",
+      "stock_code": "006360",
+      "stock_name": "GS건설",
+      "sector": "건설",
       "signal_count": 1,
-      "avg_confidence": 0.6667,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "거래량2.4x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "avg_confidence": 1.0,
+      "strategies": [],
+      "reason": "score=6.50, ranked_score=6.50",
       "price_at_signal": 0,
-      "signal_time": "2026-04-14T06:11:02.144870",
-      "status": "매수 시그널"
+      "signal_time": "2026-04-15T15:25:00.089447+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "001780",
+      "stock_name": "알루코",
+      "sector": "비철금속",
+      "signal_count": 1,
+      "avg_confidence": 0.5,
+      "strategies": [],
+      "reason": "score=3.50, ranked_score=3.50",
+      "price_at_signal": 0,
+      "signal_time": "2026-04-15T15:25:00.089447+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "025860",
+      "stock_name": "남해화학",
+      "sector": "화학",
+      "signal_count": 1,
+      "avg_confidence": 0.5,
+      "strategies": [],
+      "reason": "score=3.50, ranked_score=3.50",
+      "price_at_signal": 0,
+      "signal_time": "2026-04-15T15:25:00.089447+09:00",
+      "status": "장중 워치리스트"
     }
   ],
   "holdings": [
     {
-      "stock_code": "001430",
-      "stock_name": "세아베스틸지주",
-      "quantity": 7,
-      "avg_price": 67600.0,
+      "stock_code": "004710",
+      "stock_name": "한솔테크닉스",
+      "quantity": 66,
+      "avg_price": 7490.0,
       "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-04-14",
+      "entry_date": "2026-04-15",
       "status": "보유 중"
     },
     {
-      "stock_code": "004100",
-      "stock_name": "태양금속",
-      "quantity": 68,
-      "avg_price": 3470.0,
+      "stock_code": "006360",
+      "stock_name": "GS건설",
+      "quantity": 12,
+      "avg_price": 40900.0,
       "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-04-14",
+      "entry_date": "2026-04-15",
       "status": "보유 중"
     },
     {
-      "stock_code": "005880",
-      "stock_name": "대한해운",
-      "quantity": 138,
-      "avg_price": 2675.0,
+      "stock_code": "006800",
+      "stock_name": "미래에셋증권",
+      "quantity": 9,
+      "avg_price": 70400.0,
       "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-04-14",
+      "entry_date": "2026-04-15",
       "status": "보유 중"
     },
     {
-      "stock_code": "020150",
-      "stock_name": "롯데에너지머티리얼즈",
-      "quantity": 7,
-      "avg_price": 45750.0,
+      "stock_code": "014680",
+      "stock_name": "한솔케미칼",
+      "quantity": 1,
+      "avg_price": 279000.0,
       "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-04-14",
+      "entry_date": "2026-04-15",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "018260",
+      "stock_name": "삼성에스디에스",
+      "quantity": 3,
+      "avg_price": 177900.0,
+      "strategy": "manual_recovery",
+      "entry_date": "2026-04-15",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "025820",
+      "stock_name": "025820",
+      "quantity": 92,
+      "avg_price": 5700.0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-04-15",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "025860",
+      "stock_name": "남해화학",
+      "quantity": 76,
+      "avg_price": 8980.0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-04-15",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "034220",
+      "stock_name": "LG디스플레이",
+      "quantity": 50,
+      "avg_price": 13510.0,
+      "strategy": "manual_recovery",
+      "entry_date": "2026-04-15",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "062040",
+      "stock_name": "산일전기",
+      "quantity": 2,
+      "avg_price": 193700.0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-04-15",
       "status": "보유 중"
     },
     {

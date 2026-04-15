@@ -1,16 +1,38 @@
 {
-  "exported_at": "2026-04-14T07:00:01.284129+00:00",
+  "exported_at": "2026-04-15T07:00:01.062188+00:00",
   "holdings": [
     {
-      "stock_code": "020150",
-      "stock_name": "롯데에너지머티리얼즈",
-      "quantity": 7,
-      "avg_price": 45750.0,
-      "current_price": 46000.0,
-      "unrealized_pnl": 661.15,
-      "unrealized_pnl_rate": 0.2064,
+      "stock_code": "014680",
+      "stock_name": "한솔케미칼",
+      "quantity": 1,
+      "avg_price": 279000.0,
+      "current_price": 281500.0,
+      "unrealized_pnl": 1551.4,
+      "unrealized_pnl_rate": 0.5561,
       "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-04-14T06:16:05.747908"
+      "entry_date": "2026-04-15T06:00:59.591851"
+    },
+    {
+      "stock_code": "034220",
+      "stock_name": "LG디스플레이",
+      "quantity": 50,
+      "avg_price": 13510.0,
+      "current_price": 13580.0,
+      "unrealized_pnl": 1203.3,
+      "unrealized_pnl_rate": 0.1641,
+      "strategy": "manual_recovery",
+      "entry_date": "2026-04-15T06:01:34.481741"
+    },
+    {
+      "stock_code": "018260",
+      "stock_name": "삼성에스디에스",
+      "quantity": 3,
+      "avg_price": 177900.0,
+      "current_price": 178600.0,
+      "unrealized_pnl": 285.42,
+      "unrealized_pnl_rate": 0.0575,
+      "strategy": "manual_recovery",
+      "entry_date": "2026-04-15T06:02:38.660043"
     },
     {
       "stock_code": "003160",
@@ -24,37 +46,70 @@
       "entry_date": "2026-04-10T03:22:15.477900"
     },
     {
-      "stock_code": "004100",
-      "stock_name": "태양금속",
-      "quantity": 68,
-      "avg_price": 3470.0,
-      "current_price": 3480.0,
-      "unrealized_pnl": -122.26,
-      "unrealized_pnl_rate": -0.0518,
+      "stock_code": "025820",
+      "stock_name": "025820",
+      "quantity": 92,
+      "avg_price": 5700.0,
+      "current_price": 5730.0,
+      "unrealized_pnl": 977.04,
+      "unrealized_pnl_rate": -0.0137,
       "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-04-14T06:15:53.206145"
+      "entry_date": "2026-04-15T06:01:32.280137"
     },
     {
-      "stock_code": "001430",
-      "stock_name": "세아베스틸지주",
-      "quantity": 7,
-      "avg_price": 67600.0,
-      "current_price": 67600.0,
-      "unrealized_pnl": -1608.88,
-      "unrealized_pnl_rate": -0.34,
+      "stock_code": "006360",
+      "stock_name": "GS건설",
+      "quantity": 12,
+      "avg_price": 40900.0,
+      "current_price": 41050.0,
+      "unrealized_pnl": 131.28,
+      "unrealized_pnl_rate": -0.0353,
       "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-04-14T06:01:00.954086"
+      "entry_date": "2026-04-15T06:01:23.741263"
     },
     {
-      "stock_code": "005880",
-      "stock_name": "대한해운",
-      "quantity": 138,
-      "avg_price": 2675.0,
-      "current_price": 2675.0,
-      "unrealized_pnl": -1255.11,
-      "unrealized_pnl_rate": -0.34,
+      "stock_code": "062040",
+      "stock_name": "산일전기",
+      "quantity": 2,
+      "avg_price": 193700.0,
+      "current_price": 193800.0,
+      "unrealized_pnl": -1117.16,
+      "unrealized_pnl_rate": -0.3314,
       "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-04-14T06:15:46.735596"
+      "entry_date": "2026-04-15T06:04:10.320249"
+    },
+    {
+      "stock_code": "006800",
+      "stock_name": "미래에셋증권",
+      "quantity": 9,
+      "avg_price": 70400.0,
+      "current_price": 70400.0,
+      "unrealized_pnl": -2154.24,
+      "unrealized_pnl_rate": -0.422,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-04-15T06:01:27.555353"
+    },
+    {
+      "stock_code": "025860",
+      "stock_name": "남해화학",
+      "quantity": 76,
+      "avg_price": 8980.0,
+      "current_price": 8970.0,
+      "unrealized_pnl": -3080.43,
+      "unrealized_pnl_rate": -0.5024,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-04-15T06:17:13.068237"
+    },
+    {
+      "stock_code": "004710",
+      "stock_name": "한솔테크닉스",
+      "quantity": 66,
+      "avg_price": 7490.0,
+      "current_price": 7460.0,
+      "unrealized_pnl": -3660.76,
+      "unrealized_pnl_rate": -0.9405,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-04-15T06:17:10.610068"
     }
   ]
 }

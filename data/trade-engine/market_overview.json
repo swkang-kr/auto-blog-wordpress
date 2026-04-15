@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-04-14T07:00:02.080614+00:00",
+  "exported_at": "2026-04-15T07:00:01.521830+00:00",
   "market_daily": [
+    {
+      "date": "20260415",
+      "kospi_change": 2.07,
+      "kosdaq_change": 2.72,
+      "foreign_net": 55.14,
+      "institution_net": -2.23,
+      "individual_net": -93.5,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260414",
       "kospi_change": 2.74,
       "kosdaq_change": 2.0,
-      "foreign_net": 82.82,
+      "foreign_net": 82.79,
       "institution_net": 125.42,
-      "individual_net": -239.17,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "individual_net": -239.15,
+      "hot_theme_count": 40,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260413",
@@ -99,29 +110,18 @@
       "hot_theme_count": 2,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260401",
-      "kospi_change": 8.44,
-      "kosdaq_change": 6.06,
-      "foreign_net": -62.59,
-      "institution_net": 402.68,
-      "individual_net": -376.28,
-      "hot_theme_count": 40,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "‘장중 6000피 터치’ 코스피, 5967.75 상승 마감…코스닥도 올라",
-    "실적 기대 속 상승 마감한 SK하이닉스",
-    "티엘엔지니어링, 폐수열 회수장치 특허 취득...장영실상도 수상",
-    "실적 기대 속 상승 마감한 SK하이닉스",
-    "미·이란 협상 기대감에 원/달러 환율 하락…1,481.2원",
-    "실적 기대 속 상승 마감한 SK하이닉스",
-    "코스피·코스닥, 중동 전쟁 협상 기대감에 상승 마감",
-    "코스피, 외인·기관 메수세로 6000선 턱밑 마감",
-    "코스피, '6천피' 찍고 5,960선 마감",
-    "코스피, 6000선 턱밑 5960선에서 마감…SK하닉 6%대 강세"
+    "[포토]코스피·코스닥, 종전 협상 기대감에 오름세로 장마감",
+    "‘육천피’ 회복하며 미소 지은 국내 증시",
+    "코스피, 6000선 탈환",
+    "코스피, 6000선 탈환",
+    "코스피, 6000선 탈환",
+    "코스피 6000선 탈환, 삼성전자-SK하이닉스 상승 마감",
+    "코스피 6000선 탈환, 삼성전자-SK하이닉스 상승 마감",
+    "반도체주 상승 견인",
+    "[포토]코스피·코스닥, 종전 협상 기대에 오름세로 장마감",
+    "종전 기대감에 ‘어게인 육천피’"
   ]
 }
