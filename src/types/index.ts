@@ -147,6 +147,9 @@ export interface NicheConfig {
   dynamicRpmValue?: number;
   /** Whether this niche is enabled (default true) */
   enabled?: boolean;
+  /** Skip Google Trends API calls entirely — use seed keywords directly.
+   *  Set true for stock-specific niches where Trends always returns 0 data. */
+  skipTrends?: boolean;
   /** Pillar topics for internal link hub structure — each topic becomes a comprehensive guide page */
   pillarTopics?: string[];
 }

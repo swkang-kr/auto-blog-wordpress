@@ -256,6 +256,7 @@ export function buildStockNiches(stocks: LiveWatchlistItem[], maxCount: number):
       ],
       contentTypes: ['analysis', 'deep-dive', 'how-to', 'listicle'],
       adSenseRpm: 'high',
+      skipTrends: true, // 종목명은 Trends에서 데이터 없음 → 즉시 seed-only 모드로
       pillarTopics: [
         `${name} 매수후보 완전 분석: RSI MACD 수급 종합 가이드`,
         `${name} 기술적 분석으로 매수타이밍 잡는 법`,

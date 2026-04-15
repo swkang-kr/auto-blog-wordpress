@@ -305,57 +305,79 @@ export class KeywordResearchService {
     let trendDirection: TrendsData['trendDirection'] = 'stable';
     let trendsSource = 'rising';
 
-    try {
-      const result = await this.trendsService.fetchRisingQueries(niche.broadTerm);
-      risingQueries = result.rising;
-      topQueries = result.top;
-      averageInterest = result.averageInterest;
-      trendDirection = result.trendDirection;
-    } catch (error) {
-      logger.warn(`Rising trends fetch failed for "${niche.name}": ${error instanceof Error ? error.message : error}`);
-    }
-
-    // 1b. Fetch extra broad terms (e.g., 금융분석, Korean movie) to capture non-primary topics
-    // Limit to 2 extra terms to reduce API calls (was unlimited, causing 10+ calls per niche)
-    if (niche.broadTermsExtra?.length) {
-      const limitedExtra = niche.broadTermsExtra.slice(0, 2);
-      for (const extraTerm of limitedExtra) {
-        try {
-          const extra = await this.trendsService.fetchRisingQueries(extraTerm);
-          if (extra.rising.length > 0) {
-            risingQueries.push(...extra.rising);
-            logger.info(`Extra broad term "${extraTerm}" added ${extra.rising.length} rising queries`);
-          }
-          if (extra.top.length > 0) {
-            topQueries.push(...extra.top);
-          }
-        } catch (error) {
-          logger.debug(`Extra broad term "${extraTerm}" fetch failed: ${error instanceof Error ? error.message : error}`);
-        }
+    if (niche.skipTrends) {
+      // 종목별 니치: Trends 호출 생략 — 종목명은 Trends 데이터가 없어 매번 타임아웃 낭비
+      logger.info(`[skipTrends] "${niche.name}" → seed-only mode (Trends skipped)`);
+      trendsSource = 'seed';
+    } else {
+      try {
+        const result = await this.trendsService.fetchRisingQueries(niche.broadTerm);
+        risingQueries = result.rising;
+        topQueries = result.top;
+        averageInterest = result.averageInterest;
+        trendDirection = result.trendDirection;
+      } catch (error) {
+        logger.warn(`Rising trends fetch failed for "${niche.name}": ${error instanceof Error ? error.message : error}`);
       }
-      // Deduplicate by query text (case-insensitive)
-      const seen = new Set<string>();
-      risingQueries = risingQueries.filter(q => {
-        const key = q.query.toLowerCase();
-        if (seen.has(key)) return false;
-        seen.add(key);
-        return true;
-      });
-      const seenTop = new Set<string>();
-      topQueries = topQueries.filter(q => {
-        const key = q.query.toLowerCase();
-        if (seenTop.has(key)) return false;
-        seenTop.add(key);
-        return true;
-      });
+
+      // 1b. Fetch extra broad terms (e.g., 금융분석, Korean movie) to capture non-primary topics
+      // Limit to 2 extra terms to reduce API calls (was unlimited, causing 10+ calls per niche)
+      if (niche.broadTermsExtra?.length) {
+        const limitedExtra = niche.broadTermsExtra.slice(0, 2);
+        for (const extraTerm of limitedExtra) {
+          try {
+            const extra = await this.trendsService.fetchRisingQueries(extraTerm);
+            if (extra.rising.length > 0) {
+              risingQueries.push(...extra.rising);
+              logger.info(`Extra broad term "${extraTerm}" added ${extra.rising.length} rising queries`);
+            }
+            if (extra.top.length > 0) {
+              topQueries.push(...extra.top);
+            }
+          } catch (error) {
+            logger.debug(`Extra broad term "${extraTerm}" fetch failed: ${error instanceof Error ? error.message : error}`);
+          }
+        }
+        // Deduplicate by query text (case-insensitive)
+        const seen = new Set<string>();
+        risingQueries = risingQueries.filter(q => {
+          const key = q.query.toLowerCase();
+          if (seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        });
+        const seenTop = new Set<string>();
+        topQueries = topQueries.filter(q => {
+          const key = q.query.toLowerCase();
+          if (seenTop.has(key)) return false;
+          seenTop.add(key);
+          return true;
+        });
+      }
     }
 
     // 2. Fall back to Naver Finance themes (theme-analysis) or seed keywords if no rising queries found
     const trendsData: TrendsData[] = [];
     if (risingQueries.length === 0 && topQueries.length === 0) {
+      // skipTrends 모드: Trends 호출 없이 seed 키워드 직접 사용 (즉시 완료)
+      if (niche.skipTrends) {
+        const sampled = stratifiedSample(niche.seedKeywords, 12);
+        for (const seed of sampled) {
+          trendsData.push({
+            keyword: seed,
+            interestOverTime: [],
+            relatedTopics: [],
+            relatedQueries: [],
+            averageInterest: 0,
+            trendDirection: 'stable',
+            hasBreakout: false,
+          });
+        }
+      }
+
       // 2a. For theme-analysis niche: fetch today's top-rising themes from Naver Finance
       //     This gives fresh, market-driven seeds every day instead of a static list.
-      if (topQueries.length === 0 && niche.id === 'theme-analysis') {
+      if (!niche.skipTrends && topQueries.length === 0 && niche.id === 'theme-analysis') {
         try {
           const naverSeeds = await this.naverThemesService.getTopSeedKeywords(25);
           if (naverSeeds.length > 0) {
@@ -373,7 +395,7 @@ export class KeywordResearchService {
 
       // 2b. Fall back to seed keyword scanning if still empty
       //     Sample up to MAX_SEED_SAMPLE random seeds + apply time budget to avoid batch timeout
-      if (topQueries.length === 0) {
+      if (!niche.skipTrends && topQueries.length === 0) {
         const MAX_SEED_SAMPLE = 12; // Increased from 10: wider pool reduces duplicate collisions
         const SEED_TIME_BUDGET_MS = 3.5 * 60 * 1000; // 3.5 minutes: Trends takes 60-90s/query so 2min only gave ~1-2 seeds
         const seedStart = Date.now();
