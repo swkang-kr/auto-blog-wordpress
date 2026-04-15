@@ -152,7 +152,7 @@
         }
       ],
       "lastPosition": 50,
-      "engagementScore": 23
+      "engagementScore": 31
     },
     {
       "keyword": "홍지윤",
@@ -354,7 +354,7 @@
       "publishedAt": "2026-02-25T07:07:21.563Z",
       "niche": "ai-tools-review",
       "contentType": "best-x-for-y",
-      "engagementScore": 2,
+      "engagementScore": 0,
       "estimatedRpm": 3,
       "estimatedRevenue": 0.009000000000000001
     },
@@ -393,7 +393,7 @@
       "publishedAt": "2026-02-26T10:50:14.048Z",
       "niche": "ai-tools-review",
       "contentType": "how-to",
-      "engagementScore": 21,
+      "engagementScore": 0,
       "estimatedRpm": 3,
       "estimatedRevenue": 0.009000000000000001
     },
@@ -441,7 +441,7 @@
       "publishedAt": "2026-03-06T04:49:21.186Z",
       "niche": "k-entertainment",
       "contentType": "deep-dive",
-      "engagementScore": 25,
+      "engagementScore": 0,
       "estimatedRpm": 3,
       "estimatedRevenue": 0.009000000000000001
     },
@@ -693,7 +693,7 @@
       "affiliateLinkCount": 0,
       "engagementScore": 1,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0.021,
+      "estimatedRevenue": 0.006,
       "titleTestPhaseBStarted": true,
       "titleTestPhaseBTitle": "K-Pop Trainee Contracts: The Business Reality Behind the System (2026)",
       "titleTestWinner": "How K-Pop Idol Agency Contracts Work for Trainees (2026)",
@@ -762,7 +762,7 @@
       "affiliateLinkCount": 0,
       "engagementScore": 16,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0.018000000000000002,
+      "estimatedRevenue": 0.006,
       "titleTestPhaseBStarted": true,
       "titleTestPhaseBTitle": "Which Korean Skincare Ingredients Are Actually Proven? (2026)",
       "titleTestWinner": "Korean Skincare Ingredients That Actually Work (2026 Guide)",
@@ -784,7 +784,7 @@
       "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/best-kpop-albums-2026-ranked-sales-streaming-featured-2026.webp",
       "featuredImageMediaId": 16376,
       "affiliateLinkCount": 0,
-      "engagementScore": 27,
+      "engagementScore": 0,
       "estimatedRpm": 3,
       "estimatedRevenue": 0.018000000000000002,
       "titleTestPhaseBStarted": true,
@@ -1814,7 +1814,7 @@
       "lastPosition": 50,
       "engagementScore": 0,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0.018000000000000002,
+      "estimatedRevenue": 0.006,
       "titleTestPhaseBStarted": true,
       "titleTestPhaseBTitle": "Free Korean Web Dramas on YouTube 2026: 10 Must-Watch Picks",
       "titleTestWinner": "Best Korean Web Dramas on YouTube 2026: Ranked Guide",
@@ -2103,7 +2103,7 @@
       "qualityScore": 82,
       "seriesId": "kpop-business-analysis",
       "seriesPart": 2,
-      "engagementScore": 30,
+      "engagementScore": 37,
       "estimatedRpm": 3,
       "estimatedRevenue": 0.026999999999999996,
       "titleTestPhaseACtr": 0,
@@ -2212,7 +2212,7 @@
       "featuredImageMediaId": 88941,
       "affiliateLinkCount": 0,
       "qualityScore": 75,
-      "engagementScore": 45,
+      "engagementScore": 33,
       "estimatedRpm": 3,
       "estimatedRevenue": 0.045,
       "titleTestPhaseBStarted": true,
@@ -2420,8 +2420,8 @@
       "searchIntent": "commercial-investigation",
       "qualityScore": 83,
       "engagementScore": 4,
-      "estimatedRpm": 8,
-      "estimatedRevenue": 0.032,
+      "estimatedRpm": 3,
+      "estimatedRevenue": 0.012,
       "affiliateLinkCount": 0
     },
     {
@@ -2500,7 +2500,7 @@
       "featuredImageMediaId": 89282,
       "affiliateLinkCount": 0,
       "qualityScore": 79,
-      "engagementScore": 4,
+      "engagementScore": 32,
       "titleTestPhaseBStarted": true,
       "titleTestPhaseBTitle": "4월 3일 삼성전자 RSI·MACD·볼린저밴드 3중 교차 분석: score 4.00이 의미하는 것",
       "titleTestWinner": "4월 3일 삼성전자 주가 기술적 분석: RSI·MACD·볼린저밴드 복합 시그널 점검 2026",
@@ -2548,7 +2548,11 @@
       "affiliateLinkCount": 0,
       "qualityScore": 84,
       "seriesId": "battery-ev-guide",
-      "seriesPart": 1
+      "seriesPart": 1,
+      "titleTestPhaseBStarted": true,
+      "titleTestPhaseBTitle": "4월 8일 LG에너지솔루션 vs 삼성SDI vs SK이노베이션: 2026년 배터리 3강 투자 승자는?",
+      "titleTestWinner": "4월 8일 2차전지 관련주 비교: LG에너지솔루션 vs 삼성SDI vs SK이노베이션 투자 분석 2026",
+      "titleTestResolved": true
     },
     {
       "keyword": "반도체 HBM 테마주 수혜주 정리 2026",
@@ -2565,7 +2569,9 @@
       "featuredImageUrl": "",
       "affiliateLinkCount": 0,
       "qualityScore": 77,
-      "engagementScore": 33
+      "engagementScore": 33,
+      "estimatedRpm": 3,
+      "estimatedRevenue": 0.006
     },
     {
       "keyword": "RSI 과매도 구간 진입 종목 기술적 분석",
@@ -2582,7 +2588,9 @@
       "featuredImageUrl": "",
       "affiliateLinkCount": 0,
       "qualityScore": 66,
-      "engagementScore": 33
+      "engagementScore": 33,
+      "estimatedRpm": 3,
+      "estimatedRevenue": 0.006
     },
     {
       "keyword": "무선통신서비스 업종 강세 이유 관련주 분석 2026",
@@ -2600,8 +2608,8 @@
       "affiliateLinkCount": 0,
       "qualityScore": 69,
       "engagementScore": 32,
-      "estimatedRpm": 8,
-      "estimatedRevenue": 0.04
+      "estimatedRpm": 3,
+      "estimatedRevenue": 0.015
     },
     {
       "keyword": "신성장 테마 테마분석 가이드 2026",
@@ -2784,10 +2792,82 @@
       "featuredImageMediaId": 89648,
       "affiliateLinkCount": 0,
       "qualityScore": 81
+    },
+    {
+      "keyword": "산일전기 오늘 매수해도 될까 분석 2026",
+      "postId": 89695,
+      "postUrl": "https://trendhunt.net/%ec%82%b0%ec%9d%bc%ec%a0%84%ea%b8%b0-%ec%98%a4%eb%8a%98-%eb%a7%a4%ec%88%98%ed%95%b4%eb%8f%84-%eb%90%a0%ea%b9%8c-%ea%b8%b0%ec%88%a0%ec%a0%81%eb%b6%84%ec%84%9d-2026/",
+      "publishedAt": "2026-04-15T23:12:17.791Z",
+      "niche": "stock-062040",
+      "contentType": "analysis",
+      "titleCandidates": [
+        "산일전기 4월 16일 MACD 골든크로스 확정 — 매수 타이밍·손절선·목표가 완전 분석 2026",
+        "산일전기 52주 신고가 경신 후 추가 상승 가능할까? RSI·수급 이중 검증 2026"
+      ],
+      "originalTitle": "산일전기 오늘 매수해도 될까? 4월 16일 RSI·MACD·볼린저밴드 3중 기술적 분석 2026",
+      "searchIntent": "commercial-investigation",
+      "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/04/2026-featured-2026-8.webp",
+      "featuredImageMediaId": 89694,
+      "affiliateLinkCount": 0,
+      "qualityScore": 88
+    },
+    {
+      "keyword": "삼성에스디에스 단기 스윙 매수후보 손절선 목표가",
+      "postId": 89702,
+      "postUrl": "https://trendhunt.net/%ec%82%bc%ec%84%b1%ec%97%90%ec%8a%a4%eb%94%94%ec%97%90%ec%8a%a4-%ec%8a%a4%ec%9c%99-%eb%a7%a4%ec%88%98-%ec%86%90%ec%a0%88%ec%84%a0-%eb%aa%a9%ed%91%9c%ea%b0%80-2026/",
+      "publishedAt": "2026-04-15T23:14:33.201Z",
+      "niche": "stock-018260",
+      "contentType": "analysis",
+      "titleCandidates": [
+        "4월 16일 삼성에스디에스 +18% 급등 후 매수 타이밍: 손절선·목표가 실전 설정법",
+        "삼성에스디에스 RSI MACD 수급 분석: 스윙 트레이더를 위한 손절·목표가 가이드 2026"
+      ],
+      "originalTitle": "4월 16일 삼성에스디에스 스윙 매수: 손절선·목표가 설정 실전 분석 2026",
+      "searchIntent": "commercial-investigation",
+      "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/04/featured-2026-5.webp",
+      "featuredImageMediaId": 89698,
+      "affiliateLinkCount": 0,
+      "qualityScore": 75
+    },
+    {
+      "keyword": "한솔케미칼 단기 스윙 매수후보 손절선 목표가",
+      "postId": 89710,
+      "postUrl": "https://trendhunt.net/%ec%9d%b4%ea%b5%ac%ec%82%b0%ec%97%85-%eb%8b%a8%ea%b8%b0-%ec%8a%a4%ec%9c%99-%eb%a7%a4%ec%88%98%ed%9b%84%eb%b3%b4-%ec%86%90%ec%a0%88%ec%84%a0-%eb%aa%a9%ed%91%9c%ea%b0%80-2026/",
+      "publishedAt": "2026-04-15T23:16:37.392Z",
+      "niche": "stock-014680",
+      "contentType": "analysis",
+      "titleCandidates": [
+        "4월 16일 이구산업(025820) MACD 골든크로스 포착: 스윙 손절선 5,350원·목표가 6,100원 분석",
+        "이구산업(025820) 거래량 2.1배 급증 포착: RSI·볼린저밴드 기반 단기 매수 전략 2026"
+      ],
+      "originalTitle": "4월 16일 이구산업(025820) 단기 스윙 매수후보: 손절선·목표가 설정 분석 2026",
+      "searchIntent": "commercial-investigation",
+      "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/04/featured-2026-6.webp",
+      "featuredImageMediaId": 89705,
+      "affiliateLinkCount": 0,
+      "qualityScore": 85
+    },
+    {
+      "keyword": "이구산업 매수타이밍 RSI MACD 분석 2026",
+      "postId": 89717,
+      "postUrl": "https://trendhunt.net/%ec%9d%b4%ea%b5%ac%ec%82%b0%ec%97%85-%eb%a7%a4%ec%88%98%ed%83%80%ec%9d%b4%eb%b0%8d-rsi-macd-%eb%b6%84%ec%84%9d-2026/",
+      "publishedAt": "2026-04-15T23:18:51.706Z",
+      "niche": "stock-025820",
+      "contentType": "analysis",
+      "titleCandidates": [
+        "4월 16일 이구산업(025820) RSI 32 반등 신호: MACD 골든크로스 임박 매수 전략",
+        "이구산업 볼린저밴드 하단 지지 확인: 4월 매수타이밍과 손절선 완전 분석 2026"
+      ],
+      "originalTitle": "4월 16일 이구산업 매수타이밍: RSI MACD 볼린저밴드 기술적 분석 2026",
+      "searchIntent": "commercial-investigation",
+      "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/04/rsi-macd-2026-featured-2026.webp",
+      "featuredImageMediaId": 89713,
+      "affiliateLinkCount": 0,
+      "qualityScore": 82
     }
   ],
-  "lastRunAt": "2026-04-13T23:37:37.167Z",
-  "totalPosts": 96,
+  "lastRunAt": "2026-04-15T23:22:19.318Z",
+  "totalPosts": 100,
   "categoryLastPublished": {
     "korean-food-cooking": "2026-03-09T14:49:00.731Z",
     "korean-tech-ai": "2026-03-13T14:58:36.162Z",
@@ -2800,6 +2880,10 @@
     "ai-stock-picks": "2026-04-13T23:28:17.907Z",
     "market-analysis": "2026-04-13T23:26:01.135Z",
     "sector-analysis": "2026-04-13T23:32:01.357Z",
-    "theme-analysis": "2026-04-12T23:42:35.583Z"
+    "theme-analysis": "2026-04-12T23:42:35.583Z",
+    "stock-062040": "2026-04-15T23:12:17.788Z",
+    "stock-018260": "2026-04-15T23:14:33.199Z",
+    "stock-014680": "2026-04-15T23:16:37.390Z",
+    "stock-025820": "2026-04-15T23:18:51.704Z"
   }
 }
