@@ -594,6 +594,7 @@ Image Prompt Rules:
 - All 5 prompts MUST describe completely different scenes/subjects/compositions (NO duplicates!)
 - Each prompt MUST be at least 50 words with specific details
 - Include Korean visual elements where appropriate: 시장분석/업종분석/테마분석 content → 서울 여의도 증권가 빌딩, 주식 차트 모니터, 한국거래소(KRX) 전광판, 투자자 분석 화면, 캔들스틱 차트 클로즈업; 종목분석 content → 캔들스틱 차트에 RSI·MACD 지표 오버레이, 매수 타이밍 화살표 표시 차트, 트레이딩 대시보드, 수급 분석 화면, 종목 분석 노트
+- CRITICAL for 종목분석 imagePrompts (index 0 featured image): Must describe a visually complex, highly detailed scene. Example: "Korean stock market trading terminal showing multi-panel candlestick chart with RSI indicator oscillating below, MACD histogram bars in green and red, Bollinger Band envelope lines, volume bars at bottom, multiple overlapping moving average lines in different colors, dark trading room with glowing screen illumination, professional trader workstation, Seoul financial district skyline visible through large office window at night, photorealistic, ultra high detail, cinematic lighting, 16:9 wide format" — Include multiple chart elements, colors, lighting details to generate rich high-file-size images
 
 imageCaptions Rules:
 - 정확히 5개의 한국어 이미지 캡션 생성 (8-20단어)

@@ -57,19 +57,24 @@ async function getCategoryName(catId: number): Promise<string> {
 }
 
 function buildImagePrompt(title: string, categoryName: string): string[] {
+  // Rich, detail-heavy prompts produce larger files and pass Discover 50KB minimum
+  if (categoryName === '종목분석') {
+    return [
+      'Korean stock market trading terminal showing candlestick chart with RSI MACD Bollinger Band indicators, multiple monitors, green and red candles, technical analysis overlays, dark trading room with glowing screens, photorealistic, ultra high detail, cinematic lighting, 16:9 wide format',
+      'Close-up of stock market trading dashboard with live candlestick charts, moving average lines, volume bars in green and red, professional trader workstation, Seoul financial district visible through window, dramatic lighting, high resolution illustration',
+      'Financial data visualization with multiple overlapping stock charts, technical indicators, glowing neon lines on dark background, Korean won symbols, investment analysis concept, rich detail, vibrant colors, 16:9 banner',
+      'Professional stock analyst reviewing multiple screens showing Korean equity charts, candlestick patterns, buy signal indicators highlighted, modern office setting, Seoul skyline background, photorealistic editorial style',
+      'Abstract financial growth visualization with ascending line charts, bar graphs, data streams, blue purple gradient background, particle effects, modern fintech digital art, highly detailed',
+    ];
+  }
   const base = CATEGORY_KEYWORDS[categoryName] || 'Korean financial market data visualization';
-  // Remove HTML tags, Korean text for prompt (AI image gen works better with English)
-  const engTitle = title.replace(/<[^>]+>/g, '').replace(/[^\x00-\x7F\s]/g, '').trim();
-  const topicHint = engTitle.length > 5 ? `, topic: ${engTitle.slice(0, 60)}` : '';
-
-  const prompts = [
-    `${base}${topicHint}, professional editorial illustration, wide 16:9 banner, vivid colors, high detail`,
-    `${base}, digital data dashboard, blue and green tones, modern fintech aesthetic`,
-    `Korean stock market trading floor visualization, financial charts, clean professional design`,
-    `Investment strategy concept art, financial growth chart, Korean market context`,
-    `Market analysis infographic, Korean economy data visualization, professional editorial style`,
+  return [
+    `${base}, multiple overlapping charts and data graphs, vibrant blue green color scheme, dark professional background, highly detailed, cinematic editorial illustration, 16:9 wide banner`,
+    `${base}, professional financial dashboard with real-time data panels, Seoul skyline in background, dramatic lighting, photorealistic, ultra high detail`,
+    `Korean stock market analysis concept, complex financial data visualization with charts indicators metrics, rich colors, modern editorial style, professional photography`,
+    `Investment strategy and market analysis, financial charts overlapping, Korean economy context, detailed illustration, vivid colors, wide composition`,
+    `Market analysis infographic with multiple data streams charts graphs, Korean financial market, professional editorial style, high resolution`,
   ];
-  return prompts;
 }
 
 async function buildFallbackSvg(title: string, categoryName: string, siteName: string): Promise<Buffer> {
