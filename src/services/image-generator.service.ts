@@ -11,9 +11,9 @@ const TARGET_MIN_KB = 100;
 
 /** Fallback image models in priority order */
 const GEMINI_MODELS = [
-  'gemini-2.5-flash-image',                // primary: confirmed working (2026-04-13)
-  'imagen-3.0-generate-001',               // secondary: imagen v1 fallback
-  'gemini-2.0-flash-exp-image-generation', // tertiary: 404 as of 2026-04-13, kept for future
+  'gemini-2.5-flash-image',  // only confirmed-working model (2026-04-15)
+  // imagen-3.0-generate-001 → 404 (removed 2026-04-16)
+  // gemini-2.0-flash-exp-image-generation → 404 (removed 2026-04-16)
 ] as const;
 
 export class ImageGeneratorService {
@@ -472,14 +472,20 @@ export class ImageGeneratorService {
     results[0] = await this.generateSingleImage(model, prompts[0], 0, []);
 
     // If featured image failed (null = all retries exhausted or blank/quality-fail),
-    // try fallback models before giving up.
+    // retry with progressively simpler fallback prompts on the same model.
     if (!results[0]) {
-      logger.warn(`Featured image failed with primary model (${GEMINI_MODELS[this.activeModelIndex]}), trying fallbacks...`);
-      while (this.advanceModel()) {
-        model = this.getImageModel();
-        logger.info(`Retrying featured image with fallback model: ${GEMINI_MODELS[this.activeModelIndex]}`);
-        results[0] = await this.generateSingleImage(model, prompts[0], 0, []);
-        if (results[0]) break;
+      logger.warn(`Featured image failed (all retries), trying simplified fallback prompts...`);
+      const fallbackPrompts = [
+        'Korean stock market trading screen with candlestick charts, financial data dashboard, professional photography, vibrant colors, high detail',
+        'Stock market investment concept, rising graph on blue background, financial growth visualization, clean modern illustration',
+        'Business finance concept, bar chart and line graph, blue and green colors, professional clean design, no text',
+      ];
+      for (const fallbackPrompt of fallbackPrompts) {
+        results[0] = await this.generateSingleImage(model, fallbackPrompt, 0, []);
+        if (results[0]) {
+          logger.info(`Featured image recovered with simplified fallback prompt`);
+          break;
+        }
       }
     }
 
