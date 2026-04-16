@@ -1,20 +1,7 @@
 {
-  "exported_at": "2026-04-15T07:00:01.820939+00:00",
-  "total": 90,
+  "exported_at": "2026-04-16T07:00:01.485102+00:00",
+  "total": 95,
   "items": [
-    {
-      "stock_code": "014680",
-      "stock_name": "한솔케미칼",
-      "market": "KRX",
-      "sector": "",
-      "target_buy_price": null,
-      "target_price": null,
-      "stop_loss": null,
-      "priority": 100,
-      "memo": "AI APPROVE | conf=100% | qty_ratio=120% | AI review removed (2026-04-15)",
-      "created_at": "2026-04-15T10:00:22.014290",
-      "updated_at": "2026-04-15T15:00:17.478534"
-    },
     {
       "stock_code": "018260",
       "stock_name": "삼성에스디에스",
@@ -65,7 +52,7 @@
       "priority": 90,
       "memo": "AI APPROVE | conf=90% | qty_ratio=120% | AI review removed (2026-04-15)",
       "created_at": "2026-04-10T10:56:39.319051",
-      "updated_at": "2026-04-15T15:03:50.920711"
+      "updated_at": "2026-04-16T15:00:08.566484"
     },
     {
       "stock_code": "006360",
@@ -146,6 +133,32 @@
       "updated_at": "2026-04-10T09:12:52.191384"
     },
     {
+      "stock_code": "013580",
+      "stock_name": "계룡건설",
+      "market": "KRX",
+      "sector": "",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 85,
+      "memo": "AI APPROVE | conf=85% | qty_ratio=120% | AI review removed (2026-04-15)",
+      "created_at": "2026-04-10T12:45:47.651131",
+      "updated_at": "2026-04-16T15:00:08.569357"
+    },
+    {
+      "stock_code": "006340",
+      "stock_name": "대원전선",
+      "market": "KRX",
+      "sector": "전기장비",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 85,
+      "memo": "AI APPROVE | conf=85% | qty_ratio=120% | AI review removed (2026-04-15)",
+      "created_at": "2026-04-16T15:00:08.531614",
+      "updated_at": "2026-04-16T15:00:08.531614"
+    },
+    {
       "stock_code": "004710",
       "stock_name": "한솔테크닉스",
       "market": "KRX",
@@ -170,19 +183,6 @@
       "memo": "AI APPROVE | conf=85% | qty_ratio=120% | AI skip: score≥6 강제매수 (8.0점)",
       "created_at": "2026-04-10T09:37:22.995427",
       "updated_at": "2026-04-15T10:17:10.577899"
-    },
-    {
-      "stock_code": "013580",
-      "stock_name": "계룡건설",
-      "market": "KRX",
-      "sector": "",
-      "target_buy_price": null,
-      "target_price": null,
-      "stop_loss": null,
-      "priority": 85,
-      "memo": "AI APPROVE | conf=85% | qty_ratio=120% | AI skip: score≥7 강제매수 (8.0점)",
-      "created_at": "2026-04-10T12:45:47.651131",
-      "updated_at": "2026-04-10T12:45:47.651131"
     },
     {
       "stock_code": "003160",
@@ -365,6 +365,58 @@
       "memo": "AI APPROVE | conf=76% | qty_ratio=120% | AI skip: score≥6 강제매수 (8.0점)",
       "created_at": "2026-04-15T10:01:40.937782",
       "updated_at": "2026-04-15T10:01:40.937782"
+    },
+    {
+      "stock_code": "017960",
+      "stock_name": "한국카본",
+      "market": "KRX",
+      "sector": "",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 75,
+      "memo": "AI APPROVE | conf=75% | qty_ratio=120% | AI review removed (2026-04-15)",
+      "created_at": "2026-04-16T15:00:08.566098",
+      "updated_at": "2026-04-16T15:00:08.566098"
+    },
+    {
+      "stock_code": "079900",
+      "stock_name": "전진건설로봇",
+      "market": "KRX",
+      "sector": "",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 75,
+      "memo": "AI APPROVE | conf=75% | qty_ratio=120% | AI review removed (2026-04-15)",
+      "created_at": "2026-04-16T15:00:08.532861",
+      "updated_at": "2026-04-16T15:00:08.532861"
+    },
+    {
+      "stock_code": "025540",
+      "stock_name": "한국단자",
+      "market": "KRX",
+      "sector": "",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 75,
+      "memo": "AI APPROVE | conf=75% | qty_ratio=120% | AI review removed (2026-04-15)",
+      "created_at": "2026-04-16T15:00:08.530682",
+      "updated_at": "2026-04-16T15:00:08.530682"
+    },
+    {
+      "stock_code": "005690",
+      "stock_name": "파미셀",
+      "market": "KRX",
+      "sector": "",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 75,
+      "memo": "AI APPROVE | conf=75% | qty_ratio=120% | AI review removed (2026-04-15)",
+      "created_at": "2026-04-16T15:00:08.529956",
+      "updated_at": "2026-04-16T15:00:08.529956"
     },
     {
       "stock_code": "001440",
@@ -562,6 +614,19 @@
       "updated_at": "2026-04-09T11:24:41.077223"
     },
     {
+      "stock_code": "014680",
+      "stock_name": "한솔케미칼",
+      "market": "KRX",
+      "sector": "",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 66,
+      "memo": "AI APPROVE | conf=67% | qty_ratio=100% | AI review removed (2026-04-15)",
+      "created_at": "2026-04-15T10:00:22.014290",
+      "updated_at": "2026-04-16T15:02:38.401842"
+    },
+    {
       "stock_code": "019170",
       "stock_name": "신풍제약",
       "market": "KRX",
@@ -614,19 +679,6 @@
       "updated_at": "2026-04-09T14:16:33.345151"
     },
     {
-      "stock_code": "001530",
-      "stock_name": "DI동일",
-      "market": "KRX",
-      "sector": "섬유,의류,신발,호화품",
-      "target_buy_price": null,
-      "target_price": null,
-      "stop_loss": null,
-      "priority": 64,
-      "memo": "AI APPROVE | conf=65% | qty_ratio=120% | AI skip: score≥7 강제매수 (8.0점)",
-      "created_at": "2026-04-09T14:16:33.345151",
-      "updated_at": "2026-04-09T14:16:33.345151"
-    },
-    {
       "stock_code": "010950",
       "stock_name": "S-Oil",
       "market": "KRX",
@@ -644,6 +696,19 @@
       "stock_name": "인바이오젠",
       "market": "KRX",
       "sector": "전자장비와기기",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 64,
+      "memo": "AI APPROVE | conf=65% | qty_ratio=120% | AI skip: score≥7 강제매수 (8.0점)",
+      "created_at": "2026-04-09T14:16:33.345151",
+      "updated_at": "2026-04-09T14:16:33.345151"
+    },
+    {
+      "stock_code": "001530",
+      "stock_name": "DI동일",
+      "market": "KRX",
+      "sector": "섬유,의류,신발,호화품",
       "target_buy_price": null,
       "target_price": null,
       "stop_loss": null,
@@ -874,10 +939,10 @@
       "updated_at": "2026-04-10T10:55:56.829152"
     },
     {
-      "stock_code": "353200",
-      "stock_name": "대덕전자",
+      "stock_code": "281820",
+      "stock_name": "케이씨텍",
       "market": "KRX",
-      "sector": "전자장비와기기",
+      "sector": "",
       "target_buy_price": null,
       "target_price": null,
       "stop_loss": null,
@@ -887,10 +952,10 @@
       "updated_at": "2026-04-10T09:42:12.983046"
     },
     {
-      "stock_code": "281820",
-      "stock_name": "케이씨텍",
+      "stock_code": "353200",
+      "stock_name": "대덕전자",
       "market": "KRX",
-      "sector": "",
+      "sector": "전자장비와기기",
       "target_buy_price": null,
       "target_price": null,
       "stop_loss": null,
@@ -1004,19 +1069,6 @@
       "updated_at": "2026-04-09T13:19:50.495230"
     },
     {
-      "stock_code": "011170",
-      "stock_name": "롯데케미칼",
-      "market": "KRX",
-      "sector": "",
-      "target_buy_price": null,
-      "target_price": null,
-      "stop_loss": null,
-      "priority": 60,
-      "memo": "AI APPROVE | conf=60% | qty_ratio=120% | AI skip: score≥7 강제매수 (8.0점)",
-      "created_at": "2026-04-09T12:39:37.316229",
-      "updated_at": "2026-04-09T13:06:06.142393"
-    },
-    {
       "stock_code": "036570",
       "stock_name": "엔씨소프트",
       "market": "KRX",
@@ -1027,6 +1079,19 @@
       "priority": 60,
       "memo": "AI APPROVE | conf=60% | qty_ratio=120% | AI skip: score≥7 강제매수 (8.0점)",
       "created_at": "2026-04-09T13:06:06.142393",
+      "updated_at": "2026-04-09T13:06:06.142393"
+    },
+    {
+      "stock_code": "011170",
+      "stock_name": "롯데케미칼",
+      "market": "KRX",
+      "sector": "",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 60,
+      "memo": "AI APPROVE | conf=60% | qty_ratio=120% | AI skip: score≥7 강제매수 (8.0점)",
+      "created_at": "2026-04-09T12:39:37.316229",
       "updated_at": "2026-04-09T13:06:06.142393"
     },
     {
@@ -1069,19 +1134,6 @@
       "updated_at": "2026-04-15T15:16:40.740641"
     },
     {
-      "stock_code": "001820",
-      "stock_name": "삼화콘덴서",
-      "market": "KRX",
-      "sector": "",
-      "target_buy_price": null,
-      "target_price": null,
-      "stop_loss": null,
-      "priority": 55,
-      "memo": "AI APPROVE | conf=55% | qty_ratio=100% | AI review removed (2026-04-15)",
-      "created_at": "2026-04-15T15:00:17.478534",
-      "updated_at": "2026-04-15T15:00:17.478534"
-    },
-    {
       "stock_code": "001780",
       "stock_name": "알루코",
       "market": "KRX",
@@ -1121,6 +1173,19 @@
       "updated_at": "2026-04-15T15:00:17.478534"
     },
     {
+      "stock_code": "001820",
+      "stock_name": "삼화콘덴서",
+      "market": "KRX",
+      "sector": "",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 55,
+      "memo": "AI APPROVE | conf=55% | qty_ratio=100% | AI review removed (2026-04-15)",
+      "created_at": "2026-04-15T15:00:17.478534",
+      "updated_at": "2026-04-15T15:00:17.478534"
+    },
+    {
       "stock_code": "003620",
       "stock_name": "KG모빌리티",
       "market": "KRX",
@@ -1147,19 +1212,6 @@
       "updated_at": "2026-04-14T15:15:14.243627"
     },
     {
-      "stock_code": "011280",
-      "stock_name": "태림포장",
-      "market": "KRX",
-      "sector": "포장재",
-      "target_buy_price": null,
-      "target_price": null,
-      "stop_loss": null,
-      "priority": 50,
-      "memo": "AI APPROVE | conf=50% | qty_ratio=90% | AI skip: 15:15 무조건매수",
-      "created_at": "2026-03-30T15:18:44.329725",
-      "updated_at": "2026-04-14T15:15:14.243627"
-    },
-    {
       "stock_code": "005880",
       "stock_name": "대한해운",
       "market": "KRX",
@@ -1170,6 +1222,19 @@
       "priority": 50,
       "memo": "AI APPROVE | conf=50% | qty_ratio=90% | AI skip: 15:15 무조건매수",
       "created_at": "2026-04-14T15:15:14.243627",
+      "updated_at": "2026-04-14T15:15:14.243627"
+    },
+    {
+      "stock_code": "011280",
+      "stock_name": "태림포장",
+      "market": "KRX",
+      "sector": "포장재",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 50,
+      "memo": "AI APPROVE | conf=50% | qty_ratio=90% | AI skip: 15:15 무조건매수",
+      "created_at": "2026-03-30T15:18:44.329725",
       "updated_at": "2026-04-14T15:15:14.243627"
     }
   ]

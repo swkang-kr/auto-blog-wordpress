@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-04-15T07:00:01.521830+00:00",
+  "exported_at": "2026-04-16T07:00:01.191323+00:00",
   "market_daily": [
+    {
+      "date": "20260416",
+      "kospi_change": 2.21,
+      "kosdaq_change": 0.91,
+      "foreign_net": 46.44,
+      "institution_net": 110.37,
+      "individual_net": -180.69,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260415",
       "kospi_change": 2.07,
       "kosdaq_change": 2.72,
-      "foreign_net": 55.14,
-      "institution_net": -2.23,
-      "individual_net": -93.5,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": 55.06,
+      "institution_net": -2.24,
+      "individual_net": -93.41,
+      "hot_theme_count": 40,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260414",
@@ -99,29 +110,18 @@
       "hot_theme_count": 40,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260402",
-      "kospi_change": -4.47,
-      "kosdaq_change": -5.36,
-      "foreign_net": -13.69,
-      "institution_net": -145.17,
-      "individual_net": 120.98,
-      "hot_theme_count": 2,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "[포토]코스피·코스닥, 종전 협상 기대감에 오름세로 장마감",
-    "‘육천피’ 회복하며 미소 지은 국내 증시",
-    "코스피, 6000선 탈환",
-    "코스피, 6000선 탈환",
-    "코스피, 6000선 탈환",
-    "코스피 6000선 탈환, 삼성전자-SK하이닉스 상승 마감",
-    "코스피 6000선 탈환, 삼성전자-SK하이닉스 상승 마감",
-    "반도체주 상승 견인",
-    "[포토]코스피·코스닥, 종전 협상 기대에 오름세로 장마감",
-    "종전 기대감에 ‘어게인 육천피’"
+    "코스피·코스닥 동반 상승",
+    "군인공제회, 엠플러스자산운용 에이펙자산운용에 매각 [시그널]",
+    "코스피, 중동전쟁 이후 첫 6200선 회복…2.21% 강세 마감",
+    "'종전 기대감' 코스피, 6200선 안착",
+    "테슬라 AI칩에 '삼성 각인'…파운드리 반격 시작?",
+    "'종전 기대감' 코스피, 6200선 안착",
+    "개미 차익실현에도…코스피 6200선 상승 마감 [시황]",
+    "\"2주 만에 1000p 폭등\"…코스피 6000, '과속 장세' 논쟁",
+    "엔알비, 81억 규모 한국세무금융고 생활관 모듈러 제작·설치 계약",
+    "'종전 재협상' 기대에 코스피 6200선 회복"
   ]
 }
