@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-04-17T07:00:01.216486+00:00",
+  "exported_at": "2026-04-20T07:00:01.215977+00:00",
   "market_daily": [
+    {
+      "date": "20260420",
+      "kospi_change": 0.44,
+      "kosdaq_change": 0.41,
+      "foreign_net": -15.98,
+      "institution_net": 18.15,
+      "individual_net": -27.74,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260417",
       "kospi_change": -0.55,
       "kosdaq_change": 0.61,
-      "foreign_net": -199.75,
+      "foreign_net": -199.74,
       "institution_net": 15.04,
-      "individual_net": 144.62,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "individual_net": 144.61,
+      "hot_theme_count": 15,
+      "momentum_count": 60,
+      "crash_count": 42
     },
     {
       "date": "20260416",
@@ -99,29 +110,18 @@
       "hot_theme_count": 3,
       "momentum_count": 52,
       "crash_count": 60
-    },
-    {
-      "date": "20260406",
-      "kospi_change": 1.36,
-      "kosdaq_change": -1.54,
-      "foreign_net": -15.94,
-      "institution_net": 83.69,
-      "individual_net": -105.02,
-      "hot_theme_count": 7,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "인젝티브(INJ) ETF 출시 가시화…미 시장서 선물 거래 개시",
-    "외인 차익실현 물량 출회…코스피 약보합 마감",
-    "일진홀딩스, 자회사 일진전기 지분 1천억원 주가수익스와프 처분",
-    "[마켓뷰] 美·이란 협상 앞두고 관망… 코스피, 소폭 하락",
-    "'美 상호관세' 환급 기대…화장품주 강세[핫종목]",
-    "한국거래소 노조 \"파생상품시본부장, 낙하산 인사 중단해야\"",
-    "[속보] 코스피, 소폭 하락 6190선 마감…코스닥은 소폭 상승",
-    "코스피, 4거래일 만에 하락 마감…코스닥은 강보합",
-    "6200 찍은 코스피 숨고르기…6191.92",
-    "코스피 숨고르기…6191.92"
+    "전쟁보다 강한 실적 기대감…코스피 6200대 재탈환",
+    "식당까지 파고든 논알코올 맥주…전국 5.5만곳에 '카스'",
+    "美·이란 긴장 고조에 달러·원 다시 1470원대로(종합)",
+    "코스피, 기관 매수에 6200선 회복…SK하닉 3.4%↑",
+    "상승 마감한 코스피·코스닥",
+    "SK하닉 실적 기대감에도…코스피, 중동 불확실성에 상승폭 제한[fn마감시황]",
+    "반등 기대 높아진 銀...은 현물 ETF 출시 '러시'",
+    "상승 마감한 코스피",
+    "[포토]코스피, 0.44% 오른 6219.09 마감",
+    "실적 선방, 안정 배당, 생산적 금융까지···은행주, 매력발산의 시간"
   ]
 }
