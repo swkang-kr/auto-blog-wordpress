@@ -1,6 +1,102 @@
 {
-  "exported_at": "2026-04-20T07:00:00.771168+00:00",
+  "exported_at": "2026-04-21T07:00:06.386137+00:00",
   "trades": [
+    {
+      "stock_code": "011690",
+      "stock_name": "와이투솔루션",
+      "side": "buy",
+      "quantity": 46,
+      "price": 7330.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "거래량2.0x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "filled_at": "2026-04-21T06:15:11.871931"
+    },
+    {
+      "stock_code": "005870",
+      "stock_name": "휴니드",
+      "side": "buy",
+      "quantity": 36,
+      "price": 9340.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "filled_at": "2026-04-21T06:15:10.626873"
+    },
+    {
+      "stock_code": "005690",
+      "stock_name": "파미셀",
+      "side": "sell",
+      "quantity": 21,
+      "price": 18240.0,
+      "pnl": -21688.63,
+      "pnl_rate": -5.3763,
+      "strategy": "swing_stop_loss(SL=18,250)",
+      "reason": "swing_stop_loss(SL=18,250)",
+      "filled_at": "2026-04-21T05:03:49.177674"
+    },
+    {
+      "stock_code": "077970",
+      "stock_name": "STX엔진",
+      "side": "sell",
+      "quantity": 9,
+      "price": 52700.0,
+      "pnl": 57834.9,
+      "pnl_rate": 13.9395,
+      "strategy": "swing_trailing(peak=17.9%,step=3.0%,trail_sl=14.9%)",
+      "reason": "swing_trailing(peak=17.9%,step=3.0%,trail_sl=14.9%)",
+      "filled_at": "2026-04-21T04:35:17.638888"
+    },
+    {
+      "stock_code": "082740",
+      "stock_name": "한화엔진",
+      "side": "sell",
+      "quantity": 6,
+      "price": 56700.0,
+      "pnl": 12053.88,
+      "pnl_rate": 3.6862,
+      "strategy": "swing_trailing(peak=6.8%,step=3.0%,trail_sl=3.8%)",
+      "reason": "swing_trailing(peak=6.8%,step=3.0%,trail_sl=3.8%)",
+      "filled_at": "2026-04-21T02:40:14.242180"
+    },
+    {
+      "stock_code": "000990",
+      "stock_name": "DB하이텍",
+      "side": "sell",
+      "quantity": 6,
+      "price": 119400.0,
+      "pnl": -43268.4,
+      "pnl_rate": -5.7143,
+      "strategy": "swing_stop_loss(SL=119,890)",
+      "reason": "swing_stop_loss(SL=119,890)",
+      "filled_at": "2026-04-21T01:23:15.370133"
+    },
+    {
+      "stock_code": "011500",
+      "stock_name": "한농화성",
+      "side": "sell",
+      "quantity": 23,
+      "price": 25100.0,
+      "pnl": 52130.42,
+      "pnl_rate": 9.9628,
+      "strategy": "swing_trailing(peak=12.8%,step=3.0%,trail_sl=9.8%)",
+      "reason": "swing_trailing(peak=12.8%,step=3.0%,trail_sl=9.8%)",
+      "filled_at": "2026-04-21T01:06:27.815314"
+    },
+    {
+      "stock_code": "019170",
+      "stock_name": "신풍제약",
+      "side": "sell",
+      "quantity": 63,
+      "price": 12100.0,
+      "pnl": -44835.59,
+      "pnl_rate": -5.573,
+      "strategy": "swing_stop_loss(SL=12,132)",
+      "reason": "swing_stop_loss(SL=12,132)",
+      "filled_at": "2026-04-21T00:46:20.016643"
+    },
     {
       "stock_code": "005690",
       "stock_name": "파미셀",
@@ -504,102 +600,6 @@
       "strategy": "RSI+MACD(swing)",
       "reason": "MACD히스토그램↑ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "filled_at": "2026-04-16T06:02:50.696744"
-    },
-    {
-      "stock_code": "017960",
-      "stock_name": "한국카본",
-      "side": "buy",
-      "quantity": 8,
-      "price": 51300.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "watchlist_accumulated",
-      "filled_at": "2026-04-16T06:00:44.554543"
-    },
-    {
-      "stock_code": "013580",
-      "stock_name": "계룡건설",
-      "side": "buy",
-      "quantity": 17,
-      "price": 28450.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "watchlist_accumulated",
-      "filled_at": "2026-04-16T06:00:39.976345"
-    },
-    {
-      "stock_code": "025540",
-      "stock_name": "한국단자",
-      "side": "buy",
-      "quantity": 5,
-      "price": 83400.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "MACD골든크로스 | RSI모멘텀(64) | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+9.8%vsKOSPI+1.9%)",
-      "filled_at": "2026-04-16T06:00:39.818657"
-    },
-    {
-      "stock_code": "062040",
-      "stock_name": "산일전기",
-      "side": "buy",
-      "quantity": 2,
-      "price": 188700.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "watchlist_accumulated",
-      "filled_at": "2026-04-16T06:00:37.994397"
-    },
-    {
-      "stock_code": "009410",
-      "stock_name": "태영건설",
-      "side": "buy",
-      "quantity": 162,
-      "price": 2100.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위",
-      "filled_at": "2026-04-16T06:00:37.726336"
-    },
-    {
-      "stock_code": "006340",
-      "stock_name": "대원전선",
-      "side": "buy",
-      "quantity": 77,
-      "price": 6440.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "MACD히스토그램↑ | 거래량3.9x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
-      "filled_at": "2026-04-16T06:00:35.780257"
-    },
-    {
-      "stock_code": "005690",
-      "stock_name": "파미셀",
-      "side": "buy",
-      "quantity": 22,
-      "price": 19440.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(66) | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+6.4%vsKOSPI+1.9%)",
-      "filled_at": "2026-04-16T06:00:35.491961"
-    },
-    {
-      "stock_code": "003720",
-      "stock_name": "삼영",
-      "side": "buy",
-      "quantity": 51,
-      "price": 8520.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "watchlist_accumulated",
-      "filled_at": "2026-04-16T06:00:31.867874"
     }
   ]
 }

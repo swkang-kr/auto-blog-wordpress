@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-04-20T07:00:01.215977+00:00",
+  "exported_at": "2026-04-21T07:00:06.765221+00:00",
   "market_daily": [
+    {
+      "date": "20260421",
+      "kospi_change": 2.72,
+      "kosdaq_change": 0.36,
+      "foreign_net": 133.47,
+      "institution_net": 73.77,
+      "individual_net": -192.05,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260420",
       "kospi_change": 0.44,
       "kosdaq_change": 0.41,
       "foreign_net": -15.98,
       "institution_net": 18.15,
-      "individual_net": -27.74,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "individual_net": -27.75,
+      "hot_theme_count": 18,
+      "momentum_count": 60,
+      "crash_count": 44
     },
     {
       "date": "20260417",
@@ -99,29 +110,18 @@
       "hot_theme_count": 40,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260407",
-      "kospi_change": 0.82,
-      "kosdaq_change": -1.02,
-      "foreign_net": 40.7,
-      "institution_net": -41.41,
-      "individual_net": -34.28,
-      "hot_theme_count": 3,
-      "momentum_count": 52,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "전쟁보다 강한 실적 기대감…코스피 6200대 재탈환",
-    "식당까지 파고든 논알코올 맥주…전국 5.5만곳에 '카스'",
-    "美·이란 긴장 고조에 달러·원 다시 1470원대로(종합)",
-    "코스피, 기관 매수에 6200선 회복…SK하닉 3.4%↑",
-    "상승 마감한 코스피·코스닥",
-    "SK하닉 실적 기대감에도…코스피, 중동 불확실성에 상승폭 제한[fn마감시황]",
-    "반등 기대 높아진 銀...은 현물 ETF 출시 '러시'",
-    "상승 마감한 코스피",
-    "[포토]코스피, 0.44% 오른 6219.09 마감",
-    "실적 선방, 안정 배당, 생산적 금융까지···은행주, 매력발산의 시간"
+    "코스피 6400선 ‘눈앞’…SK하이닉스 120만원 넘었다 [시황]",
+    "[포토]코스피, 2.7% 급등 사상 최고치 6,380선 마감",
+    "돌아온 외국인에 코스피 다시 '봄'···시총도 첫 5200조↑",
+    "코스피 또 새 역사…외국인·기관 쌍끌이에 6380선 돌파",
+    "코스피, 2.72% 상승한 6388.47 마감",
+    "코스피, 2.72% 상승한 6388.47 마감",
+    "활짝 웃은 코스피",
+    "코스피, 2.72% 상승한 6388.47 마감",
+    "코스피, 2.7% 급등 6380선 마감…사상 최고치 돌파",
+    "티비씨, 주식병합 결정…\"주가 안정화·기업가치 제고\""
   ]
 }

@@ -1,406 +1,406 @@
 {
-  "exported_at": "2026-04-20T07:00:01.245691+00:00",
-  "date": "20260420",
+  "exported_at": "2026-04-21T07:00:06.802804+00:00",
+  "date": "20260421",
   "top_sectors": [
     {
-      "name": "레저용장비와제품",
-      "change_rate": 5.64
-    },
-    {
       "name": "전기제품",
-      "change_rate": 2.55
-    },
-    {
-      "name": "통신장비",
-      "change_rate": 2.53
-    },
-    {
-      "name": "무역회사와판매업체",
-      "change_rate": 2.47
-    },
-    {
-      "name": "상업서비스와공급품",
-      "change_rate": 1.72
-    },
-    {
-      "name": "소프트웨어",
-      "change_rate": 1.67
+      "change_rate": 11.75
     },
     {
       "name": "전자장비와기기",
-      "change_rate": 1.57
+      "change_rate": 8.62
     },
     {
-      "name": "복합기업",
-      "change_rate": 1.53
+      "name": "종이와목재",
+      "change_rate": 8.07
     },
     {
-      "name": "판매업체",
-      "change_rate": 1.1
+      "name": "조선",
+      "change_rate": 5.97
     },
     {
-      "name": "도로와철도운송",
-      "change_rate": 1.1
+      "name": "철강",
+      "change_rate": 5.89
+    },
+    {
+      "name": "건설",
+      "change_rate": 5.77
+    },
+    {
+      "name": "다각화된소비자서비스",
+      "change_rate": 4.91
+    },
+    {
+      "name": "화학",
+      "change_rate": 4.85
+    },
+    {
+      "name": "자동차부품",
+      "change_rate": 4.11
+    },
+    {
+      "name": "레저용장비와제품",
+      "change_rate": 3.98
     }
   ],
   "bottom_sectors": [
     {
-      "name": "종이와목재",
-      "change_rate": -1.38
+      "name": "게임엔터테인먼트",
+      "change_rate": -1.53
     },
     {
-      "name": "건설",
-      "change_rate": -1.42
-    },
-    {
-      "name": "생명과학도구및서비스",
-      "change_rate": -1.51
-    },
-    {
-      "name": "컴퓨터와주변기기",
-      "change_rate": -1.62
-    },
-    {
-      "name": "무선통신서비스",
+      "name": "건강관리장비와용품",
       "change_rate": -1.63
     },
     {
-      "name": "자동차",
+      "name": "건강관리기술",
       "change_rate": -1.64
     },
     {
-      "name": "양방향미디어와서비스",
-      "change_rate": -1.73
+      "name": "제약",
+      "change_rate": -1.79
     },
     {
-      "name": "다각화된통신서비스",
-      "change_rate": -1.74
+      "name": "사무용전자제품",
+      "change_rate": -1.9
     },
     {
-      "name": "방송과엔터테인먼트",
-      "change_rate": -1.85
+      "name": "판매업체",
+      "change_rate": -1.92
     },
     {
-      "name": "건강관리기술",
-      "change_rate": -2.58
+      "name": "생물공학",
+      "change_rate": -2.77
+    },
+    {
+      "name": "생명과학도구및서비스",
+      "change_rate": -3.69
+    },
+    {
+      "name": "컴퓨터와주변기기",
+      "change_rate": -3.91
+    },
+    {
+      "name": "건강관리업체및서비스",
+      "change_rate": -4.39
     }
   ],
   "all_sectors": [
     {
-      "name": "레저용장비와제품",
-      "change_rate": 5.64
-    },
-    {
       "name": "전기제품",
-      "change_rate": 2.55
-    },
-    {
-      "name": "통신장비",
-      "change_rate": 2.53
-    },
-    {
-      "name": "무역회사와판매업체",
-      "change_rate": 2.47
-    },
-    {
-      "name": "상업서비스와공급품",
-      "change_rate": 1.72
-    },
-    {
-      "name": "소프트웨어",
-      "change_rate": 1.67
+      "change_rate": 11.75
     },
     {
       "name": "전자장비와기기",
-      "change_rate": 1.57
+      "change_rate": 8.62
     },
     {
-      "name": "복합기업",
-      "change_rate": 1.53
+      "name": "종이와목재",
+      "change_rate": 8.07
     },
     {
-      "name": "판매업체",
-      "change_rate": 1.1
-    },
-    {
-      "name": "도로와철도운송",
-      "change_rate": 1.1
-    },
-    {
-      "name": "게임엔터테인먼트",
-      "change_rate": 1.02
-    },
-    {
-      "name": "기계",
-      "change_rate": 1.02
-    },
-    {
-      "name": "화학",
-      "change_rate": 0.93
-    },
-    {
-      "name": "교육서비스",
-      "change_rate": 0.93
-    },
-    {
-      "name": "반도체와반도체장비",
-      "change_rate": 0.9
-    },
-    {
-      "name": "섬유,의류,신발,호화품",
-      "change_rate": 0.88
-    },
-    {
-      "name": "부동산",
-      "change_rate": 0.83
-    },
-    {
-      "name": "우주항공과국방",
-      "change_rate": 0.81
-    },
-    {
-      "name": "생물공학",
-      "change_rate": 0.62
-    },
-    {
-      "name": "디스플레이장비및부품",
-      "change_rate": 0.48
-    },
-    {
-      "name": "포장재",
-      "change_rate": 0.48
-    },
-    {
-      "name": "전기장비",
-      "change_rate": 0.44
-    },
-    {
-      "name": "기타",
-      "change_rate": 0.41
-    },
-    {
-      "name": "건축자재",
-      "change_rate": 0.4
-    },
-    {
-      "name": "디스플레이패널",
-      "change_rate": 0.39
-    },
-    {
-      "name": "석유와가스",
-      "change_rate": 0.34
-    },
-    {
-      "name": "해운사",
-      "change_rate": 0.23
+      "name": "조선",
+      "change_rate": 5.97
     },
     {
       "name": "철강",
-      "change_rate": 0.22
+      "change_rate": 5.89
     },
     {
-      "name": "출판",
-      "change_rate": 0.21
+      "name": "건설",
+      "change_rate": 5.77
+    },
+    {
+      "name": "다각화된소비자서비스",
+      "change_rate": 4.91
+    },
+    {
+      "name": "화학",
+      "change_rate": 4.85
+    },
+    {
+      "name": "자동차부품",
+      "change_rate": 4.11
+    },
+    {
+      "name": "레저용장비와제품",
+      "change_rate": 3.98
     },
     {
       "name": "인터넷과카탈로그소매",
-      "change_rate": 0.16
+      "change_rate": 3.96
+    },
+    {
+      "name": "반도체와반도체장비",
+      "change_rate": 3.17
+    },
+    {
+      "name": "무선통신서비스",
+      "change_rate": 3.05
+    },
+    {
+      "name": "자동차",
+      "change_rate": 2.88
+    },
+    {
+      "name": "항공화물운송과물류",
+      "change_rate": 2.7
+    },
+    {
+      "name": "기계",
+      "change_rate": 2.58
+    },
+    {
+      "name": "디스플레이장비및부품",
+      "change_rate": 2.4
+    },
+    {
+      "name": "항공사",
+      "change_rate": 2.05
+    },
+    {
+      "name": "디스플레이패널",
+      "change_rate": 1.95
+    },
+    {
+      "name": "석유와가스",
+      "change_rate": 1.76
+    },
+    {
+      "name": "에너지장비및서비스",
+      "change_rate": 1.7
+    },
+    {
+      "name": "복합기업",
+      "change_rate": 1.69
+    },
+    {
+      "name": "복합유틸리티",
+      "change_rate": 1.57
     },
     {
       "name": "전자제품",
-      "change_rate": 0.16
+      "change_rate": 1.56
     },
     {
-      "name": "운송인프라",
-      "change_rate": 0.14
+      "name": "건축자재",
+      "change_rate": 1.37
     },
     {
-      "name": "담배",
-      "change_rate": 0.12
+      "name": "포장재",
+      "change_rate": 1.36
     },
     {
-      "name": "광고",
-      "change_rate": 0.07
+      "name": "기타",
+      "change_rate": 1.33
+    },
+    {
+      "name": "부동산",
+      "change_rate": 1.23
     },
     {
       "name": "핸드셋",
-      "change_rate": 0.05
+      "change_rate": 1.2
     },
     {
-      "name": "문구류",
-      "change_rate": 0.0
+      "name": "IT서비스",
+      "change_rate": 1.15
     },
     {
-      "name": "카드",
-      "change_rate": 0.0
+      "name": "창업투자",
+      "change_rate": 1.07
+    },
+    {
+      "name": "가구",
+      "change_rate": 0.88
+    },
+    {
+      "name": "담배",
+      "change_rate": 0.87
     },
     {
       "name": "생명보험",
+      "change_rate": 0.83
+    },
+    {
+      "name": "무역회사와판매업체",
+      "change_rate": 0.71
+    },
+    {
+      "name": "가스유틸리티",
+      "change_rate": 0.59
+    },
+    {
+      "name": "증권",
+      "change_rate": 0.57
+    },
+    {
+      "name": "섬유,의류,신발,호화품",
+      "change_rate": 0.55
+    },
+    {
+      "name": "교육서비스",
+      "change_rate": 0.43
+    },
+    {
+      "name": "해운사",
+      "change_rate": 0.29
+    },
+    {
+      "name": "백화점과일반상점",
+      "change_rate": 0.23
+    },
+    {
+      "name": "도로와철도운송",
+      "change_rate": 0.22
+    },
+    {
+      "name": "양방향미디어와서비스",
+      "change_rate": 0.19
+    },
+    {
+      "name": "비철금속",
+      "change_rate": 0.16
+    },
+    {
+      "name": "기타금융",
+      "change_rate": 0.12
+    },
+    {
+      "name": "음료",
+      "change_rate": 0.12
+    },
+    {
+      "name": "운송인프라",
+      "change_rate": 0.05
+    },
+    {
+      "name": "통신장비",
       "change_rate": -0.02
     },
     {
       "name": "전기유틸리티",
-      "change_rate": -0.08
+      "change_rate": -0.09
     },
     {
-      "name": "복합유틸리티",
-      "change_rate": -0.13
-    },
-    {
-      "name": "백화점과일반상점",
-      "change_rate": -0.13
-    },
-    {
-      "name": "IT서비스",
-      "change_rate": -0.15
-    },
-    {
-      "name": "제약",
-      "change_rate": -0.17
-    },
-    {
-      "name": "조선",
-      "change_rate": -0.19
-    },
-    {
-      "name": "사무용전자제품",
-      "change_rate": -0.19
-    },
-    {
-      "name": "은행",
-      "change_rate": -0.2
-    },
-    {
-      "name": "식품과기본식료품소매",
-      "change_rate": -0.22
-    },
-    {
-      "name": "식품",
-      "change_rate": -0.25
-    },
-    {
-      "name": "항공사",
-      "change_rate": -0.31
-    },
-    {
-      "name": "기타금융",
-      "change_rate": -0.31
-    },
-    {
-      "name": "가스유틸리티",
-      "change_rate": -0.37
-    },
-    {
-      "name": "창업투자",
-      "change_rate": -0.46
-    },
-    {
-      "name": "가정용품",
-      "change_rate": -0.51
-    },
-    {
-      "name": "항공화물운송과물류",
-      "change_rate": -0.54
-    },
-    {
-      "name": "음료",
-      "change_rate": -0.56
-    },
-    {
-      "name": "건강관리장비와용품",
-      "change_rate": -0.61
-    },
-    {
-      "name": "손해보험",
-      "change_rate": -0.62
-    },
-    {
-      "name": "화장품",
-      "change_rate": -0.72
-    },
-    {
-      "name": "비철금속",
-      "change_rate": -0.73
-    },
-    {
-      "name": "다각화된소비자서비스",
-      "change_rate": -0.74
-    },
-    {
-      "name": "가구",
-      "change_rate": -0.79
-    },
-    {
-      "name": "가정용기기와용품",
-      "change_rate": -0.83
-    },
-    {
-      "name": "자동차부품",
-      "change_rate": -0.83
-    },
-    {
-      "name": "증권",
-      "change_rate": -0.84
-    },
-    {
-      "name": "호텔,레스토랑,레저",
-      "change_rate": -0.91
-    },
-    {
-      "name": "전문소매",
-      "change_rate": -0.93
-    },
-    {
-      "name": "건축제품",
-      "change_rate": -1.01
-    },
-    {
-      "name": "에너지장비및서비스",
-      "change_rate": -1.06
-    },
-    {
-      "name": "건강관리업체및서비스",
-      "change_rate": -1.1
-    },
-    {
-      "name": "종이와목재",
-      "change_rate": -1.38
-    },
-    {
-      "name": "건설",
-      "change_rate": -1.42
-    },
-    {
-      "name": "생명과학도구및서비스",
-      "change_rate": -1.51
-    },
-    {
-      "name": "컴퓨터와주변기기",
-      "change_rate": -1.62
-    },
-    {
-      "name": "무선통신서비스",
-      "change_rate": -1.63
-    },
-    {
-      "name": "자동차",
-      "change_rate": -1.64
-    },
-    {
-      "name": "양방향미디어와서비스",
-      "change_rate": -1.73
+      "name": "광고",
+      "change_rate": -0.09
     },
     {
       "name": "다각화된통신서비스",
-      "change_rate": -1.74
+      "change_rate": -0.19
+    },
+    {
+      "name": "전기장비",
+      "change_rate": -0.21
+    },
+    {
+      "name": "은행",
+      "change_rate": -0.22
+    },
+    {
+      "name": "호텔,레스토랑,레저",
+      "change_rate": -0.22
+    },
+    {
+      "name": "식품과기본식료품소매",
+      "change_rate": -0.28
+    },
+    {
+      "name": "건축제품",
+      "change_rate": -0.28
+    },
+    {
+      "name": "문구류",
+      "change_rate": -0.34
+    },
+    {
+      "name": "전문소매",
+      "change_rate": -0.4
+    },
+    {
+      "name": "가정용기기와용품",
+      "change_rate": -0.5
+    },
+    {
+      "name": "식품",
+      "change_rate": -0.63
+    },
+    {
+      "name": "카드",
+      "change_rate": -0.74
+    },
+    {
+      "name": "화장품",
+      "change_rate": -0.76
+    },
+    {
+      "name": "가정용품",
+      "change_rate": -0.83
+    },
+    {
+      "name": "출판",
+      "change_rate": -0.91
+    },
+    {
+      "name": "상업서비스와공급품",
+      "change_rate": -1.05
+    },
+    {
+      "name": "손해보험",
+      "change_rate": -1.14
+    },
+    {
+      "name": "우주항공과국방",
+      "change_rate": -1.14
+    },
+    {
+      "name": "소프트웨어",
+      "change_rate": -1.21
     },
     {
       "name": "방송과엔터테인먼트",
-      "change_rate": -1.85
+      "change_rate": -1.49
+    },
+    {
+      "name": "게임엔터테인먼트",
+      "change_rate": -1.53
+    },
+    {
+      "name": "건강관리장비와용품",
+      "change_rate": -1.63
     },
     {
       "name": "건강관리기술",
-      "change_rate": -2.58
+      "change_rate": -1.64
+    },
+    {
+      "name": "제약",
+      "change_rate": -1.79
+    },
+    {
+      "name": "사무용전자제품",
+      "change_rate": -1.9
+    },
+    {
+      "name": "판매업체",
+      "change_rate": -1.92
+    },
+    {
+      "name": "생물공학",
+      "change_rate": -2.77
+    },
+    {
+      "name": "생명과학도구및서비스",
+      "change_rate": -3.69
+    },
+    {
+      "name": "컴퓨터와주변기기",
+      "change_rate": -3.91
+    },
+    {
+      "name": "건강관리업체및서비스",
+      "change_rate": -4.39
     }
   ]
 }
