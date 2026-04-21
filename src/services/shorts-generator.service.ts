@@ -4,19 +4,30 @@ import { bundle } from '@remotion/bundler';
 import { renderMedia, selectComposition } from '@remotion/renderer';
 import { ClovaTtsService } from './clova-tts.service.js';
 import { ShortsScriptService } from './shorts-script.service.js';
+import { YouTubeUploadService } from './youtube-upload.service.js';
 import { logger } from '../utils/logger.js';
-import type { BlogContent } from '../types/index.js';
-import type { PublishedPost } from '../types/index.js';
+import type { BlogContent, PublishedPost } from '../types/index.js';
 
 const OUTPUT_DIR = path.resolve('output/shorts');
 
 export class ShortsGeneratorService {
   private tts: ClovaTtsService;
   private scriptService: ShortsScriptService;
+  private youtube: YouTubeUploadService | null;
 
-  constructor(clovaClientId: string, clovaClientSecret: string) {
+  constructor(
+    clovaClientId: string,
+    clovaClientSecret: string,
+    youtubeClientId?: string,
+    youtubeClientSecret?: string,
+    youtubeRefreshToken?: string,
+  ) {
     this.tts = new ClovaTtsService(clovaClientId, clovaClientSecret);
     this.scriptService = new ShortsScriptService();
+    this.youtube = youtubeClientId && youtubeClientSecret && youtubeRefreshToken
+      ? new YouTubeUploadService(youtubeClientId, youtubeClientSecret, youtubeRefreshToken)
+      : null;
+    if (this.youtube) logger.info('[Shorts] YouTube auto-upload enabled');
   }
 
   async generate(content: BlogContent, post: PublishedPost, keyword: string): Promise<string | null> {
@@ -42,11 +53,7 @@ export class ShortsGeneratorService {
       const composition = await selectComposition({
         serveUrl: bundleLocation,
         id: 'Shorts',
-        inputProps: {
-          scenes: script.scenes,
-          audioSrc: audioPath,
-          keyword,
-        },
+        inputProps: { scenes: script.scenes, audioSrc: audioPath, keyword },
       });
 
       const outputPath = path.join(OUTPUT_DIR, `${safeSlug}.mp4`);
@@ -57,11 +64,7 @@ export class ShortsGeneratorService {
         serveUrl: bundleLocation,
         codec: 'h264',
         outputLocation: outputPath,
-        inputProps: {
-          scenes: script.scenes,
-          audioSrc: audioPath,
-          keyword,
-        },
+        inputProps: { scenes: script.scenes, audioSrc: audioPath, keyword },
         chromiumOptions: { disableWebSecurity: true },
         onProgress: ({ progress }) => {
           if (Math.round(progress * 100) % 20 === 0) {
@@ -71,6 +74,14 @@ export class ShortsGeneratorService {
       });
 
       logger.info(`[Shorts] MP4 saved: ${outputPath}`);
+
+      // YouTube 업로드
+      if (this.youtube) {
+        const postUrl = post.url || '';
+        const videoUrl = await this.youtube.upload(outputPath, script, postUrl);
+        if (videoUrl) logger.info(`[Shorts] YouTube: ${videoUrl}`);
+      }
+
       return outputPath;
     } catch (err) {
       logger.warn(`[Shorts] Generation failed (non-fatal): ${err instanceof Error ? err.message : err}`);
