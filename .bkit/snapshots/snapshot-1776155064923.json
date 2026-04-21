@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-03-17T00:57:20.213Z",
+  "timestamp": "2026-04-14T08:24:24.922Z",
   "reason": "compaction",
   "status": {
-    "version": "2.0",
-    "lastUpdated": "2026-03-17T00:56:45.777Z",
+    "version": "3.0",
+    "lastUpdated": "2026-04-14T00:34:08.358Z",
     "activeFeatures": [
       "auto-blog-wordpress",
       "config",
@@ -29,7 +29,13 @@
       "linkedin.service.ts",
       "facebook.service.ts",
       "twitter.service.ts",
-      "reddit-post.service.ts"
+      "reddit-post.service.ts",
+      "trade-engine-bridge.service.ts",
+      "scheduler",
+      "threads.service.ts",
+      "naver-finance-themes.service.ts",
+      "naver-market-data.service.ts",
+      "kis"
     ],
     "primaryFeature": "auto-blog-wordpress",
     "features": {
@@ -47,8 +53,25 @@
         "doCompleted": true,
         "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/index.ts",
         "timestamps": {
-          "lastUpdated": "2026-03-17T00:56:20.848Z"
-        }
+          "lastUpdated": "2026-04-14T00:34:08.357Z"
+        },
+        "stateMachine": {
+          "currentState": "do",
+          "previousState": null,
+          "stateHistory": [],
+          "retryCount": 0,
+          "maxRetries": 5,
+          "circuitBreakerOpen": false
+        },
+        "metrics": {
+          "qualityScore": null,
+          "conventionCompliance": null,
+          "apiCompliance": null,
+          "cycleTimeMs": null,
+          "iterationEfficiency": null
+        },
+        "phaseTimestamps": {},
+        "automationLevel": 2
       },
       "config": {
         "phase": "do",
@@ -59,9 +82,26 @@
         "documents": {},
         "timestamps": {
           "started": "2026-02-24T13:58:27.485Z",
-          "lastUpdated": "2026-03-17T00:37:31.647Z"
+          "lastUpdated": "2026-04-14T00:33:27.772Z"
         },
-        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/config/niches.ts"
+        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/config/niches.ts",
+        "stateMachine": {
+          "currentState": "do",
+          "previousState": null,
+          "stateHistory": [],
+          "retryCount": 0,
+          "maxRetries": 5,
+          "circuitBreakerOpen": false
+        },
+        "metrics": {
+          "qualityScore": null,
+          "conventionCompliance": null,
+          "apiCompliance": null,
+          "cycleTimeMs": null,
+          "iterationEfficiency": null
+        },
+        "phaseTimestamps": {},
+        "automationLevel": 2
       },
       "scripts": {
         "phase": "do",
@@ -72,9 +112,26 @@
         "documents": {},
         "timestamps": {
           "started": "2026-03-09T01:26:04.863Z",
-          "lastUpdated": "2026-03-17T00:18:06.524Z"
+          "lastUpdated": "2026-04-13T03:41:40.147Z"
         },
-        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/scripts/post-social-manual.ts"
+        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/scripts/fix-missing-images.ts",
+        "stateMachine": {
+          "currentState": "do",
+          "previousState": null,
+          "stateHistory": [],
+          "retryCount": 0,
+          "maxRetries": 5,
+          "circuitBreakerOpen": false
+        },
+        "metrics": {
+          "qualityScore": null,
+          "conventionCompliance": null,
+          "apiCompliance": null,
+          "cycleTimeMs": null,
+          "iterationEfficiency": null
+        },
+        "phaseTimestamps": {},
+        "automationLevel": 2
       },
       "wordpress.service.ts": {
         "phase": "do",
@@ -85,9 +142,26 @@
         "documents": {},
         "timestamps": {
           "started": "2026-03-09T02:04:01.095Z",
-          "lastUpdated": "2026-03-16T08:21:02.434Z"
+          "lastUpdated": "2026-04-09T23:58:46.685Z"
         },
-        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/wordpress.service.ts"
+        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/wordpress.service.ts",
+        "stateMachine": {
+          "currentState": "do",
+          "previousState": null,
+          "stateHistory": [],
+          "retryCount": 0,
+          "maxRetries": 5,
+          "circuitBreakerOpen": false
+        },
+        "metrics": {
+          "qualityScore": null,
+          "conventionCompliance": null,
+          "apiCompliance": null,
+          "cycleTimeMs": null,
+          "iterationEfficiency": null
+        },
+        "phaseTimestamps": {},
+        "automationLevel": 2
       },
       "seo.service.ts": {
         "phase": "do",
@@ -98,9 +172,26 @@
         "documents": {},
         "timestamps": {
           "started": "2026-03-09T02:05:25.652Z",
-          "lastUpdated": "2026-03-16T08:14:55.874Z"
+          "lastUpdated": "2026-04-07T01:45:43.584Z"
         },
-        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/seo.service.ts"
+        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/seo.service.ts",
+        "stateMachine": {
+          "currentState": "do",
+          "previousState": null,
+          "stateHistory": [],
+          "retryCount": 0,
+          "maxRetries": 5,
+          "circuitBreakerOpen": false
+        },
+        "metrics": {
+          "qualityScore": null,
+          "conventionCompliance": null,
+          "apiCompliance": null,
+          "cycleTimeMs": null,
+          "iterationEfficiency": null
+        },
+        "phaseTimestamps": {},
+        "automationLevel": 2
       },
       "content-generator.service.ts": {
         "phase": "do",
@@ -111,9 +202,26 @@
         "documents": {},
         "timestamps": {
           "started": "2026-03-09T02:06:54.047Z",
-          "lastUpdated": "2026-03-17T00:55:26.567Z"
+          "lastUpdated": "2026-04-14T00:15:57.769Z"
         },
-        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/content-generator.service.ts"
+        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/content-generator.service.ts",
+        "stateMachine": {
+          "currentState": "do",
+          "previousState": null,
+          "stateHistory": [],
+          "retryCount": 0,
+          "maxRetries": 5,
+          "circuitBreakerOpen": false
+        },
+        "metrics": {
+          "qualityScore": null,
+          "conventionCompliance": null,
+          "apiCompliance": null,
+          "cycleTimeMs": null,
+          "iterationEfficiency": null
+        },
+        "phaseTimestamps": {},
+        "automationLevel": 2
       },
       "keyword-research.service.ts": {
         "phase": "do",
@@ -124,9 +232,26 @@
         "documents": {},
         "timestamps": {
           "started": "2026-03-09T02:08:11.137Z",
-          "lastUpdated": "2026-03-17T00:38:17.242Z"
+          "lastUpdated": "2026-04-07T01:32:04.836Z"
         },
-        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/keyword-research.service.ts"
+        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/keyword-research.service.ts",
+        "stateMachine": {
+          "currentState": "do",
+          "previousState": null,
+          "stateHistory": [],
+          "retryCount": 0,
+          "maxRetries": 5,
+          "circuitBreakerOpen": false
+        },
+        "metrics": {
+          "qualityScore": null,
+          "conventionCompliance": null,
+          "apiCompliance": null,
+          "cycleTimeMs": null,
+          "iterationEfficiency": null
+        },
+        "phaseTimestamps": {},
+        "automationLevel": 2
       },
       "image-generator.service.ts": {
         "phase": "do",
@@ -137,9 +262,26 @@
         "documents": {},
         "timestamps": {
           "started": "2026-03-09T02:22:20.309Z",
-          "lastUpdated": "2026-03-17T00:56:45.776Z"
+          "lastUpdated": "2026-04-13T03:46:55.531Z"
         },
-        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/image-generator.service.ts"
+        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/image-generator.service.ts",
+        "stateMachine": {
+          "currentState": "do",
+          "previousState": null,
+          "stateHistory": [],
+          "retryCount": 0,
+          "maxRetries": 5,
+          "circuitBreakerOpen": false
+        },
+        "metrics": {
+          "qualityScore": null,
+          "conventionCompliance": null,
+          "apiCompliance": null,
+          "cycleTimeMs": null,
+          "iterationEfficiency": null
+        },
+        "phaseTimestamps": {},
+        "automationLevel": 2
       },
       "ga4-analytics.service.ts": {
         "phase": "do",
@@ -150,9 +292,26 @@
         "documents": {},
         "timestamps": {
           "started": "2026-03-09T03:23:53.784Z",
-          "lastUpdated": "2026-03-10T04:17:29.359Z"
+          "lastUpdated": "2026-03-31T06:34:01.184Z"
         },
-        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/ga4-analytics.service.ts"
+        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/ga4-analytics.service.ts",
+        "stateMachine": {
+          "currentState": "do",
+          "previousState": null,
+          "stateHistory": [],
+          "retryCount": 0,
+          "maxRetries": 5,
+          "circuitBreakerOpen": false
+        },
+        "metrics": {
+          "qualityScore": null,
+          "conventionCompliance": null,
+          "apiCompliance": null,
+          "cycleTimeMs": null,
+          "iterationEfficiency": null
+        },
+        "phaseTimestamps": {},
+        "automationLevel": 2
       },
       "pages.service.ts": {
         "phase": "do",
@@ -163,9 +322,26 @@
         "documents": {},
         "timestamps": {
           "started": "2026-03-09T03:34:22.189Z",
-          "lastUpdated": "2026-03-10T08:15:40.142Z"
+          "lastUpdated": "2026-03-31T06:28:52.442Z"
         },
-        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/pages.service.ts"
+        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/pages.service.ts",
+        "stateMachine": {
+          "currentState": "do",
+          "previousState": null,
+          "stateHistory": [],
+          "retryCount": 0,
+          "maxRetries": 5,
+          "circuitBreakerOpen": false
+        },
+        "metrics": {
+          "qualityScore": null,
+          "conventionCompliance": null,
+          "apiCompliance": null,
+          "cycleTimeMs": null,
+          "iterationEfficiency": null
+        },
+        "phaseTimestamps": {},
+        "automationLevel": 2
       },
       "gsc-analytics.service.ts": {
         "phase": "do",
@@ -176,9 +352,26 @@
         "documents": {},
         "timestamps": {
           "started": "2026-03-09T05:25:27.859Z",
-          "lastUpdated": "2026-03-10T08:11:16.741Z"
+          "lastUpdated": "2026-03-27T05:52:06.894Z"
         },
-        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/gsc-analytics.service.ts"
+        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/gsc-analytics.service.ts",
+        "stateMachine": {
+          "currentState": "do",
+          "previousState": null,
+          "stateHistory": [],
+          "retryCount": 0,
+          "maxRetries": 5,
+          "circuitBreakerOpen": false
+        },
+        "metrics": {
+          "qualityScore": null,
+          "conventionCompliance": null,
+          "apiCompliance": null,
+          "cycleTimeMs": null,
+          "iterationEfficiency": null
+        },
+        "phaseTimestamps": {},
+        "automationLevel": 2
       },
       "content-refresh.service.ts": {
         "phase": "do",
@@ -189,9 +382,26 @@
         "documents": {},
         "timestamps": {
           "started": "2026-03-09T06:52:05.000Z",
-          "lastUpdated": "2026-03-17T00:03:16.532Z"
+          "lastUpdated": "2026-04-14T00:01:37.079Z"
         },
-        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/content-refresh.service.ts"
+        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/content-refresh.service.ts",
+        "stateMachine": {
+          "currentState": "do",
+          "previousState": null,
+          "stateHistory": [],
+          "retryCount": 0,
+          "maxRetries": 5,
+          "circuitBreakerOpen": false
+        },
+        "metrics": {
+          "qualityScore": null,
+          "conventionCompliance": null,
+          "apiCompliance": null,
+          "cycleTimeMs": null,
+          "iterationEfficiency": null
+        },
+        "phaseTimestamps": {},
+        "automationLevel": 2
       },
       "topic-cluster.service.ts": {
         "phase": "do",
@@ -202,9 +412,26 @@
         "documents": {},
         "timestamps": {
           "started": "2026-03-09T08:02:44.180Z",
-          "lastUpdated": "2026-03-17T00:56:09.672Z"
+          "lastUpdated": "2026-03-31T06:48:03.836Z"
         },
-        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/topic-cluster.service.ts"
+        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/topic-cluster.service.ts",
+        "stateMachine": {
+          "currentState": "do",
+          "previousState": null,
+          "stateHistory": [],
+          "retryCount": 0,
+          "maxRetries": 5,
+          "circuitBreakerOpen": false
+        },
+        "metrics": {
+          "qualityScore": null,
+          "conventionCompliance": null,
+          "apiCompliance": null,
+          "cycleTimeMs": null,
+          "iterationEfficiency": null
+        },
+        "phaseTimestamps": {},
+        "automationLevel": 2
       },
       "devto.service.ts": {
         "phase": "do",
@@ -215,9 +442,26 @@
         "documents": {},
         "timestamps": {
           "started": "2026-03-09T08:05:15.772Z",
-          "lastUpdated": "2026-03-16T08:20:24.722Z"
+          "lastUpdated": "2026-03-31T06:33:45.562Z"
         },
-        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/devto.service.ts"
+        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/devto.service.ts",
+        "stateMachine": {
+          "currentState": "do",
+          "previousState": null,
+          "stateHistory": [],
+          "retryCount": 0,
+          "maxRetries": 5,
+          "circuitBreakerOpen": false
+        },
+        "metrics": {
+          "qualityScore": null,
+          "conventionCompliance": null,
+          "apiCompliance": null,
+          "cycleTimeMs": null,
+          "iterationEfficiency": null
+        },
+        "phaseTimestamps": {},
+        "automationLevel": 2
       },
       "hashnode.service.ts": {
         "phase": "do",
@@ -228,9 +472,26 @@
         "documents": {},
         "timestamps": {
           "started": "2026-03-09T08:05:28.839Z",
-          "lastUpdated": "2026-03-16T08:20:23.433Z"
+          "lastUpdated": "2026-03-31T06:33:50.281Z"
         },
-        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/hashnode.service.ts"
+        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/hashnode.service.ts",
+        "stateMachine": {
+          "currentState": "do",
+          "previousState": null,
+          "stateHistory": [],
+          "retryCount": 0,
+          "maxRetries": 5,
+          "circuitBreakerOpen": false
+        },
+        "metrics": {
+          "qualityScore": null,
+          "conventionCompliance": null,
+          "apiCompliance": null,
+          "cycleTimeMs": null,
+          "iterationEfficiency": null
+        },
+        "phaseTimestamps": {},
+        "automationLevel": 2
       },
       "pinterest.service.ts": {
         "phase": "do",
@@ -241,9 +502,26 @@
         "documents": {},
         "timestamps": {
           "started": "2026-03-09T08:46:48.741Z",
-          "lastUpdated": "2026-03-16T08:20:07.553Z"
+          "lastUpdated": "2026-03-31T06:22:27.502Z"
         },
-        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/pinterest.service.ts"
+        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/pinterest.service.ts",
+        "stateMachine": {
+          "currentState": "do",
+          "previousState": null,
+          "stateHistory": [],
+          "retryCount": 0,
+          "maxRetries": 5,
+          "circuitBreakerOpen": false
+        },
+        "metrics": {
+          "qualityScore": null,
+          "conventionCompliance": null,
+          "apiCompliance": null,
+          "cycleTimeMs": null,
+          "iterationEfficiency": null
+        },
+        "phaseTimestamps": {},
+        "automationLevel": 2
       },
       "reddit-trends.service.ts": {
         "phase": "do",
@@ -254,9 +532,26 @@
         "documents": {},
         "timestamps": {
           "started": "2026-03-10T00:19:48.137Z",
-          "lastUpdated": "2026-03-16T08:20:19.748Z"
+          "lastUpdated": "2026-03-31T06:30:27.734Z"
         },
-        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/reddit-trends.service.ts"
+        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/reddit-trends.service.ts",
+        "stateMachine": {
+          "currentState": "do",
+          "previousState": null,
+          "stateHistory": [],
+          "retryCount": 0,
+          "maxRetries": 5,
+          "circuitBreakerOpen": false
+        },
+        "metrics": {
+          "qualityScore": null,
+          "conventionCompliance": null,
+          "apiCompliance": null,
+          "cycleTimeMs": null,
+          "iterationEfficiency": null
+        },
+        "phaseTimestamps": {},
+        "automationLevel": 2
       },
       "google-trends.service.ts": {
         "phase": "do",
@@ -267,9 +562,26 @@
         "documents": {},
         "timestamps": {
           "started": "2026-03-10T01:18:54.230Z",
-          "lastUpdated": "2026-03-10T01:19:13.085Z"
+          "lastUpdated": "2026-03-27T01:50:32.418Z"
         },
-        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/google-trends.service.ts"
+        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/google-trends.service.ts",
+        "stateMachine": {
+          "currentState": "do",
+          "previousState": null,
+          "stateHistory": [],
+          "retryCount": 0,
+          "maxRetries": 5,
+          "circuitBreakerOpen": false
+        },
+        "metrics": {
+          "qualityScore": null,
+          "conventionCompliance": null,
+          "apiCompliance": null,
+          "cycleTimeMs": null,
+          "iterationEfficiency": null
+        },
+        "phaseTimestamps": {},
+        "automationLevel": 2
       },
       "fact-check.service.ts": {
         "phase": "do",
@@ -280,9 +592,26 @@
         "documents": {},
         "timestamps": {
           "started": "2026-03-10T04:15:37.066Z",
-          "lastUpdated": "2026-03-16T08:22:14.368Z"
+          "lastUpdated": "2026-03-31T06:35:07.403Z"
         },
-        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/fact-check.service.ts"
+        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/fact-check.service.ts",
+        "stateMachine": {
+          "currentState": "do",
+          "previousState": null,
+          "stateHistory": [],
+          "retryCount": 0,
+          "maxRetries": 5,
+          "circuitBreakerOpen": false
+        },
+        "metrics": {
+          "qualityScore": null,
+          "conventionCompliance": null,
+          "apiCompliance": null,
+          "cycleTimeMs": null,
+          "iterationEfficiency": null
+        },
+        "phaseTimestamps": {},
+        "automationLevel": 2
       },
       "korean-content.service.ts": {
         "phase": "do",
@@ -293,9 +622,26 @@
         "documents": {},
         "timestamps": {
           "started": "2026-03-10T05:23:39.436Z",
-          "lastUpdated": "2026-03-16T04:50:33.177Z"
+          "lastUpdated": "2026-03-31T06:28:08.125Z"
         },
-        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/korean-content.service.ts"
+        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/korean-content.service.ts",
+        "stateMachine": {
+          "currentState": "do",
+          "previousState": null,
+          "stateHistory": [],
+          "retryCount": 0,
+          "maxRetries": 5,
+          "circuitBreakerOpen": false
+        },
+        "metrics": {
+          "qualityScore": null,
+          "conventionCompliance": null,
+          "apiCompliance": null,
+          "cycleTimeMs": null,
+          "iterationEfficiency": null
+        },
+        "phaseTimestamps": {},
+        "automationLevel": 2
       },
       "data-visualization.service.ts": {
         "phase": "do",
@@ -306,9 +652,26 @@
         "documents": {},
         "timestamps": {
           "started": "2026-03-10T07:55:31.022Z",
-          "lastUpdated": "2026-03-16T08:20:28.136Z"
+          "lastUpdated": "2026-03-31T06:26:55.297Z"
         },
-        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/data-visualization.service.ts"
+        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/data-visualization.service.ts",
+        "stateMachine": {
+          "currentState": "do",
+          "previousState": null,
+          "stateHistory": [],
+          "retryCount": 0,
+          "maxRetries": 5,
+          "circuitBreakerOpen": false
+        },
+        "metrics": {
+          "qualityScore": null,
+          "conventionCompliance": null,
+          "apiCompliance": null,
+          "cycleTimeMs": null,
+          "iterationEfficiency": null
+        },
+        "phaseTimestamps": {},
+        "automationLevel": 2
       },
       "linkedin.service.ts": {
         "phase": "do",
@@ -321,7 +684,24 @@
           "started": "2026-03-14T13:10:23.552Z",
           "lastUpdated": "2026-03-16T01:38:23.576Z"
         },
-        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/linkedin.service.ts"
+        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/linkedin.service.ts",
+        "stateMachine": {
+          "currentState": "do",
+          "previousState": null,
+          "stateHistory": [],
+          "retryCount": 0,
+          "maxRetries": 5,
+          "circuitBreakerOpen": false
+        },
+        "metrics": {
+          "qualityScore": null,
+          "conventionCompliance": null,
+          "apiCompliance": null,
+          "cycleTimeMs": null,
+          "iterationEfficiency": null
+        },
+        "phaseTimestamps": {},
+        "automationLevel": 2
       },
       "facebook.service.ts": {
         "phase": "do",
@@ -332,9 +712,26 @@
         "documents": {},
         "timestamps": {
           "started": "2026-03-14T13:11:53.651Z",
-          "lastUpdated": "2026-03-16T08:20:21.572Z"
+          "lastUpdated": "2026-03-31T06:27:00.348Z"
         },
-        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/facebook.service.ts"
+        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/facebook.service.ts",
+        "stateMachine": {
+          "currentState": "do",
+          "previousState": null,
+          "stateHistory": [],
+          "retryCount": 0,
+          "maxRetries": 5,
+          "circuitBreakerOpen": false
+        },
+        "metrics": {
+          "qualityScore": null,
+          "conventionCompliance": null,
+          "apiCompliance": null,
+          "cycleTimeMs": null,
+          "iterationEfficiency": null
+        },
+        "phaseTimestamps": {},
+        "automationLevel": 2
       },
       "twitter.service.ts": {
         "phase": "do",
@@ -345,9 +742,26 @@
         "documents": {},
         "timestamps": {
           "started": "2026-03-14T13:12:58.983Z",
-          "lastUpdated": "2026-03-16T08:20:12.784Z"
+          "lastUpdated": "2026-03-31T06:27:19.501Z"
         },
-        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/twitter.service.ts"
+        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/twitter.service.ts",
+        "stateMachine": {
+          "currentState": "do",
+          "previousState": null,
+          "stateHistory": [],
+          "retryCount": 0,
+          "maxRetries": 5,
+          "circuitBreakerOpen": false
+        },
+        "metrics": {
+          "qualityScore": null,
+          "conventionCompliance": null,
+          "apiCompliance": null,
+          "cycleTimeMs": null,
+          "iterationEfficiency": null
+        },
+        "phaseTimestamps": {},
+        "automationLevel": 2
       },
       "reddit-post.service.ts": {
         "phase": "do",
@@ -358,9 +772,206 @@
         "documents": {},
         "timestamps": {
           "started": "2026-03-16T08:20:16.179Z",
-          "lastUpdated": "2026-03-16T08:20:16.179Z"
+          "lastUpdated": "2026-03-31T05:58:20.762Z"
         },
-        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/reddit-post.service.ts"
+        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/reddit-post.service.ts",
+        "stateMachine": {
+          "currentState": "do",
+          "previousState": null,
+          "stateHistory": [],
+          "retryCount": 0,
+          "maxRetries": 5,
+          "circuitBreakerOpen": false
+        },
+        "metrics": {
+          "qualityScore": null,
+          "conventionCompliance": null,
+          "apiCompliance": null,
+          "cycleTimeMs": null,
+          "iterationEfficiency": null
+        },
+        "phaseTimestamps": {},
+        "automationLevel": 2
+      },
+      "trade-engine-bridge.service.ts": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-03-27T06:54:37.865Z",
+          "lastUpdated": "2026-04-14T00:31:33.226Z"
+        },
+        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/trade-engine-bridge.service.ts",
+        "stateMachine": {
+          "currentState": "do",
+          "previousState": null,
+          "stateHistory": [],
+          "retryCount": 0,
+          "maxRetries": 5,
+          "circuitBreakerOpen": false
+        },
+        "metrics": {
+          "qualityScore": null,
+          "conventionCompliance": null,
+          "apiCompliance": null,
+          "cycleTimeMs": null,
+          "iterationEfficiency": null
+        },
+        "phaseTimestamps": {},
+        "automationLevel": 2
+      },
+      "scheduler": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-03-27T07:37:53.344Z",
+          "lastUpdated": "2026-03-30T06:10:50.426Z"
+        },
+        "lastFile": "/home/trendhunt/workspace/trade-engine/src/scheduler/market_scheduler.py",
+        "stateMachine": {
+          "currentState": "do",
+          "previousState": null,
+          "stateHistory": [],
+          "retryCount": 0,
+          "maxRetries": 5,
+          "circuitBreakerOpen": false
+        },
+        "metrics": {
+          "qualityScore": null,
+          "conventionCompliance": null,
+          "apiCompliance": null,
+          "cycleTimeMs": null,
+          "iterationEfficiency": null
+        },
+        "phaseTimestamps": {},
+        "automationLevel": 2
+      },
+      "threads.service.ts": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-03-31T06:27:07.647Z",
+          "lastUpdated": "2026-04-08T01:23:05.772Z"
+        },
+        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/threads.service.ts",
+        "stateMachine": {
+          "currentState": "do",
+          "previousState": null,
+          "stateHistory": [],
+          "retryCount": 0,
+          "maxRetries": 5,
+          "circuitBreakerOpen": false
+        },
+        "metrics": {
+          "qualityScore": null,
+          "conventionCompliance": null,
+          "apiCompliance": null,
+          "cycleTimeMs": null,
+          "iterationEfficiency": null
+        },
+        "phaseTimestamps": {},
+        "automationLevel": 2
+      },
+      "naver-finance-themes.service.ts": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-04-06T01:30:20.804Z",
+          "lastUpdated": "2026-04-06T01:30:20.804Z"
+        },
+        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/naver-finance-themes.service.ts",
+        "stateMachine": {
+          "currentState": "do",
+          "previousState": null,
+          "stateHistory": [],
+          "retryCount": 0,
+          "maxRetries": 5,
+          "circuitBreakerOpen": false
+        },
+        "metrics": {
+          "qualityScore": null,
+          "conventionCompliance": null,
+          "apiCompliance": null,
+          "cycleTimeMs": null,
+          "iterationEfficiency": null
+        },
+        "phaseTimestamps": {},
+        "automationLevel": 2
+      },
+      "naver-market-data.service.ts": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-04-07T00:18:23.867Z",
+          "lastUpdated": "2026-04-10T03:51:46.441Z"
+        },
+        "lastFile": "/home/trendhunt/workspace/auto-blog-wordpress/src/services/naver-market-data.service.ts",
+        "stateMachine": {
+          "currentState": "do",
+          "previousState": null,
+          "stateHistory": [],
+          "retryCount": 0,
+          "maxRetries": 5,
+          "circuitBreakerOpen": false
+        },
+        "metrics": {
+          "qualityScore": null,
+          "conventionCompliance": null,
+          "apiCompliance": null,
+          "cycleTimeMs": null,
+          "iterationEfficiency": null
+        },
+        "phaseTimestamps": {},
+        "automationLevel": 2
+      },
+      "kis": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-04-08T03:27:22.431Z",
+          "lastUpdated": "2026-04-08T03:27:22.431Z"
+        },
+        "lastFile": "/home/trendhunt/workspace/trade-engine/src/api/kis/client.py",
+        "stateMachine": {
+          "currentState": "do",
+          "previousState": null,
+          "stateHistory": [],
+          "retryCount": 0,
+          "maxRetries": 5,
+          "circuitBreakerOpen": false
+        },
+        "metrics": {
+          "qualityScore": null,
+          "conventionCompliance": null,
+          "apiCompliance": null,
+          "cycleTimeMs": null,
+          "iterationEfficiency": null
+        },
+        "phaseTimestamps": {},
+        "automationLevel": 2
       }
     },
     "pipeline": {
@@ -371,7 +982,7 @@
     "session": {
       "startedAt": "2026-02-24T10:12:24.092Z",
       "onboardingCompleted": true,
-      "lastActivity": "2026-03-17T00:56:45.777Z"
+      "lastActivity": "2026-04-14T00:34:08.358Z"
     },
     "history": [
       {
@@ -9928,7 +10539,5585 @@
         "feature": "image-generator.service.ts",
         "phase": "do",
         "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T00:59:54.064Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:00:05.514Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:00:11.962Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:00:17.934Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:00:40.970Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:00:47.273Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:00:55.408Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:01:03.440Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:01:12.448Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:01:20.387Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:01:26.530Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:01:39.710Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:01:46.582Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:01:53.575Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:02:27.615Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:03:02.348Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:03:43.774Z",
+        "feature": "pinterest.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:03:44.992Z",
+        "feature": "twitter.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:04:29.127Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:04:38.680Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:05:23.573Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:17:32.301Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:24:47.732Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:25:08.716Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:25:24.932Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:25:36.027Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:25:43.634Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:26:02.611Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:26:09.149Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:26:18.910Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:26:29.510Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:26:35.049Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:26:49.130Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:27:03.230Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:30:46.286Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:30:56.723Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:31:01.350Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:31:14.603Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:31:27.023Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:31:42.977Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:31:48.801Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:35:37.483Z",
+        "feature": "topic-cluster.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:35:51.365Z",
+        "feature": "topic-cluster.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:36:06.310Z",
+        "feature": "topic-cluster.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:36:13.661Z",
+        "feature": "topic-cluster.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:36:25.918Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:36:33.681Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:49:49.488Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:49:51.956Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:49:59.701Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:50:06.451Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:50:15.609Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:50:24.138Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:50:34.456Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:50:41.072Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T01:50:47.521Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T02:08:07.042Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T02:09:00.302Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T02:09:25.944Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T02:10:06.844Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T02:10:24.529Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T02:10:58.608Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T02:11:05.130Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T02:11:40.383Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T02:12:19.148Z",
+        "feature": "topic-cluster.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T02:12:30.079Z",
+        "feature": "topic-cluster.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T02:12:38.963Z",
+        "feature": "topic-cluster.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T02:12:50.331Z",
+        "feature": "topic-cluster.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T02:12:59.169Z",
+        "feature": "topic-cluster.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T02:13:10.321Z",
+        "feature": "topic-cluster.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T02:13:39.366Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T02:14:15.000Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T02:14:47.581Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T02:24:09.580Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T02:25:13.462Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T02:25:43.715Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T02:26:09.976Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T02:26:19.183Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T02:26:27.980Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T02:26:54.245Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T02:27:06.337Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T02:27:15.176Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T02:27:23.469Z",
+        "feature": "topic-cluster.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T02:27:30.224Z",
+        "feature": "topic-cluster.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T02:27:39.341Z",
+        "feature": "topic-cluster.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T02:27:49.073Z",
+        "feature": "topic-cluster.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T02:28:00.865Z",
+        "feature": "topic-cluster.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T02:28:40.950Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T02:29:03.309Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T02:29:13.157Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T02:29:31.349Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T03:01:13.425Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T03:01:13.862Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T03:01:15.454Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T03:01:22.095Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T03:01:26.529Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T03:01:42.140Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T03:01:50.600Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T03:02:21.418Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T03:02:27.402Z",
+        "feature": "topic-cluster.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T03:02:45.449Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T03:02:48.500Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T03:20:39.218Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T03:20:41.010Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T03:20:42.597Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T03:20:43.729Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T03:21:08.506Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T03:21:47.470Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T03:22:19.491Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T03:23:17.217Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T03:23:45.024Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T03:24:04.567Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T03:24:28.383Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T03:24:40.671Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T03:26:02.412Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T03:26:03.568Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T03:26:06.482Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T03:26:38.448Z",
+        "feature": "topic-cluster.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T03:26:44.123Z",
+        "feature": "topic-cluster.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T03:26:55.117Z",
+        "feature": "topic-cluster.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T03:26:58.370Z",
+        "feature": "topic-cluster.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T03:27:15.629Z",
+        "feature": "korean-content.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T03:27:42.053Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T03:28:11.608Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T03:29:12.695Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T03:29:13.964Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T03:30:01.077Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:08:21.388Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:08:56.683Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:09:11.927Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:09:20.216Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:09:30.906Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:09:39.629Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:10:17.004Z",
+        "feature": "topic-cluster.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:10:28.579Z",
+        "feature": "topic-cluster.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:10:51.695Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:11:26.906Z",
+        "feature": "content-refresh.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:17:30.177Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:18:00.231Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:18:37.189Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:19:36.931Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:19:53.249Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:20:06.027Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:20:17.474Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:21:00.456Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:21:12.762Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:21:23.244Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:40:47.816Z",
+        "feature": "fact-check.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:40:53.204Z",
+        "feature": "fact-check.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:41:03.809Z",
+        "feature": "fact-check.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:41:20.858Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:41:26.825Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:41:35.461Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:41:58.231Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:42:07.723Z",
+        "feature": "fact-check.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:42:33.967Z",
+        "feature": "fact-check.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:49:22.274Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:49:29.323Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:49:34.198Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:49:49.988Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:50:02.427Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:50:24.964Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:51:07.385Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:51:51.121Z",
+        "feature": "content-refresh.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:57:26.798Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:57:39.896Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:57:56.589Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:58:10.381Z",
+        "feature": "pages.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:58:50.593Z",
+        "feature": "pages.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:59:13.829Z",
+        "feature": "korean-content.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:59:31.943Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T04:59:46.400Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T05:00:00.594Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T05:00:41.028Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T05:01:12.082Z",
+        "feature": "pages.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T05:23:10.976Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T05:23:17.652Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T05:23:24.776Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T05:23:46.163Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T05:24:14.428Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T05:24:57.992Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T05:25:12.451Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T05:25:34.018Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T05:25:49.020Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T05:26:04.073Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T05:26:43.245Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T05:27:38.682Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T05:28:31.961Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T05:29:00.833Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T05:29:18.161Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T05:30:06.485Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T05:30:51.752Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T05:31:49.740Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T05:40:59.598Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T05:41:09.111Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T05:41:44.076Z",
+        "feature": "fact-check.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T05:42:20.123Z",
+        "feature": "fact-check.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T05:42:29.817Z",
+        "feature": "fact-check.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T05:43:35.107Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T05:44:15.260Z",
+        "feature": "fact-check.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T05:44:53.749Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T05:47:58.074Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T05:49:03.853Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T05:49:31.882Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T05:49:43.169Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T05:49:51.205Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T05:50:15.303Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T06:02:23.575Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T06:02:34.027Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T06:02:37.166Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T06:02:40.003Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T06:02:42.299Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T06:02:51.516Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T06:02:58.265Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T06:03:09.308Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T06:03:19.573Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T06:03:31.644Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T06:04:09.806Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T06:04:11.472Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T06:05:18.095Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T06:05:18.203Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T06:27:54.400Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T06:29:33.215Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T06:30:02.668Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T06:30:11.390Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T06:30:58.415Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T06:32:15.819Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T06:34:07.224Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T06:34:38.439Z",
+        "feature": "korean-content.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T06:35:15.644Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T06:36:17.933Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T06:44:33.184Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T06:44:46.842Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T06:44:57.421Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T06:45:25.930Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T06:45:58.749Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T06:46:03.939Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T06:46:09.661Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T06:46:28.826Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T06:46:48.374Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T06:49:01.077Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T06:49:18.739Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-17T06:49:37.576Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:03:31.113Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:03:37.779Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:04:13.282Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:04:18.415Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:04:33.480Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:04:43.646Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:05:03.675Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:05:19.178Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:05:51.799Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:06:24.860Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:06:55.398Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:07:18.243Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:07:39.247Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:07:55.635Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:08:37.120Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:09:01.803Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:09:07.755Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:09:13.271Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:09:37.114Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:09:55.631Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:10:32.060Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:10:46.912Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:11:02.368Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:11:41.452Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:17:54.268Z",
+        "feature": "google-trends.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:18:02.836Z",
+        "feature": "google-trends.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:18:12.182Z",
+        "feature": "google-trends.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:18:18.355Z",
+        "feature": "google-trends.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:18:24.905Z",
+        "feature": "google-trends.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:18:33.301Z",
+        "feature": "google-trends.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:18:40.881Z",
+        "feature": "google-trends.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:18:46.162Z",
+        "feature": "google-trends.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:19:15.205Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:19:40.465Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:20:05.772Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:31:56.099Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:32:03.548Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:32:08.374Z",
+        "feature": "fact-check.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:32:17.758Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:32:18.746Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:32:29.000Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:32:51.140Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:32:58.015Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:33:04.681Z",
+        "feature": "fact-check.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:33:42.672Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:33:49.927Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:33:55.985Z",
+        "feature": "fact-check.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:34:17.773Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:34:42.456Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:35:28.083Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:53:16.997Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:53:54.606Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:54:25.560Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:54:49.617Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:54:59.408Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:55:10.011Z",
+        "feature": "korean-content.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:55:15.260Z",
+        "feature": "korean-content.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:56:05.540Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:56:13.630Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T00:56:28.817Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T01:05:11.795Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T01:05:22.516Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T01:05:48.240Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T01:06:06.904Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T01:06:34.861Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T01:06:47.083Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T01:06:54.599Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T01:07:37.824Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T01:07:44.595Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T01:08:07.156Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T01:08:21.999Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T01:08:47.369Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T01:08:57.637Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T01:09:12.630Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T01:09:22.247Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T01:09:29.001Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T01:10:10.413Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T01:10:16.932Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T01:10:44.913Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T01:19:26.383Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T01:20:18.334Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T01:20:34.402Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T01:20:49.836Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T01:21:08.551Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T01:21:20.667Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T01:21:48.836Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T01:22:07.446Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T01:22:16.943Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T01:22:32.269Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T01:22:41.834Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T01:23:18.980Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T01:23:42.210Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T04:18:14.792Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T04:18:21.102Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T04:18:25.988Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T04:18:31.598Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T04:19:01.063Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T04:19:17.477Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T04:19:31.514Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T04:19:47.032Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T04:20:23.613Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T04:20:34.070Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T04:20:41.378Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T04:21:11.951Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T04:21:28.739Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T04:21:43.459Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T04:22:03.270Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T04:22:08.872Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T04:22:14.234Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T04:54:20.851Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T04:54:43.074Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T04:55:08.397Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T04:55:52.024Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T04:56:23.014Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-18T04:56:49.323Z",
+        "feature": "korean-content.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T00:08:23.420Z",
+        "feature": "seo.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T00:09:30.977Z",
+        "feature": "facebook.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T00:09:39.300Z",
+        "feature": "facebook.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T00:11:57.569Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T01:15:45.309Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T01:50:03.361Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T01:50:11.690Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T01:50:20.142Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T01:50:27.731Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T01:50:33.668Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T01:51:08.326Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T01:51:16.293Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T01:51:52.489Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T01:52:07.756Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T01:53:17.814Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T01:56:52.725Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T01:57:02.149Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T01:57:37.029Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T01:57:47.886Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T02:04:28.519Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T02:04:47.537Z",
+        "feature": "fact-check.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T02:05:00.746Z",
+        "feature": "fact-check.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T02:05:24.276Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T02:05:47.009Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T02:05:56.178Z",
+        "feature": "fact-check.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T02:06:12.687Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T02:06:21.385Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T02:07:01.143Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T02:07:28.312Z",
+        "feature": "fact-check.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T02:07:34.676Z",
+        "feature": "fact-check.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T02:11:41.231Z",
+        "feature": "fact-check.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T02:11:52.522Z",
+        "feature": "fact-check.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T02:11:58.995Z",
+        "feature": "fact-check.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T02:15:09.246Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T02:15:26.126Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T02:15:33.826Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T02:15:43.532Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T02:16:12.858Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T02:16:23.856Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T02:19:01.722Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T02:19:13.551Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T02:19:28.840Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T02:19:35.525Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T02:19:40.686Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T02:19:56.700Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T02:20:05.585Z",
+        "feature": "fact-check.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T02:20:16.090Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T03:21:23.468Z",
+        "feature": "pinterest.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T03:21:35.585Z",
+        "feature": "pinterest.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T03:21:54.413Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T03:22:03.833Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T03:22:13.538Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T03:22:31.201Z",
+        "feature": "korean-content.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T04:37:41.855Z",
+        "feature": "pages.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T04:37:50.515Z",
+        "feature": "pages.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T04:38:07.466Z",
+        "feature": "pages.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T04:38:24.908Z",
+        "feature": "pages.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T04:38:36.038Z",
+        "feature": "pages.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T04:38:55.425Z",
+        "feature": "pages.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T04:39:03.059Z",
+        "feature": "reddit-trends.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-19T05:00:52.806Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-23T00:13:12.127Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-24T00:05:23.329Z",
+        "feature": "content-refresh.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-24T00:05:33.628Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-24T00:05:56.082Z",
+        "feature": "content-refresh.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-26T00:05:26.054Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-26T00:06:12.509Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-26T00:07:00.974Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-26T00:11:24.174Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-26T00:11:47.969Z",
+        "feature": "content-refresh.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-26T00:12:14.357Z",
+        "feature": "content-refresh.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-26T00:12:22.083Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-26T00:12:56.198Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-26T00:20:13.982Z",
+        "feature": "content-refresh.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-26T00:27:37.364Z",
+        "feature": "content-refresh.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-26T00:33:53.931Z",
+        "feature": "content-refresh.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T00:01:25.975Z",
+        "feature": "fact-check.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T01:40:58.552Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T01:41:20.062Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T01:41:31.055Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T01:42:04.043Z",
+        "feature": "google-trends.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T01:42:11.947Z",
+        "feature": "google-trends.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T01:42:30.684Z",
+        "feature": "pinterest.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T01:42:38.265Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T01:42:58.753Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T01:43:12.831Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T01:49:20.681Z",
+        "feature": "google-trends.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T01:49:34.225Z",
+        "feature": "google-trends.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T01:49:53.672Z",
+        "feature": "google-trends.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T01:50:06.059Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T01:50:21.843Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T01:50:32.418Z",
+        "feature": "google-trends.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T02:23:12.946Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T02:23:22.297Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T05:47:34.017Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T05:48:58.564Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T05:49:04.896Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T05:49:21.969Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T05:49:53.483Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T05:50:12.258Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T05:50:33.347Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T05:50:55.276Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T05:51:12.322Z",
+        "feature": "gsc-analytics.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T05:51:49.537Z",
+        "feature": "gsc-analytics.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T05:52:06.894Z",
+        "feature": "gsc-analytics.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T05:52:25.375Z",
+        "feature": "facebook.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T06:53:44.608Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T06:54:37.865Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T06:58:37.188Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T06:59:58.323Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:00:45.678Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:00:53.120Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:00:59.911Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:01:22.452Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:01:29.536Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:01:37.948Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:02:06.415Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:02:14.069Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:02:52.243Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:04:18.661Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:07:57.402Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:08:09.378Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:08:22.374Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:09:10.420Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:09:21.814Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:09:37.951Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:10:00.783Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:10:40.218Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:11:14.694Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:11:26.475Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:12:52.707Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:13:45.534Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:13:54.869Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:21:59.843Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:22:08.426Z",
+        "feature": "pinterest.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:22:19.557Z",
+        "feature": "pinterest.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:22:30.007Z",
+        "feature": "reddit-trends.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:23:16.941Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:25:35.591Z",
+        "feature": "fact-check.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:28:24.698Z",
+        "feature": "fact-check.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:29:01.190Z",
+        "feature": "fact-check.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:31:07.998Z",
+        "feature": "pages.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:31:15.281Z",
+        "feature": "pages.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:31:21.159Z",
+        "feature": "pages.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:31:37.138Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:31:47.627Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:31:56.486Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:32:15.831Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:32:38.688Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:32:59.945Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:33:09.315Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:33:44.857Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:33:51.171Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:34:28.746Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:37:53.344Z",
+        "feature": "scheduler",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:38:25.023Z",
+        "feature": "scheduler",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:39:07.159Z",
+        "feature": "scheduler",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:40:51.161Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:40:57.870Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:41:14.525Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:43:04.627Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:43:39.936Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:44:04.517Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:44:37.112Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:44:54.938Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:45:32.964Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:45:51.119Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:46:12.640Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:49:00.726Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:49:07.295Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:49:24.260Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:49:45.998Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T07:50:02.462Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T08:34:28.505Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T08:35:26.477Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T08:36:06.997Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T08:36:49.185Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T08:37:00.620Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T08:39:25.520Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T08:39:50.416Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-27T08:40:24.305Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T00:02:15.388Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T00:02:31.405Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T00:02:51.198Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T00:03:13.863Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T00:06:06.298Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T00:07:02.617Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T00:07:33.953Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T00:08:00.936Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T00:08:22.112Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T00:08:57.159Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T00:09:20.794Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T00:55:15.375Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T00:55:46.290Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T00:57:23.228Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T00:57:59.876Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T00:58:12.113Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T00:58:55.127Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T01:15:42.984Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T02:01:57.926Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T02:02:16.175Z",
+        "feature": "seo.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T02:02:27.573Z",
+        "feature": "seo.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T02:02:40.201Z",
+        "feature": "seo.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T02:03:07.632Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T02:19:12.642Z",
+        "feature": "seo.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T02:19:37.107Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T03:11:42.055Z",
+        "feature": "seo.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T03:15:28.236Z",
+        "feature": "seo.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T03:25:40.745Z",
+        "feature": "seo.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T03:30:53.838Z",
+        "feature": "seo.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T03:31:20.050Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T03:31:38.072Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T03:42:52.405Z",
+        "feature": "seo.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T03:43:01.901Z",
+        "feature": "seo.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T03:43:11.328Z",
+        "feature": "seo.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T03:43:21.389Z",
+        "feature": "seo.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T03:46:45.883Z",
+        "feature": "pages.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T03:47:11.958Z",
+        "feature": "pages.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T03:47:36.840Z",
+        "feature": "pages.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T04:22:33.316Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T04:33:31.727Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T04:36:40.886Z",
+        "feature": "pages.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T04:37:10.077Z",
+        "feature": "pages.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T04:37:53.474Z",
+        "feature": "pages.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T04:39:37.730Z",
+        "feature": "pages.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T04:41:11.127Z",
+        "feature": "pages.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T04:46:34.693Z",
+        "feature": "pages.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T04:48:49.428Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T04:49:08.924Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T04:49:40.767Z",
+        "feature": "seo.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T04:49:59.604Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T04:50:18.267Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T04:56:59.985Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T04:57:32.492Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T04:57:55.715Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T04:58:08.240Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T04:58:20.017Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T04:58:35.087Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T04:58:47.998Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T04:59:03.044Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T05:00:42.869Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T05:03:20.711Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T05:03:36.424Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T05:03:46.091Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T05:04:53.797Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T05:07:49.201Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T05:08:08.892Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T05:08:25.762Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T05:08:39.834Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T05:08:59.707Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T05:09:32.281Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T05:09:52.929Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T05:14:35.102Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T05:14:56.978Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T05:15:28.638Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T05:15:41.497Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T05:15:53.358Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T05:16:04.284Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T05:16:15.578Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T05:16:39.220Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T05:16:51.913Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T05:17:02.834Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T05:17:24.485Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T05:18:09.452Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T05:18:50.159Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T05:21:41.522Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T05:21:55.430Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T05:23:52.391Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T05:28:49.887Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T05:48:09.068Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T05:54:43.565Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T05:57:44.724Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T05:58:13.503Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T05:59:21.860Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T05:59:37.619Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T05:59:58.530Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T06:00:14.510Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T06:01:07.358Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T06:04:15.750Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T06:04:44.583Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T06:05:06.450Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T06:10:29.855Z",
+        "feature": "scheduler",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T06:10:50.426Z",
+        "feature": "scheduler",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T06:11:07.957Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T06:11:25.638Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T06:30:16.873Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T06:30:26.348Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T06:30:33.232Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T06:30:56.697Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T06:31:03.409Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T06:31:18.445Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T06:31:31.853Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T06:34:48.557Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T06:35:19.095Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T06:35:25.816Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T06:35:38.028Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T06:35:48.196Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T06:35:55.524Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T06:36:01.893Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T06:36:33.647Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T06:36:53.525Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T06:36:59.185Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T06:37:07.688Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T08:22:22.008Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T08:27:22.101Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T08:27:30.353Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T08:27:35.332Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T08:27:42.299Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T08:27:43.490Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T09:00:27.288Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T23:59:15.271Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-30T23:59:24.502Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T00:27:21.382Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T00:34:07.212Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T00:43:16.709Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T01:30:35.548Z",
+        "feature": "seo.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T01:33:18.756Z",
+        "feature": "seo.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T01:40:12.980Z",
+        "feature": "pages.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T01:40:22.409Z",
+        "feature": "pages.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T01:40:30.266Z",
+        "feature": "pages.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T01:43:22.148Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T01:52:16.684Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T04:43:39.872Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T04:43:49.790Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T04:43:55.341Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T04:44:01.676Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T04:44:10.726Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T04:46:40.668Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T04:50:00.611Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T04:55:25.903Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T04:55:32.829Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T04:56:01.404Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T04:56:21.463Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T04:56:41.622Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T04:56:54.196Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T04:57:09.146Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T04:57:13.735Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T04:57:20.267Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T05:00:14.963Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T05:47:25.801Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T05:47:53.547Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T05:48:00.786Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T05:48:08.972Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T05:48:14.404Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T05:48:18.590Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T05:49:28.294Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T05:49:55.361Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T05:50:03.740Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T05:50:55.258Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T05:51:44.763Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T05:51:54.389Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T05:53:10.115Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T05:53:26.664Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T05:53:34.825Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T05:55:34.789Z",
+        "feature": "topic-cluster.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T05:56:50.967Z",
+        "feature": "topic-cluster.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T05:57:33.484Z",
+        "feature": "content-refresh.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T05:58:01.699Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T05:58:12.291Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T05:58:20.762Z",
+        "feature": "reddit-post.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T05:58:31.033Z",
+        "feature": "reddit-trends.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T05:58:36.345Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T05:58:44.160Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T05:58:59.793Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T05:59:05.066Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T05:59:30.605Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T05:59:36.601Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:00:02.187Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:00:23.879Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:00:32.905Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:00:48.759Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:01:05.380Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:01:24.793Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:01:34.111Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:01:46.623Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:02:02.060Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:02:17.640Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:02:24.892Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:02:44.360Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:03:10.016Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:03:31.852Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:03:52.501Z",
+        "feature": "pages.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:06:50.026Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:06:54.808Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:06:59.983Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:07:16.715Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:07:34.797Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:07:42.032Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:08:33.112Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:08:51.972Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:08:58.188Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:09:28.724Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:09:42.745Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:09:53.061Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:09:58.507Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:10:07.612Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:10:18.284Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:14:04.293Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:14:18.947Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:14:30.575Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:14:41.010Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:14:50.198Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:18:19.832Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:18:58.635Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:19:30.889Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:21:54.820Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:22:06.824Z",
+        "feature": "pinterest.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:22:13.669Z",
+        "feature": "pinterest.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:22:19.224Z",
+        "feature": "pinterest.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:22:27.502Z",
+        "feature": "pinterest.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:22:39.165Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:22:48.342Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:22:58.658Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:23:04.867Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:23:11.934Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:23:18.580Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:26:42.799Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:26:55.297Z",
+        "feature": "data-visualization.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:27:00.348Z",
+        "feature": "facebook.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:27:07.647Z",
+        "feature": "threads.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:27:19.501Z",
+        "feature": "twitter.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:27:25.908Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:27:36.535Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:28:08.125Z",
+        "feature": "korean-content.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:28:52.442Z",
+        "feature": "pages.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:29:08.024Z",
+        "feature": "seo.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:29:33.724Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:29:44.857Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:29:59.605Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:30:04.214Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:30:10.027Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:30:19.107Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:30:27.734Z",
+        "feature": "reddit-trends.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:30:41.019Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:30:57.098Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:31:02.192Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:31:13.414Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:31:30.642Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:31:40.562Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:32:10.910Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:32:16.227Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:32:26.708Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:32:32.648Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:32:45.497Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:32:59.422Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:33:14.202Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:33:21.137Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:33:45.562Z",
+        "feature": "devto.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:33:50.281Z",
+        "feature": "hashnode.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:34:01.184Z",
+        "feature": "ga4-analytics.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:34:28.902Z",
+        "feature": "fact-check.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:34:42.447Z",
+        "feature": "fact-check.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:34:49.286Z",
+        "feature": "fact-check.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:35:07.403Z",
+        "feature": "fact-check.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:35:20.744Z",
+        "feature": "content-refresh.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:35:49.045Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:36:13.343Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:36:50.979Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:40:01.198Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:40:16.072Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:43:02.808Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:43:12.337Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:44:15.423Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:48:03.836Z",
+        "feature": "topic-cluster.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:48:08.691Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:48:17.939Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:48:45.539Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:52:02.766Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T06:52:06.871Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-31T07:17:55.207Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-01T00:14:17.341Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-01T00:46:32.180Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-01T00:46:37.973Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-01T01:11:44.852Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-01T01:15:26.808Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-02T00:06:37.312Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-02T00:06:43.801Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-03T00:03:57.074Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-03T00:04:14.955Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-03T01:19:08.308Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-03T01:21:40.529Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-06T00:18:19.913Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-06T00:18:29.662Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-06T01:30:20.804Z",
+        "feature": "naver-finance-themes.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-06T01:30:24.673Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-06T01:30:28.035Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-06T01:30:31.342Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-06T01:30:45.478Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-06T01:33:24.725Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-06T01:33:30.174Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-06T01:33:33.941Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-06T01:33:37.580Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-06T01:33:40.802Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-07T00:08:37.418Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-07T00:18:23.868Z",
+        "feature": "naver-market-data.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-07T00:18:34.247Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-07T00:18:43.255Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-07T00:18:51.042Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-07T00:18:56.465Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-07T01:31:55.064Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-07T01:32:04.836Z",
+        "feature": "keyword-research.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-07T01:45:43.584Z",
+        "feature": "seo.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-07T03:46:04.563Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-07T03:46:29.857Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-07T03:46:34.685Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-07T03:47:07.417Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-07T04:00:26.224Z",
+        "feature": "threads.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-07T04:01:18.822Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-07T04:01:22.070Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-07T04:01:25.476Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-07T04:01:29.411Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-07T04:02:15.663Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-07T04:02:19.355Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-07T04:02:22.830Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-07T04:02:27.220Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-07T04:02:35.831Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-07T04:02:44.343Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-08T01:23:05.772Z",
+        "feature": "threads.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-08T01:24:51.719Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-08T01:28:07.633Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-08T01:28:17.426Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-08T01:31:03.140Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-08T03:27:22.431Z",
+        "feature": "kis",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-09T07:39:34.179Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-09T23:58:40.349Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-09T23:58:46.686Z",
+        "feature": "wordpress.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-10T03:30:58.381Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-10T03:33:43.214Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-10T03:35:51.731Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-10T03:51:26.929Z",
+        "feature": "naver-market-data.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-10T03:51:46.442Z",
+        "feature": "naver-market-data.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-10T03:51:52.732Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-10T03:51:55.821Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-10T03:52:00.782Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-10T03:52:05.021Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-10T03:52:10.358Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-10T03:52:34.047Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-10T03:52:48.009Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-10T03:53:09.804Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-10T04:17:39.923Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-10T04:18:13.578Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-13T03:33:25.936Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-13T03:33:30.724Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-13T03:38:13.803Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-13T03:38:19.202Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-13T03:38:27.656Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-13T03:41:40.148Z",
+        "feature": "scripts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-13T03:46:55.532Z",
+        "feature": "image-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-14T00:01:25.677Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-14T00:01:29.430Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-14T00:01:37.080Z",
+        "feature": "content-refresh.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-14T00:14:31.499Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-14T00:14:57.320Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-14T00:15:06.053Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-14T00:15:11.593Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-14T00:15:16.980Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-14T00:15:23.276Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-14T00:15:40.745Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-14T00:15:47.655Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-14T00:15:57.770Z",
+        "feature": "content-generator.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-14T00:30:35.214Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-14T00:30:42.268Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-14T00:30:47.126Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-14T00:30:59.534Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-14T00:31:33.228Z",
+        "feature": "trade-engine-bridge.service.ts",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-14T00:33:18.807Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-14T00:33:27.773Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-14T00:33:52.775Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-04-14T00:34:08.358Z",
+        "feature": "auto-blog-wordpress",
+        "phase": "do",
+        "action": "updated"
       }
-    ]
+    ],
+    "stateMachine": {
+      "defaultWorkflow": "default",
+      "activeWorkflows": {},
+      "totalTransitions": 0
+    },
+    "automation": {
+      "globalLevel": 2,
+      "trustScore": 40,
+      "pendingApprovals": 0,
+      "lastGateResult": null
+    },
+    "team": {
+      "enabled": true,
+      "stateFile": ".bkit/runtime/agent-state.json",
+      "eventsFile": ".bkit/runtime/agent-events.jsonl"
+    }
   }
 }
