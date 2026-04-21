@@ -1418,7 +1418,8 @@ Return raw HTML only, no markdown code blocks or JSON wrapper.`;
 
   private callClaudeCli(systemPrompt: string, userPrompt: string): string {
     const combined = `<system>\n${systemPrompt}\n</system>\n\n${userPrompt}`;
-    const result = spawnSync('claude', ['-p', combined], {
+    const claudeBin = process.env.CLAUDE_BIN || 'claude';
+    const result = spawnSync(claudeBin, ['-p', combined], {
       encoding: 'utf8',
       maxBuffer: 32 * 1024 * 1024,
       timeout: 300_000,

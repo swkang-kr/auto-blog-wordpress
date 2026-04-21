@@ -1,6 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
+export PATH="/home/trendhunt/.local/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
+
 REPO="/home/trendhunt/workspace/auto-blog-wordpress"
 LOG="$REPO/logs/daily-post.log"
 
