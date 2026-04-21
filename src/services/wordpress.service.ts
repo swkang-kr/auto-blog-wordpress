@@ -2159,6 +2159,19 @@ ${ga4TrackingScript}`;
 
         logger.info(`Post published: ID=${post.postId} URL=${post.url}`);
 
+        // Auto-decode percent-encoded slug to Korean Unicode
+        if (resolvedSlug && resolvedSlug.includes('%')) {
+          try {
+            const decodedSlug = decodeURIComponent(resolvedSlug);
+            await this.api.post(`/posts/${post.postId}`, { slug: decodedSlug });
+            post.url = `${this.wpUrl}/${decodedSlug}/`;
+            post.slug = decodedSlug;
+            logger.info(`Slug decoded: ${resolvedSlug} → ${decodedSlug}`);
+          } catch (slugErr) {
+            logger.warn(`Slug decode failed (non-fatal): ${slugErr instanceof Error ? slugErr.message : slugErr}`);
+          }
+        }
+
         // Set _autoblog_* custom meta separately (may fail if register_post_meta snippet not installed)
         try {
           const autoblogMeta: Record<string, string> = {

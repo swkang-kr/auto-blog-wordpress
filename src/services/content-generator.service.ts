@@ -1419,10 +1419,10 @@ Return raw HTML only, no markdown code blocks or JSON wrapper.`;
   private callClaudeCli(systemPrompt: string, userPrompt: string): string {
     const combined = `<system>\n${systemPrompt}\n</system>\n\n${userPrompt}`;
     const claudeBin = process.env.CLAUDE_BIN || 'claude';
-    const result = spawnSync(claudeBin, ['-p', combined], {
+    const model = process.env.CLAUDE_MODEL || 'claude-sonnet-4-6';
+    const result = spawnSync(claudeBin, ['-p', combined, '--model', model], {
       encoding: 'utf8',
-      maxBuffer: 32 * 1024 * 1024,
-      timeout: 300_000,
+      maxBuffer: 64 * 1024 * 1024,
     });
     if (result.status !== 0) {
       throw new ContentGenerationError(`Claude CLI failed (exit ${result.status}): ${result.stderr?.slice(0, 500)}`);
