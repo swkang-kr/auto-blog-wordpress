@@ -43,17 +43,27 @@ export class ShortsGeneratorService {
       logger.info(`[Shorts] Synthesizing TTS audio...`);
       await this.tts.synthesize(script.narration, audioPath);
 
+      // MP3 → base64 data URL (Remotion은 HTTP URL 필요)
+      const audioBuffer = await fs.readFile(audioPath);
+      const audioDataUrl = `data:audio/mp3;base64,${audioBuffer.toString('base64')}`;
+
       // Remotion 번들 + 렌더링
       logger.info(`[Shorts] Bundling Remotion composition...`);
       const bundleLocation = await bundle({
         entryPoint: path.resolve('src/remotion/index.tsx'),
-        webpackOverride: (config) => config,
+        webpackOverride: (config) => ({
+          ...config,
+          resolve: {
+            ...config.resolve,
+            extensionAlias: { '.js': ['.tsx', '.ts', '.js'] },
+          },
+        }),
       });
 
       const composition = await selectComposition({
         serveUrl: bundleLocation,
         id: 'Shorts',
-        inputProps: { scenes: script.scenes, audioSrc: audioPath, keyword },
+        inputProps: { scenes: script.scenes, audioSrc: audioDataUrl, keyword },
       });
 
       const outputPath = path.join(OUTPUT_DIR, `${safeSlug}.mp4`);
@@ -64,7 +74,7 @@ export class ShortsGeneratorService {
         serveUrl: bundleLocation,
         codec: 'h264',
         outputLocation: outputPath,
-        inputProps: { scenes: script.scenes, audioSrc: audioPath, keyword },
+        inputProps: { scenes: script.scenes, audioSrc: audioDataUrl, keyword },
         chromiumOptions: { disableWebSecurity: true },
         onProgress: ({ progress }) => {
           if (Math.round(progress * 100) % 20 === 0) {

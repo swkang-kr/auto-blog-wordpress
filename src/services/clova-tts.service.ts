@@ -1,53 +1,28 @@
-import axios from 'axios';
+import { spawnSync } from 'child_process';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
 export class ClovaTtsService {
-  private clientId: string;
-  private clientSecret: string;
+  private voice: string;
 
-  constructor(clientId: string, clientSecret: string) {
-    this.clientId = clientId;
-    this.clientSecret = clientSecret;
+  constructor(_clientId: string, _clientSecret: string) {
+    this.voice = process.env.TTS_VOICE || 'ko-KR-SunHiNeural';
   }
 
-  async synthesize(text: string, outputPath: string, options: {
-    speaker?: string;
-    speed?: number;
-    volume?: number;
-    pitch?: number;
-  } = {}): Promise<void> {
-    const {
-      speaker = 'nara_call', // 뉴스 내레이션 최적화 성우
-      speed = -1,            // 약간 느리게 (명확한 발음)
-      volume = 5,
-      pitch = 0,
-    } = options;
+  async synthesize(text: string, outputPath: string): Promise<void> {
+    await fs.mkdir(path.dirname(outputPath), { recursive: true });
 
-    const params = new URLSearchParams({
-      speaker,
-      text: text.slice(0, 2000), // CLOVA 최대 2000자
-      speed: String(speed),
-      volume: String(volume),
-      pitch: String(pitch),
-      format: 'mp3',
+    const result = spawnSync('edge-tts', [
+      '--voice', this.voice,
+      '--text', text.slice(0, 2000),
+      '--write-media', outputPath,
+    ], {
+      encoding: 'utf8',
+      timeout: 30_000,
     });
 
-    const response = await axios.post(
-      'https://naveropenapi.apigw.ntruss.com/tts-premium/v1/tts',
-      params.toString(),
-      {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'X-NCP-APIGW-API-KEY-ID': this.clientId,
-          'X-NCP-APIGW-API-KEY': this.clientSecret,
-        },
-        responseType: 'arraybuffer',
-        timeout: 30_000,
-      },
-    );
-
-    await fs.mkdir(path.dirname(outputPath), { recursive: true });
-    await fs.writeFile(outputPath, response.data);
+    if (result.status !== 0) {
+      throw new Error(`edge-tts failed (exit ${result.status}): ${result.stderr?.slice(0, 300)}`);
+    }
   }
 }
