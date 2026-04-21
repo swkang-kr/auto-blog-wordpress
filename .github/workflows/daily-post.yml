@@ -1,9 +1,9 @@
 name: Daily Blog Post
 
 on:
-  schedule:
-    - cron: '0 22 * * 0-4'  # UTC 22:00 Sun-Thu (주말 제외, KST 07:00 Mon-Fri)
-  workflow_dispatch:          # Manual trigger
+  # schedule disabled — running locally via cron
+  # - cron: '0 22 * * 0-4'  # UTC 22:00 Sun-Thu (주말 제외, KST 07:00 Mon-Fri)
+  workflow_dispatch:          # Manual trigger (emergency use)
     inputs:
       post_count:
         description: 'Number of niches to post (1-4: 시장/업종/테마/종목분석)'

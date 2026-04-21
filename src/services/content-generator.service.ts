@@ -1,4 +1,4 @@
-import Anthropic from '@anthropic-ai/sdk';
+import { spawnSync } from 'child_process';
 import { jsonrepair } from 'jsonrepair';
 import { logger } from '../utils/logger.js';
 import { ContentGenerationError } from '../types/errors.js';
@@ -744,7 +744,6 @@ IMPORTANT for titleCandidates: 메인 제목과 다른 앵글/후크로 2개 대
 }
 
 export class ContentGeneratorService {
-  private client: Anthropic;
   private siteOwner: string;
   private siteUrl: string;
   private minQualityScore: number;
@@ -755,8 +754,7 @@ export class ContentGeneratorService {
   private snippetContext: string;
   private marketDataContext: string;
   private stockDataContext: string;
-  constructor(apiKey: string, siteOwner?: string, siteUrl?: string, minQualityScore?: number, authorLinks?: { linkedin?: string; twitter?: string }) {
-    this.client = new Anthropic({ apiKey });
+  constructor(_apiKey: string, siteOwner?: string, siteUrl?: string, minQualityScore?: number, authorLinks?: { linkedin?: string; twitter?: string }) {
     this.siteOwner = siteOwner || '';
     this.siteUrl = siteUrl || '';
     this.minQualityScore = minQualityScore ?? 55;
@@ -1091,47 +1089,14 @@ Respond with pure JSON only.`;
       throw new ContentGenerationError('Claude API circuit breaker OPEN — skipping to prevent cascade failure');
     }
 
-    const stream = this.client.messages.stream({
-      model: process.env.CLAUDE_MODEL || 'claude-sonnet-4-6',
-      max_tokens: 64000,
-      temperature,
-      system: [
-        {
-          type: 'text',
-          text: systemPrompt,
-          cache_control: { type: 'ephemeral' },
-        },
-      ],
-      messages: [{ role: 'user', content: userPrompt }],
-    });
-
-    let response;
+    let text: string;
     try {
-      response = await stream.finalMessage();
+      text = this.callClaudeCli(systemPrompt, userPrompt);
       circuitBreakers.claude.recordSuccess();
     } catch (claudeError) {
       circuitBreakers.claude.recordFailure();
       throw claudeError;
     }
-
-    const usage = response.usage as typeof response.usage & {
-      cache_creation_input_tokens?: number;
-      cache_read_input_tokens?: number;
-    };
-    costTracker.addClaudeCallForPhase(
-      process.env.CLAUDE_MODEL || 'claude-sonnet-4-6',
-      usage.input_tokens || 0,
-      usage.output_tokens || 0,
-      'contentGeneration',
-    );
-    if (usage.cache_read_input_tokens) {
-      logger.info(`Prompt cache HIT: ${usage.cache_read_input_tokens} tokens read from cache (saved ~$${((usage.cache_read_input_tokens / 1_000_000) * 2.7).toFixed(4)})`);
-    } else if (usage.cache_creation_input_tokens) {
-      logger.info(`Prompt cache WRITE: ${usage.cache_creation_input_tokens} tokens written to cache`);
-    }
-
-    const text =
-      response.content[0].type === 'text' ? response.content[0].text : '';
 
     logger.debug(`Raw Claude response length: ${text.length} chars`);
 
@@ -1440,15 +1405,7 @@ Write additional content that seamlessly continues this article. Requirements:
 Return raw HTML only, no markdown code blocks or JSON wrapper.`;
 
     try {
-      const response = await this.client.messages.create({
-        model: process.env.CLAUDE_MODEL || 'claude-sonnet-4-6',
-        max_tokens: 8000,
-        temperature,
-        system: continuationSystemPrompt,
-        messages: [{ role: 'user', content: prompt }],
-      });
-
-      const text = response.content[0].type === 'text' ? response.content[0].text : '';
+      const text = this.callClaudeCli(continuationSystemPrompt, prompt);
       const cleaned = text.replace(/```(?:html)?\s*/g, '').replace(/```\s*$/g, '').trim();
       if (cleaned.length > 200) {
         return cleaned;
@@ -1459,29 +1416,27 @@ Return raw HTML only, no markdown code blocks or JSON wrapper.`;
     }
   }
 
+  private callClaudeCli(systemPrompt: string, userPrompt: string): string {
+    const combined = `<system>\n${systemPrompt}\n</system>\n\n${userPrompt}`;
+    const result = spawnSync('claude', ['-p', combined], {
+      encoding: 'utf8',
+      maxBuffer: 32 * 1024 * 1024,
+      timeout: 300_000,
+    });
+    if (result.status !== 0) {
+      throw new ContentGenerationError(`Claude CLI failed (exit ${result.status}): ${result.stderr?.slice(0, 500)}`);
+    }
+    return result.stdout ?? '';
+  }
+
   /**
    * Regenerate a weak excerpt using a focused Claude call.
    * Returns improved excerpt or null on failure.
    */
   private async regenerateExcerpt(title: string, currentExcerpt: string, keyword: string): Promise<string | null> {
     try {
-      const response = await this.client.messages.create({
-        model: process.env.CLAUDE_MODEL || 'claude-sonnet-4-6',
-        max_tokens: 200,
-        temperature: 0.3,
-        messages: [{
-          role: 'user',
-          content: `Write a compelling meta description (150-160 chars) for this blog post. It MUST contain the keyword "${keyword}" naturally. Include a clear benefit or hook for the reader.\n\nTitle: ${title}\nCurrent excerpt: ${currentExcerpt}\n\nRespond with ONLY the meta description text, no quotes or explanation.`,
-        }],
-      });
-
-      const text = response.content[0].type === 'text' ? response.content[0].text.trim() : '';
-      costTracker.addClaudeCallForPhase(
-        process.env.CLAUDE_MODEL || 'claude-sonnet-4-6',
-        response.usage?.input_tokens || 0,
-        response.usage?.output_tokens || 0,
-        'contentGeneration',
-      );
+      const userMsg = `Write a compelling meta description (150-160 chars) for this blog post. It MUST contain the keyword "${keyword}" naturally. Include a clear benefit or hook for the reader.\n\nTitle: ${title}\nCurrent excerpt: ${currentExcerpt}\n\nRespond with ONLY the meta description text, no quotes or explanation.`;
+      const text = this.callClaudeCli('', userMsg).trim();
 
       if (text.length >= 80 && text.length <= 200) {
         logger.info(`Excerpt regenerated: "${text.slice(0, 60)}..."`);
