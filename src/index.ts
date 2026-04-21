@@ -31,6 +31,7 @@ import { LinkedInService } from './services/linkedin.service.js';
 import { FacebookService } from './services/facebook.service.js';
 import { ThreadsService } from './services/threads.service.js';
 import { RedditPostService } from './services/reddit-post.service.js';
+import { ShortsGeneratorService } from './services/shorts-generator.service.js';
 import { AdSenseApiService } from './services/adsense-api.service.js';
 import type { PostResult, BatchResult, MediaUploadResult, NicheConfig } from './types/index.js';
 // CATEGORY_PUBLISH_TIMING available for future use (niche-specific timing)
@@ -164,6 +165,13 @@ async function main(): Promise<void> {
     config.THREADS_ACCESS_TOKEN && config.THREADS_USER_ID
       ? new ThreadsService(config.THREADS_ACCESS_TOKEN, config.THREADS_USER_ID)
       : null;
+
+  const shortsService =
+    process.env.NAVER_TTS_CLIENT_ID && process.env.NAVER_TTS_CLIENT_SECRET
+      ? new ShortsGeneratorService(process.env.NAVER_TTS_CLIENT_ID, process.env.NAVER_TTS_CLIENT_SECRET)
+      : null;
+  if (shortsService) logger.info('Shorts generation enabled (CLOVA TTS)');
+  else logger.info('NAVER_TTS_CLIENT_ID not set, skipping Shorts generation');
   if (threadsService) {
     // Pre-flight token validation for Threads
     try {
@@ -1697,6 +1705,13 @@ async function main(): Promise<void> {
       if (threadsService && isImmediatePublish) {
         const threadsPostId = await threadsService.promoteBlogPost(content, post);
         if (threadsPostId) await wpService.updatePostMeta(post.postId, { _autoblog_threads_post_id: threadsPostId }).catch(() => {});
+      }
+
+      // Shorts: generate MP4 after publish (non-blocking)
+      if (shortsService && isImmediatePublish) {
+        shortsService.generate(content, post, researched.analysis.selectedKeyword).catch(e =>
+          logger.warn(`Shorts generation error: ${e instanceof Error ? e.message : e}`)
+        );
       }
 
       // LinkedIn: post immediately when published (not scheduled)
