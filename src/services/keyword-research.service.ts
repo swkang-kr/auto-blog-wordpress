@@ -1,4 +1,4 @@
-import Anthropic from '@anthropic-ai/sdk';
+import { spawnSync } from 'child_process';
 import { logger } from '../utils/logger.js';
 import { KeywordResearchError } from '../types/errors.js';
 import { GoogleTrendsService } from './google-trends.service.js';
@@ -68,7 +68,6 @@ interface SerpAnalysis {
 }
 
 export class KeywordResearchService {
-  private client: Anthropic;
   private trendsService: GoogleTrendsService;
   private naverThemesService: NaverFinanceThemesService;
   private performanceInsights: string;
@@ -81,8 +80,7 @@ export class KeywordResearchService {
   private paaQuestions: string[] = [];
   private rpmByNiche: Record<string, number> = {};
 
-  constructor(apiKey: string, geo: string, redditCredentials?: { clientId: string; clientSecret: string }, serpApiKey?: string) {
-    this.client = new Anthropic({ apiKey });
+  constructor(_apiKey: string, geo: string, redditCredentials?: { clientId: string; clientSecret: string }, serpApiKey?: string) {
     this.trendsService = new GoogleTrendsService(geo, serpApiKey);
     this.naverThemesService = new NaverFinanceThemesService();
     this.performanceInsights = '';
@@ -730,20 +728,15 @@ ${this.paaQuestions.length > 0 ? `\n## People Also Ask (PAA) Questions\nThese qu
 {"selectedKeyword":"삼성전자 주가 전망 분석 2026","contentType":"analysis|deep-dive|news-explainer|how-to|best-x-for-y|x-vs-y|listicle|case-study|product-review","suggestedTitle":"삼성전자 주가 전망: PER 12배의 의미와 매수 타이밍 분석","uniqueAngle":"한국어로 작성","searchIntent":"informational|commercial|commercial-investigation|transactional|navigational","estimatedCompetition":"low|medium|high","keywordDifficulty":25,"volumeEstimate":"high|medium|low|minimal","estimatedMonthlySearches":1500,"reasoning":"한국어로 이유 설명","relatedKeywordsToInclude":["관련 키워드 1","관련 키워드 2"],"longTailVariants":["롱테일 변형 1","롱테일 변형 2","롱테일 변형 3"]}`;
 
     try {
-      const response = await this.client.messages.create({
-        model: this.researchModel,
-        max_tokens: 2000,
-        temperature: 0.5,
-        messages: [{ role: 'user', content: prompt }],
+      const claudeBin = process.env.CLAUDE_BIN || 'claude';
+      const result = spawnSync(claudeBin, ['-p', prompt, '--model', 'opus'], {
+        encoding: 'utf8',
+        maxBuffer: 4 * 1024 * 1024,
       });
-
-      const text = response.content[0].type === 'text' ? response.content[0].text : '';
-      costTracker.addClaudeCallForPhase(
-        process.env.CLAUDE_MODEL || 'claude-sonnet-4-6',
-        response.usage?.input_tokens || 0,
-        response.usage?.output_tokens || 0,
-        'keywordResearch',
-      );
+      if (result.status !== 0) {
+        throw new Error(`CLI exit ${result.status}: ${result.stderr?.slice(0, 300)}`);
+      }
+      const text = result.stdout ?? '';
       return this.parseAnalysis(text, niche);
     } catch (error) {
       throw new KeywordResearchError(
