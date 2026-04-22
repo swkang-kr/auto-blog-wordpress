@@ -3,12 +3,12 @@
  * - 시총, 현재가, PER, PBR 등 오래된 수치를 네이버 금융 실시간 데이터로 교체
  * - 증권사 목표가: 구체적 수치 대신 "최신 리포트 참고" 방식으로 변경
  *
- * 실행: node --import tsx/esm src/scripts/fix-stock-financial-data.ts
- * 드라이런: node --import tsx/esm src/scripts/fix-stock-financial-data.ts --dry-run
+ * 실행: npx tsx src/scripts/fix-stock-financial-data.ts
+ * 드라이런: npx tsx src/scripts/fix-stock-financial-data.ts --dry-run
  */
 
+import { spawnSync } from 'child_process';
 import axios from 'axios';
-import Anthropic from '@anthropic-ai/sdk';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import 'dotenv/config';
@@ -18,7 +18,7 @@ const TARGET_POST_ID = process.argv.find(a => /^\d+$/.test(a)) ? parseInt(proces
 
 const WP_URL = process.env.WP_URL!.replace(/\/+$/, '');
 const AUTH = Buffer.from(`${process.env.WP_USERNAME}:${process.env.WP_APP_PASSWORD}`).toString('base64');
-const CLAUDE_MODEL = process.env.CLAUDE_MODEL || 'claude-sonnet-4-6';
+const CLAUDE_BIN = process.env.CLAUDE_BIN || 'claude';
 
 const wpApi = axios.create({
   baseURL: `${WP_URL}/wp-json/wp/v2`,
@@ -30,8 +30,6 @@ const naverHeaders = {
   'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
   'Referer': 'https://finance.naver.com',
 };
-
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! });
 
 // 종목 코드 매핑: 정적 목록 + Trade Engine 워치리스트 동적 로드
 function buildStockCodeMap(): Record<string, string> {
@@ -61,14 +59,12 @@ function buildStockCodeMap(): Record<string, string> {
     'SK텔레콤': '017670',
     'KT': '030200',
   };
-  // Merge live watchlist stocks
   try {
     const watchlistPath = resolve(process.cwd(), 'data/trade-engine/live_watchlist.json');
     const wl = JSON.parse(readFileSync(watchlistPath, 'utf-8')) as { watchlist?: Array<{ stock_code: string; stock_name: string }> };
     for (const item of wl.watchlist ?? []) {
       if (item.stock_code && item.stock_name) map[item.stock_name] = item.stock_code;
     }
-    // Also check db_watchlist
     const dbPath = resolve(process.cwd(), 'data/trade-engine/db_watchlist.json');
     const db = JSON.parse(readFileSync(dbPath, 'utf-8')) as { watchlist?: Array<{ stock_code: string; stock_name: string }> };
     for (const item of db.watchlist ?? []) {
@@ -86,7 +82,7 @@ interface StockData {
   price: number;
   diff: number;
   rate: number;
-  marketCapJo: number; // 조원
+  marketCapJo: number;
   per: number | null;
   pbr: number | null;
   eps: number | null;
@@ -136,7 +132,6 @@ function detectStocksInText(text: string): Array<{ name: string; code: string }>
       found.push({ name, code });
     }
   }
-  // Deduplicate by code
   return found.filter((item, idx) => found.findIndex(f => f.code === item.code) === idx);
 }
 
@@ -145,7 +140,7 @@ function hasFinancialData(html: string): boolean {
   return /시가총액|목표가|현재가|PER|PBR|주가\s*(전망|분석)|증권사/.test(plain);
 }
 
-async function updatePostContent(post: WPPost, stocks: Array<{ name: string; code: string; data: StockData }>): Promise<string | null> {
+function updatePostContent(post: WPPost, stocks: Array<{ name: string; code: string; data: StockData }>): string | null {
   const stockDataBlocks = stocks.map(s => {
     const d = s.data;
     const diffSign = d.diff >= 0 ? '▲' : '▼';
@@ -179,20 +174,18 @@ ${stockDataBlocks}
 ## 수정할 포스트 HTML
 ${post.content.rendered.slice(0, 25000)}`;
 
-  try {
-    const stream = anthropic.messages.stream({
-      model: CLAUDE_MODEL,
-      max_tokens: 32000,
-      messages: [{ role: 'user', content: prompt }],
-    });
-    const response = await stream.finalMessage();
-    const text = response.content[0].type === 'text' ? response.content[0].text : '';
-    // Strip markdown code fences if present
-    return text.replace(/^```html?\s*/i, '').replace(/\s*```\s*$/, '').trim();
-  } catch (err) {
-    console.error(`Claude API error: ${err instanceof Error ? err.message : err}`);
+  const result = spawnSync(CLAUDE_BIN, ['-p', prompt, '--model', 'opus'], {
+    encoding: 'utf8',
+    maxBuffer: 16 * 1024 * 1024,
+  });
+
+  if (result.status !== 0) {
+    console.error(`Claude CLI error: ${result.stderr?.slice(0, 300)}`);
     return null;
   }
+
+  const text = result.stdout?.trim() ?? '';
+  return text.replace(/^```html?\s*/i, '').replace(/\s*```\s*$/, '').trim();
 }
 
 async function getAllPublishedPosts(): Promise<WPPost[]> {
@@ -217,7 +210,6 @@ async function main() {
   const allPosts = await getAllPublishedPosts();
   console.log(`총 발행 포스트: ${allPosts.length}개\n`);
 
-  // 대상 포스트 필터링
   let targetPosts = TARGET_POST_ID
     ? allPosts.filter(p => p.id === TARGET_POST_ID)
     : allPosts.filter(p => {
@@ -242,7 +234,6 @@ async function main() {
   for (const post of targetPosts) {
     console.log(`\n[${post.id}] ${post.title.rendered}`);
 
-    // 종목 탐지 (제목 + 본문)
     const titleStocks = detectStocksInText(post.title.rendered);
     const contentStocks = detectStocksInText(post.content.rendered);
     const uniqueStocks = [...titleStocks, ...contentStocks]
@@ -256,7 +247,6 @@ async function main() {
 
     console.log(`  → 탐지된 종목: ${uniqueStocks.map(s => `${s.name}(${s.code})`).join(', ')}`);
 
-    // 실시간 데이터 fetch
     const stocksWithData: Array<{ name: string; code: string; data: StockData }> = [];
     for (const stock of uniqueStocks) {
       const data = await fetchStockData(stock.code, stock.name);
@@ -280,16 +270,14 @@ async function main() {
       continue;
     }
 
-    // Claude로 콘텐츠 수정
-    console.log('  → Claude로 콘텐츠 수정 중...');
-    const updatedContent = await updatePostContent(post, stocksWithData);
+    console.log('  → Claude CLI로 콘텐츠 수정 중...');
+    const updatedContent = updatePostContent(post, stocksWithData);
     if (!updatedContent || updatedContent.length < 500) {
       console.error(`  → 콘텐츠 수정 실패 (길이: ${updatedContent?.length ?? 0})`);
       failed++;
       continue;
     }
 
-    // WordPress 업데이트
     try {
       await wpApi.post(`/posts/${post.id}`, {
         content: updatedContent,
@@ -303,7 +291,6 @@ async function main() {
       failed++;
     }
 
-    // Rate limit
     await new Promise(r => setTimeout(r, 3000));
   }
 

@@ -1,10 +1,10 @@
 /**
  * [#17] Lead Magnet Content Generator — creates niche-specific lead magnet content.
- * Generates downloadable guides/checklists using Claude API for each niche category.
+ * Generates downloadable guides/checklists using Claude CLI for each niche category.
  *
  * Usage: npx tsx src/scripts/generate-lead-magnets.ts [--niche=korean-tech-ai]
  */
-import Anthropic from '@anthropic-ai/sdk';
+import { spawnSync } from 'child_process';
 import { writeFileSync, mkdirSync } from 'fs';
 import { join } from 'path';
 import { loadConfig } from '../config/env.js';
@@ -36,6 +36,7 @@ const LEAD_MAGNET_PROMPTS: Record<string, { title: string; type: string; descrip
 
 async function main(): Promise<void> {
   const config = loadConfig();
+  const claudeBin = process.env.CLAUDE_BIN || 'claude';
   const nicheArg = process.argv.find(a => a.startsWith('--niche='))?.split('=')[1];
 
   const targetNiches = nicheArg
@@ -47,7 +48,6 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  const client = new Anthropic({ apiKey: config.ANTHROPIC_API_KEY });
   const outputDir = join(process.cwd(), 'data', 'lead-magnets');
   mkdirSync(outputDir, { recursive: true });
 
@@ -60,13 +60,7 @@ async function main(): Promise<void> {
 
     logger.info(`Generating lead magnet for ${niche.category}: "${prompt.title}"`);
 
-    try {
-      const response = await client.messages.create({
-        model: config.CLAUDE_MODEL,
-        max_tokens: 8000,
-        messages: [{
-          role: 'user',
-          content: `Create a comprehensive ${prompt.type} titled "${prompt.title}".
+    const fullPrompt = `Create a comprehensive ${prompt.type} titled "${prompt.title}".
 
 Description: ${prompt.description}
 
@@ -80,11 +74,21 @@ Requirements:
 - Include a professional cover section with title and subtitle
 - Add a "About ${config.SITE_NAME}" section at the end with site URL: ${config.WP_URL}
 
-Output format: Pure HTML document.`,
-        }],
+Output format: Pure HTML document.`;
+
+    try {
+      const result = spawnSync(claudeBin, ['-p', fullPrompt, '--model', 'opus'], {
+        encoding: 'utf8',
+        maxBuffer: 16 * 1024 * 1024,
       });
 
-      const content = response.content[0].type === 'text' ? response.content[0].text : '';
+      if (result.status !== 0) {
+        throw new Error(`Claude CLI failed: ${result.stderr?.slice(0, 300)}`);
+      }
+
+      const content = result.stdout?.trim() ?? '';
+      if (!content) throw new Error('Empty response from Claude CLI');
+
       const filename = `${niche.id}-lead-magnet.html`;
       writeFileSync(join(outputDir, filename), content, 'utf-8');
       logger.info(`  Saved: ${filename} (${content.length} chars)`);
