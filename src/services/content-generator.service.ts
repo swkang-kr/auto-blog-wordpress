@@ -111,17 +111,15 @@ const LAYOUT_VARIANTS: LayoutVariant[] = ['standard', 'narrative', 'compact', 'j
 
 /**
  * Rotating variant assignment based on niche ID + date.
- * Changes variant weekly per niche to avoid structural monotony (AI detection signal).
- * Still deterministic within the same week for prompt cache HITs.
+ * Changes variant DAILY per niche — each day's post gets a different layout.
  */
 function getVariantForNiche(nicheId: string): LayoutVariant {
   let hash = 0;
   for (let i = 0; i < nicheId.length; i++) {
     hash = ((hash << 5) - hash + nicheId.charCodeAt(i)) | 0;
   }
-  // Add week-of-year rotation so same niche gets different layouts each week
-  const weekOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 1).getTime()) / (7 * 24 * 60 * 60 * 1000));
-  return LAYOUT_VARIANTS[Math.abs(hash + weekOfYear) % LAYOUT_VARIANTS.length];
+  const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 1).getTime()) / (24 * 60 * 60 * 1000));
+  return LAYOUT_VARIANTS[Math.abs(hash + dayOfYear) % LAYOUT_VARIANTS.length];
 }
 
 /** Variant-specific structural directives */
@@ -258,9 +256,20 @@ function optimizeSlug(slug: string): string {
   return words.slice(0, 8).join('-'); // 한글은 단어가 짧으므로 8개까지 허용
 }
 
+const ANALYST_PERSONAS = [
+  { name: '퀀트 개발자 출신 애널리스트', style: '데이터와 백테스트 결과 중심. 숫자로 말한다. 감정 없이 팩트만. "백테스트 결과 연복리 XX%" 스타일.' },
+  { name: '10년차 증권사 리서치센터 수석 연구원', style: '기관 리포트 스타일. 컨센서스 대비 분석. "시장 컨센서스는 X이지만 우리 분석은 Y" 패턴 활용.' },
+  { name: '개인투자자 커뮤니티 운영 고수 트레이더', style: '현장감 있는 구어체. "제가 실제 매수한 구간은..." 등 경험담 포함. 주식 커뮤니티(주갤, 종토방) 감성.' },
+  { name: '거시경제 전문 독립 리서처', style: '글로벌 매크로 시각. 미국 금리·달러·원자재와 한국 시장 연결고리를 강조. "Fed 피벗이 KOSPI에 미치는 영향" 등.' },
+  { name: '한국 주식 전문 유튜버 출신 애널리스트', style: '스토리텔링 강조. "이 주식에서 3배 수익을 낸 투자자는 이걸 먼저 봤습니다" 같은 훅. 독자 참여 유도 문구 포함.' },
+];
+
 function buildSystemPrompt(variant: LayoutVariant): string {
   const variantDirectives = getVariantDirectives(variant);
-  return `You are a Korean financial analyst and algorithmic trading expert creating authoritative **Korean-language (한국어)** content for **한국인 개인 투자자**.
+  const persona = ANALYST_PERSONAS[Math.floor(Math.random() * ANALYST_PERSONAS.length)];
+  return `You are a ${persona.name} creating authoritative **Korean-language (한국어)** content for **한국인 개인 투자자**.
+
+글쓰기 스타일: ${persona.style}
 
 타겟 독자: 한국어를 사용하는 한국인 개인 투자자, 주식 초보~중급자, 퀀트/알고리즘 트레이딩에 관심 있는 개발자.
 NOT 외국인 투자자. 한국 증권사(키움, 미래에셋, 삼성증권 등)를 사용하는 한국인 기준으로 작성.
@@ -1008,9 +1017,33 @@ RISK MGMT: Present 손절선 and 목표가 with specific prices. Risk/reward rat
 
 KOREAN MARKET: VI at ±10%. T+2 settlement. 상한가/하한가 ±30%. Use Korean brokerage terms (키움, 미래에셋, 삼성증권 MTS 기준).${analysis.contentType === 'case-study' ? '\nCASE STUDY: 종목 선정 배경 → 기술적 시그널 → 매수 시점 → 결과 → 교훈.' : ''}`,
     };
-    // Map 업종분석/테마분석 to the shared 시장분석 voice directive (all Korean stock market context)
-    nicheDirectives['업종분석'] = nicheDirectives['시장분석'];
-    nicheDirectives['테마분석'] = nicheDirectives['시장분석'];
+    nicheDirectives['업종분석'] = `NICHE VOICE: 한국 산업/업종 전문 리서치 애널리스트. 특정 업종(반도체, 2차전지, 바이오, 인터넷, 금융 등) 전체를 조망하는 시각으로 작성. 개별 종목이 아닌 업종 사이클과 섹터 로테이션에 집중.
+
+STRUCTURE (업종 분석):
+1. 업종 현황 — 지수(코스피 업종지수/코스닥 업종지수) 흐름과 외국인·기관 수급
+2. 업종 내 주도주 vs 소외주 비교 (최소 3~4개 종목 언급, 종목코드 포함)
+3. 밸류에이션 비교 — 업종 평균 PER/PBR vs 글로벌 피어 (반도체는 TSMC·NVIDIA, 배터리는 CATL, 바이오는 글로벌 CRO 등)
+4. 업황 사이클 — 상승/하락 모멘텀, 재고 사이클, 실적 시즌 모멘텀
+5. 수급 분석 — ETF(TIGER, KODEX 해당 업종ETF) 수급 포함
+6. 투자 전략 — 섹터 ETF 매수 전략 or 업종 내 최선호주/차선호주
+
+CITE: KRX 업종 지수, FnGuide 컨센서스, 에프앤가이드, 하나증권·미래에셋 섹터 리포트, 한국거래소 시장통계.
+
+DISCLAIMER: 투자 결정은 개인 책임. 특정 종목 매수·매도 권유 아님.`,
+
+    nicheDirectives['테마분석'] = `NICHE VOICE: 한국 테마주·정책 수혜주 전문 트레이더. 특정 정책 발표, 이슈, 트렌드로 묶인 테마군(그룹)을 분석. 단기 모멘텀 + 중기 펀더멘털을 동시에 체크.
+
+STRUCTURE (테마 분석):
+1. 테마 촉매(Catalyst) — 정책 발표/이슈/글로벌 트렌드 구체적 날짜·내용 명시
+2. 수혜주 분류 — 1차 수혜주(직접 수혜) vs 2차 수혜주(간접 수혜), 종목코드 포함 최소 5개
+3. 선도주 vs 후발주 분석 — 누가 테마를 이끌고 있는지, 주도주 교체 가능성
+4. 리스크 요인 — 테마 소멸 조건, 과열 신호, 대주주 이슈
+5. 매매 전략 — 테마 초입/중반/과열 구간별 대응 (분할 매수/익절 라인)
+6. 모니터링 포인트 — 다음에 주목할 변수(공시, 의회 일정, 실적 발표)
+
+CITE: 국회 법안 현황, 정부 보도자료(공식 gov.kr), DART 공시, 뉴스1·연합인포맥스 기사.
+
+DISCLAIMER: 테마주는 변동성 매우 높음. 투자 결정은 개인 책임.`;
     const nicheVoice = nicheDirectives[niche.category] || nicheDirectives['시장분석'] || '';
 
     const STOCK_MARKET_CATEGORIES = new Set(['시장분석', '업종분석', '테마분석', '종목분석']);
@@ -1023,7 +1056,11 @@ Niche: "${niche.name}" (${niche.category})
 Content Type: ${analysis.contentType}
 Primary Keyword: "${analysis.selectedKeyword}"
 Suggested Title: "${analysis.suggestedTitle}"
-Unique Angle: ${analysis.uniqueAngle}
+
+⚡ CORE DIFFERENTIATION ANGLE (이것이 이 포스트의 핵심 존재 이유입니다):
+"${analysis.uniqueAngle}"
+이 앵글에서 벗어나지 마세요. 서론 첫 문단, 주요 H2 섹션, 결론 모두 이 앵글을 중심으로 전개해야 합니다.
+
 Search Intent: ${analysis.searchIntent}
 Related Keywords to Include: ${analysis.relatedKeywordsToInclude.join(', ')}${pillarTopicsSection}${clusterLinksSection}${internalLinksSection}
 ${marketSection}${stockSection}
@@ -1063,21 +1100,16 @@ For product/brand mentions, include structured product data in the JSON output a
 Include up to 8 products or brands mentioned in the article. This enables automatic affiliate link injection.` : ''}
 Respond with pure JSON only.`;
 
-    // Temperature varies by content type: analytical content needs precision, creative needs more variation
+    // Temperature: raised across the board to increase content variety
     const temperatureMap: Record<string, number> = {
-      'analysis': 0.5, 'news-explainer': 0.5, 'case-study': 0.5, 'product-review': 0.6,
-      'deep-dive': 0.6, 'x-vs-y': 0.6,
-      'how-to': 0.7, 'best-x-for-y': 0.7, 'listicle': 0.7,
+      'analysis': 0.7, 'news-explainer': 0.7, 'case-study': 0.7, 'product-review': 0.8,
+      'deep-dive': 0.8, 'x-vs-y': 0.8,
+      'how-to': 0.85, 'best-x-for-y': 0.85, 'listicle': 0.85,
     };
-    let temperature = temperatureMap[analysis.contentType] ?? 0.7;
-    // 종목분석 case-study/analysis: 분석 대상 — 학술적 톤(0.5) 대신 약간 더 자연스러운 0.6
-    if (niche.category === '종목분석' && ['case-study', 'analysis'].includes(analysis.contentType)) {
-      temperature = 0.6;
-    }
-    // 시장분석 news-explainer: 시장 이슈 뉴스는 personality & energy 필요, 학술 정밀도보다
-    if (niche.category === '시장분석' && analysis.contentType === 'news-explainer') {
-      temperature = 0.65;
-    }
+    let temperature = temperatureMap[analysis.contentType] ?? 0.8;
+    // Add small random jitter (±0.05) so same content type varies between runs
+    temperature = Math.min(1.0, Math.max(0.5, temperature + (Math.random() * 0.1 - 0.05)));
+    temperature = Math.round(temperature * 100) / 100;
 
     const variant = getVariantForNiche(researched.niche.id);
     const targets = getWordCountTargets(analysis.contentType, analysis.searchIntent, niche.category);
