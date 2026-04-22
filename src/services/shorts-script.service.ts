@@ -74,7 +74,16 @@ export class ShortsScriptService {
       m.replace(/\n/g, '\\n').replace(/\r/g, '').replace(/\t/g, '\\t')
     );
     const parsed = JSON.parse(sanitized) as ShortsScript;
-    logger.info(`Shorts script generated: "${parsed.title}" (${parsed.scenes.length} scenes)`);
+
+    // 고볼륨 기본 태그 병합 (Claude 생성 태그 + 고정 태그, 최대 15개)
+    const HIGH_VOLUME_TAGS = [
+      '#주식', '#주식쇼츠', '#오늘의주식', '#종목분석', '#주식투자',
+      '#한국주식', '#코스피', '#재테크', '#투자', '#주식초보',
+    ];
+    const merged = [...new Set([...parsed.hashtags, ...HIGH_VOLUME_TAGS])].slice(0, 15);
+    parsed.hashtags = merged;
+
+    logger.info(`Shorts script generated: "${parsed.title}" (${parsed.scenes.length} scenes, ${merged.length} hashtags)`);
     return parsed;
   }
 }
