@@ -965,6 +965,7 @@ async function main(): Promise<void> {
     content: Awaited<ReturnType<typeof contentService.generateContent>>;
     fastTrack?: boolean;
     selectedPersona?: import('./types/index.js').AuthorProfile;
+    stockCode?: string;
   }
 
   // Cross-niche keyword tracking (prevent different niches from picking similar topics in same batch)
@@ -1205,10 +1206,14 @@ async function main(): Promise<void> {
         logger.info(`Found ${similarPostTitles.length} similar post(s) for differentiation: ${similarPostTitles.map(t => `"${t}"`).join(', ')}`);
       }
 
+      // 종목분석 쇼츠에 주입할 종목코드 (Naver 실시간 현재가용)
+      let shortsStockCode: string | undefined;
+
       // 종목별 니치: 해당 종목 1개의 심층 분석 컨텍스트 주입
       // niche.id = 'stock-{code}' → liveWatchlist에서 해당 종목 찾아 단독 주입
       if (niche.category === '종목분석') {
         const stockCode = niche.id.startsWith('stock-') ? niche.id.replace('stock-', '') : null;
+        if (stockCode) shortsStockCode = stockCode;
         const stockIdx = stockCode
           ? liveList.findIndex(s => s.stock_code === stockCode)
           : nicheIdx;
@@ -1230,7 +1235,7 @@ async function main(): Promise<void> {
       }
 
       const content = await contentService.generateContent(researched, filteredPosts, clusterLinksForPrompt, { postCount, rankingKeywords: gscRankingKeywords, similarPostTitles });
-      generated.push({ niche, postStart, researched, content, fastTrack: hasBreakout, selectedPersona });
+      generated.push({ niche, postStart, researched, content, fastTrack: hasBreakout, selectedPersona, stockCode: shortsStockCode });
 
       // Track keyword for cross-niche dedup
       batchKeywords.push(researched.analysis.selectedKeyword);
@@ -1331,7 +1336,7 @@ async function main(): Promise<void> {
   }
 
   for (let gi = 0; gi < generated.length; gi++) {
-    const { niche, postStart, researched, content, fastTrack, selectedPersona } = generated[gi];
+    const { niche, postStart, researched, content, fastTrack, selectedPersona, stockCode: shortsStockCode } = generated[gi];
     // Reset publish status per post (fact-check may have forced draft on previous post)
     effectivePublishStatus = config.PUBLISH_STATUS as 'publish' | 'draft';
     logger.info(`\n[Phase B] Niche: "${niche.name}"${fastTrack ? ' [FAST-TRACK]' : ''}`);
@@ -1711,7 +1716,7 @@ async function main(): Promise<void> {
 
       // Shorts: generate MP4 after publish (non-blocking)
       if (shortsService && isImmediatePublish) {
-        shortsService.generate(content, post, researched.analysis.selectedKeyword).catch(e =>
+        shortsService.generate(content, post, researched.analysis.selectedKeyword, shortsStockCode).catch(e =>
           logger.warn(`Shorts generation error: ${e instanceof Error ? e.message : e}`)
         );
       }

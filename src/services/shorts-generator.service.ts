@@ -7,6 +7,7 @@ import { ShortsScriptService } from './shorts-script.service.js';
 import { YouTubeUploadService } from './youtube-upload.service.js';
 import { FalImageService, FALLBACK_IMAGE_PROMPTS } from './fal-image.service.js';
 import { BgmService } from './bgm.service.js';
+import { NaverMarketDataService } from './naver-market-data.service.js';
 import { logger } from '../utils/logger.js';
 import type { BlogContent, PublishedPost } from '../types/index.js';
 
@@ -39,13 +40,29 @@ export class ShortsGeneratorService {
     else logger.info('[Shorts] fal.ai disabled (FAL_KEY not set) — using solid backgrounds');
   }
 
-  async generate(content: BlogContent, post: PublishedPost, keyword: string): Promise<string | null> {
+  async generate(content: BlogContent, post: PublishedPost, keyword: string, stockCode?: string): Promise<string | null> {
     try {
       await fs.mkdir(OUTPUT_DIR, { recursive: true });
       const safeSlug = (post.slug || String(post.postId)).replace(/[^a-z0-9가-힣-]/gi, '-').slice(0, 60);
 
       logger.info(`[Shorts] Generating script for: "${content.title}"`);
       const script = this.scriptService.generateScript(content.title, content.excerpt || '', keyword);
+
+      // 종목분석 쇼츠: 네이버금융 실시간 현재가 주입
+      if (stockCode && script.scenes.length > 0) {
+        try {
+          const naverSvc = new NaverMarketDataService();
+          const stockName = content.tags?.[0] || keyword;
+          const summary = await naverSvc.fetchStockSummary(stockCode, stockName);
+          if (summary && summary.price > 0) {
+            const priceStr = `${summary.price.toLocaleString('ko-KR')}원`;
+            script.scenes[0].highlight = priceStr;
+            logger.info(`[Shorts] Real-time price injected: ${priceStr}`);
+          }
+        } catch (err) {
+          logger.warn(`[Shorts] Naver price fetch failed (non-fatal): ${err instanceof Error ? err.message : err}`);
+        }
+      }
 
       // 장면별 배경 이미지 생성
       if (this.falImage) {
