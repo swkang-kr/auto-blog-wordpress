@@ -177,8 +177,8 @@ function SubText({ text, style }: { text: string; style?: React.CSSProperties })
 
 // Scene 0 — 훅: 가격 카운트업 + 방사형 버스트
 function HookScene({ scene, frame }: { scene: Scene; frame: number }) {
-  const rawNum = scene.highlight ? parseFloat(scene.highlight.replace(/[^0-9.]/g, '')) : 4280;
-  const num = isNaN(rawNum) || rawNum === 0 ? 4280 : rawNum;
+  const rawNum = scene.highlight ? parseFloat(scene.highlight.replace(/[^0-9.]/g, '')) : null;
+  const num = rawNum !== null && !isNaN(rawNum) && rawNum > 0 ? rawNum : null;
   const suffix = scene.highlight ? scene.highlight.replace(/[0-9.,]/g, '').trim() : '원';
 
   const rays = Array.from({ length: 16 }, (_, i) => i);
@@ -215,21 +215,25 @@ function HookScene({ scene, frame }: { scene: Scene; frame: number }) {
 
       {/* 핵심 숫자 */}
       <div style={{ transform: `scale(${numScale})`, textAlign: 'center', zIndex: 2 }}>
-        <div style={{ fontSize: 22, color: 'rgba(255,255,255,0.5)', letterSpacing: 3, marginBottom: 8 }}>
-          현재가
-        </div>
-        <div style={{
-          fontSize: 130, fontWeight: 900, color: '#fff',
-          fontFamily: 'Noto Sans KR, sans-serif',
-          lineHeight: 1, letterSpacing: -4,
-          textShadow: `0 0 60px ${RED}`,
-        }}>
-          <CountUp target={num} frame={frame} start={4} dur={36} suffix={suffix} />
-        </div>
-        {/* 트렌드 화살표 */}
-        <div style={{ marginTop: 8 }}>
-          <TrendArrow up frame={frame} start={20} />
-        </div>
+        {num !== null && (
+          <>
+            <div style={{ fontSize: 22, color: 'rgba(255,255,255,0.5)', letterSpacing: 3, marginBottom: 8 }}>
+              현재가
+            </div>
+            <div style={{
+              fontSize: 130, fontWeight: 900, color: '#fff',
+              fontFamily: 'Noto Sans KR, sans-serif',
+              lineHeight: 1, letterSpacing: -4,
+              textShadow: `0 0 60px ${RED}`,
+            }}>
+              <CountUp target={num} frame={frame} start={4} dur={36} suffix={suffix} />
+            </div>
+            {/* 트렌드 화살표 */}
+            <div style={{ marginTop: 8 }}>
+              <TrendArrow up frame={frame} start={20} />
+            </div>
+          </>
+        )}
         <SubText text={scene.text} style={{
           fontSize: 38, fontWeight: 700, color: 'rgba(255,255,255,0.92)',
           marginTop: 16, letterSpacing: 0.3, lineHeight: 1.5,
