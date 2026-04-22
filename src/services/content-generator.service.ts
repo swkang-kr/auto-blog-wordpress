@@ -1002,18 +1002,27 @@ ${analysis.contentType === 'case-study' ? 'CASE STUDY STRUCTURE: Focus on ONE st
 
       '종목분석': `NICHE VOICE: Hands-on Korean stock trader & technical analyst. This post is a SINGLE-STOCK deep-dive — focus entirely on the one stock provided in the stock context data. Do NOT compare with multiple stocks or make it a list post. Write as if a professional trader is explaining exactly why THIS stock is today's buy candidate.
 
-STRUCTURE (single stock deep dive):
-1. 오늘의 매수후보 선정 이유 — 핵심 시그널 요약 (RSI·MACD·수급·패턴 중 2-3개 강조)
-2. 기술적 분석 심층 — RSI(14)·MACD(12,26,9)·볼린저밴드(20,2)·이동평균선·거래량 각각 분석
-3. 수급 분석 — 외국인·기관 순매수/순매도 동향, 투자자별 매매 흐름
-4. 매수 전략 — 매수 타이밍 구체화, 분할 매수 방법, 손절선(stop-loss), 목표가(target), R:R 비율
+STRUCTURE (single stock deep dive — ALL 6 sections MANDATORY):
+1. 강력매수해야 할 이유 (MANDATORY H2) — 3가지 핵심 근거를 bullet로 명확히 제시. 기술적·수급·모멘텀 시그널 중 가장 강력한 것부터. "지금 강력매수해야 하는 이유 3가지" 형태의 제목 사용.
+2. 기술적 분석 심층 — RSI(14)·MACD(12,26,9)·볼린저밴드(20,2)·이동평균선·거래량 각각 분석. 각 지표 수치를 날짜 기준으로 명시.
+3. 수급 분석 — 외국인·기관 순매수/순매도 동향, 투자자별 매매 흐름.
+4. 진입가격 & 손절가격 (MANDATORY H2) — 반드시 다음을 포함:
+   - 1차 진입가격: 구체적 가격대 (예: "52,400원 ~ 52,800원 구간 1차 진입")
+   - 2차 진입가격: 눌림목·추가 매수 구간 (예: "51,000원 ~ 51,500원 2차 분할 매수")
+   - 손절가격: 명확한 손절 기준가 (예: "50,000원 이탈 시 손절 — 하락 추세 전환 신호")
+   - 목표가: 1차/2차 목표가 (예: "1차 목표 57,000원, 2차 목표 61,000원")
+   - R:R 비율: Risk/Reward ≥ 1:2 계산 명시
+   - 진입 전략 박스: <div class="ab-keypoint"> 태그로 진입가·손절가·목표가·R:R을 표 형태로 정리
 5. 리스크 요인 & 투자 유의사항
+6. 매매 체크리스트 — 매수 전 확인해야 할 5가지 체크포인트 bullet list
 
 DISCLAIMER: "이 글은 투자 정보 제공 목적이며 특정 종목 매수·매도를 권유하지 않습니다. 투자 결정은 본인 판단과 책임 하에 이루어져야 합니다."
 
 TECHNICAL ACCURACY: RSI(14) daily — oversold<30, overbought>70. MACD(12,26,9) — golden/dead cross signals. BB(20,2) — band support/resistance, width contraction/expansion. Volume confirmation is mandatory for all signals.
 
-RISK MGMT: Present 손절선 and 목표가 with specific prices. Risk/reward ratio ≥ 1:2. Include 분할 매수 plan (1차/2차 매수 구간).
+PRICE SPECIFICITY (CRITICAL): 진입가격과 손절가격은 반드시 실제 가격으로 제시. "지지선 부근" 같은 모호한 표현 금지. 구체적 숫자 필수. 주가 데이터가 없으면 기술적 지표(볼린저밴드 하단, 이동평균선 등)로 계산한 추정가 사용 — 단 "기술적 계산 추정가" 명시.
+
+RISK MGMT: Risk/reward ratio ≥ 1:2. Include 분할 매수 plan (1차/2차 매수 구간).
 
 KOREAN MARKET: VI at ±10%. T+2 settlement. 상한가/하한가 ±30%. Use Korean brokerage terms (키움, 미래에셋, 삼성증권 MTS 기준).${analysis.contentType === 'case-study' ? '\nCASE STUDY: 종목 선정 배경 → 기술적 시그널 → 매수 시점 → 결과 → 교훈.' : ''}`,
     };
