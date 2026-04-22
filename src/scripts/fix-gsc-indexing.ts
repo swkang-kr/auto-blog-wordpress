@@ -168,39 +168,30 @@ async function verifySnippetUpdate(): Promise<boolean> {
       return false;
     }
 
-    // unavailable_after가 아직 있는지 체크
-    if (thinPagesSnippet.code.includes('unavailable_after')) {
-      console.log('  🔴 스니펫에 unavailable_after가 아직 있습니다!');
-      console.log('  → 다음 자동 실행 시 업데이트됩니다 (seo.service.ts 수정 완료)');
+    // unavailable_after 또는 rank_math filter가 있으면 wp_head 직접 출력 방식으로 교체
+    if (thinPagesSnippet.code.includes('unavailable_after') || thinPagesSnippet.code.includes('rank_math/frontend/robots')) {
+      console.log('  🔴 스니펫이 잘못된 방식입니다 (rank_math filter 또는 unavailable_after)');
 
       if (!DRY_RUN) {
-        // 즉시 수정: unavailable_after 부분 제거
-        const fixedCode = thinPagesSnippet.code
-          .replace(/\/\/ unavailable_after.*?\n(?:.*\n)*?.*?unavailable_after.*?\n.*?\}\n\}/s, '});')
-          .replace(/\/\/ unavailable_after[^}]*\}[^}]*\}/s, '});');
-
-        // Rank Math filter 방식으로 교체된 새 코드 설치
+        // wp_head 직접 출력 방식으로 교체 (SEO 플러그인 없음)
         const newCode = `
-// Noindex thin archive pages via Rank Math filter (prevents duplicate robots meta tag)
-add_filter('rank_math/frontend/robots', function($robots) {
+// Noindex thin/duplicate archive pages (native wp_head — no SEO plugin)
+add_action('wp_head', function() {
+    $robots = '';
     if (is_tag() || is_author() || is_date()) {
-        $robots['index'] = 'noindex';
-        $robots['follow'] = 'follow';
-        return $robots;
-    }
-    if (is_category()) {
+        $robots = 'noindex, follow';
+    } elseif (is_category()) {
         $cat = get_queried_object();
-        if ($cat && $cat->count < 3) {
-            $robots['index'] = 'noindex';
-            $robots['follow'] = 'follow';
-        }
+        if ($cat && $cat->count < 3) { $robots = 'noindex, follow'; }
+    } elseif ((is_home() || is_category() || is_tag()) && get_query_var('paged') > 1) {
+        $robots = 'noindex, follow';
+    } elseif (is_search()) {
+        $robots = 'noindex, follow';
     }
-    if ((is_category() || is_tag() || is_home()) && get_query_var('paged') > 1) {
-        $robots['index'] = 'noindex';
-        $robots['follow'] = 'follow';
+    if ($robots) {
+        echo '<meta name="robots" content="' . esc_attr($robots) . '" />' . "\\n";
     }
-    return $robots;
-});
+}, 1);
 
 // Pagination rel next/prev for archive pages
 add_action('wp_head', function() {
@@ -224,20 +215,13 @@ add_action('wp_head', function() {
             { code: newCode, active: true },
             { headers: { Authorization: `Basic ${token}` }, timeout: 30000 },
           );
-          console.log('  ✅ 스니펫 즉시 업데이트 완료 (unavailable_after 제거 + Rank Math filter 방식)');
+          console.log('  ✅ 스니펫 교체 완료 (wp_head 직접 출력 방식)');
           return true;
         } catch (error) {
           console.error(`  ❌ 스니펫 업데이트 실패: ${error instanceof Error ? error.message : error}`);
           return false;
         }
       }
-      return false;
-    }
-
-    // wp_head에서 직접 meta 태그를 echo하는 방식인지 확인
-    if (thinPagesSnippet.code.includes('echo \'<meta name="robots"') && !thinPagesSnippet.code.includes('rank_math/frontend/robots')) {
-      console.log('  🟡 스니펫이 wp_head에서 직접 meta를 출력 중 (Rank Math과 충돌 가능)');
-      console.log('  → Rank Math filter 방식으로 업데이트 필요');
       return false;
     }
 
