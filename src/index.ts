@@ -576,15 +576,20 @@ async function main(): Promise<void> {
         );
       }
 
-      // Content decay detection
-      const declining = await gscService.getDecliningPages();
+      // Content decay detection — filter to active-niche posts only (exclude old/deleted niches)
+      const activeNichePostUrls = new Set(
+        history.getAllEntries()
+          .filter(e => e.postUrl && e.niche && NICHES.map(n => n.id).includes(e.niche))
+          .map(e => e.postUrl),
+      );
+      const decliningAll = await gscService.getDecliningPages();
+      const declining = decliningAll.filter(p => activeNichePostUrls.has(p.page));
       if (declining.length > 0) {
         logger.warn(`\n=== Content Decay Alert: ${declining.length} declining page(s) ===`);
         for (const page of declining.slice(0, 10)) {
           logger.warn(`  ${page.page} (pos ${page.position.toFixed(1)}, ${page.clicks} clicks/7d, ${page.impressions} imp/7d)`);
         }
         logger.warn(`Consider running: npx tsx src/scripts/refresh-stale-posts.ts`);
-        // Send Telegram alert for content decay
         if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
           await sendDecayAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, declining.slice(0, 5));
         }
