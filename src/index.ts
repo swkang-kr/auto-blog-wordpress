@@ -348,15 +348,19 @@ async function main(): Promise<void> {
     logger.warn(`Pillar/Author/FAQ pages update failed: ${error instanceof Error ? error.message : error}`);
   }
 
-  // 2.12d. Series hub pages (aggregate all posts in a content series)
+  // 2.12d. Series hub pages — active niches only (skip old/deleted niche series)
   try {
+    const activeNicheIds = new Set(NICHES.map(n => n.id));
     const seriesIds = history.getAllSeriesIds();
     if (seriesIds.length > 0) {
       const seriesMap = new Map<string, import('./types/index.js').PostHistoryEntry[]>();
       for (const sid of seriesIds) {
-        seriesMap.set(sid, history.getSeriesEntries(sid));
+        const entries = history.getSeriesEntries(sid).filter(e => e.niche && activeNicheIds.has(e.niche));
+        if (entries.length >= 2) seriesMap.set(sid, entries);
       }
-      await pagesService.ensureSeriesHubPages(seriesMap, config.SITE_NAME);
+      if (seriesMap.size > 0) {
+        await pagesService.ensureSeriesHubPages(seriesMap, config.SITE_NAME);
+      }
     }
   } catch (error) {
     logger.warn(`Series hub pages update failed: ${error instanceof Error ? error.message : error}`);
