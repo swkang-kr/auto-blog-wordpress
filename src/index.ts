@@ -20,7 +20,6 @@ import { sendBatchSummary, sendQualityAlert, sendDecayAlert, sendHealthCheck, se
 import { DataVisualizationService } from './services/data-visualization.service.js';
 import { costTracker, CostTracker } from './utils/cost-tracker.js';
 import { logger } from './utils/logger.js';
-import { ContentRefreshService } from './services/content-refresh.service.js';
 import { TopicClusterService } from './services/topic-cluster.service.js';
 import { FactCheckService } from './services/fact-check.service.js';
 import { MediumService } from './services/medium.service.js';
@@ -453,9 +452,6 @@ async function main(): Promise<void> {
       postCount: config.POST_COUNT,
     });
   }
-
-  // 2.14c. Check evergreen ratio health
-  ContentRefreshService.checkEvergreenRatio(history.getAllEntries());
 
   // 2.15. Manual review mode: schedule initial posts for delayed auto-publish (AdSense safety)
   const isNewPublisher = config.MANUAL_REVIEW_THRESHOLD > 0 && history.getAllEntries().length < config.MANUAL_REVIEW_THRESHOLD * 2;
@@ -2049,25 +2045,6 @@ async function main(): Promise<void> {
     logger.warn(`Orphan/link check failed: ${error instanceof Error ? error.message : error}`);
   }
 
-  // 4.1b. Periodic broken external link check (weekly maintenance)
-  try {
-    const linkCheckService = new ContentRefreshService(
-      config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD,
-      config.ANTHROPIC_API_KEY, config.CLAUDE_MODEL,
-    );
-    const { broken, fixed } = await linkCheckService.checkBrokenExternalLinks(20);
-    if (broken > 0) {
-      logger.info(`Broken external link maintenance: ${broken} broken link(s) found, ${fixed} post(s) updated`);
-    }
-    // Fix broken internal links (deleted posts, hallucinated category/guide pages)
-    const intResult = await linkCheckService.fixBrokenInternalLinks(50);
-    if (intResult.broken > 0) {
-      logger.info(`Broken internal link maintenance: ${intResult.broken} broken link(s) found, ${intResult.fixed} post(s) updated`);
-    }
-  } catch (error) {
-    logger.warn(`Broken link check failed: ${error instanceof Error ? error.message : error}`);
-  }
-
   // 4.1c. Link rot detection on Mondays — check last 50 posts for dead external links
   if (new Date().getDay() === 1) {
     try {
@@ -2127,263 +2104,8 @@ async function main(): Promise<void> {
     }
   }
 
-  // 4.2. Auto-rewrite underperforming posts (when enabled, with timeout guard)
-  const elapsedMinutes = (Date.now() - new Date(startedAt).getTime()) / 60000;
-  const REWRITE_TIME_BUDGET_MIN = 35; // Skip rewrite if already past 35 min (GitHub Actions timeout is 45 min)
-  if (config.AUTO_REWRITE_COUNT > 0 && config.GA4_PROPERTY_ID && config.GOOGLE_INDEXING_SA_KEY && elapsedMinutes < REWRITE_TIME_BUDGET_MIN) {
-    try {
-      const ga4Service = ga4Singleton!;
-      const refreshService = new ContentRefreshService(
-        config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD,
-        config.ANTHROPIC_API_KEY, config.CLAUDE_MODEL,
-      );
-      const activeNicheIds = NICHES.map(n => n.id);
-      const freshnessData = history.getPostsByFreshnessScore(config.AUTO_REWRITE_MIN_AGE_DAYS)
-        .filter(e => e.niche && activeNicheIds.includes(e.niche));
-      if (freshnessData.length > 0) {
-        const staleCount = freshnessData.filter(f => f.freshnessScore < 30).length;
-        if (staleCount > 0) {
-          logger.info(`Content freshness: ${staleCount} post(s) with freshness score < 30 (needs refresh)`);
-        }
-      }
-      const gscForRefresh = gscSingleton ?? undefined;
-      const rewritten = await refreshService.refreshDecliningPosts(
-        ga4Service, seoService, config.AUTO_REWRITE_COUNT, config.AUTO_REWRITE_MIN_AGE_DAYS, freshnessData, gscForRefresh, undefined, activeNicheIds,
-      );
-      if (rewritten > 0) {
-        logger.info(`Auto-rewrote ${rewritten} underperforming post(s)`);
-        // Purge Cloudflare cache for refreshed URLs so updated content propagates immediately
-        if (config.CLOUDFLARE_API_TOKEN && config.CLOUDFLARE_ZONE_ID) {
-          try {
-            const refreshedForPurge = await wpService.getPostsByMeta('_autoblog_last_refreshed', 10);
-            const refreshedUrls = refreshedForPurge
-              .filter(r => r.meta._autoblog_last_refreshed && Date.now() - new Date(r.meta._autoblog_last_refreshed).getTime() < 24 * 60 * 60 * 1000)
-              .map(r => r.url);
-            if (refreshedUrls.length > 0) {
-              await seoService.purgeCloudflareUrls(config.CLOUDFLARE_API_TOKEN, config.CLOUDFLARE_ZONE_ID, refreshedUrls);
-            }
-          } catch (purgeErr) {
-            logger.debug(`Cloudflare purge after refresh failed: ${purgeErr instanceof Error ? purgeErr.message : purgeErr}`);
-          }
-        }
-        // Re-promote refreshed content to SNS for renewed traffic
-        try {
-          const recentRefreshed = await wpService.getPostsByMeta('_autoblog_last_refreshed', 5);
-          for (const refreshed of recentRefreshed.slice(0, 2)) {
-            const refreshedAt = refreshed.meta._autoblog_last_refreshed;
-            // Only re-promote if refreshed within last 24h
-            if (!refreshedAt || Date.now() - new Date(refreshedAt).getTime() > 24 * 60 * 60 * 1000) continue;
-            logger.info(`Re-promoting refreshed post: "${refreshed.title}"`);
-            // Fetch enriched content from WP for proper social post building
-            let reproContent: any = { title: refreshed.title, html: '', excerpt: '', tags: [], category: '', imagePrompts: [], imageCaptions: [], qualityScore: 0, metaDescription: '', slug: '' };
-            let reproExcerpt = '';
-            try {
-              const fullPost = await wpService.getPostContent(refreshed.postId);
-              if (fullPost) {
-                reproExcerpt = fullPost.content.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().substring(0, 300);
-                reproContent = { ...reproContent, title: fullPost.title, html: fullPost.content, category: fullPost.category, excerpt: reproExcerpt };
-                // Fetch tags for Twitter thread
-                try {
-                  const { data: wpData } = await (wpService as any).api.get(`/posts/${refreshed.postId}`, { params: { _fields: 'tags,slug' } });
-                  reproContent.slug = (wpData as any).slug || '';
-                  const tagIds: number[] = (wpData as any).tags || [];
-                  if (tagIds.length > 0) {
-                    const { data: tagsData } = await (wpService as any).api.get('/tags', { params: { include: tagIds.slice(0, 10).join(','), _fields: 'name' } });
-                    reproContent.tags = (tagsData as any[]).map((t: any) => t.name);
-                  }
-                } catch { /* tags extraction optional */ }
-              }
-            } catch { /* use minimal content */ }
-            if (twitterService) {
-              try {
-                await twitterService.promoteBlogPost(
-                  reproContent as any,
-                  { url: refreshed.url, postId: refreshed.postId, title: refreshed.title, featuredImageId: 0 },
-                );
-                logger.info(`Re-promotion: Twitter thread posted for "${refreshed.title}"`);
-              } catch (reproErr) {
-                logger.debug(`Re-promotion Twitter failed: ${reproErr instanceof Error ? reproErr.message : reproErr}`);
-              }
-            }
-            if (linkedinService) {
-              try {
-                await linkedinService.promoteBlogPost(refreshed.title, reproExcerpt, refreshed.url);
-                logger.info(`Re-promotion: LinkedIn post shared for "${refreshed.title}"`);
-              } catch (reproErr) {
-                logger.debug(`Re-promotion LinkedIn failed: ${reproErr instanceof Error ? reproErr.message : reproErr}`);
-              }
-            }
-          }
-        } catch (reproError) {
-          logger.debug(`Re-promotion lookup failed: ${reproError instanceof Error ? reproError.message : reproError}`);
-        }
-      }
-    } catch (error) {
-      logger.warn(`Auto-rewrite failed: ${error instanceof Error ? error.message : error}`);
-    }
-  } else if (config.AUTO_REWRITE_COUNT > 0 && elapsedMinutes >= REWRITE_TIME_BUDGET_MIN) {
-    logger.warn(`Skipping auto-rewrite: elapsed ${elapsedMinutes.toFixed(0)} min exceeds ${REWRITE_TIME_BUDGET_MIN} min budget`);
-  }
-
-  // 4.21b. CTR-based title/meta-only refresh (lightweight — no full rewrite)
-  // Targets posts where position is stable but CTR is declining → title/meta problem
-  if (config.GSC_SITE_URL && config.GOOGLE_INDEXING_SA_KEY) {
-    try {
-      const gscCtrService = gscSingleton!;
-      const ctrRefreshService = new ContentRefreshService(
-        config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD,
-        config.ANTHROPIC_API_KEY, config.CLAUDE_MODEL,
-      );
-      const activeNicheUrlsForCtr = new Set(
-        history.getAllEntries()
-          .filter(e => e.niche && NICHES.map(n => n.id).includes(e.niche) && e.postUrl)
-          .map(e => { try { return new URL(e.postUrl).pathname.replace(/^\/|\/$/g, ''); } catch { return ''; } })
-          .filter(Boolean),
-      );
-      const ctrRefreshed = await ctrRefreshService.refreshDecliningCtrPosts(gscCtrService, seoService, 2, activeNicheUrlsForCtr);
-      if (ctrRefreshed > 0) {
-        logger.info(`CTR refresh: Updated title/meta for ${ctrRefreshed} post(s) with stable position but declining CTR`);
-      }
-    } catch (error) {
-      logger.warn(`CTR refresh failed: ${error instanceof Error ? error.message : error}`);
-    }
-  }
-
-  // 4.22. Time-based content refresh fallback (works WITHOUT GA4)
-  // Refreshes posts that exceed their freshness class update interval
-  try {
-    const freshnessData = history.getPostsByFreshnessScore(14)
-      .filter(e => e.niche && NICHES.map(n => n.id).includes(e.niche));
-    if (freshnessData.length > 0) {
-      const refreshService = new ContentRefreshService(
-        config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD,
-        config.ANTHROPIC_API_KEY, config.CLAUDE_MODEL,
-      );
-      const timeRefreshed = await refreshService.refreshByTimeThreshold(freshnessData, seoService, 2);
-      if (timeRefreshed > 0) {
-        logger.info(`Time-based refresh: Rewrote ${timeRefreshed} stale post(s) exceeding freshness threshold`);
-      }
-
-      // 4.22b. Yearly content refresh (Q1 only: update previous year's content)
-      const yearlyRefreshed = await refreshService.refreshYearlyContent(freshnessData, seoService, 2);
-      if (yearlyRefreshed > 0) {
-        logger.info(`Yearly refresh: Updated ${yearlyRefreshed} post(s) with new year data`);
-      }
-    }
-  } catch (error) {
-    logger.warn(`Time-based/yearly refresh failed: ${error instanceof Error ? error.message : error}`);
-  }
-
-  // 4.22b2. Partial data-section refresh (lightweight — updates prices, dates, tables only)
-  try {
-    const freshnessForPartial = history.getPostsByFreshnessScore(14);
-    if (freshnessForPartial.length > 0) {
-      const partialRefreshService = new ContentRefreshService(
-        config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD,
-        config.ANTHROPIC_API_KEY, config.CLAUDE_MODEL,
-      );
-      const partialRefreshed = await partialRefreshService.partialRefreshDataSections(freshnessForPartial, seoService, 3);
-      if (partialRefreshed > 0) {
-        logger.info(`Partial data refresh: Updated data sections in ${partialRefreshed} post(s) without full rewrite`);
-      }
-    }
-  } catch (error) {
-    logger.warn(`Partial data refresh failed: ${error instanceof Error ? error.message : error}`);
-  }
-
-  // 4.22d. Striking distance post strengthening (position 5-20 → strengthen for target query)
-  if (config.GSC_SITE_URL && config.GOOGLE_INDEXING_SA_KEY && elapsedMinutes < REWRITE_TIME_BUDGET_MIN) {
-    try {
-      const gscForStrength = gscSingleton!;
-      const strengthService = new ContentRefreshService(
-        config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD,
-        config.ANTHROPIC_API_KEY, config.CLAUDE_MODEL,
-      );
-      const strengthened = await strengthService.strengthenStrikingDistancePosts(gscForStrength, seoService, 2);
-      if (strengthened > 0) {
-        logger.info(`Striking distance: Strengthened ${strengthened} post(s) for better ranking`);
-      }
-    } catch (error) {
-      logger.warn(`Striking distance strengthening failed: ${error instanceof Error ? error.message : error}`);
-    }
-  }
-
-  // 4.22c. Content lifecycle: noindex stale time-sensitive content (>6 months)
-  try {
-    const lifecycleService = new ContentRefreshService(
-      config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD,
-      config.ANTHROPIC_API_KEY, config.CLAUDE_MODEL,
-    );
-    const noindexed = await lifecycleService.noindexStaleContent(history.getAllEntries(), 180);
-    if (noindexed > 0) {
-      logger.info(`Content lifecycle: ${noindexed} stale post(s) noindexed`);
-    }
-  } catch (error) {
-    logger.warn(`Content lifecycle noindex failed: ${error instanceof Error ? error.message : error}`);
-  }
-
-  // 4.22d-pre. Content pruning: auto-archive near-zero engagement stale posts
-  try {
-    const pruneService = new ContentRefreshService(
-      config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD,
-      config.ANTHROPIC_API_KEY, config.CLAUDE_MODEL,
-    );
-    const ga4ForPrune = ga4Singleton ?? undefined;
-    const gscForPrune = gscSingleton ?? undefined;
-    const pruned = await pruneService.pruneStaleContent(history.getAllEntries(), ga4ForPrune, gscForPrune, 3);
-    if (pruned > 0) {
-      logger.info(`Content pruning: ${pruned} stale post(s) archived (draft + noindex)`);
-      if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
-        await sendTelegramAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID,
-          `<b>Content Pruning</b>\n${pruned} stale post(s) auto-archived (draft + noindex)`, 'info');
-      }
-    }
-  } catch (error) {
-    logger.warn(`Content pruning failed: ${error instanceof Error ? error.message : error}`);
-  }
-
-  // Build set of live post URLs — used to filter out deleted posts from decay/merge detection
+  // Build set of live post URLs — used to filter out deleted posts from decay detection
   const livePostUrls = new Set(existingPosts.map(p => p.url).filter(Boolean));
-
-  // 4.22d. Content lifecycle: detect merge candidates (cannibalization reduction)
-  // Only consider active-niche posts — off-niche posts are handled via noindex, not merge
-  try {
-    const activeNicheIdsForMerge = NICHES.map(n => n.id);
-    const liveEntries = history.getAllEntries().filter(e =>
-      e.postUrl && livePostUrls.has(e.postUrl) &&
-      e.niche && activeNicheIdsForMerge.includes(e.niche),
-    );
-    const mergeCandidates = ContentRefreshService.detectMergeCandidates(liveEntries);
-    if (mergeCandidates.length > 0) {
-      logger.info(`Content lifecycle: ${mergeCandidates.length} merge candidate(s) detected — review recommended`);
-
-      // Auto-redirect: for very high similarity (≥80%) merge candidates, set 301 redirect
-      // from weaker post (lower engagement) to stronger post
-      const autoRedirectCandidates = mergeCandidates
-        .filter(c => c.similarity >= 0.8 && c.postB.postId)
-        .slice(0, 2); // Max 2 auto-redirects per batch
-
-      for (const c of autoRedirectCandidates) {
-        try {
-          await wpService.updatePostMeta(c.postB.postId, {
-            rank_math_redirection_url_to: c.postA.postUrl,
-            rank_math_redirection_header_code: '301',
-          });
-          logger.info(`Merge auto-redirect: "${c.postB.keyword}" → "${c.postA.keyword}" (${(c.similarity * 100).toFixed(0)}% overlap)`);
-        } catch (redirectErr) {
-          logger.debug(`Merge redirect failed: ${redirectErr instanceof Error ? redirectErr.message : redirectErr}`);
-        }
-      }
-
-      if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID && mergeCandidates.length > 0) {
-        const mergeMsg = mergeCandidates.slice(0, 3).map(c => c.recommendation).join('\n  - ');
-        await sendTelegramAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID,
-          `<b>Content Merge Candidates: ${mergeCandidates.length} pair(s)</b>\n  - ${mergeMsg}\n\n<i>Review recommended to reduce keyword cannibalization.</i>`, 'info');
-      }
-    }
-  } catch (error) {
-    logger.warn(`Content merge detection failed: ${error instanceof Error ? error.message : error}`);
-  }
 
   // 4.23. Keyword ranking tracking — store position trends in history
   if (config.GSC_SITE_URL && config.GOOGLE_INDEXING_SA_KEY) {
@@ -2732,49 +2454,6 @@ async function main(): Promise<void> {
     }
   }
 
-  // 4.25b. New title A/B testing via ContentRefreshService (complementary to inline A/B above)
-  if (config.GSC_SITE_URL && config.GOOGLE_INDEXING_SA_KEY) {
-    try {
-      const abRefreshService = new ContentRefreshService(
-        config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD,
-        config.ANTHROPIC_API_KEY, config.CLAUDE_MODEL,
-      );
-      const gscForAB = gscSingleton!;
-      const pendingTests = history.getPendingTitleTests();
-      const abResults = await abRefreshService.runTitleABTests(pendingTests, gscForAB);
-      if (abResults.tested > 0) {
-        logger.info(`Title A/B testing (refresh service): ${abResults.tested} test(s) processed, ${abResults.resolved} resolved`);
-      }
-    } catch (error) {
-      logger.debug(`Title A/B testing (refresh service) failed: ${error instanceof Error ? error.message : error}`);
-    }
-  }
-
-  // 4.25c. Proactive content refresh calendar: log upcoming scheduled refreshes
-  try {
-    const scheduledRefreshes = ContentRefreshService.getScheduledRefreshes(history.getAllEntries(), 10);
-    if (scheduledRefreshes.length > 0) {
-      // getScheduledRefreshes already logs — auto-execute partial refreshes for most overdue items
-      const topOverdue = scheduledRefreshes.slice(0, 2);
-      if (topOverdue.length > 0 && elapsedMinutes < REWRITE_TIME_BUDGET_MIN) {
-        const proactiveService = new ContentRefreshService(
-          config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD,
-          config.ANTHROPIC_API_KEY, config.CLAUDE_MODEL,
-        );
-        for (const sr of topOverdue) {
-          try {
-            await proactiveService.partialRefresh(sr.postId, ['stats', 'dates', 'links']);
-            logger.info(`Proactive partial refresh completed for post ${sr.postId} ("${sr.keyword}")`);
-          } catch (prError) {
-            logger.debug(`Proactive partial refresh failed for post ${sr.postId}: ${prError instanceof Error ? prError.message : prError}`);
-          }
-        }
-      }
-    }
-  } catch (error) {
-    logger.debug(`Proactive refresh calendar failed: ${error instanceof Error ? error.message : error}`);
-  }
-
   // 4.25d. Title pattern learning: log win rates from resolved A/B tests
   try {
     const patternWinRates = history.getTitlePatternWinRates();
@@ -2856,23 +2535,6 @@ async function main(): Promise<void> {
     }
   } catch (error) {
     logger.debug(`Cluster coverage analysis failed: ${error instanceof Error ? error.message : error}`);
-  }
-
-  // 4.8. Featured snippet auto-optimization — optimize top-ranking posts for Position 0
-  if (config.GSC_SITE_URL && config.GOOGLE_INDEXING_SA_KEY) {
-    try {
-      const refreshService = new ContentRefreshService(
-        config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD,
-        config.ANTHROPIC_API_KEY, config.CLAUDE_MODEL,
-      );
-      const gscSnippet = gscSingleton!;
-      const snippetOptimized = await refreshService.optimizeForFeaturedSnippets(gscSnippet, seoService, 2);
-      if (snippetOptimized > 0) {
-        logger.info(`Featured snippet: Optimized ${snippetOptimized} post(s) for Position 0 capture`);
-      }
-    } catch (error) {
-      logger.warn(`Featured snippet optimization failed: ${error instanceof Error ? error.message : error}`);
-    }
   }
 
   // 4.9. [#2] Early content decay detection — 3-day consecutive + slope-based detection
