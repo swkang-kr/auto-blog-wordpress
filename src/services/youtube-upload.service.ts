@@ -52,6 +52,29 @@ export class YouTubeUploadService {
       const videoId = response.data.id!;
       const videoUrl = `https://www.youtube.com/shorts/${videoId}`;
       logger.info(`[YouTube] Uploaded: ${videoUrl}`);
+
+      // 블로그 URL 댓글 등록
+      if (postUrl) {
+        try {
+          await youtube.commentThreads.insert({
+            part: ['snippet'],
+            requestBody: {
+              snippet: {
+                videoId,
+                topLevelComment: {
+                  snippet: {
+                    textOriginal: `📊 전체 분석 보기 → ${postUrl}\n\n더 자세한 기술적 분석과 매수 전략이 담겨 있습니다!`,
+                  },
+                },
+              },
+            },
+          });
+          logger.info(`[YouTube] Comment posted: ${postUrl}`);
+        } catch (commentErr) {
+          logger.warn(`[YouTube] Comment failed (non-fatal): ${commentErr instanceof Error ? commentErr.message : commentErr}`);
+        }
+      }
+
       return videoUrl;
     } catch (err) {
       logger.warn(`[YouTube] Upload failed (non-fatal): ${err instanceof Error ? err.message : err}`);
