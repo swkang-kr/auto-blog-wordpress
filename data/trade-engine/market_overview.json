@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-04-21T07:00:06.765221+00:00",
+  "exported_at": "2026-04-22T07:00:01.483618+00:00",
   "market_daily": [
+    {
+      "date": "20260422",
+      "kospi_change": 0.46,
+      "kosdaq_change": 0.18,
+      "foreign_net": -67.49,
+      "institution_net": -44.87,
+      "individual_net": 124.05,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260421",
       "kospi_change": 2.72,
       "kosdaq_change": 0.36,
-      "foreign_net": 133.47,
-      "institution_net": 73.77,
-      "individual_net": -192.05,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": 133.42,
+      "institution_net": 73.78,
+      "individual_net": -192.02,
+      "hot_theme_count": 25,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260420",
@@ -99,29 +110,18 @@
       "hot_theme_count": 5,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260408",
-      "kospi_change": 6.87,
-      "kosdaq_change": 5.12,
-      "foreign_net": 243.85,
-      "institution_net": 271.13,
-      "individual_net": -541.61,
-      "hot_theme_count": 40,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "코스피 6400선 ‘눈앞’…SK하이닉스 120만원 넘었다 [시황]",
-    "[포토]코스피, 2.7% 급등 사상 최고치 6,380선 마감",
-    "돌아온 외국인에 코스피 다시 '봄'···시총도 첫 5200조↑",
-    "코스피 또 새 역사…외국인·기관 쌍끌이에 6380선 돌파",
-    "코스피, 2.72% 상승한 6388.47 마감",
-    "코스피, 2.72% 상승한 6388.47 마감",
-    "활짝 웃은 코스피",
-    "코스피, 2.72% 상승한 6388.47 마감",
-    "코스피, 2.7% 급등 6380선 마감…사상 최고치 돌파",
-    "티비씨, 주식병합 결정…\"주가 안정화·기업가치 제고\""
+    "코스피 6,417 돌파…하루 만에 또 '최고치'",
+    "코스피, 하루 만에 최고치 또 경신…6,400선 돌파",
+    "코스피, 6417.93 마감…종가 역대 최고치 하루 만에 또 경신",
+    "코스피 이틀 연속 최고치 경신…증권사는 ‘빚투’ 제한 나서",
+    "피지컬 AI 5대 투자처가 뜬다…\"매년 2배 성장할 곳 주목\"",
+    "코스피·코스닥 동반 상승",
+    "동반 상승한 코스피·코스닥",
+    "코스피·코스닥 동반 상승",
+    "코스피 상승…하이닉스·삼성전자는 하락",
+    "“SK하이닉스 말고 또 있다고?”…이달 쏟아진 코스피 ‘신고가’ 종목들"
   ]
 }

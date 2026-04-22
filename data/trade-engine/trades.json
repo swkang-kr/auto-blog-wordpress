@@ -1,6 +1,78 @@
 {
-  "exported_at": "2026-04-21T07:00:06.386137+00:00",
+  "exported_at": "2026-04-22T07:00:01.070780+00:00",
   "trades": [
+    {
+      "stock_code": "018880",
+      "stock_name": "한온시스템",
+      "side": "buy",
+      "quantity": 98,
+      "price": 4175.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "watchlist_interval_follow",
+      "filled_at": "2026-04-22T06:17:09.420221"
+    },
+    {
+      "stock_code": "033240",
+      "stock_name": "자화전자",
+      "side": "sell",
+      "quantity": 12,
+      "price": 42950.0,
+      "pnl": 24068.28,
+      "pnl_rate": 4.9159,
+      "strategy": "swing_trailing(peak=8.1%,step=3.0%,trail_sl=5.1%)",
+      "reason": "swing_trailing(peak=8.1%,step=3.0%,trail_sl=5.1%)",
+      "filled_at": "2026-04-22T02:12:17.541418"
+    },
+    {
+      "stock_code": "017860",
+      "stock_name": "DS단석",
+      "side": "sell",
+      "quantity": 21,
+      "price": 21900.0,
+      "pnl": 32063.22,
+      "pnl_rate": 7.5213,
+      "strategy": "swing_trailing(peak=11.0%,step=3.0%,trail_sl=8.0%)",
+      "reason": "swing_trailing(peak=11.0%,step=3.0%,trail_sl=8.0%)",
+      "filled_at": "2026-04-22T01:39:16.239559"
+    },
+    {
+      "stock_code": "034020",
+      "stock_name": "034020",
+      "side": "sell",
+      "quantity": 3,
+      "price": 113100.0,
+      "pnl": 4550.94,
+      "pnl_rate": 1.3642,
+      "strategy": "swing_trailing(peak=4.4%,step=3.0%,trail_sl=1.4%)",
+      "reason": "swing_trailing(peak=4.4%,step=3.0%,trail_sl=1.4%)",
+      "filled_at": "2026-04-22T01:09:18.435816"
+    },
+    {
+      "stock_code": "005870",
+      "stock_name": "휴니드",
+      "side": "sell",
+      "quantity": 36,
+      "price": 11340.0,
+      "pnl": 70669.58,
+      "pnl_rate": 21.0176,
+      "strategy": "swing_trailing(peak=25.6%,step=3.0%,trail_sl=22.6%)",
+      "reason": "swing_trailing(peak=25.6%,step=3.0%,trail_sl=22.6%)",
+      "filled_at": "2026-04-22T01:09:15.551315"
+    },
+    {
+      "stock_code": "008730",
+      "stock_name": "율촌화학",
+      "side": "sell",
+      "quantity": 12,
+      "price": 27600.0,
+      "pnl": 1876.32,
+      "pnl_rate": 0.5717,
+      "strategy": "swing_trailing(peak=3.9%,step=3.0%,trail_sl=0.9%)",
+      "reason": "swing_trailing(peak=3.9%,step=3.0%,trail_sl=0.9%)",
+      "filled_at": "2026-04-22T00:04:06.218850"
+    },
     {
       "stock_code": "011690",
       "stock_name": "와이투솔루션",
@@ -528,78 +600,6 @@
       "strategy": "RSI+MACD(swing)",
       "reason": "MACD히스토그램↑ | RSI모멘텀(60) | 거래량2.1x | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+6.0%vsKOSPI-0.4%)",
       "filled_at": "2026-04-17T06:15:17.868718"
-    },
-    {
-      "stock_code": "034020",
-      "stock_name": "두산에너빌리티",
-      "side": "buy",
-      "quantity": 3,
-      "price": 108400.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "MACD히스토그램↑ | MA정배열 | 섹터약세(기계) | 주봉골든크로스 | 주봉MA20위",
-      "filled_at": "2026-04-17T06:15:17.604479"
-    },
-    {
-      "stock_code": "018260",
-      "stock_name": "삼성에스디에스",
-      "side": "buy",
-      "quantity": 1,
-      "price": 182800.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "MACD히스토그램↑ | 거래량5.5x | 거래량3x+ | MA정배열 | 주봉데드크로스 | 주봉MA20위",
-      "filled_at": "2026-04-17T06:15:15.587356"
-    },
-    {
-      "stock_code": "019170",
-      "stock_name": "신풍제약",
-      "side": "buy",
-      "quantity": 38,
-      "price": 13690.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(72) | 거래량28.0x | 거래량3x+ | MA정배열 | 주봉데드크로스 | 주봉MA20위 | 상대강도(+21.4%vsKOSPI-0.4%)",
-      "filled_at": "2026-04-17T06:15:15.514769"
-    },
-    {
-      "stock_code": "018260",
-      "stock_name": "삼성에스디에스",
-      "side": "sell",
-      "quantity": 2,
-      "price": 181700.0,
-      "pnl": -20651.08,
-      "pnl_rate": -5.3947,
-      "strategy": "swing_stop_loss(SL=181,830)",
-      "reason": "swing_stop_loss(SL=181,830)",
-      "filled_at": "2026-04-17T02:50:36.898954"
-    },
-    {
-      "stock_code": "005690",
-      "stock_name": "파미셀",
-      "side": "sell",
-      "quantity": 22,
-      "price": 18440.0,
-      "pnl": -23396.91,
-      "pnl_rate": -5.4707,
-      "strategy": "swing_stop_loss(SL=18,468)",
-      "reason": "swing_stop_loss(SL=18,468)",
-      "filled_at": "2026-04-17T01:22:38.874332"
-    },
-    {
-      "stock_code": "014680",
-      "stock_name": "한솔케미칼",
-      "side": "buy",
-      "quantity": 1,
-      "price": 284500.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "MACD히스토그램↑ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
-      "filled_at": "2026-04-16T06:02:50.696744"
     }
   ]
 }
