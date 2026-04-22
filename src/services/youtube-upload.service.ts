@@ -63,7 +63,7 @@ export class YouTubeUploadService {
                 videoId,
                 topLevelComment: {
                   snippet: {
-                    textOriginal: `📊 전체 분석 보기 → ${postUrl}\n\n더 자세한 기술적 분석과 매수 전략이 담겨 있습니다!`,
+                    textOriginal: `📊 전체 분석 보기 → ${encodeURI(postUrl)}\n\n더 자세한 기술적 분석과 매수 전략이 담겨 있습니다!`,
                   },
                 },
               },
