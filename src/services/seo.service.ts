@@ -614,6 +614,8 @@ add_action('init', function() {
 
     const sitemaps = [
       `${this.wpUrl}/sitemap_index.xml`,
+      `${this.wpUrl}/post-sitemap.xml`,
+      `${this.wpUrl}/page-sitemap.xml`,
       `${this.wpUrl}/news-sitemap.xml`,
     ];
 
