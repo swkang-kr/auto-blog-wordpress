@@ -7,13 +7,14 @@ const RemotionRoot: React.FC = () => {
     <Composition
       id="Shorts"
       component={ShortsComposition as unknown as React.ComponentType<Record<string, unknown>>}
-      durationInFrames={60 * 30}  // 60초 × 30fps
+      durationInFrames={30 * 30}  // 30초 × 30fps
       fps={30}
       width={1080}
       height={1920}
       defaultProps={{
         scenes: [],
         audioSrc: '',
+        bgmSrc: '',
         keyword: '',
       }}
     />

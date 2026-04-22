@@ -1532,7 +1532,7 @@ Return pure JSON only.`;
         let postFixed = false;
 
         // Domains that block bot HEAD/GET requests (false positives)
-        const BOT_BLOCKED_DOMAINS = ['amazon.com', 'amazon.co', 'kocca.kr', 'instagram.com', 'facebook.com', 'tiktok.com', 'bloomberg.com', 'dart.fss.or.kr', 'reuters.com', 'ft.com', 'wsj.com', 'nytimes.com'];
+        const BOT_BLOCKED_DOMAINS = ['amazon.com', 'amazon.co', 'kocca.kr', 'instagram.com', 'facebook.com', 'tiktok.com', 'bloomberg.com', 'dart.fss.or.kr', 'reuters.com', 'ft.com', 'wsj.com', 'nytimes.com', 'krx.co.kr', 'linkedin.com'];
         for (const link of links) {
           checked++;
           try {

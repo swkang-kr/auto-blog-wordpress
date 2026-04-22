@@ -166,18 +166,14 @@ async function main(): Promise<void> {
       ? new ThreadsService(config.THREADS_ACCESS_TOKEN, config.THREADS_USER_ID)
       : null;
 
-  const shortsService =
-    process.env.NAVER_TTS_CLIENT_ID && process.env.NAVER_TTS_CLIENT_SECRET
-      ? new ShortsGeneratorService(
-          process.env.NAVER_TTS_CLIENT_ID,
-          process.env.NAVER_TTS_CLIENT_SECRET,
-          process.env.YOUTUBE_CLIENT_ID,
-          process.env.YOUTUBE_CLIENT_SECRET,
-          process.env.YOUTUBE_REFRESH_TOKEN,
-        )
-      : null;
-  if (shortsService) logger.info('Shorts generation enabled (CLOVA TTS)');
-  else logger.info('NAVER_TTS_CLIENT_ID not set, skipping Shorts generation');
+  const shortsService = new ShortsGeneratorService(
+    '',
+    '',
+    process.env.YOUTUBE_CLIENT_ID,
+    process.env.YOUTUBE_CLIENT_SECRET,
+    process.env.YOUTUBE_REFRESH_TOKEN,
+  );
+  logger.info('Shorts generation enabled (edge-tts)');
   if (threadsService) {
     // Pre-flight token validation for Threads
     try {
