@@ -33,24 +33,24 @@ export class ShortsScriptService {
    예) "4,280원 → 5,500원? 한온시스템 지금 담아야 하는 이유"
 2. narration: 첫 문장은 반드시 충격적인 수치나 결론부터 시작. 100자 이내. 자연스러운 구어체.
 3. scenes: 정확히 5개, 각 5~6초 (총 0~28초)
-   - scene[0]: 훅 — 충격 수치 or 핵심 결론을 먼저 공개. highlight 필수.
-   - scene[1]: 현황 — 현재 상황/데이터. highlight 필수.
-   - scene[2]: 분석 — 핵심 신호/근거. highlight 권장.
-   - scene[3]: 전략 — 매수/매도 포인트. highlight 권장.
+   - scene[0]: 훅 — 충격 수치 or 핵심 결론을 먼저 공개. highlight 필수 (숫자 우선).
+   - scene[1]: 강력매수해야 할 이유 — 가장 핵심적인 매수 근거 1가지를 임팩트 있게. highlight 필수 (이유 키워드, 예: "RSI 과매도!" / "기관 3일 연속 매수").
+   - scene[2]: 기술적 시그널 — RSI·MACD·볼린저밴드 중 가장 강한 시그널 1개와 수치. highlight 필수 (지표 수치, 예: "RSI 28").
+   - scene[3]: 진입가격 & 손절가격 — 구체적 숫자 필수. "X원 진입, Y원 손절" 형태로 명시. highlight 필수 (진입가 숫자).
    - scene[4]: CTA — "구독하면 매일 종목 분석!" 또는 "내일 장 시작 전 확인하세요!" (highlight 없음)
 4. text: 자연스러운 한국어 문장으로 작성. 2줄 이내, 줄 구분은 \n 사용. 규칙:
    - 완전한 문장으로 끝맺음 (~다, ~요, ~네요, ~군요, ~세요)
    - 구어체, 친근한 말투 (뉴스 앵커X, 유튜버 말투O)
    - 숫자/데이터가 있으면 문장에 자연스럽게 포함
-   - 예시: "지금 볼린저밴드가\n심하게 수축 중이에요" / "4,280원에서 돌파하면\n단기 10% 상승 가능합니다"
+   - 예시: "지금 볼린저밴드가\n심하게 수축 중이에요" / "4,280원에서 진입하고\n4,000원 손절이면 R:R 2배네요"
    - 금지: 단어 나열("볼린저밴드 수축"), 조사 생략("현재가 4280"), 영어 남발
 5. highlight: 핵심 숫자(예: "4,280원") 또는 임팩트 단어(예: "스퀴즈 돌파!"). 숫자 우선.
-6. hashtags: 종목명/기법/투자 관련 10개
+6. hashtags: 종목명/기법/투자 관련 10개. #진입가격 #손절가격 #강력매수 반드시 포함.
 7. imagePrompt: 각 장면 배경 이미지용 영문 프롬프트 (30단어 이내). 장면마다 완전히 다른 시각적 스타일 사용.
    - scene[0] 훅: WIDE SHOT stock exchange trading floor, red LED ticker boards, dramatic overhead lighting, ultra-wide lens, photorealistic
-   - scene[1] 현황: CLOSE-UP glowing financial dashboard monitors, cyan data streams, dark office, bokeh background, photorealistic
-   - scene[2] 분석: ABSTRACT purple neural network visualization, floating holographic graphs, deep space background, digital art, cinematic
-   - scene[3] 전략: AERIAL NIGHT VIEW Seoul financial district, green upward arrows overlay, wet streets reflecting neon, cinematic drone shot
+   - scene[1] 강력매수 이유: CLOSE-UP glowing financial dashboard monitors, cyan data streams, dark office, bokeh background, photorealistic
+   - scene[2] 기술적 시그널: ABSTRACT purple neural network visualization, floating holographic graphs, deep space background, digital art, cinematic
+   - scene[3] 진입가·손절가: AERIAL NIGHT VIEW Seoul financial district, green upward arrows overlay, wet streets reflecting neon, cinematic drone shot
    - scene[4] CTA: MACRO smartphone screen with subscription bell notification, golden hour rim light, shallow depth of field, product photography
 
 순수 JSON만 응답. 마크다운 코드블록 금지.
