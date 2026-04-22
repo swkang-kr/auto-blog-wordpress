@@ -64,18 +64,19 @@ export class ShortsGeneratorService {
         }
       }
 
-      // 장면별 배경 이미지 생성
+      // 장면별 배경 이미지 생성 (순차 — 동일 seed 중복 방지)
       if (this.falImage) {
         logger.info(`[Shorts] Generating scene background images (fal.ai)...`);
-        await Promise.all(script.scenes.map(async (scene, i) => {
+        for (let i = 0; i < script.scenes.length; i++) {
+          const scene = script.scenes[i];
           try {
             const prompt = scene.imagePrompt || FALLBACK_IMAGE_PROMPTS[i] || FALLBACK_IMAGE_PROMPTS[0];
-            scene.imageSrc = await this.falImage!.generateDataUrl(prompt);
+            scene.imageSrc = await this.falImage.generateDataUrl(prompt);
             logger.info(`[Shorts] Image ${i + 1}/${script.scenes.length} generated`);
           } catch (err) {
             logger.warn(`[Shorts] Image ${i + 1} failed (non-fatal): ${err instanceof Error ? err.message : err}`);
           }
-        }));
+        }
       }
 
       // TTS + BGM 병렬 처리

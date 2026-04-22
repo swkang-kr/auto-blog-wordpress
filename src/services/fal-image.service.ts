@@ -13,6 +13,7 @@ export class FalImageService {
   }
 
   async generateDataUrl(prompt: string): Promise<string> {
+    const seed = Math.floor(Math.random() * 2_147_483_647);
     const result = await fal.subscribe('fal-ai/flux/schnell', {
       input: {
         prompt,
@@ -20,6 +21,7 @@ export class FalImageService {
         num_inference_steps: 4,
         num_images: 1,
         enable_safety_checker: false,
+        seed,
       },
     }) as { data: FalImageResult };
 

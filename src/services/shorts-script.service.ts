@@ -46,12 +46,12 @@ export class ShortsScriptService {
    - 금지: 단어 나열("볼린저밴드 수축"), 조사 생략("현재가 4280"), 영어 남발
 5. highlight: 핵심 숫자(예: "4,280원") 또는 임팩트 단어(예: "스퀴즈 돌파!"). 숫자 우선.
 6. hashtags: 종목명/기법/투자 관련 10개
-7. imagePrompt: 각 장면 배경 이미지용 영문 프롬프트 (30단어 이내, photorealistic, dark theme, cinematic)
-   - scene[0] 훅: 극적인 주식 거래소 or 가격 상승 장면
-   - scene[1] 현황: 금융 데이터 차트/대시보드
-   - scene[2] 분석: 추상적 데이터 시각화 or 분석 화면
-   - scene[3] 전략: 금융 지구 야경 or 매수 신호 장면
-   - scene[4] CTA: 스마트폰 앱 알림 or 구독 관련 이미지
+7. imagePrompt: 각 장면 배경 이미지용 영문 프롬프트 (30단어 이내). 장면마다 완전히 다른 시각적 스타일 사용.
+   - scene[0] 훅: WIDE SHOT stock exchange trading floor, red LED ticker boards, dramatic overhead lighting, ultra-wide lens, photorealistic
+   - scene[1] 현황: CLOSE-UP glowing financial dashboard monitors, cyan data streams, dark office, bokeh background, photorealistic
+   - scene[2] 분석: ABSTRACT purple neural network visualization, floating holographic graphs, deep space background, digital art, cinematic
+   - scene[3] 전략: AERIAL NIGHT VIEW Seoul financial district, green upward arrows overlay, wet streets reflecting neon, cinematic drone shot
+   - scene[4] CTA: MACRO smartphone screen with subscription bell notification, golden hour rim light, shallow depth of field, product photography
 
 순수 JSON만 응답. 마크다운 코드블록 금지.
 {"title":"","narration":"","scenes":[{"startSec":0,"endSec":6,"text":"","highlight":"","imagePrompt":""},{"startSec":6,"endSec":12,"text":"","highlight":"","imagePrompt":""},{"startSec":12,"endSec":18,"text":"","highlight":"","imagePrompt":""},{"startSec":18,"endSec":24,"text":"","highlight":"","imagePrompt":""},{"startSec":24,"endSec":28,"text":"","highlight":"","imagePrompt":""}],"hashtags":["#주식"]}`;
