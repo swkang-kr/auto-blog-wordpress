@@ -65,6 +65,8 @@ export class FactCheckService {
           const numMatch = match.match(/([\d,]+(?:\.\d+)?)/);
           if (numMatch) {
             const claimed = parseFloat(numMatch[1].replace(/,/g, ''));
+            // Skip years (2020-2035) — "KOSPI 2026" refers to the year, not the index level
+            if (claimed >= 2020 && claimed <= 2035) continue;
             // KOSPI ranges 2000-3500 typically. Allow 15% tolerance
             if (claimed > 1000 && claimed < 10000 && Math.abs(claimed - kospiLevel) / kospiLevel > 0.15) {
               flagged.push(`KOSPI level "${match}" may be outdated (recent: ~${kospiLevel.toFixed(0)})`);
