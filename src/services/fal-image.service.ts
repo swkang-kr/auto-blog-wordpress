@@ -13,11 +13,16 @@ export class FalImageService {
   }
 
   async generateDataUrl(prompt: string): Promise<string> {
+    const buf = await this.generateBuffer(prompt, 1080, 1920);
+    return `data:image/jpeg;base64,${buf.toString('base64')}`;
+  }
+
+  async generateBuffer(prompt: string, width = 1280, height = 720): Promise<Buffer> {
     const seed = Math.floor(Math.random() * 2_147_483_647);
     const result = await fal.subscribe('fal-ai/flux/schnell', {
       input: {
         prompt,
-        image_size: { width: 1080, height: 1920 },
+        image_size: { width, height },
         num_inference_steps: 4,
         num_images: 1,
         enable_safety_checker: false,
@@ -28,8 +33,7 @@ export class FalImageService {
     const url = result.data.images[0]?.url;
     if (!url) throw new Error('fal.ai: no image returned');
 
-    const buf = await this.fetchBuffer(url);
-    return `data:image/jpeg;base64,${buf.toString('base64')}`;
+    return this.fetchBuffer(url);
   }
 
   private fetchBuffer(url: string): Promise<Buffer> {

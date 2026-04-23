@@ -4,6 +4,7 @@ import { logger } from '../utils/logger.js';
 import { ImageGenerationError } from '../types/errors.js';
 import { costTracker } from '../utils/cost-tracker.js';
 import { circuitBreakers } from '../utils/retry.js';
+import { FalImageService } from './fal-image.service.js';
 import type { ImageResult } from '../types/index.js';
 
 const TARGET_MAX_KB = 200;
@@ -21,10 +22,14 @@ export class ImageGeneratorService {
   private imageFormat: 'webp' | 'avif';
   /** Track which model index to use (auto-advances on failure) */
   private activeModelIndex = 0;
+  private falService: FalImageService | null;
 
   constructor(apiKey: string, imageFormat: 'webp' | 'avif' = 'webp') {
     this.client = new GoogleGenerativeAI(apiKey);
     this.imageFormat = imageFormat;
+    const falKey = process.env.FAL_KEY;
+    this.falService = falKey ? new FalImageService(falKey) : null;
+    if (this.falService) logger.info('fal.ai fallback enabled for blog images');
   }
 
   /**
@@ -270,7 +275,22 @@ export class ImageGeneratorService {
         return null;
       }
     }
-    return null;
+    // All Gemini retries exhausted — try fal.ai fallback
+    return this.falFallback(prompt, index);
+  }
+
+  private async falFallback(originalPrompt: string, index: number): Promise<Buffer | null> {
+    if (!this.falService) return null;
+    try {
+      logger.info(`Image ${index + 1}: Gemini exhausted, trying fal.ai fallback...`);
+      const buf = await this.falService.generateBuffer(originalPrompt, 1280, 720);
+      const compressed = await this.convertImage(buf);
+      logger.info(`Image ${index + 1} recovered via fal.ai (${(compressed.length / 1024).toFixed(0)}KB)`);
+      return compressed;
+    } catch (err) {
+      logger.warn(`Image ${index + 1} fal.ai fallback failed: ${err instanceof Error ? err.message : String(err)}`);
+      return null;
+    }
   }
 
   /**
