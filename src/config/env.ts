@@ -5,7 +5,7 @@ import { ConfigError } from '../types/errors.js';
 // No dotenv import needed — Node v20.6+ handles .env natively.
 
 const envSchema = z.object({
-  ANTHROPIC_API_KEY: z.string().min(1, 'ANTHROPIC_API_KEY is required'),
+  ANTHROPIC_API_KEY: z.string().default(''),
   GEMINI_API_KEY: z.string().min(1, 'GEMINI_API_KEY is required'),
   WP_URL: z.string().url('WP_URL must be a valid URL'),
   WP_USERNAME: z.string().min(1, 'WP_USERNAME is required'),
