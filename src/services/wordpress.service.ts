@@ -3621,10 +3621,13 @@ ${ga4TrackingScript}`;
         if (!slug || slug.includes('?') || slug.startsWith('wp-')) continue;
 
         // Check if this URL exists in our post list or page list
-        const existsAsPost = existingPosts.some(p =>
-          p.url.replace(/\/$/, '') === linkUrl.replace(/\/$/, ''),
-        );
-        const existsAsPage = validPageUrls.has(linkUrl.replace(/\/$/, ''));
+        // Decode both sides to handle Korean slug encoding differences
+        const decodedLinkUrl = (() => { try { return decodeURIComponent(linkUrl); } catch { return linkUrl; } })();
+        const existsAsPost = existingPosts.some(p => {
+          const decodedPostUrl = (() => { try { return decodeURIComponent(p.url); } catch { return p.url; } })();
+          return decodedPostUrl.replace(/\/$/, '') === decodedLinkUrl.replace(/\/$/, '');
+        });
+        const existsAsPage = validPageUrls.has(linkUrl.replace(/\/$/, '')) || validPageUrls.has(decodedLinkUrl.replace(/\/$/, ''));
         if (existsAsPost || existsAsPage) continue;
 
         // Try to find similar slug (Levenshtein-like matching)
