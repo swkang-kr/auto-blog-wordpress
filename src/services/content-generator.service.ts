@@ -1206,11 +1206,16 @@ Respond with pure JSON only.`;
       );
     }
 
-    // Ensure at least 5 image prompts
+    // Ensure exactly 5 image prompts (1 featured + 4 inline = 4 placeholders in HTML)
     while (content.imagePrompts.length < 5) {
       logger.warn(`Only ${content.imagePrompts.length} image prompts, padding to 5`);
       content.imagePrompts.push(`Detailed illustration related to ${analysis.selectedKeyword}, vivid colors, editorial style, Korean visual elements`);
       content.imageCaptions.push(`${content.title} related image`);
+    }
+    if (content.imagePrompts.length > 5) {
+      logger.warn(`${content.imagePrompts.length} image prompts returned, trimming to 5`);
+      content.imagePrompts = content.imagePrompts.slice(0, 5);
+      content.imageCaptions = content.imageCaptions.slice(0, 5);
     }
 
     if (!content.title || !content.html) {
