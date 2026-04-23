@@ -729,9 +729,11 @@ ${this.paaQuestions.length > 0 ? `\n## People Also Ask (PAA) Questions\nThese qu
 
     try {
       const claudeBin = process.env.CLAUDE_BIN || 'claude';
+      const { ANTHROPIC_API_KEY: _unused, ...safeEnv } = process.env;
       const result = spawnSync(claudeBin, ['-p', prompt, '--model', 'opus'], {
         encoding: 'utf8',
         maxBuffer: 4 * 1024 * 1024,
+        env: safeEnv,
       });
       if (result.status !== 0) {
         throw new Error(`CLI exit ${result.status}: ${result.stderr?.slice(0, 300)}`);

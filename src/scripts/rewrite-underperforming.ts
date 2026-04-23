@@ -72,9 +72,11 @@ REWRITE RULES:
 Return pure JSON only (no markdown):
 {"title":"improved title","html":"full HTML content","excerpt":"compelling 145-158 char meta description"}`;
 
+  const { ANTHROPIC_API_KEY: _unused, ...safeEnv } = process.env;
   const result = spawnSync(CLAUDE_BIN, ['-p', prompt, '--model', 'opus'], {
     encoding: 'utf8',
     maxBuffer: 16 * 1024 * 1024,
+    env: safeEnv,
   });
 
   if (result.status !== 0) {

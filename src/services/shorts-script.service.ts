@@ -56,9 +56,11 @@ export class ShortsScriptService {
 순수 JSON만 응답. 마크다운 코드블록 금지.
 {"title":"","narration":"","scenes":[{"startSec":0,"endSec":6,"text":"","highlight":"","imagePrompt":""},{"startSec":6,"endSec":12,"text":"","highlight":"","imagePrompt":""},{"startSec":12,"endSec":18,"text":"","highlight":"","imagePrompt":""},{"startSec":18,"endSec":24,"text":"","highlight":"","imagePrompt":""},{"startSec":24,"endSec":28,"text":"","highlight":"","imagePrompt":""}],"hashtags":["#주식"]}`;
 
+    const { ANTHROPIC_API_KEY: _unused, ...safeEnv } = process.env;
     const result = spawnSync(claudeBin, ['-p', prompt, '--model', 'opus'], {
       encoding: 'utf8',
       maxBuffer: 2 * 1024 * 1024,
+      env: safeEnv,
     });
 
     if (result.status !== 0) {

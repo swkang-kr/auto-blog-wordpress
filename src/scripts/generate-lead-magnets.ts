@@ -77,9 +77,11 @@ Requirements:
 Output format: Pure HTML document.`;
 
     try {
+      const { ANTHROPIC_API_KEY: _unused, ...safeEnv } = process.env;
       const result = spawnSync(claudeBin, ['-p', fullPrompt, '--model', 'opus'], {
         encoding: 'utf8',
         maxBuffer: 16 * 1024 * 1024,
+        env: safeEnv,
       });
 
       if (result.status !== 0) {

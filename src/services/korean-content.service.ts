@@ -73,9 +73,11 @@ ${contentForTranslation}
 Respond ONLY in this JSON format (no markdown):
 {"title":"Korean title here","html":"Korean HTML content here","excerpt":"Korean meta description here","tags":["태그1","태그2","태그3"]}`;
 
+      const { ANTHROPIC_API_KEY: _unused, ...safeEnv } = process.env;
       const result = spawnSync(this.claudeBin, ['-p', prompt, '--model', 'opus'], {
         encoding: 'utf8',
         maxBuffer: 16 * 1024 * 1024,
+        env: safeEnv,
       });
 
       if (result.status !== 0) {
@@ -129,9 +131,11 @@ Rules:
 Respond in JSON (no markdown):
 {"koreanKeyword":"한국어 키워드","searchTerms":["관련 검색어1","관련 검색어2"],"naverTags":["태그1","태그2"]}`;
 
+      const { ANTHROPIC_API_KEY: _unused2, ...safeEnv2 } = process.env;
       const result = spawnSync(this.claudeBin, ['-p', prompt, '--model', 'opus'], {
         encoding: 'utf8',
         maxBuffer: 2 * 1024 * 1024,
+        env: safeEnv2,
       });
 
       if (result.status !== 0) {

@@ -124,9 +124,11 @@ If the current title already follows the correct pattern and is good, keep it bu
 Respond with pure JSON only (no markdown):
 {"title":"...","excerpt":"...","reason":"one sentence explaining the change"}`;
 
+  const { ANTHROPIC_API_KEY: _unused, ...safeEnv } = process.env;
   const result = spawnSync(CLAUDE_BIN, ['-p', prompt, '--model', 'opus'], {
     encoding: 'utf8',
     maxBuffer: 2 * 1024 * 1024,
+    env: safeEnv,
   });
 
   if (result.status !== 0) {
