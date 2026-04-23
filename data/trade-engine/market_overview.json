@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-04-22T07:00:01.483618+00:00",
+  "exported_at": "2026-04-23T07:00:01.635868+00:00",
   "market_daily": [
+    {
+      "date": "20260423",
+      "kospi_change": 0.9,
+      "kosdaq_change": -0.58,
+      "foreign_net": -4.99,
+      "institution_net": -32.96,
+      "individual_net": 45.14,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260422",
       "kospi_change": 0.46,
       "kosdaq_change": 0.18,
-      "foreign_net": -67.49,
+      "foreign_net": -67.5,
       "institution_net": -44.87,
-      "individual_net": 124.05,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "individual_net": 124.1,
+      "hot_theme_count": 17,
+      "momentum_count": 60,
+      "crash_count": 30
     },
     {
       "date": "20260421",
@@ -99,29 +110,18 @@
       "hot_theme_count": 40,
       "momentum_count": 60,
       "crash_count": 22
-    },
-    {
-      "date": "20260409",
-      "kospi_change": -1.61,
-      "kosdaq_change": -1.27,
-      "foreign_net": -87.46,
-      "institution_net": 20.98,
-      "individual_net": 29.5,
-      "hot_theme_count": 5,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "코스피 6,417 돌파…하루 만에 또 '최고치'",
-    "코스피, 하루 만에 최고치 또 경신…6,400선 돌파",
-    "코스피, 6417.93 마감…종가 역대 최고치 하루 만에 또 경신",
-    "코스피 이틀 연속 최고치 경신…증권사는 ‘빚투’ 제한 나서",
-    "피지컬 AI 5대 투자처가 뜬다…\"매년 2배 성장할 곳 주목\"",
-    "코스피·코스닥 동반 상승",
-    "동반 상승한 코스피·코스닥",
-    "코스피·코스닥 동반 상승",
-    "코스피 상승…하이닉스·삼성전자는 하락",
-    "“SK하이닉스 말고 또 있다고?”…이달 쏟아진 코스피 ‘신고가’ 종목들"
+    "황성엽 금투협회장 \"코너스톤 투자자 제도, 'K-IPO 대전환' 기폭제 될 것\"",
+    "반도체주 훈풍에 코스피 사상 최고치 마감",
+    "코스피, 6475.81로 사흘 연속 '최고치' 마감…장중 6500선도 넘겨(종합)",
+    "코스피 사흘 연속 사상 최고치, 삼성전자 3%대 급등",
+    "삼성전자 노조 투쟁 결의대회, 3%대 급등",
+    "삼성전자 노조 투쟁 결의대회, 3%대 급등",
+    "코스피, 사흘 연속 최고치",
+    "3%대 급등한 삼성전자, 사흘 연속 사상 최고치 경신한 코스피",
+    "3%대 급등한 삼성전자, 사흘 연속 사상 최고치 경신한 코스피",
+    "신한지주 \"ROE·성장률 연동…주주환원율 상한 없앤다\""
   ]
 }
