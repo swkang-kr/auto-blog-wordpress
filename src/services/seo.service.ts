@@ -552,24 +552,11 @@ add_action('init', function() {
   }
 
   /**
-   * Ping Bing with the sitemap URL to trigger re-crawl.
-   * Google deprecated sitemap ping in 2023, but Bing still supports it.
+   * Bing deprecated the sitemap ping endpoint (returns 410 Gone as of 2025).
+   * Use Bing Webmaster API or IndexNow instead.
    */
   async pingSitemap(): Promise<void> {
-    const sitemapUrl = `${this.wpUrl}/sitemap_index.xml`;
-    const pingUrl = `https://www.bing.com/ping?sitemap=${encodeURIComponent(sitemapUrl)}`;
-
-    try {
-      const { status } = await axios.get(pingUrl, { timeout: 10000, validateStatus: () => true });
-      if (status === 200) {
-        logger.info(`Bing sitemap ping OK: ${sitemapUrl}`);
-      } else {
-        logger.warn(`Bing sitemap ping returned status ${status}`);
-      }
-    } catch (error) {
-      const msg = error instanceof Error ? error.message : String(error);
-      logger.warn(`Bing sitemap ping failed: ${msg}`);
-    }
+    logger.debug('Bing sitemap ping skipped (endpoint deprecated)');
   }
 
   /**

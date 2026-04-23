@@ -102,7 +102,8 @@ export class FacebookService {
       '#TrendHunt',
     ].join(' ');
 
-    return `${emoji} ${content.title}\n\n${content.excerpt || ''}\n\n🔗 ${url}\n\n${hashtags}`;
+    const excerpt = (content.excerpt || '').slice(0, 200);
+    return `${emoji} ${content.title}\n\n${excerpt}\n\n🔗 ${url}\n\n${hashtags}`;
   }
 
   private nicheEmoji(category: string): string {
