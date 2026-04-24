@@ -1,6 +1,28 @@
 {
-  "exported_at": "2026-04-23T07:00:01.120046+00:00",
+  "exported_at": "2026-04-24T07:00:00.745255+00:00",
   "holdings": [
+    {
+      "stock_code": "011790",
+      "stock_name": "SKC",
+      "quantity": 15,
+      "avg_price": 111653.0,
+      "current_price": 115900.0,
+      "unrealized_pnl": 58010.7,
+      "unrealized_pnl_rate": 3.4634,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-04-23T06:15:12.245275"
+    },
+    {
+      "stock_code": "014680",
+      "stock_name": "한솔케미칼",
+      "quantity": 1,
+      "avg_price": 284500.0,
+      "current_price": 292500.0,
+      "unrealized_pnl": 7032.7,
+      "unrealized_pnl_rate": 2.472,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-04-16T06:02:50.701676"
+    },
     {
       "stock_code": "018880",
       "stock_name": "한온시스템",
@@ -13,24 +35,79 @@
       "entry_date": "2026-04-22T06:17:09.405613"
     },
     {
-      "stock_code": "014680",
-      "stock_name": "한솔케미칼",
+      "stock_code": "000660",
+      "stock_name": "SK하이닉스",
       "quantity": 1,
-      "avg_price": 284500.0,
-      "current_price": 287500.0,
-      "unrealized_pnl": 2032.7,
-      "unrealized_pnl_rate": 0.7145,
+      "avg_price": 1222000.0,
+      "current_price": 1225000.0,
+      "unrealized_pnl": -1154.8,
+      "unrealized_pnl_rate": -0.0945,
       "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-04-16T06:02:50.701676"
+      "entry_date": "2026-04-23T06:18:07.799371"
+    },
+    {
+      "stock_code": "034220",
+      "stock_name": "LG디스플레이",
+      "quantity": 25,
+      "avg_price": 12790.0,
+      "current_price": 12790.0,
+      "unrealized_pnl": -1087.15,
+      "unrealized_pnl_rate": -0.358,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-04-24T06:15:09.893627"
+    },
+    {
+      "stock_code": "097230",
+      "stock_name": "HJ중공업",
+      "quantity": 8,
+      "avg_price": 31950.0,
+      "current_price": 31950.0,
+      "unrealized_pnl": -869.04,
+      "unrealized_pnl_rate": -0.437,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-04-24T06:19:04.856595"
+    },
+    {
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "quantity": 1,
+      "avg_price": 219500.0,
+      "current_price": 219500.0,
+      "unrealized_pnl": -746.3,
+      "unrealized_pnl_rate": -0.508,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-04-24T06:18:04.133456"
+    },
+    {
+      "stock_code": "005870",
+      "stock_name": "휴니드",
+      "quantity": 28,
+      "avg_price": 10070.0,
+      "current_price": 10050.0,
+      "unrealized_pnl": -1518.66,
+      "unrealized_pnl_rate": -0.5776,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-04-24T06:15:09.024143"
+    },
+    {
+      "stock_code": "011500",
+      "stock_name": "한농화성",
+      "quantity": 70,
+      "avg_price": 24800.0,
+      "current_price": 24600.0,
+      "unrealized_pnl": -19902.4,
+      "unrealized_pnl_rate": -1.1465,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-04-23T06:18:06.373373"
     },
     {
       "stock_code": "066570",
       "stock_name": "LG전자",
       "quantity": 13,
       "avg_price": 129100.0,
-      "current_price": 129500.0,
-      "unrealized_pnl": -506.22,
-      "unrealized_pnl_rate": -0.0482,
+      "current_price": 127400.0,
+      "unrealized_pnl": -27806.22,
+      "unrealized_pnl_rate": -1.6568,
       "strategy": "RSI+MACD(swing)",
       "entry_date": "2026-04-23T06:15:12.108267"
     },
@@ -39,66 +116,22 @@
       "stock_name": "화신",
       "quantity": 141,
       "avg_price": 12390.0,
-      "current_price": 12390.0,
-      "unrealized_pnl": -5939.77,
-      "unrealized_pnl_rate": -0.361,
+      "current_price": 12160.0,
+      "unrealized_pnl": -38369.77,
+      "unrealized_pnl_rate": -2.1963,
       "strategy": "RSI+MACD(swing)",
       "entry_date": "2026-04-23T06:15:11.608864"
-    },
-    {
-      "stock_code": "000660",
-      "stock_name": "SK하이닉스",
-      "quantity": 1,
-      "avg_price": 1222000.0,
-      "current_price": 1222000.0,
-      "unrealized_pnl": -4154.8,
-      "unrealized_pnl_rate": -0.362,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-04-23T06:18:07.799371"
-    },
-    {
-      "stock_code": "011790",
-      "stock_name": "SKC",
-      "quantity": 15,
-      "avg_price": 111653.0,
-      "current_price": 111600.0,
-      "unrealized_pnl": -6489.3,
-      "unrealized_pnl_rate": -0.4178,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-04-23T06:15:12.245275"
     },
     {
       "stock_code": "009470",
       "stock_name": "삼화전기",
       "quantity": 37,
       "avg_price": 46450.0,
-      "current_price": 46500.0,
-      "unrealized_pnl": -3993.41,
-      "unrealized_pnl_rate": -0.4324,
+      "current_price": 45450.0,
+      "unrealized_pnl": -42843.41,
+      "unrealized_pnl_rate": -2.4929,
       "strategy": "RSI+MACD(swing)",
       "entry_date": "2026-04-23T06:15:11.811617"
-    },
-    {
-      "stock_code": "011500",
-      "stock_name": "한농화성",
-      "quantity": 70,
-      "avg_price": 24800.0,
-      "current_price": 24750.0,
-      "unrealized_pnl": -9402.4,
-      "unrealized_pnl_rate": -0.6836,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-04-23T06:18:06.373373"
-    },
-    {
-      "stock_code": "005880",
-      "stock_name": "대한해운",
-      "quantity": 136,
-      "avg_price": 2700.0,
-      "current_price": 2635.0,
-      "unrealized_pnl": -10088.48,
-      "unrealized_pnl_rate": -2.7474,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-04-20T06:15:26.024483"
     }
   ]
 }

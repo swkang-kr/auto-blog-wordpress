@@ -1,6 +1,66 @@
 {
-  "exported_at": "2026-04-23T07:00:01.150723+00:00",
+  "exported_at": "2026-04-24T07:00:00.762621+00:00",
   "trades": [
+    {
+      "stock_code": "097230",
+      "stock_name": "HJ중공업",
+      "side": "buy",
+      "quantity": 8,
+      "price": 31950.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "MACD히스토그램↑ | 거래량4.5x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "filled_at": "2026-04-24T06:19:04.865111"
+    },
+    {
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "side": "buy",
+      "quantity": 1,
+      "price": 219500.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "watchlist_interval_follow",
+      "filled_at": "2026-04-24T06:18:04.143712"
+    },
+    {
+      "stock_code": "034220",
+      "stock_name": "LG디스플레이",
+      "side": "buy",
+      "quantity": 25,
+      "price": 12790.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "거래량2.3x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "filled_at": "2026-04-24T06:15:09.901946"
+    },
+    {
+      "stock_code": "005870",
+      "stock_name": "휴니드",
+      "side": "buy",
+      "quantity": 28,
+      "price": 10070.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "거래량2.7x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "filled_at": "2026-04-24T06:15:09.033858"
+    },
+    {
+      "stock_code": "005880",
+      "stock_name": "대한해운",
+      "side": "sell",
+      "quantity": 136,
+      "price": 2775.0,
+      "pnl": 8925.0,
+      "pnl_rate": 2.4306,
+      "strategy": "swing_trailing(peak=5.6%,step=3.0%,trail_sl=2.6%)",
+      "reason": "swing_trailing(peak=5.6%,step=3.0%,trail_sl=2.6%)",
+      "filled_at": "2026-04-24T00:24:59.957993"
+    },
     {
       "stock_code": "000660",
       "stock_name": "SK하이닉스",
@@ -540,66 +600,6 @@
       "strategy": "swing_trailing(peak=5.3%,step=3.0%,trail_sl=2.3%)",
       "reason": "swing_trailing(peak=5.3%,step=3.0%,trail_sl=2.3%)",
       "filled_at": "2026-04-20T05:31:41.651189"
-    },
-    {
-      "stock_code": "025540",
-      "stock_name": "한국단자",
-      "side": "sell",
-      "quantity": 5,
-      "price": 85300.0,
-      "pnl": 8057.5,
-      "pnl_rate": 1.9323,
-      "strategy": "swing_trailing(peak=5.1%,step=3.0%,trail_sl=2.1%)",
-      "reason": "swing_trailing(peak=5.1%,step=3.0%,trail_sl=2.1%)",
-      "filled_at": "2026-04-20T03:56:59.690768"
-    },
-    {
-      "stock_code": "062040",
-      "stock_name": "산일전기",
-      "side": "sell",
-      "quantity": 2,
-      "price": 203000.0,
-      "pnl": 27242.48,
-      "pnl_rate": 7.2185,
-      "strategy": "swing_trailing(peak=10.4%,step=3.0%,trail_sl=7.4%)",
-      "reason": "swing_trailing(peak=10.4%,step=3.0%,trail_sl=7.4%)",
-      "filled_at": "2026-04-20T02:22:44.645568"
-    },
-    {
-      "stock_code": "003720",
-      "stock_name": "삼영",
-      "side": "sell",
-      "quantity": 51,
-      "price": 9503.0,
-      "pnl": 48525.29,
-      "pnl_rate": 11.1676,
-      "strategy": "swing_trailing(peak=16.3%,step=3.0%,trail_sl=13.3%)",
-      "reason": "swing_trailing(peak=16.3%,step=3.0%,trail_sl=13.3%)",
-      "filled_at": "2026-04-20T00:37:22.063634"
-    },
-    {
-      "stock_code": "017960",
-      "stock_name": "한국카본",
-      "side": "sell",
-      "quantity": 8,
-      "price": 50900.0,
-      "pnl": -4587.04,
-      "pnl_rate": -1.1177,
-      "strategy": "swing_stop_loss(SL=51,213)",
-      "reason": "swing_stop_loss(SL=51,213)",
-      "filled_at": "2026-04-20T00:07:53.111995"
-    },
-    {
-      "stock_code": "019170",
-      "stock_name": "신풍제약",
-      "side": "sell",
-      "quantity": 38,
-      "price": 12670.0,
-      "pnl": -40427.97,
-      "pnl_rate": -7.7713,
-      "strategy": "swing_stop_loss(SL=13,317)",
-      "reason": "swing_stop_loss(SL=13,317)",
-      "filled_at": "2026-04-20T00:01:40.769831"
     }
   ]
 }
