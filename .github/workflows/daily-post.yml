@@ -79,7 +79,17 @@ jobs:
           HASHNODE_TOKEN: ${{ secrets.HASHNODE_TOKEN }}
           HASHNODE_PUBLICATION_ID: ${{ secrets.HASHNODE_PUBLICATION_ID }}
           DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
-        run: node --import tsx/esm src/index.ts
+        run: |
+          mkdir -p logs
+          node --import tsx/esm src/index.ts 2>&1 | tee logs/daily-post-${{ github.run_id }}.log
+
+      - name: Upload log artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-post-log-${{ github.run_id }}
+          path: logs/daily-post-${{ github.run_id }}.log
+          retention-days: 30
 
       - name: Commit updated data files
         run: |
