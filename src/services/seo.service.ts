@@ -27,6 +27,7 @@ const COOKIE_CONSENT_SNIPPET_TITLE = 'Auto Blog Cookie Consent';
 const STICKY_ADS_SNIPPET_TITLE = 'Auto Blog Sticky Sidebar & Anchor Ads';
 const EXIT_INTENT_SNIPPET_TITLE = 'Auto Blog Exit-Intent Lead Magnet';
 const ADS_TXT_SNIPPET_TITLE = 'Auto Blog ads.txt';
+const KOREAN_URL_REDIRECT_SNIPPET_TITLE = 'Auto Blog Korean URL Redirect';
 
 export class SeoService {
   private api: AxiosInstance;
@@ -2500,5 +2501,49 @@ add_action('wp_head', function() {
       }
     }
     return results;
+  }
+
+  /**
+   * Install a PHP snippet that 301-redirects decoded Korean slug URLs to their
+   * percent-encoded equivalents. Fixes GSC "not indexed" errors caused by
+   * WordPress serving 404+noindex when Googlebot accesses decoded Korean URLs.
+   */
+  async ensureKoreanUrlRedirectSnippet(): Promise<void> {
+    const phpCode = `
+// 301-redirect decoded Korean (non-ASCII) URLs to percent-encoded form.
+// Fixes GSC indexing failures where /아모레퍼시픽-.../ returns 404+noindex
+// while /%EC%95%84%EB%AA%A8.../ returns 200.
+add_action('init', function() {
+    $request_uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
+    if ($request_uri === '') return;
+
+    $path = parse_url($request_uri, PHP_URL_PATH);
+    if ($path === null || $path === false) return;
+
+    // Re-encode each path segment: decode then encode to normalise mixed forms
+    $segments = explode('/', $path);
+    $encoded_segments = array_map(function($seg) {
+        $decoded = rawurldecode($seg);
+        // Only re-encode if it contains non-ASCII (Korean etc.)
+        if ($decoded === $seg && preg_match('/^[\\x00-\\x7F]*$/', $seg)) {
+            return $seg; // pure ASCII — no change needed
+        }
+        return rawurlencode($decoded);
+    }, $segments);
+    $encoded_path = implode('/', $encoded_segments);
+
+    if ($encoded_path !== $path) {
+        $query = parse_url($request_uri, PHP_URL_QUERY);
+        $new_url = $encoded_path . ($query ? '?' . $query : '');
+        wp_redirect($new_url, 301);
+        exit;
+    }
+}, 1);
+`.trim();
+
+    const installed = await this.upsertCodeSnippet(KOREAN_URL_REDIRECT_SNIPPET_TITLE, phpCode);
+    if (!installed) {
+      logger.warn(`Failed to install Korean URL redirect snippet`);
+    }
   }
 }

@@ -276,6 +276,7 @@ async function main(): Promise<void> {
     seoService.ensurePostCssSnippet(),
     seoService.ensureIndexNowKeySnippet(),
     seoService.ensurePostCanonicalFallbackSnippet(),
+    seoService.ensureKoreanUrlRedirectSnippet(),
     seoService.ensureCookieConsentSnippet(),
     seoService.ensureSiteSchemaSnippet(config.SITE_NAME, config.SITE_OWNER, {
       linkedin: config.AUTHOR_LINKEDIN,
