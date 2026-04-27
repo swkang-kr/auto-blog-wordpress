@@ -1,74 +1,76 @@
 {
-  "exported_at": "2026-04-24T07:00:01.554514+00:00",
+  "exported_at": "2026-04-27T07:00:01.764711+00:00",
   "total_candidates": 5,
-  "total_holdings": 12,
+  "total_holdings": 11,
   "candidates": [
     {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "sector": "반도체",
-      "signal_count": 19,
-      "avg_confidence": 0.7,
-      "strategies": [],
-      "reason": "score=5.00, ranked_score=95.00",
-      "price_at_signal": 0,
-      "signal_time": "2026-04-24T15:25:00.104908+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "011500",
-      "stock_name": "한농화성",
-      "sector": "",
-      "signal_count": 10,
+      "stock_code": "034220",
+      "stock_name": "LG디스플레이",
+      "sector": "디스플레이패널",
+      "signal_count": 6,
       "avg_confidence": 0.5,
       "strategies": [
         "RSI+MACD(swing)"
       ],
       "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-04-24T06:07:59.769732",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "005870",
-      "stock_name": "휴니드",
-      "sector": "",
-      "signal_count": 9,
-      "avg_confidence": 0.6666999999999998,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "거래량2.7x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
-      "price_at_signal": 0,
-      "signal_time": "2026-04-24T06:08:59.880852",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "034220",
-      "stock_name": "LG디스플레이",
-      "sector": "디스플레이패널",
-      "signal_count": 9,
-      "avg_confidence": 0.6666999999999998,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "거래량2.3x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
-      "price_at_signal": 0,
-      "signal_time": "2026-04-24T06:08:59.880826",
+      "signal_time": "2026-04-27T06:11:59.727294",
       "status": "매수 시그널"
     },
     {
       "stock_code": "097230",
       "stock_name": "HJ중공업",
       "sector": "건설",
-      "signal_count": 2,
+      "signal_count": 6,
+      "avg_confidence": 0.6667,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "거래량2.1x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-04-27T06:11:59.727291",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "012030",
+      "stock_name": "DB",
+      "sector": "",
+      "signal_count": 6,
+      "avg_confidence": 0.8333,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MACD히스토그램↑ | 거래량2.0x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-04-27T06:11:59.727287",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "010140",
+      "stock_name": "삼성중공업",
+      "sector": "조선",
+      "signal_count": 6,
+      "avg_confidence": 0.8333,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "거래량3.1x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-04-27T06:11:59.727282",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "090430",
+      "stock_name": "아모레퍼시픽",
+      "sector": "화장품",
+      "signal_count": 6,
       "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | 거래량4.5x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(67) | 거래량2.2x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-04-24T06:18:59.460724",
+      "signal_time": "2026-04-27T06:11:59.727264",
       "status": "매수 시그널"
     }
   ],
@@ -110,12 +112,12 @@
       "status": "보유 중"
     },
     {
-      "stock_code": "010690",
-      "stock_name": "화신",
-      "quantity": 141,
-      "avg_price": 12390.0,
+      "stock_code": "010140",
+      "stock_name": "삼성중공업",
+      "quantity": 35,
+      "avg_price": 33400.0,
       "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-04-23",
+      "entry_date": "2026-04-27",
       "status": "보유 중"
     },
     {
@@ -128,30 +130,12 @@
       "status": "보유 중"
     },
     {
-      "stock_code": "011790",
-      "stock_name": "SKC",
-      "quantity": 15,
-      "avg_price": 111653.0,
+      "stock_code": "012030",
+      "stock_name": "DB",
+      "quantity": 332,
+      "avg_price": 2110.0,
       "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-04-23",
-      "status": "보유 중"
-    },
-    {
-      "stock_code": "014680",
-      "stock_name": "한솔케미칼",
-      "quantity": 1,
-      "avg_price": 284500.0,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-04-16",
-      "status": "보유 중"
-    },
-    {
-      "stock_code": "018880",
-      "stock_name": "한온시스템",
-      "quantity": 98,
-      "avg_price": 4175.0,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-04-22",
+      "entry_date": "2026-04-27",
       "status": "보유 중"
     },
     {
@@ -170,6 +154,15 @@
       "avg_price": 129100.0,
       "strategy": "RSI+MACD(swing)",
       "entry_date": "2026-04-23",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "090430",
+      "stock_name": "아모레퍼시픽",
+      "quantity": 11,
+      "avg_price": 150500.0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-04-27",
       "status": "보유 중"
     },
     {
