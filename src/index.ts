@@ -2093,7 +2093,7 @@ async function main(): Promise<void> {
             if (!m[1].includes('youtube.com') && !m[1].includes('schema.org')) extLinks.push(m[1]);
           }
           // Skip domains known to block bot HEAD/GET requests (false positives)
-          const BOT_BLOCKED_DOMAINS = ['amazon.com', 'amazon.co', 'kocca.kr', 'instagram.com', 'facebook.com', 'tiktok.com', 'bloomberg.com', 'dart.fss.or.kr', 'reuters.com', 'ft.com', 'wsj.com', 'nytimes.com'];
+          const BOT_BLOCKED_DOMAINS = ['amazon.com', 'amazon.co', 'kocca.kr', 'instagram.com', 'facebook.com', 'tiktok.com', 'bloomberg.com', 'dart.fss.or.kr', 'reuters.com', 'ft.com', 'wsj.com', 'nytimes.com', 'twitter.com', 'x.com', 'linkedin.com', 'bok.or.kr', 'krx.co.kr', 'kotra.or.kr'];
           for (const link of [...new Set(extLinks)].slice(0, 5)) {
             try {
               const linkHost = new URL(link).hostname;
@@ -2119,6 +2119,9 @@ async function main(): Promise<void> {
       }
       if (brokenLinks.length > 0) {
         logger.warn(`Link rot check: ${brokenLinks.length} broken link(s) detected`);
+        for (const b of brokenLinks) {
+          logger.warn(`  [${b.status}] ${b.linkUrl}  ← "${b.postTitle}"`);
+        }
         if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
           const lrMsg = `🔗 Link Rot: ${brokenLinks.length} broken link(s)\n` +
             brokenLinks.slice(0, 8).map(b => `[${b.status}] ${b.linkUrl}\n  in: "${b.postTitle}"`).join('\n');

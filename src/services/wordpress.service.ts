@@ -310,14 +310,14 @@ export class WordPressService {
   /** Source registry: maps cite data-source keys to verified URLs */
   private static readonly SOURCE_REGISTRY: Record<string, { domain: string; paths: Record<string, string>; label: string }> = {
     // Korean institutions
-    bok:    { domain: 'https://www.bok.or.kr', paths: { default: '/eng/', 'monetary-policy': '/eng/monetary/policyDecisions.do', research: '/eng/research/economicReport.do', rates: '/eng/monetary/baseRate.do', statistics: '/eng/statistics/publicationList.do' }, label: 'Bank of Korea' },
-    krx:    { domain: 'https://www.krx.co.kr', paths: { default: '/eng/main/', market: '/eng/main/marketdata/', statistics: '/eng/statistics/', listing: '/eng/main/listing/' }, label: 'Korea Exchange' },
+    bok:    { domain: 'https://www.bok.or.kr', paths: { default: '/', 'monetary-policy': '/portal/bbs/P0000559/list.do?menuNo=200690', research: '/portal/bbs/P0000528/list.do?menuNo=200475', rates: '/portal/singl.do?menuNo=100093', statistics: '/portal/singl.do?menuNo=200074' }, label: 'Bank of Korea' },
+    krx:    { domain: 'https://www.krx.co.kr', paths: { default: '/', market: '/contents/MDC/MAIN/main/KRXMain.jsp', statistics: '/contents/MDC/MAIN/main/KRXMain.jsp', listing: '/contents/MDC/MAIN/main/KRXMain.jsp' }, label: 'Korea Exchange' },
     dart:   { domain: 'https://dart.fss.or.kr', paths: { default: '/', filings: '/dsaf001/main.do', reports: '/dsab007/main.do' }, label: 'DART' },
     kosis:  { domain: 'https://kosis.kr', paths: { default: '/eng/', statistics: '/eng/statisticsList/', gdp: '/eng/statisticsList/statisticsList_01.do', trade: '/eng/statisticsList/statisticsList_02.do' }, label: 'KOSIS' },
     fsc:    { domain: 'https://www.fsc.go.kr', paths: { default: '/eng/', policy: '/eng/po/scpolicies/', press: '/eng/pr/pressReleases/', regulations: '/eng/po/regulations/' }, label: 'Financial Services Commission' },
     ftc:    { domain: 'https://www.ftc.go.kr', paths: { default: '/eng/', decisions: '/eng/policyDecisions/', reports: '/eng/annualReports/' }, label: 'Fair Trade Commission' },
     msit:   { domain: 'https://www.msit.go.kr', paths: { default: '/eng/', policy: '/eng/bbs/list.do?sCode=eng&mId=4&mPid=2', press: '/eng/bbs/list.do?sCode=eng&mId=6&mPid=5' }, label: 'Ministry of Science and ICT' },
-    kotra:  { domain: 'https://www.kotra.or.kr', paths: { default: '/eng/', invest: '/eng/invest/', reports: '/eng/reports/' }, label: 'KOTRA' },
+    kotra:  { domain: 'https://www.kotra.or.kr', paths: { default: '/', invest: '/kita/index.do', reports: '/kita/index.do' }, label: 'KOTRA' },
     kisa:   { domain: 'https://www.kisa.or.kr', paths: { default: '/eng/', reports: '/eng/usefulreport/', cybersecurity: '/eng/cybersecurity/' }, label: 'KISA' },
     kocca:  { domain: 'https://www.kocca.kr', paths: { default: '/en/', reports: '/en/contents/report/', industry: '/en/contents/industry/' }, label: 'KOCCA' },
     // Korean companies
@@ -697,7 +697,9 @@ div[style*="background:#f8f9fa"]{background:#1e1e2e!important;border-color:#3b3b
    */
   private buildBreadcrumbNav(category: string, title: string, subNiche?: string): string {
     const truncatedTitle = title.length > 50 ? title.slice(0, 47) + '...' : title;
-    const categorySlug = category.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    const categorySlugAscii = category.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    // Korean categories produce empty ASCII slug — use URL-encoded Korean as fallback
+    const categorySlug = categorySlugAscii || encodeURIComponent(category.toLowerCase());
 
     // Enhanced breadcrumb: Home > Category > SubTopic > Post (reflects topic cluster hierarchy)
     let breadcrumb = `<nav class="ab-breadcrumb" aria-label="Breadcrumb"><a href="${this.wpUrl}/">Home</a><span class="ab-bc-sep" aria-hidden="true">›</span><a href="${this.wpUrl}/category/${categorySlug}/">${this.escapeHtml(category)}</a>`;
@@ -2029,15 +2031,17 @@ ${ga4TrackingScript}`;
     }
 
     // BreadcrumbList schema with topic cluster hierarchy
+    const catSlugRaw = content.category.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    const catSlug = catSlugRaw || encodeURIComponent(content.category.toLowerCase());
     const breadcrumbItems = [
       { '@type': 'ListItem', position: 1, name: 'Home', item: this.wpUrl },
-      { '@type': 'ListItem', position: 2, name: content.category, item: `${this.wpUrl}/category/${content.category.toLowerCase().replace(/\s+/g, '-')}/` },
+      { '@type': 'ListItem', position: 2, name: content.category, item: `${this.wpUrl}/category/${catSlug}/` },
     ];
     if (options?.subNiche) {
       const subLabel = options.subNiche.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
       breadcrumbItems.push({
         '@type': 'ListItem', position: 3, name: subLabel,
-        item: `${this.wpUrl}/category/${content.category.toLowerCase().replace(/\s+/g, '-')}/?topic=${options.subNiche}`,
+        item: `${this.wpUrl}/category/${catSlug}/?topic=${options.subNiche}`,
       });
       breadcrumbItems.push({
         '@type': 'ListItem', position: 4, name: content.title,
