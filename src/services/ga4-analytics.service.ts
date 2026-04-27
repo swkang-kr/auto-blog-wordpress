@@ -4,6 +4,17 @@ import { getGoogleAccessToken } from '../utils/google-auth.js';
 import { circuitBreakers } from '../utils/retry.js';
 import type { PostPerformance, PostHistoryEntry } from '../types/index.js';
 
+/** Normalize a URL path for comparison: strip trailing slash + decode percent-encoding */
+function normPath(urlOrPath: string): string {
+  let path = urlOrPath;
+  try {
+    // If it looks like a full URL, extract pathname
+    if (urlOrPath.startsWith('http')) path = new URL(urlOrPath).pathname;
+  } catch { /* keep as-is */ }
+  try { path = decodeURIComponent(path); } catch { /* keep encoded if malformed */ }
+  return path.replace(/\/$/, '');
+}
+
 /**
  * GA4 Data API service for performance feedback loop.
  * Fetches top-performing and worst-performing posts to inform keyword research.
@@ -182,11 +193,8 @@ Use this data to inform your keyword selection — topics similar to top perform
     if (posts.length === 0) return performanceMap;
 
     for (const post of posts) {
-      // Match GA4 path to history entry
-      const entry = historyEntries.find(e => {
-        const entryPath = new URL(e.postUrl).pathname.replace(/\/$/, '');
-        return post.url.replace(/\/$/, '') === entryPath;
-      });
+      // Match GA4 path to history entry (decode both sides — GA4 returns decoded, history stores encoded)
+      const entry = historyEntries.find(e => normPath(e.postUrl) === normPath(post.url));
 
       if (!entry?.niche || !entry?.contentType) continue;
 
@@ -262,7 +270,7 @@ Favor top-performing content types when choosing format for each niche.`;
     // Build URL-to-title map from history
     const urlToTitle = new Map<string, string>();
     for (const entry of historyEntries) {
-      const path = new URL(entry.postUrl).pathname.replace(/\/$/, '');
+      const path = normPath(entry.postUrl);
       urlToTitle.set(path, entry.keyword);
     }
 
@@ -327,10 +335,7 @@ Favor top-performing content types when choosing format for each niche.`;
     const clusterMap = new Map<string, { totalPageviews: number; postCount: number; bounceSum: number; engagementSum: number; topPost: string; topViews: number }>();
 
     for (const post of posts) {
-      const entry = historyEntries.find(e => {
-        const entryPath = new URL(e.postUrl).pathname.replace(/\/$/, '');
-        return post.url.replace(/\/$/, '') === entryPath;
-      });
+      const entry = historyEntries.find(e => normPath(e.postUrl) === normPath(post.url));
 
       const niche = entry?.niche || 'uncategorized';
       const existing = clusterMap.get(niche) || { totalPageviews: 0, postCount: 0, bounceSum: 0, engagementSum: 0, topPost: '', topViews: 0 };
@@ -437,11 +442,7 @@ Favor top-performing content types when choosing format for each niche.`;
       const attributed: Array<{ url: string; title: string; niche: string; pageviews: number; estimatedRevenue: number }> = [];
 
       for (const post of posts) {
-        const entry = historyEntries.find(e => {
-          try {
-            return new URL(e.postUrl).pathname.replace(/\/$/, '') === post.url.replace(/\/$/, '');
-          } catch { return false; }
-        });
+        const entry = historyEntries.find(e => normPath(e.postUrl) === normPath(post.url));
         if (!entry?.niche) continue;
 
         // Find category for this niche
