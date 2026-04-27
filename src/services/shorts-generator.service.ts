@@ -102,7 +102,9 @@ export class ShortsGeneratorService {
         }),
       });
 
-      const inputProps = { scenes: script.scenes, audioSrc: audioDataUrl, bgmSrc: bgmDataUrl ?? '', keyword };
+      const now = new Date();
+      const generatedAt = now.toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\. /g, '.').replace(/\.$/, '');
+      const inputProps = { scenes: script.scenes, audioSrc: audioDataUrl, bgmSrc: bgmDataUrl ?? '', keyword, generatedAt };
 
       const composition = await selectComposition({
         serveUrl: bundleLocation,

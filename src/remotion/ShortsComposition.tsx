@@ -15,6 +15,7 @@ export interface Props {
   audioSrc: string;
   bgmSrc: string;
   keyword: string;
+  generatedAt?: string; // "YYYY.MM.DD" 형식 생성일시
 }
 
 const BLUE   = '#1E90FF';
@@ -486,7 +487,7 @@ function CtaScene({ scene, frame }: { scene: Scene; frame: number }) {
 }
 
 // ── 오프닝 ──────────────────────────────────────────
-function OpeningCard({ frame, fps, keyword }: { frame: number; fps: number; keyword: string }) {
+function OpeningCard({ frame, fps, keyword, generatedAt }: { frame: number; fps: number; keyword: string; generatedAt?: string }) {
   const fadeOut = interpolate(frame, [fps * 1.5, fps * 2], [1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
   const s = spring({ frame, fps, config: { damping: 14, stiffness: 100 } });
   const scale = interpolate(s, [0, 1], [0.85, 1]);
@@ -511,8 +512,15 @@ function OpeningCard({ frame, fps, keyword }: { frame: number; fps: number; keyw
       </div>
       <div style={{
         position: 'absolute', top: 52, right: 48,
-        fontSize: 22, color: 'rgba(255,255,255,0.35)', fontWeight: 600, letterSpacing: 1,
-      }}>trendhunt.net</div>
+        textAlign: 'right',
+      }}>
+        <div style={{ fontSize: 22, color: 'rgba(255,255,255,0.35)', fontWeight: 600, letterSpacing: 1 }}>trendhunt.net</div>
+        {generatedAt && (
+          <div style={{ fontSize: 18, color: 'rgba(255,255,255,0.25)', fontWeight: 500, letterSpacing: 0.5, marginTop: 4 }}>
+            {generatedAt}
+          </div>
+        )}
+      </div>
 
       {/* 중앙 */}
       <AbsoluteFill style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -584,7 +592,7 @@ function SceneFade({ children, localFrame, totalFrames, imageSrc }: {
 }
 
 // ── 메인 ─────────────────────────────────────────────
-export const ShortsComposition: React.FC<Props> = ({ scenes, audioSrc, bgmSrc, keyword }) => {
+export const ShortsComposition: React.FC<Props> = ({ scenes, audioSrc, bgmSrc, keyword, generatedAt }) => {
   const frame = useCurrentFrame();
   const { fps, durationInFrames } = useVideoConfig();
 
@@ -610,7 +618,7 @@ export const ShortsComposition: React.FC<Props> = ({ scenes, audioSrc, bgmSrc, k
 
   return (
     <AbsoluteFill style={{ background: BG, overflow: 'hidden', fontFamily: 'Noto Sans KR, sans-serif' }}>
-      {frame < OPEN_F && <OpeningCard frame={frame} fps={fps} keyword={keyword} />}
+      {frame < OPEN_F && <OpeningCard frame={frame} fps={fps} keyword={keyword} generatedAt={generatedAt} />}
 
       {frame >= OPEN_F && offsetScenes.map((scene, i) => {
         const startF = scene.startSec * fps;
