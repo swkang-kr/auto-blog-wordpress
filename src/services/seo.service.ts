@@ -806,6 +806,7 @@ add_action('init', function() {
         'rank_math_twitter_description',
         'rank_math_schema_Article',
         'rank_math_pillar_content',
+        'rank_math_robots',
         'rank_math_news_sitemap_robots',
         'rank_math_news_sitemap_stock_tickers',
         'rank_math_news_sitemap_genres',

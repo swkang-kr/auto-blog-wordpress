@@ -2102,6 +2102,7 @@ ${ga4TrackingScript}`;
             rank_math_twitter_title: content.title,
             rank_math_twitter_description: content.metaDescription || validatedExcerpt,
             rank_math_twitter_image: options?.ogImageUrl || options?.featuredImageUrl || '',
+            rank_math_robots: 'index,follow',
             rank_math_twitter_use_facebook_data: '1',
             rank_math_twitter_card_type: 'summary_large_image',
             rank_math_og_type: 'article',
