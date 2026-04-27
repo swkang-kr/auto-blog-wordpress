@@ -1,0 +1,26 @@
+name: Fix Crawled Not Indexed
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Set rank_math_robots=index,follow on all posts + IndexNow resubmit
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USERNAME: ${{ secrets.WP_USERNAME }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+        run: node --import tsx/esm src/scripts/fix-crawled-not-indexed.ts
