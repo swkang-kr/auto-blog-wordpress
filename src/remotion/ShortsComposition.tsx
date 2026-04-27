@@ -512,15 +512,8 @@ function OpeningCard({ frame, fps, keyword, generatedAt }: { frame: number; fps:
       </div>
       <div style={{
         position: 'absolute', top: 52, right: 48,
-        textAlign: 'right',
-      }}>
-        <div style={{ fontSize: 22, color: 'rgba(255,255,255,0.35)', fontWeight: 600, letterSpacing: 1 }}>trendhunt.net</div>
-        {generatedAt && (
-          <div style={{ fontSize: 18, color: 'rgba(255,255,255,0.25)', fontWeight: 500, letterSpacing: 0.5, marginTop: 4 }}>
-            {generatedAt}
-          </div>
-        )}
-      </div>
+        fontSize: 22, color: 'rgba(255,255,255,0.35)', fontWeight: 600, letterSpacing: 1,
+      }}>trendhunt.net</div>
 
       {/* 중앙 */}
       <AbsoluteFill style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -619,6 +612,26 @@ export const ShortsComposition: React.FC<Props> = ({ scenes, audioSrc, bgmSrc, k
   return (
     <AbsoluteFill style={{ background: BG, overflow: 'hidden', fontFamily: 'Noto Sans KR, sans-serif' }}>
       {frame < OPEN_F && <OpeningCard frame={frame} fps={fps} keyword={keyword} generatedAt={generatedAt} />}
+
+      {/* 생성일자 상단 고정 오버레이 (전체 장면) */}
+      {generatedAt && (
+        <div style={{
+          position: 'absolute', top: 0, left: 0, right: 0,
+          height: 68,
+          background: 'linear-gradient(180deg, rgba(6,9,18,0.92) 0%, rgba(6,9,18,0.0) 100%)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          zIndex: 100, pointerEvents: 'none',
+        }}>
+          <div style={{
+            fontSize: 34, fontWeight: 800, color: '#fff',
+            fontFamily: 'Noto Sans KR, sans-serif',
+            letterSpacing: 2,
+            textShadow: '0 2px 12px rgba(0,0,0,0.8)',
+          }}>
+            {generatedAt}
+          </div>
+        </div>
+      )}
 
       {frame >= OPEN_F && offsetScenes.map((scene, i) => {
         const startF = scene.startSec * fps;
