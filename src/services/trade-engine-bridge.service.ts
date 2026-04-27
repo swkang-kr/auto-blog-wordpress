@@ -613,23 +613,25 @@ export class TradeEngineBridge {
     parts.push('### 오늘의 매수후보 종목 (실시간 지표 포함)\n');
     for (const w of picks) {
       const ind = w.indicators;
-      const bbWidth = ind.bb_upper && ind.bb_lower ? ((ind.bb_upper - ind.bb_lower) / ind.close * 100).toFixed(1) : 'N/A';
+      const bbWidth = ind.bb_upper && ind.bb_lower && ind.close ? ((ind.bb_upper - ind.bb_lower) / ind.close * 100).toFixed(1) : 'N/A';
       const w52Pos = ind.w52_position_pct ? `${ind.w52_position_pct}%` : 'N/A';
-      const macdHist = (ind.macd - ind.macd_signal).toFixed(2);
-      const macdDir = ind.macd > ind.macd_signal ? '↑(골든)' : '↓(데드)';
-      const rsiLabel = ind.rsi < 30 ? '과매도' : ind.rsi > 70 ? '과매수' : '중립';
+      const macdHist = (ind.macd != null && ind.macd_signal != null) ? (ind.macd - ind.macd_signal).toFixed(2) : 'N/A';
+      const macdDir = (ind.macd != null && ind.macd_signal != null) ? (ind.macd > ind.macd_signal ? '↑(골든)' : '↓(데드)') : '';
+      const rsiLabel = ind.rsi != null ? (ind.rsi < 30 ? '과매도' : ind.rsi > 70 ? '과매수' : '중립') : '?';
 
-      parts.push(`**${w.stock_name} (${w.stock_code})** — ${w.sector || '미분류'} | ${ind.market || 'KOSPI'} | 종합점수 ${w.score.toFixed(1)}점 (ranked ${w.ranked_score.toFixed(0)})`);
-      parts.push(`  - 현재가: ${ind.close ? ind.close.toLocaleString() : '?'}원 | 전일대비: +${ind.day_change_pct}%`);
-      parts.push(`  - RSI(14): ${ind.rsi.toFixed(1)} (${rsiLabel})`);
-      parts.push(`  - MACD: ${ind.macd.toFixed(2)} / 시그널: ${ind.macd_signal.toFixed(2)} / 히스토그램: ${macdHist} ${macdDir}`);
-      parts.push(`  - 볼린저밴드: 상단 ${ind.bb_upper.toLocaleString()}원 / 하단 ${ind.bb_lower.toLocaleString()}원 (밴드폭 ${bbWidth}%)`);
+      parts.push(`**${w.stock_name} (${w.stock_code})** — ${w.sector || '미분류'} | ${ind.market || 'KOSPI'} | 종합점수 ${w.score?.toFixed(1) ?? '?'}점 (ranked ${w.ranked_score?.toFixed(0) ?? '?'})`);
+      parts.push(`  - 현재가: ${ind.close ? ind.close.toLocaleString() : '?'}원 | 전일대비: +${ind.day_change_pct ?? '?'}%`);
+      parts.push(`  - RSI(14): ${ind.rsi != null ? ind.rsi.toFixed(1) : '?'} (${rsiLabel})`);
+      parts.push(`  - MACD: ${ind.macd != null ? ind.macd.toFixed(2) : '?'} / 시그널: ${ind.macd_signal != null ? ind.macd_signal.toFixed(2) : '?'} / 히스토그램: ${macdHist} ${macdDir}`);
+      if (ind.bb_upper != null && ind.bb_lower != null) {
+        parts.push(`  - 볼린저밴드: 상단 ${ind.bb_upper.toLocaleString()}원 / 하단 ${ind.bb_lower.toLocaleString()}원 (밴드폭 ${bbWidth}%)`);
+      }
       parts.push(`  - 거래량 급증: ${ind.vol_surge?.toFixed(1) || ind.volume_surge?.toFixed(1) || '?'}배 | ATR(14): ${ind.atr_14?.toFixed(0) || '?'}원`);
       parts.push(`  - 52주 고/저: ${ind.w52_high || '?'}원 / ${ind.w52_low || '?'}원 (현재 위치: ${w52Pos})`);
       if (ind.candle_pattern) parts.push(`  - 캔들 패턴: ${ind.candle_pattern}`);
       parts.push(`  - 매수 근거: ${ind.swing_reasons}`);
-      if (ind.foreign_net_buy !== 0 || ind.institution_net_buy !== 0) {
-        parts.push(`  - 수급: 외국인 ${ind.foreign_net_buy >= 0 ? '+' : ''}${ind.foreign_net_buy.toLocaleString()}주 / 기관 ${ind.institution_net_buy >= 0 ? '+' : ''}${ind.institution_net_buy.toLocaleString()}주`);
+      if ((ind.foreign_net_buy ?? 0) !== 0 || (ind.institution_net_buy ?? 0) !== 0) {
+        parts.push(`  - 수급: 외국인 ${(ind.foreign_net_buy ?? 0) >= 0 ? '+' : ''}${(ind.foreign_net_buy ?? 0).toLocaleString()}주 / 기관 ${(ind.institution_net_buy ?? 0) >= 0 ? '+' : ''}${(ind.institution_net_buy ?? 0).toLocaleString()}주`);
       }
       parts.push('');
     }
@@ -638,8 +640,8 @@ export class TradeEngineBridge {
     if (data.marketOverview.length > 0) {
       const m = data.marketOverview[0];
       parts.push(`### 시장 컨텍스트 (${m.date})`);
-      parts.push(`- KOSPI: ${m.kospi_change >= 0 ? '+' : ''}${m.kospi_change.toFixed(2)}% | KOSDAQ: ${m.kosdaq_change >= 0 ? '+' : ''}${m.kosdaq_change.toFixed(2)}%`);
-      parts.push(`- 외국인 순매매: ${m.foreign_net >= 0 ? '+' : ''}${m.foreign_net.toLocaleString()}억원 | 기관: ${m.institution_net >= 0 ? '+' : ''}${m.institution_net.toLocaleString()}억원`);
+      parts.push(`- KOSPI: ${(m.kospi_change ?? 0) >= 0 ? '+' : ''}${m.kospi_change?.toFixed(2) ?? '?'}% | KOSDAQ: ${(m.kosdaq_change ?? 0) >= 0 ? '+' : ''}${m.kosdaq_change?.toFixed(2) ?? '?'}%`);
+      parts.push(`- 외국인 순매매: ${(m.foreign_net ?? 0) >= 0 ? '+' : ''}${(m.foreign_net ?? 0).toLocaleString()}억원 | 기관: ${(m.institution_net ?? 0) >= 0 ? '+' : ''}${(m.institution_net ?? 0).toLocaleString()}억원`);
       parts.push('');
     }
 

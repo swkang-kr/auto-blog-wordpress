@@ -1298,8 +1298,25 @@ async function main(): Promise<void> {
         const retrySimilarTitles = history.getPostedTitlesForNiche(niche.id)
           .filter(t => history.titleSimilarity(t, researched.analysis.suggestedTitle) > 0.25)
           .slice(0, 5);
+
+        // Re-inject stock context for 종목분석 retry (same logic as Phase A)
+        let retryStockCode: string | undefined;
+        if (niche.category === '종목분석') {
+          const stockCode = niche.id.startsWith('stock-') ? niche.id.replace('stock-', '') : null;
+          if (stockCode) retryStockCode = stockCode;
+          const stockIdx = stockCode ? liveList.findIndex(s => s.stock_code === stockCode) : 0;
+          const effectiveIdx = stockIdx >= 0 ? stockIdx : 0;
+          const buyCandidateCtx = tradeEngineBridge.buildBuyCandidateContext(tradeEngineData, effectiveIdx, effectiveIdx + 1);
+          const retryStockData = await marketDataService.fetchStockSummary(
+            liveList[effectiveIdx]?.stock_code ?? stockCode ?? '',
+            liveList[effectiveIdx]?.stock_name ?? niche.name,
+          );
+          contentService.setStockContext(buyCandidateCtx + (retryStockData ? '\n' + retryStockData.promptContext : ''));
+          logger.info(`[Retry] 종목분석 컨텍스트 재주입: ${liveList[effectiveIdx]?.stock_name ?? niche.name}`);
+        }
+
         const content = await contentService.generateContent(researched, filteredPosts, retryClusterLinksForPrompt, { postCount: retryPostCount, rankingKeywords: gscRankingKeywords, similarPostTitles: retrySimilarTitles });
-        generated.push({ niche, postStart: retryStart, researched, content, selectedPersona: retryPersona });
+        generated.push({ niche, postStart: retryStart, researched, content, selectedPersona: retryPersona, stockCode: retryStockCode });
         batchKeywords.push(researched.analysis.selectedKeyword);
 
         // Replace failure result with pending success
