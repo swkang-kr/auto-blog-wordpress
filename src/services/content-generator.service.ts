@@ -186,8 +186,8 @@ const WORD_COUNT_TARGETS: Record<string, { min: number; target: number; continua
   'how-to':          { min: 1800, target: 2400, continuation: 1600, rejection: 1300 },
   'best-x-for-y':   { min: 1800, target: 2400, continuation: 1600, rejection: 1300 },
   'x-vs-y':         { min: 1800, target: 2400, continuation: 1600, rejection: 1300 },
-  'analysis':        { min: 2000, target: 2800, continuation: 1800, rejection: 1500 },
-  'deep-dive':       { min: 2500, target: 3200, continuation: 2200, rejection: 1800 },
+  'analysis':        { min: 2500, target: 2800, continuation: 2300, rejection: 1500 },
+  'deep-dive':       { min: 2500, target: 3200, continuation: 2600, rejection: 1800 },
   'news-explainer':  { min: 1600, target: 2000, continuation: 1400, rejection: 1100 },
   'listicle':        { min: 1600, target: 2200, continuation: 1400, rejection: 1100 },
   'case-study':      { min: 2000, target: 2800, continuation: 1800, rejection: 1500 },
@@ -1484,10 +1484,10 @@ Return raw HTML only, no markdown code blocks or JSON wrapper.`;
    */
   private async regenerateExcerpt(title: string, currentExcerpt: string, keyword: string): Promise<string | null> {
     try {
-      const userMsg = `Write a compelling meta description (150-160 chars) for this blog post. It MUST contain the keyword "${keyword}" naturally. Include a clear benefit or hook for the reader.\n\nTitle: ${title}\nCurrent excerpt: ${currentExcerpt}\n\nRespond with ONLY the meta description text, no quotes or explanation.`;
+      const userMsg = `Write a compelling meta description for this Korean blog post. Requirements:\n- MUST be 120-160 characters (count carefully)\n- MUST contain the keyword "${keyword}" naturally\n- Include a clear benefit or action hook for the reader\n- Write in Korean\n\nTitle: ${title}\nCurrent excerpt: ${currentExcerpt}\n\nRespond with ONLY the meta description text, no quotes, no explanation.`;
       const text = this.callClaudeCli('', userMsg).trim();
 
-      if (text.length >= 80 && text.length <= 200) {
+      if (text.length >= 120 && text.length <= 200) {
         logger.info(`Excerpt regenerated: "${text.slice(0, 60)}..."`);
         return text;
       }
