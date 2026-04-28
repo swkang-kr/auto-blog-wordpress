@@ -61,7 +61,7 @@ export class ShortsScriptService {
     const env = { ...process.env };
     delete env.ANTHROPIC_API_KEY;
 
-    const result = spawnSync('claude', ['-p', prompt, '--model', 'claude-haiku-4-5-20251001'], {
+    const result = spawnSync('claude', ['-p', prompt, '--model', 'opus'], {
       encoding: 'utf-8',
       env,
       timeout: 60_000,
