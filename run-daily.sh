@@ -28,9 +28,10 @@ fi
 
 echo "Phase A 완료: $GENERATED_FILE" >> "$LOG"
 
-# 생성된 JSON 커밋 & 푸시
+# 생성된 JSON + Shorts MP4 커밋 & 푸시
 git add "$GENERATED_FILE" >> "$LOG" 2>&1
-git diff --staged --quiet || git commit -m "feat: generated content ${DATE} [skip ci]" >> "$LOG" 2>&1
+git add output/shorts/ >> "$LOG" 2>&1 || true
+git diff --staged --quiet || git commit -m "feat: generated content + shorts ${DATE} [skip ci]" >> "$LOG" 2>&1
 git push >> "$LOG" 2>&1 || true
 
 # Phase B: GitHub Actions에서 워드프레스 발행

@@ -31,6 +31,7 @@ import { FacebookService } from './services/facebook.service.js';
 import { ThreadsService } from './services/threads.service.js';
 import { RedditPostService } from './services/reddit-post.service.js';
 import { ShortsGeneratorService } from './services/shorts-generator.service.js';
+import type { ShortsScript } from './services/shorts-generator.service.js';
 import { AdSenseApiService } from './services/adsense-api.service.js';
 import type { PostResult, BatchResult, MediaUploadResult, NicheConfig } from './types/index.js';
 // CATEGORY_PUBLISH_TIMING available for future use (niche-specific timing)
@@ -171,6 +172,7 @@ async function main(): Promise<void> {
     process.env.YOUTUBE_CLIENT_ID,
     process.env.YOUTUBE_CLIENT_SECRET,
     process.env.YOUTUBE_REFRESH_TOKEN,
+    process.env.ANTHROPIC_API_KEY,
   );
   logger.info('Shorts generation enabled (edge-tts)');
   if (threadsService) {
@@ -980,6 +982,8 @@ async function main(): Promise<void> {
     fastTrack?: boolean;
     selectedPersona?: import('./types/index.js').AuthorProfile;
     stockCode?: string;
+    shortsPath?: string;
+    shortsScript?: ShortsScript;
   }
 
   // Cross-niche keyword tracking (prevent different niches from picking similar topics in same batch)
@@ -1363,8 +1367,23 @@ async function main(): Promise<void> {
     }
   }
 
-  // ── GENERATE_ONLY: save Phase A output and exit ──────────────────────────
+  // ── GENERATE_ONLY: Shorts 렌더링 + save Phase A output and exit ──────────
   if (process.env.GENERATE_ONLY === 'true') {
+    // Shorts MP4 로컬 렌더링 (YouTube 업로드는 Phase B에서 수행)
+    for (const item of generated) {
+      const keyword = item.researched.analysis.selectedKeyword;
+      logger.info(`[Shorts] Phase A rendering for: "${item.content.title}"`);
+      const result = await shortsService.renderMp4(item.content, keyword, item.stockCode).catch(err => {
+        logger.warn(`[Shorts] Phase A render failed (non-fatal): ${err instanceof Error ? err.message : err}`);
+        return null;
+      });
+      if (result) {
+        item.shortsPath = result.outputPath;
+        item.shortsScript = result.script;
+        logger.info(`[Shorts] Phase A MP4 ready: ${result.outputPath}`);
+      }
+    }
+
     await fs.mkdir('data/generated', { recursive: true });
     const date = new Date().toISOString().slice(0, 10);
     const outPath = `data/generated/${date}.json`;
@@ -1769,11 +1788,15 @@ async function main(): Promise<void> {
         if (threadsPostId) await wpService.updatePostMeta(post.postId, { _autoblog_threads_post_id: threadsPostId }).catch(() => {});
       }
 
-      // Shorts: generate MP4 after publish (non-blocking)
-      if (shortsService && isImmediatePublish) {
-        shortsService.generate(content, post, researched.analysis.selectedKeyword, shortsStockCode).catch(e =>
-          logger.warn(`Shorts generation error: ${e instanceof Error ? e.message : e}`)
-        );
+      // Shorts: Phase B는 YouTube 업로드만 (MP4는 Phase A에서 생성, git에 커밋됨)
+      if (isImmediatePublish) {
+        const shortsPath = generated[gi].shortsPath;
+        const shortsScript = generated[gi].shortsScript;
+        if (shortsPath && shortsScript) {
+          shortsService.uploadToYouTube(shortsPath, shortsScript, post.url || '').catch(e =>
+            logger.warn(`Shorts YouTube upload error: ${e instanceof Error ? e.message : e}`)
+          );
+        }
       }
 
       // LinkedIn: post immediately when published (not scheduled)

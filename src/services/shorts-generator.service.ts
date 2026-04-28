@@ -4,6 +4,7 @@ import { bundle } from '@remotion/bundler';
 import { renderMedia, selectComposition } from '@remotion/renderer';
 import { ClovaTtsService } from './clova-tts.service.js';
 import { ShortsScriptService } from './shorts-script.service.js';
+import type { ShortsScript } from './shorts-script.service.js';
 import { YouTubeUploadService } from './youtube-upload.service.js';
 import { FalImageService, FALLBACK_IMAGE_PROMPTS } from './fal-image.service.js';
 import { BgmService } from './bgm.service.js';
@@ -12,6 +13,8 @@ import { logger } from '../utils/logger.js';
 import type { BlogContent, PublishedPost } from '../types/index.js';
 
 const OUTPUT_DIR = path.resolve('output/shorts');
+
+export type { ShortsScript };
 
 export class ShortsGeneratorService {
   private tts: ClovaTtsService;
@@ -41,10 +44,11 @@ export class ShortsGeneratorService {
     else logger.info('[Shorts] fal.ai disabled (FAL_KEY not set) — using solid backgrounds');
   }
 
-  async generate(content: BlogContent, post: PublishedPost, keyword: string, stockCode?: string): Promise<string | null> {
+  // Phase A: 로컬에서 MP4 렌더링까지만 수행 (YouTube 업로드 없음)
+  async renderMp4(content: BlogContent, keyword: string, stockCode?: string): Promise<{ outputPath: string; script: ShortsScript } | null> {
     try {
       await fs.mkdir(OUTPUT_DIR, { recursive: true });
-      const safeSlug = (post.slug || String(post.postId)).replace(/[^a-z0-9가-힣-]/gi, '-').slice(0, 60);
+      const safeSlug = keyword.replace(/[^a-z0-9가-힣-]/gi, '-').slice(0, 60);
 
       logger.info(`[Shorts] Generating script for: "${content.title}"`);
       const script = await this.scriptService.generateScript(content.title, content.excerpt || '', keyword);
@@ -136,18 +140,32 @@ export class ShortsGeneratorService {
       });
 
       logger.info(`[Shorts] MP4 saved: ${outputPath}`);
-
-      // YouTube 업로드
-      if (this.youtube) {
-        const postUrl = post.url || '';
-        const videoUrl = await this.youtube.upload(outputPath, script, postUrl);
-        if (videoUrl) logger.info(`[Shorts] YouTube: ${videoUrl}`);
-      }
-
-      return outputPath;
+      return { outputPath, script };
     } catch (err) {
-      logger.warn(`[Shorts] Generation failed (non-fatal): ${err instanceof Error ? err.message : err}`);
+      logger.warn(`[Shorts] renderMp4 failed (non-fatal): ${err instanceof Error ? err.message : err}`);
       return null;
     }
+  }
+
+  // Phase B: 이미 렌더링된 MP4를 YouTube에 업로드
+  async uploadToYouTube(outputPath: string, script: ShortsScript, postUrl: string): Promise<void> {
+    if (!this.youtube) {
+      logger.info('[Shorts] YouTube upload skipped (no credentials)');
+      return;
+    }
+    try {
+      const videoUrl = await this.youtube.upload(outputPath, script, postUrl);
+      if (videoUrl) logger.info(`[Shorts] YouTube: ${videoUrl}`);
+    } catch (err) {
+      logger.warn(`[Shorts] YouTube upload failed (non-fatal): ${err instanceof Error ? err.message : err}`);
+    }
+  }
+
+  // 레거시: Phase A + Phase B 통합 (사용하지 않음)
+  async generate(content: BlogContent, post: PublishedPost, keyword: string, stockCode?: string): Promise<string | null> {
+    const result = await this.renderMp4(content, keyword, stockCode);
+    if (!result) return null;
+    await this.uploadToYouTube(result.outputPath, result.script, post.url || '');
+    return result.outputPath;
   }
 }
