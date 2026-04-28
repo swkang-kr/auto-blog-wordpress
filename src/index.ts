@@ -225,8 +225,16 @@ async function main(): Promise<void> {
   }
 
 
+  const generateOnly = process.env.GENERATE_ONLY === 'true';
+
+  // 2.5–2.12d. WP initialization (pages, SEO snippets, pillar pages) — Phase B only
+  let pagesService: PagesService | null = null;
+  let seoService: SeoService | null = null;
+  let postCssSnippetActive = false;
+
+  if (!generateOnly) {
   // 2.5. Ensure required pages exist (AdSense compliance)
-  const pagesService = new PagesService(config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD);
+  pagesService = new PagesService(config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD);
   try {
     await pagesService.ensureRequiredPages(config.SITE_NAME, config.SITE_OWNER, config.CONTACT_EMAIL, authorLinks, config.AUTHOR_BIO, config.AUTHOR_CREDENTIALS);
   } catch (error) {
@@ -234,7 +242,7 @@ async function main(): Promise<void> {
   }
 
   // 2.6. SEO service + niche-aware site settings
-  const seoService = new SeoService(config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD, {
+  seoService = new SeoService(config.WP_URL, config.WP_USERNAME, config.WP_APP_PASSWORD, {
     indexNowKey: config.INDEXNOW_KEY || undefined,
     indexingSaKey: config.GOOGLE_INDEXING_SA_KEY || undefined,
   });
@@ -303,9 +311,8 @@ async function main(): Promise<void> {
   }
 
   // Post-CSS snippet status check (depends on ensurePostCssSnippet completing above)
-  let postCssSnippetActive = false;
   try {
-    postCssSnippetActive = await seoService.isPostCssSnippetActive();
+    postCssSnippetActive = await seoService!.isPostCssSnippetActive();
     if (postCssSnippetActive) {
       logger.info('Post CSS loaded via site-wide snippet (inline CSS disabled)');
     }
@@ -315,22 +322,22 @@ async function main(): Promise<void> {
 
   // Comment settings + spam cleanup (sequential — interdependent)
   try {
-    await seoService.ensureCommentSettings();
-    await seoService.cleanupSpamComments();
-    await seoService.ensureCommentEngagementSnippet();
+    await seoService!.ensureCommentSettings();
+    await seoService!.cleanupSpamComments();
+    await seoService!.ensureCommentEngagementSnippet();
   } catch (error) {
     logger.warn(`Comment settings/cleanup failed: ${error instanceof Error ? error.message : error}`);
   }
 
   // 2.11. Check robots.txt + WordPress indexing settings + sitemap
-  await seoService.ensureRobotsTxtCustomization(config.DAUM_SITE_VERIFICATION || undefined);
-  await seoService.checkRobotsTxt();
-  await seoService.checkAndFixIndexingSettings();
-  await seoService.verifySitemap();
+  await seoService!.ensureRobotsTxtCustomization(config.DAUM_SITE_VERIFICATION || undefined);
+  await seoService!.checkRobotsTxt();
+  await seoService!.checkAndFixIndexingSettings();
+  await seoService!.verifySitemap();
 
   // 2.11b. Submit sitemaps to Google Search Console
   try {
-    await seoService.submitSitemapToGSC(config.GSC_SITE_URL);
+    await seoService!.submitSitemapToGSC(config.GSC_SITE_URL);
   } catch (error) {
     logger.warn(`GSC sitemap submission failed: ${error instanceof Error ? error.message : error}`);
   }
@@ -338,13 +345,13 @@ async function main(): Promise<void> {
   // 2.12. Ensure pillar pages for topic clusters
   try {
     const earlyPosts = await wpService.getRecentPosts(500);
-    await pagesService.ensurePillarPages(NICHES, earlyPosts, config.SITE_NAME);
+    await pagesService!.ensurePillarPages(NICHES, earlyPosts, config.SITE_NAME);
 
     // 2.12b. Author profile pages (E-E-A-T entity building)
-    await pagesService.ensureAuthorPages(NICHES, earlyPosts, config.SITE_OWNER, authorLinks);
+    await pagesService!.ensureAuthorPages(NICHES, earlyPosts, config.SITE_OWNER, authorLinks);
 
     // 2.12c. Site-wide FAQ page (aggregated FAQPage schema)
-    await pagesService.ensureFaqPage(earlyPosts, config.SITE_NAME, config.WP_URL);
+    await pagesService!.ensureFaqPage(earlyPosts, config.SITE_NAME, config.WP_URL);
   } catch (error) {
     logger.warn(`Pillar/Author/FAQ pages update failed: ${error instanceof Error ? error.message : error}`);
   }
@@ -360,12 +367,13 @@ async function main(): Promise<void> {
         if (entries.length >= 2) seriesMap.set(sid, entries);
       }
       if (seriesMap.size > 0) {
-        await pagesService.ensureSeriesHubPages(seriesMap, config.SITE_NAME);
+        await pagesService!.ensureSeriesHubPages(seriesMap, config.SITE_NAME);
       }
     }
   } catch (error) {
     logger.warn(`Series hub pages update failed: ${error instanceof Error ? error.message : error}`);
   }
+  } // end !generateOnly WP initialization block
 
   // 2.12e-pre. Load cached RPM data from previous runs (fallback when AdSense API unavailable)
   const RPM_CACHE_FILE = path.resolve('data', 'rpm-cache.json');
@@ -710,7 +718,7 @@ async function main(): Promise<void> {
   }
 
   // 3.5b2. Weekly PageSpeed Insights per-URL check (Mondays only)
-  if (new Date().getDay() === 1) {
+  if (new Date().getDay() === 1 && seoService) {
     try {
       const recentForPsi = await wpService.getRecentPosts(5);
       const psiUrls = recentForPsi.map(p => p.url).filter(Boolean).slice(0, 5);
@@ -1741,8 +1749,8 @@ async function main(): Promise<void> {
       // B-4.5. Korean content generation removed — English-only publishing
 
       // B-5. IndexNow + Bing Sitemap Ping
-      await seoService.notifyIndexNow([post.url]);
-      await seoService.pingSitemap();
+      await seoService!.notifyIndexNow([post.url]);
+      await seoService!.pingSitemap();
 
       // B-6. Social media promotion: post immediately to all platforms
       // Skip social posting for scheduled/future posts — they'll be handled by deferred execution on next batch
@@ -2016,7 +2024,7 @@ async function main(): Promise<void> {
       }
 
       // B-9. Google Indexing API
-      await seoService.requestIndexing(post.url);
+      await seoService!.requestIndexing(post.url);
 
       // B-9.5. Reverse internal linking
       try {
@@ -2550,7 +2558,7 @@ async function main(): Promise<void> {
   try {
     const recentEntries = history.getRecentEntries(7);
     if (recentEntries.length > 0) {
-      await seoService.verifyRecentIndexing(recentEntries.map(e => e.postUrl));
+      await seoService!.verifyRecentIndexing(recentEntries.map(e => e.postUrl));
     }
   } catch (error) {
     logger.warn(`Indexing verification failed: ${error instanceof Error ? error.message : error}`);
@@ -2655,7 +2663,7 @@ async function main(): Promise<void> {
   // 4.11. [#22] Core Web Vitals monitoring — CrUX API check + Telegram alert on degradation
   if (config.GOOGLE_API_KEY) {
     try {
-      const cwv = await seoService.checkCoreWebVitals(config.GOOGLE_API_KEY);
+      const cwv = await seoService!.checkCoreWebVitals(config.GOOGLE_API_KEY);
       if (cwv.overall === 'poor' && config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
         const cwvMsg = `CWV Alert: POOR scores — LCP: ${cwv.lcp?.p75 || 'N/A'}ms, INP: ${cwv.inp?.p75 || 'N/A'}ms, CLS: ${cwv.cls?.p75 || 'N/A'}`;
         await sendTelegramAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, cwvMsg);
@@ -2670,7 +2678,7 @@ async function main(): Promise<void> {
     try {
       const recentPosts = results.filter(r => r.success && r.postUrl).slice(0, 3);
       for (const post of recentPosts) {
-        const validation = await seoService.validateStructuredData(post.postUrl!, config.GOOGLE_API_KEY);
+        const validation = await seoService!.validateStructuredData(post.postUrl!, config.GOOGLE_API_KEY);
         if (!validation.valid) {
           logger.warn(`Rich Results: ${validation.errors.length} error(s) for ${post.postUrl}: ${validation.errors.join(', ')}`);
         }
