@@ -336,6 +336,7 @@ export class WordPressService {
     worldbank: { domain: 'https://www.worldbank.org', paths: { default: '/', data: '/en/country/korea/', indicators: '/en/data/', research: '/en/research/' }, label: 'World Bank' },
     // Korean financial/stock market sources
     'naver-finance':     { domain: 'https://finance.naver.com', paths: { default: '/', stock: '/item/main.naver', market: '/sise/' }, label: 'Naver Finance' },
+    'naver-finance-api': { domain: 'https://finance.naver.com', paths: { default: '/', stock: '/item/main.naver', market: '/sise/' }, label: 'Naver Finance' },
     'naver-news':        { domain: 'https://news.naver.com', paths: { default: '/', economy: '/section/101' }, label: 'Naver News' },
     'investing-kr':      { domain: 'https://kr.investing.com', paths: { default: '/', stocks: '/equities/south-korea', indices: '/indices/kospi' }, label: 'Investing.com KR' },
     // General
