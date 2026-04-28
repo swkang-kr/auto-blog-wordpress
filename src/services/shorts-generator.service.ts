@@ -2,6 +2,8 @@ import path from 'node:path';
 import fs from 'node:fs/promises';
 import { bundle } from '@remotion/bundler';
 import { renderMedia, selectComposition } from '@remotion/renderer';
+import { GoogleGenerativeAI } from '@google/generative-ai';
+import sharp from 'sharp';
 import { ClovaTtsService } from './clova-tts.service.js';
 import { ShortsScriptService } from './shorts-script.service.js';
 import type { ShortsScript } from './shorts-script.service.js';
@@ -21,6 +23,7 @@ export class ShortsGeneratorService {
   private scriptService: ShortsScriptService;
   private youtube: YouTubeUploadService | null;
   private falImage: FalImageService | null;
+  private geminiImageClient: GoogleGenerativeAI | null;
   private bgm: BgmService;
 
   constructor(
@@ -38,9 +41,12 @@ export class ShortsGeneratorService {
       : null;
     const falKey = process.env.FAL_KEY;
     this.falImage = falKey ? new FalImageService(falKey) : null;
+    const geminiKey = process.env.GEMINI_API_KEY;
+    this.geminiImageClient = (!falKey && geminiKey) ? new GoogleGenerativeAI(geminiKey) : null;
     this.bgm = new BgmService();
     if (this.youtube) logger.info('[Shorts] YouTube auto-upload enabled');
     if (this.falImage) logger.info('[Shorts] fal.ai image generation enabled');
+    else if (this.geminiImageClient) logger.info('[Shorts] fal.ai not set — using Gemini image fallback');
     else logger.info('[Shorts] fal.ai disabled (FAL_KEY not set) — using solid backgrounds');
   }
 
@@ -69,15 +75,20 @@ export class ShortsGeneratorService {
         }
       }
 
-      // 장면별 배경 이미지 생성 (순차 — 동일 seed 중복 방지)
-      if (this.falImage) {
-        logger.info(`[Shorts] Generating scene background images (fal.ai)...`);
+      // 장면별 배경 이미지 생성 (fal.ai → Gemini 폴백, 순차 — 동일 seed 중복 방지)
+      if (this.falImage || this.geminiImageClient) {
+        const source = this.falImage ? 'fal.ai' : 'Gemini';
+        logger.info(`[Shorts] Generating scene background images (${source})...`);
         for (let i = 0; i < script.scenes.length; i++) {
           const scene = script.scenes[i];
           try {
             const prompt = scene.imagePrompt || FALLBACK_IMAGE_PROMPTS[i] || FALLBACK_IMAGE_PROMPTS[0];
-            scene.imageSrc = await this.falImage.generateDataUrl(prompt);
-            logger.info(`[Shorts] Image ${i + 1}/${script.scenes.length} generated`);
+            if (this.falImage) {
+              scene.imageSrc = await this.falImage.generateDataUrl(prompt);
+            } else {
+              scene.imageSrc = await this.generateGeminiDataUrl(prompt);
+            }
+            logger.info(`[Shorts] Image ${i + 1}/${script.scenes.length} generated (${source})`);
           } catch (err) {
             logger.warn(`[Shorts] Image ${i + 1} failed (non-fatal): ${err instanceof Error ? err.message : err}`);
           }
@@ -159,6 +170,28 @@ export class ShortsGeneratorService {
     } catch (err) {
       logger.warn(`[Shorts] YouTube upload failed (non-fatal): ${err instanceof Error ? err.message : err}`);
     }
+  }
+
+  // Gemini로 1080x1920 portrait 이미지 생성 → base64 data URL 반환
+  private async generateGeminiDataUrl(prompt: string): Promise<string> {
+    if (!this.geminiImageClient) throw new Error('Gemini client not initialized');
+    const model = this.geminiImageClient.getGenerativeModel({
+      model: 'gemini-2.5-flash-image',
+      generationConfig: { responseModalities: ['IMAGE', 'TEXT'] } as Record<string, unknown>,
+    });
+    const portraitPrompt = prompt + ', portrait orientation 9:16, vertical composition optimized for YouTube Shorts, vivid colors, cinematic lighting, absolutely no text, no words, no watermark';
+    const response = await model.generateContent(portraitPrompt);
+    const parts = response.response.candidates?.[0]?.content?.parts ?? [];
+    for (const part of parts) {
+      const inlineData = (part as unknown as Record<string, unknown>).inlineData as { data: string; mimeType: string } | undefined;
+      if (inlineData?.data) {
+        // sharp로 1080x1920 리사이즈 후 data URL 반환
+        const buf = Buffer.from(inlineData.data, 'base64');
+        const resized = await sharp(buf).resize(1080, 1920, { fit: 'cover' }).jpeg({ quality: 85 }).toBuffer();
+        return `data:image/jpeg;base64,${resized.toString('base64')}`;
+      }
+    }
+    throw new Error('Gemini image generation returned no data');
   }
 
   // 레거시: Phase A + Phase B 통합 (사용하지 않음)
