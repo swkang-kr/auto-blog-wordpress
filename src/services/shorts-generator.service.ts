@@ -42,12 +42,13 @@ export class ShortsGeneratorService {
     const falKey = process.env.FAL_KEY;
     this.falImage = falKey ? new FalImageService(falKey) : null;
     const geminiKey = process.env.GEMINI_API_KEY;
-    this.geminiImageClient = (!falKey && geminiKey) ? new GoogleGenerativeAI(geminiKey) : null;
+    this.geminiImageClient = geminiKey ? new GoogleGenerativeAI(geminiKey) : null;
     this.bgm = new BgmService();
     if (this.youtube) logger.info('[Shorts] YouTube auto-upload enabled');
-    if (this.falImage) logger.info('[Shorts] fal.ai image generation enabled');
-    else if (this.geminiImageClient) logger.info('[Shorts] fal.ai not set — using Gemini image fallback');
-    else logger.info('[Shorts] fal.ai disabled (FAL_KEY not set) — using solid backgrounds');
+    if (this.falImage && this.geminiImageClient) logger.info('[Shorts] fal.ai image generation enabled (Gemini as fallback)');
+    else if (this.falImage) logger.info('[Shorts] fal.ai image generation enabled (no Gemini fallback)');
+    else if (this.geminiImageClient) logger.info('[Shorts] FAL_KEY not set — using Gemini image generation');
+    else logger.info('[Shorts] No image generation configured — using solid backgrounds');
   }
 
   // Phase A: 로컬에서 MP4 렌더링까지만 수행 (YouTube 업로드 없음)
@@ -77,18 +78,28 @@ export class ShortsGeneratorService {
 
       // 장면별 배경 이미지 생성 (fal.ai → Gemini 폴백, 순차 — 동일 seed 중복 방지)
       if (this.falImage || this.geminiImageClient) {
-        const source = this.falImage ? 'fal.ai' : 'Gemini';
-        logger.info(`[Shorts] Generating scene background images (${source})...`);
+        logger.info(`[Shorts] Generating scene background images (fal.ai → Gemini fallback)...`);
         for (let i = 0; i < script.scenes.length; i++) {
           const scene = script.scenes[i];
           try {
             const prompt = scene.imagePrompt || FALLBACK_IMAGE_PROMPTS[i] || FALLBACK_IMAGE_PROMPTS[0];
             if (this.falImage) {
-              scene.imageSrc = await this.falImage.generateDataUrl(prompt);
+              try {
+                scene.imageSrc = await this.falImage.generateDataUrl(prompt);
+                logger.info(`[Shorts] Image ${i + 1}/${script.scenes.length} generated (fal.ai)`);
+              } catch (falErr) {
+                logger.warn(`[Shorts] fal.ai image ${i + 1} failed, trying Gemini: ${falErr instanceof Error ? falErr.message : falErr}`);
+                if (this.geminiImageClient) {
+                  scene.imageSrc = await this.generateGeminiDataUrl(prompt);
+                  logger.info(`[Shorts] Image ${i + 1}/${script.scenes.length} generated (Gemini fallback)`);
+                } else {
+                  throw falErr;
+                }
+              }
             } else {
               scene.imageSrc = await this.generateGeminiDataUrl(prompt);
+              logger.info(`[Shorts] Image ${i + 1}/${script.scenes.length} generated (Gemini)`);
             }
-            logger.info(`[Shorts] Image ${i + 1}/${script.scenes.length} generated (${source})`);
           } catch (err) {
             logger.warn(`[Shorts] Image ${i + 1} failed (non-fatal): ${err instanceof Error ? err.message : err}`);
           }
