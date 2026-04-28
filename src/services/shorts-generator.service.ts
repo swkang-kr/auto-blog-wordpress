@@ -26,9 +26,10 @@ export class ShortsGeneratorService {
     youtubeClientId?: string,
     youtubeClientSecret?: string,
     youtubeRefreshToken?: string,
+    anthropicApiKey?: string,
   ) {
     this.tts = new ClovaTtsService(clovaClientId, clovaClientSecret);
-    this.scriptService = new ShortsScriptService();
+    this.scriptService = new ShortsScriptService(anthropicApiKey || process.env.ANTHROPIC_API_KEY || '');
     this.youtube = youtubeClientId && youtubeClientSecret && youtubeRefreshToken
       ? new YouTubeUploadService(youtubeClientId, youtubeClientSecret, youtubeRefreshToken)
       : null;
@@ -46,7 +47,7 @@ export class ShortsGeneratorService {
       const safeSlug = (post.slug || String(post.postId)).replace(/[^a-z0-9가-힣-]/gi, '-').slice(0, 60);
 
       logger.info(`[Shorts] Generating script for: "${content.title}"`);
-      const script = this.scriptService.generateScript(content.title, content.excerpt || '', keyword);
+      const script = await this.scriptService.generateScript(content.title, content.excerpt || '', keyword);
 
       // 종목분석 쇼츠: 네이버금융 실시간 현재가 주입
       if (stockCode && script.scenes.length > 0) {

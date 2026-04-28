@@ -3624,6 +3624,8 @@ ${ga4TrackingScript}`;
         // Extract slug from URL
         const slug = linkUrl.replace(this.wpUrl, '').replace(/^\/|\/$/g, '');
         if (!slug || slug.includes('?') || slug.startsWith('wp-')) continue;
+        // Skip taxonomy/author/feed URLs — these are WordPress-managed, not posts
+        if (/^\/(category|tag|author|feed|page)\//i.test('/' + slug)) continue;
 
         // Check if this URL exists in our post list or page list
         // Decode both sides to handle Korean slug encoding differences

@@ -1,4 +1,4 @@
-import { spawnSync } from 'child_process';
+import Anthropic from '@anthropic-ai/sdk';
 import { logger } from '../utils/logger.js';
 
 export interface ShortsScript {
@@ -18,9 +18,15 @@ export interface Scene {
 }
 
 export class ShortsScriptService {
-  generateScript(postTitle: string, postExcerpt: string, keyword: string): ShortsScript {
-    const claudeBin = process.env.CLAUDE_BIN || 'claude';
+  private readonly client: Anthropic;
+  private readonly model: string;
 
+  constructor(apiKey: string) {
+    this.client = new Anthropic({ apiKey });
+    this.model = process.env.CLAUDE_MODEL || 'claude-haiku-4-5-20251001';
+  }
+
+  async generateScript(postTitle: string, postExcerpt: string, keyword: string): Promise<ShortsScript> {
     const prompt = `당신은 한국 주식 유튜브 쇼츠 전문 스크립트 작가입니다. 조회수 10만+ 영상의 공식을 따릅니다.
 
 블로그 포스트:
@@ -56,28 +62,21 @@ export class ShortsScriptService {
 순수 JSON만 응답. 마크다운 코드블록 금지.
 {"title":"","narration":"","scenes":[{"startSec":0,"endSec":6,"text":"","highlight":"","imagePrompt":""},{"startSec":6,"endSec":12,"text":"","highlight":"","imagePrompt":""},{"startSec":12,"endSec":18,"text":"","highlight":"","imagePrompt":""},{"startSec":18,"endSec":24,"text":"","highlight":"","imagePrompt":""},{"startSec":24,"endSec":28,"text":"","highlight":"","imagePrompt":""}],"hashtags":["#주식"]}`;
 
-    const { ANTHROPIC_API_KEY: _unused, ...safeEnv } = process.env;
-    const result = spawnSync(claudeBin, ['-p', prompt, '--model', 'opus'], {
-      encoding: 'utf8',
-      maxBuffer: 2 * 1024 * 1024,
-      env: safeEnv,
+    const response = await this.client.messages.create({
+      model: this.model,
+      max_tokens: 1024,
+      messages: [{ role: 'user', content: prompt }],
     });
 
-    if (result.status !== 0) {
-      throw new Error(`Shorts script generation failed: ${result.stderr?.slice(0, 300)}`);
-    }
-
-    const raw = result.stdout?.trim() ?? '';
+    const raw = response.content[0].type === 'text' ? response.content[0].text.trim() : '';
     const jsonMatch = raw.match(/\{[\s\S]*\}/);
     if (!jsonMatch) throw new Error('No JSON in shorts script response');
 
-    // 문자열 값 내 제어문자(실제 개행 등) 제거
     const sanitized = jsonMatch[0].replace(/("(?:[^"\\]|\\.)*")/g, (m) =>
       m.replace(/\n/g, '\\n').replace(/\r/g, '').replace(/\t/g, '\\t')
     );
     const parsed = JSON.parse(sanitized) as ShortsScript;
 
-    // 고볼륨 기본 태그 병합 (Claude 생성 태그 + 고정 태그, 최대 15개)
     const HIGH_VOLUME_TAGS = [
       '#주식', '#주식쇼츠', '#오늘의주식', '#종목분석', '#주식투자',
       '#한국주식', '#코스피', '#재테크', '#투자', '#주식초보',
