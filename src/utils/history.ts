@@ -520,10 +520,11 @@ export class PostHistory {
   static classifyFunnelStage(contentType?: string, searchIntent?: string): 'tofu' | 'mofu' | 'bofu' {
     // BOFU: transactional intent, product reviews, how-to purchase
     if (searchIntent === 'transactional' || contentType === 'product-review') return 'bofu';
-    // MOFU: commercial investigation, comparisons, best-x-for-y
+    // MOFU: commercial investigation, comparisons, best-x-for-y, stock analysis (investment decision support)
     if (searchIntent === 'commercial' || searchIntent === 'commercial-investigation' ||
-        contentType === 'x-vs-y' || contentType === 'best-x-for-y') return 'mofu';
-    // TOFU: informational, news, deep-dive, analysis
+        contentType === 'x-vs-y' || contentType === 'best-x-for-y' ||
+        contentType === 'analysis' || contentType === 'deep-dive' || contentType === 'case-study') return 'mofu';
+    // TOFU: informational, news, how-to, listicle
     return 'tofu';
   }
 

@@ -780,16 +780,8 @@ async function main(): Promise<void> {
       const mofuPct = (funnelDist.mofu / funnelDist.total) * 100;
       const bofuPct = (funnelDist.bofu / funnelDist.total) * 100;
       logger.info(`Content funnel: TOFU=${funnelDist.tofu} (${tofuPct.toFixed(0)}%) | MOFU=${funnelDist.mofu} (${mofuPct.toFixed(0)}%) | BOFU=${funnelDist.bofu} (${bofuPct.toFixed(0)}%) | Total=${funnelDist.total}`);
-      if (bofuPct < 10) {
-        logger.warn('Funnel imbalance: BOFU content is below 10%. Consider more transactional/comparison content.');
-        insightParts.push(
-          '## Funnel Imbalance Alert (MANDATORY)\n' +
-          'BOFU (bottom-of-funnel) content is critically low at ' + bofuPct.toFixed(0) + '%.\n' +
-          'You MUST select one of these content types: product-review, best-x-for-y, or x-vs-y.\n' +
-          'You MUST select a transactional or commercial search intent.\n' +
-          'Pick keywords with buying intent: "best [product] for [use case]", "[brand] vs [brand]", "[product] review".\n' +
-          'Do NOT select informational/how-to/deep-dive — those are overrepresented.',
-        );
+      if (bofuPct < 5) {
+        logger.info(`Content funnel: BOFU ${bofuPct.toFixed(0)}% (stock analysis blog — MOFU-heavy is expected)`);
       }
     }
   } catch (funnelError) {
