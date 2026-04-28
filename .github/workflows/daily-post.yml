@@ -1,19 +1,18 @@
-name: Daily Blog Post (Generate Only)
+name: Daily Blog Post
 
 on:
   schedule:
-    # 07:05 UTC = 16:05 KST — trade-engine data is ready by 16:00 KST
-    # Phase A only: content generation (no WP API). publish-content.yml runs separately.
-    - cron: '5 7 * * 1-5'
+    # 08:05 UTC = 17:05 KST (평일) — trade-engine data ready by 16:00 KST
+    - cron: '5 8 * * 1-5'
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  generate:
+  generate-and-publish:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
         with:
@@ -26,7 +25,15 @@ jobs:
 
       - run: npm ci
 
-      - name: Phase A — Generate content (no WP API calls)
+      - name: Install system deps (edge-tts TTS + Remotion Chromium libs)
+        run: |
+          pip install edge-tts
+          sudo apt-get install -y \
+            libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 \
+            libxkbcommon0 libxcomposite1 libxdamage1 libxfixes3 libxrandr2 \
+            libgbm1 libasound2 libpangocairo-1.0-0 libxshmfence1
+
+      - name: Phase A — Generate content (GENERATE_ONLY, no WP API)
         env:
           GENERATE_ONLY: 'true'
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -42,7 +49,6 @@ jobs:
           GA_MEASUREMENT_ID: ${{ secrets.GA_MEASUREMENT_ID }}
           NAVER_SITE_VERIFICATION: ${{ secrets.NAVER_SITE_VERIFICATION }}
           MIN_QUALITY_SCORE: ${{ secrets.MIN_QUALITY_SCORE }}
-          POST_COUNT: '4'
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           WP_URL: ${{ secrets.WP_URL }}
@@ -51,38 +57,82 @@ jobs:
         run: |
           mkdir -p logs data/generated
           DATE=$(TZ=Asia/Seoul date '+%Y-%m-%d')
-          node --import tsx/esm src/index.ts 2>&1 | tee logs/generate-${DATE}-${{ github.run_id }}.log
+          node --import tsx/esm src/index.ts 2>&1 | tee logs/phase-a-${DATE}.log
+          echo "DATE=${DATE}" >> $GITHUB_ENV
 
-      - name: Commit generated JSON
-        id: commit
+      - name: Phase B — Publish to WordPress
+        env:
+          PUBLISH_FROM_FILE: data/generated/${{ env.DATE }}.json
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USERNAME: ${{ secrets.WP_USERNAME }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          SITE_NAME: ${{ secrets.SITE_NAME }}
+          SITE_OWNER: ${{ secrets.SITE_OWNER }}
+          SITE_TAGLINE: ${{ secrets.SITE_TAGLINE }}
+          CONTACT_EMAIL: ${{ secrets.CONTACT_EMAIL }}
+          AUTHOR_LINKEDIN: ${{ secrets.AUTHOR_LINKEDIN }}
+          AUTHOR_TWITTER: ${{ secrets.AUTHOR_TWITTER }}
+          AUTHOR_WEBSITE: ${{ secrets.AUTHOR_WEBSITE }}
+          GA_MEASUREMENT_ID: ${{ secrets.GA_MEASUREMENT_ID }}
+          GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+          GOOGLE_SITE_VERIFICATION: ${{ secrets.GOOGLE_SITE_VERIFICATION }}
+          NAVER_SITE_VERIFICATION: ${{ secrets.NAVER_SITE_VERIFICATION }}
+          DAUM_SITE_VERIFICATION: ${{ secrets.DAUM_SITE_VERIFICATION }}
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+          ADSENSE_PUB_ID: ${{ secrets.ADSENSE_PUB_ID }}
+          GSC_SITE_URL: ${{ secrets.GSC_SITE_URL }}
+          GOOGLE_INDEXING_SA_KEY: ${{ secrets.GOOGLE_INDEXING_SA_KEY }}
+          CLAUDE_MODEL: ${{ secrets.CLAUDE_MODEL }}
+          IMAGE_FORMAT: ${{ secrets.IMAGE_FORMAT }}
+          MIN_QUALITY_SCORE: ${{ secrets.MIN_QUALITY_SCORE }}
+          PUBLISH_STATUS: ${{ secrets.PUBLISH_STATUS }}
+          PUBLISH_INTERVAL_MINUTES: ${{ secrets.PUBLISH_INTERVAL_MINUTES }}
+          PUBLISH_OPTIMAL_HOUR: ${{ secrets.PUBLISH_OPTIMAL_HOUR }}
+          PUBLISH_TIMEZONE: ${{ secrets.PUBLISH_TIMEZONE }}
+          AUTO_REWRITE_COUNT: ${{ secrets.AUTO_REWRITE_COUNT }}
+          AUTO_REWRITE_MIN_AGE_DAYS: ${{ secrets.AUTO_REWRITE_MIN_AGE_DAYS }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          X_API_KEY: ${{ secrets.X_API_KEY }}
+          X_API_SECRET: ${{ secrets.X_API_SECRET }}
+          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}
+          FB_APP_ID: ${{ secrets.FB_APP_ID }}
+          FB_APP_SECRET: ${{ secrets.FB_APP_SECRET }}
+          FB_ACCESS_TOKEN: ${{ secrets.FB_ACCESS_TOKEN }}
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          THREADS_APP_ID: ${{ secrets.THREADS_APP_ID }}
+          THREADS_APP_SECRET: ${{ secrets.THREADS_APP_SECRET }}
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+          THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+          LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
+          LINKEDIN_PERSON_ID: ${{ secrets.LINKEDIN_PERSON_ID }}
+          NEWSLETTER_FORM_URL: ${{ secrets.NEWSLETTER_FORM_URL }}
+          HASHNODE_TOKEN: ${{ secrets.HASHNODE_TOKEN }}
+          HASHNODE_PUBLICATION_ID: ${{ secrets.HASHNODE_PUBLICATION_ID }}
+          DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
         run: |
-          DATE=$(TZ=Asia/Seoul date '+%Y-%m-%d')
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/generated/${DATE}.json
-          if git diff --staged --quiet; then
-            echo "No generated file to commit"
-            echo "generated=false" >> $GITHUB_OUTPUT
-          else
-            git commit -m "feat: generated content ${DATE} [skip ci]"
-            git push
-            echo "generated=true" >> $GITHUB_OUTPUT
-            echo "date=${DATE}" >> $GITHUB_OUTPUT
-          fi
+          node --import tsx/esm src/index.ts 2>&1 | tee logs/phase-b-${{ env.DATE }}.log
 
-      - name: Upload log artifact
+      - name: Upload log artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: generate-log-${{ github.run_id }}
-          path: logs/generate-*.log
+          name: daily-post-logs-${{ env.DATE }}-${{ github.run_id }}
+          path: logs/phase-*.log
           retention-days: 30
 
-      - name: Trigger Phase B — publish-content
-        if: steps.commit.outputs.generated == 'true'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Commit updated data files
+        if: always()
         run: |
-          gh workflow run publish-content.yml \
-            --repo swkang-kr/auto-blog-wordpress \
-            --field date="${{ steps.commit.outputs.date }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/post-history.json data/batch-sla.json data/generated/ .cache/ 2>/dev/null || true
+          git diff --staged --quiet || git commit -m "chore: update post history ${{ env.DATE }} [skip ci]"
+          git push || true
