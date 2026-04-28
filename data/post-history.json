@@ -1620,9 +1620,9 @@
         }
       ],
       "lastPosition": 20,
-      "engagementScore": 0,
+      "engagementScore": 1,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0.009000000000000001,
+      "estimatedRevenue": 0.006,
       "titleTestPhaseBStarted": true,
       "titleTestPhaseBTitle": "Best Korean Cica Skincare 2026: Ranked by Science, Not Hype",
       "titleTestWinner": "10 Best Korean Centella Asiatica Skincare Products (2026)",
@@ -2212,7 +2212,7 @@
       "featuredImageMediaId": 88941,
       "affiliateLinkCount": 0,
       "qualityScore": 75,
-      "engagementScore": 30,
+      "engagementScore": 33,
       "estimatedRpm": 3,
       "estimatedRevenue": 0.045,
       "titleTestPhaseBStarted": true,
@@ -2309,7 +2309,7 @@
       "featuredImageMediaId": 89016,
       "affiliateLinkCount": 0,
       "qualityScore": 84,
-      "engagementScore": 26,
+      "engagementScore": 19,
       "titleTestPhaseBStarted": true,
       "titleTestPhaseBTitle": "FOMC 금리 인상·인하·동결: KOSPI 섹터별 반응 완전 분석 2026",
       "titleTestWinner": "FOMC 금리 결정이 한국 주식시장에 미치는 영향 2026: 시나리오별 완전 분석",
@@ -3179,9 +3179,9 @@
       "featuredImageMediaId": 89980,
       "affiliateLinkCount": 0,
       "qualityScore": 89,
-      "engagementScore": 0,
+      "engagementScore": 1,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0.018000000000000002
+      "estimatedRevenue": 0.006
     },
     {
       "keyword": "휴니드 외국인 기관 순매수 수급 분석",
@@ -3365,10 +3365,13 @@
       "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/04/featured-2026-19.webp",
       "featuredImageMediaId": 90162,
       "affiliateLinkCount": 0,
-      "qualityScore": 86
+      "qualityScore": 86,
+      "engagementScore": 2,
+      "estimatedRpm": 3,
+      "estimatedRevenue": 0.009000000000000001
     }
   ],
-  "lastRunAt": "2026-04-27T08:23:13.362Z",
+  "lastRunAt": "2026-04-28T00:41:12.397Z",
   "totalPosts": 123,
   "categoryLastPublished": {
     "korean-food-cooking": "2026-03-09T14:49:00.731Z",
