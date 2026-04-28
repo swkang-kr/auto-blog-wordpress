@@ -1044,9 +1044,20 @@ async function main(): Promise<void> {
     logger.warn('live_watchlist/aiPicks 데이터 없음 — 기본 니치 유지');
   }
 
+  // ── Phase A/B Split ───────────────────────────────────────────────────────
+  // PUBLISH_FROM_FILE: skip Phase A, load pre-generated content from JSON file
+  // GENERATE_ONLY:     run Phase A only, save output to data/generated/DATE.json
+  let generated: GeneratedPost[] = [];
+  const publishFromFile = process.env.PUBLISH_FROM_FILE;
+
+  if (publishFromFile) {
+    const raw = await fs.readFile(publishFromFile, 'utf-8');
+    generated = JSON.parse(raw) as GeneratedPost[];
+    logger.info(`[Phase A skipped] Loaded ${generated.length} post(s) from ${publishFromFile}`);
+  } else {
+
   // ── Phase A: Research + Content Generation ──────────────────────────────
   logger.info('\n=== Phase A: Research + Content Generation (prompt-cache optimised) ===');
-  const generated: GeneratedPost[] = [];
   const failedNiches: Array<{ niche: NicheConfig; resultIndex: number }> = [];
 
   for (let nicheIdx = 0; nicheIdx < activeNiches.length; nicheIdx++) {
@@ -1343,6 +1354,19 @@ async function main(): Promise<void> {
       logger.warn(`Batch duplicate check: ${duplicates.length} similar article pair(s) detected — consider diversifying topics`);
     }
   }
+
+  // ── GENERATE_ONLY: save Phase A output and exit ──────────────────────────
+  if (process.env.GENERATE_ONLY === 'true') {
+    await fs.mkdir('data/generated', { recursive: true });
+    const date = new Date().toISOString().slice(0, 10);
+    const outPath = `data/generated/${date}.json`;
+    await fs.writeFile(outPath, JSON.stringify(generated, null, 2));
+    logger.info(`[GENERATE_ONLY] Saved ${generated.length} post(s) → ${outPath}`);
+    logger.info('[GENERATE_ONLY] Phase A complete. Run Phase B via GitHub Actions with PUBLISH_FROM_FILE=' + outPath);
+    return;
+  }
+
+  } // end Phase A (else block for publishFromFile)
 
   // ── Phase B: Images + Publish ──────────────────────────────────────────
   logger.info('\n=== Phase B: Images + Publish ===');

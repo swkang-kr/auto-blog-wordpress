@@ -1,0 +1,118 @@
+name: Publish Generated Content
+
+on:
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'Generated content date (YYYY-MM-DD). Defaults to today.'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Resolve generated file path
+        id: resolve
+        run: |
+          DATE="${{ github.event.inputs.date }}"
+          if [ -z "$DATE" ]; then
+            DATE=$(TZ=Asia/Seoul date '+%Y-%m-%d')
+          fi
+          FILE="data/generated/${DATE}.json"
+          if [ ! -f "$FILE" ]; then
+            echo "ERROR: $FILE not found"
+            exit 1
+          fi
+          echo "date=$DATE" >> $GITHUB_OUTPUT
+          echo "file=$FILE" >> $GITHUB_OUTPUT
+          echo "Using generated file: $FILE ($(wc -c < $FILE) bytes)"
+
+      - name: Publish to WordPress (Phase B)
+        env:
+          PUBLISH_FROM_FILE: ${{ steps.resolve.outputs.file }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USERNAME: ${{ secrets.WP_USERNAME }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          SITE_NAME: ${{ secrets.SITE_NAME }}
+          SITE_OWNER: ${{ secrets.SITE_OWNER }}
+          SITE_TAGLINE: ${{ secrets.SITE_TAGLINE }}
+          CONTACT_EMAIL: ${{ secrets.CONTACT_EMAIL }}
+          AUTHOR_LINKEDIN: ${{ secrets.AUTHOR_LINKEDIN }}
+          AUTHOR_TWITTER: ${{ secrets.AUTHOR_TWITTER }}
+          AUTHOR_WEBSITE: ${{ secrets.AUTHOR_WEBSITE }}
+          GA_MEASUREMENT_ID: ${{ secrets.GA_MEASUREMENT_ID }}
+          GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+          GOOGLE_SITE_VERIFICATION: ${{ secrets.GOOGLE_SITE_VERIFICATION }}
+          NAVER_SITE_VERIFICATION: ${{ secrets.NAVER_SITE_VERIFICATION }}
+          DAUM_SITE_VERIFICATION: ${{ secrets.DAUM_SITE_VERIFICATION }}
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+          ADSENSE_PUB_ID: ${{ secrets.ADSENSE_PUB_ID }}
+          GSC_SITE_URL: ${{ secrets.GSC_SITE_URL }}
+          GOOGLE_INDEXING_SA_KEY: ${{ secrets.GOOGLE_INDEXING_SA_KEY }}
+          CLAUDE_MODEL: ${{ secrets.CLAUDE_MODEL }}
+          IMAGE_FORMAT: ${{ secrets.IMAGE_FORMAT }}
+          MIN_QUALITY_SCORE: ${{ secrets.MIN_QUALITY_SCORE }}
+          PUBLISH_STATUS: ${{ secrets.PUBLISH_STATUS }}
+          PUBLISH_INTERVAL_MINUTES: ${{ secrets.PUBLISH_INTERVAL_MINUTES }}
+          PUBLISH_OPTIMAL_HOUR: ${{ secrets.PUBLISH_OPTIMAL_HOUR }}
+          PUBLISH_TIMEZONE: ${{ secrets.PUBLISH_TIMEZONE }}
+          AUTO_REWRITE_COUNT: ${{ secrets.AUTO_REWRITE_COUNT }}
+          AUTO_REWRITE_MIN_AGE_DAYS: ${{ secrets.AUTO_REWRITE_MIN_AGE_DAYS }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          X_API_KEY: ${{ secrets.X_API_KEY }}
+          X_API_SECRET: ${{ secrets.X_API_SECRET }}
+          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}
+          FB_APP_ID: ${{ secrets.FB_APP_ID }}
+          FB_APP_SECRET: ${{ secrets.FB_APP_SECRET }}
+          FB_ACCESS_TOKEN: ${{ secrets.FB_ACCESS_TOKEN }}
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          THREADS_APP_ID: ${{ secrets.THREADS_APP_ID }}
+          THREADS_APP_SECRET: ${{ secrets.THREADS_APP_SECRET }}
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+          THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
+          LINKEDIN_PERSON_ID: ${{ secrets.LINKEDIN_PERSON_ID }}
+          NEWSLETTER_FORM_URL: ${{ secrets.NEWSLETTER_FORM_URL }}
+          HASHNODE_TOKEN: ${{ secrets.HASHNODE_TOKEN }}
+          HASHNODE_PUBLICATION_ID: ${{ secrets.HASHNODE_PUBLICATION_ID }}
+          DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
+        run: |
+          mkdir -p logs
+          node --import tsx/esm src/index.ts 2>&1 | tee logs/publish-${{ steps.resolve.outputs.date }}-${{ github.run_id }}.log
+
+      - name: Upload log artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: publish-log-${{ steps.resolve.outputs.date }}-${{ github.run_id }}
+          path: logs/publish-${{ steps.resolve.outputs.date }}-${{ github.run_id }}.log
+          retention-days: 30
+
+      - name: Commit updated data files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/post-history.json data/batch-sla.json .cache/ 2>/dev/null || true
+          git diff --staged --quiet || git commit -m "chore: update post history ${{ steps.resolve.outputs.date }} [skip ci]"
+          git push || true
