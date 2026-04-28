@@ -1,9 +1,6 @@
 name: Daily Blog Post
 
 on:
-  schedule:
-    # 08:05 UTC = 17:05 KST (평일) — trade-engine data ready by 16:00 KST
-    - cron: '5 8 * * 1-5'
   workflow_dispatch:
 
 permissions:
