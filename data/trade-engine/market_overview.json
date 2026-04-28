@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-04-27T07:00:01.399963+00:00",
+  "exported_at": "2026-04-28T07:00:01.116128+00:00",
   "market_daily": [
+    {
+      "date": "20260428",
+      "kospi_change": 0.39,
+      "kosdaq_change": -0.86,
+      "foreign_net": -18.45,
+      "institution_net": 35.11,
+      "individual_net": -13.03,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260427",
       "kospi_change": 2.15,
       "kosdaq_change": 1.86,
       "foreign_net": 89.05,
-      "institution_net": 110.08,
-      "individual_net": -197.56,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "institution_net": 110.07,
+      "individual_net": -197.57,
+      "hot_theme_count": 20,
+      "momentum_count": 60,
+      "crash_count": 44
     },
     {
       "date": "20260424",
@@ -99,29 +110,18 @@
       "hot_theme_count": 40,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260414",
-      "kospi_change": 2.74,
-      "kosdaq_change": 2.0,
-      "foreign_net": 82.79,
-      "institution_net": 125.42,
-      "individual_net": -239.15,
-      "hot_theme_count": 40,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "안랩, 1분기 영업익 19억…전년비 84.4% ↑",
-    "코스피 연일 최고치 경신에…'빚투'도 천장 뚫렸다",
-    "코스피 사상 첫 6600선 돌파 마감",
-    "하이닉스, 장중 한때 '130만 닉스'…삼성전자 2.28% 상승 마감",
-    "코스피 6600선 뚫었다…최고치 행진에 ‘칠천피’ 가시권 [시황]",
-    "코스피 사상 최고치 경신",
-    "코스피 사상 첫 6600 돌파 마감",
-    "코스피 6615.03 마감",
-    "코스피, 2.15% 상승한 6615.03 마감…사상 첫 6600선 안착",
-    "코스피, 2.15% 상승한 6615.03 마감…사상 첫 6600선 안착"
+    "롯데정밀화학, 1분기 영업이익 327억원…\"반도체 호황 영향\"",
+    "전쟁은 잊혔는데 유가는 고공행진, 거꾸로 베팅한 개미들 2300억원 증발 위험",
+    "불확실한 지정학적 리스크에 원·달러, 1.6원↑…1473.6원 마감(종합)",
+    "코스피, 원·달러 환율 상승, 코스피 하락 마감",
+    "[포토]美 증시 사상 최고 훈풍에 코스피도 사상 최고 경신",
+    "코스피 상승 마감",
+    "원·달러 환율 상승",
+    "코스피 상승 마감",
+    "코스피 상승 마감",
+    "코스피 상승 마감"
   ]
 }
