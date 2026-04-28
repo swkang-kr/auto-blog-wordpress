@@ -27,6 +27,14 @@ jobs:
 
       - run: npm ci
 
+      - name: Install system deps (edge-tts TTS + Remotion Chromium libs)
+        run: |
+          pip install edge-tts
+          sudo apt-get install -y \
+            libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 \
+            libxkbcommon0 libxcomposite1 libxdamage1 libxfixes3 libxrandr2 \
+            libgbm1 libasound2 libpangocairo-1.0-0 libxshmfence1
+
       - name: Resolve generated file path
         id: resolve
         run: |
@@ -97,6 +105,10 @@ jobs:
           HASHNODE_TOKEN: ${{ secrets.HASHNODE_TOKEN }}
           HASHNODE_PUBLICATION_ID: ${{ secrets.HASHNODE_PUBLICATION_ID }}
           DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
         run: |
           mkdir -p logs
           node --import tsx/esm src/index.ts 2>&1 | tee logs/publish-${{ steps.resolve.outputs.date }}-${{ github.run_id }}.log
