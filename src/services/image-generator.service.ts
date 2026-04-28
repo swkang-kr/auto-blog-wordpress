@@ -86,6 +86,12 @@ export class ImageGeneratorService {
   private async toWebP(buffer: Buffer): Promise<Buffer> {
     const originalKB = buffer.length / 1024;
 
+    // Upscale to 1200px minimum for Google Discover eligibility
+    const meta = await sharp(buffer).metadata();
+    if ((meta.width ?? 0) > 0 && (meta.width ?? 0) < 1200) {
+      buffer = await sharp(buffer).resize(1200, null, { fit: 'inside', withoutEnlargement: false }).toBuffer();
+    }
+
     // Start with quality 80 and adjust
     let quality = 80;
     let result = await sharp(buffer).webp({ quality }).toBuffer();
@@ -116,6 +122,12 @@ export class ImageGeneratorService {
    */
   private async toAvif(buffer: Buffer): Promise<Buffer> {
     const originalKB = buffer.length / 1024;
+
+    // Upscale to 1200px minimum for Google Discover eligibility
+    const meta = await sharp(buffer).metadata();
+    if ((meta.width ?? 0) > 0 && (meta.width ?? 0) < 1200) {
+      buffer = await sharp(buffer).resize(1200, null, { fit: 'inside', withoutEnlargement: false }).toBuffer();
+    }
 
     let quality = 70;
     let result = await sharp(buffer).avif({ quality }).toBuffer();
