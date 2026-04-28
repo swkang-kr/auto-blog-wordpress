@@ -2,7 +2,7 @@
  * WeeklyTradingReviewService
  * trade-engine 데이터를 기반으로 이번 주(월~금) 매매 결산 포스트를 생성한다.
  */
-import Anthropic from '@anthropic-ai/sdk';
+import { spawnSync } from 'child_process';
 import { TradeEngineBridge } from './trade-engine-bridge.service.js';
 import type { TradeRecord, DailySummary } from './trade-engine-bridge.service.js';
 import { logger } from '../utils/logger.js';
@@ -170,17 +170,13 @@ function buildContextText(
 }
 
 export class WeeklyTradingReviewService {
-  private client: Anthropic;
-  private model: string;
   private bridge: TradeEngineBridge;
 
-  constructor(anthropicApiKey?: string) {
-    this.client = new Anthropic({ apiKey: anthropicApiKey || process.env.ANTHROPIC_API_KEY || '' });
-    this.model = process.env.CLAUDE_MODEL || 'claude-haiku-4-5-20251001';
+  constructor() {
     this.bridge = new TradeEngineBridge();
   }
 
-  async generatePost(referenceDate = new Date()): Promise<BlogContent> {
+  generatePost(referenceDate = new Date()): BlogContent {
     const { startDate, endDate, weekLabel } = getWeekRange(referenceDate);
     logger.info(`[WeeklyPost] 기간: ${startDate} ~ ${endDate} (${weekLabel})`);
 
@@ -230,14 +226,18 @@ ${marketCtx}
 순수 JSON으로만 응답:
 {"title":"","html":"","excerpt":"","tags":[],"metaDescription":"","imagePrompts":["",""],"imageCaptions":["",""]}`;
 
-    logger.info(`[WeeklyPost] Claude 포스트 생성 중...`);
-    const response = await this.client.messages.create({
-      model: this.model,
-      max_tokens: 4096,
-      messages: [{ role: 'user', content: prompt }],
+    logger.info(`[WeeklyPost] Claude CLI 포스트 생성 중...`);
+    const claudeBin = process.env.CLAUDE_BIN || 'claude';
+    const { ANTHROPIC_API_KEY: _unused, ...safeEnv } = process.env;
+    const result = spawnSync(claudeBin, ['-p', prompt, '--model', 'opus'], {
+      encoding: 'utf8',
+      maxBuffer: 8 * 1024 * 1024,
+      env: safeEnv,
     });
-
-    const raw = response.content[0].type === 'text' ? response.content[0].text.trim() : '';
+    if (result.status !== 0) {
+      throw new Error(`Claude CLI exit ${result.status}: ${result.stderr?.slice(0, 300)}`);
+    }
+    const raw = result.stdout?.trim() ?? '';
     const jsonMatch = raw.match(/\{[\s\S]*\}/);
     if (!jsonMatch) throw new Error('[WeeklyPost] No JSON in Claude response');
 

@@ -14,8 +14,8 @@ async function main() {
 
   logger.info(`[WeeklyPost] Phase A 시작 (기준일: ${refDate.toISOString().slice(0, 10)})`);
 
-  const service = new WeeklyTradingReviewService(process.env.ANTHROPIC_API_KEY);
-  const content = await service.generatePost(refDate);
+  const service = new WeeklyTradingReviewService();
+  const content = service.generatePost(refDate);
 
   const date = refDate.toISOString().slice(0, 10);
   const outPath = `data/generated/weekly-${date}.json`;
