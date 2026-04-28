@@ -1,4 +1,4 @@
-import Anthropic from '@anthropic-ai/sdk';
+import { spawnSync } from 'node:child_process';
 import { logger } from '../utils/logger.js';
 
 export interface ShortsScript {
@@ -18,15 +18,11 @@ export interface Scene {
 }
 
 export class ShortsScriptService {
-  private readonly client: Anthropic;
-  private readonly model: string;
-
-  constructor(apiKey: string) {
-    this.client = new Anthropic({ apiKey });
-    this.model = process.env.CLAUDE_MODEL || 'claude-haiku-4-5-20251001';
+  constructor(_apiKey: string) {
+    // apiKey 파라미터는 하위 호환성 유지용 — Claude CLI 사용
   }
 
-  async generateScript(postTitle: string, postExcerpt: string, keyword: string): Promise<ShortsScript> {
+  generateScript(postTitle: string, postExcerpt: string, keyword: string): ShortsScript {
     const prompt = `당신은 한국 주식 유튜브 쇼츠 전문 스크립트 작가입니다. 조회수 10만+ 영상의 공식을 따릅니다.
 
 블로그 포스트:
@@ -62,13 +58,19 @@ export class ShortsScriptService {
 순수 JSON만 응답. 마크다운 코드블록 금지.
 {"title":"","narration":"","scenes":[{"startSec":0,"endSec":6,"text":"","highlight":"","imagePrompt":""},{"startSec":6,"endSec":12,"text":"","highlight":"","imagePrompt":""},{"startSec":12,"endSec":18,"text":"","highlight":"","imagePrompt":""},{"startSec":18,"endSec":24,"text":"","highlight":"","imagePrompt":""},{"startSec":24,"endSec":28,"text":"","highlight":"","imagePrompt":""}],"hashtags":["#주식"]}`;
 
-    const response = await this.client.messages.create({
-      model: this.model,
-      max_tokens: 1024,
-      messages: [{ role: 'user', content: prompt }],
+    const env = { ...process.env };
+    delete env.ANTHROPIC_API_KEY;
+
+    const result = spawnSync('claude', ['-p', prompt, '--model', 'claude-haiku-4-5-20251001'], {
+      encoding: 'utf-8',
+      env,
+      timeout: 60_000,
     });
 
-    const raw = response.content[0].type === 'text' ? response.content[0].text.trim() : '';
+    if (result.error) throw result.error;
+    if (result.status !== 0) throw new Error(`claude CLI exited ${result.status}: ${result.stderr}`);
+
+    const raw = (result.stdout ?? '').trim();
     const jsonMatch = raw.match(/\{[\s\S]*\}/);
     if (!jsonMatch) throw new Error('No JSON in shorts script response');
 

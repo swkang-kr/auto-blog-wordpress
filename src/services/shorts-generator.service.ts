@@ -55,10 +55,12 @@ export class ShortsGeneratorService {
   async renderMp4(content: BlogContent, keyword: string, stockCode?: string): Promise<{ outputPath: string; script: ShortsScript } | null> {
     try {
       await fs.mkdir(OUTPUT_DIR, { recursive: true });
-      const safeSlug = keyword.replace(/[^a-z0-9가-힣-]/gi, '-').slice(0, 60);
+      // content.title은 항상 한국어 — keyword가 영문으로 리턴되더라도 한국어 슬러그 보장
+      const slugSource = content.title || keyword;
+      const safeSlug = slugSource.replace(/[^a-z0-9가-힣-]/gi, '-').replace(/-{2,}/g, '-').replace(/^-|-$/g, '').slice(0, 60);
 
       logger.info(`[Shorts] Generating script for: "${content.title}"`);
-      const script = await this.scriptService.generateScript(content.title, content.excerpt || '', keyword);
+      const script = this.scriptService.generateScript(content.title, content.excerpt || '', keyword);
 
       // 종목분석 쇼츠: 네이버금융 실시간 현재가 주입
       if (stockCode && script.scenes.length > 0) {
