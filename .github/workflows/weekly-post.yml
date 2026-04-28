@@ -1,0 +1,86 @@
+name: Weekly Trading Summary Post
+
+on:
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'Weekly post date (YYYY-MM-DD). Defaults to today.'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Resolve weekly file path
+        id: resolve
+        run: |
+          DATE="${{ github.event.inputs.date }}"
+          if [ -z "$DATE" ]; then
+            DATE=$(TZ=Asia/Seoul date '+%Y-%m-%d')
+          fi
+          FILE="data/generated/weekly-${DATE}.json"
+          if [ ! -f "$FILE" ]; then
+            echo "ERROR: $FILE not found"
+            exit 1
+          fi
+          echo "date=$DATE" >> $GITHUB_OUTPUT
+          echo "file=$FILE" >> $GITHUB_OUTPUT
+          echo "Using: $FILE ($(wc -c < $FILE) bytes)"
+
+      - name: Publish Weekly Post to WordPress (Phase B)
+        env:
+          PUBLISH_WEEKLY_FILE: ${{ steps.resolve.outputs.file }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USERNAME: ${{ secrets.WP_USERNAME }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          SITE_NAME: ${{ secrets.SITE_NAME }}
+          SITE_OWNER: ${{ secrets.SITE_OWNER }}
+          SITE_TAGLINE: ${{ secrets.SITE_TAGLINE }}
+          CONTACT_EMAIL: ${{ secrets.CONTACT_EMAIL }}
+          AUTHOR_LINKEDIN: ${{ secrets.AUTHOR_LINKEDIN }}
+          AUTHOR_TWITTER: ${{ secrets.AUTHOR_TWITTER }}
+          AUTHOR_WEBSITE: ${{ secrets.AUTHOR_WEBSITE }}
+          IMAGE_FORMAT: ${{ secrets.IMAGE_FORMAT }}
+          PUBLISH_STATUS: ${{ secrets.PUBLISH_STATUS }}
+          ADSENSE_PUB_ID: ${{ secrets.ADSENSE_PUB_ID }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          THREADS_APP_ID: ${{ secrets.THREADS_APP_ID }}
+          THREADS_APP_SECRET: ${{ secrets.THREADS_APP_SECRET }}
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+          THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
+          LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
+          LINKEDIN_PERSON_ID: ${{ secrets.LINKEDIN_PERSON_ID }}
+          FB_APP_ID: ${{ secrets.FB_APP_ID }}
+          FB_APP_SECRET: ${{ secrets.FB_APP_SECRET }}
+          FB_ACCESS_TOKEN: ${{ secrets.FB_ACCESS_TOKEN }}
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+        run: |
+          mkdir -p logs
+          node --import tsx/esm src/scripts/publish-weekly.ts 2>&1 | tee logs/weekly-${{ steps.resolve.outputs.date }}-${{ github.run_id }}.log
+
+      - name: Upload log artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: weekly-log-${{ steps.resolve.outputs.date }}-${{ github.run_id }}
+          path: logs/weekly-${{ steps.resolve.outputs.date }}-${{ github.run_id }}.log
+          retention-days: 30
