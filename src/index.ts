@@ -1409,6 +1409,9 @@ async function main(): Promise<void> {
     return undefined; // immediate publish
   }
 
+  // 이번 배치에서 새로 발행된 포스트 수집 (broken link 체크 시 existingPosts에 병합)
+  const newlyPublishedPosts: import('./types/index.js').ExistingPost[] = [];
+
   for (let gi = 0; gi < generated.length; gi++) {
     const { niche, postStart, researched, content, fastTrack, selectedPersona, stockCode: shortsStockCode } = generated[gi];
     // Reset publish status per post (fact-check may have forced draft on previous post)
@@ -1734,6 +1737,17 @@ async function main(): Promise<void> {
           factCheckClaims: factCheckClaims.length > 0 ? factCheckClaims : undefined,
         },
       );
+
+      // 새로 발행된 포스트를 목록에 추가 (broken link 체크에서 false positive 방지)
+      newlyPublishedPosts.push({
+        title: content.title,
+        url: post.url,
+        slug: post.slug,
+        postId: post.postId,
+        category: content.category,
+        keyword: researched.analysis.selectedKeyword,
+        subNiche: niche.id,
+      });
 
       // Mark fact-check-drafted posts for auto-retry on next batch
       if (effectivePublishStatus === 'draft' && post.postId) {
@@ -2118,11 +2132,13 @@ async function main(): Promise<void> {
 
   // 4.1. Orphan page detection + auto-fix + internal link integrity check
   try {
-    const orphans = await wpService.detectOrphanPages(existingPosts);
+    // 이번 배치에서 발행된 포스트를 existingPosts에 병합 (broken link false positive 방지)
+    const allPosts = [...newlyPublishedPosts, ...existingPosts];
+    const orphans = await wpService.detectOrphanPages(allPosts);
     if (orphans.length > 0) {
-      await wpService.autoLinkOrphans(orphans, existingPosts);
+      await wpService.autoLinkOrphans(orphans, allPosts);
     }
-    await wpService.checkAndFixInternalLinks(existingPosts);
+    await wpService.checkAndFixInternalLinks(allPosts);
   } catch (error) {
     logger.warn(`Orphan/link check failed: ${error instanceof Error ? error.message : error}`);
   }
