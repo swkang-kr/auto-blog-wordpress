@@ -1,0 +1,41 @@
+name: Fix Pages Sitemap
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Delete old-niche pages + generate page-sitemap.xml
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USERNAME: ${{ secrets.WP_USERNAME }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+        run: node --import tsx/esm src/scripts/fix-pages-sitemap.ts
+      - name: Upload page-sitemap.xml via FTP
+        env:
+          FTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
+        run: |
+          sudo apt-get install -y lftp > /dev/null 2>&1
+          lftp -u "${{ secrets.SFTP_USERNAME }}","$FTP_PASSWORD" \
+            -e "set ftp:ssl-allow yes; set ssl:verify-certificate no; put page-sitemap.xml -o /trendhunt.net/public_html/page-sitemap.xml; bye" \
+            ftp://${{ secrets.SFTP_HOST }}
+          echo "page-sitemap.xml 업로드 완료"
+      - name: Commit sitemap
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add page-sitemap.xml
+          git diff --staged --quiet || git commit -m "chore: regenerate page-sitemap.xml [skip ci]"
+          git push || true
