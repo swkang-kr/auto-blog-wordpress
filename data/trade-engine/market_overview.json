@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-04-28T07:00:01.116128+00:00",
+  "exported_at": "2026-04-29T07:00:01.229873+00:00",
   "market_daily": [
+    {
+      "date": "20260429",
+      "kospi_change": 0.75,
+      "kosdaq_change": 0.39,
+      "foreign_net": -60.71,
+      "institution_net": 47.81,
+      "individual_net": 16.7,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260428",
       "kospi_change": 0.39,
       "kosdaq_change": -0.86,
-      "foreign_net": -18.45,
+      "foreign_net": -18.44,
       "institution_net": 35.11,
-      "individual_net": -13.03,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "individual_net": -13.05,
+      "hot_theme_count": 12,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260427",
@@ -99,29 +110,18 @@
       "hot_theme_count": 40,
       "momentum_count": 60,
       "crash_count": 34
-    },
-    {
-      "date": "20260415",
-      "kospi_change": 2.07,
-      "kosdaq_change": 2.72,
-      "foreign_net": 55.06,
-      "institution_net": -2.24,
-      "individual_net": -93.41,
-      "hot_theme_count": 40,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "롯데정밀화학, 1분기 영업이익 327억원…\"반도체 호황 영향\"",
-    "전쟁은 잊혔는데 유가는 고공행진, 거꾸로 베팅한 개미들 2300억원 증발 위험",
-    "불확실한 지정학적 리스크에 원·달러, 1.6원↑…1473.6원 마감(종합)",
-    "코스피, 원·달러 환율 상승, 코스피 하락 마감",
-    "[포토]美 증시 사상 최고 훈풍에 코스피도 사상 최고 경신",
-    "코스피 상승 마감",
-    "원·달러 환율 상승",
-    "코스피 상승 마감",
-    "코스피 상승 마감",
-    "코스피 상승 마감"
+    "이란 해상 봉쇄 장기화 우려에 원·달러 환율 5.4원 상승 마감 [김혜란의 FX]",
+    "[특징주] 'AI 붐'에 전력기기株 강세…일부 상한가 마감(종합2보)",
+    "코스피, 0.75% 상승...6700선 임박 [fn마감시황]",
+    "[특징주] 고유가 장기화 우려에 신재생 관련주 급등(종합)",
+    "코스피, 사흘 연속 사상 최고가",
+    "윤석열 2심 선고 공판",
+    "코스피, 사흘 연속 사상 최고가",
+    "코스피, 사흘 연속 사상 최고가",
+    "증시 마감 시황",
+    "'증시 마감 시황은'"
   ]
 }

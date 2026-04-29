@@ -1,88 +1,76 @@
 {
-  "exported_at": "2026-04-28T07:00:01.427139+00:00",
-  "total_candidates": 6,
-  "total_holdings": 12,
+  "exported_at": "2026-04-29T07:00:01.546839+00:00",
+  "total_candidates": 5,
+  "total_holdings": 15,
   "candidates": [
-    {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "sector": "",
-      "signal_count": 8,
-      "avg_confidence": 0.7,
-      "strategies": [],
-      "reason": "score=5.00, ranked_score=40.00",
-      "price_at_signal": 0,
-      "signal_time": "2026-04-28T15:25:00.018747+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "075580",
-      "stock_name": "세진중공업",
-      "sector": "",
-      "signal_count": 6,
-      "avg_confidence": 0.5,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위",
-      "price_at_signal": 0,
-      "signal_time": "2026-04-28T06:10:14.645372",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "012030",
-      "stock_name": "DB",
-      "sector": "",
-      "signal_count": 6,
-      "avg_confidence": 0.5,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위",
-      "price_at_signal": 0,
-      "signal_time": "2026-04-28T06:10:14.645365",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "000680",
-      "stock_name": "LS네트웍스",
-      "sector": "",
-      "signal_count": 6,
-      "avg_confidence": 0.5833,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "거래량3.3x | 거래량3x+ | 주봉골든크로스 | 주봉MA20위",
-      "price_at_signal": 0,
-      "signal_time": "2026-04-28T06:10:14.645357",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "001360",
-      "stock_name": "삼성제약",
-      "sector": "",
-      "signal_count": 6,
-      "avg_confidence": 0.6667,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "거래량2.6x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
-      "price_at_signal": 0,
-      "signal_time": "2026-04-28T06:10:14.645346",
-      "status": "매수 시그널"
-    },
     {
       "stock_code": "090430",
       "stock_name": "아모레퍼시픽",
       "sector": "화장품",
       "signal_count": 6,
+      "avg_confidence": 0.7083499999999999,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "거래량2.4x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-04-29T06:11:50.600830",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "009830",
+      "stock_name": "한화솔루션",
+      "sector": "에너지장비및서비스",
+      "signal_count": 6,
+      "avg_confidence": 0.7083499999999999,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "거래량2.1x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-04-29T06:11:50.600822",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "001200",
+      "stock_name": "유진투자증권",
+      "sector": "증권",
+      "signal_count": 6,
       "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(70) | 거래량2.5x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "reason": "MACD히스토그램↑ | 거래량13.1x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-04-28T06:10:14.645319",
+      "signal_time": "2026-04-29T06:11:50.600814",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "066570",
+      "stock_name": "LG전자",
+      "sector": "전자제품",
+      "signal_count": 6,
+      "avg_confidence": 1.0,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MACD히스토그램↑ | 거래량2.4x | MA정배열 | 캔들역해머(강) | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-04-29T06:11:50.600804",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "004020",
+      "stock_name": "현대제철",
+      "sector": "",
+      "signal_count": 6,
+      "avg_confidence": 1.0,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(70) | 거래량2.9x | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+3.6%vsKOSPI+0.8%)",
+      "price_at_signal": 0,
+      "signal_time": "2026-04-29T06:11:50.600778",
       "status": "매수 시그널"
     }
   ],
@@ -97,12 +85,12 @@
       "status": "보유 중"
     },
     {
-      "stock_code": "000680",
-      "stock_name": "LS네트웍스",
-      "quantity": 233,
-      "avg_price": 4090.0,
+      "stock_code": "001200",
+      "stock_name": "유진투자증권",
+      "quantity": 33,
+      "avg_price": 5990.0,
       "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-04-28",
+      "entry_date": "2026-04-29",
       "status": "보유 중"
     },
     {
@@ -112,6 +100,15 @@
       "avg_price": 2125.0,
       "strategy": "RSI+MACD(swing)",
       "entry_date": "2026-04-28",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "004020",
+      "stock_name": "현대제철",
+      "quantity": 32,
+      "avg_price": 45900.0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-04-29",
       "status": "보유 중"
     },
     {
@@ -130,6 +127,15 @@
       "avg_price": 219500.0,
       "strategy": "RSI+MACD(swing)",
       "entry_date": "2026-04-24",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "009830",
+      "stock_name": "한화솔루션",
+      "quantity": 14,
+      "avg_price": 48100.0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-04-29",
       "status": "보유 중"
     },
     {
@@ -169,6 +175,15 @@
       "status": "보유 중"
     },
     {
+      "stock_code": "066570",
+      "stock_name": "LG전자",
+      "quantity": 8,
+      "avg_price": 135700.0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-04-29",
+      "status": "보유 중"
+    },
+    {
       "stock_code": "075580",
       "stock_name": "세진중공업",
       "quantity": 41,
@@ -180,10 +195,10 @@
     {
       "stock_code": "090430",
       "stock_name": "아모레퍼시픽",
-      "quantity": 11,
-      "avg_price": 150500.0,
+      "quantity": 4,
+      "avg_price": 141000.0,
       "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-04-27",
+      "entry_date": "2026-04-29",
       "status": "보유 중"
     },
     {
