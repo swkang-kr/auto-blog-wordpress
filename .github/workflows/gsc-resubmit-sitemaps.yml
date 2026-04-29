@@ -1,0 +1,24 @@
+name: GSC Resubmit Sitemaps
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Delete old sitemaps + resubmit all
+        env:
+          GSC_SITE_URL: ${{ secrets.GSC_SITE_URL }}
+          GOOGLE_INDEXING_SA_KEY: ${{ secrets.GOOGLE_INDEXING_SA_KEY }}
+        run: node --import tsx/esm src/scripts/gsc-manage-sitemaps.ts

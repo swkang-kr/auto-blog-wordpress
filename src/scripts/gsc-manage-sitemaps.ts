@@ -10,6 +10,7 @@ const KEEP_SITEMAPS = new Set([
   'https://trendhunt.net/wp-sitemap.xml',
   'https://trendhunt.net/post-sitemap.xml',
   'https://trendhunt.net/page-sitemap.xml',
+  'https://trendhunt.net/category-sitemap.xml',
   'https://trendhunt.net/news-sitemap.xml',
 ]);
 
@@ -51,17 +52,15 @@ async function main() {
     }
   }
 
-  // 4개 중 미등록 항목은 새로 제출
-  const registeredPaths = new Set(sitemaps.map(s => s.path));
+  // 모든 KEEP_SITEMAPS 재제출 (이미 등록된 것도 포함)
   for (const url of KEEP_SITEMAPS) {
-    if (!registeredPaths.has(url)) {
-      try {
-        await sc.sitemaps.submit({ siteUrl: SITE_URL, feedpath: url });
-        console.log(`신규 제출: ${url}`);
-      } catch (err) {
-        console.error(`제출 실패: ${url} — ${err instanceof Error ? err.message : err}`);
-      }
+    try {
+      await sc.sitemaps.submit({ siteUrl: SITE_URL, feedpath: url });
+      console.log(`재제출 완료: ${url}`);
+    } catch (err) {
+      console.error(`제출 실패: ${url} — ${err instanceof Error ? err.message : err}`);
     }
+    await new Promise(r => setTimeout(r, 500));
   }
 
   console.log('\n완료');
