@@ -1804,7 +1804,7 @@ async function main(): Promise<void> {
           const shortsPath = rawShortsPath.startsWith('/')
             ? rawShortsPath.replace(/^.*\/output\/shorts\//, 'output/shorts/')
             : rawShortsPath;
-          shortsService.uploadToYouTube(shortsPath, shortsScript, post.url || '').catch(e =>
+          await shortsService.uploadToYouTube(shortsPath, shortsScript, post.url || '').catch(e =>
             logger.warn(`Shorts YouTube upload error: ${e instanceof Error ? e.message : e}`)
           );
         }
