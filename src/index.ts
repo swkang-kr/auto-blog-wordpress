@@ -1370,7 +1370,8 @@ async function main(): Promise<void> {
         return null;
       });
       if (result) {
-        item.shortsPath = result.outputPath;
+        // 절대경로 → 상대경로 변환 (GH Actions 환경에서도 동작하도록)
+        item.shortsPath = result.outputPath.replace(process.cwd() + '/', '');
         item.shortsScript = result.script;
         logger.info(`[Shorts] Phase A MP4 ready: ${result.outputPath}`);
       }
@@ -1796,9 +1797,13 @@ async function main(): Promise<void> {
 
       // Shorts: Phase B는 YouTube 업로드만 (MP4는 Phase A에서 생성, git에 커밋됨)
       if (isImmediatePublish) {
-        const shortsPath = generated[gi].shortsPath;
+        const rawShortsPath = generated[gi].shortsPath;
         const shortsScript = generated[gi].shortsScript;
-        if (shortsPath && shortsScript) {
+        if (rawShortsPath && shortsScript) {
+          // 절대경로로 저장된 경우 repo 루트 기준 상대경로로 정규화
+          const shortsPath = rawShortsPath.startsWith('/')
+            ? rawShortsPath.replace(/^.*\/output\/shorts\//, 'output/shorts/')
+            : rawShortsPath;
           shortsService.uploadToYouTube(shortsPath, shortsScript, post.url || '').catch(e =>
             logger.warn(`Shorts YouTube upload error: ${e instanceof Error ? e.message : e}`)
           );
