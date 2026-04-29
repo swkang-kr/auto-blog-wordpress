@@ -34,9 +34,28 @@ git add output/shorts/ >> "$LOG" 2>&1 || true
 git diff --staged --quiet || git commit -m "feat: generated content + shorts ${DATE} [skip ci]" >> "$LOG" 2>&1
 git push >> "$LOG" 2>&1 || true
 
-# Phase B: GitHub Actions에서 워드프레스 발행
-gh workflow run publish-content.yml \
-  --repo swkang-kr/auto-blog-wordpress \
-  --field date="${DATE}" >> "$LOG" 2>&1
+# Phase B: GitHub Actions에서 워드프레스 발행 (rate limit 초과 시 최대 5회 재시도)
+MAX_RETRY=5
+RETRY_DELAY=120  # 2분 대기 후 재시도
 
-echo "=== Phase B 트리거 완료 (GH Actions에서 WP 발행) ===" >> "$LOG"
+for i in $(seq 1 $MAX_RETRY); do
+  ERROR=$(gh workflow run publish-content.yml \
+    --repo swkang-kr/auto-blog-wordpress \
+    --field date="${DATE}" 2>&1)
+  EXIT_CODE=$?
+
+  if [ $EXIT_CODE -eq 0 ]; then
+    echo "=== Phase B 트리거 완료 (시도 ${i}/${MAX_RETRY}) ===" >> "$LOG"
+    break
+  fi
+
+  echo "[WARN] Phase B 트리거 실패 (시도 ${i}/${MAX_RETRY}): $ERROR" >> "$LOG"
+
+  if [ $i -eq $MAX_RETRY ]; then
+    echo "[ERROR] Phase B 트리거 최종 실패 — 수동 실행 필요: gh workflow run publish-content.yml --field date=${DATE}" >> "$LOG"
+    exit 1
+  fi
+
+  echo "[INFO] ${RETRY_DELAY}초 후 재시도..." >> "$LOG"
+  sleep $RETRY_DELAY
+done
