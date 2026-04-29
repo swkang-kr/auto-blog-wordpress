@@ -29,7 +29,7 @@ jobs:
         run: |
           sudo apt-get install -y lftp > /dev/null 2>&1
           lftp -u "${{ secrets.SFTP_USERNAME }}","$FTP_PASSWORD" \
-            -e "set ftp:ssl-allow yes; set ssl:verify-certificate no; put post-sitemap.xml -o /public_html/post-sitemap.xml; bye" \
+            -e "set ftp:ssl-allow yes; set ssl:verify-certificate no; ls; bye" \
             ftp://${{ secrets.SFTP_HOST }}
           echo "post-sitemap.xml 업로드 완료"
       - name: Commit sitemap
