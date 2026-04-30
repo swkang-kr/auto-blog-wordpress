@@ -46,8 +46,11 @@ async function main() {
   logger.info(`총 ${posts.length}개 발행 포스트 확인`);
 
   const korean = posts.filter(p => p.link && isKoreanSlug(p.link));
-  const skipped = posts.length - korean.length;
-  if (skipped > 0) logger.info(`영문 슬러그 ${skipped}개 제외`);
+  const excluded = posts.filter(p => !p.link || !isKoreanSlug(p.link));
+  if (excluded.length > 0) {
+    logger.info(`영문 슬러그 ${excluded.length}개 제외:`);
+    excluded.forEach(p => logger.info(`  제외: ${p.link}`));
+  }
 
   const lines = [
     '<?xml version="1.0" encoding="UTF-8"?>',
