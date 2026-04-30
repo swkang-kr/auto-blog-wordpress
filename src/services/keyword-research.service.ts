@@ -713,9 +713,16 @@ ${this.paaQuestions.length > 0 ? `\n## People Also Ask (PAA) Questions\nThese qu
 7. 키워드 난이도 추정 (0-100)
 8. 월간 검색량 추정 (네이버 기준 한국어 검색량)
 9. 검색 의도 분류: informational, commercial, commercial-investigation, transactional, navigational
+   ★ 한국 주식 투자 키워드 intent 분류 규칙 (최우선 적용):
+   - "매수후보", "매수추천", "오늘 매수", "강력매수", "매수타이밍", "진입가", "손절가", "목표가" 포함 → commercial
+   - "종목 추천", "추천 종목", "매수 종목", "관심 종목", "주목 종목" 포함 → commercial
+   - "TOP5", "TOP10", "랭킹", "순위" + 투자/종목 키워드 → commercial
+   - "수급 분석", "외국인 순매수", "기관 매수" + 특정 종목 → commercial-investigation
+   - "vs", "비교", "차이" + 종목/ETF 키워드 → commercial-investigation
    - commercial-investigation: 비교 검색 (예: "삼성전자 vs SK하이닉스 비교", "KODEX vs TIGER ETF")
-   - commercial: 구매 의도 (예: "배당주 추천 2026", "국내 ETF 추천")
-   - transactional: 행동 의도 (예: "키움증권 계좌 개설 방법", "공모주 청약 방법")
+   - commercial: 구매/투자 의도 (예: "배당주 추천 2026", "오늘 매수후보 TOP5", "진입가 목표가 설정")
+   - transactional: 직접 행동 의도 (예: "키움증권 계좌 개설 방법", "공모주 청약 방법")
+   - informational: 순수 지식 습득 (예: "RSI 지표란", "볼린저밴드 원리 설명")
 10. 의도-유형 정합성:
    - transactional intent → MUST use: product-review, best-x-for-y, or how-to
    - commercial intent → MUST use: best-x-for-y, x-vs-y, product-review, listicle, or analysis
@@ -1035,11 +1042,34 @@ STRATEGY: Consider creating content that directly targets one of these content g
     }
   }
 
+  private correctIntent(analysis: KeywordAnalysis): KeywordAnalysis {
+    const kw = (analysis.selectedKeyword || '') + ' ' + (analysis.suggestedTitle || '');
+    const commercialPatterns = [
+      /매수후보|매수추천|오늘\s*매수|강력매수|매수타이밍|매수\s*종목|매수\s*신호/,
+      /진입가|손절가|목표가|진입\s*가격|손절\s*가격|목표\s*가격/,
+      /종목\s*추천|추천\s*종목|관심\s*종목|주목\s*종목|오늘의\s*종목/,
+      /TOP\s*[35]|상위\s*[35]종목|매수후보\s*TOP/,
+    ];
+    const ciPatterns = [
+      /수급\s*분석|외국인\s*순매수|기관\s*매수|외국인\s*매도/,
+      /vs|비교|차이점|어떤\s*종목/,
+    ];
+
+    if (analysis.searchIntent === 'informational') {
+      if (commercialPatterns.some(p => p.test(kw))) {
+        analysis.searchIntent = 'commercial';
+      } else if (ciPatterns.some(p => p.test(kw))) {
+        analysis.searchIntent = 'commercial-investigation';
+      }
+    }
+    return analysis;
+  }
+
   private parseAnalysis(text: string, niche: NicheConfig): KeywordAnalysis {
     let cleaned = text.replace(/```(?:json)?\s*/g, '').replace(/```\s*$/g, '').trim();
 
     try {
-      return this.validateKoreaRelevance(JSON.parse(cleaned) as KeywordAnalysis, niche);
+      return this.correctIntent(this.validateKoreaRelevance(JSON.parse(cleaned) as KeywordAnalysis, niche));
     } catch {
       // continue
     }
@@ -1072,7 +1102,7 @@ STRATEGY: Consider creating content that directly targets one of these content g
 
     const jsonStr = cleaned.slice(startIdx, endIdx + 1);
     try {
-      return this.validateKoreaRelevance(JSON.parse(jsonStr) as KeywordAnalysis, niche);
+      return this.correctIntent(this.validateKoreaRelevance(JSON.parse(jsonStr) as KeywordAnalysis, niche));
     } catch (e) {
       throw new KeywordResearchError(
         `Failed to parse analysis JSON for niche "${niche.name}": ${(e as Error).message}`,
