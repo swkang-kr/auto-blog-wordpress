@@ -1,67 +1,80 @@
 {
-  "exported_at": "2026-04-29T07:00:01.289376+00:00",
-  "date": "20260429",
+  "exported_at": "2026-04-30T07:00:01.658238+00:00",
+  "date": "20260430",
   "hot_themes": [
     {
       "name": "전선",
-      "change_rate": 14.35
+      "change_rate": 9.2
     },
     {
-      "name": "정유",
-      "change_rate": 10.89
+      "name": "렌터카",
+      "change_rate": 7.69
+    },
+    {
+      "name": "비료",
+      "change_rate": 4.4
     },
     {
       "name": "전력설비",
-      "change_rate": 7.74
+      "change_rate": 3.61
     },
     {
-      "name": "석유화학",
-      "change_rate": 6.68
-    },
-    {
-      "name": "고체산화물 연료전지(SOFC)",
-      "change_rate": 6.41
-    },
-    {
-      "name": "2차전지(생산)",
-      "change_rate": 5.85
-    },
-    {
-      "name": "2026 상반기 신규상장",
-      "change_rate": 5.67
-    },
-    {
-      "name": "캐릭터상품",
-      "change_rate": 5.63
-    },
-    {
-      "name": "LPG(액화석유가스)",
-      "change_rate": 4.89
-    },
-    {
-      "name": "윤활유",
-      "change_rate": 4.82
-    },
-    {
-      "name": "전기차(충전소/충전기)",
-      "change_rate": 4.81
-    },
-    {
-      "name": "스마트그리드(지능형전력망)",
-      "change_rate": 4.33
+      "name": "태풍 및 장마",
+      "change_rate": 3.16
     },
     {
       "name": "해저터널(지하화/지하도로 등)",
-      "change_rate": 4.29
+      "change_rate": 2.54
     },
     {
-      "name": "전력저장장치(ESS)",
-      "change_rate": 4.09
+      "name": "유심(USIM)",
+      "change_rate": 2.48
     },
     {
-      "name": "2차전지(나트륨이온)",
-      "change_rate": 3.93
+      "name": "광통신(광케이블/광섬유 등)",
+      "change_rate": 2.24
+    },
+    {
+      "name": "주유소",
+      "change_rate": 2.21
+    },
+    {
+      "name": "마이크로 LED",
+      "change_rate": 1.57
+    },
+    {
+      "name": "애플페이",
+      "change_rate": 1.49
+    },
+    {
+      "name": "농업",
+      "change_rate": 1.34
+    },
+    {
+      "name": "SNS(소셜네트워크서비스)",
+      "change_rate": 1.04
+    },
+    {
+      "name": "뉴로모픽 반도체",
+      "change_rate": 1.02
+    },
+    {
+      "name": "증강현실(AR)",
+      "change_rate": 0.96
     }
   ],
-  "cold_themes": []
+  "cold_themes": [
+    {
+      "name": "고체산화물 연료전지(SOFC)",
+      "change_rate": -0.06
+    },
+    {
+      "name": "아프리카 돼지열병(ASF)",
+      "change_rate": -0.02
+    },
+    {
+      "name": "도시가스",
+      "change_rate": -0.02
+    }
+  ]
 }

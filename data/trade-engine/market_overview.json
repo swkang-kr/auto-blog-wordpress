@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-04-29T07:00:01.229873+00:00",
+  "exported_at": "2026-04-30T07:00:01.605836+00:00",
   "market_daily": [
+    {
+      "date": "20260430",
+      "kospi_change": -1.38,
+      "kosdaq_change": -2.29,
+      "foreign_net": -145.63,
+      "institution_net": 28.36,
+      "individual_net": 118.8,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260429",
       "kospi_change": 0.75,
       "kosdaq_change": 0.39,
-      "foreign_net": -60.71,
-      "institution_net": 47.81,
-      "individual_net": 16.7,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": -60.7,
+      "institution_net": 47.85,
+      "individual_net": 16.67,
+      "hot_theme_count": 20,
+      "momentum_count": 60,
+      "crash_count": 52
     },
     {
       "date": "20260428",
@@ -99,29 +110,18 @@
       "hot_theme_count": 15,
       "momentum_count": 60,
       "crash_count": 42
-    },
-    {
-      "date": "20260416",
-      "kospi_change": 2.21,
-      "kosdaq_change": 0.91,
-      "foreign_net": 46.45,
-      "institution_net": 110.37,
-      "individual_net": -180.69,
-      "hot_theme_count": 40,
-      "momentum_count": 60,
-      "crash_count": 34
     }
   ],
   "headlines": [
-    "이란 해상 봉쇄 장기화 우려에 원·달러 환율 5.4원 상승 마감 [김혜란의 FX]",
-    "[특징주] 'AI 붐'에 전력기기株 강세…일부 상한가 마감(종합2보)",
-    "코스피, 0.75% 상승...6700선 임박 [fn마감시황]",
-    "[특징주] 고유가 장기화 우려에 신재생 관련주 급등(종합)",
-    "코스피, 사흘 연속 사상 최고가",
-    "윤석열 2심 선고 공판",
-    "코스피, 사흘 연속 사상 최고가",
-    "코스피, 사흘 연속 사상 최고가",
-    "증시 마감 시황",
-    "'증시 마감 시황은'"
+    "삼성바이오, 릴리와 손잡고 '스타트업 글로벌 진출 지원'",
+    "코스피 1.3% 하락",
+    "달러·원 환율 1483.3원 기록",
+    "유가 100달러·FOMC 분열 '달러 강세'…환율 1480원대 상승 (종합)",
+    "SOOP 1분기 영업이익 212억원…작년 동기 대비 24.1%↓(종합)",
+    "서울행정법원, 빗썸 집행정지 신청 인용… '본안 판결까지 정상 영업'",
+    "법원, 빗썸 영업 일부정지 6개월 처분 효력 정지",
+    "법원, 빗썸 영업 일부정지 6개월 처분 효력 정지",
+    "영업정지 '족쇄' 푼 빗썸…법원, FIU 제재 효력 정지 결정",
+    "법원, 빗썸 영업 일부정지 6개월 처분 효력 정지"
   ]
 }
