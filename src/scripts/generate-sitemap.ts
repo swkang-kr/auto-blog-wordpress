@@ -34,7 +34,8 @@ async function fetchAllPublished() {
   return posts;
 }
 
-function isKoreanSlug(url: string): boolean {
+function isKoreanSlug(url: unknown): boolean {
+  if (typeof url !== 'string') return false;
   const slug = decodeURIComponent(url.replace(/\/$/, '').split('/').pop() ?? '');
   return /[가-힣]/.test(slug);
 }
@@ -44,7 +45,7 @@ async function main() {
   const posts = await fetchAllPublished();
   logger.info(`총 ${posts.length}개 발행 포스트 확인`);
 
-  const korean = posts.filter(p => isKoreanSlug(p.link));
+  const korean = posts.filter(p => p.link && isKoreanSlug(p.link));
   const skipped = posts.length - korean.length;
   if (skipped > 0) logger.info(`영문 슬러그 ${skipped}개 제외`);
 
