@@ -1,0 +1,33 @@
+name: Upload Shorts to YouTube
+
+on:
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'Date (YYYY-MM-DD). Defaults to today.'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Upload Shorts to YouTube
+        env:
+          DATE: ${{ github.event.inputs.date }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+        run: node --import tsx/esm src/scripts/upload-shorts-youtube.ts
