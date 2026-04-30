@@ -6,6 +6,7 @@
 set -euo pipefail
 
 export PATH="/home/trendhunt/.local/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
+export GH_TOKEN="$(grep '^GH_TOKEN=' /home/trendhunt/workspace/auto-blog-wordpress/.env 2>/dev/null | cut -d= -f2-)"
 
 REPO="/home/trendhunt/workspace/auto-blog-wordpress"
 DATE=$(TZ=Asia/Seoul date '+%Y-%m-%d')
