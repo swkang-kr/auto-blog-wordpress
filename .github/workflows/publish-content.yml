@@ -127,3 +127,27 @@ jobs:
           git add data/post-history.json data/batch-sla.json .cache/ 2>/dev/null || true
           git diff --staged --quiet || git commit -m "chore: update post history ${{ steps.resolve.outputs.date }} [skip ci]"
           git push || true
+
+      - name: Regenerate post-sitemap.xml
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USERNAME: ${{ secrets.WP_USERNAME }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+        run: node --import tsx/esm src/scripts/generate-sitemap.ts
+
+      - name: Upload post-sitemap.xml via FTP
+        env:
+          FTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
+        run: |
+          sudo apt-get install -y lftp > /dev/null 2>&1
+          lftp -u "${{ secrets.SFTP_USERNAME }}","$FTP_PASSWORD" \
+            -e "set ftp:ssl-allow yes; set ssl:verify-certificate no; put post-sitemap.xml -o /trendhunt.net/public_html/post-sitemap.xml; bye" \
+            ftp://${{ secrets.SFTP_HOST }}
+          echo "post-sitemap.xml 업로드 완료"
+
+      - name: Commit updated sitemap
+        run: |
+          git pull --rebase || true
+          git add post-sitemap.xml
+          git diff --staged --quiet || git commit -m "chore: update post-sitemap.xml ${{ steps.resolve.outputs.date }} [skip ci]"
+          git push || true
