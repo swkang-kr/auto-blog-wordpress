@@ -1,5 +1,5 @@
 {
-  "exported_at": "2026-04-30T15:25:00.008126+09:00",
+  "exported_at": "2026-05-01T15:25:00.012157+09:00",
   "total": 3,
   "watchlist": [
     {
@@ -14,7 +14,7 @@
         "force_buy": true,
         "day_change_pct": -1.44
       },
-      "ranked_score": 85.0
+      "ranked_score": 51.0
     },
     {
       "stock_code": "002020",
@@ -51,7 +51,7 @@
         "swing_reasons": "MACD히스토그램↑ | 거래량2.8x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
         "market": "KOSPI"
       },
-      "ranked_score": 50.0
+      "ranked_score": 30.0
     },
     {
       "stock_code": "005380",
@@ -90,7 +90,7 @@
         "market": "KOSPI",
         "sector_momentum": 0.0
       },
-      "ranked_score": 16.5
+      "ranked_score": 6.93
     }
   ]
 }

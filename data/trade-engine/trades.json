@@ -1,5 +1,5 @@
 {
-  "exported_at": "2026-04-30T07:00:01.172279+00:00",
+  "exported_at": "2026-05-01T07:00:00.725671+00:00",
   "trades": [
     {
       "stock_code": "005930",
@@ -324,66 +324,6 @@
       "strategy": "swing_trailing(peak=8.1%,step=3.0%,trail_sl=5.1%)",
       "reason": "swing_trailing(peak=8.1%,step=3.0%,trail_sl=5.1%)",
       "filled_at": "2026-04-27T00:06:00.150347"
-    },
-    {
-      "stock_code": "097230",
-      "stock_name": "HJ중공업",
-      "side": "buy",
-      "quantity": 8,
-      "price": 31950.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "MACD히스토그램↑ | 거래량4.5x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
-      "filled_at": "2026-04-24T06:19:04.865111"
-    },
-    {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "side": "buy",
-      "quantity": 1,
-      "price": 219500.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "watchlist_interval_follow",
-      "filled_at": "2026-04-24T06:18:04.143712"
-    },
-    {
-      "stock_code": "034220",
-      "stock_name": "LG디스플레이",
-      "side": "buy",
-      "quantity": 25,
-      "price": 12790.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "거래량2.3x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
-      "filled_at": "2026-04-24T06:15:09.901946"
-    },
-    {
-      "stock_code": "005870",
-      "stock_name": "휴니드",
-      "side": "buy",
-      "quantity": 28,
-      "price": 10070.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "거래량2.7x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
-      "filled_at": "2026-04-24T06:15:09.033858"
-    },
-    {
-      "stock_code": "005880",
-      "stock_name": "대한해운",
-      "side": "sell",
-      "quantity": 136,
-      "price": 2775.0,
-      "pnl": 8925.0,
-      "pnl_rate": 2.4306,
-      "strategy": "swing_trailing(peak=5.6%,step=3.0%,trail_sl=2.6%)",
-      "reason": "swing_trailing(peak=5.6%,step=3.0%,trail_sl=2.6%)",
-      "filled_at": "2026-04-24T00:24:59.957993"
     }
   ]
 }
