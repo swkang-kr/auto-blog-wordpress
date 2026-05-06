@@ -148,3 +148,68 @@ export function getSeasonalSuggestionsForNiche(nicheCategory: string, date: Date
 
   return suggestions;
 }
+
+/**
+ * 대한민국 공휴일 목록 (고정 + 음력 환산 하드코딩, 연도별 관리)
+ * 설날/추석 연휴(전날·당일·다음날), 부처님오신날 포함
+ */
+const KR_HOLIDAYS: Record<number, string[]> = {
+  2025: [
+    '2025-01-01', // 신정
+    '2025-01-28', '2025-01-29', '2025-01-30', // 설날 연휴
+    '2025-03-01', // 삼일절
+    '2025-05-05', // 어린이날 (부처님오신날 대체: 2025-05-06)
+    '2025-05-06', // 어린이날 대체공휴일
+    '2025-06-06', // 현충일
+    '2025-08-15', // 광복절
+    '2025-10-03', // 개천절
+    '2025-10-05', '2025-10-06', '2025-10-07', // 추석 연휴
+    '2025-10-08', // 추석 대체공휴일
+    '2025-10-09', // 한글날
+    '2025-12-25', // 크리스마스
+  ],
+  2026: [
+    '2026-01-01', // 신정
+    '2026-02-16', '2026-02-17', '2026-02-18', // 설날 연휴
+    '2026-03-01', // 삼일절
+    '2026-05-05', // 어린이날
+    '2026-05-24', // 부처님오신날
+    '2026-06-06', // 현충일
+    '2026-08-15', // 광복절
+    '2026-09-23', '2026-09-24', '2026-09-25', // 추석 연휴
+    '2026-10-03', // 개천절
+    '2026-10-09', // 한글날
+    '2026-12-25', // 크리스마스
+  ],
+  2027: [
+    '2027-01-01', // 신정
+    '2027-02-06', '2027-02-07', '2027-02-08', // 설날 연휴
+    '2027-03-01', // 삼일절
+    '2027-05-05', // 어린이날
+    '2027-05-13', // 부처님오신날
+    '2027-06-06', // 현충일
+    '2027-08-15', // 광복절
+    '2027-10-03', // 개천절
+    '2027-10-09', // 한글날
+    '2027-10-14', '2027-10-15', '2027-10-16', // 추석 연휴
+    '2027-12-25', // 크리스마스
+  ],
+};
+
+/** 오늘이 대한민국 공휴일 또는 주말이면 true 반환 */
+export function isKoreanHolidayOrWeekend(date: Date = new Date()): { skip: boolean; reason: string } {
+  const kstStr = date.toLocaleDateString('en-CA', { timeZone: 'Asia/Seoul' }); // YYYY-MM-DD
+  const kstDate = new Date(date.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
+  const dow = kstDate.getDay(); // 0=일, 6=토
+
+  if (dow === 0) return { skip: true, reason: `일요일 (${kstStr})` };
+  if (dow === 6) return { skip: true, reason: `토요일 (${kstStr})` };
+
+  const year = kstDate.getFullYear();
+  const holidays = KR_HOLIDAYS[year] ?? [];
+  if (holidays.includes(kstStr)) {
+    return { skip: true, reason: `공휴일 (${kstStr})` };
+  }
+
+  return { skip: false, reason: '' };
+}

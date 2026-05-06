@@ -37,6 +37,7 @@ import type { PostResult, BatchResult, MediaUploadResult, NicheConfig } from './
 // CATEGORY_PUBLISH_TIMING available for future use (niche-specific timing)
 // import { CATEGORY_PUBLISH_TIMING } from './types/index.js';
 import { resolvePostUrl } from './utils/utm.js';
+import { isKoreanHolidayOrWeekend } from './utils/korean-calendar.js';
 
 function extractDataPoints(html: string): Array<{ label: string; value: string }> {
   const points: Array<{ label: string; value: string }> = [];
@@ -65,6 +66,13 @@ function extractDataPoints(html: string): Array<{ label: string; value: string }
 async function main(): Promise<void> {
   const startedAt = new Date().toISOString();
   logger.info('=== Auto Blog WordPress - Korea-Focused SEO Batch Start ===');
+
+  // 대한민국 공휴일 / 주말 체크 — 휴장일 포스팅 건너뜀
+  const { skip, reason } = isKoreanHolidayOrWeekend();
+  if (skip) {
+    logger.info(`오늘은 ${reason} — 포스팅 건너뜀`);
+    process.exit(0);
+  }
 
   // 1. Config
   const config = loadConfig();
