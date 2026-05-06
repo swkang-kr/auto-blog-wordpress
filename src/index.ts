@@ -1049,8 +1049,8 @@ async function main(): Promise<void> {
     },
   }));
 
-  activeNiches = buildStockNiches(liveList, config.POST_COUNT);
-  logger.info(`종목별 니치 구성 [trades.json 오늘 매수 ${todayBuyTrades.length}종목]: ${activeNiches.map(n => n.name).join(' | ')}`);
+  activeNiches = buildStockNiches(liveList, liveList.length);
+  logger.info(`종목별 니치 구성 [trades.json 오늘 매수 ${todayBuyTrades.length}종목 전체]: ${activeNiches.map(n => n.name).join(' | ')}`);
 
   // ── Phase A/B Split ───────────────────────────────────────────────────────
   // PUBLISH_FROM_FILE: skip Phase A, load pre-generated content from JSON file
