@@ -1028,50 +1028,29 @@ async function main(): Promise<void> {
     t => t.side === 'buy' && t.filled_at?.slice(0, 10) === todayKST,
   );
 
-  const liveList = todayBuyTrades.length > 0
-    ? todayBuyTrades.map(t => ({
-        stock_code: t.stock_code,
-        stock_name: t.stock_name,
-        score: 80,
-        ranked_score: 80,
-        confidence: 80,
-        signal_count: 1,
-        sector: '',
-        indicators: {
-          rsi: 0, macd: 0, macd_signal: 0, bb_upper: 0, bb_lower: 0,
-          close: t.price, atr_14: 0, vol_surge: 0,
-          day_change_pct: '0', foreign_net_buy: 0, institution_net_buy: 0,
-          individual_net_buy: 0, swing_reasons: t.reason || t.strategy, market: '',
-        },
-      }))
-    : tradeEngineData.liveWatchlist.length > 0
-      ? tradeEngineData.liveWatchlist
-      : tradeEngineData.aiPicks.map(p => ({
-          stock_code: p.stock_code,
-          stock_name: p.stock_name,
-          score: p.avg_confidence,
-          ranked_score: 0,
-          confidence: p.avg_confidence,
-          signal_count: p.signal_count,
-          sector: p.sector,
-          indicators: {
-            rsi: 0, macd: 0, macd_signal: 0, bb_upper: 0, bb_lower: 0,
-            close: p.price_at_signal, atr_14: 0, vol_surge: 0,
-            day_change_pct: '0', foreign_net_buy: 0, institution_net_buy: 0,
-            individual_net_buy: 0, swing_reasons: p.reason, market: '',
-          },
-        }));
-
-  const liveListSource = todayBuyTrades.length > 0 ? `trades.json 오늘 매수 ${todayBuyTrades.length}종목`
-    : tradeEngineData.liveWatchlist.length > 0 ? `liveWatchlist ${tradeEngineData.liveWatchlist.length}종목`
-    : `aiPicks ${tradeEngineData.aiPicks.length}종목 (fallback)`;
-
-  if (liveList.length > 0) {
-    activeNiches = buildStockNiches(liveList, config.POST_COUNT);
-    logger.info(`종목별 니치 구성 [${liveListSource}]: ${activeNiches.map(n => n.name).join(' | ')}`);
-  } else {
-    logger.warn('trades.json/liveWatchlist/aiPicks 데이터 없음 — 기본 니치 유지');
+  if (todayBuyTrades.length === 0) {
+    logger.info(`trades.json 오늘(${todayKST}) 매수 종목 없음 — 포스팅 건너뜀`);
+    process.exit(0);
   }
+
+  const liveList = todayBuyTrades.map(t => ({
+    stock_code: t.stock_code,
+    stock_name: t.stock_name,
+    score: 80,
+    ranked_score: 80,
+    confidence: 80,
+    signal_count: 1,
+    sector: '',
+    indicators: {
+      rsi: 0, macd: 0, macd_signal: 0, bb_upper: 0, bb_lower: 0,
+      close: t.price, atr_14: 0, vol_surge: 0,
+      day_change_pct: '0', foreign_net_buy: 0, institution_net_buy: 0,
+      individual_net_buy: 0, swing_reasons: t.reason || t.strategy, market: '',
+    },
+  }));
+
+  activeNiches = buildStockNiches(liveList, config.POST_COUNT);
+  logger.info(`종목별 니치 구성 [trades.json 오늘 매수 ${todayBuyTrades.length}종목]: ${activeNiches.map(n => n.name).join(' | ')}`);
 
   // ── Phase A/B Split ───────────────────────────────────────────────────────
   // PUBLISH_FROM_FILE: skip Phase A, load pre-generated content from JSON file
