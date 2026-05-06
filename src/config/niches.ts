@@ -247,7 +247,7 @@ export function buildStockNiches(stocks: LiveWatchlistItem[], maxCount: number):
       broadTerm: `${name} 매수후보 ${Y}`,
       broadTermsExtra: [`${name} 매수타이밍`, `${name} 주가 전망`],
       seedKeywords: [
-        `${M}월 ${D}일 ${name} 오늘의 매수후보 기술적 분석`,
+        `${name} 오늘의 매수후보 기술적 분석 ${Y}`,
         `${name} 매수타이밍 RSI MACD 분석 ${Y}`,
         `${name} 오늘의 매수후보 수급 분석`,
         `${name} 오늘 매수해도 될까 분석 ${Y}`,
@@ -258,7 +258,7 @@ export function buildStockNiches(stocks: LiveWatchlistItem[], maxCount: number):
         `${name} 볼린저밴드 매수후보 분석`,
         ...(swingSnippet ? [`${name} ${swingSnippet} 매수후보`] : []),
         `오늘의 매수후보 ${name} 종합 분석 ${Y}`,
-        `${name} 주가 매수 시점 ${M}월 ${D}일`,
+        `${name} 주가 매수 시점 분석 ${Y}`,
         `${name} 강력매수해야할 이유 진입가격 손절가격`,
         `${name} 진입가격 손절가격 목표가 설정 분석`,
       ],

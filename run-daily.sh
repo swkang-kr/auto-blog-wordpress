@@ -40,10 +40,13 @@ MAX_RETRY=5
 RETRY_DELAY=120  # 2분 대기 후 재시도
 
 for i in $(seq 1 $MAX_RETRY); do
+  # set -e를 일시 해제: gh 명령 실패 시 스크립트 즉시 종료 방지
+  set +e
   ERROR=$(gh workflow run publish-content.yml \
     --repo swkang-kr/auto-blog-wordpress \
     --field date="${DATE}" 2>&1)
   EXIT_CODE=$?
+  set -e
 
   if [ $EXIT_CODE -eq 0 ]; then
     echo "=== Phase B 트리거 완료 (시도 ${i}/${MAX_RETRY}) ===" >> "$LOG"
