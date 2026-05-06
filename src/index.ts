@@ -68,7 +68,7 @@ async function main(): Promise<void> {
   logger.info('=== Auto Blog WordPress - Korea-Focused SEO Batch Start ===');
 
   // 대한민국 공휴일 / 주말 체크 — 휴장일 포스팅 건너뜀
-  const { skip, reason } = isKoreanHolidayOrWeekend();
+  const { skip, reason } = await isKoreanHolidayOrWeekend();
   if (skip) {
     logger.info(`오늘은 ${reason} — 포스팅 건너뜀`);
     process.exit(0);

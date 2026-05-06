@@ -149,55 +149,56 @@ export function getSeasonalSuggestionsForNiche(nicheCategory: string, date: Date
   return suggestions;
 }
 
-/**
- * 대한민국 공휴일 목록 (고정 + 음력 환산 하드코딩, 연도별 관리)
- * 설날/추석 연휴(전날·당일·다음날), 부처님오신날 포함
- */
-const KR_HOLIDAYS: Record<number, string[]> = {
-  2025: [
-    '2025-01-01', // 신정
-    '2025-01-28', '2025-01-29', '2025-01-30', // 설날 연휴
-    '2025-03-01', // 삼일절
-    '2025-05-05', // 어린이날 (부처님오신날 대체: 2025-05-06)
-    '2025-05-06', // 어린이날 대체공휴일
-    '2025-06-06', // 현충일
-    '2025-08-15', // 광복절
-    '2025-10-03', // 개천절
-    '2025-10-05', '2025-10-06', '2025-10-07', // 추석 연휴
-    '2025-10-08', // 추석 대체공휴일
-    '2025-10-09', // 한글날
-    '2025-12-25', // 크리스마스
-  ],
-  2026: [
-    '2026-01-01', // 신정
-    '2026-02-16', '2026-02-17', '2026-02-18', // 설날 연휴
-    '2026-03-01', // 삼일절
-    '2026-05-05', // 어린이날
-    '2026-05-24', // 부처님오신날
-    '2026-06-06', // 현충일
-    '2026-08-15', // 광복절
-    '2026-09-23', '2026-09-24', '2026-09-25', // 추석 연휴
-    '2026-10-03', // 개천절
-    '2026-10-09', // 한글날
-    '2026-12-25', // 크리스마스
-  ],
-  2027: [
-    '2027-01-01', // 신정
-    '2027-02-06', '2027-02-07', '2027-02-08', // 설날 연휴
-    '2027-03-01', // 삼일절
-    '2027-05-05', // 어린이날
-    '2027-05-13', // 부처님오신날
-    '2027-06-06', // 현충일
-    '2027-08-15', // 광복절
-    '2027-10-03', // 개천절
-    '2027-10-09', // 한글날
-    '2027-10-14', '2027-10-15', '2027-10-16', // 추석 연휴
-    '2027-12-25', // 크리스마스
-  ],
-};
+import fs from 'node:fs';
+import path from 'node:path';
 
-/** 오늘이 대한민국 공휴일 또는 주말이면 true 반환 */
-export function isKoreanHolidayOrWeekend(date: Date = new Date()): { skip: boolean; reason: string } {
+const HOLIDAY_CACHE_DIR = path.resolve(process.cwd(), '.cache');
+const NAGER_API = 'https://date.nager.at/api/v3/PublicHolidays';
+
+/** nager.date에서 연도별 한국 공휴일 가져와 캐시 */
+async function fetchHolidaysFromApi(year: number): Promise<string[]> {
+  const res = await fetch(`${NAGER_API}/${year}/KR`);
+  if (!res.ok) throw new Error(`nager.date API ${res.status}`);
+  const data = await res.json() as Array<{ date: string }>;
+  return data.map(h => h.date);
+}
+
+function holidayCachePath(year: number) {
+  return path.join(HOLIDAY_CACHE_DIR, `kr-holidays-${year}.json`);
+}
+
+function loadCachedHolidays(year: number): string[] | null {
+  try {
+    const p = holidayCachePath(year);
+    if (!fs.existsSync(p)) return null;
+    const { dates, cachedYear } = JSON.parse(fs.readFileSync(p, 'utf-8')) as { dates: string[]; cachedYear: number };
+    return cachedYear === year ? dates : null;
+  } catch {
+    return null;
+  }
+}
+
+function saveCachedHolidays(year: number, dates: string[]) {
+  fs.mkdirSync(HOLIDAY_CACHE_DIR, { recursive: true });
+  fs.writeFileSync(holidayCachePath(year), JSON.stringify({ cachedYear: year, dates }));
+}
+
+/** 연도별 공휴일 Set 반환 (캐시 우선, 없으면 API 호출) */
+async function getHolidaySet(year: number): Promise<Set<string>> {
+  const cached = loadCachedHolidays(year);
+  if (cached) return new Set(cached);
+
+  try {
+    const dates = await fetchHolidaysFromApi(year);
+    saveCachedHolidays(year, dates);
+    return new Set(dates);
+  } catch {
+    return new Set(); // API 실패 시 공휴일 없는 것으로 처리 (주말 체크는 유지)
+  }
+}
+
+/** 오늘이 대한민국 공휴일 또는 주말이면 true 반환 (비동기) */
+export async function isKoreanHolidayOrWeekend(date: Date = new Date()): Promise<{ skip: boolean; reason: string }> {
   const kstStr = date.toLocaleDateString('en-CA', { timeZone: 'Asia/Seoul' }); // YYYY-MM-DD
   const kstDate = new Date(date.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
   const dow = kstDate.getDay(); // 0=일, 6=토
@@ -206,8 +207,8 @@ export function isKoreanHolidayOrWeekend(date: Date = new Date()): { skip: boole
   if (dow === 6) return { skip: true, reason: `토요일 (${kstStr})` };
 
   const year = kstDate.getFullYear();
-  const holidays = KR_HOLIDAYS[year] ?? [];
-  if (holidays.includes(kstStr)) {
+  const holidays = await getHolidaySet(year);
+  if (holidays.has(kstStr)) {
     return { skip: true, reason: `공휴일 (${kstStr})` };
   }
 
