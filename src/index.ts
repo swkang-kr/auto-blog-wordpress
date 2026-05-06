@@ -1020,32 +1020,57 @@ async function main(): Promise<void> {
   const tradeEngineData = tradeEngineBridge.loadData();
   const tradeEngineContext = tradeEngineBridge.buildContentContext(tradeEngineData);
 
-  // ── liveWatchlist 기반 종목별 니치 재구성 ────────────────────────────
-  // live_watchlist 종목이 있으면 각 종목이 개별 포스트(1종목 심층 분석)가 된다.
-  // 없으면 fallback: aiPicks → liveWatchlist 형식 변환 후 동일하게 처리.
-  const liveList = tradeEngineData.liveWatchlist.length > 0
-    ? tradeEngineData.liveWatchlist
-    : tradeEngineData.aiPicks.map(p => ({
-        stock_code: p.stock_code,
-        stock_name: p.stock_name,
-        score: p.avg_confidence,
-        ranked_score: 0,
-        confidence: p.avg_confidence,
-        signal_count: p.signal_count,
-        sector: p.sector,
+  // ── trades.json 오늘 매수 종목 기반 니치 재구성 ─────────────────────
+  // 우선순위: 1) 오늘 매수 체결(trades.json side=buy) → 2) liveWatchlist → 3) aiPicks
+  const todayKST = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' }))
+    .toISOString().slice(0, 10);
+  const todayBuyTrades = tradeEngineData.trades.filter(
+    t => t.side === 'buy' && t.filled_at?.slice(0, 10) === todayKST,
+  );
+
+  const liveList = todayBuyTrades.length > 0
+    ? todayBuyTrades.map(t => ({
+        stock_code: t.stock_code,
+        stock_name: t.stock_name,
+        score: 80,
+        ranked_score: 80,
+        confidence: 80,
+        signal_count: 1,
+        sector: '',
         indicators: {
           rsi: 0, macd: 0, macd_signal: 0, bb_upper: 0, bb_lower: 0,
-          close: p.price_at_signal, atr_14: 0, vol_surge: 0,
+          close: t.price, atr_14: 0, vol_surge: 0,
           day_change_pct: '0', foreign_net_buy: 0, institution_net_buy: 0,
-          individual_net_buy: 0, swing_reasons: p.reason, market: '',
+          individual_net_buy: 0, swing_reasons: t.reason || t.strategy, market: '',
         },
-      }));
+      }))
+    : tradeEngineData.liveWatchlist.length > 0
+      ? tradeEngineData.liveWatchlist
+      : tradeEngineData.aiPicks.map(p => ({
+          stock_code: p.stock_code,
+          stock_name: p.stock_name,
+          score: p.avg_confidence,
+          ranked_score: 0,
+          confidence: p.avg_confidence,
+          signal_count: p.signal_count,
+          sector: p.sector,
+          indicators: {
+            rsi: 0, macd: 0, macd_signal: 0, bb_upper: 0, bb_lower: 0,
+            close: p.price_at_signal, atr_14: 0, vol_surge: 0,
+            day_change_pct: '0', foreign_net_buy: 0, institution_net_buy: 0,
+            individual_net_buy: 0, swing_reasons: p.reason, market: '',
+          },
+        }));
+
+  const liveListSource = todayBuyTrades.length > 0 ? `trades.json 오늘 매수 ${todayBuyTrades.length}종목`
+    : tradeEngineData.liveWatchlist.length > 0 ? `liveWatchlist ${tradeEngineData.liveWatchlist.length}종목`
+    : `aiPicks ${tradeEngineData.aiPicks.length}종목 (fallback)`;
 
   if (liveList.length > 0) {
     activeNiches = buildStockNiches(liveList, config.POST_COUNT);
-    logger.info(`종목별 니치 구성: ${activeNiches.map(n => n.name).join(' | ')}`);
+    logger.info(`종목별 니치 구성 [${liveListSource}]: ${activeNiches.map(n => n.name).join(' | ')}`);
   } else {
-    logger.warn('live_watchlist/aiPicks 데이터 없음 — 기본 니치 유지');
+    logger.warn('trades.json/liveWatchlist/aiPicks 데이터 없음 — 기본 니치 유지');
   }
 
   // ── Phase A/B Split ───────────────────────────────────────────────────────
