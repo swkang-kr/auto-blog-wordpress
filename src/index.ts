@@ -1028,8 +1028,20 @@ async function main(): Promise<void> {
   const tradeEngineData = tradeEngineBridge.loadData();
   const tradeEngineContext = tradeEngineBridge.buildContentContext(tradeEngineData);
 
-  // ── trades.json 오늘 매수 종목 기반 니치 재구성 ─────────────────────
-  // 우선순위: 1) 오늘 매수 체결(trades.json side=buy) → 2) liveWatchlist → 3) aiPicks
+  // ── Phase A/B Split ───────────────────────────────────────────────────────
+  // PUBLISH_FROM_FILE: skip Phase A, load pre-generated content from JSON file
+  // GENERATE_ONLY:     run Phase A only, save output to data/generated/DATE.json
+  let generated: GeneratedPost[] = [];
+  const publishFromFile = process.env.PUBLISH_FROM_FILE;
+
+  if (publishFromFile) {
+    // Phase B: 이미 생성된 JSON 로드 (trades/niche 체크 불필요)
+    const raw = await fs.readFile(publishFromFile, 'utf-8');
+    generated = JSON.parse(raw) as GeneratedPost[];
+    logger.info(`[Phase A skipped] Loaded ${generated.length} post(s) from ${publishFromFile}`);
+  } else {
+
+  // ── Phase A 전용: trades.json 오늘 매수 종목 → 니치 재구성 ───────────
   const todayKST = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' }))
     .toISOString().slice(0, 10);
   const todayBuyTrades = tradeEngineData.trades.filter(
@@ -1058,19 +1070,7 @@ async function main(): Promise<void> {
   }));
 
   activeNiches = buildStockNiches(liveList, liveList.length);
-  logger.info(`종목별 니치 구성 [trades.json 오늘 매수 ${todayBuyTrades.length}종목 전체]: ${activeNiches.map(n => n.name).join(' | ')}`);
-
-  // ── Phase A/B Split ───────────────────────────────────────────────────────
-  // PUBLISH_FROM_FILE: skip Phase A, load pre-generated content from JSON file
-  // GENERATE_ONLY:     run Phase A only, save output to data/generated/DATE.json
-  let generated: GeneratedPost[] = [];
-  const publishFromFile = process.env.PUBLISH_FROM_FILE;
-
-  if (publishFromFile) {
-    const raw = await fs.readFile(publishFromFile, 'utf-8');
-    generated = JSON.parse(raw) as GeneratedPost[];
-    logger.info(`[Phase A skipped] Loaded ${generated.length} post(s) from ${publishFromFile}`);
-  } else {
+  logger.info(`종목별 니치 구성 [trades.json 오늘 매수 ${todayBuyTrades.length}종목]: ${activeNiches.map(n => n.name).join(' | ')}`);
 
   // ── Phase A: Research + Content Generation ──────────────────────────────
   logger.info('\n=== Phase A: Research + Content Generation (prompt-cache optimised) ===');
