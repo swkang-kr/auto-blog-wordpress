@@ -7,6 +7,7 @@ import { google } from 'googleapis';
 import 'dotenv/config';
 
 const KEEP_SITEMAPS = new Set([
+  'https://trendhunt.net/sitemap_index.xml',
   'https://trendhunt.net/post-sitemap.xml',
   'https://trendhunt.net/page-sitemap.xml',
   'https://trendhunt.net/category-sitemap.xml',
