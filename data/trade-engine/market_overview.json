@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-05-06T07:00:01.541342+00:00",
+  "exported_at": "2026-05-07T07:00:02.008197+00:00",
   "market_daily": [
+    {
+      "date": "20260507",
+      "kospi_change": 1.43,
+      "kosdaq_change": -0.91,
+      "foreign_net": -715.19,
+      "institution_net": 109.83,
+      "individual_net": 598.96,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260506",
       "kospi_change": 6.45,
       "kosdaq_change": -0.29,
-      "foreign_net": 313.47,
+      "foreign_net": 313.46,
       "institution_net": -231.34,
-      "individual_net": -57.16,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "individual_net": -57.15,
+      "hot_theme_count": 21,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260430",
@@ -99,29 +110,18 @@
       "hot_theme_count": 25,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260420",
-      "kospi_change": 0.44,
-      "kosdaq_change": 0.41,
-      "foreign_net": -15.98,
-      "institution_net": 18.15,
-      "individual_net": -27.75,
-      "hot_theme_count": 18,
-      "momentum_count": 60,
-      "crash_count": 44
     }
   ],
   "headlines": [
-    "[포토]코스피 ‘꿈의 7천피’ 시대 열렸다",
-    "개막한 코스피 7000시대",
-    "'코스피 7000p 축하합니다'",
-    "“연기금 수익률 높이려면 국내 주식 비중 상향 검토해야”",
-    "셀트리온제약, 1분기 영업익 20% 증가…\"역대 최대\"",
-    "대화마저 끊긴 삼성바이오 노사…오후 면담 취소",
-    "코스피, 7300선 장 마감 '최고치'…6%대 급등",
-    "개막한 코스피 7000시대",
-    "개막한 코스피 7000시대",
-    "개막한 코스피 7000시대"
+    "코스피, 장중 7500 찍고 ‘숨고르기’…외인 ‘팔자’에 보합권 혼조",
+    "중앙그룹, 상암 사옥 등 팔고 빌려쓴다…6000억 유동화 추진[only 이데일리]",
+    "10년 뒤 170조 시장…\"유망 로봇주 선점하라\"",
+    "[기자노트] 국민성장펀드, 취지는 좋지만…관건은 납득 가능한 '성과'",
+    "HD현대중공업, 호실적에 7% 상승…조선주 동반 강세[핫종목]",
+    "日닛케이 6% 랠리 '불기둥'…사상 최고·역대 최대 상승폭",
+    "반도체 투톱 올라탄 월배당 ETF…투자자 유치 경쟁 불붙었다",
+    "스페이스X 특수에도 우주 ETF '마이너스'",
+    "'또 사상 최고치' 코스피 7490선 마감…장중 7500선 터치",
+    "[속보] 코스피,  또 '사상 최고치' 7490선 마감…코스닥은 1% 하락"
   ]
 }

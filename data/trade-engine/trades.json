@@ -1,6 +1,54 @@
 {
-  "exported_at": "2026-05-06T07:00:01.015229+00:00",
+  "exported_at": "2026-05-07T07:00:01.371863+00:00",
   "trades": [
+    {
+      "stock_code": "000660",
+      "stock_name": "SK하이닉스",
+      "side": "buy",
+      "quantity": 1,
+      "price": 1649000.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "강제매수(우선종목)",
+      "filled_at": "2026-05-07T06:13:56.593232"
+    },
+    {
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "side": "buy",
+      "quantity": 6,
+      "price": 271000.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "강제매수(우선종목)",
+      "filled_at": "2026-05-07T06:13:56.210799"
+    },
+    {
+      "stock_code": "025860",
+      "stock_name": "남해화학",
+      "side": "sell",
+      "quantity": 98,
+      "price": 9680.0,
+      "pnl": -86592.02,
+      "pnl_rate": -8.3912,
+      "strategy": "swing_stop_loss(SL=9,688)",
+      "reason": "swing_stop_loss(SL=9,688)",
+      "filled_at": "2026-05-07T02:45:35.274847"
+    },
+    {
+      "stock_code": "016610",
+      "stock_name": "DB증권",
+      "side": "sell",
+      "quantity": 86,
+      "price": 15987.0,
+      "pnl": 27773.34,
+      "pnl_rate": 2.0688,
+      "strategy": "swing_trailing(peak=5.2%,step=3.0%,trail_sl=2.2%)",
+      "reason": "swing_trailing(peak=5.2%,step=3.0%,trail_sl=2.2%)",
+      "filled_at": "2026-05-07T00:02:47.907405"
+    },
     {
       "stock_code": "011170",
       "stock_name": "롯데케미칼",
@@ -156,102 +204,6 @@
       "strategy": "swing_stop_loss(SL=42,228)",
       "reason": "swing_stop_loss(SL=42,228)",
       "filled_at": "2026-05-04T00:02:57.448738"
-    },
-    {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "side": "buy",
-      "quantity": 7,
-      "price": 222000.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "watchlist_interval_follow",
-      "filled_at": "2026-04-30T06:17:19.282121"
-    },
-    {
-      "stock_code": "002020",
-      "stock_name": "코오롱",
-      "side": "buy",
-      "quantity": 25,
-      "price": 72000.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "watchlist_interval_follow",
-      "filled_at": "2026-04-30T06:17:19.043318"
-    },
-    {
-      "stock_code": "001360",
-      "stock_name": "삼성제약",
-      "side": "sell",
-      "quantity": 523,
-      "price": 2010.0,
-      "pnl": -63767.3,
-      "pnl_rate": -5.7377,
-      "strategy": "swing_stop_loss(SL=2,019)",
-      "reason": "swing_stop_loss(SL=2,019)",
-      "filled_at": "2026-04-30T04:40:11.085492"
-    },
-    {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "side": "sell",
-      "quantity": 1,
-      "price": 223250.0,
-      "pnl": 2993.95,
-      "pnl_rate": 1.364,
-      "strategy": "swing_trailing(peak=4.4%,step=3.0%,trail_sl=1.4%)",
-      "reason": "swing_trailing(peak=4.4%,step=3.0%,trail_sl=1.4%)",
-      "filled_at": "2026-04-30T04:15:10.873184"
-    },
-    {
-      "stock_code": "009830",
-      "stock_name": "한화솔루션",
-      "side": "sell",
-      "quantity": 14,
-      "price": 53500.0,
-      "pnl": 73113.88,
-      "pnl_rate": 10.8574,
-      "strategy": "swing_trailing(peak=14.0%,step=3.0%,trail_sl=11.0%)",
-      "reason": "swing_trailing(peak=14.0%,step=3.0%,trail_sl=11.0%)",
-      "filled_at": "2026-04-30T00:45:12.176451"
-    },
-    {
-      "stock_code": "066570",
-      "stock_name": "LG전자",
-      "side": "sell",
-      "quantity": 8,
-      "price": 146900.0,
-      "pnl": 85676.0,
-      "pnl_rate": 7.892,
-      "strategy": "swing_trailing(peak=11.1%,step=3.0%,trail_sl=8.1%)",
-      "reason": "swing_trailing(peak=11.1%,step=3.0%,trail_sl=8.1%)",
-      "filled_at": "2026-04-30T00:35:11.432575"
-    },
-    {
-      "stock_code": "097230",
-      "stock_name": "HJ중공업",
-      "side": "sell",
-      "quantity": 8,
-      "price": 29300.0,
-      "pnl": -22013.92,
-      "pnl_rate": -8.6126,
-      "strategy": "swing_stop_loss(SL=29,394)",
-      "reason": "swing_stop_loss(SL=29,394)",
-      "filled_at": "2026-04-30T00:27:12.359875"
-    },
-    {
-      "stock_code": "090430",
-      "stock_name": "아모레퍼시픽",
-      "side": "sell",
-      "quantity": 4,
-      "price": 138212.0,
-      "pnl": -13040.6,
-      "pnl_rate": -2.3122,
-      "strategy": "swing_stop_loss(SL=138,460)",
-      "reason": "swing_stop_loss(SL=138,460)",
-      "filled_at": "2026-04-30T00:11:51.832843"
     }
   ]
 }
