@@ -1,6 +1,6 @@
 {
-  "exported_at": "2026-05-07T07:00:02.772338+00:00",
-  "total": 126,
+  "exported_at": "2026-05-08T07:00:02.197014+00:00",
+  "total": 128,
   "items": [
     {
       "stock_code": "066570",
@@ -289,32 +289,6 @@
       "updated_at": "2026-04-10T09:41:15.748337"
     },
     {
-      "stock_code": "139990",
-      "stock_name": "아주스틸",
-      "market": "KRX",
-      "sector": "",
-      "target_buy_price": null,
-      "target_price": null,
-      "stop_loss": null,
-      "priority": 85,
-      "memo": "AI APPROVE | conf=85% | qty_ratio=120% | AI skip: score≥7 강제매수 (8.0점)",
-      "created_at": "2026-04-09T14:16:33.345151",
-      "updated_at": "2026-04-09T14:16:33.345151"
-    },
-    {
-      "stock_code": "017670",
-      "stock_name": "SK텔레콤",
-      "market": "KRX",
-      "sector": "무선통신서비스",
-      "target_buy_price": null,
-      "target_price": null,
-      "stop_loss": null,
-      "priority": 85,
-      "memo": "AI APPROVE | conf=85% | qty_ratio=120% | AI skip: score≥7 강제매수 (8.0점)",
-      "created_at": "2026-04-09T10:12:50.457289",
-      "updated_at": "2026-04-09T14:16:33.345151"
-    },
-    {
       "stock_code": "008350",
       "stock_name": "남선알미늄",
       "market": "KRX",
@@ -338,6 +312,32 @@
       "priority": 85,
       "memo": "AI APPROVE | conf=85% | qty_ratio=120% | AI skip: score≥7 강제매수 (8.0점)",
       "created_at": "2026-04-09T12:40:33.372430",
+      "updated_at": "2026-04-09T14:16:33.345151"
+    },
+    {
+      "stock_code": "017670",
+      "stock_name": "SK텔레콤",
+      "market": "KRX",
+      "sector": "무선통신서비스",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 85,
+      "memo": "AI APPROVE | conf=85% | qty_ratio=120% | AI skip: score≥7 강제매수 (8.0점)",
+      "created_at": "2026-04-09T10:12:50.457289",
+      "updated_at": "2026-04-09T14:16:33.345151"
+    },
+    {
+      "stock_code": "139990",
+      "stock_name": "아주스틸",
+      "market": "KRX",
+      "sector": "",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 85,
+      "memo": "AI APPROVE | conf=85% | qty_ratio=120% | AI skip: score≥7 강제매수 (8.0점)",
+      "created_at": "2026-04-09T14:16:33.345151",
       "updated_at": "2026-04-09T14:16:33.345151"
     },
     {
@@ -809,6 +809,19 @@
       "updated_at": "2026-04-16T15:02:38.401842"
     },
     {
+      "stock_code": "003530",
+      "stock_name": "한화투자증권",
+      "market": "KRX",
+      "sector": "증권",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 65,
+      "memo": "AI APPROVE | conf=65% | qty_ratio=120% | AI review removed (2026-04-15)",
+      "created_at": "2026-05-08T15:12:21.186860",
+      "updated_at": "2026-05-08T15:12:21.186860"
+    },
+    {
       "stock_code": "030610",
       "stock_name": "교보증권",
       "market": "KRX",
@@ -833,6 +846,19 @@
       "memo": "AI APPROVE | conf=65% | qty_ratio=120% | AI review removed (2026-04-15)",
       "created_at": "2026-04-16T15:00:08.529956",
       "updated_at": "2026-04-20T15:17:47.086090"
+    },
+    {
+      "stock_code": "003490",
+      "stock_name": "대한항공",
+      "market": "KRX",
+      "sector": "항공사",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 64,
+      "memo": "AI APPROVE | conf=65% | qty_ratio=120% | AI review removed (2026-04-15)",
+      "created_at": "2026-05-08T15:12:21.186485",
+      "updated_at": "2026-05-08T15:12:21.186485"
     },
     {
       "stock_code": "000880",
@@ -887,10 +913,10 @@
       "updated_at": "2026-04-09T14:16:33.345151"
     },
     {
-      "stock_code": "101140",
-      "stock_name": "인바이오젠",
+      "stock_code": "001530",
+      "stock_name": "DI동일",
       "market": "KRX",
-      "sector": "전자장비와기기",
+      "sector": "섬유,의류,신발,호화품",
       "target_buy_price": null,
       "target_price": null,
       "stop_loss": null,
@@ -900,10 +926,10 @@
       "updated_at": "2026-04-09T14:16:33.345151"
     },
     {
-      "stock_code": "001530",
-      "stock_name": "DI동일",
+      "stock_code": "101140",
+      "stock_name": "인바이오젠",
       "market": "KRX",
-      "sector": "섬유,의류,신발,호화품",
+      "sector": "전자장비와기기",
       "target_buy_price": null,
       "target_price": null,
       "stop_loss": null,
@@ -1160,10 +1186,10 @@
       "updated_at": "2026-04-10T10:55:56.829152"
     },
     {
-      "stock_code": "281820",
-      "stock_name": "케이씨텍",
+      "stock_code": "353200",
+      "stock_name": "대덕전자",
       "market": "KRX",
-      "sector": "",
+      "sector": "전자장비와기기",
       "target_buy_price": null,
       "target_price": null,
       "stop_loss": null,
@@ -1173,10 +1199,10 @@
       "updated_at": "2026-04-10T09:42:12.983046"
     },
     {
-      "stock_code": "353200",
-      "stock_name": "대덕전자",
+      "stock_code": "281820",
+      "stock_name": "케이씨텍",
       "market": "KRX",
-      "sector": "전자장비와기기",
+      "sector": "",
       "target_buy_price": null,
       "target_price": null,
       "stop_loss": null,
@@ -1511,19 +1537,6 @@
       "updated_at": "2026-04-20T15:15:08.093785"
     },
     {
-      "stock_code": "006800",
-      "stock_name": "미래에셋증권",
-      "market": "KRX",
-      "sector": "증권",
-      "target_buy_price": null,
-      "target_price": null,
-      "stop_loss": null,
-      "priority": 55,
-      "memo": "AI APPROVE | conf=55% | qty_ratio=100% | AI review removed (2026-04-15)",
-      "created_at": "2026-04-14T15:15:14.243627",
-      "updated_at": "2026-04-15T15:00:17.478534"
-    },
-    {
       "stock_code": "001780",
       "stock_name": "알루코",
       "market": "KRX",
@@ -1547,6 +1560,19 @@
       "priority": 55,
       "memo": "AI APPROVE | conf=55% | qty_ratio=100% | AI review removed (2026-04-15)",
       "created_at": "2026-04-15T15:00:17.478534",
+      "updated_at": "2026-04-15T15:00:17.478534"
+    },
+    {
+      "stock_code": "006800",
+      "stock_name": "미래에셋증권",
+      "market": "KRX",
+      "sector": "증권",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 55,
+      "memo": "AI APPROVE | conf=55% | qty_ratio=100% | AI review removed (2026-04-15)",
+      "created_at": "2026-04-14T15:15:14.243627",
       "updated_at": "2026-04-15T15:00:17.478534"
     },
     {

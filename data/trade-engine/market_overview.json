@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-05-07T07:00:02.008197+00:00",
+  "exported_at": "2026-05-08T07:00:01.378468+00:00",
   "market_daily": [
+    {
+      "date": "20260508",
+      "kospi_change": 0.11,
+      "kosdaq_change": 0.71,
+      "foreign_net": -558.99,
+      "institution_net": 154.76,
+      "individual_net": 397.52,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260507",
       "kospi_change": 1.43,
       "kosdaq_change": -0.91,
-      "foreign_net": -715.19,
-      "institution_net": 109.83,
-      "individual_net": 598.96,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": -714.92,
+      "institution_net": 109.55,
+      "individual_net": 599.25,
+      "hot_theme_count": 8,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260506",
@@ -99,29 +110,18 @@
       "hot_theme_count": 17,
       "momentum_count": 60,
       "crash_count": 30
-    },
-    {
-      "date": "20260421",
-      "kospi_change": 2.72,
-      "kosdaq_change": 0.36,
-      "foreign_net": 133.42,
-      "institution_net": 73.78,
-      "individual_net": -192.02,
-      "hot_theme_count": 25,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "코스피, 장중 7500 찍고 ‘숨고르기’…외인 ‘팔자’에 보합권 혼조",
-    "중앙그룹, 상암 사옥 등 팔고 빌려쓴다…6000억 유동화 추진[only 이데일리]",
-    "10년 뒤 170조 시장…\"유망 로봇주 선점하라\"",
-    "[기자노트] 국민성장펀드, 취지는 좋지만…관건은 납득 가능한 '성과'",
-    "HD현대중공업, 호실적에 7% 상승…조선주 동반 강세[핫종목]",
-    "日닛케이 6% 랠리 '불기둥'…사상 최고·역대 최대 상승폭",
-    "반도체 투톱 올라탄 월배당 ETF…투자자 유치 경쟁 불붙었다",
-    "스페이스X 특수에도 우주 ETF '마이너스'",
-    "'또 사상 최고치' 코스피 7490선 마감…장중 7500선 터치",
-    "[속보] 코스피,  또 '사상 최고치' 7490선 마감…코스닥은 1% 하락"
+    "코스피 '나흘 연속 종가 사상 최고치'",
+    "GC녹십자, 1분기 영업이익 117억…\"46.3% 성장\"",
+    "HDC, 1분기 영업익 1803억…전년비 16.5% ↑",
+    "코스피, 개인·기관 매수세에 사상 최고치 '또' 경신",
+    "키움운용, '하이리스크 하이리턴' 美 혁신기업 ETF 선보인다",
+    "CJ CGV, 1분기 영업익 87억…전년비 172.4% ↑",
+    "코스피, 상승 반전해 7500선 목전 마감…또 사상 최고치",
+    "[특징주] 하이닉스는 또 오르고…삼전은 숨고르기(종합)",
+    "코스피, 막판 상승 전환하며 '사상 최고'",
+    "코스피 '연일 종가 최고치'"
   ]
 }
