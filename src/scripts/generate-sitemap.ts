@@ -17,13 +17,13 @@ const api = axios.create({
 });
 
 async function fetchAllPublished() {
-  const posts: { link: string; modified: string }[] = [];
+  const posts: { link: string; modified: string; title: { rendered: string } }[] = [];
   let page = 1;
   while (true) {
     const res = await api.get('/posts', {
-      params: { status: 'publish', per_page: 100, page, _fields: 'link,modified' },
+      params: { status: 'publish', per_page: 100, page, _fields: 'link,modified,title' },
     });
-    const items = res.data as { link: string; modified: string }[];
+    const items = res.data as { link: string; modified: string; title: { rendered: string } }[];
     if (!items.length) break;
     posts.push(...items);
     const totalPages = parseInt(res.headers['x-wp-totalpages'] ?? '1', 10);
@@ -34,10 +34,19 @@ async function fetchAllPublished() {
   return posts;
 }
 
-function isKoreanSlug(url: unknown): boolean {
-  if (typeof url !== 'string') return false;
-  const slug = decodeURIComponent(url.replace(/\/$/, '').split('/').pop() ?? '');
-  return /[가-힣]/.test(slug);
+/**
+ * 한국어 콘텐츠 판정.
+ * 제목 또는 슬러그에 한글이 있으면 한국 콘텐츠로 인식.
+ * (슬러그만 영문/숫자로 망가진 정상 콘텐츠도 포함시키기 위함)
+ */
+function isKoreanContent(post: { link?: string; title?: { rendered?: string } }): boolean {
+  const title = post.title?.rendered ?? '';
+  if (/[가-힣]/.test(title)) return true;
+  if (typeof post.link === 'string') {
+    const slug = decodeURIComponent(post.link.replace(/\/$/, '').split('/').pop() ?? '');
+    if (/[가-힣]/.test(slug)) return true;
+  }
+  return false;
 }
 
 async function main() {
@@ -45,10 +54,10 @@ async function main() {
   const posts = await fetchAllPublished();
   logger.info(`총 ${posts.length}개 발행 포스트 확인`);
 
-  const korean = posts.filter(p => p.link && isKoreanSlug(p.link));
-  const excluded = posts.filter(p => !p.link || !isKoreanSlug(p.link));
+  const korean = posts.filter(p => p.link && isKoreanContent(p));
+  const excluded = posts.filter(p => !p.link || !isKoreanContent(p));
   if (excluded.length > 0) {
-    logger.info(`영문 슬러그 ${excluded.length}개 제외:`);
+    logger.info(`비한국어 콘텐츠 ${excluded.length}개 제외:`);
     excluded.forEach(p => logger.info(`  제외: ${p.link}`));
   }
 
