@@ -1,89 +1,178 @@
 {
-  "exported_at": "2026-05-08T07:00:02.158848+00:00",
-  "total_candidates": 5,
-  "total_holdings": 3,
+  "exported_at": "2026-05-11T07:00:03.195378+00:00",
+  "total_candidates": 12,
+  "total_holdings": 1,
   "candidates": [
     {
       "stock_code": "011700",
       "stock_name": "한신기계",
       "sector": "기계",
-      "signal_count": 6,
-      "avg_confidence": 0.75,
+      "signal_count": 3,
+      "avg_confidence": 0.5,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "거래량3.6x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "reason": "거래량2.3x | MA정배열 | EMA20하방 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-05-08T06:05:36.725716",
+      "signal_time": "2026-05-11T06:08:22.875958",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "018880",
-      "stock_name": "한온시스템",
-      "sector": "자동차부품",
-      "signal_count": 6,
-      "avg_confidence": 0.75,
+      "stock_code": "028670",
+      "stock_name": "팬오션",
+      "sector": "해운사",
+      "signal_count": 3,
+      "avg_confidence": 0.5,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "거래량3.7x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-05-08T06:05:36.725714",
+      "signal_time": "2026-05-11T06:08:22.875956",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "003530",
-      "stock_name": "한화투자증권",
+      "stock_code": "003550",
+      "stock_name": "LG",
+      "sector": "",
+      "signal_count": 3,
+      "avg_confidence": 0.5,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-05-11T06:08:22.875953",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "016360",
+      "stock_name": "삼성증권",
       "sector": "증권",
-      "signal_count": 6,
-      "avg_confidence": 0.9167,
+      "signal_count": 3,
+      "avg_confidence": 0.5,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "RSI모멘텀(59) | 거래량4.5x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-05-08T06:05:36.725712",
+      "signal_time": "2026-05-11T06:08:22.875950",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "011210",
+      "stock_name": "현대위아",
+      "sector": "",
+      "signal_count": 3,
+      "avg_confidence": 0.75,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MACD히스토그램↑ | 거래량5.0x | 거래량3x+ | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-05-11T06:08:22.875947",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "002020",
+      "stock_name": "코오롱",
+      "sector": "",
+      "signal_count": 3,
+      "avg_confidence": 0.8333,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MACD히스토그램↑ | 거래량2.4x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-05-11T06:08:22.875945",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "005850",
+      "stock_name": "에스엘",
+      "sector": "",
+      "signal_count": 2,
+      "avg_confidence": 0.8333,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MACD히스토그램↑ | 거래량2.2x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-05-11T06:09:22.439643",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "010140",
+      "stock_name": "삼성중공업",
+      "sector": "조선",
+      "signal_count": 2,
+      "avg_confidence": 1.0,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MACD히스토그램↑ | RSI모멘텀(62) | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+6.3%vsKOSPI+4.4%)",
+      "price_at_signal": 0,
+      "signal_time": "2026-05-11T06:09:22.439641",
       "status": "매수 시그널"
     },
     {
       "stock_code": "011780",
       "stock_name": "금호석유화학",
       "sector": "",
-      "signal_count": 6,
+      "signal_count": 2,
       "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(61) | 거래량2.0x | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+13.7%vsKOSPI+0.1%)",
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(63) | 거래량2.1x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-05-08T06:05:36.725709",
+      "signal_time": "2026-05-11T06:09:22.439638",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "003490",
-      "stock_name": "대한항공",
-      "sector": "항공사",
-      "signal_count": 6,
+      "stock_code": "005380",
+      "stock_name": "현대차",
+      "sector": "자동차",
+      "signal_count": 2,
       "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(62) | 거래량2.5x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(70) | 거래량3.0x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-05-08T06:05:36.725701",
+      "signal_time": "2026-05-11T06:09:22.439635",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "007070",
+      "stock_name": "GS리테일",
+      "sector": "",
+      "signal_count": 2,
+      "avg_confidence": 1.0,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(70) | 거래량3.8x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-05-11T06:09:22.439632",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "000270",
+      "stock_name": "기아",
+      "sector": "자동차",
+      "signal_count": 2,
+      "avg_confidence": 1.0,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(67) | 거래량2.2x | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+5.7%vsKOSPI+4.4%)",
+      "price_at_signal": 0,
+      "signal_time": "2026-05-11T06:09:22.439622",
       "status": "매수 시그널"
     }
   ],
   "holdings": [
-    {
-      "stock_code": "003490",
-      "stock_name": "대한항공",
-      "quantity": 66,
-      "avg_price": 26950.0,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-05-08",
-      "status": "보유 중"
-    },
     {
       "stock_code": "003530",
       "stock_name": "한화투자증권",
@@ -91,15 +180,6 @@
       "avg_price": 8550.0,
       "strategy": "RSI+MACD(swing)",
       "entry_date": "2026-05-08",
-      "status": "보유 중"
-    },
-    {
-      "stock_code": "011170",
-      "stock_name": "롯데케미칼",
-      "quantity": 10,
-      "avg_price": 101200.0,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-05-06",
       "status": "보유 중"
     }
   ]

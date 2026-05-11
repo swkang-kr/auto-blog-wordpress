@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-05-08T07:00:01.378468+00:00",
+  "exported_at": "2026-05-11T07:00:02.041638+00:00",
   "market_daily": [
+    {
+      "date": "20260511",
+      "kospi_change": 4.32,
+      "kosdaq_change": -0.03,
+      "foreign_net": -348.38,
+      "institution_net": 61.92,
+      "individual_net": 287.15,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260508",
       "kospi_change": 0.11,
       "kosdaq_change": 0.71,
-      "foreign_net": -558.99,
+      "foreign_net": -559.0,
       "institution_net": 154.76,
-      "individual_net": 397.52,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "individual_net": 397.5,
+      "hot_theme_count": 14,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260507",
@@ -99,29 +110,18 @@
       "hot_theme_count": 8,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260422",
-      "kospi_change": 0.46,
-      "kosdaq_change": 0.18,
-      "foreign_net": -67.5,
-      "institution_net": -44.87,
-      "individual_net": 124.1,
-      "hot_theme_count": 17,
-      "momentum_count": 60,
-      "crash_count": 30
     }
   ],
   "headlines": [
-    "코스피 '나흘 연속 종가 사상 최고치'",
-    "GC녹십자, 1분기 영업이익 117억…\"46.3% 성장\"",
-    "HDC, 1분기 영업익 1803억…전년비 16.5% ↑",
-    "코스피, 개인·기관 매수세에 사상 최고치 '또' 경신",
-    "키움운용, '하이리스크 하이리턴' 美 혁신기업 ETF 선보인다",
-    "CJ CGV, 1분기 영업익 87억…전년비 172.4% ↑",
-    "코스피, 상승 반전해 7500선 목전 마감…또 사상 최고치",
-    "[특징주] 하이닉스는 또 오르고…삼전은 숨고르기(종합)",
-    "코스피, 막판 상승 전환하며 '사상 최고'",
-    "코스피 '연일 종가 최고치'"
+    "반도체 진격에 '팔천피' 가시권…코스피 4% 급등 최고치 또 경신",
+    "파인테크닉스, 중동 국영 에너지 기업 공급망 확보",
+    "[특징주] 삼성전자 '불기둥'에 우선주도 20만원 턱밑까지(종합)",
+    "에프앤가이드, 1분기 영업이익 47억…전년 동기 대비 124%↑",
+    "외국인 주식 ‘팔자’에 원·달러 환율 상승 마감 [김혜란의 FX]",
+    "코스피 8000 육박한 날...금감원, 변동성·빚투 경고",
+    "코스피, 4.3% 오른 7822.24 마감…다시 한번 최고치 경신",
+    "코스피, 또 사상 최고치 경신…7820선 마감",
+    "코스피, 또 사상 최고치 경신…7820선 마감",
+    "'30만전자·200만닉스' 가시권…삼성전자·SK하이닉스 어디까지 오를까"
   ]
 }

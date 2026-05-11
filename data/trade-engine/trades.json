@@ -1,6 +1,30 @@
 {
-  "exported_at": "2026-05-08T07:00:00.927330+00:00",
+  "exported_at": "2026-05-11T07:00:01.341162+00:00",
   "trades": [
+    {
+      "stock_code": "003490",
+      "stock_name": "대한항공",
+      "side": "sell",
+      "quantity": 66,
+      "price": 25600.0,
+      "pnl": -94915.92,
+      "pnl_rate": -5.3363,
+      "strategy": "swing_stop_loss(SL=25,602)",
+      "reason": "swing_stop_loss(SL=25,602)",
+      "filled_at": "2026-05-11T05:41:37.299388"
+    },
+    {
+      "stock_code": "011170",
+      "stock_name": "롯데케미칼",
+      "side": "sell",
+      "quantity": 10,
+      "price": 104500.0,
+      "pnl": 29473.4,
+      "pnl_rate": 2.9124,
+      "strategy": "swing_trailing(peak=6.2%,step=3.0%,trail_sl=3.2%)",
+      "reason": "swing_trailing(peak=6.2%,step=3.0%,trail_sl=3.2%)",
+      "filled_at": "2026-05-11T01:00:56.592109"
+    },
     {
       "stock_code": "003530",
       "stock_name": "한화투자증권",
@@ -228,42 +252,6 @@
       "strategy": "swing_stop_loss(SL=68,400)",
       "reason": "swing_stop_loss(SL=68,400)",
       "filled_at": "2026-05-06T00:13:36.246212"
-    },
-    {
-      "stock_code": "001200",
-      "stock_name": "유진투자증권",
-      "side": "sell",
-      "quantity": 33,
-      "price": 6010.0,
-      "pnl": -13.79,
-      "pnl_rate": -0.007,
-      "strategy": "swing_trailing(peak=3.5%,step=3.0%,trail_sl=0.5%)",
-      "reason": "swing_trailing(peak=3.5%,step=3.0%,trail_sl=0.5%)",
-      "filled_at": "2026-05-04T00:30:57.522638"
-    },
-    {
-      "stock_code": "005870",
-      "stock_name": "휴니드",
-      "side": "sell",
-      "quantity": 28,
-      "price": 9240.0,
-      "pnl": -24138.24,
-      "pnl_rate": -8.5609,
-      "strategy": "swing_stop_loss(SL=9,264)",
-      "reason": "swing_stop_loss(SL=9,264)",
-      "filled_at": "2026-05-04T00:03:00.226984"
-    },
-    {
-      "stock_code": "004020",
-      "stock_name": "현대제철",
-      "side": "sell",
-      "quantity": 32,
-      "price": 42150.0,
-      "pnl": -124681.92,
-      "pnl_rate": -8.4887,
-      "strategy": "swing_stop_loss(SL=42,228)",
-      "reason": "swing_stop_loss(SL=42,228)",
-      "filled_at": "2026-05-04T00:02:57.448738"
     }
   ]
 }

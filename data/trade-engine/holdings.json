@@ -1,38 +1,16 @@
 {
-  "exported_at": "2026-05-08T07:00:00.911842+00:00",
+  "exported_at": "2026-05-11T07:00:01.317657+00:00",
   "holdings": [
     {
       "stock_code": "003530",
       "stock_name": "한화투자증권",
       "quantity": 208,
       "avg_price": 8550.0,
-      "current_price": 8560.0,
-      "unrealized_pnl": -3966.56,
-      "unrealized_pnl_rate": -0.223,
+      "current_price": 8210.0,
+      "unrealized_pnl": -76766.56,
+      "unrealized_pnl_rate": -4.3166,
       "strategy": "RSI+MACD(swing)",
       "entry_date": "2026-05-08T06:12:26.656427"
-    },
-    {
-      "stock_code": "003490",
-      "stock_name": "대한항공",
-      "quantity": 66,
-      "avg_price": 26950.0,
-      "current_price": 26950.0,
-      "unrealized_pnl": -6047.58,
-      "unrealized_pnl_rate": -0.34,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-05-08T06:12:26.574213"
-    },
-    {
-      "stock_code": "011170",
-      "stock_name": "롯데케미칼",
-      "quantity": 10,
-      "avg_price": 101200.0,
-      "current_price": 99500.0,
-      "unrealized_pnl": -20440.8,
-      "unrealized_pnl_rate": -2.0198,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-05-06T06:13:55.472417"
     }
   ]
 }
