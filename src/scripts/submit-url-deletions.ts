@@ -1,16 +1,20 @@
 /**
  * submit-url-deletions.ts
- * Google Indexing API에 URL_DELETED 알림 일괄 전송.
- * GSC "찾을 수 없음(404)" 리포트로 표시되는 옛 URL들을 색인에서 빠르게 제거.
+ * Google Indexing API에 URL_DELETED 또는 URL_UPDATED 알림 일괄 전송.
  *
- * 입력: data/gsc-404-urls.txt — 한 줄에 URL 하나 (빈 줄/주석 # 허용)
- *      또는 GSC에서 다운받은 CSV (첫 컬럼이 URL이면 자동 인식)
+ * 용도:
+ * - URL_DELETED: GSC "찾을 수 없음(404)" 리포트의 옛 URL을 색인에서 제거
+ * - URL_UPDATED: 사이트맵에 새로 포함된/변경된 URL 즉시 재인덱싱 요청
  *
- * 실행: node --env-file=.env --import tsx/esm src/scripts/submit-url-deletions.ts [--dry-run] [--file=path]
+ * 입력: 한 줄에 URL 하나 (빈 줄/주석 # 허용) 또는 GSC CSV (첫 컬럼이 URL)
+ *
+ * 실행:
+ *   node --env-file=.env --import tsx/esm src/scripts/submit-url-deletions.ts \
+ *     [--dry-run] [--file=path] [--type=DELETED|UPDATED]
  *
  * 제약:
- * - Indexing API 일일 quota 기본 200건 (Google Cloud Console에서 증액 신청 가능)
- * - 일반 페이지에 대한 URL_DELETED는 비공식이지만 실제 동작함
+ * - Indexing API 일일 quota 기본 200건
+ * - URL_DELETED는 일반 페이지에 비공식이지만 실무에서 동작
  */
 import axios from 'axios';
 import { createSign } from 'crypto';
@@ -22,6 +26,9 @@ const SA_KEY = process.env.GOOGLE_INDEXING_SA_KEY;
 const DRY_RUN = process.argv.includes('--dry-run');
 const fileArg = process.argv.find(a => a.startsWith('--file='));
 const INPUT_FILE = fileArg ? fileArg.split('=')[1] : 'data/gsc-404-urls.txt';
+const typeArg = process.argv.find(a => a.startsWith('--type='));
+const NOTIFY_TYPE: 'URL_DELETED' | 'URL_UPDATED' =
+  typeArg?.split('=')[1] === 'UPDATED' ? 'URL_UPDATED' : 'URL_DELETED';
 
 if (!SA_KEY) {
   console.error('[FAIL] GOOGLE_INDEXING_SA_KEY 미설정');
@@ -68,11 +75,11 @@ async function loadUrls(file: string): Promise<string[]> {
   return [...urls];
 }
 
-async function submitDeletion(url: string, token: string): Promise<'ok' | 'quota' | 'not_found' | 'error'> {
+async function submitNotification(url: string, token: string): Promise<'ok' | 'quota' | 'not_found' | 'error'> {
   try {
     await axios.post(
       'https://indexing.googleapis.com/v3/urlNotifications:publish',
-      { url, type: 'URL_DELETED' },
+      { url, type: NOTIFY_TYPE },
       { headers: { Authorization: `Bearer ${token}` }, timeout: 15000 },
     );
     return 'ok';
@@ -94,14 +101,14 @@ async function main() {
     process.exit(2);
   });
 
-  console.log(`[LOAD] ${urls.length}개 URL 로드됨`);
+  console.log(`[LOAD] ${urls.length}개 URL 로드됨 (type=${NOTIFY_TYPE})`);
   if (urls.length === 0) {
     console.log('[INFO] 처리할 URL 없음');
     return;
   }
 
   if (DRY_RUN) {
-    console.log('[DRY_RUN] 실제 호출 없이 목록만 표시');
+    console.log(`[DRY_RUN] 실제 호출 없이 목록만 표시 (type=${NOTIFY_TYPE})`);
     for (const u of urls) console.log(`  - ${u}`);
     return;
   }
@@ -111,7 +118,7 @@ async function main() {
 
   for (let i = 0; i < urls.length; i++) {
     const url = urls[i];
-    const result = await submitDeletion(url, token);
+    const result = await submitNotification(url, token);
     if (result === 'ok') {
       ok++;
       console.log(`  [${i + 1}/${urls.length}] OK ${url}`);
