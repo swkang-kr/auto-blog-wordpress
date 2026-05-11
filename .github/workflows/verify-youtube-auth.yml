@@ -2,6 +2,9 @@ name: Verify YouTube Auth
 
 on:
   workflow_dispatch:
+  schedule:
+    # 매일 00:00 KST (= 15:00 UTC 전날) - 정규 배치(17:00 KST)보다 17시간 앞서 만료 감지
+    - cron: '0 15 * * *'
 
 permissions:
   contents: read
@@ -22,4 +25,6 @@ jobs:
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
           YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: node --import tsx/esm src/scripts/verify-youtube-auth.ts

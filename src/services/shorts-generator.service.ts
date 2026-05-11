@@ -36,8 +36,10 @@ export class ShortsGeneratorService {
   ) {
     this.tts = new ClovaTtsService(clovaClientId, clovaClientSecret);
     this.scriptService = new ShortsScriptService(anthropicApiKey || process.env.ANTHROPIC_API_KEY || '');
+    const telegramBotToken = process.env.TELEGRAM_BOT_TOKEN || '';
+    const telegramChatId = process.env.TELEGRAM_CHAT_ID || '';
     this.youtube = youtubeClientId && youtubeClientSecret && youtubeRefreshToken
-      ? new YouTubeUploadService(youtubeClientId, youtubeClientSecret, youtubeRefreshToken)
+      ? new YouTubeUploadService(youtubeClientId, youtubeClientSecret, youtubeRefreshToken, telegramBotToken, telegramChatId)
       : null;
     const falKey = process.env.FAL_KEY;
     this.falImage = falKey ? new FalImageService(falKey) : null;

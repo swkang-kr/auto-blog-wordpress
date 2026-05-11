@@ -1,18 +1,29 @@
 import { google } from 'googleapis';
 import fs from 'node:fs';
 import { logger } from '../utils/logger.js';
+import { sendTelegramAlert } from '../utils/alerting.js';
 import type { ShortsScript } from './shorts-script.service.js';
 
 export class YouTubeUploadService {
   private oauth2Client;
+  private telegramBotToken: string;
+  private telegramChatId: string;
 
-  constructor(clientId: string, clientSecret: string, refreshToken: string) {
+  constructor(
+    clientId: string,
+    clientSecret: string,
+    refreshToken: string,
+    telegramBotToken: string = '',
+    telegramChatId: string = '',
+  ) {
     this.oauth2Client = new google.auth.OAuth2(
       clientId,
       clientSecret,
       'urn:ietf:wg:oauth:2.0:oob',
     );
     this.oauth2Client.setCredentials({ refresh_token: refreshToken });
+    this.telegramBotToken = telegramBotToken;
+    this.telegramChatId = telegramChatId;
   }
 
   async upload(mp4Path: string, script: ShortsScript, postUrl: string): Promise<string | null> {
@@ -77,7 +88,21 @@ export class YouTubeUploadService {
 
       return videoUrl;
     } catch (err) {
-      logger.warn(`[YouTube] Upload failed (non-fatal): ${err instanceof Error ? err.message : err}`);
+      const msg = err instanceof Error ? err.message : String(err);
+      logger.warn(`[YouTube] Upload failed (non-fatal): ${msg}`);
+
+      // OAuth 인증 오류는 즉시 운영자 알림 (Testing 모드 7일 만료 케이스)
+      if (/invalid_grant|unauthorized|invalid_token/i.test(msg)) {
+        await sendTelegramAlert(
+          this.telegramBotToken,
+          this.telegramChatId,
+          `<b>YouTube OAuth 만료</b>\n` +
+          `업로드 실패: "${script.title}"\n` +
+          `에러: ${msg}\n\n` +
+          `<i>조치: 새 refresh_token 발급 필요 (Google OAuth Testing 모드는 7일마다 만료).</i>`,
+          'error',
+        );
+      }
       return null;
     }
   }
