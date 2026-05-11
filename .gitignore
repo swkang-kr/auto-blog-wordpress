@@ -5,3 +5,8 @@ dist/
 .cache/
 .claude/settings.local.json
 .claude/worktrees/
+
+# GSC 익스포트 CSV (일회성, 커밋 안 함)
+data/*.csv
+data/테이블.csv
+data/메타데이터.csv
