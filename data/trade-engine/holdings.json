@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-05-11T07:00:01.317657+00:00",
+  "exported_at": "2026-05-12T07:00:00.872710+00:00",
   "holdings": [
     {
-      "stock_code": "003530",
-      "stock_name": "한화투자증권",
-      "quantity": 208,
-      "avg_price": 8550.0,
-      "current_price": 8210.0,
-      "unrealized_pnl": -76766.56,
-      "unrealized_pnl_rate": -4.3166,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-05-08T06:12:26.656427"
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "quantity": 10,
+      "avg_price": 279000.0,
+      "current_price": 279000.0,
+      "unrealized_pnl": 0,
+      "unrealized_pnl_rate": 0,
+      "strategy": "",
+      "entry_date": "2026-05-11T15:00:00"
+    },
+    {
+      "stock_code": "000660",
+      "stock_name": "SK하이닉스",
+      "quantity": 2,
+      "avg_price": 1903000.0,
+      "current_price": 1863000.0,
+      "unrealized_pnl": -92940.4,
+      "unrealized_pnl_rate": -2.4419,
+      "strategy": "manual_recovery",
+      "entry_date": "2026-05-12T02:23:53.654798"
     }
   ]
 }
