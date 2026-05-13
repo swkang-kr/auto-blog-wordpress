@@ -1,117 +1,220 @@
 {
-  "exported_at": "2026-05-12T07:00:02.883104+00:00",
-  "total_candidates": 7,
-  "total_holdings": 2,
+  "exported_at": "2026-05-13T07:00:04.371965+00:00",
+  "total_candidates": 15,
+  "total_holdings": 1,
   "candidates": [
+    {
+      "stock_code": "003550",
+      "stock_name": "LG",
+      "sector": "",
+      "signal_count": 2,
+      "avg_confidence": 0.5,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-05-13T06:09:58.098811",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "010140",
+      "stock_name": "삼성중공업",
+      "sector": "조선",
+      "signal_count": 2,
+      "avg_confidence": 0.5,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-05-13T06:09:58.098806",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "028260",
+      "stock_name": "삼성물산",
+      "sector": "복합기업",
+      "signal_count": 2,
+      "avg_confidence": 0.5,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-05-13T06:09:58.098801",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "396270",
+      "stock_name": "넥스트칩",
+      "sector": "반도체와반도체장비",
+      "signal_count": 2,
+      "avg_confidence": 0.6667,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-05-13T06:09:58.098797",
+      "status": "매수 시그널"
+    },
     {
       "stock_code": "018880",
       "stock_name": "한온시스템",
       "sector": "자동차부품",
-      "signal_count": 5,
-      "avg_confidence": 0.5833,
+      "signal_count": 2,
+      "avg_confidence": 0.6667,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "거래량2.7x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "reason": "거래량2.8x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-05-12T06:06:53.261224",
+      "signal_time": "2026-05-13T06:09:58.098792",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "007070",
-      "stock_name": "GS리테일",
+      "stock_code": "000270",
+      "stock_name": "기아",
+      "sector": "자동차",
+      "signal_count": 2,
+      "avg_confidence": 0.6667,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "RSI모멘텀(61) | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-05-13T06:09:58.098787",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "012030",
+      "stock_name": "DB",
       "sector": "",
-      "signal_count": 5,
-      "avg_confidence": 0.9833400000000001,
+      "signal_count": 2,
+      "avg_confidence": 0.8333,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | 거래량3.0x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(-1.5%vsKOSPI-2.6%)",
+      "reason": "거래량3.1x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-05-12T06:06:53.261218",
+      "signal_time": "2026-05-13T06:09:58.098773",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "004150",
-      "stock_name": "한솔홀딩스",
-      "sector": "복합기업",
-      "signal_count": 5,
-      "avg_confidence": 0.9167,
+      "stock_code": "417500",
+      "stock_name": "제이아이테크",
+      "sector": "반도체와반도체장비",
+      "signal_count": 2,
+      "avg_confidence": 0.8333,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | 거래량15.4x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "reason": "RSI모멘텀(52) | MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-05-12T06:06:53.261222",
+      "signal_time": "2026-05-13T06:09:58.098782",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "024720",
-      "stock_name": "콜마홀딩스",
+      "stock_code": "002900",
+      "stock_name": "TYM",
       "sector": "",
-      "signal_count": 5,
+      "signal_count": 2,
+      "avg_confidence": 0.8333,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "거래량3.6x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-05-13T06:09:58.098778",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "019170",
+      "stock_name": "신풍제약",
+      "sector": "",
+      "signal_count": 2,
+      "avg_confidence": 0.8333,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | 거래량3.3x | 거래량3x+ | MA역배열 | 캔들역해머(강) | 주봉골든크로스 | 주봉MA20아래",
+      "price_at_signal": 0,
+      "signal_time": "2026-05-13T06:09:58.098768",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "064400",
+      "stock_name": "LG씨엔에스",
+      "sector": "IT서비스",
+      "signal_count": 2,
       "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | RSI모멘텀(63) | 거래량2.6x | 주봉골든크로스 | 주봉MA20위 | 상대강도(+0.3%vsKOSPI-2.6%)",
+      "reason": "MACD히스토그램↑ | 거래량3.4x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-05-12T06:06:53.261220",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "005850",
-      "stock_name": "에스엘",
-      "sector": "",
-      "signal_count": 5,
-      "avg_confidence": 1.0,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(64) | 거래량2.6x | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+2.6%vsKOSPI-2.6%)",
-      "price_at_signal": 0,
-      "signal_time": "2026-05-12T06:06:53.261215",
+      "signal_time": "2026-05-13T06:09:58.098763",
       "status": "매수 시그널"
     },
     {
       "stock_code": "011210",
       "stock_name": "현대위아",
       "sector": "",
-      "signal_count": 4,
+      "signal_count": 2,
       "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(55) | 거래량3.4x | 거래량3x+ | 주봉골든크로스 | 주봉MA20위 | 상대강도(+7.1%vsKOSPI-2.6%)",
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(54) | 거래량2.1x | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-05-12T06:07:53.699789",
+      "signal_time": "2026-05-13T06:09:58.098758",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "sector": "반도체",
-      "signal_count": 1,
+      "stock_code": "014680",
+      "stock_name": "한솔케미칼",
+      "sector": "",
+      "signal_count": 2,
       "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(79) | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-3.1%) | 상대강도(+0.5%vsKOSPI-2.6%)",
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(65) | 거래량2.2x | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+5.3%vsKOSPI+2.6%)",
       "price_at_signal": 0,
-      "signal_time": "2026-05-12T06:08:53.559196",
+      "signal_time": "2026-05-13T06:09:58.098753",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "025820",
+      "stock_name": "이구산업",
+      "sector": "비철금속",
+      "signal_count": 2,
+      "avg_confidence": 1.0,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(69) | 거래량2.1x | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+13.1%vsKOSPI+2.6%)",
+      "price_at_signal": 0,
+      "signal_time": "2026-05-13T06:09:58.098748",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "086280",
+      "stock_name": "현대글로비스",
+      "sector": "",
+      "signal_count": 2,
+      "avg_confidence": 1.0,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(70) | 거래량3.0x | 거래량3x+ | MA정배열 | 캔들상승장악형(강) | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-05-13T06:09:58.098736",
       "status": "매수 시그널"
     }
   ],
   "holdings": [
-    {
-      "stock_code": "000660",
-      "stock_name": "SK하이닉스",
-      "quantity": 2,
-      "avg_price": 1903000.0,
-      "strategy": "manual_recovery",
-      "entry_date": "2026-05-12",
-      "status": "보유 중"
-    },
     {
       "stock_code": "005930",
       "stock_name": "삼성전자",

@@ -1,108 +1,67 @@
 {
-  "exported_at": "2026-05-12T07:00:01.707085+00:00",
-  "date": "20260512",
+  "exported_at": "2026-05-13T07:00:02.407707+00:00",
+  "date": "20260513",
   "hot_themes": [
     {
-      "name": "바이오시밀러(복제 바이오의약품)",
-      "change_rate": 3.91
+      "name": "서울고속버스터미널 재개발 수혜",
+      "change_rate": 17.34
     },
     {
-      "name": "통신",
-      "change_rate": 3.28
+      "name": "LED장비",
+      "change_rate": 7.35
     },
     {
-      "name": "제대혈",
-      "change_rate": 3.04
+      "name": "반도체 대표주(생산)",
+      "change_rate": 7.14
     },
     {
-      "name": "백신/진단시약/방역(신종플루, AI 등)",
-      "change_rate": 2.77
+      "name": "백화점",
+      "change_rate": 6.46
     },
     {
-      "name": "면역항암제",
-      "change_rate": 2.36
+      "name": "렌터카",
+      "change_rate": 6.3
     },
     {
-      "name": "마이코플라스마 폐렴",
-      "change_rate": 2.35
+      "name": "뉴로모픽 반도체",
+      "change_rate": 5.9
     },
     {
-      "name": "코로나19(진단키트)",
-      "change_rate": 2.26
+      "name": "부동산 보유 자산주",
+      "change_rate": 5.77
     },
     {
-      "name": "마리화나(대마)",
-      "change_rate": 1.7
+      "name": "자동차 대표주",
+      "change_rate": 5.59
     },
     {
-      "name": "유심(USIM)",
-      "change_rate": 1.66
+      "name": "반도체 기판(FC-BGA/PCB/MLB 등)",
+      "change_rate": 5.57
+    },
+    {
+      "name": "스마트카(SMART CAR)",
+      "change_rate": 4.52
+    },
+    {
+      "name": "소캠(SOCAMM)",
+      "change_rate": 4.47
+    },
+    {
+      "name": "온디바이스 AI",
+      "change_rate": 4.29
     },
     {
       "name": "IT 대표주",
-      "change_rate": 1.62
+      "change_rate": 4.14
     },
     {
-      "name": "치매",
-      "change_rate": 1.42
-    },
-    {
-      "name": "제습기",
-      "change_rate": 1.4
-    },
-    {
-      "name": "코로나19(진단/치료제/백신 개발 등)",
-      "change_rate": 1.29
+      "name": "반도체 장비",
+      "change_rate": 3.96
     },
     {
       "name": "국내 상장 중국기업",
-      "change_rate": 1.1
-    },
-    {
-      "name": "3D 프린터",
-      "change_rate": 1.05
+      "change_rate": 3.83
     }
   ],
-  "cold_themes": [
-    {
-      "name": "줄기세포",
-      "change_rate": -0.65
-    },
-    {
-      "name": "정유",
-      "change_rate": -0.55
-    },
-    {
-      "name": "우주태양광(페로브스카이트 등)",
-      "change_rate": -0.53
-    },
-    {
-      "name": "스마트홈(홈네트워크)",
-      "change_rate": -0.49
-    },
-    {
-      "name": "LPG(액화석유가스)",
-      "change_rate": -0.46
-    },
-    {
-      "name": "자전거",
-      "change_rate": -0.45
-    },
-    {
-      "name": "낙태/피임",
-      "change_rate": -0.42
-    },
-    {
-      "name": "무선충전기술",
-      "change_rate": -0.41
-    },
-    {
-      "name": "비만치료제",
-      "change_rate": -0.29
-    },
-    {
-      "name": "화이자(PFIZER)",
-      "change_rate": -0.22
-    }
-  ]
+  "cold_themes": []
 }
