@@ -760,9 +760,9 @@
       "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/03/korean-skincare-ingredients-actually-work-explained-featured-2026.webp",
       "featuredImageMediaId": 16228,
       "affiliateLinkCount": 0,
-      "engagementScore": 4,
+      "engagementScore": 2,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0.024,
+      "estimatedRevenue": 0.018000000000000002,
       "titleTestPhaseBStarted": true,
       "titleTestPhaseBTitle": "Which Korean Skincare Ingredients Are Actually Proven? (2026)",
       "titleTestWinner": "Korean Skincare Ingredients That Actually Work (2026 Guide)",
@@ -2103,9 +2103,9 @@
       "qualityScore": 82,
       "seriesId": "kpop-business-analysis",
       "seriesPart": 2,
-      "engagementScore": 37,
+      "engagementScore": 0,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0.006,
+      "estimatedRevenue": 0.003,
       "titleTestPhaseACtr": 0,
       "titleTestPhaseATitle": "Korean entertainment Big 4 SM JYP YG HYBE training system compared 2026",
       "titleTestPhaseBStarted": true,
@@ -3160,7 +3160,9 @@
       "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/04/featured-2026-12.webp",
       "featuredImageMediaId": 89860,
       "affiliateLinkCount": 0,
-      "qualityScore": 81
+      "qualityScore": 81,
+      "titleTestResolved": true,
+      "titleTestWinner": "파미셀 외국인 기관 순매수 수급 분석"
     },
     {
       "keyword": "DS단석 매수타이밍 RSI MACD 분석 2026",
@@ -3178,7 +3180,9 @@
       "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/04/ds-rsi-macd-2026-featured-2026.webp",
       "featuredImageMediaId": 89872,
       "affiliateLinkCount": 0,
-      "qualityScore": 84
+      "qualityScore": 84,
+      "titleTestResolved": true,
+      "titleTestWinner": "DS단석 매수타이밍 RSI MACD 분석 2026"
     },
     {
       "keyword": "한온시스템 볼린저밴드 매수후보 분석",
@@ -3196,7 +3200,9 @@
       "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/04/featured-2026-13.webp",
       "featuredImageMediaId": 89937,
       "affiliateLinkCount": 0,
-      "qualityScore": 87
+      "qualityScore": 87,
+      "titleTestResolved": true,
+      "titleTestWinner": "한온시스템 볼린저밴드 매수후보 분석"
     },
     {
       "keyword": "와이투솔루션 오늘 매수해도 될까 분석 2026",
@@ -3217,7 +3223,9 @@
       "qualityScore": 89,
       "engagementScore": 16,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0.006
+      "estimatedRevenue": 0.006,
+      "titleTestResolved": true,
+      "titleTestWinner": "와이투솔루션 오늘 매수해도 될까 분석 2026"
     },
     {
       "keyword": "휴니드 외국인 기관 순매수 수급 분석",
@@ -3238,7 +3246,9 @@
       "qualityScore": 84,
       "engagementScore": 32,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0.003
+      "estimatedRevenue": 0.003,
+      "titleTestResolved": true,
+      "titleTestWinner": "휴니드 외국인 기관 순매수 수급 분석"
     },
     {
       "keyword": "한온시스템 외국인 기관 순매수 수급 분석",
@@ -3427,7 +3437,7 @@
       "qualityScore": 78,
       "engagementScore": 0,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0.033
+      "estimatedRevenue": 0.003
     },
     {
       "keyword": "LG전자 매수타이밍 RSI MACD 분석 2026",
@@ -3550,7 +3560,10 @@
       "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/05/featured-2026.webp",
       "featuredImageMediaId": 90526,
       "affiliateLinkCount": 0,
-      "qualityScore": 87
+      "qualityScore": 87,
+      "engagementScore": 29,
+      "estimatedRpm": 3,
+      "estimatedRevenue": 0.026999999999999996
     },
     {
       "keyword": "대한항공 단기 스윙 매수후보 손절선 목표가",
@@ -3568,10 +3581,13 @@
       "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/05/featured-2026-1.webp",
       "featuredImageMediaId": 90534,
       "affiliateLinkCount": 0,
-      "qualityScore": 82
+      "qualityScore": 82,
+      "engagementScore": 32,
+      "estimatedRpm": 3,
+      "estimatedRevenue": 0.012
     }
   ],
-  "lastRunAt": "2026-05-08T08:34:07.965Z",
+  "lastRunAt": "2026-05-14T08:39:28.325Z",
   "totalPosts": 131,
   "categoryLastPublished": {
     "korean-food-cooking": "2026-03-09T14:49:00.731Z",
