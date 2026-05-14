@@ -3269,7 +3269,9 @@
       "qualityScore": 80,
       "engagementScore": 40,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0.03
+      "estimatedRevenue": 0.03,
+      "titleTestResolved": true,
+      "titleTestWinner": "한온시스템 외국인 기관 순매수 수급 분석"
     },
     {
       "keyword": "화신 진입가격 손절가격 목표가 설정 분석",
@@ -3290,7 +3292,9 @@
       "qualityScore": 77,
       "engagementScore": 24,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0.012
+      "estimatedRevenue": 0.012,
+      "titleTestResolved": true,
+      "titleTestWinner": "화신 진입가격 손절가격 목표가 설정 분석"
     },
     {
       "keyword": "삼화전기 외국인 기관 순매수 수급 분석",
@@ -3311,7 +3315,9 @@
       "qualityScore": 83,
       "engagementScore": 32,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0.012
+      "estimatedRevenue": 0.012,
+      "titleTestResolved": true,
+      "titleTestWinner": "삼화전기 외국인 기관 순매수 수급 분석"
     },
     {
       "keyword": "LG전자 단기 스윙 매수후보 손절선 목표가",
@@ -3332,7 +3338,9 @@
       "qualityScore": 82,
       "engagementScore": 36,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0.051000000000000004
+      "estimatedRevenue": 0.051000000000000004,
+      "titleTestResolved": true,
+      "titleTestWinner": "LG전자 단기 스윙 매수후보 손절선 목표가"
     },
     {
       "keyword": "LG디스플레이 진입가격 손절가격 목표가 설정 분석",
@@ -3353,7 +3361,9 @@
       "qualityScore": 88,
       "engagementScore": 33,
       "estimatedRpm": 3,
-      "estimatedRevenue": 0.033
+      "estimatedRevenue": 0.033,
+      "titleTestResolved": true,
+      "titleTestWinner": "LG디스플레이 진입가격 손절가격 목표가 설정 분석"
     },
     {
       "keyword": "휴니드 매수타이밍 RSI MACD 분석 2026",
@@ -3585,10 +3595,82 @@
       "engagementScore": 32,
       "estimatedRpm": 3,
       "estimatedRevenue": 0.012
+    },
+    {
+      "keyword": "현대위아 진입가격 손절가격 목표가 설정 분석",
+      "postId": 90571,
+      "postUrl": "https://trendhunt.net/현대위아-진입가-손절가-목표가-분석-2026/",
+      "publishedAt": "2026-05-14T09:41:16.957Z",
+      "niche": "stock-011210",
+      "contentType": "analysis",
+      "titleCandidates": [
+        "현대위아 011210 진입가·손절가·목표가 3단계 분할매수 플랜",
+        "현대위아 PBR 0.71배 매수 타이밍 — 방산 모멘텀 분석 2026"
+      ],
+      "originalTitle": "5/14 현대위아 진입가 손절가 목표가 설정 분석 2026",
+      "searchIntent": "commercial",
+      "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/05/featured-2026-2.webp",
+      "featuredImageMediaId": 90566,
+      "affiliateLinkCount": 0,
+      "qualityScore": 81
+    },
+    {
+      "keyword": "제이아이테크 외국인 기관 순매수 수급 분석",
+      "postId": 90579,
+      "postUrl": "https://trendhunt.net/제이아이테크-외국인-기관-순매수-수급-분석-2026/",
+      "publishedAt": "2026-05-14T09:42:53.367Z",
+      "niche": "stock-417500",
+      "contentType": "analysis",
+      "titleCandidates": [
+        "제이아이테크 매집 신호 vs 분산 신호, 5월 14일 거래원·누적 순매수 정밀 진단",
+        "5/14 제이아이테크(417500) 진입가 5,200원·손절 4,950원 — 외국인 매집 가능성 분석"
+      ],
+      "originalTitle": "5/14 제이아이테크 외국인·기관 순매수 수급 분석: 매집 신호 포착 2026",
+      "searchIntent": "commercial-investigation",
+      "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/05/featured-2026-3.webp",
+      "featuredImageMediaId": 90574,
+      "affiliateLinkCount": 0,
+      "qualityScore": 89
+    },
+    {
+      "keyword": "현대글로비스 단기 스윙 매수후보 손절선 목표가",
+      "postId": 90587,
+      "postUrl": "https://trendhunt.net/현대글로비스-스윙-진입가-손절가-목표가-2026/",
+      "publishedAt": "2026-05-14T09:45:26.784Z",
+      "niche": "stock-086280",
+      "contentType": "analysis",
+      "titleCandidates": [
+        "5/14 현대글로비스 -7.39% 급락 매수 기회? ATR 16,206원 손절선 분석",
+        "5월 14일 현대글로비스 진입가 263,000·손절가 248,000·목표가 296,000원 RR 1:2 분석"
+      ],
+      "originalTitle": "5월 14일 현대글로비스 단기 스윙 매수후보 손절선 목표가 RR 1:2.5 ATR 분석",
+      "searchIntent": "commercial",
+      "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/05/featured-2026-4.webp",
+      "featuredImageMediaId": 90582,
+      "affiliateLinkCount": 0,
+      "qualityScore": 89
+    },
+    {
+      "keyword": "한솔케미칼 RSI분석 매수 시그널 분석",
+      "postId": 90595,
+      "postUrl": "https://trendhunt.net/한솔케미칼-rsi-과매도-매수-시그널-분석-2026/",
+      "publishedAt": "2026-05-14T09:47:12.681Z",
+      "niche": "stock-014680",
+      "contentType": "best-x-for-y",
+      "titleCandidates": [
+        "5월 14일 한솔케미칼 RSI 다이버전스 vs 단순 과매도 매수 비교",
+        "5/14 한솔케미칼 RSI 백테스팅 7개 사례: 평균 +8.4% 반등 검증"
+      ],
+      "originalTitle": "5/14 한솔케미칼 RSI 60.9 매수 시그널: 과매도 반등 백테스팅 분석",
+      "searchIntent": "commercial",
+      "featuredImageUrl": "https://trendhunt.net/wp-content/uploads/2026/05/rsi-featured-2026.webp",
+      "featuredImageMediaId": 90590,
+      "affiliateLinkCount": 0,
+      "qualityScore": 83
     }
   ],
-  "lastRunAt": "2026-05-14T08:39:28.325Z",
-  "totalPosts": 131,
+  "lastRunAt": "2026-05-14T09:50:35.694Z",
+  "totalPosts": 135,
   "categoryLastPublished": {
     "korean-food-cooking": "2026-03-09T14:49:00.731Z",
     "korean-tech-ai": "2026-03-13T14:58:36.162Z",
@@ -3604,7 +3686,7 @@
     "theme-analysis": "2026-04-12T23:42:35.583Z",
     "stock-062040": "2026-04-15T23:12:17.788Z",
     "stock-018260": "2026-04-19T23:03:51.009Z",
-    "stock-014680": "2026-04-19T23:00:09.515Z",
+    "stock-014680": "2026-05-14T09:47:12.679Z",
     "stock-025820": "2026-04-15T23:18:51.704Z",
     "stock-005690": "2026-04-20T23:12:00.732Z",
     "stock-025540": "2026-04-19T23:05:51.072Z",
@@ -3622,6 +3704,9 @@
     "stock-009830": "2026-04-29T09:11:24.871Z",
     "stock-000660": "2026-05-07T08:27:41.145Z",
     "stock-003530": "2026-05-08T08:29:10.753Z",
-    "stock-003490": "2026-05-08T08:31:08.694Z"
+    "stock-003490": "2026-05-08T08:31:08.694Z",
+    "stock-011210": "2026-05-14T09:41:16.955Z",
+    "stock-417500": "2026-05-14T09:42:53.365Z",
+    "stock-086280": "2026-05-14T09:45:26.781Z"
   }
 }
