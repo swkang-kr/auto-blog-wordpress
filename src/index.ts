@@ -1053,7 +1053,33 @@ async function main(): Promise<void> {
     process.exit(0);
   }
 
-  const liveList = todayBuyTrades.map(t => ({
+  // trade-engine이 trades.json의 stock_name을 빈 문자열로 export하는 경우 대비:
+  // liveWatchlist → aiPicks → aiHoldings → holdings → watchlistAll 순으로 stock_code → name lookup
+  const nameByCode = new Map<string, string>();
+  const lookupSources: Array<Array<{ stock_code?: string; stock_name?: string }>> = [
+    tradeEngineData.liveWatchlist,
+    tradeEngineData.aiPicks,
+    tradeEngineData.aiHoldings,
+    tradeEngineData.holdings,
+    tradeEngineData.watchlistAll,
+  ];
+  for (const src of lookupSources) {
+    for (const item of src ?? []) {
+      const code = item?.stock_code;
+      const name = item?.stock_name;
+      if (code && name && !nameByCode.has(code)) nameByCode.set(code, name);
+    }
+  }
+  const enrichedTrades = todayBuyTrades.map(t => ({
+    ...t,
+    stock_name: t.stock_name || nameByCode.get(t.stock_code) || t.stock_code,
+  }));
+  const missingNames = enrichedTrades.filter(t => t.stock_name === t.stock_code);
+  if (missingNames.length > 0) {
+    logger.warn(`trades.json stock_name 누락 + 폴백 실패 ${missingNames.length}건 (code만 사용): ${missingNames.map(t => t.stock_code).join(', ')}`);
+  }
+
+  const liveList = enrichedTrades.map(t => ({
     stock_code: t.stock_code,
     stock_name: t.stock_name,
     score: 80,
@@ -1070,7 +1096,7 @@ async function main(): Promise<void> {
   }));
 
   activeNiches = buildStockNiches(liveList, liveList.length);
-  logger.info(`종목별 니치 구성 [trades.json 오늘 매수 ${todayBuyTrades.length}종목]: ${activeNiches.map(n => n.name).join(' | ')}`);
+  logger.info(`종목별 니치 구성 [trades.json 오늘 매수 ${enrichedTrades.length}종목]: ${activeNiches.map(n => n.name).join(' | ')}`);
 
   // ── Phase A: Research + Content Generation ──────────────────────────────
   logger.info('\n=== Phase A: Research + Content Generation (prompt-cache optimised) ===');
