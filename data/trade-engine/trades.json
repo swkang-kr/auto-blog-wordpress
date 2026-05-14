@@ -1,6 +1,78 @@
 {
-  "exported_at": "2026-05-13T07:00:01.944865+00:00",
+  "exported_at": "2026-05-14T07:00:01.479771+00:00",
   "trades": [
+    {
+      "stock_code": "011210",
+      "stock_name": "",
+      "side": "buy",
+      "quantity": 13,
+      "price": 95800.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "mirror_order(acc2)",
+      "reason": "acc2 mirror_order",
+      "filled_at": "2026-05-14T06:23:04.127431"
+    },
+    {
+      "stock_code": "417500",
+      "stock_name": "",
+      "side": "buy",
+      "quantity": 231,
+      "price": 5460.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "mirror_order(acc2)",
+      "reason": "acc2 mirror_order",
+      "filled_at": "2026-05-14T06:23:04.116183"
+    },
+    {
+      "stock_code": "086280",
+      "stock_name": "",
+      "side": "buy",
+      "quantity": 4,
+      "price": 264500.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "mirror_order(acc2)",
+      "reason": "acc2 mirror_order",
+      "filled_at": "2026-05-14T06:23:04.114777"
+    },
+    {
+      "stock_code": "014680",
+      "stock_name": "",
+      "side": "buy",
+      "quantity": 3,
+      "price": 321500.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "mirror_order(acc2)",
+      "reason": "acc2 mirror_order",
+      "filled_at": "2026-05-14T06:23:04.110427"
+    },
+    {
+      "stock_code": "002900",
+      "stock_name": "TYM",
+      "side": "buy",
+      "quantity": 2050,
+      "price": 8540.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "mirror_order(acc2)",
+      "reason": "acc2 mirror_order",
+      "filled_at": "2026-05-13T15:23:29"
+    },
+    {
+      "stock_code": "002900",
+      "stock_name": "TYM",
+      "side": "buy",
+      "quantity": 96,
+      "price": 8530.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "mirror_order(acc2)",
+      "reason": "acc2 mirror_order",
+      "filled_at": "2026-05-13T15:23:10"
+    },
     {
       "stock_code": "005850",
       "stock_name": "에스엘",
@@ -120,54 +192,6 @@
       "strategy": "swing_stop_loss(SL=6,118)",
       "reason": "swing_stop_loss(SL=6,118)",
       "filled_at": "2026-05-08T00:01:03.731650"
-    },
-    {
-      "stock_code": "000660",
-      "stock_name": "SK하이닉스",
-      "side": "buy",
-      "quantity": 1,
-      "price": 1649000.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "강제매수(우선종목)",
-      "filled_at": "2026-05-07T06:13:56.593232"
-    },
-    {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "side": "buy",
-      "quantity": 6,
-      "price": 271000.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "강제매수(우선종목)",
-      "filled_at": "2026-05-07T06:13:56.210799"
-    },
-    {
-      "stock_code": "025860",
-      "stock_name": "남해화학",
-      "side": "sell",
-      "quantity": 98,
-      "price": 9680.0,
-      "pnl": -86592.02,
-      "pnl_rate": -8.3912,
-      "strategy": "swing_stop_loss(SL=9,688)",
-      "reason": "swing_stop_loss(SL=9,688)",
-      "filled_at": "2026-05-07T02:45:35.274847"
-    },
-    {
-      "stock_code": "016610",
-      "stock_name": "DB증권",
-      "side": "sell",
-      "quantity": 86,
-      "price": 15987.0,
-      "pnl": 27773.34,
-      "pnl_rate": 2.0688,
-      "strategy": "swing_trailing(peak=5.2%,step=3.0%,trail_sl=2.2%)",
-      "reason": "swing_trailing(peak=5.2%,step=3.0%,trail_sl=2.2%)",
-      "filled_at": "2026-05-07T00:02:47.907405"
     }
   ]
 }

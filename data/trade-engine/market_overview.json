@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-05-13T07:00:02.336824+00:00",
+  "exported_at": "2026-05-14T07:00:02.688952+00:00",
   "market_daily": [
+    {
+      "date": "20260514",
+      "kospi_change": 1.75,
+      "kosdaq_change": 1.2,
+      "foreign_net": -214.45,
+      "institution_net": 19.17,
+      "individual_net": 183.78,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260513",
       "kospi_change": 2.63,
       "kosdaq_change": -0.2,
-      "foreign_net": -372.27,
+      "foreign_net": -372.26,
       "institution_net": 168.76,
-      "individual_net": 188.69,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "individual_net": 188.68,
+      "hot_theme_count": 19,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260512",
@@ -99,29 +110,18 @@
       "hot_theme_count": 12,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260427",
-      "kospi_change": 2.15,
-      "kosdaq_change": 1.86,
-      "foreign_net": 89.05,
-      "institution_net": 110.07,
-      "individual_net": -197.57,
-      "hot_theme_count": 20,
-      "momentum_count": 60,
-      "crash_count": 44
     }
   ],
   "headlines": [
-    "동아제약 구취 케어 ‘듀오버스터 민트볼’, 출시 1년 만에 100만개 판매",
-    "코스피 또 사상 최고치 7844.01로 마감…연말 1만선 가능성도 제기",
-    "풍산그룹, 포스코 골프장 잭니클라우스 인수 추진",
-    "종가 기준 최고치 경신한 코스피 7844.01 포인트 고공행진",
-    "종가 기준 최고치 경신한 코스피 7844.01 포인트 고공행진",
-    "SK하이닉스 197만6000원 장마감",
-    "플루토스, 31억 규모 전환청구권 행사",
-    "삼성전자 공급망 신뢰 '시험대'…50만원 목표주가에도 '불안'",
-    "가비아, 1분기 영업익 107억…전년比 85.7%↑",
-    "코스피, 대내 리스크 진정 속 2%대 급반등…종가 기준 최고치"
+    "[포토]코스피, 또 사상최고 7,981.41마감",
+    "코스피, 종가 최고치 경신…8000까지 단 0.23% 남아",
+    "[포토]코스피, 개인 매수에 8000선 근접... 7981.41마감",
+    "오에스피, 1분기 영업익 흑전…PB 브랜드 성장 효과",
+    "[포토]코스피 또 사상 최고치 마감",
+    "삼전·SK하닉 레버리지 ETF 출격…미래운용 ‘최저보수’ 승부수",
+    "코스피, 7981.41…종가 기준 최고치",
+    "코스피, 사상 최고치 7981.41 마감…'팔천피' 가시권",
+    "코스피 7981.41",
+    "'팔천피 임박'"
   ]
 }
