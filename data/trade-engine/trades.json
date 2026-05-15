@@ -1,9 +1,9 @@
 {
-  "exported_at": "2026-05-14T07:00:01.479771+00:00",
+  "exported_at": "2026-05-15T07:00:01.018255+00:00",
   "trades": [
     {
       "stock_code": "011210",
-      "stock_name": "",
+      "stock_name": "현대위아",
       "side": "buy",
       "quantity": 13,
       "price": 95800.0,
@@ -15,7 +15,7 @@
     },
     {
       "stock_code": "417500",
-      "stock_name": "",
+      "stock_name": "제이아이테크",
       "side": "buy",
       "quantity": 231,
       "price": 5460.0,
@@ -27,7 +27,7 @@
     },
     {
       "stock_code": "086280",
-      "stock_name": "",
+      "stock_name": "현대글로비스",
       "side": "buy",
       "quantity": 4,
       "price": 264500.0,
@@ -39,7 +39,7 @@
     },
     {
       "stock_code": "014680",
-      "stock_name": "",
+      "stock_name": "한솔케미칼",
       "side": "buy",
       "quantity": 3,
       "price": 321500.0,
@@ -132,66 +132,6 @@
       "strategy": "swing_trailing(peak=6.2%,step=3.0%,trail_sl=3.2%)",
       "reason": "swing_trailing(peak=6.2%,step=3.0%,trail_sl=3.2%)",
       "filled_at": "2026-05-11T01:00:56.592109"
-    },
-    {
-      "stock_code": "003530",
-      "stock_name": "한화투자증권",
-      "side": "buy",
-      "quantity": 208,
-      "price": 8550.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "",
-      "filled_at": "2026-05-08T06:12:26.660776"
-    },
-    {
-      "stock_code": "003490",
-      "stock_name": "대한항공",
-      "side": "buy",
-      "quantity": 66,
-      "price": 26950.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "",
-      "filled_at": "2026-05-08T06:12:26.584178"
-    },
-    {
-      "stock_code": "034220",
-      "stock_name": "LG디스플레이",
-      "side": "sell",
-      "quantity": 25,
-      "price": 12370.0,
-      "pnl": -11559.85,
-      "pnl_rate": -3.6153,
-      "strategy": "swing_time_exit(14일≥14일)",
-      "reason": "swing_time_exit(14일≥14일)",
-      "filled_at": "2026-05-08T00:01:10.640123"
-    },
-    {
-      "stock_code": "030610",
-      "stock_name": "교보증권",
-      "side": "sell",
-      "quantity": 92,
-      "price": 14760.0,
-      "pnl": -103135.68,
-      "pnl_rate": -7.0817,
-      "strategy": "swing_stop_loss(SL=15,038)",
-      "reason": "swing_stop_loss(SL=15,038)",
-      "filled_at": "2026-05-08T00:01:07.713838"
-    },
-    {
-      "stock_code": "025820",
-      "stock_name": "이구산업",
-      "side": "sell",
-      "quantity": 193,
-      "price": 5985.0,
-      "pnl": -91812.61,
-      "pnl_rate": -7.3868,
-      "strategy": "swing_stop_loss(SL=6,118)",
-      "reason": "swing_stop_loss(SL=6,118)",
-      "filled_at": "2026-05-08T00:01:03.731650"
     }
   ]
 }

@@ -1,76 +1,104 @@
 {
-  "exported_at": "2026-05-14T07:00:04.152541+00:00",
-  "total_candidates": 5,
-  "total_holdings": 1,
+  "exported_at": "2026-05-15T07:00:03.176071+00:00",
+  "total_candidates": 7,
+  "total_holdings": 2,
   "candidates": [
     {
-      "stock_code": "014680",
-      "stock_name": "한솔케미칼",
+      "stock_code": "001450",
+      "stock_name": "현대해상",
       "sector": "",
-      "signal_count": 6,
-      "avg_confidence": 0.75,
+      "signal_count": 5,
+      "avg_confidence": 0.8125,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | 거래량2.5x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "reason": "MACD히스토그램↑ | 거래량2.1x | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(-0.8%vsKOSPI-6.6%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-05-14T06:06:08.851871",
+      "signal_time": "2026-05-15T05:52:31.357391",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "086280",
-      "stock_name": "현대글로비스",
-      "sector": "",
-      "signal_count": 6,
-      "avg_confidence": 0.75,
+      "stock_code": "090710",
+      "stock_name": "휴림로봇",
+      "sector": "기계",
+      "signal_count": 5,
+      "avg_confidence": 0.8125,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "거래량3.8x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "reason": "MACD히스토그램↑ | RSI모멘텀(66) | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+15.8%vsKOSPI-6.6%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-05-14T06:06:08.851869",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "227950",
-      "stock_name": "엔투텍",
-      "sector": "반도체와반도체장비",
-      "signal_count": 6,
-      "avg_confidence": 0.8333,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "캔들상승장악형(강) | 주봉골든크로스 | 주봉MA20위 | 상대강도(+7.7%vsKOSPI+1.3%)",
-      "price_at_signal": 0,
-      "signal_time": "2026-05-14T06:06:08.851866",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "011210",
-      "stock_name": "현대위아",
-      "sector": "",
-      "signal_count": 6,
-      "avg_confidence": 1.0,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(57) | 거래량2.4x | 주봉골든크로스 | 주봉MA20위",
-      "price_at_signal": 0,
-      "signal_time": "2026-05-14T06:06:08.851863",
+      "signal_time": "2026-05-15T05:52:31.357382",
       "status": "매수 시그널"
     },
     {
       "stock_code": "417500",
       "stock_name": "제이아이테크",
       "sector": "반도체와반도체장비",
-      "signal_count": 6,
+      "signal_count": 4,
+      "avg_confidence": 0.8125,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MACD히스토그램↑ | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(-3.1%vsKOSPI-6.7%) | 디커플링모멘텀",
+      "price_at_signal": 0,
+      "signal_time": "2026-05-15T05:53:36.562891",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "000430",
+      "stock_name": "대원강업",
+      "sector": "",
+      "signal_count": 4,
+      "avg_confidence": 0.975,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | RSI모멘텀(64) | 거래량3.2x | 거래량3x+ | 주봉골든크로스 | 주봉MA20위 | 상대강도(+8.5%vsKOSPI-6.7%) | 디커플링모멘텀",
+      "price_at_signal": 0,
+      "signal_time": "2026-05-15T05:53:36.562887",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "sector": "반도체",
+      "signal_count": 4,
       "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(57) | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-9.0%) | 상대강도(-1.2%vsKOSPI-6.7%)",
       "price_at_signal": 0,
-      "signal_time": "2026-05-14T06:06:08.851846",
+      "signal_time": "2026-05-15T05:53:36.562882",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "010780",
+      "stock_name": "아이에스동서",
+      "sector": "",
+      "signal_count": 4,
+      "avg_confidence": 1.0,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(59) | 거래량4.0x | 거래량3x+ | 주봉골든크로스 | 주봉MA20위 | 상대강도(+1.7%vsKOSPI-6.7%) | 디커플링모멘텀",
+      "price_at_signal": 0,
+      "signal_time": "2026-05-15T05:53:36.562877",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "000660",
+      "stock_name": "SK하이닉스",
+      "sector": "반도체",
+      "signal_count": 4,
+      "avg_confidence": 1.0,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-8.0%) | 상대강도(-0.2%vsKOSPI-6.7%)",
+      "price_at_signal": 0,
+      "signal_time": "2026-05-15T05:53:36.562862",
       "status": "매수 시그널"
     }
   ],
@@ -78,10 +106,19 @@
     {
       "stock_code": "005930",
       "stock_name": "삼성전자",
-      "quantity": 10,
+      "quantity": 0,
       "avg_price": 279000.0,
       "strategy": "",
       "entry_date": "2026-05-11",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "000660",
+      "stock_name": "SK하이닉스",
+      "quantity": 8,
+      "avg_price": 1819000.0,
+      "strategy": "",
+      "entry_date": "2026-05-14",
       "status": "보유 중"
     }
   ]
