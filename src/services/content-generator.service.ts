@@ -244,16 +244,19 @@ const SLUG_STOP_WORDS = new Set([
 
 /** Optimize slug: remove stop words, limit to 6 meaningful words */
 function optimizeSlug(slug: string): string {
+  // SEO 최적: 영문 ASCII 슬러그만 허용. 한글은 WP의 percent-encoding/canonical 충돌로 인덱싱 차단됨.
+  // 한글이 섞여 들어오면 제거 후 영문 부분만 사용. 결과가 비면 호출처에서 fallback 처리.
   const words = slug
     .toLowerCase()
-    .replace(/[^a-z0-9가-힣\s-]/g, '') // 한글(가-힣) + 영문 + 숫자 허용
+    .replace(/[가-힣]+/g, '') // 한글 제거
+    .replace(/[^a-z0-9\s-]/g, '')
     .replace(/\s+/g, '-')
     .replace(/-+/g, '-')
     .replace(/^-|-$/g, '')
     .split('-')
     .filter(w => w.length > 0 && !SLUG_STOP_WORDS.has(w));
 
-  return words.slice(0, 8).join('-'); // 한글은 단어가 짧으므로 8개까지 허용
+  return words.slice(0, 10).join('-');
 }
 
 const ANALYST_PERSONAS = [
@@ -744,9 +747,13 @@ IMPORTANT: Respond with pure JSON only. Do NOT use markdown code blocks (\`\`\`)
 Escape double quotes (") inside field values as \\".
 
 JSON format:
-{"title":"한국어 제목","slug":"삼성전자-주가-전망-분석","ogTitle":"짧은 소셜 제목 (20자 내)","html":"<div style=\\"max-width:760px;...\\">...한국어 콘텐츠...</div>","excerpt":"한국어 메타 설명 60-80자","metaDescription":"SEO 최적화 메타 설명 (60-80자, 핵심 키워드 포함, 행동 유도)","titleCandidates":["대안 제목 A (다른 앵글)","대안 제목 B (다른 후크)"],"tags":["태그1","태그2"],"category":"카테고리명","imagePrompts":["A detailed scene of... (50+ words, English for image generation)","...","...","...","..."],"imageCaptions":["한국어 이미지 캡션 1","캡션 2","캡션 3","캡션 4","캡션 5"]}
+{"title":"한국어 제목","slug":"samsung-005930-stock-forecast-2026","ogTitle":"짧은 소셜 제목 (20자 내)","html":"<div style=\\"max-width:760px;...\\">...한국어 콘텐츠...</div>","excerpt":"한국어 메타 설명 60-80자","metaDescription":"SEO 최적화 메타 설명 (60-80자, 핵심 키워드 포함, 행동 유도)","titleCandidates":["대안 제목 A (다른 앵글)","대안 제목 B (다른 후크)"],"tags":["태그1","태그2"],"category":"카테고리명","imagePrompts":["A detailed scene of... (50+ words, English for image generation)","...","...","...","..."],"imageCaptions":["한국어 이미지 캡션 1","캡션 2","캡션 3","캡션 4","캡션 5"]}
 
-IMPORTANT: title, html, excerpt, metaDescription, tags, category, imageCaptions, slug 모두 한국어로 작성.
+IMPORTANT: title, html, excerpt, metaDescription, tags, category, imageCaptions 모두 한국어로 작성.
+IMPORTANT: slug는 반드시 **영문 ASCII 소문자/숫자/하이픈만** (a-z, 0-9, -). 한글 사용 금지.
+  → 한국 종목명은 로마자/티커 코드로 표기 (예: samsung-005930, hynix-000660, hyundai-mobis-012330).
+  → 키워드는 영문 번역 또는 transliteration (예: rsi, macd, swing, supply-demand, target-price).
+  → 최대 60자, 단어 6~10개 권장. 예: "samsung-005930-rsi-macd-buy-signal-2026"
 IMPORTANT: imagePrompts만 영문 유지 (이미지 생성 AI용).
 IMPORTANT for metaDescription: excerpt와 별도. 구글 검색 결과 CTR 최적화용. 핵심 키워드 + 가치 제안 + 행동 유도. 60-80자.
 IMPORTANT for titleCandidates: 메인 제목과 다른 앵글/후크로 2개 대안 제목 (A/B 테스트용).`;
@@ -1272,16 +1279,22 @@ Respond with pure JSON only.`;
     content.html = ensureHeadingIds(content.html);
 
     // Ensure slug exists (fallback: generate from title, no year for evergreen content)
+    const yr = new Date().getFullYear();
+    if (content.slug) {
+      content.slug = optimizeSlug(content.slug);
+    }
+    // optimizeSlug가 한글 제거 후 빈 결과면 title 기반 fallback
     if (!content.slug) {
-      const yr = new Date().getFullYear();
       const base = optimizeSlug(content.title);
-      // Append year for time-sensitive content types
       const isBestOf = base.startsWith('best-') || base.startsWith('top-');
       const isTimeSensitive = isBestOf || analysis.contentType === 'news-explainer';
       content.slug = isTimeSensitive ? `${base}-${yr}` : base;
-    } else {
-      // Optimize Claude-returned slug too
-      content.slug = optimizeSlug(content.slug);
+    }
+    // 그래도 비면 (title도 한글 only) 종목코드/타임스탬프 기반 임시 슬러그
+    if (!content.slug) {
+      const ts = Date.now().toString(36);
+      content.slug = `post-${ts}-${yr}`;
+      logger.warn(`Slug 생성 실패 — fallback 사용: ${content.slug} (title="${content.title.slice(0, 40)}")`);
     }
 
     // YMYL compliance: ensure investment disclaimer is always present

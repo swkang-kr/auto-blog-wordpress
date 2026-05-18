@@ -67,6 +67,9 @@ async function main() {
   ];
 
   for (const p of korean) {
+    // canonical(<link rel="canonical">)이 decoded 한글 URL을 가리키므로 사이트맵도 같은 형식 유지.
+    // 다만 WP가 한글 URL 요청 시 uppercase percent-encoded로 301 redirect함 → canonical mismatch.
+    // 근본 해결은 WP PHP에서 redirect_canonical 제거 + canonical을 uppercase encoded로 변경 필요.
     const decoded = decodeURIComponent(p.link);
     const lastmod = p.modified?.slice(0, 10) ?? new Date().toISOString().slice(0, 10);
     lines.push('  <url>');
