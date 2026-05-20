@@ -1,5 +1,5 @@
 {
-  "exported_at": "2026-05-15T07:00:01.018255+00:00",
+  "exported_at": "2026-05-20T07:00:01.308185+00:00",
   "trades": [
     {
       "stock_code": "011210",
@@ -72,66 +72,6 @@
       "strategy": "mirror_order(acc2)",
       "reason": "acc2 mirror_order",
       "filled_at": "2026-05-13T15:23:10"
-    },
-    {
-      "stock_code": "005850",
-      "stock_name": "에스엘",
-      "side": "sell",
-      "quantity": 10,
-      "price": 68400.0,
-      "pnl": 36705.6,
-      "pnl_rate": 5.6908,
-      "strategy": "swing_trailing(peak=9.0%,step=3.0%,trail_sl=6.0%)",
-      "reason": "swing_trailing(peak=9.0%,step=3.0%,trail_sl=6.0%)",
-      "filled_at": "2026-05-13T01:21:15.966321"
-    },
-    {
-      "stock_code": "000660",
-      "stock_name": "SK하이닉스",
-      "side": "sell",
-      "quantity": 2,
-      "price": 1793000.0,
-      "pnl": -232368.4,
-      "pnl_rate": -6.1053,
-      "strategy": "swing_gap_down(net=-6.07%,held=21.6h)",
-      "reason": "swing_gap_down(net=-6.07%,held=21.6h)",
-      "filled_at": "2026-05-13T00:00:22.653669"
-    },
-    {
-      "stock_code": "003530",
-      "stock_name": "한화투자증권",
-      "side": "sell",
-      "quantity": 208,
-      "price": 8110.0,
-      "pnl": -97328.61,
-      "pnl_rate": -5.4728,
-      "strategy": "swing_stop_loss(SL=8,122)",
-      "reason": "swing_stop_loss(SL=8,122)",
-      "filled_at": "2026-05-12T00:17:41.843199"
-    },
-    {
-      "stock_code": "003490",
-      "stock_name": "대한항공",
-      "side": "sell",
-      "quantity": 66,
-      "price": 25600.0,
-      "pnl": -94915.92,
-      "pnl_rate": -5.3363,
-      "strategy": "swing_stop_loss(SL=25,602)",
-      "reason": "swing_stop_loss(SL=25,602)",
-      "filled_at": "2026-05-11T05:41:37.299388"
-    },
-    {
-      "stock_code": "011170",
-      "stock_name": "롯데케미칼",
-      "side": "sell",
-      "quantity": 10,
-      "price": 104500.0,
-      "pnl": 29473.4,
-      "pnl_rate": 2.9124,
-      "strategy": "swing_trailing(peak=6.2%,step=3.0%,trail_sl=3.2%)",
-      "reason": "swing_trailing(peak=6.2%,step=3.0%,trail_sl=3.2%)",
-      "filled_at": "2026-05-11T01:00:56.592109"
     }
   ]
 }
