@@ -1,77 +1,29 @@
 {
-  "exported_at": "2026-05-20T07:00:01.308185+00:00",
+  "exported_at": "2026-05-26T07:00:01.429895+00:00",
   "trades": [
     {
-      "stock_code": "011210",
-      "stock_name": "현대위아",
-      "side": "buy",
-      "quantity": 13,
-      "price": 95800.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "mirror_order(acc2)",
-      "reason": "acc2 mirror_order",
-      "filled_at": "2026-05-14T06:23:04.127431"
-    },
-    {
-      "stock_code": "417500",
-      "stock_name": "제이아이테크",
-      "side": "buy",
-      "quantity": 231,
-      "price": 5460.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "mirror_order(acc2)",
-      "reason": "acc2 mirror_order",
-      "filled_at": "2026-05-14T06:23:04.116183"
-    },
-    {
-      "stock_code": "086280",
-      "stock_name": "현대글로비스",
-      "side": "buy",
-      "quantity": 4,
-      "price": 264500.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "mirror_order(acc2)",
-      "reason": "acc2 mirror_order",
-      "filled_at": "2026-05-14T06:23:04.114777"
-    },
-    {
-      "stock_code": "014680",
-      "stock_name": "한솔케미칼",
+      "stock_code": "003550",
+      "stock_name": "",
       "side": "buy",
       "quantity": 3,
-      "price": 321500.0,
+      "price": 123500.0,
       "pnl": null,
       "pnl_rate": null,
       "strategy": "mirror_order(acc2)",
       "reason": "acc2 mirror_order",
-      "filled_at": "2026-05-14T06:23:04.110427"
+      "filled_at": "2026-05-26T04:26:30.782518"
     },
     {
-      "stock_code": "002900",
-      "stock_name": "TYM",
+      "stock_code": "064400",
+      "stock_name": "",
       "side": "buy",
-      "quantity": 2050,
-      "price": 8540.0,
+      "quantity": 7,
+      "price": 82300.0,
       "pnl": null,
       "pnl_rate": null,
       "strategy": "mirror_order(acc2)",
       "reason": "acc2 mirror_order",
-      "filled_at": "2026-05-13T15:23:29"
-    },
-    {
-      "stock_code": "002900",
-      "stock_name": "TYM",
-      "side": "buy",
-      "quantity": 96,
-      "price": 8530.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "mirror_order(acc2)",
-      "reason": "acc2 mirror_order",
-      "filled_at": "2026-05-13T15:23:10"
+      "filled_at": "2026-05-26T04:17:42.507365"
     }
   ]
 }

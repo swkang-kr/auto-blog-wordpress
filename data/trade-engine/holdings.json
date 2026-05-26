@@ -1,6 +1,17 @@
 {
-  "exported_at": "2026-05-20T07:00:01.260358+00:00",
+  "exported_at": "2026-05-26T07:00:01.391412+00:00",
   "holdings": [
+    {
+      "stock_code": "000660",
+      "stock_name": "SK하이닉스",
+      "quantity": 7,
+      "avg_price": 1819000.0,
+      "current_price": 2072000.0,
+      "unrealized_pnl": 1727707.8,
+      "unrealized_pnl_rate": 13.5687,
+      "strategy": "",
+      "entry_date": "2026-05-14T15:00:00"
+    },
     {
       "stock_code": "005930",
       "stock_name": "삼성전자",
@@ -11,17 +22,6 @@
       "unrealized_pnl_rate": 3.9611,
       "strategy": "",
       "entry_date": "2026-05-11T15:00:00"
-    },
-    {
-      "stock_code": "000660",
-      "stock_name": "SK하이닉스",
-      "quantity": 8,
-      "avg_price": 1819000.0,
-      "current_price": 1751000.0,
-      "unrealized_pnl": -593476.8,
-      "unrealized_pnl_rate": -4.0783,
-      "strategy": "",
-      "entry_date": "2026-05-14T15:00:00"
     }
   ]
 }
