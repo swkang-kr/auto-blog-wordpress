@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-05-26T07:00:01.948148+00:00",
+  "exported_at": "2026-05-27T07:00:01.962973+00:00",
   "market_daily": [
+    {
+      "date": "20260527",
+      "kospi_change": 2.25,
+      "kosdaq_change": -3.36,
+      "foreign_net": -44.98,
+      "institution_net": 18.8,
+      "individual_net": 40.65,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260526",
       "kospi_change": 2.55,
       "kosdaq_change": 0.98,
-      "foreign_net": -18.43,
-      "institution_net": 91.04,
-      "individual_net": -61.57,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": -18.45,
+      "institution_net": 91.05,
+      "individual_net": -61.58,
+      "hot_theme_count": 22,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260520",
@@ -99,29 +110,18 @@
       "hot_theme_count": 21,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260430",
-      "kospi_change": -1.38,
-      "kosdaq_change": -2.29,
-      "foreign_net": -145.59,
-      "institution_net": 28.38,
-      "individual_net": 118.72,
-      "hot_theme_count": 5,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "수익률 19% 사학연금, 기금운용평가 5년 연속 '탁월'",
-    "코스피, 사상 첫 8000선 안착…'200만닉스'에 장중 '30만전자'[마감]",
-    "외인 '3290억' 몰렸다…미래운용 삼전·닉스 레버리지 주목",
-    "[특징주] 지구홀딩스, '투자주의환기종목' 지정에 7% 급락 마감(종합)",
-    "AI가 이끄는 자산시장...하반기 승자도 미국·한국 증시?",
-    "[특징주] 내달로 다가온 스페이스X IPO…국내서도 관련주 강세(종합)",
-    "[특징주] 삼성전기, 올초 27만원→157만원…역대 최고가(종합)",
-    "코스피 최고치 경신하며 8,047.51 마감",
-    "코스피 최고치 경신하며 8,047.51 마감",
-    "코스피 최고치 경신하며 8,047.51 마감"
+    "금통위 경계에 국고채 금리↑…환율, 소폭 내리며 1501.1원 마감(종합)",
+    "두산에너빌리티, 美기업에 스팀터빈 4기 공급…지난 3월 2기 이은 추가 수주",
+    "코스피 '8200선 안착'",
+    "'8200선' 마감한 코스피",
+    "코스피, 연일 최고가 마감",
+    "코스피 8228.70 마감 또 사상 최고…장중 첫 8400선 돌파",
+    "연일 최고가 갱신 마감한 코스피",
+    "연일 최고가 마감한 코스피 '8200선 안착'",
+    "8200선 안착하며 연일 최고가로 마감한 코스피",
+    "미래에셋 \"업계 첫 삼전·닉스 단일종목 레버리지 ETN 신규상장\""
   ]
 }

@@ -1,76 +1,90 @@
 {
-  "exported_at": "2026-05-26T07:00:02.745613+00:00",
-  "total_candidates": 8,
+  "exported_at": "2026-05-27T07:00:02.756552+00:00",
+  "total_candidates": 9,
   "total_holdings": 2,
   "candidates": [
     {
-      "stock_code": "429270",
-      "stock_name": "시지트로닉스",
-      "sector": "반도체와반도체장비",
-      "signal_count": 7,
-      "avg_confidence": 0.75,
+      "stock_code": "005680",
+      "stock_name": "삼영전자",
+      "sector": "",
+      "signal_count": 5,
+      "avg_confidence": 0.6333,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | RSI모멘텀(60) | MA역배열 | 주봉골든크로스 | 주봉MA20위",
+      "reason": "MACD히스토그램↑ | 거래량7.2x | 거래량3x+ | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-05-26T06:04:24.091933",
+      "signal_time": "2026-05-27T06:06:25.237716",
       "status": "매수 시그널"
     },
     {
       "stock_code": "227950",
       "stock_name": "엔투텍",
       "sector": "반도체와반도체장비",
-      "signal_count": 6,
+      "signal_count": 5,
       "avg_confidence": 0.9167,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "캔들상승장악형(강) | 주봉골든크로스 | 주봉MA20위 | 상대강도(+7.7%vsKOSPI+2.8%)",
+      "reason": "캔들상승장악형(강) | 주봉골든크로스 | 주봉MA20위 | 상대강도(+7.7%vsKOSPI+2.6%)",
       "price_at_signal": 0,
-      "signal_time": "2026-05-26T06:05:22.660544",
+      "signal_time": "2026-05-27T06:06:25.237714",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "005680",
-      "stock_name": "삼영전자",
-      "sector": "",
-      "signal_count": 6,
-      "avg_confidence": 1.0,
+      "stock_code": "055490",
+      "stock_name": "테이팩스",
+      "sector": "전자장비와기기",
+      "signal_count": 5,
+      "avg_confidence": 0.9167,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | MACD골든크로스 | RSI모멘텀(64) | 거래량2.0x | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+18.5%vsKOSPI+2.8%) | 디커플링모멘텀",
+      "reason": "2일연속상승 | RSI모멘텀(61) | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+20.8%vsKOSPI+2.6%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-05-26T06:05:22.660542",
+      "signal_time": "2026-05-27T06:06:25.237712",
       "status": "매수 시그널"
     },
     {
       "stock_code": "306620",
       "stock_name": "지아이에스",
       "sector": "반도체와반도체장비",
-      "signal_count": 6,
+      "signal_count": 5,
       "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | MACD골든크로스 | RSI모멘텀(65) | 거래량2.6x | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+15.6%vsKOSPI+2.8%) | 디커플링모멘텀",
+      "reason": "MACD히스토그램↑ | 거래량2.4x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-05-26T06:05:22.660535",
+      "signal_time": "2026-05-27T06:06:25.237709",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "064400",
-      "stock_name": "LG씨엔에스",
-      "sector": "IT서비스",
+      "stock_code": "004150",
+      "stock_name": "한솔홀딩스",
+      "sector": "복합기업",
       "signal_count": 5,
-      "avg_confidence": 0.6667,
+      "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "reason": "MACD히스토그램↑ | RSI모멘텀(65) | 거래량4.1x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-05-26T06:04:24.091937",
+      "signal_time": "2026-05-27T06:06:25.237706",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "010580",
+      "stock_name": "에스엠벡셀",
+      "sector": "자동차부품",
+      "signal_count": 5,
+      "avg_confidence": 1.0,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(67) | 거래량2.3x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-05-27T06:06:25.237698",
       "status": "매수 시그널"
     },
     {

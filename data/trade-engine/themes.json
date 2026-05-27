@@ -1,67 +1,68 @@
 {
-  "exported_at": "2026-05-26T07:00:02.003459+00:00",
-  "date": "20260526",
+  "exported_at": "2026-05-27T07:00:02.018965+00:00",
+  "date": "20260527",
   "hot_themes": [
     {
-      "name": "MLCC(적층세라믹콘덴서)",
-      "change_rate": 12.75
+      "name": "IT 대표주",
+      "change_rate": 4.74
     },
     {
       "name": "반도체 대표주(생산)",
-      "change_rate": 9.9
+      "change_rate": 1.2
     },
     {
-      "name": "양자암호/양자컴퓨팅",
-      "change_rate": 9.25
+      "name": "냉각시스템(액침냉각 등)",
+      "change_rate": 0.6
     },
     {
-      "name": "반도체 기판(FC-BGA/PCB/MLB 등)",
-      "change_rate": 8.67
+      "name": "SI(시스템통합)",
+      "change_rate": 0.08
     },
     {
-      "name": "뉴로모픽 반도체",
-      "change_rate": 7.42
-    },
-    {
-      "name": "탄소나노튜브(CNT)",
-      "change_rate": 7.07
-    },
-    {
-      "name": "스페이스X(SpaceX)",
-      "change_rate": 6.74
-    },
-    {
-      "name": "광통신(광케이블/광섬유 등)",
-      "change_rate": 6.1
-    },
-    {
-      "name": "소캠(SOCAMM)",
-      "change_rate": 4.97
-    },
-    {
-      "name": "온디바이스 AI",
-      "change_rate": 4.69
-    },
-    {
-      "name": "유리 기판",
-      "change_rate": 4.15
-    },
-    {
-      "name": "폴더블폰",
-      "change_rate": 3.94
-    },
-    {
-      "name": "5G(5세대 이동통신)",
-      "change_rate": 3.73
-    },
-    {
-      "name": "핵융합에너지",
-      "change_rate": 3.6
-    },
-    {
-      "name": "국내 상장 중국기업",
-      "change_rate": 3.53
+      "name": "제대혈",
+      "change_rate": 0.06
     }
   ],
-  "cold_themes": []
+  "cold_themes": [
+    {
+      "name": "코로나19(진단/치료제/백신 개발 등)",
+      "change_rate": -2.06
+    },
+    {
+      "name": "백신/진단시약/방역(신종플루, AI 등)",
+      "change_rate": -2.04
+    },
+    {
+      "name": "렌터카",
+      "change_rate": -2.03
+    },
+    {
+      "name": "고령화 사회(노인복지)",
+      "change_rate": -2.0
+    },
+    {
+      "name": "치매",
+      "change_rate": -1.99
+    },
+    {
+      "name": "도시가스",
+      "change_rate": -1.9
+    },
+    {
+      "name": "생명보험",
+      "change_rate": -1.88
+    },
+    {
+      "name": "통신",
+      "change_rate": -1.84
+    },
+    {
+      "name": "화이자(PFIZER)",
+      "change_rate": -1.82
+    },
+    {
+      "name": "리모델링/인테리어",
+      "change_rate": -1.79
+    }
+  ]
 }
