@@ -1,90 +1,34 @@
 {
-  "exported_at": "2026-05-27T07:00:02.756552+00:00",
-  "total_candidates": 9,
+  "exported_at": "2026-05-28T07:00:02.623435+00:00",
+  "total_candidates": 5,
   "total_holdings": 2,
   "candidates": [
     {
-      "stock_code": "005680",
-      "stock_name": "삼영전자",
-      "sector": "",
-      "signal_count": 5,
-      "avg_confidence": 0.6333,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MACD히스토그램↑ | 거래량7.2x | 거래량3x+ | 주봉골든크로스 | 주봉MA20위",
-      "price_at_signal": 0,
-      "signal_time": "2026-05-27T06:06:25.237716",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "227950",
-      "stock_name": "엔투텍",
+      "stock_code": "403870",
+      "stock_name": "HPSP",
       "sector": "반도체와반도체장비",
-      "signal_count": 5,
-      "avg_confidence": 0.9167,
+      "signal_count": 15,
+      "avg_confidence": 0.5833000000000002,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "캔들상승장악형(강) | 주봉골든크로스 | 주봉MA20위 | 상대강도(+7.7%vsKOSPI+2.6%)",
+      "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-05-27T06:06:25.237714",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "055490",
-      "stock_name": "테이팩스",
-      "sector": "전자장비와기기",
-      "signal_count": 5,
-      "avg_confidence": 0.9167,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "2일연속상승 | RSI모멘텀(61) | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+20.8%vsKOSPI+2.6%) | 디커플링모멘텀",
-      "price_at_signal": 0,
-      "signal_time": "2026-05-27T06:06:25.237712",
+      "signal_time": "2026-05-28T05:56:21.738587",
       "status": "매수 시그널"
     },
     {
       "stock_code": "306620",
       "stock_name": "지아이에스",
       "sector": "반도체와반도체장비",
-      "signal_count": 5,
+      "signal_count": 14,
       "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | 거래량2.4x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "reason": "MACD히스토그램↑ | RSI모멘텀(55) | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+1.4%vsKOSPI-1.3%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-05-27T06:06:25.237709",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "004150",
-      "stock_name": "한솔홀딩스",
-      "sector": "복합기업",
-      "signal_count": 5,
-      "avg_confidence": 1.0,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(65) | 거래량4.1x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
-      "price_at_signal": 0,
-      "signal_time": "2026-05-27T06:06:25.237706",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "010580",
-      "stock_name": "에스엠벡셀",
-      "sector": "자동차부품",
-      "signal_count": 5,
-      "avg_confidence": 1.0,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(67) | 거래량2.3x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
-      "price_at_signal": 0,
-      "signal_time": "2026-05-27T06:06:25.237698",
+      "signal_time": "2026-05-28T05:57:22.354784",
       "status": "매수 시그널"
     },
     {
@@ -100,18 +44,6 @@
       "status": "장중 워치리스트"
     },
     {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "sector": "",
-      "signal_count": 3,
-      "avg_confidence": 0.85,
-      "strategies": [],
-      "reason": "score=8.50, ranked_score=25.50",
-      "price_at_signal": 0,
-      "signal_time": "2026-05-15T15:25:00.010723+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
       "stock_code": "001450",
       "stock_name": "현대해상",
       "sector": "",
@@ -122,18 +54,23 @@
       "price_at_signal": 0,
       "signal_time": "2026-05-15T15:25:00.010723+09:00",
       "status": "장중 워치리스트"
-    }
-  ],
-  "holdings": [
+    },
     {
       "stock_code": "005930",
       "stock_name": "삼성전자",
-      "quantity": 0,
-      "avg_price": 279000.0,
-      "strategy": "",
-      "entry_date": "2026-05-11",
-      "status": "보유 중"
-    },
+      "sector": "반도체",
+      "signal_count": 1,
+      "avg_confidence": 1.0,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-3.0%)",
+      "price_at_signal": 0,
+      "signal_time": "2026-05-28T05:58:21.273988",
+      "status": "매수 시그널"
+    }
+  ],
+  "holdings": [
     {
       "stock_code": "000660",
       "stock_name": "SK하이닉스",
@@ -141,6 +78,15 @@
       "avg_price": 1819000.0,
       "strategy": "",
       "entry_date": "2026-05-14",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "quantity": 0,
+      "avg_price": 279000.0,
+      "strategy": "",
+      "entry_date": "2026-05-11",
       "status": "보유 중"
     }
   ]

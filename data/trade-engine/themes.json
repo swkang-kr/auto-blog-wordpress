@@ -1,68 +1,108 @@
 {
-  "exported_at": "2026-05-27T07:00:02.018965+00:00",
-  "date": "20260527",
+  "exported_at": "2026-05-28T07:00:01.711203+00:00",
+  "date": "20260528",
   "hot_themes": [
     {
-      "name": "IT 대표주",
-      "change_rate": 4.74
+      "name": "MLCC(적층세라믹콘덴서)",
+      "change_rate": 8.97
     },
     {
-      "name": "반도체 대표주(생산)",
-      "change_rate": 1.2
+      "name": "2차전지(생산)",
+      "change_rate": 7.98
     },
     {
-      "name": "냉각시스템(액침냉각 등)",
-      "change_rate": 0.6
+      "name": "편의점",
+      "change_rate": 4.29
     },
     {
-      "name": "SI(시스템통합)",
-      "change_rate": 0.08
+      "name": "2차전지(나트륨이온)",
+      "change_rate": 3.66
     },
     {
-      "name": "제대혈",
-      "change_rate": 0.06
+      "name": "리튬",
+      "change_rate": 2.96
+    },
+    {
+      "name": "영화",
+      "change_rate": 2.27
+    },
+    {
+      "name": "2차전지(전고체)",
+      "change_rate": 2.06
+    },
+    {
+      "name": "캐릭터상품",
+      "change_rate": 1.69
+    },
+    {
+      "name": "백화점",
+      "change_rate": 1.58
+    },
+    {
+      "name": "인터넷 대표주",
+      "change_rate": 1.07
+    },
+    {
+      "name": "종합 물류",
+      "change_rate": 1.04
+    },
+    {
+      "name": "렌터카",
+      "change_rate": 0.9
+    },
+    {
+      "name": "니켈",
+      "change_rate": 0.84
+    },
+    {
+      "name": "전력저장장치(ESS)",
+      "change_rate": 0.82
+    },
+    {
+      "name": "건설 중소형",
+      "change_rate": 0.52
     }
   ],
   "cold_themes": [
     {
-      "name": "코로나19(진단/치료제/백신 개발 등)",
-      "change_rate": -2.06
+      "name": "반도체 기판(FC-BGA/PCB/MLB 등)",
+      "change_rate": -0.21
     },
     {
-      "name": "백신/진단시약/방역(신종플루, AI 등)",
-      "change_rate": -2.04
+      "name": "폐기물처리",
+      "change_rate": -0.21
     },
     {
-      "name": "렌터카",
-      "change_rate": -2.03
+      "name": "2차전지",
+      "change_rate": -0.21
     },
     {
-      "name": "고령화 사회(노인복지)",
-      "change_rate": -2.0
+      "name": "LPG(액화석유가스)",
+      "change_rate": -0.2
     },
     {
-      "name": "치매",
-      "change_rate": -1.99
+      "name": "정유",
+      "change_rate": -0.19
     },
     {
-      "name": "도시가스",
-      "change_rate": -1.9
+      "name": "2차전지(LFP/리튬인산철)",
+      "change_rate": -0.11
     },
     {
-      "name": "생명보험",
-      "change_rate": -1.88
+      "name": "쿠팡(coupang)",
+      "change_rate": -0.09
     },
     {
-      "name": "통신",
-      "change_rate": -1.84
+      "name": "면세점",
+      "change_rate": -0.09
     },
     {
-      "name": "화이자(PFIZER)",
-      "change_rate": -1.82
+      "name": "마켓컬리(kurly)",
+      "change_rate": -0.04
     },
     {
-      "name": "리모델링/인테리어",
-      "change_rate": -1.79
+      "name": "IT 대표주",
+      "change_rate": -0.01
     }
   ]
 }

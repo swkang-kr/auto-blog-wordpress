@@ -1,6 +1,17 @@
 {
-  "exported_at": "2026-05-27T07:00:01.962973+00:00",
+  "exported_at": "2026-05-28T07:00:01.650883+00:00",
   "market_daily": [
+    {
+      "date": "20260528",
+      "kospi_change": -0.53,
+      "kosdaq_change": -2.54,
+      "foreign_net": -289.57,
+      "institution_net": -89.14,
+      "individual_net": 363.63,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260527",
       "kospi_change": 2.25,
@@ -8,9 +19,9 @@
       "foreign_net": -44.98,
       "institution_net": 18.8,
       "individual_net": 40.65,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "hot_theme_count": 1,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260526",
@@ -99,29 +110,18 @@
       "hot_theme_count": 8,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260506",
-      "kospi_change": 6.45,
-      "kosdaq_change": -0.29,
-      "foreign_net": 313.46,
-      "institution_net": -231.34,
-      "individual_net": -57.15,
-      "hot_theme_count": 21,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "금통위 경계에 국고채 금리↑…환율, 소폭 내리며 1501.1원 마감(종합)",
-    "두산에너빌리티, 美기업에 스팀터빈 4기 공급…지난 3월 2기 이은 추가 수주",
-    "코스피 '8200선 안착'",
-    "'8200선' 마감한 코스피",
-    "코스피, 연일 최고가 마감",
-    "코스피 8228.70 마감 또 사상 최고…장중 첫 8400선 돌파",
-    "연일 최고가 갱신 마감한 코스피",
-    "연일 최고가 마감한 코스피 '8200선 안착'",
-    "8200선 안착하며 연일 최고가로 마감한 코스피",
-    "미래에셋 \"업계 첫 삼전·닉스 단일종목 레버리지 ETN 신규상장\""
+    "'삼전·하닉 2배'가 쏘아올린 '하락베팅'…\"공매도·대차거래 최고치\"",
+    "가상자산 거래소 지분 확보 경쟁 벌이는 증권사들…삼성·두나무,한투·코인원 손잡는다",
+    "코스피, 8180선 약보합 마감…장중 변동성 확대",
+    "하락 마감한 국내 증시",
+    "코스피 숨고르기",
+    "코스피 숨고르기",
+    "하락 마감한 코스피",
+    "하락 마감한 국내 증시",
+    "하락 마감한 국내 증시",
+    "코스피·코스닥 하락 마감"
   ]
 }
