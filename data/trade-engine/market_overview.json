@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-05-28T07:00:01.650883+00:00",
+  "exported_at": "2026-05-29T07:00:04.676139+00:00",
   "market_daily": [
+    {
+      "date": "20260529",
+      "kospi_change": 3.55,
+      "kosdaq_change": -2.68,
+      "foreign_net": -104.2,
+      "institution_net": 236.85,
+      "individual_net": -140.42,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260528",
       "kospi_change": -0.53,
       "kosdaq_change": -2.54,
       "foreign_net": -289.57,
-      "institution_net": -89.14,
-      "individual_net": 363.63,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "institution_net": -88.79,
+      "individual_net": 363.28,
+      "hot_theme_count": 4,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260527",
@@ -99,29 +110,18 @@
       "hot_theme_count": 14,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260507",
-      "kospi_change": 1.43,
-      "kosdaq_change": -0.91,
-      "foreign_net": -714.92,
-      "institution_net": 109.55,
-      "individual_net": 599.25,
-      "hot_theme_count": 8,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "'삼전·하닉 2배'가 쏘아올린 '하락베팅'…\"공매도·대차거래 최고치\"",
-    "가상자산 거래소 지분 확보 경쟁 벌이는 증권사들…삼성·두나무,한투·코인원 손잡는다",
-    "코스피, 8180선 약보합 마감…장중 변동성 확대",
-    "하락 마감한 국내 증시",
-    "코스피 숨고르기",
-    "코스피 숨고르기",
-    "하락 마감한 코스피",
-    "하락 마감한 국내 증시",
-    "하락 마감한 국내 증시",
-    "코스피·코스닥 하락 마감"
+    "코윈테크, 대한상의·포브스 사회공헌대상 ESG경영 부문 '대상'",
+    "코인원, 한투증권·글로벌거래소 OKX 투자 유치…차명훈 대표 경영권 유지",
+    "[특징주] 'AI협력' 젠슨황 방한 기대감에 LG전자 역대 최고가·상한가(종합)",
+    "상승 마감한 코스피",
+    "상승 마감한 코스피",
+    "“젠슨 황 한국 온다”…코스피 또 최고치 경신, 8476.15로 마감",
+    "오늘 증시 상황은?",
+    "오늘 증시 상황은?",
+    "증시 마감 시황은?",
+    "8500선도 넘보는 코스피"
   ]
 }

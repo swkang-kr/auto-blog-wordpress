@@ -1,108 +1,67 @@
 {
-  "exported_at": "2026-05-28T07:00:01.711203+00:00",
-  "date": "20260528",
+  "exported_at": "2026-05-29T07:00:04.741542+00:00",
+  "date": "20260529",
   "hot_themes": [
     {
-      "name": "MLCC(적층세라믹콘덴서)",
-      "change_rate": 8.97
-    },
-    {
-      "name": "2차전지(생산)",
-      "change_rate": 7.98
-    },
-    {
-      "name": "편의점",
-      "change_rate": 4.29
-    },
-    {
-      "name": "2차전지(나트륨이온)",
-      "change_rate": 3.66
-    },
-    {
-      "name": "리튬",
-      "change_rate": 2.96
-    },
-    {
-      "name": "영화",
-      "change_rate": 2.27
-    },
-    {
-      "name": "2차전지(전고체)",
-      "change_rate": 2.06
-    },
-    {
-      "name": "캐릭터상품",
-      "change_rate": 1.69
-    },
-    {
-      "name": "백화점",
-      "change_rate": 1.58
+      "name": "IT 대표주",
+      "change_rate": 11.9
     },
     {
       "name": "인터넷 대표주",
-      "change_rate": 1.07
+      "change_rate": 9.38
     },
     {
-      "name": "종합 물류",
-      "change_rate": 1.04
+      "name": "퓨리오사AI",
+      "change_rate": 6.75
     },
     {
-      "name": "렌터카",
-      "change_rate": 0.9
+      "name": "자동차 대표주",
+      "change_rate": 5.03
     },
     {
-      "name": "니켈",
-      "change_rate": 0.84
+      "name": "통신",
+      "change_rate": 4.2
     },
     {
-      "name": "전력저장장치(ESS)",
-      "change_rate": 0.82
+      "name": "건설 대표주",
+      "change_rate": 3.47
     },
     {
-      "name": "건설 중소형",
-      "change_rate": 0.52
-    }
-  ],
-  "cold_themes": [
+      "name": "제습기",
+      "change_rate": 3.36
+    },
     {
       "name": "반도체 기판(FC-BGA/PCB/MLB 등)",
-      "change_rate": -0.21
+      "change_rate": 3.27
     },
     {
-      "name": "폐기물처리",
-      "change_rate": -0.21
+      "name": "영화",
+      "change_rate": 2.88
     },
     {
-      "name": "2차전지",
-      "change_rate": -0.21
+      "name": "SI(시스템통합)",
+      "change_rate": 2.79
     },
     {
-      "name": "LPG(액화석유가스)",
-      "change_rate": -0.2
+      "name": "두나무(Dunamu)",
+      "change_rate": 2.69
     },
     {
-      "name": "정유",
-      "change_rate": -0.19
+      "name": "AI 챗봇(챗GPT 등)",
+      "change_rate": 2.61
     },
     {
-      "name": "2차전지(LFP/리튬인산철)",
-      "change_rate": -0.11
+      "name": "피지컬 AI/휴머노이드 로봇",
+      "change_rate": 2.57
     },
     {
-      "name": "쿠팡(coupang)",
-      "change_rate": -0.09
+      "name": "2차전지(생산)",
+      "change_rate": 2.43
     },
     {
-      "name": "면세점",
-      "change_rate": -0.09
-    },
-    {
-      "name": "마켓컬리(kurly)",
-      "change_rate": -0.04
-    },
-    {
-      "name": "IT 대표주",
-      "change_rate": -0.01
+      "name": "음성인식",
+      "change_rate": 2.32
     }
-  ]
+  ],
+  "cold_themes": []
 }

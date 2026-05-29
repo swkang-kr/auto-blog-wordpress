@@ -1,34 +1,90 @@
 {
-  "exported_at": "2026-05-28T07:00:02.623435+00:00",
-  "total_candidates": 5,
+  "exported_at": "2026-05-29T07:00:05.941844+00:00",
+  "total_candidates": 9,
   "total_holdings": 2,
   "candidates": [
+    {
+      "stock_code": "064400",
+      "stock_name": "LG씨엔에스",
+      "sector": "IT서비스",
+      "signal_count": 6,
+      "avg_confidence": 1.0,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MACD히스토그램↑ | RSI모멘텀(73) | 거래량3.6x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+20.9%vsKOSPI+1.9%) | 디커플링모멘텀",
+      "price_at_signal": 0,
+      "signal_time": "2026-05-29T01:18:21.244811",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "001340",
+      "stock_name": "PKC",
+      "sector": "",
+      "signal_count": 6,
+      "avg_confidence": 0.8555333333333334,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MACD히스토그램↑ | 거래량11.2x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-05-29T01:17:22.709243",
+      "status": "매수 시그널"
+    },
     {
       "stock_code": "403870",
       "stock_name": "HPSP",
       "sector": "반도체와반도체장비",
-      "signal_count": 15,
-      "avg_confidence": 0.5833000000000002,
+      "signal_count": 5,
+      "avg_confidence": 0.5,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "reason": "MA정배열 | EMA20하방 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-05-28T05:56:21.738587",
+      "signal_time": "2026-05-29T01:17:22.709255",
       "status": "매수 시그널"
     },
     {
       "stock_code": "306620",
       "stock_name": "지아이에스",
       "sector": "반도체와반도체장비",
-      "signal_count": 14,
+      "signal_count": 5,
+      "avg_confidence": 0.5,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MA정배열 | EMA20하방 | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-05-29T01:17:22.709251",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "003550",
+      "stock_name": "LG",
+      "sector": "",
+      "signal_count": 4,
       "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(55) | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+1.4%vsKOSPI-1.3%) | 디커플링모멘텀",
+      "reason": "MACD히스토그램↑ | RSI모멘텀(63) | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+9.7%vsKOSPI+2.1%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-05-28T05:57:22.354784",
+      "signal_time": "2026-05-29T01:19:21.024414",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "006660",
+      "stock_name": "삼성공조",
+      "sector": "",
+      "signal_count": 4,
+      "avg_confidence": 0.6333,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MACD히스토그램↑ | 거래량14.6x | 거래량3x+ | MA정배열 | 캔들슈팅스타(약세) | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-05-29T01:17:22.709247",
       "status": "매수 시그널"
     },
     {
@@ -44,6 +100,18 @@
       "status": "장중 워치리스트"
     },
     {
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "sector": "",
+      "signal_count": 3,
+      "avg_confidence": 0.85,
+      "strategies": [],
+      "reason": "score=8.50, ranked_score=25.50",
+      "price_at_signal": 0,
+      "signal_time": "2026-05-15T15:25:00.010723+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
       "stock_code": "001450",
       "stock_name": "현대해상",
       "sector": "",
@@ -54,20 +122,6 @@
       "price_at_signal": 0,
       "signal_time": "2026-05-15T15:25:00.010723+09:00",
       "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "sector": "반도체",
-      "signal_count": 1,
-      "avg_confidence": 1.0,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-3.0%)",
-      "price_at_signal": 0,
-      "signal_time": "2026-05-28T05:58:21.273988",
-      "status": "매수 시그널"
     }
   ],
   "holdings": [
