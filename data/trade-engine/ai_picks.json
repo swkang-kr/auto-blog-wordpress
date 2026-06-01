@@ -1,90 +1,76 @@
 {
-  "exported_at": "2026-05-29T07:00:05.941844+00:00",
-  "total_candidates": 9,
+  "exported_at": "2026-06-01T07:00:03.059665+00:00",
+  "total_candidates": 8,
   "total_holdings": 2,
   "candidates": [
     {
-      "stock_code": "064400",
-      "stock_name": "LG씨엔에스",
-      "sector": "IT서비스",
+      "stock_code": "001820",
+      "stock_name": "삼화콘덴서",
+      "sector": "",
+      "signal_count": 7,
+      "avg_confidence": 0.7167000000000001,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "거래량5.4x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-06-01T06:04:23.914253",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "005380",
+      "stock_name": "현대차",
+      "sector": "자동차",
       "signal_count": 6,
       "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(73) | 거래량3.6x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+20.9%vsKOSPI+1.9%) | 디커플링모멘텀",
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(68) | MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-05-29T01:18:21.244811",
+      "signal_time": "2026-06-01T06:05:24.111727",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "001340",
-      "stock_name": "PKC",
-      "sector": "",
+      "stock_code": "034220",
+      "stock_name": "LG디스플레이",
+      "sector": "디스플레이패널",
       "signal_count": 6,
-      "avg_confidence": 0.8555333333333334,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MACD히스토그램↑ | 거래량11.2x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
-      "price_at_signal": 0,
-      "signal_time": "2026-05-29T01:17:22.709243",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "403870",
-      "stock_name": "HPSP",
-      "sector": "반도체와반도체장비",
-      "signal_count": 5,
-      "avg_confidence": 0.5,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MA정배열 | EMA20하방 | 주봉골든크로스 | 주봉MA20위",
-      "price_at_signal": 0,
-      "signal_time": "2026-05-29T01:17:22.709255",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "306620",
-      "stock_name": "지아이에스",
-      "sector": "반도체와반도체장비",
-      "signal_count": 5,
-      "avg_confidence": 0.5,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MA정배열 | EMA20하방 | 주봉골든크로스 | 주봉MA20위",
-      "price_at_signal": 0,
-      "signal_time": "2026-05-29T01:17:22.709251",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "003550",
-      "stock_name": "LG",
-      "sector": "",
-      "signal_count": 4,
       "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(63) | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+9.7%vsKOSPI+2.1%) | 디커플링모멘텀",
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(63) | 거래량3.1x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-05-29T01:19:21.024414",
+      "signal_time": "2026-06-01T06:05:24.111723",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "006660",
-      "stock_name": "삼성공조",
+      "stock_code": "011790",
+      "stock_name": "SKC",
       "sector": "",
-      "signal_count": 4,
-      "avg_confidence": 0.6333,
+      "signal_count": 6,
+      "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | 거래량14.6x | 거래량3x+ | MA정배열 | 캔들슈팅스타(약세) | 주봉골든크로스 | 주봉MA20위",
+      "reason": "2일연속상승 | MACD골든크로스 | RSI모멘텀(67) | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+25.1%vsKOSPI+4.2%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-05-29T01:17:22.709247",
+      "signal_time": "2026-06-01T06:05:24.111711",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "009420",
+      "stock_name": "한올바이오파마",
+      "sector": "",
+      "signal_count": 5,
+      "avg_confidence": 0.5,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-06-01T06:04:23.914255",
       "status": "매수 시그널"
     },
     {

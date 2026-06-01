@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-05-29T07:00:04.676139+00:00",
+  "exported_at": "2026-06-01T07:00:01.796383+00:00",
   "market_daily": [
+    {
+      "date": "20260601",
+      "kospi_change": 3.68,
+      "kosdaq_change": -2.3,
+      "foreign_net": -291.43,
+      "institution_net": 253.5,
+      "individual_net": 37.74,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260529",
       "kospi_change": 3.55,
       "kosdaq_change": -2.68,
       "foreign_net": -104.2,
-      "institution_net": 236.85,
-      "individual_net": -140.42,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "institution_net": 236.87,
+      "individual_net": -140.44,
+      "hot_theme_count": 8,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260528",
@@ -99,29 +110,18 @@
       "hot_theme_count": 11,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260508",
-      "kospi_change": 0.11,
-      "kosdaq_change": 0.71,
-      "foreign_net": -559.0,
-      "institution_net": 154.76,
-      "individual_net": 397.5,
-      "hot_theme_count": 14,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "코윈테크, 대한상의·포브스 사회공헌대상 ESG경영 부문 '대상'",
-    "코인원, 한투증권·글로벌거래소 OKX 투자 유치…차명훈 대표 경영권 유지",
-    "[특징주] 'AI협력' 젠슨황 방한 기대감에 LG전자 역대 최고가·상한가(종합)",
-    "상승 마감한 코스피",
-    "상승 마감한 코스피",
-    "“젠슨 황 한국 온다”…코스피 또 최고치 경신, 8476.15로 마감",
-    "오늘 증시 상황은?",
-    "오늘 증시 상황은?",
-    "증시 마감 시황은?",
-    "8500선도 넘보는 코스피"
+    "李 “축구 실력 빼면 손흥민도 보통사람?”…‘코스피서 반도체 왜 빼나’ 반박",
+    "IPO 가로막는 '주주 동의' 중복상장 규제",
+    "ETF 500조 시대…삼성 ‘아시아 1위’·미래 ‘글로벌 12위’ 도약",
+    "코스피, 사상 최고치…'대장주' 삼성전자·하이닉스도 상승 마감",
+    "진짜 1위는 누구…오비·하이트의 '무알코올' 전쟁",
+    "코스피 또 사상 최고치 경신",
+    "코스피, 종가 기준 첫 8700선 돌파…AI 랠리에 사상 최고",
+    "삼성전자, 시총 2000조 돌파",
+    "코스피 사상 최고, 코스닥은 하락 마감",
+    "코스피 사상 최고, 코스닥은 하락 마감"
   ]
 }

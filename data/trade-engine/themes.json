@@ -1,67 +1,108 @@
 {
-  "exported_at": "2026-05-29T07:00:04.741542+00:00",
-  "date": "20260529",
+  "exported_at": "2026-06-01T07:00:01.852449+00:00",
+  "date": "20260601",
   "hot_themes": [
     {
       "name": "IT 대표주",
-      "change_rate": 11.9
+      "change_rate": 9.21
     },
     {
       "name": "인터넷 대표주",
-      "change_rate": 9.38
-    },
-    {
-      "name": "퓨리오사AI",
-      "change_rate": 6.75
-    },
-    {
-      "name": "자동차 대표주",
-      "change_rate": 5.03
-    },
-    {
-      "name": "통신",
-      "change_rate": 4.2
-    },
-    {
-      "name": "건설 대표주",
-      "change_rate": 3.47
+      "change_rate": 8.91
     },
     {
       "name": "제습기",
-      "change_rate": 3.36
+      "change_rate": 5.43
     },
     {
-      "name": "반도체 기판(FC-BGA/PCB/MLB 등)",
-      "change_rate": 3.27
+      "name": "통신",
+      "change_rate": 4.7
     },
     {
-      "name": "영화",
-      "change_rate": 2.88
+      "name": "공기청정기",
+      "change_rate": 3.39
     },
     {
-      "name": "SI(시스템통합)",
-      "change_rate": 2.79
+      "name": "반도체 대표주(생산)",
+      "change_rate": 3.06
     },
     {
-      "name": "두나무(Dunamu)",
-      "change_rate": 2.69
+      "name": "무선충전기술",
+      "change_rate": 2.36
     },
     {
-      "name": "AI 챗봇(챗GPT 등)",
-      "change_rate": 2.61
+      "name": "3D 프린터",
+      "change_rate": 1.73
     },
     {
       "name": "피지컬 AI/휴머노이드 로봇",
-      "change_rate": 2.57
+      "change_rate": 1.26
     },
     {
-      "name": "2차전지(생산)",
-      "change_rate": 2.43
+      "name": "전선",
+      "change_rate": 1.25
     },
     {
-      "name": "음성인식",
-      "change_rate": 2.32
+      "name": "지능형로봇/인공지능(AI)",
+      "change_rate": 1.1
+    },
+    {
+      "name": "스마트팩토리(스마트공장)",
+      "change_rate": 1.02
+    },
+    {
+      "name": "스마트홈(홈네트워크)",
+      "change_rate": 0.64
+    },
+    {
+      "name": "전자결제(전자화폐)",
+      "change_rate": 0.51
+    },
+    {
+      "name": "생명보험",
+      "change_rate": 0.5
     }
   ],
-  "cold_themes": []
+  "cold_themes": [
+    {
+      "name": "전력설비",
+      "change_rate": -0.84
+    },
+    {
+      "name": "은행",
+      "change_rate": -0.75
+    },
+    {
+      "name": "가상현실(VR)",
+      "change_rate": -0.73
+    },
+    {
+      "name": "자원개발",
+      "change_rate": -0.72
+    },
+    {
+      "name": "딥페이크(deepfake)",
+      "change_rate": -0.71
+    },
+    {
+      "name": "윤활유",
+      "change_rate": -0.7
+    },
+    {
+      "name": "스테이블코인",
+      "change_rate": -0.67
+    },
+    {
+      "name": "미용기기",
+      "change_rate": -0.63
+    },
+    {
+      "name": "타이어",
+      "change_rate": -0.61
+    },
+    {
+      "name": "조선",
+      "change_rate": -0.53
+    }
+  ]
 }
