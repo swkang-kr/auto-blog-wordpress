@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-06-01T07:00:01.796383+00:00",
+  "exported_at": "2026-06-02T07:00:02.095768+00:00",
   "market_daily": [
+    {
+      "date": "20260602",
+      "kospi_change": 0.15,
+      "kosdaq_change": -2.29,
+      "foreign_net": -659.41,
+      "institution_net": 24.09,
+      "individual_net": 634.85,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260601",
       "kospi_change": 3.68,
       "kosdaq_change": -2.3,
       "foreign_net": -291.43,
-      "institution_net": 253.5,
-      "individual_net": 37.74,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "institution_net": 253.51,
+      "individual_net": 37.8,
+      "hot_theme_count": 6,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260529",
@@ -99,29 +110,18 @@
       "hot_theme_count": 3,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260511",
-      "kospi_change": 4.32,
-      "kosdaq_change": -0.03,
-      "foreign_net": -347.98,
-      "institution_net": 61.93,
-      "individual_net": 286.69,
-      "hot_theme_count": 11,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "李 “축구 실력 빼면 손흥민도 보통사람?”…‘코스피서 반도체 왜 빼나’ 반박",
-    "IPO 가로막는 '주주 동의' 중복상장 규제",
-    "ETF 500조 시대…삼성 ‘아시아 1위’·미래 ‘글로벌 12위’ 도약",
-    "코스피, 사상 최고치…'대장주' 삼성전자·하이닉스도 상승 마감",
-    "진짜 1위는 누구…오비·하이트의 '무알코올' 전쟁",
-    "코스피 또 사상 최고치 경신",
-    "코스피, 종가 기준 첫 8700선 돌파…AI 랠리에 사상 최고",
-    "삼성전자, 시총 2000조 돌파",
-    "코스피 사상 최고, 코스닥은 하락 마감",
-    "코스피 사상 최고, 코스닥은 하락 마감"
+    "외국인 6.6조 코스피 순매도에…달러·원 12.1원 오른 1516.4원(종합)",
+    "코스피, 또 사상 최고치 마감",
+    "코스피, 외국인 거센 매도에도 8800선 방어...개미의 힘[fn마감시황]",
+    "삼성전자 강세에 코스피 최고치 경신, 8800선 마감",
+    "코스피, 또 사상 최고치 마감",
+    "코스피, 또 사상 최고치 마감",
+    "삼성전자 강세에 코스피 최고치 경신",
+    "8,800대로 상승 마감한 코스피",
+    "아티스트컴퍼니, 스튜디오지담과 전략적 제휴…55억원 확보해 신사업 투자",
+    "8,800대로 상승 마감한 코스피"
   ]
 }
