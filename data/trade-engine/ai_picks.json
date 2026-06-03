@@ -1,48 +1,62 @@
 {
-  "exported_at": "2026-06-02T07:00:02.963774+00:00",
-  "total_candidates": 6,
+  "exported_at": "2026-06-03T07:00:02.279505+00:00",
+  "total_candidates": 7,
   "total_holdings": 2,
   "candidates": [
+    {
+      "stock_code": "006660",
+      "stock_name": "삼성공조",
+      "sector": "",
+      "signal_count": 8,
+      "avg_confidence": 0.7832999999999999,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "거래량3.7x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-06-03T06:03:36.140614",
+      "status": "매수 시그널"
+    },
     {
       "stock_code": "020150",
       "stock_name": "롯데에너지머티리얼즈",
       "sector": "",
-      "signal_count": 11,
-      "avg_confidence": 0.8333000000000002,
+      "signal_count": 8,
+      "avg_confidence": 0.8833000000000001,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | RSI모멘텀(58) | 거래량2.7x | MA역배열 | 캔들슈팅스타(약세) | 주봉골든크로스 | 주봉MA20위 | 상대강도(+4.5%vsKOSPI-0.4%) | 디커플링모멘텀",
+      "reason": "2일연속상승 | RSI모멘텀(58) | 거래량3.5x | 거래량3x+ | MA역배열 | 캔들슈팅스타(약세) | 주봉골든크로스 | 주봉MA20위 | 상대강도(+4.7%vsKOSPI+0.1%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-06-02T05:32:32.244797",
+      "signal_time": "2026-06-03T06:03:36.140606",
       "status": "매수 시그널"
     },
     {
       "stock_code": "034220",
       "stock_name": "LG디스플레이",
       "sector": "디스플레이패널",
-      "signal_count": 10,
+      "signal_count": 7,
       "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(65) | 거래량3.7x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+7.8%vsKOSPI-0.4%) | 디커플링모멘텀",
+      "reason": "MACD히스토그램↑ | RSI모멘텀(63) | 거래량4.4x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+5.6%vsKOSPI+0.1%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-06-02T05:33:23.649541",
+      "signal_time": "2026-06-03T06:04:36.880482",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "006660",
-      "stock_name": "삼성공조",
+      "stock_code": "085620",
+      "stock_name": "미래에셋생명",
       "sector": "",
-      "signal_count": 9,
-      "avg_confidence": 0.6333000000000001,
+      "signal_count": 7,
+      "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "거래량3.6x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(62) | 거래량12.3x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+14.3%vsKOSPI+0.1%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-06-02T05:32:32.244800",
+      "signal_time": "2026-06-03T06:04:36.880468",
       "status": "매수 시그널"
     },
     {
