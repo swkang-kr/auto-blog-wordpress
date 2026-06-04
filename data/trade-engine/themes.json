@@ -1,80 +1,67 @@
 {
-  "exported_at": "2026-06-03T07:00:01.457751+00:00",
-  "date": "20260603",
+  "exported_at": "2026-06-04T07:00:01.552714+00:00",
+  "date": "20260604",
   "hot_themes": [
     {
-      "name": "생명보험",
-      "change_rate": 7.95
+      "name": "백화점",
+      "change_rate": 7.45
+    },
+    {
+      "name": "반도체 장비",
+      "change_rate": 6.89
+    },
+    {
+      "name": "반도체 기판(FC-BGA/PCB/MLB 등)",
+      "change_rate": 6.7
+    },
+    {
+      "name": "광통신(광케이블/광섬유 등)",
+      "change_rate": 6.65
+    },
+    {
+      "name": "HBM(고대역폭메모리)",
+      "change_rate": 6.35
+    },
+    {
+      "name": "LED장비",
+      "change_rate": 5.96
     },
     {
       "name": "서울고속버스터미널 재개발 수혜",
-      "change_rate": 5.16
-    },
-    {
-      "name": "통신",
-      "change_rate": 3.75
-    },
-    {
-      "name": "백화점",
-      "change_rate": 3.24
+      "change_rate": 4.92
     },
     {
       "name": "면세점",
-      "change_rate": 2.81
+      "change_rate": 4.78
     },
     {
-      "name": "토스(toss)",
-      "change_rate": 1.89
+      "name": "소캠(SOCAMM)",
+      "change_rate": 4.49
     },
     {
-      "name": "출산장려정책",
-      "change_rate": 1.82
+      "name": "반도체 재료/부품",
+      "change_rate": 4.34
     },
     {
-      "name": "홈쇼핑",
-      "change_rate": 1.77
+      "name": "통신장비",
+      "change_rate": 4.13
     },
     {
-      "name": "손해보험",
-      "change_rate": 1.63
+      "name": "CXL(컴퓨트익스프레스링크)",
+      "change_rate": 3.81
     },
     {
-      "name": "소매유통",
-      "change_rate": 1.51
+      "name": "전자파",
+      "change_rate": 3.79
     },
     {
-      "name": "인터넷 대표주",
-      "change_rate": 1.48
+      "name": "온디바이스 AI",
+      "change_rate": 3.78
     },
     {
-      "name": "NFT(대체불가토큰)",
-      "change_rate": 1.48
-    },
-    {
-      "name": "게임",
-      "change_rate": 1.43
-    },
-    {
-      "name": "엔젤산업",
-      "change_rate": 1.37
-    },
-    {
-      "name": "제습기",
-      "change_rate": 1.13
+      "name": "피팅(관이음쇠)/밸브",
+      "change_rate": 3.77
     }
   ],
-  "cold_themes": [
-    {
-      "name": "음성인식",
-      "change_rate": -0.09
-    },
-    {
-      "name": "SNS(소셜네트워크서비스)",
-      "change_rate": -0.07
-    },
-    {
-      "name": "기업인수목적회사(SPAC)",
-      "change_rate": -0.03
-    }
-  ]
+  "cold_themes": []
 }

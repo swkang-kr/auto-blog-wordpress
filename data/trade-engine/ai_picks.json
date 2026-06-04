@@ -1,75 +1,63 @@
 {
-  "exported_at": "2026-06-03T07:00:02.279505+00:00",
-  "total_candidates": 7,
+  "exported_at": "2026-06-04T07:00:02.373001+00:00",
+  "total_candidates": 6,
   "total_holdings": 2,
   "candidates": [
     {
-      "stock_code": "006660",
-      "stock_name": "삼성공조",
+      "stock_code": "003550",
+      "stock_name": "LG",
       "sector": "",
-      "signal_count": 8,
-      "avg_confidence": 0.7832999999999999,
+      "signal_count": 12,
+      "avg_confidence": 0.5833000000000003,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "거래량3.7x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "reason": "거래량2.6x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-06-03T06:03:36.140614",
+      "signal_time": "2026-06-04T05:59:37.451009",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "020150",
-      "stock_name": "롯데에너지머티리얼즈",
+      "stock_code": "011790",
+      "stock_name": "SKC",
       "sector": "",
-      "signal_count": 8,
-      "avg_confidence": 0.8833000000000001,
+      "signal_count": 12,
+      "avg_confidence": 0.8333,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | RSI모멘텀(58) | 거래량3.5x | 거래량3x+ | MA역배열 | 캔들슈팅스타(약세) | 주봉골든크로스 | 주봉MA20위 | 상대강도(+4.7%vsKOSPI+0.1%) | 디커플링모멘텀",
+      "reason": "RSI모멘텀(58) | 거래량2.4x | 주봉골든크로스 | 주봉MA20위 | 상대강도(+9.8%vsKOSPI-1.6%)",
       "price_at_signal": 0,
-      "signal_time": "2026-06-03T06:03:36.140606",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "034220",
-      "stock_name": "LG디스플레이",
-      "sector": "디스플레이패널",
-      "signal_count": 7,
-      "avg_confidence": 1.0,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(63) | 거래량4.4x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+5.6%vsKOSPI+0.1%) | 디커플링모멘텀",
-      "price_at_signal": 0,
-      "signal_time": "2026-06-03T06:04:36.880482",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "085620",
-      "stock_name": "미래에셋생명",
-      "sector": "",
-      "signal_count": 7,
-      "avg_confidence": 1.0,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(62) | 거래량12.3x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+14.3%vsKOSPI+0.1%) | 디커플링모멘텀",
-      "price_at_signal": 0,
-      "signal_time": "2026-06-03T06:04:36.880468",
+      "signal_time": "2026-06-04T05:59:37.451007",
       "status": "매수 시그널"
     },
     {
       "stock_code": "000660",
       "stock_name": "SK하이닉스",
+      "sector": "반도체",
+      "signal_count": 3,
+      "avg_confidence": 1.0,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-3.0%)",
+      "price_at_signal": 0,
+      "signal_time": "2026-06-04T06:06:36.972590",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "006660",
+      "stock_name": "삼성공조",
       "sector": "",
       "signal_count": 3,
-      "avg_confidence": 0.85,
-      "strategies": [],
-      "reason": "score=10.50, ranked_score=31.50",
+      "avg_confidence": 0.5833,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "거래량2.8x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-05-15T15:25:00.010723+09:00",
-      "status": "장중 워치리스트"
+      "signal_time": "2026-06-04T05:59:37.451011",
+      "status": "매수 시그널"
     },
     {
       "stock_code": "005930",
