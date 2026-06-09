@@ -1,41 +1,4 @@
 {
-  "exported_at": "2026-06-04T07:00:01.064710+00:00",
-  "trades": [
-    {
-      "stock_code": "018260",
-      "stock_name": "",
-      "side": "buy",
-      "quantity": 1,
-      "price": 271000.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "mirror_order(acc2)",
-      "reason": "acc2 mirror_order",
-      "filled_at": "2026-06-04T03:55:47.305476"
-    },
-    {
-      "stock_code": "018260",
-      "stock_name": "",
-      "side": "buy",
-      "quantity": 1,
-      "price": 264000.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "mirror_order(acc2)",
-      "reason": "acc2 mirror_order",
-      "filled_at": "2026-06-04T01:42:45.786893"
-    },
-    {
-      "stock_code": "018260",
-      "stock_name": "",
-      "side": "buy",
-      "quantity": 1,
-      "price": 262500.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "mirror_order(acc2)",
-      "reason": "acc2 mirror_order",
-      "filled_at": "2026-06-04T01:11:50.834727"
-    }
-  ]
+  "exported_at": "2026-06-09T07:00:01.114096+00:00",
+  "trades": []
 }

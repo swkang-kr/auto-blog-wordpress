@@ -1,132 +1,18 @@
 {
-  "exported_at": "2026-06-04T07:00:01.647543+00:00",
-  "period": "20d",
+  "exported_at": "2026-06-09T07:00:01.729350+00:00",
+  "period": "1d",
   "summary": {
-    "foreign_net_total": -5619.0,
-    "institution_net_total": 1204.0,
-    "individual_net_total": 4375.0,
-    "dominant_buyer": "개인"
+    "foreign_net_total": -201.0,
+    "institution_net_total": 250.0,
+    "individual_net_total": -62.0,
+    "dominant_buyer": "기관"
   },
   "daily": [
     {
-      "date": "20260604",
-      "foreign_net": -695.29,
-      "institution_net": 180.91,
-      "individual_net": 501.59
-    },
-    {
-      "date": "20260603",
-      "foreign_net": -630.35,
-      "institution_net": -5.46,
-      "individual_net": 635.37
-    },
-    {
-      "date": "20260602",
-      "foreign_net": -659.87,
-      "institution_net": 24.09,
-      "individual_net": 635.34
-    },
-    {
-      "date": "20260601",
-      "foreign_net": -291.43,
-      "institution_net": 253.51,
-      "individual_net": 37.8
-    },
-    {
-      "date": "20260529",
-      "foreign_net": -104.2,
-      "institution_net": 236.87,
-      "individual_net": -140.44
-    },
-    {
-      "date": "20260528",
-      "foreign_net": -289.57,
-      "institution_net": -88.79,
-      "individual_net": 363.28
-    },
-    {
-      "date": "20260527",
-      "foreign_net": -44.98,
-      "institution_net": 18.8,
-      "individual_net": 40.65
-    },
-    {
-      "date": "20260526",
-      "foreign_net": -18.45,
-      "institution_net": 91.05,
-      "individual_net": -61.58
-    },
-    {
-      "date": "20260520",
-      "foreign_net": -292.93,
-      "institution_net": 110.53,
-      "individual_net": 171.06
-    },
-    {
-      "date": "20260514",
-      "foreign_net": -214.48,
-      "institution_net": 19.22,
-      "individual_net": 183.78
-    },
-    {
-      "date": "20260513",
-      "foreign_net": -372.26,
-      "institution_net": 168.76,
-      "individual_net": 188.68
-    },
-    {
-      "date": "20260512",
-      "foreign_net": -560.91,
-      "institution_net": -121.38,
-      "individual_net": 668.19
-    },
-    {
-      "date": "20260511",
-      "foreign_net": -347.98,
-      "institution_net": 61.93,
-      "individual_net": 286.69
-    },
-    {
-      "date": "20260508",
-      "foreign_net": -559.0,
-      "institution_net": 154.76,
-      "individual_net": 397.5
-    },
-    {
-      "date": "20260507",
-      "foreign_net": -714.92,
-      "institution_net": 109.55,
-      "individual_net": 599.25
-    },
-    {
-      "date": "20260506",
-      "foreign_net": 313.46,
-      "institution_net": -231.34,
-      "individual_net": -57.15
-    },
-    {
-      "date": "20260430",
-      "foreign_net": -145.59,
-      "institution_net": 28.38,
-      "individual_net": 118.72
-    },
-    {
-      "date": "20260429",
-      "foreign_net": -60.7,
-      "institution_net": 47.85,
-      "individual_net": 16.67
-    },
-    {
-      "date": "20260428",
-      "foreign_net": -18.44,
-      "institution_net": 35.11,
-      "individual_net": -13.05
-    },
-    {
-      "date": "20260427",
-      "foreign_net": 89.05,
-      "institution_net": 110.07,
-      "individual_net": -197.57
+      "date": "20260609",
+      "foreign_net": -200.7,
+      "institution_net": 250.43,
+      "individual_net": -61.7
     }
   ]
 }
