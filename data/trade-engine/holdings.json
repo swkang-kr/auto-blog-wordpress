@@ -1,4 +1,16 @@
 {
-  "exported_at": "2026-06-09T07:00:01.080768+00:00",
-  "holdings": []
+  "exported_at": "2026-06-10T07:00:01.747825+00:00",
+  "holdings": [
+    {
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "quantity": 10,
+      "avg_price": 300300.0,
+      "current_price": 300500.0,
+      "unrealized_pnl": 3903.8,
+      "unrealized_pnl_rate": 0.1097,
+      "strategy": "",
+      "entry_date": "2026-06-09T15:00:00"
+    }
+  ]
 }

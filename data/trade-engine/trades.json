@@ -1,4 +1,29 @@
 {
-  "exported_at": "2026-06-09T07:00:01.114096+00:00",
-  "trades": []
+  "exported_at": "2026-06-10T07:00:01.769966+00:00",
+  "trades": [
+    {
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "side": "buy",
+      "quantity": 10,
+      "price": 302750.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "",
+      "filled_at": "2026-06-10T06:19:16.734900"
+    },
+    {
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "side": "buy",
+      "quantity": 6,
+      "price": 298250.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "",
+      "filled_at": "2026-06-10T05:01:29.320222"
+    }
+  ]
 }

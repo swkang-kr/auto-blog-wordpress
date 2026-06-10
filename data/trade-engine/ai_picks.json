@@ -1,90 +1,74 @@
 {
-  "exported_at": "2026-06-09T07:00:01.955895+00:00",
-  "total_candidates": 6,
-  "total_holdings": 0,
+  "exported_at": "2026-06-10T07:00:02.884904+00:00",
+  "total_candidates": 4,
+  "total_holdings": 1,
   "candidates": [
     {
-      "stock_code": "093370",
-      "stock_name": "후성",
-      "sector": "",
-      "signal_count": 7,
-      "avg_confidence": 0.7000000000000001,
+      "stock_code": "006220",
+      "stock_name": "제주은행",
+      "sector": "은행",
+      "signal_count": 8,
+      "avg_confidence": 0.8833000000000001,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "RSI모멘텀(57) | 거래량2.3x | MA역배열 | 주봉골든크로스 | 주봉RSI과열(72,-0.5) | 주봉MA20위 | 상대강도(+16.7%vsKOSPI+7.7%)",
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(52) | 거래량5.4x | 거래량3x+ | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+1.4%vsKOSPI-5.9%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-06-09T06:04:19.290011",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "035420",
-      "stock_name": "NAVER",
-      "sector": "IT서비스",
-      "signal_count": 6,
-      "avg_confidence": 0.7999999999999999,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "거래량2.8x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
-      "price_at_signal": 0,
-      "signal_time": "2026-06-09T06:05:20.825452",
+      "signal_time": "2026-06-10T06:02:03.416474",
       "status": "매수 시그널"
     },
     {
       "stock_code": "403870",
       "stock_name": "HPSP",
       "sector": "반도체와반도체장비",
-      "signal_count": 6,
+      "signal_count": 8,
       "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "RSI모멘텀(59) | 거래량2.2x | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+24.1%vsKOSPI+7.7%)",
+      "reason": "MACD골든크로스 | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(-0.5%vsKOSPI-5.9%)",
       "price_at_signal": 0,
-      "signal_time": "2026-06-09T06:05:20.825450",
+      "signal_time": "2026-06-10T06:02:03.416466",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "004100",
-      "stock_name": "태양금속",
-      "sector": "",
-      "signal_count": 6,
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "sector": "반도체",
+      "signal_count": 7,
       "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | MACD골든크로스 | RSI모멘텀(59) | 거래량2.7x | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+13.1%vsKOSPI+7.7%) | 디커플링모멘텀",
+      "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-6.8%) | 상대강도(-4.7%vsKOSPI-5.8%)",
       "price_at_signal": 0,
-      "signal_time": "2026-06-09T06:05:20.825441",
+      "signal_time": "2026-06-10T06:03:01.176567",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "003220",
-      "stock_name": "대원제약",
-      "sector": "",
-      "signal_count": 5,
-      "avg_confidence": 0.56,
+      "stock_code": "000660",
+      "stock_name": "SK하이닉스",
+      "sector": "반도체",
+      "signal_count": 7,
+      "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | 거래량37.6x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위",
+      "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-8.7%) | 상대강도(-3.8%vsKOSPI-5.8%)",
       "price_at_signal": 0,
-      "signal_time": "2026-06-09T06:04:19.290014",
+      "signal_time": "2026-06-10T06:03:01.176542",
       "status": "매수 시그널"
-    },
-    {
-      "stock_code": "055550",
-      "stock_name": "신한지주",
-      "sector": "은행",
-      "signal_count": 1,
-      "avg_confidence": 0.6265000000000001,
-      "strategies": [],
-      "reason": "score=3.20, ranked_score=1.92",
-      "price_at_signal": 0,
-      "signal_time": "2026-06-09T15:25:00.005688+09:00",
-      "status": "장중 워치리스트"
     }
   ],
-  "holdings": []
+  "holdings": [
+    {
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "quantity": 10,
+      "avg_price": 300300.0,
+      "strategy": "",
+      "entry_date": "2026-06-09",
+      "status": "보유 중"
+    }
+  ]
 }
