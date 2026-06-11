@@ -1,20 +1,20 @@
 {
-  "exported_at": "2026-06-10T07:00:02.884904+00:00",
-  "total_candidates": 4,
+  "exported_at": "2026-06-11T07:00:02.121339+00:00",
+  "total_candidates": 13,
   "total_holdings": 1,
   "candidates": [
     {
-      "stock_code": "006220",
-      "stock_name": "제주은행",
-      "sector": "은행",
+      "stock_code": "017860",
+      "stock_name": "DS단석",
+      "sector": "",
       "signal_count": 8,
-      "avg_confidence": 0.8833000000000001,
+      "avg_confidence": 0.8600000000000001,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(52) | 거래량5.4x | 거래량3x+ | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+1.4%vsKOSPI-5.9%) | 디커플링모멘텀",
+      "reason": "2일연속상승 | RSI반등(36) | RSI sweet(36) | 거래량4.1x | 거래량3x+ | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+6.0%vsKOSPI+0.0%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-06-10T06:02:03.416474",
+      "signal_time": "2026-06-11T05:56:03.396637",
       "status": "매수 시그널"
     },
     {
@@ -22,42 +22,150 @@
       "stock_name": "HPSP",
       "sector": "반도체와반도체장비",
       "signal_count": 8,
+      "avg_confidence": 0.9000000000000001,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MACD히스토그램↑ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-06-11T05:56:03.396629",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "000430",
+      "stock_name": "대원강업",
+      "sector": "",
+      "signal_count": 7,
+      "avg_confidence": 0.96,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "거래량8.1x | 거래량3x+ | MA정배열 | 캔들역해머(강) | 주봉골든크로스 | 주봉RSI과열(73,-0.5) | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-06-11T05:57:37.062638",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "051630",
+      "stock_name": "진양화학",
+      "sector": "",
+      "signal_count": 7,
       "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD골든크로스 | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(-0.5%vsKOSPI-5.9%)",
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(61) | 거래량2.2x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+14.4%vsKOSPI+0.0%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-06-10T06:02:03.416466",
+      "signal_time": "2026-06-11T05:57:37.062627",
       "status": "매수 시그널"
     },
     {
       "stock_code": "005930",
       "stock_name": "삼성전자",
       "sector": "반도체",
-      "signal_count": 7,
+      "signal_count": 5,
       "avg_confidence": 1.0,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-6.8%) | 상대강도(-4.7%vsKOSPI-5.8%)",
+      "strategies": [],
+      "reason": "score=6.50, ranked_score=19.50",
       "price_at_signal": 0,
-      "signal_time": "2026-06-10T06:03:01.176567",
-      "status": "매수 시그널"
+      "signal_time": "2026-06-11T15:25:00.010873+09:00",
+      "status": "장중 워치리스트"
     },
     {
-      "stock_code": "000660",
-      "stock_name": "SK하이닉스",
-      "sector": "반도체",
-      "signal_count": 7,
-      "avg_confidence": 1.0,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-8.7%) | 상대강도(-3.8%vsKOSPI-5.8%)",
+      "stock_code": "047810",
+      "stock_name": "한국항공우주",
+      "sector": "우주항공과국방",
+      "signal_count": 4,
+      "avg_confidence": 0.6,
+      "strategies": [],
+      "reason": "score=2.45, ranked_score=5.88",
       "price_at_signal": 0,
-      "signal_time": "2026-06-10T06:03:01.176542",
-      "status": "매수 시그널"
+      "signal_time": "2026-06-11T15:25:00.010873+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "017670",
+      "stock_name": "SK텔레콤",
+      "sector": "무선통신서비스",
+      "signal_count": 3,
+      "avg_confidence": 0.8795000000000001,
+      "strategies": [],
+      "reason": "score=4.05, ranked_score=7.29",
+      "price_at_signal": 0,
+      "signal_time": "2026-06-11T15:25:00.010873+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "024110",
+      "stock_name": "기업은행",
+      "sector": "은행",
+      "signal_count": 2,
+      "avg_confidence": 0.5,
+      "strategies": [],
+      "reason": "score=1.80, ranked_score=2.16",
+      "price_at_signal": 0,
+      "signal_time": "2026-06-11T15:25:00.010873+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "017900",
+      "stock_name": "광전자",
+      "sector": "전자장비와기기",
+      "signal_count": 2,
+      "avg_confidence": 0.4795,
+      "strategies": [],
+      "reason": "score=1.25, ranked_score=1.50",
+      "price_at_signal": 0,
+      "signal_time": "2026-06-11T15:25:00.010873+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "006220",
+      "stock_name": "제주은행",
+      "sector": "은행",
+      "signal_count": 1,
+      "avg_confidence": 0.9,
+      "strategies": [],
+      "reason": "score=6.30, ranked_score=3.78",
+      "price_at_signal": 0,
+      "signal_time": "2026-06-11T15:25:00.010873+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "034230",
+      "stock_name": "파라다이스",
+      "sector": "",
+      "signal_count": 1,
+      "avg_confidence": 0.8795000000000001,
+      "strategies": [],
+      "reason": "score=5.00, ranked_score=3.00",
+      "price_at_signal": 0,
+      "signal_time": "2026-06-11T15:25:00.010873+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "085620",
+      "stock_name": "미래에셋생명",
+      "sector": "",
+      "signal_count": 1,
+      "avg_confidence": 0.6395000000000001,
+      "strategies": [],
+      "reason": "score=2.89, ranked_score=1.73",
+      "price_at_signal": 0,
+      "signal_time": "2026-06-11T15:25:00.010873+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "010060",
+      "stock_name": "OCI홀딩스",
+      "sector": "",
+      "signal_count": 1,
+      "avg_confidence": 0.4795,
+      "strategies": [],
+      "reason": "score=1.25, ranked_score=0.75",
+      "price_at_signal": 0,
+      "signal_time": "2026-06-11T15:25:00.010873+09:00",
+      "status": "장중 워치리스트"
     }
   ],
   "holdings": [
