@@ -1,6 +1,18 @@
 {
-  "exported_at": "2026-06-11T07:00:01.221594+00:00",
+  "exported_at": "2026-06-12T07:00:00.988555+00:00",
   "trades": [
+    {
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "side": "sell",
+      "quantity": 10,
+      "price": 329500.0,
+      "pnl": 292000.0,
+      "pnl_rate": 9.7236,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "swing_trailing(peak=12.5%,step=3.0%,trail_sl=9.5%) [backfill: AttributeError로 기록 실패분]",
+      "filled_at": "2026-06-12T01:40:28"
+    },
     {
       "stock_code": "005930",
       "stock_name": "삼성전자",
