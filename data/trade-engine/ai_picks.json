@@ -1,34 +1,156 @@
 {
-  "exported_at": "2026-06-12T07:00:01.878449+00:00",
-  "total_candidates": 2,
+  "exported_at": "2026-06-15T07:00:01.775590+00:00",
+  "total_candidates": 11,
   "total_holdings": 0,
   "candidates": [
+    {
+      "stock_code": "035420",
+      "stock_name": "NAVER",
+      "sector": "IT서비스",
+      "signal_count": 6,
+      "avg_confidence": 0.7666666666666666,
+      "strategies": [],
+      "reason": "score=5.04, ranked_score=18.15",
+      "price_at_signal": 0,
+      "signal_time": "2026-06-15T15:25:00.117110+09:00",
+      "status": "장중 워치리스트"
+    },
     {
       "stock_code": "403870",
       "stock_name": "HPSP",
       "sector": "반도체와반도체장비",
-      "signal_count": 29,
+      "signal_count": 5,
+      "avg_confidence": 0.8,
+      "strategies": [],
+      "reason": "score=11.00, ranked_score=33.00",
+      "price_at_signal": 0,
+      "signal_time": "2026-06-15T15:25:00.117110+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "079900",
+      "stock_name": "전진건설로봇",
+      "sector": "",
+      "signal_count": 4,
+      "avg_confidence": 0.55,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD골든크로스 | RSI모멘텀(53) | 거래량3.1x | 거래량3x+ | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래",
+      "price_at_signal": 0,
+      "signal_time": "2026-06-15T05:38:18.059089",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "006220",
+      "stock_name": "제주은행",
+      "sector": "은행",
+      "signal_count": 4,
+      "avg_confidence": 0.75,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(59) | 거래량2.2x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래",
+      "price_at_signal": 0,
+      "signal_time": "2026-06-15T05:38:18.059081",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "001800",
+      "stock_name": "오리온홀딩스",
+      "sector": "",
+      "signal_count": 4,
+      "avg_confidence": 0.8333,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MACD히스토그램↑ | RSI모멘텀(55) | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-06-15T05:38:18.059068",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "028050",
+      "stock_name": "삼성E&A",
+      "sector": "건설",
+      "signal_count": 4,
+      "avg_confidence": 0.9167,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | RSI모멘텀(54) | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+9.9%vsKOSPI+4.8%) | 디커플링모멘텀",
+      "price_at_signal": 0,
+      "signal_time": "2026-06-15T05:38:18.059053",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "042700",
+      "stock_name": "한미반도체",
+      "sector": "반도체와반도체장비",
+      "signal_count": 4,
       "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(64) | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+18.7%vsKOSPI+7.2%) | 디커플링모멘텀",
+      "reason": "MACD히스토그램↑ | 거래량2.2x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-06-12T01:19:34.980187",
+      "signal_time": "2026-06-15T05:38:18.059036",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "079370",
-      "stock_name": "제우스",
+      "stock_code": "000240",
+      "stock_name": "한국앤컴퍼니",
+      "sector": "",
+      "signal_count": 3,
+      "avg_confidence": 1.0,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(71) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+8.2%vsKOSPI+4.7%) | 디커플링모멘텀",
+      "price_at_signal": 0,
+      "signal_time": "2026-06-15T05:53:29.143322",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "006360",
+      "stock_name": "GS건설",
+      "sector": "건설",
+      "signal_count": 3,
+      "avg_confidence": 1.0,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD골든크로스 | RSI모멘텀(50) | 거래량2.7x | MA역배열 | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-06-15T05:53:29.143319",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "020560",
+      "stock_name": "아시아나항공",
+      "sector": "",
+      "signal_count": 3,
+      "avg_confidence": 1.0,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD골든크로스 | RSI모멘텀(67) | 거래량2.9x | 주봉골든크로스 | 주봉MA20위 | 상대강도(+13.2%vsKOSPI+4.7%) | 디커플링모멘텀",
+      "price_at_signal": 0,
+      "signal_time": "2026-06-15T05:53:29.143310",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "004990",
+      "stock_name": "롯데지주",
       "sector": "",
       "signal_count": 1,
-      "avg_confidence": 0.2886,
+      "avg_confidence": 0.5833,
       "strategies": [
-        "dart_momentum"
+        "RSI+MACD(swing)"
       ],
-      "reason": "공시: 주요사항보고서(자기주식취득신탁계약체결결정) | 감성점수: 0.68 | 거래량급증: True",
+      "reason": "MACD히스토그램↑ | RSI모멘텀(50) | MA정배열",
       "price_at_signal": 0,
-      "signal_time": "2026-06-12T02:08:41.484098",
+      "signal_time": "2026-06-15T05:53:29.143334",
       "status": "매수 시그널"
     }
   ],
