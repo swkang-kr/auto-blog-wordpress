@@ -1,5 +1,5 @@
 {
-  "exported_at": "2026-06-16T07:00:01.362286+00:00",
+  "exported_at": "2026-06-17T07:00:01.147248+00:00",
   "trades": [
     {
       "stock_code": "005930",
@@ -12,30 +12,6 @@
       "strategy": "RSI+MACD(swing)",
       "reason": "swing_trailing(peak=12.5%,step=3.0%,trail_sl=9.5%) [backfill: AttributeError로 기록 실패분]",
       "filled_at": "2026-06-12T01:40:28"
-    },
-    {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "side": "buy",
-      "quantity": 10,
-      "price": 302750.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "",
-      "filled_at": "2026-06-10T06:19:16.734900"
-    },
-    {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "side": "buy",
-      "quantity": 6,
-      "price": 298250.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "",
-      "filled_at": "2026-06-10T05:01:29.320222"
     }
   ]
 }

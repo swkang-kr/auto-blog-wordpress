@@ -1,32 +1,20 @@
 {
-  "exported_at": "2026-06-16T07:00:02.329665+00:00",
-  "total_candidates": 16,
+  "exported_at": "2026-06-17T07:00:02.273550+00:00",
+  "total_candidates": 11,
   "total_holdings": 0,
   "candidates": [
     {
-      "stock_code": "010120",
-      "stock_name": "LS ELECTRIC",
-      "sector": "",
-      "signal_count": 6,
-      "avg_confidence": 0.5833333333333334,
-      "strategies": [],
-      "reason": "score=2.04, ranked_score=7.35",
-      "price_at_signal": 0,
-      "signal_time": "2026-06-16T15:25:00.097475+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "403870",
-      "stock_name": "HPSP",
-      "sector": "반도체와반도체장비",
+      "stock_code": "006360",
+      "stock_name": "GS건설",
+      "sector": "건설",
       "signal_count": 4,
-      "avg_confidence": 0.675,
+      "avg_confidence": 0.75,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "거래량4.4x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "reason": "MACD히스토그램↑ | 거래량2.3x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-06-16T05:45:13.445164",
+      "signal_time": "2026-06-17T05:49:36.539733",
       "status": "매수 시그널"
     },
     {
@@ -34,93 +22,69 @@
       "stock_name": "대한항공",
       "sector": "항공사",
       "signal_count": 4,
-      "avg_confidence": 0.675,
+      "avg_confidence": 0.75,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | 거래량3.0x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "reason": "MACD히스토그램↑ | 거래량2.7x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-06-16T05:45:13.445161",
+      "signal_time": "2026-06-17T05:49:36.539741",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "042700",
-      "stock_name": "한미반도체",
+      "stock_code": "403870",
+      "stock_name": "HPSP",
       "sector": "반도체와반도체장비",
       "signal_count": 4,
-      "avg_confidence": 0.8542,
+      "avg_confidence": 0.8,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | 거래량2.1x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "reason": "거래량3.4x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-06-16T05:45:13.445159",
+      "signal_time": "2026-06-17T05:49:36.539717",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "006360",
-      "stock_name": "GS건설",
-      "sector": "건설",
+      "stock_code": "008420",
+      "stock_name": "문배철강",
+      "sector": "",
       "signal_count": 4,
-      "avg_confidence": 1.0,
+      "avg_confidence": 0.8833,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(58) | 거래량2.8x | 주봉골든크로스 | 주봉MA20위 | 상대강도(+7.8%vsKOSPI+1.7%) | 디커플링모멘텀",
+      "reason": "MACD히스토그램↑ | RSI모멘텀(61) | 거래량3.6x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+14.9%vsKOSPI+1.4%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-06-16T05:45:13.445154",
+      "signal_time": "2026-06-17T05:49:36.539708",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "047040",
-      "stock_name": "대우건설",
-      "sector": "건설",
-      "signal_count": 4,
-      "avg_confidence": 1.0,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "2일연속상승 | MACD골든크로스 | RSI모멘텀(58) | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+21.8%vsKOSPI+1.7%) | 디커플링모멘텀",
-      "price_at_signal": 0,
-      "signal_time": "2026-06-16T05:45:13.445157",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "035420",
-      "stock_name": "NAVER",
+      "stock_code": "058430",
+      "stock_name": "포스코스틸리온",
       "sector": "",
       "signal_count": 4,
       "avg_confidence": 1.0,
-      "strategies": [],
-      "reason": "score=6.50, ranked_score=15.60",
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "RSI반등(27) | 거래량4.0x | 거래량3x+ | 주봉골든크로스 | 주봉MA20위 | 상대강도(+10.7%vsKOSPI+1.4%)",
       "price_at_signal": 0,
-      "signal_time": "2026-06-16T15:25:00.097475+09:00",
-      "status": "장중 워치리스트"
+      "signal_time": "2026-06-17T05:49:36.539700",
+      "status": "매수 시그널"
     },
     {
-      "stock_code": "108860",
-      "stock_name": "셀바스AI",
+      "stock_code": "092790",
+      "stock_name": "넥스틸",
       "sector": "",
       "signal_count": 4,
-      "avg_confidence": 0.6166666666666667,
-      "strategies": [],
-      "reason": "score=3.08, ranked_score=7.40",
-      "price_at_signal": 0,
-      "signal_time": "2026-06-16T15:25:00.097475+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "028050",
-      "stock_name": "삼성E&A",
-      "sector": "건설",
-      "signal_count": 3,
       "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | MACD골든크로스 | RSI모멘텀(61) | 거래량2.6x | 주봉골든크로스 | 주봉MA20위 | 상대강도(+7.7%vsKOSPI+1.7%) | 디커플링모멘텀",
+      "reason": "2일연속상승 | MACD골든크로스 | RSI모멘텀(54) | 거래량3.3x | 거래량3x+ | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+11.4%vsKOSPI+1.4%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-06-16T05:48:48.363305",
+      "signal_time": "2026-06-17T05:49:36.539663",
       "status": "매수 시그널"
     },
     {
@@ -128,77 +92,63 @@
       "stock_name": "LIG디펜스앤에어로스페이스",
       "sector": "우주항공과국방",
       "signal_count": 3,
+      "avg_confidence": 0.75,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MACD히스토그램↑ | 거래량2.2x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-06-17T05:49:36.539725",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "026940",
+      "stock_name": "부국철강",
+      "sector": "",
+      "signal_count": 3,
       "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(67) | 거래량2.2x | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+22.6%vsKOSPI+1.7%) | 디커플링모멘텀",
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(62) | 거래량7.7x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+9.5%vsKOSPI+1.4%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-06-16T05:48:48.363297",
+      "signal_time": "2026-06-17T05:49:36.539689",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "003160",
-      "stock_name": "디아이",
+      "stock_code": "042700",
+      "stock_name": "한미반도체",
       "sector": "반도체와반도체장비",
-      "signal_count": 2,
-      "avg_confidence": 0.5,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MACD히스토그램↑ | MA정배열",
+      "signal_count": 3,
+      "avg_confidence": 0.8166666666666667,
+      "strategies": [],
+      "reason": "score=5.04, ranked_score=9.07",
       "price_at_signal": 0,
-      "signal_time": "2026-06-16T06:05:48.380099",
-      "status": "매수 시그널"
+      "signal_time": "2026-06-17T15:25:00.088845+09:00",
+      "status": "장중 워치리스트"
     },
     {
-      "stock_code": "010690",
-      "stock_name": "화신",
-      "sector": "",
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "sector": "반도체",
       "signal_count": 2,
       "avg_confidence": 1.0,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "2일연속상승 | MACD골든크로스 | RSI모멘텀(63) | 거래량3.2x | 거래량3x+ | 상대강도(+30.0%vsKOSPI+1.5%) | 디커플링모멘텀",
-      "price_at_signal": 0,
-      "signal_time": "2026-06-16T06:05:48.380073",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "029780",
-      "stock_name": "삼성카드",
-      "sector": "",
-      "signal_count": 2,
-      "avg_confidence": 0.8,
       "strategies": [],
-      "reason": "score=6.50, ranked_score=7.80",
+      "reason": "score=12.00, ranked_score=14.40",
       "price_at_signal": 0,
-      "signal_time": "2026-06-16T15:25:00.097475+09:00",
+      "signal_time": "2026-06-17T15:25:00.088845+09:00",
       "status": "장중 워치리스트"
     },
     {
       "stock_code": "079900",
       "stock_name": "전진건설로봇",
       "sector": "",
-      "signal_count": 2,
-      "avg_confidence": 0.7833333333333333,
+      "signal_count": 1,
+      "avg_confidence": 0.5496666666666666,
       "strategies": [],
-      "reason": "score=4.68, ranked_score=5.62",
+      "reason": "score=2.67, ranked_score=1.60",
       "price_at_signal": 0,
-      "signal_time": "2026-06-16T15:25:00.097475+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "035250",
-      "stock_name": "강원랜드",
-      "sector": "",
-      "signal_count": 2,
-      "avg_confidence": 0.5013333333333334,
-      "strategies": [],
-      "reason": "score=2.04, ranked_score=3.27",
-      "price_at_signal": 0,
-      "signal_time": "2026-06-16T15:25:00.097475+09:00",
+      "signal_time": "2026-06-17T15:25:00.088845+09:00",
       "status": "장중 워치리스트"
     }
   ],
