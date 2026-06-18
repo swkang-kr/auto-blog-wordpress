@@ -1,67 +1,100 @@
 {
-  "exported_at": "2026-06-17T07:00:01.845593+00:00",
-  "date": "20260617",
+  "exported_at": "2026-06-18T07:00:01.566714+00:00",
+  "date": "20260618",
   "hot_themes": [
     {
-      "name": "전선",
-      "change_rate": 8.48
-    },
-    {
-      "name": "조선",
-      "change_rate": 5.81
-    },
-    {
-      "name": "캐릭터상품",
-      "change_rate": 4.83
-    },
-    {
-      "name": "탈모 치료",
-      "change_rate": 4.26
-    },
-    {
-      "name": "강관업체(Steel pipe)",
-      "change_rate": 3.99
-    },
-    {
-      "name": "마이코플라스마 폐렴",
-      "change_rate": 3.87
-    },
-    {
-      "name": "면역항암제",
-      "change_rate": 3.73
-    },
-    {
-      "name": "시멘트/레미콘",
-      "change_rate": 3.64
-    },
-    {
-      "name": "철강 중소형",
-      "change_rate": 2.91
-    },
-    {
-      "name": "유전자 치료제/분석",
-      "change_rate": 2.83
-    },
-    {
-      "name": "미용기기",
-      "change_rate": 2.82
-    },
-    {
-      "name": "낙태/피임",
-      "change_rate": 2.66
-    },
-    {
-      "name": "보톡스(보툴리눔톡신)",
-      "change_rate": 2.49
-    },
-    {
-      "name": "비만치료제",
-      "change_rate": 2.47
+      "name": "MLCC(적층세라믹콘덴서)",
+      "change_rate": 10.36
     },
     {
       "name": "반도체 대표주(생산)",
-      "change_rate": 2.39
+      "change_rate": 2.87
+    },
+    {
+      "name": "LED장비",
+      "change_rate": 1.97
+    },
+    {
+      "name": "주류업(주정, 에탄올 등)",
+      "change_rate": 1.63
+    },
+    {
+      "name": "김밥(냉동김밥 등)",
+      "change_rate": 1.16
+    },
+    {
+      "name": "시멘트/레미콘",
+      "change_rate": 0.95
+    },
+    {
+      "name": "생명보험",
+      "change_rate": 0.65
+    },
+    {
+      "name": "마리화나(대마)",
+      "change_rate": 0.64
+    },
+    {
+      "name": "페라이트",
+      "change_rate": 0.62
+    },
+    {
+      "name": "국내 상장 중국기업",
+      "change_rate": 0.49
+    },
+    {
+      "name": "스마트그리드(지능형전력망)",
+      "change_rate": 0.36
+    },
+    {
+      "name": "희귀금속(희토류 등)",
+      "change_rate": 0.32
+    },
+    {
+      "name": "골프",
+      "change_rate": 0.13
     }
   ],
-  "cold_themes": []
+  "cold_themes": [
+    {
+      "name": "바이오시밀러(복제 바이오의약품)",
+      "change_rate": -1.48
+    },
+    {
+      "name": "여름",
+      "change_rate": -1.45
+    },
+    {
+      "name": "가상화폐(비트코인 등)",
+      "change_rate": -1.38
+    },
+    {
+      "name": "건강기능식품",
+      "change_rate": -1.37
+    },
+    {
+      "name": "온디바이스 AI",
+      "change_rate": -1.36
+    },
+    {
+      "name": "모더나(MODERNA)",
+      "change_rate": -1.32
+    },
+    {
+      "name": "HBM(고대역폭메모리)",
+      "change_rate": -1.15
+    },
+    {
+      "name": "철강 중소형",
+      "change_rate": -1.12
+    },
+    {
+      "name": "수산",
+      "change_rate": -1.02
+    },
+    {
+      "name": "아이폰",
+      "change_rate": -1.01
+    }
+  ]
 }

@@ -1,4 +1,16 @@
 {
-  "exported_at": "2026-06-17T07:00:01.118802+00:00",
-  "holdings": []
+  "exported_at": "2026-06-18T07:00:00.955207+00:00",
+  "holdings": [
+    {
+      "stock_code": "006340",
+      "stock_name": "대원전선",
+      "quantity": 123,
+      "avg_price": 12480.0,
+      "current_price": 11550.0,
+      "unrealized_pnl": -119609.14,
+      "unrealized_pnl_rate": -7.8119,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-06-18T01:25:16.400883"
+    }
+  ]
 }

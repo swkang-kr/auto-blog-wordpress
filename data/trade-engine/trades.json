@@ -1,6 +1,18 @@
 {
-  "exported_at": "2026-06-17T07:00:01.147248+00:00",
+  "exported_at": "2026-06-18T07:00:00.972020+00:00",
   "trades": [
+    {
+      "stock_code": "006340",
+      "stock_name": "대원전선",
+      "side": "buy",
+      "quantity": 123,
+      "price": 12475.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "",
+      "filled_at": "2026-06-18T01:25:16.408563"
+    },
     {
       "stock_code": "005930",
       "stock_name": "삼성전자",

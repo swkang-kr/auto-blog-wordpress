@@ -1,6 +1,6 @@
 {
-  "exported_at": "2026-06-17T07:00:02.305257+00:00",
-  "total": 1,
+  "exported_at": "2026-06-18T07:00:02.029818+00:00",
+  "total": 2,
   "items": [
     {
       "stock_code": "005930",
@@ -14,6 +14,19 @@
       "memo": "AI APPROVE | conf=95% | qty_ratio=120% | AI review removed (2026-04-15)",
       "created_at": "2026-06-10T13:59:39.285615",
       "updated_at": "2026-06-10T15:18:01.892873"
+    },
+    {
+      "stock_code": "006340",
+      "stock_name": "대원전선",
+      "market": "KRX",
+      "sector": "전기장비",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 58,
+      "memo": "AI APPROVE | conf=58% | qty_ratio=120% | AI review removed (2026-04-15)",
+      "created_at": "2026-06-18T10:23:28.012245",
+      "updated_at": "2026-06-18T10:23:28.012245"
     }
   ]
 }
