@@ -1,6 +1,42 @@
 {
-  "exported_at": "2026-06-18T07:00:00.972020+00:00",
+  "exported_at": "2026-06-19T07:00:01.699125+00:00",
   "trades": [
+    {
+      "stock_code": "052690",
+      "stock_name": "한전기술",
+      "side": "buy",
+      "quantity": 10,
+      "price": 125250.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "",
+      "filled_at": "2026-06-19T06:15:15.328211"
+    },
+    {
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "side": "buy",
+      "quantity": 4,
+      "price": 359750.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "",
+      "filled_at": "2026-06-19T06:14:38.698150"
+    },
+    {
+      "stock_code": "006340",
+      "stock_name": "대원전선",
+      "side": "sell",
+      "quantity": 123,
+      "price": 12480.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "ghost_cleanup",
+      "reason": "유령 포지션 정리 (mock 실잔고 미존재, msg_cd=40240000)",
+      "filled_at": "2026-06-19T00:27:23.473308"
+    },
     {
       "stock_code": "006340",
       "stock_name": "대원전선",
@@ -12,18 +48,6 @@
       "strategy": "RSI+MACD(swing)",
       "reason": "",
       "filled_at": "2026-06-18T01:25:16.408563"
-    },
-    {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "side": "sell",
-      "quantity": 10,
-      "price": 329500.0,
-      "pnl": 292000.0,
-      "pnl_rate": 9.7236,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "swing_trailing(peak=12.5%,step=3.0%,trail_sl=9.5%) [backfill: AttributeError로 기록 실패분]",
-      "filled_at": "2026-06-12T01:40:28"
     }
   ]
 }

@@ -1,151 +1,170 @@
 {
-  "exported_at": "2026-06-18T07:00:01.996947+00:00",
-  "total_candidates": 10,
-  "total_holdings": 1,
+  "exported_at": "2026-06-19T07:00:02.556442+00:00",
+  "total_candidates": 11,
+  "total_holdings": 2,
   "candidates": [
     {
-      "stock_code": "006340",
-      "stock_name": "대원전선",
-      "sector": "전기장비",
-      "signal_count": 7,
-      "avg_confidence": 0.5499999999999999,
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "sector": "반도체",
+      "signal_count": 6,
+      "avg_confidence": 0.85,
+      "strategies": [],
+      "reason": "score=13.00, ranked_score=78.00",
+      "price_at_signal": 0,
+      "signal_time": "2026-06-19T15:25:00.006611+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "011230",
+      "stock_name": "삼화전자",
+      "sector": "전자장비와기기",
+      "signal_count": 6,
+      "avg_confidence": 1.0,
+      "strategies": [],
+      "reason": "score=9.00, ranked_score=32.40",
+      "price_at_signal": 0,
+      "signal_time": "2026-06-19T15:25:00.006611+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "451220",
+      "stock_name": "아이엠티",
+      "sector": "반도체와반도체장비",
+      "signal_count": 5,
+      "avg_confidence": 0.75,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | RSI모멘텀(55) | 거래량4.4x | 거래량3x+ | MA역배열 | 캔들슈팅스타(약세) | 주봉골든크로스 | 주봉MA20위",
+      "reason": "MACD히스토그램↑ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-06-18T05:23:43.905665",
+      "signal_time": "2026-06-19T05:51:01.828414",
       "status": "매수 시그널"
     },
     {
       "stock_code": "403870",
       "stock_name": "HPSP",
       "sector": "반도체와반도체장비",
-      "signal_count": 7,
-      "avg_confidence": 0.6071285714285715,
+      "signal_count": 5,
+      "avg_confidence": 0.95,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "reason": "RSI모멘텀(53) | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+1.2%vsKOSPI-0.8%)",
       "price_at_signal": 0,
-      "signal_time": "2026-06-18T05:23:43.905657",
+      "signal_time": "2026-06-19T05:51:01.828378",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "079550",
-      "stock_name": "LIG디펜스앤에어로스페이스",
-      "sector": "우주항공과국방",
-      "signal_count": 6,
-      "avg_confidence": 0.6111,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "거래량2.2x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
-      "price_at_signal": 0,
-      "signal_time": "2026-06-18T05:23:43.905647",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "026940",
-      "stock_name": "부국철강",
+      "stock_code": "012320",
+      "stock_name": "경동인베스트",
       "sector": "",
       "signal_count": 5,
-      "avg_confidence": 0.89998,
+      "avg_confidence": 0.75,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(59) | 거래량6.8x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위",
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | 거래량2.1x | MA정배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(28) | 주봉MA20아래 | 상대강도(+13.9%vsKOSPI-0.8%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-06-18T05:26:41.892597",
+      "signal_time": "2026-06-19T05:51:01.828395",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "451220",
-      "stock_name": "아이엠티",
+      "stock_code": "010690",
+      "stock_name": "화신",
       "sector": "",
-      "signal_count": 3,
-      "avg_confidence": 0.9,
-      "strategies": [],
-      "reason": "score=9.50, ranked_score=17.10",
-      "price_at_signal": 0,
-      "signal_time": "2026-06-18T15:25:00.111025+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "006360",
-      "stock_name": "GS건설",
-      "sector": "",
-      "signal_count": 3,
-      "avg_confidence": 0.74,
-      "strategies": [],
-      "reason": "score=3.38, ranked_score=6.08",
-      "price_at_signal": 0,
-      "signal_time": "2026-06-18T15:25:00.111025+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "028050",
-      "stock_name": "삼성E&A",
-      "sector": "건설",
-      "signal_count": 2,
-      "avg_confidence": 0.5,
+      "signal_count": 5,
+      "avg_confidence": 0.8833,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "거래량2.2x | MA정배열 | EMA20하방 | 주봉골든크로스 | 주봉MA20위",
+      "reason": "MACD히스토그램↑ | RSI모멘텀(57) | 거래량6.3x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+10.9%vsKOSPI-0.8%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-06-18T05:52:42.293693",
+      "signal_time": "2026-06-19T05:51:01.828390",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "004310",
-      "stock_name": "현대약품",
-      "sector": "",
-      "signal_count": 2,
+      "stock_code": "417500",
+      "stock_name": "제이아이테크",
+      "sector": "반도체와반도체장비",
+      "signal_count": 5,
       "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(72) | 거래량66.4x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+13.9%vsKOSPI+2.1%) | 디커플링모멘텀",
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(55) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+5.1%vsKOSPI-0.8%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-06-18T05:52:42.293618",
+      "signal_time": "2026-06-19T05:51:01.828384",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "003490",
-      "stock_name": "대한항공",
-      "sector": "",
-      "signal_count": 2,
-      "avg_confidence": 0.6499999999999999,
-      "strategies": [],
-      "reason": "score=3.84, ranked_score=4.61",
-      "price_at_signal": 0,
-      "signal_time": "2026-06-18T15:25:00.111025+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "088350",
-      "stock_name": "한화생명",
-      "sector": "생명보험",
-      "signal_count": 1,
-      "avg_confidence": 0.6667,
+      "stock_code": "306620",
+      "stock_name": "지아이에스",
+      "sector": "반도체와반도체장비",
+      "signal_count": 5,
+      "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(59) | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+13.0%vsKOSPI-0.8%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-06-18T05:52:42.293667",
+      "signal_time": "2026-06-19T05:51:01.828361",
       "status": "매수 시그널"
+    },
+    {
+      "stock_code": "000500",
+      "stock_name": "가온전선",
+      "sector": "",
+      "signal_count": 4,
+      "avg_confidence": 0.8,
+      "strategies": [],
+      "reason": "score=6.80, ranked_score=16.32",
+      "price_at_signal": 0,
+      "signal_time": "2026-06-19T15:25:00.006611+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "052690",
+      "stock_name": "한전기술",
+      "sector": "",
+      "signal_count": 2,
+      "avg_confidence": 0.5333333333333333,
+      "strategies": [],
+      "reason": "score=2.41, ranked_score=4.81",
+      "price_at_signal": 0,
+      "signal_time": "2026-06-19T15:25:00.006611+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "058430",
+      "stock_name": "포스코스틸리온",
+      "sector": "",
+      "signal_count": 2,
+      "avg_confidence": 0.5333333333333333,
+      "strategies": [],
+      "reason": "score=2.41, ranked_score=2.89",
+      "price_at_signal": 0,
+      "signal_time": "2026-06-19T15:25:00.006611+09:00",
+      "status": "장중 워치리스트"
     }
   ],
   "holdings": [
     {
-      "stock_code": "006340",
-      "stock_name": "대원전선",
-      "quantity": 123,
-      "avg_price": 12480.0,
+      "stock_code": "052690",
+      "stock_name": "한전기술",
+      "quantity": 10,
+      "avg_price": 125300.0,
       "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-06-18",
+      "entry_date": "2026-06-19",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "quantity": 4,
+      "avg_price": 359500.0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-06-19",
       "status": "보유 중"
     }
   ]
