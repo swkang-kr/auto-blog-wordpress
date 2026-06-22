@@ -1,6 +1,42 @@
 {
-  "exported_at": "2026-06-19T07:00:01.699125+00:00",
+  "exported_at": "2026-06-22T07:00:02.084363+00:00",
   "trades": [
+    {
+      "stock_code": "451220",
+      "stock_name": "451220",
+      "side": "buy",
+      "quantity": 60,
+      "price": 14870.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "",
+      "filled_at": "2026-06-22T06:14:15.242145"
+    },
+    {
+      "stock_code": "000500",
+      "stock_name": "가온전선",
+      "side": "buy",
+      "quantity": 1,
+      "price": 338250.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "",
+      "filled_at": "2026-06-22T06:12:58.872873"
+    },
+    {
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "side": "buy",
+      "quantity": 7,
+      "price": 352750.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "",
+      "filled_at": "2026-06-22T06:12:53.308737"
+    },
     {
       "stock_code": "052690",
       "stock_name": "한전기술",

@@ -1,170 +1,195 @@
 {
-  "exported_at": "2026-06-19T07:00:02.556442+00:00",
-  "total_candidates": 11,
-  "total_holdings": 2,
+  "exported_at": "2026-06-22T07:00:03.019161+00:00",
+  "total_candidates": 12,
+  "total_holdings": 3,
   "candidates": [
     {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "sector": "반도체",
-      "signal_count": 6,
-      "avg_confidence": 0.85,
+      "stock_code": "010120",
+      "stock_name": "LS ELECTRIC",
+      "sector": "전기장비",
+      "signal_count": 5,
+      "avg_confidence": 0.8166666666666667,
       "strategies": [],
-      "reason": "score=13.00, ranked_score=78.00",
+      "reason": "score=5.04, ranked_score=25.21",
       "price_at_signal": 0,
-      "signal_time": "2026-06-19T15:25:00.006611+09:00",
+      "signal_time": "2026-06-22T15:25:00.334748+09:00",
       "status": "장중 워치리스트"
     },
     {
-      "stock_code": "011230",
-      "stock_name": "삼화전자",
-      "sector": "전자장비와기기",
-      "signal_count": 6,
-      "avg_confidence": 1.0,
-      "strategies": [],
-      "reason": "score=9.00, ranked_score=32.40",
+      "stock_code": "306620",
+      "stock_name": "지아이에스",
+      "sector": "반도체와반도체장비",
+      "signal_count": 4,
+      "avg_confidence": 0.5,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MACD히스토그램↑ | 거래량2.6x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-06-19T15:25:00.006611+09:00",
-      "status": "장중 워치리스트"
+      "signal_time": "2026-06-22T06:06:35.770436",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "042700",
+      "stock_name": "한미반도체",
+      "sector": "반도체와반도체장비",
+      "signal_count": 4,
+      "avg_confidence": 0.6667,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MA정배열 | EMA20하방 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+2.5%vsKOSPI+0.7%)",
+      "price_at_signal": 0,
+      "signal_time": "2026-06-22T06:06:35.770431",
+      "status": "매수 시그널"
     },
     {
       "stock_code": "451220",
       "stock_name": "아이엠티",
       "sector": "반도체와반도체장비",
-      "signal_count": 5,
+      "signal_count": 4,
       "avg_confidence": 0.75,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "reason": "RSI모멘텀(54) | MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-06-19T05:51:01.828414",
+      "signal_time": "2026-06-22T06:06:35.770428",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "403870",
-      "stock_name": "HPSP",
-      "sector": "반도체와반도체장비",
-      "signal_count": 5,
-      "avg_confidence": 0.95,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "RSI모멘텀(53) | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+1.2%vsKOSPI-0.8%)",
-      "price_at_signal": 0,
-      "signal_time": "2026-06-19T05:51:01.828378",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "012320",
-      "stock_name": "경동인베스트",
-      "sector": "",
-      "signal_count": 5,
+      "stock_code": "011230",
+      "stock_name": "삼화전자",
+      "sector": "전자장비와기기",
+      "signal_count": 4,
       "avg_confidence": 0.75,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | 거래량2.1x | MA정배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(28) | 주봉MA20아래 | 상대강도(+13.9%vsKOSPI-0.8%) | 디커플링모멘텀",
+      "reason": "MACD히스토그램↑ | 거래량2.3x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-06-19T05:51:01.828395",
+      "signal_time": "2026-06-22T06:06:35.770425",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "010690",
-      "stock_name": "화신",
+      "stock_code": "004310",
+      "stock_name": "현대약품",
       "sector": "",
-      "signal_count": 5,
-      "avg_confidence": 0.8833,
+      "signal_count": 4,
+      "avg_confidence": 0.85,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(57) | 거래량6.3x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+10.9%vsKOSPI-0.8%) | 디커플링모멘텀",
+      "reason": "MACD히스토그램↑ | RSI모멘텀(64) | 거래량4.2x | 거래량3x+ | MA정배열 | 캔들상승장악형 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+4.2%vsKOSPI+0.7%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-06-19T05:51:01.828390",
+      "signal_time": "2026-06-22T06:06:35.770423",
       "status": "매수 시그널"
     },
     {
       "stock_code": "417500",
       "stock_name": "제이아이테크",
       "sector": "반도체와반도체장비",
-      "signal_count": 5,
-      "avg_confidence": 1.0,
+      "signal_count": 4,
+      "avg_confidence": 0.8833,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(55) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+5.1%vsKOSPI-0.8%) | 디커플링모멘텀",
+      "reason": "MACD히스토그램↑ | RSI모멘텀(50) | MA정배열 | 캔들상승장악형 | 주봉데드크로스(-1.5) | 주봉RSI과매도(26) | 주봉MA20아래 | 상대강도(+4.1%vsKOSPI+0.7%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-06-19T05:51:01.828384",
+      "signal_time": "2026-06-22T06:06:35.770419",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "306620",
-      "stock_name": "지아이에스",
+      "stock_code": "403870",
+      "stock_name": "HPSP",
       "sector": "반도체와반도체장비",
-      "signal_count": 5,
+      "signal_count": 4,
       "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(59) | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+13.0%vsKOSPI-0.8%) | 디커플링모멘텀",
+      "reason": "RSI모멘텀(52) | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+6.5%vsKOSPI+0.7%)",
       "price_at_signal": 0,
-      "signal_time": "2026-06-19T05:51:01.828361",
+      "signal_time": "2026-06-22T06:06:35.770388",
       "status": "매수 시그널"
+    },
+    {
+      "stock_code": "010690",
+      "stock_name": "화신",
+      "sector": "",
+      "signal_count": 4,
+      "avg_confidence": 0.8833333333333333,
+      "strategies": [],
+      "reason": "score=4.68, ranked_score=11.24",
+      "price_at_signal": 0,
+      "signal_time": "2026-06-22T15:25:00.334748+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "024890",
+      "stock_name": "대원화성",
+      "sector": "",
+      "signal_count": 2,
+      "avg_confidence": 0.55,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "RSI모멘텀(61) | 거래량6.3x | 거래량3x+ | 캔들역해머(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+4.5%vsKOSPI+0.7%)",
+      "price_at_signal": 0,
+      "signal_time": "2026-06-22T06:06:35.770433",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "sector": "반도체",
+      "signal_count": 2,
+      "avg_confidence": 0.85,
+      "strategies": [],
+      "reason": "score=8.00, ranked_score=16.00",
+      "price_at_signal": 0,
+      "signal_time": "2026-06-22T15:25:00.334748+09:00",
+      "status": "장중 워치리스트"
     },
     {
       "stock_code": "000500",
       "stock_name": "가온전선",
       "sector": "",
-      "signal_count": 4,
-      "avg_confidence": 0.8,
-      "strategies": [],
-      "reason": "score=6.80, ranked_score=16.32",
-      "price_at_signal": 0,
-      "signal_time": "2026-06-19T15:25:00.006611+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "052690",
-      "stock_name": "한전기술",
-      "sector": "",
       "signal_count": 2,
-      "avg_confidence": 0.5333333333333333,
+      "avg_confidence": 0.5499999999999999,
       "strategies": [],
-      "reason": "score=2.41, ranked_score=4.81",
+      "reason": "score=1.81, ranked_score=3.63",
       "price_at_signal": 0,
-      "signal_time": "2026-06-19T15:25:00.006611+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "058430",
-      "stock_name": "포스코스틸리온",
-      "sector": "",
-      "signal_count": 2,
-      "avg_confidence": 0.5333333333333333,
-      "strategies": [],
-      "reason": "score=2.41, ranked_score=2.89",
-      "price_at_signal": 0,
-      "signal_time": "2026-06-19T15:25:00.006611+09:00",
+      "signal_time": "2026-06-22T15:25:00.334748+09:00",
       "status": "장중 워치리스트"
     }
   ],
   "holdings": [
     {
-      "stock_code": "052690",
-      "stock_name": "한전기술",
-      "quantity": 10,
-      "avg_price": 125300.0,
+      "stock_code": "000500",
+      "stock_name": "가온전선",
+      "quantity": 1,
+      "avg_price": 338500.0,
       "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-06-19",
+      "entry_date": "2026-06-22",
       "status": "보유 중"
     },
     {
       "stock_code": "005930",
       "stock_name": "삼성전자",
-      "quantity": 4,
-      "avg_price": 359500.0,
+      "quantity": 7,
+      "avg_price": 356571.428,
       "strategy": "RSI+MACD(swing)",
       "entry_date": "2026-06-19",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "451220",
+      "stock_name": "아이엠티",
+      "quantity": 78,
+      "avg_price": 14905.0,
+      "strategy": "manual_recovery",
+      "entry_date": "2026-06-22",
       "status": "보유 중"
     }
   ]
