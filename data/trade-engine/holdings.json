@@ -1,38 +1,4 @@
 {
-  "exported_at": "2026-06-22T07:00:02.070221+00:00",
-  "holdings": [
-    {
-      "stock_code": "000500",
-      "stock_name": "가온전선",
-      "quantity": 1,
-      "avg_price": 338500.0,
-      "current_price": 338500.0,
-      "unrealized_pnl": -1150.9,
-      "unrealized_pnl_rate": -0.428,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-06-22T06:12:58.865880"
-    },
-    {
-      "stock_code": "451220",
-      "stock_name": "아이엠티",
-      "quantity": 78,
-      "avg_price": 14905.0,
-      "current_price": 14850.0,
-      "unrealized_pnl": -3751.41,
-      "unrealized_pnl_rate": -0.8456,
-      "strategy": "manual_recovery",
-      "entry_date": "2026-06-22T06:13:05.489000"
-    },
-    {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "quantity": 7,
-      "avg_price": 356571.428,
-      "current_price": 353000.0,
-      "unrealized_pnl": -33486.4,
-      "unrealized_pnl_rate": -1.4236,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-06-19T06:14:38.689636"
-    }
-  ]
+  "exported_at": "2026-06-23T07:00:01.294951+00:00",
+  "holdings": []
 }

@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-06-22T07:00:02.487465+00:00",
+  "exported_at": "2026-06-23T07:00:01.742096+00:00",
   "market_daily": [
+    {
+      "date": "20260623",
+      "kospi_change": -9.99,
+      "kosdaq_change": -7.94,
+      "foreign_net": -412.68,
+      "institution_net": -454.9,
+      "individual_net": 858.63,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260622",
       "kospi_change": 0.69,
       "kosdaq_change": 0.19,
-      "foreign_net": -254.63,
+      "foreign_net": -254.66,
       "institution_net": 30.38,
-      "individual_net": 215.05,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "individual_net": 215.06,
+      "hot_theme_count": 1,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260619",
@@ -99,29 +110,18 @@
       "hot_theme_count": 3,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260609",
-      "kospi_change": 8.18,
-      "kosdaq_change": 6.19,
-      "foreign_net": -200.58,
-      "institution_net": 250.43,
-      "individual_net": -61.82,
-      "hot_theme_count": 40,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "이찬진 \"미래에셋 '스페이스X 0주' 어처구니 없어\"",
-    "미래에셋證, 연금자산 80조원 돌파",
-    "코스피, 9110선 또 최고치…SK하닉 삼전 제치고 시총 1위[마감]",
-    "\"대체 카카오게임즈 주가 언제 올라\"…日라인야후 품에 안겨 '반전'",
-    "[속보] 코스피, 또 사상 최고치 찍었다…9114.55 마감",
-    "중동 리스크에 다시 뛴 환율…“하반기 환율 1450원대로 낮아질 수도” [김혜란의 FX]",
-    "나델라 MS CEO \"AI, 소수 기업 독점해서는 안 돼\"",
-    "9000선 안착한 코스피, 또 다시 ‘사상 최고치’ [시황]",
-    "코스피 사상 최고가 마감…SK하이닉스 시총 1위",
-    "코스피 시총 1위 차지한 하이닉스"
+    "반도체 쏠림의 역습…코스피 9.99% 급락, 서킷브레이커까지",
+    "KB자산운용, 중국 ETF 1위 China AMC와 ‘전략적 파트너십’",
+    "910포인트 빠진 코스피",
+    "급락 마감한 코스피",
+    "급락 마감한 코스피",
+    "급락 마감한 코스피",
+    "급락 마감한 코스피",
+    "급락 마감한 코스피",
+    "910포인트 급락한 코스피",
+    "코스피 10% 급락 마감…곱버스ETF 거래 '급증'"
   ]
 }
