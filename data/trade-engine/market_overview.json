@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-06-23T07:00:01.742096+00:00",
+  "exported_at": "2026-06-24T07:00:01.274170+00:00",
   "market_daily": [
+    {
+      "date": "20260624",
+      "kospi_change": 3.26,
+      "kosdaq_change": 2.0,
+      "foreign_net": -465.46,
+      "institution_net": 190.94,
+      "individual_net": 263.15,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260623",
       "kospi_change": -9.99,
       "kosdaq_change": -7.94,
-      "foreign_net": -412.68,
-      "institution_net": -454.9,
-      "individual_net": 858.63,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": -413.19,
+      "institution_net": -454.89,
+      "individual_net": 859.1,
+      "hot_theme_count": 1,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260622",
@@ -99,29 +110,18 @@
       "hot_theme_count": 40,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260610",
-      "kospi_change": -4.52,
-      "kosdaq_change": -1.67,
-      "foreign_net": -277.5,
-      "institution_net": -226.7,
-      "individual_net": 486.43,
-      "hot_theme_count": 3,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "반도체 쏠림의 역습…코스피 9.99% 급락, 서킷브레이커까지",
-    "KB자산운용, 중국 ETF 1위 China AMC와 ‘전략적 파트너십’",
-    "910포인트 빠진 코스피",
-    "급락 마감한 코스피",
-    "급락 마감한 코스피",
-    "급락 마감한 코스피",
-    "급락 마감한 코스피",
-    "급락 마감한 코스피",
-    "910포인트 급락한 코스피",
-    "코스피 10% 급락 마감…곱버스ETF 거래 '급증'"
+    "MSCI 선진국 지수 편입 실패...시장 영향은 제한적",
+    "[특징주] 알테오젠, 기술수출 기대감 속 11% 급등 마감(종합)",
+    "코스피 8471.02 마감…개인·기관 '줍줍'에 급반등",
+    "[포토]코스피 3%대 반등 성공",
+    "日증시, 코스피 폭락·반도체주 약세에 하락 마감…닛케이지수 0.88%↓",
+    "[포토]코스피 3%대 반등 성공, 8400선 마감",
+    "'볼펜' 만들던 모나미, '색조 화장품'으로 뷰티 시장 승부수",
+    "\"하드웨어 넘어 소프트웨어로\"…트루엔, AI 솔루션 기업 전환[코스닥人]",
+    "[포토]코스피 3%대 반등 성공하며 8400선 마감",
+    "한국거래소, 美서 글로벌 바이오 기업 대상 코스닥 상장 유치 나서"
   ]
 }

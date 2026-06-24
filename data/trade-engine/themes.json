@@ -1,68 +1,67 @@
 {
-  "exported_at": "2026-06-23T07:00:01.794590+00:00",
-  "date": "20260623",
+  "exported_at": "2026-06-24T07:00:01.323925+00:00",
+  "date": "20260624",
   "hot_themes": [
     {
-      "name": "서울고속버스터미널 재개발 수혜",
-      "change_rate": 3.22
+      "name": "백화점",
+      "change_rate": 5.39
     },
     {
-      "name": "시멘트/레미콘",
-      "change_rate": 1.8
+      "name": "모더나(MODERNA)",
+      "change_rate": 4.43
     },
     {
-      "name": "주류업(주정, 에탄올 등)",
-      "change_rate": 1.22
+      "name": "바이오시밀러(복제 바이오의약품)",
+      "change_rate": 4.36
     },
     {
-      "name": "편의점",
-      "change_rate": 0.13
+      "name": "공작기계",
+      "change_rate": 4.27
     },
     {
-      "name": "기업인수목적회사(SPAC)",
-      "change_rate": 0.1
-    }
-  ],
-  "cold_themes": [
+      "name": "정유",
+      "change_rate": 4.14
+    },
     {
-      "name": "손해보험",
-      "change_rate": -3.68
+      "name": "반도체 대표주(생산)",
+      "change_rate": 3.89
+    },
+    {
+      "name": "면역항암제",
+      "change_rate": 3.72
+    },
+    {
+      "name": "로봇(산업용/협동로봇 등)",
+      "change_rate": 3.71
+    },
+    {
+      "name": "3D 프린터",
+      "change_rate": 3.7
     },
     {
       "name": "골프",
-      "change_rate": -3.66
+      "change_rate": 3.61
     },
     {
-      "name": "카카오뱅크(kakao BANK)",
-      "change_rate": -3.65
+      "name": "오가노이드",
+      "change_rate": 3.58
     },
     {
-      "name": "겨울",
-      "change_rate": -3.65
+      "name": "윤활유",
+      "change_rate": 3.47
     },
     {
-      "name": "렌터카",
-      "change_rate": -3.64
+      "name": "보톡스(보툴리눔톡신)",
+      "change_rate": 3.43
     },
     {
-      "name": "구제역/광우병 수혜",
-      "change_rate": -3.59
+      "name": "2차전지(생산)",
+      "change_rate": 3.42
     },
     {
-      "name": "엔젤산업",
-      "change_rate": -3.51
-    },
-    {
-      "name": "DMZ 평화공원",
-      "change_rate": -3.49
-    },
-    {
-      "name": "환율하락 수혜",
-      "change_rate": -3.42
-    },
-    {
-      "name": "제지",
-      "change_rate": -3.39
+      "name": "코로나19(치료제/백신 개발 등)",
+      "change_rate": 3.3
     }
-  ]
+  ],
+  "cold_themes": []
 }
