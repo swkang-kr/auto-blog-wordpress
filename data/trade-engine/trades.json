@@ -1,5 +1,5 @@
 {
-  "exported_at": "2026-06-24T07:00:00.881538+00:00",
+  "exported_at": "2026-06-25T07:00:00.947805+00:00",
   "trades": [
     {
       "stock_code": "005930",
@@ -108,18 +108,6 @@
       "strategy": "ghost_cleanup",
       "reason": "유령 포지션 정리 (mock 실잔고 미존재, msg_cd=40240000)",
       "filled_at": "2026-06-19T00:27:23.473308"
-    },
-    {
-      "stock_code": "006340",
-      "stock_name": "대원전선",
-      "side": "buy",
-      "quantity": 123,
-      "price": 12475.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "",
-      "filled_at": "2026-06-18T01:25:16.408563"
     }
   ]
 }

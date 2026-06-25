@@ -1,67 +1,108 @@
 {
-  "exported_at": "2026-06-24T07:00:01.323925+00:00",
-  "date": "20260624",
+  "exported_at": "2026-06-25T07:00:01.438729+00:00",
+  "date": "20260625",
   "hot_themes": [
     {
-      "name": "백화점",
-      "change_rate": 5.39
-    },
-    {
-      "name": "모더나(MODERNA)",
-      "change_rate": 4.43
-    },
-    {
-      "name": "바이오시밀러(복제 바이오의약품)",
-      "change_rate": 4.36
-    },
-    {
-      "name": "공작기계",
-      "change_rate": 4.27
-    },
-    {
-      "name": "정유",
-      "change_rate": 4.14
-    },
-    {
       "name": "반도체 대표주(생산)",
-      "change_rate": 3.89
+      "change_rate": 7.34
     },
     {
-      "name": "면역항암제",
-      "change_rate": 3.72
+      "name": "항공/저가 항공사(LCC)",
+      "change_rate": 4.45
     },
     {
-      "name": "로봇(산업용/협동로봇 등)",
-      "change_rate": 3.71
+      "name": "생명보험",
+      "change_rate": 3.49
     },
     {
-      "name": "3D 프린터",
-      "change_rate": 3.7
+      "name": "IT 대표주",
+      "change_rate": 2.62
     },
     {
-      "name": "골프",
-      "change_rate": 3.61
+      "name": "태양광에너지",
+      "change_rate": 2.54
     },
     {
-      "name": "오가노이드",
-      "change_rate": 3.58
+      "name": "태풍 및 장마",
+      "change_rate": 2.11
     },
     {
-      "name": "윤활유",
-      "change_rate": 3.47
+      "name": "자원개발",
+      "change_rate": 2.03
     },
     {
-      "name": "보톡스(보툴리눔톡신)",
-      "change_rate": 3.43
+      "name": "소캠(SOCAMM)",
+      "change_rate": 1.39
     },
     {
-      "name": "2차전지(생산)",
-      "change_rate": 3.42
+      "name": "종합상사",
+      "change_rate": 1.31
     },
     {
-      "name": "코로나19(치료제/백신 개발 등)",
-      "change_rate": 3.3
+      "name": "자전거",
+      "change_rate": 1.27
+    },
+    {
+      "name": "면세점",
+      "change_rate": 1.24
+    },
+    {
+      "name": "사료",
+      "change_rate": 1.2
+    },
+    {
+      "name": "증권",
+      "change_rate": 1.0
+    },
+    {
+      "name": "손해보험",
+      "change_rate": 0.86
+    },
+    {
+      "name": "마리화나(대마)",
+      "change_rate": 0.67
     }
   ],
-  "cold_themes": []
+  "cold_themes": [
+    {
+      "name": "수산",
+      "change_rate": -0.31
+    },
+    {
+      "name": "전자결제(전자화폐)",
+      "change_rate": -0.29
+    },
+    {
+      "name": "지주사",
+      "change_rate": -0.28
+    },
+    {
+      "name": "야놀자(Yanolja)",
+      "change_rate": -0.19
+    },
+    {
+      "name": "창투사",
+      "change_rate": -0.15
+    },
+    {
+      "name": "아스콘(아스팔트 콘크리트)",
+      "change_rate": -0.12
+    },
+    {
+      "name": "마켓컬리(kurly)",
+      "change_rate": -0.09
+    },
+    {
+      "name": "건설 대표주",
+      "change_rate": -0.06
+    },
+    {
+      "name": "서울고속버스터미널 재개발 수혜",
+      "change_rate": -0.05
+    },
+    {
+      "name": "기업인수목적회사(SPAC)",
+      "change_rate": -0.05
+    }
+  ]
 }

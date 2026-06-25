@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-06-24T07:00:01.274170+00:00",
+  "exported_at": "2026-06-25T07:00:01.384283+00:00",
   "market_daily": [
+    {
+      "date": "20260625",
+      "kospi_change": 5.42,
+      "kosdaq_change": -2.36,
+      "foreign_net": -87.41,
+      "institution_net": 332.45,
+      "individual_net": -241.7,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260624",
       "kospi_change": 3.26,
       "kosdaq_change": 2.0,
       "foreign_net": -465.46,
-      "institution_net": 190.94,
-      "individual_net": 263.15,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "institution_net": 190.95,
+      "individual_net": 263.13,
+      "hot_theme_count": 22,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260623",
@@ -99,29 +110,18 @@
       "hot_theme_count": 40,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260611",
-      "kospi_change": 0.43,
-      "kosdaq_change": 4.76,
-      "foreign_net": -146.36,
-      "institution_net": -75.66,
-      "individual_net": 207.87,
-      "hot_theme_count": 40,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "MSCI 선진국 지수 편입 실패...시장 영향은 제한적",
-    "[특징주] 알테오젠, 기술수출 기대감 속 11% 급등 마감(종합)",
-    "코스피 8471.02 마감…개인·기관 '줍줍'에 급반등",
-    "[포토]코스피 3%대 반등 성공",
-    "日증시, 코스피 폭락·반도체주 약세에 하락 마감…닛케이지수 0.88%↓",
-    "[포토]코스피 3%대 반등 성공, 8400선 마감",
-    "'볼펜' 만들던 모나미, '색조 화장품'으로 뷰티 시장 승부수",
-    "\"하드웨어 넘어 소프트웨어로\"…트루엔, AI 솔루션 기업 전환[코스닥人]",
-    "[포토]코스피 3%대 반등 성공하며 8400선 마감",
-    "한국거래소, 美서 글로벌 바이오 기업 대상 코스닥 상장 유치 나서"
+    "“과거 주가상승 탄력, 이때 가장 크게 나타나”…연준 매파적 동결에 은행주 기대감 ‘쑥’",
+    "미래에셋증권, 투자센터여의도WM 이전 오픈…'고객 세미나' 개최",
+    "마이크론 호실적에 8930선 회복…SK하이닉스, 다시 시총 1위로",
+    "코스피 5% 반등…코스닥은 2% 넘게 하락",
+    "\"국민연금, '구천피' 넘으면 최대 74조 매도 폭탄\" 전망 나와",
+    "다시 오른 코스피",
+    "다시 오른 코스피",
+    "다시 오른 코스피",
+    "상승 마감한 코스피",
+    "상승 마감한 코스피"
   ]
 }
