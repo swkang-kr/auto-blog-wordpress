@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-06-25T07:00:01.384283+00:00",
+  "exported_at": "2026-06-26T07:00:01.024216+00:00",
   "market_daily": [
+    {
+      "date": "20260626",
+      "kospi_change": -5.81,
+      "kosdaq_change": -4.1,
+      "foreign_net": -462.65,
+      "institution_net": -378.43,
+      "individual_net": 818.98,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260625",
       "kospi_change": 5.42,
       "kosdaq_change": -2.36,
-      "foreign_net": -87.41,
-      "institution_net": 332.45,
-      "individual_net": -241.7,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": -87.54,
+      "institution_net": 332.44,
+      "individual_net": -241.57,
+      "hot_theme_count": 3,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260624",
@@ -99,29 +110,18 @@
       "hot_theme_count": 40,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260612",
-      "kospi_change": 4.63,
-      "kosdaq_change": 3.22,
-      "foreign_net": 211.65,
-      "institution_net": 237.63,
-      "individual_net": -431.92,
-      "hot_theme_count": 40,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "“과거 주가상승 탄력, 이때 가장 크게 나타나”…연준 매파적 동결에 은행주 기대감 ‘쑥’",
-    "미래에셋증권, 투자센터여의도WM 이전 오픈…'고객 세미나' 개최",
-    "마이크론 호실적에 8930선 회복…SK하이닉스, 다시 시총 1위로",
-    "코스피 5% 반등…코스닥은 2% 넘게 하락",
-    "\"국민연금, '구천피' 넘으면 최대 74조 매도 폭탄\" 전망 나와",
-    "다시 오른 코스피",
-    "다시 오른 코스피",
-    "다시 오른 코스피",
-    "상승 마감한 코스피",
-    "상승 마감한 코스피"
+    "'검은 금요일' 코스피, 5.8% 밀려 8400선 후퇴…서킷브레이커 발동",
+    "토박스코리아, 36억원 규모 제3자배정 유상증자 결정",
+    "코스피, 5.8% 급락한 8,411 마감",
+    "거래소, 코스닥사 공시담당자 워크숍 진행",
+    "진정 안 되는 원/달러 환율",
+    "코스피, 5%대 급락해 8400선 후퇴…올해 5번째 서킷브레이커",
+    "진정 안 되는 원/달러 환율",
+    "진정 안 되는 원/달러 환율",
+    "진정 안 되는 원/달러 환율",
+    "진정 안 되는 원/달러 환율"
   ]
 }
