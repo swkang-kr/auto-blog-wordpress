@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-06-26T07:00:01.024216+00:00",
+  "exported_at": "2026-07-01T07:00:01.124202+00:00",
   "market_daily": [
+    {
+      "date": "20260701",
+      "kospi_change": -2.04,
+      "kosdaq_change": 1.44,
+      "foreign_net": -170.29,
+      "institution_net": -7.1,
+      "individual_net": 174.0,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260626",
       "kospi_change": -5.81,
       "kosdaq_change": -4.1,
-      "foreign_net": -462.65,
+      "foreign_net": -462.82,
       "institution_net": -378.43,
-      "individual_net": 818.98,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "individual_net": 819.14,
+      "hot_theme_count": 1,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260625",
@@ -99,29 +110,18 @@
       "hot_theme_count": 11,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260615",
-      "kospi_change": 5.2,
-      "kosdaq_change": 0.48,
-      "foreign_net": 98.44,
-      "institution_net": 53.92,
-      "individual_net": -148.66,
-      "hot_theme_count": 40,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "'검은 금요일' 코스피, 5.8% 밀려 8400선 후퇴…서킷브레이커 발동",
-    "토박스코리아, 36억원 규모 제3자배정 유상증자 결정",
-    "코스피, 5.8% 급락한 8,411 마감",
-    "거래소, 코스닥사 공시담당자 워크숍 진행",
-    "진정 안 되는 원/달러 환율",
-    "코스피, 5%대 급락해 8400선 후퇴…올해 5번째 서킷브레이커",
-    "진정 안 되는 원/달러 환율",
-    "진정 안 되는 원/달러 환율",
-    "진정 안 되는 원/달러 환율",
-    "진정 안 되는 원/달러 환율"
+    "금융위, 해외서 코인값 띄운 ‘고래’투자자·김치코인 초단타 매매자 등 시세조종 2건 고발",
+    "[인사] 하나증권",
+    "반도체 피크 아웃 우려에 코스피 8300선 간신히 사수…2%대 약세 마감",
+    "환율 또 금융위기 후 최고…장중 1,560원선 위협",
+    "코스피, 외인 '팔자' 2% 약세…'30돌' 코스닥 상승 체면치레",
+    "코스피 2% 하락, 8,303.41 마감",
+    "코스피 2% 하락, 8,303.41 마감",
+    "코스피 하락, 환율 17년 3개월 만에 최고",
+    "SK하이닉스 3.39% 하락, 삼성전자 5.83% 하락 마감",
+    "SK하이닉스 3.39% 하락, 삼성전자 5.83% 하락 마감"
   ]
 }

@@ -1,90 +1,34 @@
 {
-  "exported_at": "2026-06-26T07:00:01.610196+00:00",
-  "total_candidates": 8,
-  "total_holdings": 0,
+  "exported_at": "2026-07-01T07:00:01.631157+00:00",
+  "total_candidates": 5,
+  "total_holdings": 1,
   "candidates": [
-    {
-      "stock_code": "073240",
-      "stock_name": "금호타이어",
-      "sector": "",
-      "signal_count": 4,
-      "avg_confidence": 0.6,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "2일연속상승 | MACD골든크로스 | 거래량8.6x | 거래량3x+ | MA역배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(19) | 주봉MA20아래 | 상대강도(+3.9%vsKOSPI-7.0%) | 디커플링모멘텀",
-      "price_at_signal": 0,
-      "signal_time": "2026-06-26T06:01:13.815838",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "001260",
-      "stock_name": "남광토건",
-      "sector": "",
-      "signal_count": 4,
-      "avg_confidence": 0.6625,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(60) | 거래량12.9x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+16.0%vsKOSPI-7.0%) | 디커플링모멘텀",
-      "price_at_signal": 0,
-      "signal_time": "2026-06-26T06:01:13.815814",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "004440",
-      "stock_name": "삼일씨엔에스",
-      "sector": "건축자재",
-      "signal_count": 4,
-      "avg_confidence": 0.6625,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(52) | 거래량7.3x | 거래량3x+ | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+7.3%vsKOSPI-7.0%) | 디커플링모멘텀",
-      "price_at_signal": 0,
-      "signal_time": "2026-06-26T06:01:13.815830",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "000850",
-      "stock_name": "화천기공",
-      "sector": "",
-      "signal_count": 4,
-      "avg_confidence": 0.6625,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(62) | 거래량5.5x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+11.3%vsKOSPI-7.0%) | 디커플링모멘텀",
-      "price_at_signal": 0,
-      "signal_time": "2026-06-26T06:01:13.815822",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "010960",
-      "stock_name": "삼호개발",
-      "sector": "건설",
-      "signal_count": 4,
-      "avg_confidence": 0.7875,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(56) | 거래량7.7x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+0.1%vsKOSPI-7.0%) | 디커플링모멘텀",
-      "price_at_signal": 0,
-      "signal_time": "2026-06-26T06:01:13.815806",
-      "status": "매수 시그널"
-    },
     {
       "stock_code": "005930",
       "stock_name": "삼성전자",
       "sector": "반도체",
-      "signal_count": 4,
+      "signal_count": 12,
       "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-7.1%) | 상대강도(-3.5%vsKOSPI-7.0%)",
+      "reason": "MA정배열 | EMA20하방 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-5.2%)",
       "price_at_signal": 0,
-      "signal_time": "2026-06-26T06:01:13.815796",
+      "signal_time": "2026-07-01T05:59:28.088898",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "950250",
+      "stock_name": "테라뷰",
+      "sector": "반도체와반도체장비",
+      "signal_count": 11,
+      "avg_confidence": 0.9545454545454546,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI반등(35) | RSI sweet(35) | 거래량2.1x | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(11) | 주봉MA20아래 | 상대강도(+4.6%vsKOSPI-1.9%) | 디커플링모멘텀",
+      "price_at_signal": 0,
+      "signal_time": "2026-07-01T06:00:23.056348",
       "status": "매수 시그널"
     },
     {
@@ -96,25 +40,49 @@
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-9.4%) | 상대강도(-4.3%vsKOSPI-7.0%)",
+      "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-3.1%)",
       "price_at_signal": 0,
-      "signal_time": "2026-06-26T06:01:13.815770",
+      "signal_time": "2026-07-01T06:02:15.698140",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "005440",
-      "stock_name": "현대지에프홀딩스",
+      "stock_code": "013580",
+      "stock_name": "계룡건설",
       "sector": "",
       "signal_count": 2,
-      "avg_confidence": 0.5,
+      "avg_confidence": 0.55,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | 거래량2.5x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(-1.8%vsKOSPI-7.0%) | 디커플링모멘텀",
+      "reason": "MACD히스토그램↑ | 거래량7.3x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(-0.9%vsKOSPI-1.9%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-06-26T06:01:13.815846",
+      "signal_time": "2026-07-01T06:02:15.698184",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "000500",
+      "stock_name": "가온전선",
+      "sector": "",
+      "signal_count": 1,
+      "avg_confidence": 0.5833,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "거래량2.9x | EMA20하방 | MA역배열 | 캔들상승장악형(강) | 주봉골든크로스 | 주봉MA20위 | 상대강도(+18.4%vsKOSPI-1.9%)",
+      "price_at_signal": 0,
+      "signal_time": "2026-07-01T05:59:28.088909",
       "status": "매수 시그널"
     }
   ],
-  "holdings": []
+  "holdings": [
+    {
+      "stock_code": "005440",
+      "stock_name": "현대지에프홀딩스",
+      "quantity": 97,
+      "avg_price": 15158.659,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-06-29",
+      "status": "보유 중"
+    }
+  ]
 }

@@ -1,4 +1,16 @@
 {
-  "exported_at": "2026-06-26T07:00:00.665294+00:00",
-  "holdings": []
+  "exported_at": "2026-07-01T07:00:00.672229+00:00",
+  "holdings": [
+    {
+      "stock_code": "005440",
+      "stock_name": "현대지에프홀딩스",
+      "quantity": 97,
+      "avg_price": 15158.659,
+      "current_price": 16550.0,
+      "unrealized_pnl": 129960.75,
+      "unrealized_pnl_rate": 8.8385,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-06-29T06:15:41.709876"
+    }
+  ]
 }

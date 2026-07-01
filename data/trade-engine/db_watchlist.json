@@ -1,6 +1,6 @@
 {
-  "exported_at": "2026-06-26T07:00:01.650365+00:00",
-  "total": 5,
+  "exported_at": "2026-07-01T07:00:01.663376+00:00",
+  "total": 7,
   "items": [
     {
       "stock_code": "005930",
@@ -10,10 +10,23 @@
       "target_buy_price": null,
       "target_price": null,
       "stop_loss": null,
-      "priority": 75,
-      "memo": "AI APPROVE | conf=75% | qty_ratio=120% | AI review removed (2026-04-15)",
+      "priority": 85,
+      "memo": "AI APPROVE | conf=85% | qty_ratio=120% | AI review removed (2026-04-15)",
       "created_at": "2026-06-10T13:59:39.285615",
-      "updated_at": "2026-06-24T15:12:41.744296"
+      "updated_at": "2026-06-29T15:14:18.965106"
+    },
+    {
+      "stock_code": "005440",
+      "stock_name": "현대지에프홀딩스",
+      "market": "KRX",
+      "sector": "",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 70,
+      "memo": "AI APPROVE | conf=70% | qty_ratio=120% | AI review removed (2026-04-15)",
+      "created_at": "2026-06-29T15:14:18.961787",
+      "updated_at": "2026-06-29T15:14:18.961787"
     },
     {
       "stock_code": "006340",
@@ -27,6 +40,19 @@
       "memo": "AI APPROVE | conf=58% | qty_ratio=120% | AI review removed (2026-04-15)",
       "created_at": "2026-06-18T10:23:28.012245",
       "updated_at": "2026-06-18T10:23:28.012245"
+    },
+    {
+      "stock_code": "000850",
+      "stock_name": "화천기공",
+      "market": "KRX",
+      "sector": "",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 40,
+      "memo": "AI APPROVE | conf=40% | qty_ratio=100% | AI review removed (2026-04-15)",
+      "created_at": "2026-06-29T15:10:00.060629",
+      "updated_at": "2026-06-29T15:10:00.060629"
     },
     {
       "stock_code": "000500",

@@ -1,77 +1,77 @@
 {
-  "exported_at": "2026-06-26T07:00:00.679301+00:00",
+  "exported_at": "2026-07-01T07:00:00.688693+00:00",
   "trades": [
+    {
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "side": "sell",
+      "quantity": 12,
+      "price": 328500.0,
+      "pnl": 21124.8,
+      "pnl_rate": 0.5406,
+      "strategy": "swing_trailing(peak=3.7%,step=3.0%,trail_sl=0.7%)",
+      "reason": "swing_trailing(peak=3.7%,step=3.0%,trail_sl=0.7%)",
+      "filled_at": "2026-07-01T00:21:54.320877"
+    },
+    {
+      "stock_code": "000850",
+      "stock_name": "화천기공",
+      "side": "sell",
+      "quantity": 14,
+      "price": 35650.0,
+      "pnl": -45832.22,
+      "pnl_rate": -8.4374,
+      "strategy": "swing_stop_loss(SL=35,696)",
+      "reason": "swing_stop_loss(SL=35,696)",
+      "filled_at": "2026-07-01T00:00:44.365540"
+    },
+    {
+      "stock_code": "005440",
+      "stock_name": "현대지에프홀딩스",
+      "side": "buy",
+      "quantity": 97,
+      "price": 15160.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "",
+      "filled_at": "2026-06-29T06:15:41.715686"
+    },
+    {
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "side": "buy",
+      "quantity": 12,
+      "price": 325250.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "",
+      "filled_at": "2026-06-29T06:15:07.407736"
+    },
     {
       "stock_code": "005930",
       "stock_name": "삼성전자",
       "side": "buy",
       "quantity": 8,
-      "price": 339250.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "",
-      "filled_at": "2026-06-24T06:14:05.983088"
-    },
-    {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "side": "buy",
-      "quantity": 4,
-      "price": 339250.0,
+      "price": 325750.0,
       "pnl": null,
       "pnl_rate": null,
       "strategy": "RSI+MACD(swing)",
       "reason": "이월분(익일종가)",
-      "filled_at": "2026-06-24T06:11:16.256357"
+      "filled_at": "2026-06-29T06:11:17.625724"
     },
     {
-      "stock_code": "000500",
-      "stock_name": "가온전선",
-      "side": "sell",
-      "quantity": 1,
-      "price": 346500.0,
-      "pnl": 6828.3,
-      "pnl_rate": 2.0172,
-      "strategy": "swing_trailing(peak=5.6%,step=3.0%,trail_sl=2.6%)",
-      "reason": "swing_trailing(peak=5.6%,step=3.0%,trail_sl=2.6%)",
-      "filled_at": "2026-06-23T00:16:03.665287"
-    },
-    {
-      "stock_code": "451220",
-      "stock_name": "451220",
+      "stock_code": "000850",
+      "stock_name": "화천기공",
       "side": "buy",
-      "quantity": 60,
-      "price": 14870.0,
+      "quantity": 14,
+      "price": 38775.0,
       "pnl": null,
       "pnl_rate": null,
       "strategy": "RSI+MACD(swing)",
-      "reason": "",
-      "filled_at": "2026-06-22T06:14:15.242145"
-    },
-    {
-      "stock_code": "000500",
-      "stock_name": "가온전선",
-      "side": "buy",
-      "quantity": 1,
-      "price": 338250.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "",
-      "filled_at": "2026-06-22T06:12:58.872873"
-    },
-    {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "side": "buy",
-      "quantity": 7,
-      "price": 352750.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "",
-      "filled_at": "2026-06-22T06:12:53.308737"
+      "reason": "이월분(익일종가)",
+      "filled_at": "2026-06-29T06:10:33.488747"
     }
   ]
 }
