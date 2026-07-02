@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-07-01T07:00:01.124202+00:00",
+  "exported_at": "2026-07-02T07:00:01.179238+00:00",
   "market_daily": [
+    {
+      "date": "20260702",
+      "kospi_change": -7.89,
+      "kosdaq_change": -6.74,
+      "foreign_net": -437.1,
+      "institution_net": -208.23,
+      "individual_net": 626.6,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260701",
       "kospi_change": -2.04,
       "kosdaq_change": 1.44,
-      "foreign_net": -170.29,
-      "institution_net": -7.1,
-      "individual_net": 174.0,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": -170.28,
+      "institution_net": -7.0,
+      "individual_net": 173.89,
+      "hot_theme_count": 40,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260626",
@@ -99,29 +110,18 @@
       "hot_theme_count": 8,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260616",
-      "kospi_change": 2.11,
-      "kosdaq_change": -1.48,
-      "foreign_net": 153.74,
-      "institution_net": 70.56,
-      "individual_net": -218.47,
-      "hot_theme_count": 11,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "금융위, 해외서 코인값 띄운 ‘고래’투자자·김치코인 초단타 매매자 등 시세조종 2건 고발",
-    "[인사] 하나증권",
-    "반도체 피크 아웃 우려에 코스피 8300선 간신히 사수…2%대 약세 마감",
-    "환율 또 금융위기 후 최고…장중 1,560원선 위협",
-    "코스피, 외인 '팔자' 2% 약세…'30돌' 코스닥 상승 체면치레",
-    "코스피 2% 하락, 8,303.41 마감",
-    "코스피 2% 하락, 8,303.41 마감",
-    "코스피 하락, 환율 17년 3개월 만에 최고",
-    "SK하이닉스 3.39% 하락, 삼성전자 5.83% 하락 마감",
-    "SK하이닉스 3.39% 하락, 삼성전자 5.83% 하락 마감"
+    "삼성전자 9%, SK하이닉스 14.5% 폭락 마감",
+    "삼성전자 9%, SK하이닉스 14.5% 폭락 마감",
+    "삼성전자 9%, SK하이닉스 14.5% 폭락 마감",
+    "가라앉은 코스피 7600대로 밀려…美반도체 하락에 외인 5.9조 순매도",
+    "삼성전자 9%, SK하이닉스 14.5% 폭락 마감",
+    "코스피 8000·코스닥 900 동반 붕괴…사이드카 속 '패닉셀'(종합)",
+    "삼성전자 9%, SK하이닉스 14.5% 폭락 마감",
+    "젠스타메이트, 서울 도심권역 핵심 오피스 '오렌지센터' 매각 성공적 완료",
+    "외국인 4.4조 던졌다…코스피 7600선 마감 [시황]",
+    "7600선까지 밀린 코스피 지수"
   ]
 }

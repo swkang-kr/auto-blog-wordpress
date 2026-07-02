@@ -1,67 +1,108 @@
 {
-  "exported_at": "2026-07-01T07:00:01.189389+00:00",
-  "date": "20260701",
+  "exported_at": "2026-07-02T07:00:01.236246+00:00",
+  "date": "20260702",
   "hot_themes": [
     {
-      "name": "2026 하반기 신규상장",
-      "change_rate": 26.0
-    },
-    {
-      "name": "전선",
-      "change_rate": 17.46
-    },
-    {
       "name": "건설 중소형",
-      "change_rate": 13.07
+      "change_rate": 4.55
     },
     {
-      "name": "고체산화물 연료전지(SOFC)",
-      "change_rate": 10.63
+      "name": "은행",
+      "change_rate": 3.01
     },
     {
-      "name": "시멘트/레미콘",
-      "change_rate": 10.3
+      "name": "편의점",
+      "change_rate": 2.75
     },
     {
-      "name": "전력설비",
-      "change_rate": 9.95
+      "name": "캐릭터상품",
+      "change_rate": 2.26
     },
     {
-      "name": "아스콘(아스팔트 콘크리트)",
-      "change_rate": 9.57
+      "name": "인터넷 대표주",
+      "change_rate": 1.28
     },
     {
-      "name": "GTX(수도권 광역급행철도)",
-      "change_rate": 9.47
+      "name": "스포츠행사 수혜(올림픽, 월드컵 등)",
+      "change_rate": 1.14
     },
     {
-      "name": "자전거",
-      "change_rate": 7.77
+      "name": "손해보험",
+      "change_rate": 1.12
+    },
+    {
+      "name": "카지노",
+      "change_rate": 1.04
+    },
+    {
+      "name": "환율하락 수혜",
+      "change_rate": 1.01
+    },
+    {
+      "name": "소매유통",
+      "change_rate": 0.97
+    },
+    {
+      "name": "호텔/리조트",
+      "change_rate": 0.9
+    },
+    {
+      "name": "육계",
+      "change_rate": 0.87
+    },
+    {
+      "name": "음원/음반",
+      "change_rate": 0.83
+    },
+    {
+      "name": "겨울",
+      "change_rate": 0.72
+    },
+    {
+      "name": "자원개발",
+      "change_rate": 0.7
+    }
+  ],
+  "cold_themes": [
+    {
+      "name": "LPG(액화석유가스)",
+      "change_rate": -0.44
     },
     {
       "name": "해저터널(지하화/지하도로 등)",
-      "change_rate": 7.4
+      "change_rate": -0.39
     },
     {
-      "name": "초전도체",
-      "change_rate": 6.75
+      "name": "주류업(주정, 에탄올 등)",
+      "change_rate": -0.39
     },
     {
-      "name": "원자력발전",
-      "change_rate": 5.98
+      "name": "출산장려정책",
+      "change_rate": -0.38
     },
     {
-      "name": "모듈러주택",
-      "change_rate": 5.93
+      "name": "화장품",
+      "change_rate": -0.19
     },
     {
-      "name": "모더나(MODERNA)",
-      "change_rate": 5.77
+      "name": "기업인수목적회사(SPAC)",
+      "change_rate": -0.13
     },
     {
-      "name": "철도",
-      "change_rate": 5.67
+      "name": "자동차 대표주",
+      "change_rate": -0.1
+    },
+    {
+      "name": "홈쇼핑",
+      "change_rate": -0.08
+    },
+    {
+      "name": "패션/의류",
+      "change_rate": -0.07
+    },
+    {
+      "name": "콩/대두",
+      "change_rate": -0.04
     }
-  ],
-  "cold_themes": []
+  ]
 }
