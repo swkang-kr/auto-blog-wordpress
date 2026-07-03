@@ -1,4 +1,27 @@
 {
-  "exported_at": "2026-07-02T07:00:00.660140+00:00",
-  "holdings": []
+  "exported_at": "2026-07-03T07:00:00.665519+00:00",
+  "holdings": [
+    {
+      "stock_code": "037710",
+      "stock_name": "광주신세계",
+      "quantity": 13,
+      "avg_price": 38950.0,
+      "current_price": 38900.0,
+      "unrealized_pnl": -2371.59,
+      "unrealized_pnl_rate": -0.5374,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-07-03T06:11:11.863882"
+    },
+    {
+      "stock_code": "010780",
+      "stock_name": "아이에스동서",
+      "quantity": 16,
+      "avg_price": 22009.375,
+      "current_price": 22000.0,
+      "unrealized_pnl": -1347.31,
+      "unrealized_pnl_rate": -0.5826,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-07-03T06:11:46.055427"
+    }
+  ]
 }

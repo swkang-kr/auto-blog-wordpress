@@ -1,108 +1,67 @@
 {
-  "exported_at": "2026-07-02T07:00:01.236246+00:00",
-  "date": "20260702",
+  "exported_at": "2026-07-03T07:00:01.159239+00:00",
+  "date": "20260703",
   "hot_themes": [
     {
-      "name": "건설 중소형",
-      "change_rate": 4.55
+      "name": "반도체 대표주(생산)",
+      "change_rate": 7.48
     },
     {
-      "name": "은행",
-      "change_rate": 3.01
+      "name": "S7(삼성전자/SK하이닉스 등)",
+      "change_rate": 6.69
     },
     {
-      "name": "편의점",
-      "change_rate": 2.75
+      "name": "증권",
+      "change_rate": 5.57
     },
     {
-      "name": "캐릭터상품",
-      "change_rate": 2.26
+      "name": "마이크로 LED",
+      "change_rate": 5.14
     },
     {
-      "name": "인터넷 대표주",
-      "change_rate": 1.28
+      "name": "유심(USIM)",
+      "change_rate": 5.07
     },
     {
-      "name": "스포츠행사 수혜(올림픽, 월드컵 등)",
-      "change_rate": 1.14
+      "name": "페라이트",
+      "change_rate": 4.92
     },
     {
-      "name": "손해보험",
-      "change_rate": 1.12
+      "name": "제대혈",
+      "change_rate": 4.31
     },
     {
-      "name": "카지노",
-      "change_rate": 1.04
+      "name": "제습기",
+      "change_rate": 3.88
     },
     {
-      "name": "환율하락 수혜",
-      "change_rate": 1.01
+      "name": "STO(토큰증권 발행)",
+      "change_rate": 3.79
     },
     {
-      "name": "소매유통",
-      "change_rate": 0.97
+      "name": "카메라모듈/부품",
+      "change_rate": 3.63
     },
     {
-      "name": "호텔/리조트",
-      "change_rate": 0.9
+      "name": "폴더블폰",
+      "change_rate": 3.63
     },
     {
-      "name": "육계",
-      "change_rate": 0.87
+      "name": "귀금속(금/은)",
+      "change_rate": 3.55
     },
     {
-      "name": "음원/음반",
-      "change_rate": 0.83
+      "name": "희귀금속(희토류 등)",
+      "change_rate": 3.49
     },
     {
-      "name": "겨울",
-      "change_rate": 0.72
+      "name": "소캠(SOCAMM)",
+      "change_rate": 3.38
     },
     {
-      "name": "자원개발",
-      "change_rate": 0.7
+      "name": "니켈",
+      "change_rate": 3.37
     }
   ],
-  "cold_themes": [
-    {
-      "name": "LPG(액화석유가스)",
-      "change_rate": -0.44
-    },
-    {
-      "name": "해저터널(지하화/지하도로 등)",
-      "change_rate": -0.39
-    },
-    {
-      "name": "주류업(주정, 에탄올 등)",
-      "change_rate": -0.39
-    },
-    {
-      "name": "출산장려정책",
-      "change_rate": -0.38
-    },
-    {
-      "name": "화장품",
-      "change_rate": -0.19
-    },
-    {
-      "name": "기업인수목적회사(SPAC)",
-      "change_rate": -0.13
-    },
-    {
-      "name": "자동차 대표주",
-      "change_rate": -0.1
-    },
-    {
-      "name": "홈쇼핑",
-      "change_rate": -0.08
-    },
-    {
-      "name": "패션/의류",
-      "change_rate": -0.07
-    },
-    {
-      "name": "콩/대두",
-      "change_rate": -0.04
-    }
-  ]
+  "cold_themes": []
 }
