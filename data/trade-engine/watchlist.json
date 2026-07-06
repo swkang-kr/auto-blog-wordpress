@@ -1,64 +1,16 @@
 {
-  "exported_at": "2026-07-03T07:00:01.629794+00:00",
-  "total_stocks": 41,
+  "exported_at": "2026-07-06T07:00:01.575591+00:00",
+  "total_stocks": 40,
   "watchlist_all": [
-    {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "market": "KOSPI",
-      "sector": "반도체",
-      "signal_count": 903,
-      "buy_count": 903,
-      "sell_count": 0,
-      "avg_confidence": 0.8517442967884828,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "latest_reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-3.8%)",
-      "latest_price": 0,
-      "latest_at": "2026-06-29T00:05:59.971636"
-    },
-    {
-      "stock_code": "000660",
-      "stock_name": "SK하이닉스",
-      "market": "KOSPI",
-      "sector": "반도체",
-      "signal_count": 689,
-      "buy_count": 689,
-      "sell_count": 0,
-      "avg_confidence": 0.9982374455732945,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "latest_reason": "MA정배열 | 캔들하락장악형(약세) | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-3.1%)",
-      "latest_price": 0,
-      "latest_at": "2026-06-29T00:14:53.206756"
-    },
-    {
-      "stock_code": "037710",
-      "stock_name": "광주신세계",
-      "market": "KOSPI",
-      "sector": "백화점과일반상점",
-      "signal_count": 668,
-      "buy_count": 329,
-      "sell_count": 339,
-      "avg_confidence": 0.8236133233532845,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "latest_reason": "RSI과매수(78)",
-      "latest_price": 0,
-      "latest_at": "2026-06-29T00:05:59.971654"
-    },
     {
       "stock_code": "090430",
       "stock_name": "아모레퍼시픽",
       "market": "KOSPI",
       "sector": "화장품",
-      "signal_count": 540,
-      "buy_count": 540,
+      "signal_count": 592,
+      "buy_count": 592,
       "sell_count": 0,
-      "avg_confidence": 0.7411961111111052,
+      "avg_confidence": 0.7385923986486423,
       "strategies": [
         "RSI+MACD(swing)"
       ],
@@ -67,52 +19,116 @@
       "latest_at": "2026-07-02T01:01:09.256760"
     },
     {
-      "stock_code": "073240",
-      "stock_name": "금호타이어",
+      "stock_code": "000660",
+      "stock_name": "SK하이닉스",
       "market": "KOSPI",
-      "sector": "",
-      "signal_count": 480,
-      "buy_count": 480,
+      "sector": "반도체",
+      "signal_count": 568,
+      "buy_count": 568,
       "sell_count": 0,
-      "avg_confidence": 0.9266560416666672,
+      "avg_confidence": 0.9978619718309858,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "latest_reason": "2일연속상승 | MACD골든크로스 | RSI모멘텀(55) | 거래량26.3x | 거래량3x+ | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+11.4%vsKOSPI-1.9%) | 디커플링모멘텀",
+      "latest_reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-3.1%)",
       "latest_price": 0,
-      "latest_at": "2026-06-29T00:05:59.971648"
+      "latest_at": "2026-07-01T01:07:20.123860"
     },
     {
-      "stock_code": "009420",
-      "stock_name": "한올바이오파마",
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
       "market": "KOSPI",
-      "sector": "",
-      "signal_count": 434,
-      "buy_count": 434,
+      "sector": "반도체",
+      "signal_count": 550,
+      "buy_count": 550,
       "sell_count": 0,
-      "avg_confidence": 0.9407516129032272,
+      "avg_confidence": 0.7565910909090919,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "latest_reason": "MACD히스토그램↑ | 거래량2.2x | MA정배열 | 캔들하락장악형(약세) | 주봉골든크로스 | 주봉MA20위 | 상대강도(-0.9%vsKOSPI-1.9%) | 디커플링모멘텀",
+      "latest_reason": "주봉골든크로스 | 주봉MA20위 | 대형주급락(-3.8%)",
       "latest_price": 0,
-      "latest_at": "2026-06-29T00:05:59.971651"
+      "latest_at": "2026-07-01T00:10:02.177864"
+    },
+    {
+      "stock_code": "010960",
+      "stock_name": "삼호개발",
+      "market": "KOSPI",
+      "sector": "건설",
+      "signal_count": 474,
+      "buy_count": 253,
+      "sell_count": 221,
+      "avg_confidence": 0.6953031645569665,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "MACD히스토그램↑ | RSI모멘텀(57) | 거래량3.7x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+10.6%vsKOSPI-1.4%) | 디커플링모멘텀",
+      "latest_price": 0,
+      "latest_at": "2026-07-01T01:31:09.343803"
+    },
+    {
+      "stock_code": "002990",
+      "stock_name": "금호건설",
+      "market": "KOSPI",
+      "sector": "",
+      "signal_count": 438,
+      "buy_count": 171,
+      "sell_count": 267,
+      "avg_confidence": 0.880120091324197,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "RSI과매수(83)",
+      "latest_price": 0,
+      "latest_at": "2026-07-01T00:06:09.618334"
     },
     {
       "stock_code": "006340",
       "stock_name": "대원전선",
       "market": "KOSPI",
       "sector": "전기장비",
-      "signal_count": 352,
-      "buy_count": 352,
+      "signal_count": 418,
+      "buy_count": 418,
       "sell_count": 0,
-      "avg_confidence": 0.9789176136363612,
+      "avg_confidence": 0.9822464114832515,
       "strategies": [
         "RSI+MACD(swing)"
       ],
       "latest_reason": "2일연속상승 | MACD골든크로스 | RSI모멘텀(60) | 주봉골든크로스 | 주봉MA20위 | 상대강도(+30.0%vsKOSPI-5.1%) | 디커플링모멘텀",
       "latest_price": 0,
       "latest_at": "2026-07-02T00:10:59.538056"
+    },
+    {
+      "stock_code": "069620",
+      "stock_name": "대웅제약",
+      "market": "KOSPI",
+      "sector": "",
+      "signal_count": 391,
+      "buy_count": 391,
+      "sell_count": 0,
+      "avg_confidence": 0.8879125319693095,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(52) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+5.2%vsKOSPI-0.1%) | 디커플링모멘텀",
+      "latest_price": 0,
+      "latest_at": "2026-07-03T00:10:02.619146"
+    },
+    {
+      "stock_code": "037710",
+      "stock_name": "광주신세계",
+      "market": "KOSPI",
+      "sector": "백화점과일반상점",
+      "signal_count": 384,
+      "buy_count": 329,
+      "sell_count": 55,
+      "avg_confidence": 0.8533447916666658,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "RSI과매수(78)",
+      "latest_price": 0,
+      "latest_at": "2026-07-01T00:06:09.618341"
     },
     {
       "stock_code": "950250",
@@ -147,38 +163,6 @@
       "latest_at": "2026-07-01T01:01:12.767670"
     },
     {
-      "stock_code": "026940",
-      "stock_name": "부국철강",
-      "market": "KOSPI",
-      "sector": "",
-      "signal_count": 321,
-      "buy_count": 321,
-      "sell_count": 0,
-      "avg_confidence": 0.8459190031152647,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "latest_reason": "거래량8.1x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
-      "latest_price": 0,
-      "latest_at": "2026-06-29T00:39:53.380572"
-    },
-    {
-      "stock_code": "000500",
-      "stock_name": "가온전선",
-      "market": "KOSPI",
-      "sector": "",
-      "signal_count": 318,
-      "buy_count": 318,
-      "sell_count": 0,
-      "avg_confidence": 0.6414389937106911,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "latest_reason": "RSI모멘텀(52) | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+10.2%vsKOSPI-1.0%)",
-      "latest_price": 0,
-      "latest_at": "2026-06-29T00:11:00.555163"
-    },
-    {
       "stock_code": "013580",
       "stock_name": "계룡건설",
       "market": "KOSPI",
@@ -193,22 +177,6 @@
       "latest_reason": "MACD히스토그램↑ | 거래량7.3x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(-0.9%vsKOSPI-2.3%) | 디커플링모멘텀",
       "latest_price": 0,
       "latest_at": "2026-07-01T01:50:06.776715"
-    },
-    {
-      "stock_code": "010960",
-      "stock_name": "삼호개발",
-      "market": "KOSPI",
-      "sector": "건설",
-      "signal_count": 298,
-      "buy_count": 77,
-      "sell_count": 221,
-      "avg_confidence": 0.7319224832214796,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "latest_reason": "MACD히스토그램↑ | RSI모멘텀(57) | 거래량3.7x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+10.6%vsKOSPI-1.4%) | 디커플링모멘텀",
-      "latest_price": 0,
-      "latest_at": "2026-07-01T01:31:09.343803"
     },
     {
       "stock_code": "062040",
@@ -227,36 +195,36 @@
       "latest_at": "2026-07-02T00:10:59.538019"
     },
     {
-      "stock_code": "002990",
-      "stock_name": "금호건설",
+      "stock_code": "000500",
+      "stock_name": "가온전선",
       "market": "KOSPI",
       "sector": "",
-      "signal_count": 267,
-      "buy_count": 0,
-      "sell_count": 267,
-      "avg_confidence": 0.9327146067415748,
+      "signal_count": 268,
+      "buy_count": 268,
+      "sell_count": 0,
+      "avg_confidence": 0.5779014925373129,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "latest_reason": "RSI과매수(83)",
+      "latest_reason": "거래량2.9x | EMA20하방 | MA역배열 | 캔들상승장악형(강) | 주봉골든크로스 | 주봉MA20위 | 상대강도(+18.4%vsKOSPI-1.2%)",
       "latest_price": 0,
-      "latest_at": "2026-07-01T00:06:09.618334"
+      "latest_at": "2026-07-01T01:01:12.767667"
     },
     {
-      "stock_code": "005440",
-      "stock_name": "현대지에프홀딩스",
+      "stock_code": "001260",
+      "stock_name": "남광토건",
       "market": "KOSPI",
       "sector": "",
-      "signal_count": 266,
-      "buy_count": 266,
+      "signal_count": 263,
+      "buy_count": 263,
       "sell_count": 0,
-      "avg_confidence": 0.9761857142857144,
+      "avg_confidence": 0.7808262357414464,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(61) | 거래량2.4x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+0.6%vsKOSPI-2.0%) | 디커플링모멘텀",
+      "latest_reason": "MACD히스토그램↑ | RSI모멘텀(59) | 거래량3.0x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+13.8%vsKOSPI-1.2%) | 디커플링모멘텀",
       "latest_price": 0,
-      "latest_at": "2026-06-29T02:40:58.222038"
+      "latest_at": "2026-07-01T01:01:12.767654"
     },
     {
       "stock_code": "036930",
@@ -291,36 +259,20 @@
       "latest_at": "2026-07-02T00:10:59.538186"
     },
     {
-      "stock_code": "058730",
-      "stock_name": "다스코",
+      "stock_code": "028050",
+      "stock_name": "삼성E&A",
       "market": "KOSPI",
-      "sector": "",
-      "signal_count": 259,
-      "buy_count": 259,
+      "sector": "건설",
+      "signal_count": 182,
+      "buy_count": 182,
       "sell_count": 0,
-      "avg_confidence": 0.8833791505791505,
+      "avg_confidence": 0.6443203296703282,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "latest_reason": "MACD히스토그램↑ | RSI모멘텀(61) | 거래량11.1x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+13.7%vsKOSPI-0.9%) | 디커플링모멘텀",
+      "latest_reason": "MACD골든크로스 | RSI모멘텀(56) | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+8.6%vsKOSPI-5.1%)",
       "latest_price": 0,
-      "latest_at": "2026-06-29T01:00:57.540706"
-    },
-    {
-      "stock_code": "004440",
-      "stock_name": "삼일씨엔에스",
-      "market": "KOSPI",
-      "sector": "건축자재",
-      "signal_count": 233,
-      "buy_count": 233,
-      "sell_count": 0,
-      "avg_confidence": 0.9987982832618026,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(54) | 거래량11.8x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(28) | 주봉MA20아래 | 상대강도(+3.1%vsKOSPI-1.7%) | 디커플링모멘텀",
-      "latest_price": 0,
-      "latest_at": "2026-06-29T02:29:54.762643"
+      "latest_at": "2026-07-02T00:10:59.538128"
     },
     {
       "stock_code": "010780",
@@ -339,84 +291,36 @@
       "latest_at": "2026-07-02T01:45:05.829548"
     },
     {
-      "stock_code": "000850",
-      "stock_name": "화천기공",
+      "stock_code": "073240",
+      "stock_name": "금호타이어",
       "market": "KOSPI",
       "sector": "",
-      "signal_count": 176,
-      "buy_count": 176,
+      "signal_count": 160,
+      "buy_count": 160,
       "sell_count": 0,
-      "avg_confidence": 1.0,
+      "avg_confidence": 0.8061975000000003,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "latest_reason": "MACD히스토그램↑ | RSI모멘텀(62) | 거래량8.2x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+11.8%vsKOSPI-1.6%) | 디커플링모멘텀",
+      "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(60) | 거래량25.3x | 거래량3x+ | 주봉데드크로스(-1.5) | 주봉RSI과매도(29) | 주봉MA20아래 | 상대강도(+7.4%vsKOSPI+1.0%) | 디커플링모멘텀",
       "latest_price": 0,
-      "latest_at": "2026-06-29T00:09:52.973467"
+      "latest_at": "2026-07-01T00:06:09.618313"
     },
     {
-      "stock_code": "028050",
-      "stock_name": "삼성E&A",
-      "market": "KOSPI",
-      "sector": "건설",
-      "signal_count": 153,
-      "buy_count": 153,
-      "sell_count": 0,
-      "avg_confidence": 0.6242895424836581,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "latest_reason": "MACD골든크로스 | RSI모멘텀(56) | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+8.6%vsKOSPI-5.1%)",
-      "latest_price": 0,
-      "latest_at": "2026-07-02T00:10:59.538128"
-    },
-    {
-      "stock_code": "000890",
-      "stock_name": "보해양조",
+      "stock_code": "058730",
+      "stock_name": "다스코",
       "market": "KOSPI",
       "sector": "",
-      "signal_count": 151,
-      "buy_count": 151,
+      "signal_count": 99,
+      "buy_count": 99,
       "sell_count": 0,
-      "avg_confidence": 0.5,
+      "avg_confidence": 0.7120727272727271,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "latest_reason": "RSI모멘텀(58) | 거래량2.5x | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+0.2%vsKOSPI-0.9%)",
+      "latest_reason": "MACD히스토그램↑ | RSI모멘텀(61) | 거래량11.1x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+13.7%vsKOSPI+1.0%) | 디커플링모멘텀",
       "latest_price": 0,
-      "latest_at": "2026-06-29T01:00:57.540709"
-    },
-    {
-      "stock_code": "001260",
-      "stock_name": "남광토건",
-      "market": "KOSPI",
-      "sector": "",
-      "signal_count": 115,
-      "buy_count": 115,
-      "sell_count": 0,
-      "avg_confidence": 0.7293478260869551,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "latest_reason": "MACD히스토그램↑ | 거래량17.2x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(-0.6%vsKOSPI-1.9%) | 디커플링모멘텀",
-      "latest_price": 0,
-      "latest_at": "2026-06-29T02:08:57.328919"
-    },
-    {
-      "stock_code": "069620",
-      "stock_name": "대웅제약",
-      "market": "KOSPI",
-      "sector": "",
-      "signal_count": 93,
-      "buy_count": 93,
-      "sell_count": 0,
-      "avg_confidence": 0.8307215053763428,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(52) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+5.2%vsKOSPI-0.1%) | 디커플링모멘텀",
-      "latest_price": 0,
-      "latest_at": "2026-07-03T00:10:02.619146"
+      "latest_at": "2026-07-01T00:06:09.618321"
     },
     {
       "stock_code": "010120",
@@ -451,6 +355,38 @@
       "latest_at": "2026-07-03T04:15:24.129376"
     },
     {
+      "stock_code": "009420",
+      "stock_name": "한올바이오파마",
+      "market": "KOSPI",
+      "sector": "",
+      "signal_count": 74,
+      "buy_count": 74,
+      "sell_count": 0,
+      "avg_confidence": 0.7804445945945955,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "거래량2.1x | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(-1.3%vsKOSPI-5.8%)",
+      "latest_price": 0,
+      "latest_at": "2026-07-02T00:06:34.414006"
+    },
+    {
+      "stock_code": "011230",
+      "stock_name": "삼화전자",
+      "market": "KOSPI",
+      "sector": "전자장비와기기",
+      "signal_count": 62,
+      "buy_count": 62,
+      "sell_count": 0,
+      "avg_confidence": 0.9435483870967742,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "latest_price": 0,
+      "latest_at": "2026-07-02T05:30:48.588599"
+    },
+    {
       "stock_code": "004980",
       "stock_name": "성신양회",
       "market": "KOSPI",
@@ -467,83 +403,131 @@
       "latest_at": "2026-07-02T00:06:34.414041"
     },
     {
-      "stock_code": "003200",
-      "stock_name": "일신방직",
+      "stock_code": "005440",
+      "stock_name": "현대지에프홀딩스",
       "market": "KOSPI",
       "sector": "",
-      "signal_count": 53,
-      "buy_count": 53,
+      "signal_count": 55,
+      "buy_count": 55,
       "sell_count": 0,
-      "avg_confidence": 0.8599999999999995,
+      "avg_confidence": 0.8848254545454551,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(53) | 거래량47.4x | 거래량3x+ | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+0.6%vsKOSPI-2.3%) | 디커플링모멘텀",
+      "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(61) | 거래량2.4x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위",
       "latest_price": 0,
-      "latest_at": "2026-06-29T04:44:54.904251"
+      "latest_at": "2026-07-01T00:06:09.618328"
+    },
+    {
+      "stock_code": "078930",
+      "stock_name": "GS",
+      "market": "KOSPI",
+      "sector": "",
+      "signal_count": 50,
+      "buy_count": 50,
+      "sell_count": 0,
+      "avg_confidence": 0.9245740000000003,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "2일연속상승 | MACD골든크로스 | RSI모멘텀(58) | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+5.3%vsKOSPI-0.1%) | 디커플링모멘텀",
+      "latest_price": 0,
+      "latest_at": "2026-07-03T00:10:02.619127"
+    },
+    {
+      "stock_code": "003490",
+      "stock_name": "대한항공",
+      "market": "KOSPI",
+      "sector": "항공사",
+      "signal_count": 50,
+      "buy_count": 50,
+      "sell_count": 0,
+      "avg_confidence": 1.0,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "2일연속상승 | MACD골든크로스 | RSI모멘텀(56) | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+2.7%vsKOSPI-0.3%) | 디커플링모멘텀",
+      "latest_price": 0,
+      "latest_at": "2026-07-03T00:11:06.616986"
+    },
+    {
+      "stock_code": "003160",
+      "stock_name": "디아이",
+      "market": "KOSPI",
+      "sector": "반도체와반도체장비",
+      "signal_count": 50,
+      "buy_count": 50,
+      "sell_count": 0,
+      "avg_confidence": 0.7262000000000006,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "2일연속상승 | MACD골든크로스 | RSI모멘텀(53) | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+11.7%vsKOSPI-5.8%) | 디커플링모멘텀",
+      "latest_price": 0,
+      "latest_at": "2026-07-02T00:06:34.414014"
+    },
+    {
+      "stock_code": "006200",
+      "stock_name": "한국전자홀딩스",
+      "market": "KOSPI",
+      "sector": "반도체와반도체장비",
+      "signal_count": 50,
+      "buy_count": 50,
+      "sell_count": 0,
+      "avg_confidence": 0.7987999999999993,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "2일연속상승 | RSI모멘텀(60) | 거래량2.6x | 주봉데드크로스(-1.5) | 주봉RSI과매도(10) | 주봉MA20아래 | 상대강도(+11.3%vsKOSPI-5.8%) | 디커플링모멘텀",
+      "latest_price": 0,
+      "latest_at": "2026-07-02T00:06:34.413989"
     }
   ],
   "by_niche": {
     "시장분석": [
       {
-        "stock_code": "005930",
-        "stock_name": "삼성전자",
-        "market": "KOSPI",
-        "sector": "반도체",
-        "signal_count": 903,
-        "buy_count": 903,
-        "sell_count": 0,
-        "avg_confidence": 0.8517442967884828,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-3.8%)",
-        "latest_price": 0,
-        "latest_at": "2026-06-29T00:05:59.971636"
-      },
-      {
         "stock_code": "000660",
         "stock_name": "SK하이닉스",
         "market": "KOSPI",
         "sector": "반도체",
-        "signal_count": 689,
-        "buy_count": 689,
+        "signal_count": 568,
+        "buy_count": 568,
         "sell_count": 0,
-        "avg_confidence": 0.9982374455732945,
+        "avg_confidence": 0.9978619718309858,
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "MA정배열 | 캔들하락장악형(약세) | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-3.1%)",
+        "latest_reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-3.1%)",
         "latest_price": 0,
-        "latest_at": "2026-06-29T00:14:53.206756"
+        "latest_at": "2026-07-01T01:07:20.123860"
+      },
+      {
+        "stock_code": "005930",
+        "stock_name": "삼성전자",
+        "market": "KOSPI",
+        "sector": "반도체",
+        "signal_count": 550,
+        "buy_count": 550,
+        "sell_count": 0,
+        "avg_confidence": 0.7565910909090919,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "주봉골든크로스 | 주봉MA20위 | 대형주급락(-3.8%)",
+        "latest_price": 0,
+        "latest_at": "2026-07-01T00:10:02.177864"
       }
     ],
     "업종분석": [
-      {
-        "stock_code": "037710",
-        "stock_name": "광주신세계",
-        "market": "KOSPI",
-        "sector": "백화점과일반상점",
-        "signal_count": 668,
-        "buy_count": 329,
-        "sell_count": 339,
-        "avg_confidence": 0.8236133233532845,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "RSI과매수(78)",
-        "latest_price": 0,
-        "latest_at": "2026-06-29T00:05:59.971654"
-      },
       {
         "stock_code": "090430",
         "stock_name": "아모레퍼시픽",
         "market": "KOSPI",
         "sector": "화장품",
-        "signal_count": 540,
-        "buy_count": 540,
+        "signal_count": 592,
+        "buy_count": 592,
         "sell_count": 0,
-        "avg_confidence": 0.7411961111111052,
+        "avg_confidence": 0.7385923986486423,
         "strategies": [
           "RSI+MACD(swing)"
         ],
@@ -552,52 +536,84 @@
         "latest_at": "2026-07-02T01:01:09.256760"
       },
       {
-        "stock_code": "073240",
-        "stock_name": "금호타이어",
+        "stock_code": "010960",
+        "stock_name": "삼호개발",
         "market": "KOSPI",
-        "sector": "",
-        "signal_count": 480,
-        "buy_count": 480,
-        "sell_count": 0,
-        "avg_confidence": 0.9266560416666672,
+        "sector": "건설",
+        "signal_count": 474,
+        "buy_count": 253,
+        "sell_count": 221,
+        "avg_confidence": 0.6953031645569665,
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "2일연속상승 | MACD골든크로스 | RSI모멘텀(55) | 거래량26.3x | 거래량3x+ | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+11.4%vsKOSPI-1.9%) | 디커플링모멘텀",
+        "latest_reason": "MACD히스토그램↑ | RSI모멘텀(57) | 거래량3.7x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+10.6%vsKOSPI-1.4%) | 디커플링모멘텀",
         "latest_price": 0,
-        "latest_at": "2026-06-29T00:05:59.971648"
+        "latest_at": "2026-07-01T01:31:09.343803"
       },
       {
-        "stock_code": "009420",
-        "stock_name": "한올바이오파마",
+        "stock_code": "002990",
+        "stock_name": "금호건설",
         "market": "KOSPI",
         "sector": "",
-        "signal_count": 434,
-        "buy_count": 434,
-        "sell_count": 0,
-        "avg_confidence": 0.9407516129032272,
+        "signal_count": 438,
+        "buy_count": 171,
+        "sell_count": 267,
+        "avg_confidence": 0.880120091324197,
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "MACD히스토그램↑ | 거래량2.2x | MA정배열 | 캔들하락장악형(약세) | 주봉골든크로스 | 주봉MA20위 | 상대강도(-0.9%vsKOSPI-1.9%) | 디커플링모멘텀",
+        "latest_reason": "RSI과매수(83)",
         "latest_price": 0,
-        "latest_at": "2026-06-29T00:05:59.971651"
+        "latest_at": "2026-07-01T00:06:09.618334"
       },
       {
         "stock_code": "006340",
         "stock_name": "대원전선",
         "market": "KOSPI",
         "sector": "전기장비",
-        "signal_count": 352,
-        "buy_count": 352,
+        "signal_count": 418,
+        "buy_count": 418,
         "sell_count": 0,
-        "avg_confidence": 0.9789176136363612,
+        "avg_confidence": 0.9822464114832515,
         "strategies": [
           "RSI+MACD(swing)"
         ],
         "latest_reason": "2일연속상승 | MACD골든크로스 | RSI모멘텀(60) | 주봉골든크로스 | 주봉MA20위 | 상대강도(+30.0%vsKOSPI-5.1%) | 디커플링모멘텀",
         "latest_price": 0,
         "latest_at": "2026-07-02T00:10:59.538056"
+      },
+      {
+        "stock_code": "069620",
+        "stock_name": "대웅제약",
+        "market": "KOSPI",
+        "sector": "",
+        "signal_count": 391,
+        "buy_count": 391,
+        "sell_count": 0,
+        "avg_confidence": 0.8879125319693095,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(52) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+5.2%vsKOSPI-0.1%) | 디커플링모멘텀",
+        "latest_price": 0,
+        "latest_at": "2026-07-03T00:10:02.619146"
+      },
+      {
+        "stock_code": "037710",
+        "stock_name": "광주신세계",
+        "market": "KOSPI",
+        "sector": "백화점과일반상점",
+        "signal_count": 384,
+        "buy_count": 329,
+        "sell_count": 55,
+        "avg_confidence": 0.8533447916666658,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "RSI과매수(78)",
+        "latest_price": 0,
+        "latest_at": "2026-07-01T00:06:09.618341"
       },
       {
         "stock_code": "950250",
@@ -630,38 +646,6 @@
         "latest_reason": "RSI과매수(78)",
         "latest_price": 0,
         "latest_at": "2026-07-01T01:01:12.767670"
-      },
-      {
-        "stock_code": "026940",
-        "stock_name": "부국철강",
-        "market": "KOSPI",
-        "sector": "",
-        "signal_count": 321,
-        "buy_count": 321,
-        "sell_count": 0,
-        "avg_confidence": 0.8459190031152647,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "거래량8.1x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
-        "latest_price": 0,
-        "latest_at": "2026-06-29T00:39:53.380572"
-      },
-      {
-        "stock_code": "000500",
-        "stock_name": "가온전선",
-        "market": "KOSPI",
-        "sector": "",
-        "signal_count": 318,
-        "buy_count": 318,
-        "sell_count": 0,
-        "avg_confidence": 0.6414389937106911,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "RSI모멘텀(52) | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+10.2%vsKOSPI-1.0%)",
-        "latest_price": 0,
-        "latest_at": "2026-06-29T00:11:00.555163"
       },
       {
         "stock_code": "013580",
@@ -678,66 +662,34 @@
         "latest_reason": "MACD히스토그램↑ | 거래량7.3x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(-0.9%vsKOSPI-2.3%) | 디커플링모멘텀",
         "latest_price": 0,
         "latest_at": "2026-07-01T01:50:06.776715"
+      },
+      {
+        "stock_code": "062040",
+        "stock_name": "산일전기",
+        "market": "KOSPI",
+        "sector": "전기장비",
+        "signal_count": 288,
+        "buy_count": 288,
+        "sell_count": 0,
+        "avg_confidence": 0.6031250000000001,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "2일연속상승 | MACD골든크로스 | RSI모멘텀(60) | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+9.6%vsKOSPI-5.1%) | 디커플링모멘텀",
+        "latest_price": 0,
+        "latest_at": "2026-07-02T00:10:59.538019"
       }
     ],
     "테마분석": [
       {
-        "stock_code": "005930",
-        "stock_name": "삼성전자",
-        "market": "KOSPI",
-        "sector": "반도체",
-        "signal_count": 903,
-        "buy_count": 903,
-        "sell_count": 0,
-        "avg_confidence": 0.8517442967884828,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-3.8%)",
-        "latest_price": 0,
-        "latest_at": "2026-06-29T00:05:59.971636"
-      },
-      {
-        "stock_code": "000660",
-        "stock_name": "SK하이닉스",
-        "market": "KOSPI",
-        "sector": "반도체",
-        "signal_count": 689,
-        "buy_count": 689,
-        "sell_count": 0,
-        "avg_confidence": 0.9982374455732945,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "MA정배열 | 캔들하락장악형(약세) | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-3.1%)",
-        "latest_price": 0,
-        "latest_at": "2026-06-29T00:14:53.206756"
-      },
-      {
-        "stock_code": "037710",
-        "stock_name": "광주신세계",
-        "market": "KOSPI",
-        "sector": "백화점과일반상점",
-        "signal_count": 668,
-        "buy_count": 329,
-        "sell_count": 339,
-        "avg_confidence": 0.8236133233532845,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "RSI과매수(78)",
-        "latest_price": 0,
-        "latest_at": "2026-06-29T00:05:59.971654"
-      },
-      {
         "stock_code": "090430",
         "stock_name": "아모레퍼시픽",
         "market": "KOSPI",
         "sector": "화장품",
-        "signal_count": 540,
-        "buy_count": 540,
+        "signal_count": 592,
+        "buy_count": 592,
         "sell_count": 0,
-        "avg_confidence": 0.7411961111111052,
+        "avg_confidence": 0.7385923986486423,
         "strategies": [
           "RSI+MACD(swing)"
         ],
@@ -746,52 +698,116 @@
         "latest_at": "2026-07-02T01:01:09.256760"
       },
       {
-        "stock_code": "073240",
-        "stock_name": "금호타이어",
+        "stock_code": "000660",
+        "stock_name": "SK하이닉스",
         "market": "KOSPI",
-        "sector": "",
-        "signal_count": 480,
-        "buy_count": 480,
+        "sector": "반도체",
+        "signal_count": 568,
+        "buy_count": 568,
         "sell_count": 0,
-        "avg_confidence": 0.9266560416666672,
+        "avg_confidence": 0.9978619718309858,
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "2일연속상승 | MACD골든크로스 | RSI모멘텀(55) | 거래량26.3x | 거래량3x+ | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+11.4%vsKOSPI-1.9%) | 디커플링모멘텀",
+        "latest_reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-3.1%)",
         "latest_price": 0,
-        "latest_at": "2026-06-29T00:05:59.971648"
+        "latest_at": "2026-07-01T01:07:20.123860"
       },
       {
-        "stock_code": "009420",
-        "stock_name": "한올바이오파마",
+        "stock_code": "005930",
+        "stock_name": "삼성전자",
         "market": "KOSPI",
-        "sector": "",
-        "signal_count": 434,
-        "buy_count": 434,
+        "sector": "반도체",
+        "signal_count": 550,
+        "buy_count": 550,
         "sell_count": 0,
-        "avg_confidence": 0.9407516129032272,
+        "avg_confidence": 0.7565910909090919,
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "MACD히스토그램↑ | 거래량2.2x | MA정배열 | 캔들하락장악형(약세) | 주봉골든크로스 | 주봉MA20위 | 상대강도(-0.9%vsKOSPI-1.9%) | 디커플링모멘텀",
+        "latest_reason": "주봉골든크로스 | 주봉MA20위 | 대형주급락(-3.8%)",
         "latest_price": 0,
-        "latest_at": "2026-06-29T00:05:59.971651"
+        "latest_at": "2026-07-01T00:10:02.177864"
+      },
+      {
+        "stock_code": "010960",
+        "stock_name": "삼호개발",
+        "market": "KOSPI",
+        "sector": "건설",
+        "signal_count": 474,
+        "buy_count": 253,
+        "sell_count": 221,
+        "avg_confidence": 0.6953031645569665,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "MACD히스토그램↑ | RSI모멘텀(57) | 거래량3.7x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+10.6%vsKOSPI-1.4%) | 디커플링모멘텀",
+        "latest_price": 0,
+        "latest_at": "2026-07-01T01:31:09.343803"
+      },
+      {
+        "stock_code": "002990",
+        "stock_name": "금호건설",
+        "market": "KOSPI",
+        "sector": "",
+        "signal_count": 438,
+        "buy_count": 171,
+        "sell_count": 267,
+        "avg_confidence": 0.880120091324197,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "RSI과매수(83)",
+        "latest_price": 0,
+        "latest_at": "2026-07-01T00:06:09.618334"
       },
       {
         "stock_code": "006340",
         "stock_name": "대원전선",
         "market": "KOSPI",
         "sector": "전기장비",
-        "signal_count": 352,
-        "buy_count": 352,
+        "signal_count": 418,
+        "buy_count": 418,
         "sell_count": 0,
-        "avg_confidence": 0.9789176136363612,
+        "avg_confidence": 0.9822464114832515,
         "strategies": [
           "RSI+MACD(swing)"
         ],
         "latest_reason": "2일연속상승 | MACD골든크로스 | RSI모멘텀(60) | 주봉골든크로스 | 주봉MA20위 | 상대강도(+30.0%vsKOSPI-5.1%) | 디커플링모멘텀",
         "latest_price": 0,
         "latest_at": "2026-07-02T00:10:59.538056"
+      },
+      {
+        "stock_code": "069620",
+        "stock_name": "대웅제약",
+        "market": "KOSPI",
+        "sector": "",
+        "signal_count": 391,
+        "buy_count": 391,
+        "sell_count": 0,
+        "avg_confidence": 0.8879125319693095,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(52) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+5.2%vsKOSPI-0.1%) | 디커플링모멘텀",
+        "latest_price": 0,
+        "latest_at": "2026-07-03T00:10:02.619146"
+      },
+      {
+        "stock_code": "037710",
+        "stock_name": "광주신세계",
+        "market": "KOSPI",
+        "sector": "백화점과일반상점",
+        "signal_count": 384,
+        "buy_count": 329,
+        "sell_count": 55,
+        "avg_confidence": 0.8533447916666658,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "RSI과매수(78)",
+        "latest_price": 0,
+        "latest_at": "2026-07-01T00:06:09.618341"
       },
       {
         "stock_code": "950250",
@@ -824,82 +840,18 @@
         "latest_reason": "RSI과매수(78)",
         "latest_price": 0,
         "latest_at": "2026-07-01T01:01:12.767670"
-      },
-      {
-        "stock_code": "026940",
-        "stock_name": "부국철강",
-        "market": "KOSPI",
-        "sector": "",
-        "signal_count": 321,
-        "buy_count": 321,
-        "sell_count": 0,
-        "avg_confidence": 0.8459190031152647,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "거래량8.1x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
-        "latest_price": 0,
-        "latest_at": "2026-06-29T00:39:53.380572"
       }
     ],
     "수급분석": [
       {
-        "stock_code": "005930",
-        "stock_name": "삼성전자",
-        "market": "KOSPI",
-        "sector": "반도체",
-        "signal_count": 903,
-        "buy_count": 903,
-        "sell_count": 0,
-        "avg_confidence": 0.8517442967884828,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-3.8%)",
-        "latest_price": 0,
-        "latest_at": "2026-06-29T00:05:59.971636"
-      },
-      {
-        "stock_code": "000660",
-        "stock_name": "SK하이닉스",
-        "market": "KOSPI",
-        "sector": "반도체",
-        "signal_count": 689,
-        "buy_count": 689,
-        "sell_count": 0,
-        "avg_confidence": 0.9982374455732945,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "MA정배열 | 캔들하락장악형(약세) | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-3.1%)",
-        "latest_price": 0,
-        "latest_at": "2026-06-29T00:14:53.206756"
-      },
-      {
-        "stock_code": "037710",
-        "stock_name": "광주신세계",
-        "market": "KOSPI",
-        "sector": "백화점과일반상점",
-        "signal_count": 668,
-        "buy_count": 329,
-        "sell_count": 339,
-        "avg_confidence": 0.8236133233532845,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "RSI과매수(78)",
-        "latest_price": 0,
-        "latest_at": "2026-06-29T00:05:59.971654"
-      },
-      {
         "stock_code": "090430",
         "stock_name": "아모레퍼시픽",
         "market": "KOSPI",
         "sector": "화장품",
-        "signal_count": 540,
-        "buy_count": 540,
+        "signal_count": 592,
+        "buy_count": 592,
         "sell_count": 0,
-        "avg_confidence": 0.7411961111111052,
+        "avg_confidence": 0.7385923986486423,
         "strategies": [
           "RSI+MACD(swing)"
         ],
@@ -908,52 +860,116 @@
         "latest_at": "2026-07-02T01:01:09.256760"
       },
       {
-        "stock_code": "073240",
-        "stock_name": "금호타이어",
+        "stock_code": "000660",
+        "stock_name": "SK하이닉스",
         "market": "KOSPI",
-        "sector": "",
-        "signal_count": 480,
-        "buy_count": 480,
+        "sector": "반도체",
+        "signal_count": 568,
+        "buy_count": 568,
         "sell_count": 0,
-        "avg_confidence": 0.9266560416666672,
+        "avg_confidence": 0.9978619718309858,
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "2일연속상승 | MACD골든크로스 | RSI모멘텀(55) | 거래량26.3x | 거래량3x+ | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+11.4%vsKOSPI-1.9%) | 디커플링모멘텀",
+        "latest_reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-3.1%)",
         "latest_price": 0,
-        "latest_at": "2026-06-29T00:05:59.971648"
+        "latest_at": "2026-07-01T01:07:20.123860"
       },
       {
-        "stock_code": "009420",
-        "stock_name": "한올바이오파마",
+        "stock_code": "005930",
+        "stock_name": "삼성전자",
         "market": "KOSPI",
-        "sector": "",
-        "signal_count": 434,
-        "buy_count": 434,
+        "sector": "반도체",
+        "signal_count": 550,
+        "buy_count": 550,
         "sell_count": 0,
-        "avg_confidence": 0.9407516129032272,
+        "avg_confidence": 0.7565910909090919,
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "MACD히스토그램↑ | 거래량2.2x | MA정배열 | 캔들하락장악형(약세) | 주봉골든크로스 | 주봉MA20위 | 상대강도(-0.9%vsKOSPI-1.9%) | 디커플링모멘텀",
+        "latest_reason": "주봉골든크로스 | 주봉MA20위 | 대형주급락(-3.8%)",
         "latest_price": 0,
-        "latest_at": "2026-06-29T00:05:59.971651"
+        "latest_at": "2026-07-01T00:10:02.177864"
+      },
+      {
+        "stock_code": "010960",
+        "stock_name": "삼호개발",
+        "market": "KOSPI",
+        "sector": "건설",
+        "signal_count": 474,
+        "buy_count": 253,
+        "sell_count": 221,
+        "avg_confidence": 0.6953031645569665,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "MACD히스토그램↑ | RSI모멘텀(57) | 거래량3.7x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+10.6%vsKOSPI-1.4%) | 디커플링모멘텀",
+        "latest_price": 0,
+        "latest_at": "2026-07-01T01:31:09.343803"
+      },
+      {
+        "stock_code": "002990",
+        "stock_name": "금호건설",
+        "market": "KOSPI",
+        "sector": "",
+        "signal_count": 438,
+        "buy_count": 171,
+        "sell_count": 267,
+        "avg_confidence": 0.880120091324197,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "RSI과매수(83)",
+        "latest_price": 0,
+        "latest_at": "2026-07-01T00:06:09.618334"
       },
       {
         "stock_code": "006340",
         "stock_name": "대원전선",
         "market": "KOSPI",
         "sector": "전기장비",
-        "signal_count": 352,
-        "buy_count": 352,
+        "signal_count": 418,
+        "buy_count": 418,
         "sell_count": 0,
-        "avg_confidence": 0.9789176136363612,
+        "avg_confidence": 0.9822464114832515,
         "strategies": [
           "RSI+MACD(swing)"
         ],
         "latest_reason": "2일연속상승 | MACD골든크로스 | RSI모멘텀(60) | 주봉골든크로스 | 주봉MA20위 | 상대강도(+30.0%vsKOSPI-5.1%) | 디커플링모멘텀",
         "latest_price": 0,
         "latest_at": "2026-07-02T00:10:59.538056"
+      },
+      {
+        "stock_code": "069620",
+        "stock_name": "대웅제약",
+        "market": "KOSPI",
+        "sector": "",
+        "signal_count": 391,
+        "buy_count": 391,
+        "sell_count": 0,
+        "avg_confidence": 0.8879125319693095,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(52) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+5.2%vsKOSPI-0.1%) | 디커플링모멘텀",
+        "latest_price": 0,
+        "latest_at": "2026-07-03T00:10:02.619146"
+      },
+      {
+        "stock_code": "037710",
+        "stock_name": "광주신세계",
+        "market": "KOSPI",
+        "sector": "백화점과일반상점",
+        "signal_count": 384,
+        "buy_count": 329,
+        "sell_count": 55,
+        "avg_confidence": 0.8533447916666658,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "RSI과매수(78)",
+        "latest_price": 0,
+        "latest_at": "2026-07-01T00:06:09.618341"
       },
       {
         "stock_code": "950250",
@@ -986,22 +1002,6 @@
         "latest_reason": "RSI과매수(78)",
         "latest_price": 0,
         "latest_at": "2026-07-01T01:01:12.767670"
-      },
-      {
-        "stock_code": "026940",
-        "stock_name": "부국철강",
-        "market": "KOSPI",
-        "sector": "",
-        "signal_count": 321,
-        "buy_count": 321,
-        "sell_count": 0,
-        "avg_confidence": 0.8459190031152647,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "거래량8.1x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
-        "latest_price": 0,
-        "latest_at": "2026-06-29T00:39:53.380572"
       }
     ]
   }

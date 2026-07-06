@@ -1,6 +1,42 @@
 {
-  "exported_at": "2026-07-03T07:00:00.679208+00:00",
+  "exported_at": "2026-07-06T07:00:00.684099+00:00",
   "trades": [
+    {
+      "stock_code": "090430",
+      "stock_name": "아모레퍼시픽",
+      "side": "buy",
+      "quantity": 10,
+      "price": 121250.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "",
+      "filled_at": "2026-07-06T06:12:48.113810"
+    },
+    {
+      "stock_code": "028050",
+      "stock_name": "삼성E&A",
+      "side": "buy",
+      "quantity": 27,
+      "price": 48275.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "",
+      "filled_at": "2026-07-06T06:12:35.796156"
+    },
+    {
+      "stock_code": "010780",
+      "stock_name": "아이에스동서",
+      "side": "sell",
+      "quantity": 16,
+      "price": 22850.0,
+      "pnl": 12217.72,
+      "pnl_rate": 3.4695,
+      "strategy": "swing_trailing(peak=6.7%,step=3.0%,trail_sl=3.7%)",
+      "reason": "swing_trailing(peak=6.7%,step=3.0%,trail_sl=3.7%)",
+      "filled_at": "2026-07-06T00:16:04.337157"
+    },
     {
       "stock_code": "010780",
       "stock_name": "아이에스동서",
@@ -48,54 +84,6 @@
       "strategy": "swing_stop_loss(SL=35,696)",
       "reason": "swing_stop_loss(SL=35,696)",
       "filled_at": "2026-07-01T00:00:44.365540"
-    },
-    {
-      "stock_code": "005440",
-      "stock_name": "현대지에프홀딩스",
-      "side": "buy",
-      "quantity": 97,
-      "price": 15160.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "",
-      "filled_at": "2026-06-29T06:15:41.715686"
-    },
-    {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "side": "buy",
-      "quantity": 12,
-      "price": 325250.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "",
-      "filled_at": "2026-06-29T06:15:07.407736"
-    },
-    {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "side": "buy",
-      "quantity": 8,
-      "price": 325750.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "이월분(익일종가)",
-      "filled_at": "2026-06-29T06:11:17.625724"
-    },
-    {
-      "stock_code": "000850",
-      "stock_name": "화천기공",
-      "side": "buy",
-      "quantity": 14,
-      "price": 38775.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "이월분(익일종가)",
-      "filled_at": "2026-06-29T06:10:33.488747"
     }
   ]
 }

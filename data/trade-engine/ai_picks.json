@@ -1,178 +1,92 @@
 {
-  "exported_at": "2026-07-03T07:00:01.684375+00:00",
-  "total_candidates": 12,
+  "exported_at": "2026-07-06T07:00:01.670725+00:00",
+  "total_candidates": 5,
   "total_holdings": 2,
   "candidates": [
     {
-      "stock_code": "036930",
-      "stock_name": "주성엔지니어링",
-      "sector": "반도체와반도체장비",
-      "signal_count": 10,
-      "avg_confidence": 0.5999999999999999,
+      "stock_code": "010960",
+      "stock_name": "삼호개발",
+      "sector": "건설",
+      "signal_count": 14,
+      "avg_confidence": 0.6333000000000001,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MA정배열 | EMA20하방 | 주봉골든크로스 | 주봉MA20위",
+      "reason": "RSI모멘텀(59) | 거래량15.7x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+6.2%vsKOSPI-1.4%)",
       "price_at_signal": 0,
-      "signal_time": "2026-07-03T05:56:05.697735",
+      "signal_time": "2026-07-06T05:52:35.137960",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "006340",
-      "stock_name": "대원전선",
-      "sector": "전기장비",
-      "signal_count": 10,
+      "stock_code": "069620",
+      "stock_name": "대웅제약",
+      "sector": "",
+      "signal_count": 9,
       "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | 거래량3.1x | 거래량3x+ | MA정배열 | 캔들해머 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+8.4%vsKOSPI+5.3%) | 디커플링모멘텀",
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(61) | 거래량2.7x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+2.6%vsKOSPI-1.4%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-07-03T05:56:05.697690",
+      "signal_time": "2026-07-06T05:52:35.137936",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "003490",
-      "stock_name": "대한항공",
-      "sector": "항공사",
-      "signal_count": 6,
-      "avg_confidence": 0.9935,
-      "strategies": [],
-      "reason": "score=9.50, ranked_score=57.00",
+      "stock_code": "013360",
+      "stock_name": "일성건설",
+      "sector": "",
+      "signal_count": 7,
+      "avg_confidence": 0.8833000000000001,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MACD히스토그램↑ | RSI모멘텀(63) | 거래량3.7x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+29.7%vsKOSPI-0.5%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-07-03T15:25:00.007048+09:00",
-      "status": "장중 워치리스트"
+      "signal_time": "2026-07-06T05:56:24.265923",
+      "status": "매수 시그널"
     },
     {
       "stock_code": "090430",
       "stock_name": "아모레퍼시픽",
       "sector": "화장품",
       "signal_count": 5,
-      "avg_confidence": 0.7,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(62) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-03T05:56:05.697727",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "026960",
-      "stock_name": "동서",
-      "sector": "",
-      "signal_count": 5,
-      "avg_confidence": 0.9,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(61) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-03T05:56:05.697716",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "078930",
-      "stock_name": "GS",
-      "sector": "",
-      "signal_count": 4,
-      "avg_confidence": 0.65,
+      "avg_confidence": 0.633,
       "strategies": [],
-      "reason": "score=5.00, ranked_score=12.00",
+      "reason": "score=3.38, ranked_score=16.88",
       "price_at_signal": 0,
-      "signal_time": "2026-07-03T15:25:00.007048+09:00",
+      "signal_time": "2026-07-06T15:25:00.008481+09:00",
       "status": "장중 워치리스트"
     },
     {
       "stock_code": "028050",
       "stock_name": "삼성E&A",
       "sector": "건설",
-      "signal_count": 2,
-      "avg_confidence": 0.4935,
+      "signal_count": 4,
+      "avg_confidence": 0.55,
       "strategies": [],
-      "reason": "score=1.25, ranked_score=1.50",
+      "reason": "score=3.38, ranked_score=13.50",
       "price_at_signal": 0,
-      "signal_time": "2026-07-03T15:25:00.007048+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "013580",
-      "stock_name": "계룡건설",
-      "sector": "",
-      "signal_count": 1,
-      "avg_confidence": 0.63,
-      "strategies": [],
-      "reason": "score=5.67, ranked_score=5.67",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-03T15:25:00.007048+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "037710",
-      "stock_name": "광주신세계",
-      "sector": "",
-      "signal_count": 1,
-      "avg_confidence": 0.567,
-      "strategies": [],
-      "reason": "score=5.67, ranked_score=5.67",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-03T15:25:00.007048+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "000660",
-      "stock_name": "SK하이닉스",
-      "sector": "반도체",
-      "signal_count": 1,
-      "avg_confidence": 0.9,
-      "strategies": [],
-      "reason": "score=6.00, ranked_score=3.60",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-03T15:25:00.007048+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "010780",
-      "stock_name": "아이에스동서",
-      "sector": "",
-      "signal_count": 1,
-      "avg_confidence": 0.4,
-      "strategies": [],
-      "reason": "score=3.20, ranked_score=3.20",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-03T15:25:00.007048+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "sector": "반도체",
-      "signal_count": 1,
-      "avg_confidence": 0.4935,
-      "strategies": [],
-      "reason": "score=1.75, ranked_score=1.05",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-03T15:25:00.007048+09:00",
+      "signal_time": "2026-07-06T15:25:00.008481+09:00",
       "status": "장중 워치리스트"
     }
   ],
   "holdings": [
     {
-      "stock_code": "010780",
-      "stock_name": "아이에스동서",
-      "quantity": 16,
-      "avg_price": 22009.375,
+      "stock_code": "090430",
+      "stock_name": "아모레퍼시픽",
+      "quantity": 10,
+      "avg_price": 121300.0,
       "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-07-03",
+      "entry_date": "2026-07-06",
       "status": "보유 중"
     },
     {
-      "stock_code": "037710",
-      "stock_name": "광주신세계",
-      "quantity": 13,
-      "avg_price": 38950.0,
+      "stock_code": "028050",
+      "stock_name": "삼성E&A",
+      "quantity": 27,
+      "avg_price": 48300.0,
       "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-07-03",
+      "entry_date": "2026-07-06",
       "status": "보유 중"
     }
   ]

@@ -1,6 +1,6 @@
 {
-  "exported_at": "2026-07-03T07:00:01.717771+00:00",
-  "total": 9,
+  "exported_at": "2026-07-06T07:00:01.702593+00:00",
+  "total": 11,
   "items": [
     {
       "stock_code": "005930",
@@ -53,6 +53,32 @@
       "memo": "AI APPROVE | conf=57% | qty_ratio=100% | AI review removed (2026-04-15)",
       "created_at": "2026-07-03T15:10:03.777185",
       "updated_at": "2026-07-03T15:10:03.777185"
+    },
+    {
+      "stock_code": "090430",
+      "stock_name": "아모레퍼시픽",
+      "market": "KRX",
+      "sector": "화장품",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 40,
+      "memo": "AI APPROVE | conf=40% | qty_ratio=100% | AI review removed (2026-04-15)",
+      "created_at": "2026-07-06T15:11:34.679618",
+      "updated_at": "2026-07-06T15:11:34.679618"
+    },
+    {
+      "stock_code": "028050",
+      "stock_name": "삼성E&A",
+      "market": "KRX",
+      "sector": "건설",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 40,
+      "memo": "AI APPROVE | conf=40% | qty_ratio=100% | AI review removed (2026-04-15)",
+      "created_at": "2026-07-06T15:11:34.677859",
+      "updated_at": "2026-07-06T15:11:34.677859"
     },
     {
       "stock_code": "010780",
