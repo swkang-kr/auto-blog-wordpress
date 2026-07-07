@@ -1,27 +1,16 @@
 {
-  "exported_at": "2026-07-06T07:00:00.668004+00:00",
+  "exported_at": "2026-07-07T07:00:00.662049+00:00",
   "holdings": [
     {
       "stock_code": "090430",
       "stock_name": "아모레퍼시픽",
       "quantity": 10,
       "avg_price": 121300.0,
-      "current_price": 121250.0,
-      "unrealized_pnl": 0,
-      "unrealized_pnl_rate": 0,
+      "current_price": 125700.0,
+      "unrealized_pnl": 39875.8,
+      "unrealized_pnl_rate": 3.2874,
       "strategy": "RSI+MACD(swing)",
       "entry_date": "2026-07-06T06:12:48.105816"
-    },
-    {
-      "stock_code": "028050",
-      "stock_name": "삼성E&A",
-      "quantity": 27,
-      "avg_price": 48300.0,
-      "current_price": 48275.0,
-      "unrealized_pnl": 0,
-      "unrealized_pnl_rate": 0,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-07-06T06:12:35.788528"
     }
   ]
 }

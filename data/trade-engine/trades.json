@@ -1,6 +1,18 @@
 {
-  "exported_at": "2026-07-06T07:00:00.684099+00:00",
+  "exported_at": "2026-07-07T07:00:00.675845+00:00",
   "trades": [
+    {
+      "stock_code": "028050",
+      "stock_name": "삼성E&A",
+      "side": "sell",
+      "quantity": 27,
+      "price": 47400.0,
+      "pnl": -28670.76,
+      "pnl_rate": -2.1985,
+      "strategy": "swing_gap_down(net=-3.03%,held=17.8h)",
+      "reason": "swing_gap_down(net=-3.03%,held=17.8h)",
+      "filled_at": "2026-07-07T00:00:55.480402"
+    },
     {
       "stock_code": "090430",
       "stock_name": "아모레퍼시픽",
