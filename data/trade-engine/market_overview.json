@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-07-07T07:00:01.102775+00:00",
+  "exported_at": "2026-07-08T07:00:06.418887+00:00",
   "market_daily": [
+    {
+      "date": "20260708",
+      "kospi_change": -5.35,
+      "kosdaq_change": -5.56,
+      "foreign_net": 33.61,
+      "institution_net": -34.79,
+      "individual_net": -3.54,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260707",
       "kospi_change": -4.91,
       "kosdaq_change": -1.87,
-      "foreign_net": -291.75,
+      "foreign_net": -291.74,
       "institution_net": -31.08,
       "individual_net": 313.61,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "hot_theme_count": 5,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260706",
@@ -99,29 +110,18 @@
       "hot_theme_count": 1,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260622",
-      "kospi_change": 0.69,
-      "kosdaq_change": 0.19,
-      "foreign_net": -254.66,
-      "institution_net": 30.38,
-      "individual_net": 215.06,
-      "hot_theme_count": 1,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "삼성전자 역대급 실적에도…코스피 7600선 마감",
-    "[오늘증시] '검은 화요일' 코스피, 7600선 하락 마감…\"삼전 셀온 영향\"",
-    "[속보] '89조 잭팟' 개미 3조 방어에도…'반도체 고점론' 공포 지우지 못했다",
-    "'검은 화요일' 맞은 코스피…반도체 차익 실현에 5% 가까이 급락 마감",
-    "코스피 '검은 화요일'",
-    "코스피, 4.9% 급락",
-    "코스피 '와르르'",
-    "韓 증시 '검은 화요일'",
-    "삼전닉스 급락에 코스피 '뒷목'",
-    "코스피 와르르"
+    "'반도체 피크아웃' 공포 덮쳤다…코스피·코스닥 5% 넘게 폭락 [종합]",
+    "5%대 급락한 코스피-코스닥",
+    "코스피, 7200대로 뚝",
+    "5%대 급락한 코스피-코스닥",
+    "코스피, 5% 급락해 7,200선…코스닥도 5%대↓",
+    "5%대 급락한 코스피-코스닥",
+    "코스피, 5% 급락해 7,200선…코스닥도 5%대↓",
+    "코스피, 5% 급락해 7,200선…코스닥도 5%대↓",
+    "\"또 급락, 또 사이드카\" 피로감 커지는 증시…코스피·코스닥, 5% 하락[마감]",
+    "코스피, 5% 급락해 7,200선…코스닥도 5%대↓"
   ]
 }

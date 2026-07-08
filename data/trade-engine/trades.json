@@ -1,6 +1,42 @@
 {
-  "exported_at": "2026-07-07T07:00:00.675845+00:00",
+  "exported_at": "2026-07-08T07:00:00.699090+00:00",
   "trades": [
+    {
+      "stock_code": "004980",
+      "stock_name": "성신양회",
+      "side": "buy",
+      "quantity": 66,
+      "price": 9070.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "이월분(익일종가)",
+      "filled_at": "2026-07-08T06:11:31.024032"
+    },
+    {
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "side": "buy",
+      "quantity": 5,
+      "price": 276250.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "이월분(익일종가)",
+      "filled_at": "2026-07-08T06:11:30.431944"
+    },
+    {
+      "stock_code": "006360",
+      "stock_name": "GS건설",
+      "side": "buy",
+      "quantity": 21,
+      "price": 28375.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "이월분(익일종가)",
+      "filled_at": "2026-07-08T06:11:24.172323"
+    },
     {
       "stock_code": "028050",
       "stock_name": "삼성E&A",
@@ -72,30 +108,6 @@
       "strategy": "RSI+MACD(swing)",
       "reason": "이월분(익일종가)",
       "filled_at": "2026-07-03T06:11:11.881705"
-    },
-    {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "side": "sell",
-      "quantity": 12,
-      "price": 328500.0,
-      "pnl": 21124.8,
-      "pnl_rate": 0.5406,
-      "strategy": "swing_trailing(peak=3.7%,step=3.0%,trail_sl=0.7%)",
-      "reason": "swing_trailing(peak=3.7%,step=3.0%,trail_sl=0.7%)",
-      "filled_at": "2026-07-01T00:21:54.320877"
-    },
-    {
-      "stock_code": "000850",
-      "stock_name": "화천기공",
-      "side": "sell",
-      "quantity": 14,
-      "price": 35650.0,
-      "pnl": -45832.22,
-      "pnl_rate": -8.4374,
-      "strategy": "swing_stop_loss(SL=35,696)",
-      "reason": "swing_stop_loss(SL=35,696)",
-      "filled_at": "2026-07-01T00:00:44.365540"
     }
   ]
 }

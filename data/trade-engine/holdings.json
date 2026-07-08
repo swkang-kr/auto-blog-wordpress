@@ -1,16 +1,38 @@
 {
-  "exported_at": "2026-07-07T07:00:00.662049+00:00",
+  "exported_at": "2026-07-08T07:00:00.684281+00:00",
   "holdings": [
     {
-      "stock_code": "090430",
-      "stock_name": "아모레퍼시픽",
-      "quantity": 10,
-      "avg_price": 121300.0,
-      "current_price": 125700.0,
-      "unrealized_pnl": 39875.8,
-      "unrealized_pnl_rate": 3.2874,
+      "stock_code": "004980",
+      "stock_name": "성신양회",
+      "quantity": 66,
+      "avg_price": 9050.0,
+      "current_price": 9130.0,
+      "unrealized_pnl": 3249.18,
+      "unrealized_pnl_rate": 0.493,
       "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-07-06T06:12:48.105816"
+      "entry_date": "2026-07-08T06:11:31.016880"
+    },
+    {
+      "stock_code": "006360",
+      "stock_name": "GS건설",
+      "quantity": 21,
+      "avg_price": 28348.809,
+      "current_price": 28300.0,
+      "unrealized_pnl": -3049.09,
+      "unrealized_pnl_rate": -0.6292,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-07-08T06:11:24.166709"
+    },
+    {
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "quantity": 5,
+      "avg_price": 277000.0,
+      "current_price": 276500.0,
+      "unrealized_pnl": -7209.0,
+      "unrealized_pnl_rate": -0.6415,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-07-08T06:11:30.422990"
     }
   ]
 }
