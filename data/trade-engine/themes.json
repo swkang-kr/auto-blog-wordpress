@@ -1,68 +1,67 @@
 {
-  "exported_at": "2026-07-08T07:00:06.504122+00:00",
-  "date": "20260708",
+  "exported_at": "2026-07-09T07:00:01.347610+00:00",
+  "date": "20260709",
   "hot_themes": [
     {
-      "name": "윤활유",
-      "change_rate": 2.67
+      "name": "뉴로모픽 반도체",
+      "change_rate": 8.08
     },
     {
-      "name": "탈 플라스틱(친환경/생분해성 등)",
-      "change_rate": 1.68
+      "name": "김밥(냉동김밥 등)",
+      "change_rate": 5.65
     },
     {
-      "name": "LPG(액화석유가스)",
-      "change_rate": 0.71
+      "name": "광통신(광케이블/광섬유 등)",
+      "change_rate": 5.51
     },
     {
-      "name": "NI(네트워크통합)",
-      "change_rate": 0.16
+      "name": "소캠(SOCAMM)",
+      "change_rate": 5.4
     },
     {
-      "name": "사료",
-      "change_rate": 0.11
+      "name": "온디바이스 AI",
+      "change_rate": 5.26
+    },
+    {
+      "name": "반도체 기판(FC-BGA/PCB/MLB 등)",
+      "change_rate": 4.03
+    },
+    {
+      "name": "CXL(컴퓨트익스프레스링크)",
+      "change_rate": 3.7
+    },
+    {
+      "name": "통신",
+      "change_rate": 3.51
+    },
+    {
+      "name": "마리화나(대마)",
+      "change_rate": 3.32
+    },
+    {
+      "name": "반도체 대표주(생산)",
+      "change_rate": 3.29
+    },
+    {
+      "name": "LED장비",
+      "change_rate": 3.17
+    },
+    {
+      "name": "시스템반도체",
+      "change_rate": 3.12
+    },
+    {
+      "name": "반도체 재료/부품",
+      "change_rate": 3.02
+    },
+    {
+      "name": "수산",
+      "change_rate": 2.97
+    },
+    {
+      "name": "2026 하반기 신규상장",
+      "change_rate": 2.48
     }
   ],
-  "cold_themes": [
-    {
-      "name": "콩/대두",
-      "change_rate": -1.53
-    },
-    {
-      "name": "화장품",
-      "change_rate": -1.53
-    },
-    {
-      "name": "日제품 불매운동(수혜)",
-      "change_rate": -1.48
-    },
-    {
-      "name": "웹툰",
-      "change_rate": -1.47
-    },
-    {
-      "name": "마이코플라스마 폐렴",
-      "change_rate": -1.46
-    },
-    {
-      "name": "해운",
-      "change_rate": -1.46
-    },
-    {
-      "name": "백신/진단시약/방역(신종플루, AI 등)",
-      "change_rate": -1.45
-    },
-    {
-      "name": "요소수",
-      "change_rate": -1.29
-    },
-    {
-      "name": "골프",
-      "change_rate": -1.26
-    },
-    {
-      "name": "카카오뱅크(kakao BANK)",
-      "change_rate": -1.24
-    }
-  ]
+  "cold_themes": []
 }

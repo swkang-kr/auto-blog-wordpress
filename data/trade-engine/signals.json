@@ -1,505 +1,505 @@
 {
-  "exported_at": "2026-07-08T07:00:00.661434+00:00",
+  "exported_at": "2026-07-09T07:00:00.648398+00:00",
   "signals": [
     {
-      "stock_code": "005930",
+      "stock_code": "412350",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 1.0,
-      "reason": "EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-6.4%) | 상대강도(+0.8%vsKOSPI-5.1%)",
+      "confidence": 0.66,
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.1x | 거래량3x+ | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+7.7%vsKOSPI+0.3%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T06:10:50.474664"
+      "created_at": "2026-07-09T06:09:52.900989"
     },
     {
-      "stock_code": "000660",
+      "stock_code": "004090",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 1.0,
-      "reason": "EMA20하방 | MA역배열 | 캔들상승장악형 | 주봉골든크로스 | 주봉RSI과열(73,-0.5) | 주봉MA20위 | 대형주급락(-4.5%) | 상대강도(+5.2%vsKOSPI-5.1%)",
+      "confidence": 0.96,
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.2x | 거래량3x+ | 주봉데드크로스(-1.5) | 주봉RSI과매도(19) | 주봉MA20아래 | 상대강도(+6.0%vsKOSPI+0.3%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T06:10:50.474657"
+      "created_at": "2026-07-09T06:09:52.900979"
     },
     {
-      "stock_code": "005930",
+      "stock_code": "412350",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 1.0,
-      "reason": "EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-6.1%) | 상대강도(+0.8%vsKOSPI-5.0%)",
+      "confidence": 0.66,
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.1x | 거래량3x+ | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+7.7%vsKOSPI+0.3%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T06:09:18.422215"
+      "created_at": "2026-07-09T06:07:00.360032"
     },
     {
-      "stock_code": "000660",
+      "stock_code": "004090",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 1.0,
-      "reason": "EMA20하방 | MA역배열 | 캔들상승장악형 | 주봉골든크로스 | 주봉RSI과열(73,-0.5) | 주봉MA20위 | 대형주급락(-4.4%) | 상대강도(+5.2%vsKOSPI-5.0%)",
+      "confidence": 0.96,
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.2x | 거래량3x+ | 주봉데드크로스(-1.5) | 주봉RSI과매도(19) | 주봉MA20아래 | 상대강도(+6.0%vsKOSPI+0.3%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T06:09:18.422189"
+      "created_at": "2026-07-09T06:07:00.360005"
     },
     {
-      "stock_code": "005930",
+      "stock_code": "003230",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 1.0,
-      "reason": "EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-5.9%) | 상대강도(+0.8%vsKOSPI-5.0%)",
+      "confidence": 0.6,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(51) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+2.5%vsKOSPI+0.6%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T06:07:28.539302"
+      "created_at": "2026-07-09T06:04:47.130672"
     },
     {
-      "stock_code": "000660",
+      "stock_code": "412350",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 1.0,
-      "reason": "EMA20하방 | MA역배열 | 캔들상승장악형 | 주봉골든크로스 | 주봉RSI과열(73,-0.5) | 주봉MA20위 | 대형주급락(-4.4%) | 상대강도(+5.2%vsKOSPI-5.0%)",
+      "confidence": 0.66,
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.1x | 거래량3x+ | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+7.7%vsKOSPI+0.6%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T06:07:28.539275"
+      "created_at": "2026-07-09T06:04:47.130662"
     },
     {
-      "stock_code": "005930",
+      "stock_code": "004090",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 1.0,
-      "reason": "EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-5.7%) | 상대강도(+0.8%vsKOSPI-4.8%)",
+      "confidence": 0.96,
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.2x | 거래량3x+ | 주봉데드크로스(-1.5) | 주봉RSI과매도(19) | 주봉MA20아래 | 상대강도(+6.0%vsKOSPI+0.6%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T06:06:25.260223"
+      "created_at": "2026-07-09T06:04:47.130636"
     },
     {
-      "stock_code": "000660",
+      "stock_code": "003230",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 1.0,
-      "reason": "EMA20하방 | MA역배열 | 캔들상승장악형 | 주봉골든크로스 | 주봉RSI과열(73,-0.5) | 주봉MA20위 | 대형주급락(-4.3%) | 상대강도(+5.2%vsKOSPI-4.8%)",
+      "confidence": 0.6,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(51) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+2.5%vsKOSPI+0.6%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T06:06:25.260198"
+      "created_at": "2026-07-09T06:02:22.019962"
     },
     {
-      "stock_code": "005930",
+      "stock_code": "412350",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.7857,
-      "reason": "EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-6.0%) | 상대강도(+0.8%vsKOSPI-4.8%)",
+      "confidence": 0.66,
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.1x | 거래량3x+ | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+7.7%vsKOSPI+0.6%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T06:04:27.856167"
+      "created_at": "2026-07-09T06:02:22.019952"
     },
     {
-      "stock_code": "000660",
+      "stock_code": "004090",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 1.0,
-      "reason": "EMA20하방 | MA역배열 | 캔들상승장악형 | 주봉골든크로스 | 주봉RSI과열(73,-0.5) | 주봉MA20위 | 대형주급락(-4.2%) | 상대강도(+5.2%vsKOSPI-4.8%)",
+      "confidence": 0.96,
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.2x | 거래량3x+ | 주봉데드크로스(-1.5) | 주봉RSI과매도(19) | 주봉MA20아래 | 상대강도(+6.0%vsKOSPI+0.6%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T06:04:27.856141"
+      "created_at": "2026-07-09T06:02:22.019926"
     },
     {
-      "stock_code": "005930",
+      "stock_code": "003230",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.7857,
-      "reason": "EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-5.7%) | 상대강도(+0.8%vsKOSPI-4.8%)",
+      "confidence": 0.6,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(51) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+2.5%vsKOSPI+1.0%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T06:03:19.710526"
+      "created_at": "2026-07-09T06:00:56.011884"
     },
     {
-      "stock_code": "000660",
+      "stock_code": "412350",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 1.0,
-      "reason": "EMA20하방 | MA역배열 | 캔들상승장악형 | 주봉골든크로스 | 주봉RSI과열(73,-0.5) | 주봉MA20위 | 대형주급락(-4.0%) | 상대강도(+5.2%vsKOSPI-4.8%)",
+      "confidence": 0.66,
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.1x | 거래량3x+ | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+7.7%vsKOSPI+1.0%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T06:03:19.710510"
+      "created_at": "2026-07-09T06:00:56.011873"
     },
     {
-      "stock_code": "005930",
+      "stock_code": "004090",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.7857,
-      "reason": "EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-5.2%) | 상대강도(+0.8%vsKOSPI-4.5%)",
+      "confidence": 0.96,
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.2x | 거래량3x+ | 주봉데드크로스(-1.5) | 주봉RSI과매도(19) | 주봉MA20아래 | 상대강도(+6.0%vsKOSPI+1.0%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T06:01:33.523890"
+      "created_at": "2026-07-09T06:00:56.011847"
     },
     {
-      "stock_code": "000660",
+      "stock_code": "003230",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 1.0,
-      "reason": "EMA20하방 | MA역배열 | 캔들상승장악형 | 주봉골든크로스 | 주봉RSI과열(73,-0.5) | 주봉MA20위 | 대형주급락(-3.7%) | 상대강도(+5.2%vsKOSPI-4.5%)",
+      "confidence": 0.6,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(51) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+2.5%vsKOSPI+0.7%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T06:01:33.523863"
+      "created_at": "2026-07-09T05:58:30.146044"
     },
     {
-      "stock_code": "005930",
+      "stock_code": "412350",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.7857,
-      "reason": "EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-5.4%) | 상대강도(+0.8%vsKOSPI-4.5%)",
+      "confidence": 0.66,
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.1x | 거래량3x+ | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+7.7%vsKOSPI+0.7%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T06:00:04.552134"
+      "created_at": "2026-07-09T05:58:30.146034"
     },
     {
-      "stock_code": "000660",
+      "stock_code": "004090",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 1.0,
-      "reason": "EMA20하방 | MA역배열 | 캔들상승장악형 | 주봉골든크로스 | 주봉RSI과열(73,-0.5) | 주봉MA20위 | 대형주급락(-3.6%) | 상대강도(+5.2%vsKOSPI-4.5%)",
+      "confidence": 0.96,
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.2x | 거래량3x+ | 주봉데드크로스(-1.5) | 주봉RSI과매도(19) | 주봉MA20아래 | 상대강도(+6.0%vsKOSPI+0.7%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T06:00:04.552107"
+      "created_at": "2026-07-09T05:58:30.146007"
     },
     {
-      "stock_code": "005930",
+      "stock_code": "003230",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.7857,
-      "reason": "EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-5.4%) | 상대강도(+0.8%vsKOSPI-4.5%)",
+      "confidence": 0.6,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(51) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+2.5%vsKOSPI+0.8%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T05:59:27.061177"
+      "created_at": "2026-07-09T05:57:06.527340"
     },
     {
-      "stock_code": "000660",
+      "stock_code": "412350",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 1.0,
-      "reason": "EMA20하방 | MA역배열 | 캔들상승장악형 | 주봉골든크로스 | 주봉RSI과열(73,-0.5) | 주봉MA20위 | 대형주급락(-3.8%) | 상대강도(+5.2%vsKOSPI-4.5%)",
+      "confidence": 0.66,
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.1x | 거래량3x+ | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+7.7%vsKOSPI+0.8%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T05:59:27.061150"
+      "created_at": "2026-07-09T05:57:06.527334"
     },
     {
-      "stock_code": "005930",
+      "stock_code": "004090",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.7857,
-      "reason": "EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-5.2%) | 상대강도(+0.8%vsKOSPI-4.5%)",
+      "confidence": 0.96,
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.2x | 거래량3x+ | 주봉데드크로스(-1.5) | 주봉RSI과매도(19) | 주봉MA20아래 | 상대강도(+6.0%vsKOSPI+0.8%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T05:58:13.334755"
+      "created_at": "2026-07-09T05:57:06.527318"
     },
     {
-      "stock_code": "000660",
+      "stock_code": "003230",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 1.0,
-      "reason": "EMA20하방 | MA역배열 | 캔들상승장악형 | 주봉골든크로스 | 주봉RSI과열(73,-0.5) | 주봉MA20위 | 대형주급락(-3.4%) | 상대강도(+5.2%vsKOSPI-4.5%)",
+      "confidence": 0.6,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(51) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+2.5%vsKOSPI+0.2%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T05:58:13.334729"
+      "created_at": "2026-07-09T05:55:28.630228"
     },
     {
-      "stock_code": "005930",
+      "stock_code": "412350",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.7857,
-      "reason": "EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-5.2%) | 상대강도(+0.8%vsKOSPI-4.5%)",
+      "confidence": 0.66,
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.1x | 거래량3x+ | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+7.7%vsKOSPI+0.2%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T05:57:24.594484"
+      "created_at": "2026-07-09T05:55:28.630226"
     },
     {
-      "stock_code": "000660",
+      "stock_code": "004090",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 1.0,
-      "reason": "EMA20하방 | MA역배열 | 캔들상승장악형 | 주봉골든크로스 | 주봉RSI과열(73,-0.5) | 주봉MA20위 | 대형주급락(-3.0%) | 상대강도(+5.2%vsKOSPI-4.5%)",
+      "confidence": 0.96,
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.2x | 거래량3x+ | 주봉데드크로스(-1.5) | 주봉RSI과매도(19) | 주봉MA20아래 | 상대강도(+6.0%vsKOSPI+0.2%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T05:57:24.594458"
+      "created_at": "2026-07-09T05:55:28.630219"
     },
     {
-      "stock_code": "005930",
+      "stock_code": "003230",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.7857,
-      "reason": "EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-5.2%) | 상대강도(+0.8%vsKOSPI-4.5%)",
+      "confidence": 0.6,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(51) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+2.5%vsKOSPI-0.0%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T05:56:14.860499"
+      "created_at": "2026-07-09T05:53:23.493786"
     },
     {
-      "stock_code": "000660",
+      "stock_code": "412350",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 1.0,
-      "reason": "EMA20하방 | MA역배열 | 캔들상승장악형 | 주봉골든크로스 | 주봉RSI과열(73,-0.5) | 주봉MA20위 | 대형주급락(-3.3%) | 상대강도(+5.2%vsKOSPI-4.5%)",
+      "confidence": 0.66,
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.1x | 거래량3x+ | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+7.7%vsKOSPI-0.0%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T05:56:14.860481"
+      "created_at": "2026-07-09T05:53:23.493775"
     },
     {
-      "stock_code": "005930",
+      "stock_code": "004090",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.7857,
-      "reason": "EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-5.8%) | 상대강도(+0.8%vsKOSPI-4.9%)",
+      "confidence": 0.96,
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.2x | 거래량3x+ | 주봉데드크로스(-1.5) | 주봉RSI과매도(19) | 주봉MA20아래 | 상대강도(+6.0%vsKOSPI-0.0%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T05:54:16.498469"
+      "created_at": "2026-07-09T05:53:23.493749"
     },
     {
-      "stock_code": "000660",
+      "stock_code": "003230",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 1.0,
-      "reason": "EMA20하방 | MA역배열 | 캔들상승장악형 | 주봉골든크로스 | 주봉RSI과열(73,-0.5) | 주봉MA20위 | 대형주급락(-3.4%) | 상대강도(+5.2%vsKOSPI-4.9%)",
+      "confidence": 0.6,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(51) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+2.5%vsKOSPI-0.2%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T05:54:16.498455"
+      "created_at": "2026-07-09T05:52:20.837510"
     },
     {
-      "stock_code": "005930",
+      "stock_code": "412350",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.7857,
-      "reason": "EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-6.2%) | 상대강도(+0.8%vsKOSPI-5.1%)",
+      "confidence": 0.66,
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.1x | 거래량3x+ | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+7.7%vsKOSPI-0.2%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T05:52:17.196761"
+      "created_at": "2026-07-09T05:52:20.837508"
     },
     {
-      "stock_code": "000660",
+      "stock_code": "004090",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 1.0,
-      "reason": "EMA20하방 | MA역배열 | 캔들상승장악형 | 주봉골든크로스 | 주봉RSI과열(73,-0.5) | 주봉MA20위 | 대형주급락(-4.0%) | 상대강도(+5.2%vsKOSPI-5.1%)",
+      "confidence": 0.96,
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.2x | 거래량3x+ | 주봉데드크로스(-1.5) | 주봉RSI과매도(19) | 주봉MA20아래 | 상대강도(+6.0%vsKOSPI-0.2%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T05:52:17.196735"
+      "created_at": "2026-07-09T05:52:20.837499"
     },
     {
-      "stock_code": "005930",
+      "stock_code": "003230",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.7857,
-      "reason": "EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-6.2%) | 상대강도(+0.8%vsKOSPI-5.3%)",
+      "confidence": 0.6,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(51) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+2.5%vsKOSPI-0.2%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T05:50:39.710609"
+      "created_at": "2026-07-09T05:51:16.422257"
     },
     {
-      "stock_code": "000660",
+      "stock_code": "412350",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 1.0,
-      "reason": "EMA20하방 | MA역배열 | 캔들상승장악형 | 주봉골든크로스 | 주봉RSI과열(73,-0.5) | 주봉MA20위 | 대형주급락(-3.8%) | 상대강도(+5.2%vsKOSPI-5.3%)",
+      "confidence": 0.66,
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.1x | 거래량3x+ | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+7.7%vsKOSPI-0.2%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T05:50:39.710603"
+      "created_at": "2026-07-09T05:51:16.422255"
     },
     {
-      "stock_code": "005930",
+      "stock_code": "004090",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.7857,
-      "reason": "EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-6.8%) | 상대강도(+0.8%vsKOSPI-5.5%)",
+      "confidence": 0.96,
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.2x | 거래량3x+ | 주봉데드크로스(-1.5) | 주봉RSI과매도(19) | 주봉MA20아래 | 상대강도(+6.0%vsKOSPI-0.2%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T05:49:03.764011"
+      "created_at": "2026-07-09T05:51:16.422246"
     },
     {
-      "stock_code": "000660",
+      "stock_code": "003230",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 1.0,
-      "reason": "EMA20하방 | MA역배열 | 캔들상승장악형 | 주봉골든크로스 | 주봉RSI과열(73,-0.5) | 주봉MA20위 | 대형주급락(-4.4%) | 상대강도(+5.2%vsKOSPI-5.5%)",
+      "confidence": 0.6,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(51) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+2.5%vsKOSPI-0.6%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T05:49:03.763983"
+      "created_at": "2026-07-09T05:49:35.247647"
     },
     {
-      "stock_code": "005930",
+      "stock_code": "412350",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.7857,
-      "reason": "EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-7.1%) | 상대강도(+0.8%vsKOSPI-5.5%)",
+      "confidence": 0.66,
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.1x | 거래량3x+ | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+7.7%vsKOSPI-0.6%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T05:48:10.363610"
+      "created_at": "2026-07-09T05:49:35.247644"
     },
     {
-      "stock_code": "000660",
+      "stock_code": "004090",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 1.0,
-      "reason": "EMA20하방 | MA역배열 | 캔들상승장악형 | 주봉골든크로스 | 주봉RSI과열(73,-0.5) | 주봉MA20위 | 대형주급락(-4.6%) | 상대강도(+5.2%vsKOSPI-5.5%)",
+      "confidence": 0.96,
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.2x | 거래량3x+ | 주봉데드크로스(-1.5) | 주봉RSI과매도(19) | 주봉MA20아래 | 상대강도(+6.0%vsKOSPI-0.6%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T05:48:10.363603"
+      "created_at": "2026-07-09T05:49:35.247636"
     },
     {
-      "stock_code": "005930",
+      "stock_code": "003230",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.7857,
-      "reason": "EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-6.9%) | 상대강도(+0.8%vsKOSPI-5.5%)",
+      "confidence": 0.6,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(51) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+2.5%vsKOSPI-0.7%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T05:47:21.365083"
+      "created_at": "2026-07-09T05:48:12.791404"
     },
     {
-      "stock_code": "000660",
+      "stock_code": "412350",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 1.0,
-      "reason": "EMA20하방 | MA역배열 | 캔들상승장악형 | 주봉골든크로스 | 주봉RSI과열(73,-0.5) | 주봉MA20위 | 대형주급락(-4.7%) | 상대강도(+5.2%vsKOSPI-5.5%)",
+      "confidence": 0.66,
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.1x | 거래량3x+ | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+7.7%vsKOSPI-0.7%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T05:47:21.365057"
+      "created_at": "2026-07-09T05:48:12.791394"
     },
     {
-      "stock_code": "005930",
+      "stock_code": "004090",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.7857,
-      "reason": "EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-6.8%) | 상대강도(+0.8%vsKOSPI-5.5%)",
+      "confidence": 0.96,
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.2x | 거래량3x+ | 주봉데드크로스(-1.5) | 주봉RSI과매도(19) | 주봉MA20아래 | 상대강도(+6.0%vsKOSPI-0.7%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T05:45:28.418786"
+      "created_at": "2026-07-09T05:48:12.791344"
     },
     {
-      "stock_code": "000660",
+      "stock_code": "003230",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 1.0,
-      "reason": "EMA20하방 | MA역배열 | 캔들상승장악형 | 주봉골든크로스 | 주봉RSI과열(73,-0.5) | 주봉MA20위 | 대형주급락(-4.5%) | 상대강도(+5.2%vsKOSPI-5.5%)",
+      "confidence": 0.6,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(51) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+2.5%vsKOSPI-0.6%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T05:45:28.418769"
+      "created_at": "2026-07-09T05:46:38.406116"
     },
     {
-      "stock_code": "005930",
+      "stock_code": "412350",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.7857,
-      "reason": "EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-6.8%) | 상대강도(+0.8%vsKOSPI-5.5%)",
+      "confidence": 0.66,
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.1x | 거래량3x+ | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+7.7%vsKOSPI-0.6%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T05:44:20.018518"
+      "created_at": "2026-07-09T05:46:38.406109"
     },
     {
-      "stock_code": "000660",
+      "stock_code": "004090",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 1.0,
-      "reason": "EMA20하방 | MA역배열 | 캔들상승장악형 | 주봉골든크로스 | 주봉RSI과열(73,-0.5) | 주봉MA20위 | 대형주급락(-4.6%) | 상대강도(+5.2%vsKOSPI-5.5%)",
+      "confidence": 0.96,
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.2x | 거래량3x+ | 주봉데드크로스(-1.5) | 주봉RSI과매도(19) | 주봉MA20아래 | 상대강도(+6.0%vsKOSPI-0.6%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T05:44:20.018491"
+      "created_at": "2026-07-09T05:46:38.406091"
     },
     {
-      "stock_code": "005930",
+      "stock_code": "003230",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.7857,
-      "reason": "EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-6.7%) | 상대강도(+0.8%vsKOSPI-5.6%)",
+      "confidence": 0.6,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(51) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+2.5%vsKOSPI-0.6%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T05:42:43.458666"
+      "created_at": "2026-07-09T05:45:13.308516"
     },
     {
-      "stock_code": "000660",
+      "stock_code": "412350",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 1.0,
-      "reason": "EMA20하방 | MA역배열 | 캔들상승장악형 | 주봉골든크로스 | 주봉RSI과열(73,-0.5) | 주봉MA20위 | 대형주급락(-4.0%) | 상대강도(+5.2%vsKOSPI-5.6%)",
+      "confidence": 0.66,
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.1x | 거래량3x+ | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+7.7%vsKOSPI-0.6%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T05:42:43.458640"
+      "created_at": "2026-07-09T05:45:13.308506"
     },
     {
-      "stock_code": "005930",
+      "stock_code": "004090",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.7857,
-      "reason": "EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-7.3%) | 상대강도(+0.8%vsKOSPI-5.8%)",
+      "confidence": 0.96,
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.2x | 거래량3x+ | 주봉데드크로스(-1.5) | 주봉RSI과매도(19) | 주봉MA20아래 | 상대강도(+6.0%vsKOSPI-0.6%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T05:40:19.587122"
+      "created_at": "2026-07-09T05:45:13.308480"
     },
     {
-      "stock_code": "000660",
+      "stock_code": "003230",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 1.0,
-      "reason": "EMA20하방 | MA역배열 | 캔들상승장악형 | 주봉골든크로스 | 주봉RSI과열(73,-0.5) | 주봉MA20위 | 대형주급락(-4.9%) | 상대강도(+5.2%vsKOSPI-5.8%)",
+      "confidence": 0.6,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(51) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+2.5%vsKOSPI-1.1%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T05:40:19.587113"
+      "created_at": "2026-07-09T05:43:47.928766"
     },
     {
-      "stock_code": "005930",
+      "stock_code": "412350",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.7857,
-      "reason": "EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-7.1%) | 상대강도(+0.8%vsKOSPI-5.8%)",
+      "confidence": 0.66,
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.1x | 거래량3x+ | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+7.7%vsKOSPI-1.1%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T05:38:25.312957"
+      "created_at": "2026-07-09T05:43:47.928763"
     },
     {
-      "stock_code": "000660",
+      "stock_code": "004090",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 1.0,
-      "reason": "EMA20하방 | MA역배열 | 캔들상승장악형 | 주봉골든크로스 | 주봉RSI과열(73,-0.5) | 주봉MA20위 | 대형주급락(-4.7%) | 상대강도(+5.2%vsKOSPI-5.8%)",
+      "confidence": 0.96,
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.2x | 거래량3x+ | 주봉데드크로스(-1.5) | 주봉RSI과매도(19) | 주봉MA20아래 | 상대강도(+6.0%vsKOSPI-1.1%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T05:38:25.312939"
+      "created_at": "2026-07-09T05:43:47.928755"
     },
     {
-      "stock_code": "005930",
+      "stock_code": "003230",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.7857,
-      "reason": "EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-7.0%) | 상대강도(+0.8%vsKOSPI-5.5%)",
+      "confidence": 0.6,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(51) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+2.5%vsKOSPI-0.7%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T05:37:14.823862"
+      "created_at": "2026-07-09T05:41:48.408326"
     },
     {
-      "stock_code": "000660",
+      "stock_code": "412350",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 1.0,
-      "reason": "EMA20하방 | MA역배열 | 캔들상승장악형 | 주봉골든크로스 | 주봉RSI과열(73,-0.5) | 주봉MA20위 | 대형주급락(-4.0%) | 상대강도(+5.2%vsKOSPI-5.5%)",
+      "confidence": 0.66,
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.1x | 거래량3x+ | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+7.7%vsKOSPI-0.7%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T05:37:14.823836"
+      "created_at": "2026-07-09T05:41:48.408317"
     },
     {
-      "stock_code": "005930",
+      "stock_code": "004090",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.7857,
-      "reason": "EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-6.4%) | 상대강도(+0.8%vsKOSPI-5.5%)",
+      "confidence": 0.96,
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.2x | 거래량3x+ | 주봉데드크로스(-1.5) | 주봉RSI과매도(19) | 주봉MA20아래 | 상대강도(+6.0%vsKOSPI-0.7%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T05:35:34.927262"
+      "created_at": "2026-07-09T05:41:48.408293"
     },
     {
-      "stock_code": "000660",
+      "stock_code": "003230",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 1.0,
-      "reason": "EMA20하방 | MA역배열 | 캔들상승장악형 | 주봉골든크로스 | 주봉RSI과열(73,-0.5) | 주봉MA20위 | 대형주급락(-3.5%) | 상대강도(+5.2%vsKOSPI-5.5%)",
+      "confidence": 0.6,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(51) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+2.5%vsKOSPI-0.5%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-07-08T05:35:34.927237"
+      "created_at": "2026-07-09T05:39:16.057862"
     }
   ]
 }

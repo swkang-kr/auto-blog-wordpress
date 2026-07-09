@@ -1,6 +1,66 @@
 {
-  "exported_at": "2026-07-08T07:00:00.699090+00:00",
+  "exported_at": "2026-07-09T07:00:00.684276+00:00",
   "trades": [
+    {
+      "stock_code": "016360",
+      "stock_name": "삼성증권",
+      "side": "buy",
+      "quantity": 4,
+      "price": 106700.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "이월분(익일종가)",
+      "filled_at": "2026-07-09T06:12:52.622215"
+    },
+    {
+      "stock_code": "008770",
+      "stock_name": "호텔신라",
+      "side": "buy",
+      "quantity": 12,
+      "price": 48850.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "이월분(익일종가)",
+      "filled_at": "2026-07-09T06:12:15.757955"
+    },
+    {
+      "stock_code": "037710",
+      "stock_name": "광주신세계",
+      "side": "buy",
+      "quantity": 10,
+      "price": 41525.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "이월분(익일종가)",
+      "filled_at": "2026-07-09T06:11:51.934013"
+    },
+    {
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "side": "sell",
+      "quantity": 5,
+      "price": 281500.0,
+      "pnl": 17732.5,
+      "pnl_rate": 1.2803,
+      "strategy": "swing_trailing(peak=4.9%,step=3.0%,trail_sl=1.9%)",
+      "reason": "swing_trailing(peak=4.9%,step=3.0%,trail_sl=1.9%)",
+      "filled_at": "2026-07-09T01:53:35.428457"
+    },
+    {
+      "stock_code": "004980",
+      "stock_name": "성신양회",
+      "side": "sell",
+      "quantity": 66,
+      "price": 8720.0,
+      "pnl": -23754.19,
+      "pnl_rate": -3.9769,
+      "strategy": "swing_gap_down(net=-3.77%,held=17.8h)",
+      "reason": "swing_gap_down(net=-3.77%,held=17.8h)",
+      "filled_at": "2026-07-09T00:02:04.011395"
+    },
     {
       "stock_code": "004980",
       "stock_name": "성신양회",

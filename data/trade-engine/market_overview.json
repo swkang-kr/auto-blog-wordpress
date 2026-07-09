@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-07-08T07:00:06.418887+00:00",
+  "exported_at": "2026-07-09T07:00:01.151995+00:00",
   "market_daily": [
+    {
+      "date": "20260709",
+      "kospi_change": 0.62,
+      "kosdaq_change": 1.15,
+      "foreign_net": 13.48,
+      "institution_net": 128.77,
+      "individual_net": -132.76,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260708",
       "kospi_change": -5.35,
       "kosdaq_change": -5.56,
-      "foreign_net": 33.61,
-      "institution_net": -34.79,
-      "individual_net": -3.54,
+      "foreign_net": 33.62,
+      "institution_net": -34.78,
+      "individual_net": -3.57,
       "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260707",
@@ -99,29 +110,18 @@
       "hot_theme_count": 22,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260623",
-      "kospi_change": -9.99,
-      "kosdaq_change": -7.94,
-      "foreign_net": -413.19,
-      "institution_net": -454.89,
-      "individual_net": 859.1,
-      "hot_theme_count": 1,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "'반도체 피크아웃' 공포 덮쳤다…코스피·코스닥 5% 넘게 폭락 [종합]",
-    "5%대 급락한 코스피-코스닥",
-    "코스피, 7200대로 뚝",
-    "5%대 급락한 코스피-코스닥",
-    "코스피, 5% 급락해 7,200선…코스닥도 5%대↓",
-    "5%대 급락한 코스피-코스닥",
-    "코스피, 5% 급락해 7,200선…코스닥도 5%대↓",
-    "코스피, 5% 급락해 7,200선…코스닥도 5%대↓",
-    "\"또 급락, 또 사이드카\" 피로감 커지는 증시…코스피·코스닥, 5% 하락[마감]",
-    "코스피, 5% 급락해 7,200선…코스닥도 5%대↓"
+    "‘270만닉스’ 미자 “주가 실화?…주가 폭락에 자조적 ‘밈’도",
+    "널뛰기 장세 속 개미 1.3조 ‘투매’에 기관이 ‘줍줍’… 코스피 0.62% 반등 [이런국장 저런주식]",
+    "코스피, 0.62% 상승 마감",
+    "코스피, 4일만에 반등",
+    "4일만에 상승 마감한 코스피",
+    "코스피, 4일만에 상승 마감",
+    "코스피, 0.62% 오른 7291.91 마감",
+    "코스피·코스닥, 4일 만에 반등",
+    "레버리지 예탁금 5천만원, 등락 20% 제한 '규제설' 유포…금융위 \"사실 아냐\"",
+    "[단독]홈플러스 유성점 등 2300억에 매각…메리츠 몫 되나"
   ]
 }

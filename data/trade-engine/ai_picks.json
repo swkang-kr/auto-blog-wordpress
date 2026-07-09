@@ -1,58 +1,60 @@
 {
-  "exported_at": "2026-07-08T07:00:06.973103+00:00",
-  "total_candidates": 11,
-  "total_holdings": 3,
+  "exported_at": "2026-07-09T07:00:01.759983+00:00",
+  "total_candidates": 9,
+  "total_holdings": 4,
   "candidates": [
     {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "sector": "반도체",
-      "signal_count": 15,
-      "avg_confidence": 0.8428466666666669,
+      "stock_code": "412350",
+      "stock_name": "레이저쎌",
+      "sector": "반도체와반도체장비",
+      "signal_count": 11,
+      "avg_confidence": 0.66,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-6.2%) | 상대강도(+0.8%vsKOSPI-5.3%)",
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.1x | 거래량3x+ | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+7.7%vsKOSPI-0.2%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-07-08T05:50:39.710609",
+      "signal_time": "2026-07-09T05:51:16.422255",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "000660",
-      "stock_name": "SK하이닉스",
-      "sector": "반도체",
-      "signal_count": 15,
-      "avg_confidence": 1.0,
+      "stock_code": "004090",
+      "stock_name": "한국석유",
+      "sector": "화학",
+      "signal_count": 10,
+      "avg_confidence": 0.9600000000000002,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "EMA20하방 | MA역배열 | 캔들상승장악형 | 주봉골든크로스 | 주봉RSI과열(73,-0.5) | 주봉MA20위 | 대형주급락(-3.8%) | 상대강도(+5.2%vsKOSPI-5.3%)",
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량6.2x | 거래량3x+ | 주봉데드크로스(-1.5) | 주봉RSI과매도(19) | 주봉MA20아래 | 상대강도(+6.0%vsKOSPI-0.2%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-07-08T05:50:39.710603",
+      "signal_time": "2026-07-09T05:52:20.837499",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "006360",
-      "stock_name": "GS건설",
-      "sector": "건설",
-      "signal_count": 6,
-      "avg_confidence": 0.883,
-      "strategies": [],
-      "reason": "score=6.00, ranked_score=36.00",
+      "stock_code": "003230",
+      "stock_name": "삼양식품",
+      "sector": "식품",
+      "signal_count": 9,
+      "avg_confidence": 0.5999999999999999,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MACD히스토그램↑ | RSI모멘텀(51) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+2.5%vsKOSPI-0.2%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-07-08T15:25:00.005403+09:00",
-      "status": "장중 워치리스트"
+      "signal_time": "2026-07-09T05:51:16.422257",
+      "status": "매수 시그널"
     },
     {
-      "stock_code": "078930",
-      "stock_name": "GS",
+      "stock_code": "058730",
+      "stock_name": "다스코",
       "sector": "",
-      "signal_count": 4,
-      "avg_confidence": 0.75,
+      "signal_count": 7,
+      "avg_confidence": 0.8,
       "strategies": [],
-      "reason": "score=6.00, ranked_score=14.40",
+      "reason": "score=10.00, ranked_score=42.00",
       "price_at_signal": 0,
-      "signal_time": "2026-07-08T15:25:00.005403+09:00",
+      "signal_time": "2026-07-09T15:25:00.008970+09:00",
       "status": "장중 워치리스트"
     },
     {
@@ -60,71 +62,47 @@
       "stock_name": "광주신세계",
       "sector": "백화점과일반상점",
       "signal_count": 4,
-      "avg_confidence": 0.76,
+      "avg_confidence": 0.9,
       "strategies": [],
-      "reason": "score=2.89, ranked_score=6.93",
+      "reason": "score=5.80, ranked_score=23.20",
       "price_at_signal": 0,
-      "signal_time": "2026-07-08T15:25:00.005403+09:00",
+      "signal_time": "2026-07-09T15:25:00.008970+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "008930",
+      "stock_name": "한미사이언스",
+      "sector": "",
+      "signal_count": 2,
+      "avg_confidence": 0.9,
+      "strategies": [],
+      "reason": "score=6.80, ranked_score=8.16",
+      "price_at_signal": 0,
+      "signal_time": "2026-07-09T15:25:00.008970+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "010960",
+      "stock_name": "삼호개발",
+      "sector": "건설",
+      "signal_count": 2,
+      "avg_confidence": 0.9,
+      "strategies": [],
+      "reason": "score=5.80, ranked_score=6.96",
+      "price_at_signal": 0,
+      "signal_time": "2026-07-09T15:25:00.008970+09:00",
       "status": "장중 워치리스트"
     },
     {
       "stock_code": "008770",
       "stock_name": "호텔신라",
       "sector": "백화점과일반상점",
-      "signal_count": 2,
-      "avg_confidence": 0.9,
-      "strategies": [],
-      "reason": "score=5.50, ranked_score=6.60",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-08T15:25:00.005403+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "006340",
-      "stock_name": "대원전선",
-      "sector": "전기장비",
-      "signal_count": 2,
-      "avg_confidence": 0.483,
-      "strategies": [],
-      "reason": "score=1.25, ranked_score=1.50",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-08T15:25:00.005403+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "003230",
-      "stock_name": "삼양식품",
-      "sector": "식품",
       "signal_count": 1,
-      "avg_confidence": 0.7687142857142857,
+      "avg_confidence": 0.55,
       "strategies": [],
-      "reason": "score=4.32, ranked_score=2.59",
+      "reason": "score=5.50, ranked_score=5.50",
       "price_at_signal": 0,
-      "signal_time": "2026-07-08T15:25:00.005403+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "004980",
-      "stock_name": "성신양회",
-      "sector": "",
-      "signal_count": 1,
-      "avg_confidence": 0.4,
-      "strategies": [],
-      "reason": "score=2.31, ranked_score=2.31",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-08T15:25:00.005403+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "073240",
-      "stock_name": "금호타이어",
-      "sector": "",
-      "signal_count": 1,
-      "avg_confidence": 0.6142857142857142,
-      "strategies": [],
-      "reason": "score=2.64, ranked_score=2.11",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-08T15:25:00.005403+09:00",
+      "signal_time": "2026-07-09T15:25:00.008970+09:00",
       "status": "장중 워치리스트"
     },
     {
@@ -132,33 +110,15 @@
       "stock_name": "삼성증권",
       "sector": "증권",
       "signal_count": 1,
-      "avg_confidence": 0.6829999999999999,
+      "avg_confidence": 0.4,
       "strategies": [],
-      "reason": "score=2.45, ranked_score=1.47",
+      "reason": "score=2.45, ranked_score=2.45",
       "price_at_signal": 0,
-      "signal_time": "2026-07-08T15:25:00.005403+09:00",
+      "signal_time": "2026-07-09T15:25:00.008970+09:00",
       "status": "장중 워치리스트"
     }
   ],
   "holdings": [
-    {
-      "stock_code": "004980",
-      "stock_name": "성신양회",
-      "quantity": 66,
-      "avg_price": 9050.0,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-07-08",
-      "status": "보유 중"
-    },
-    {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "quantity": 5,
-      "avg_price": 277000.0,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-07-08",
-      "status": "보유 중"
-    },
     {
       "stock_code": "006360",
       "stock_name": "GS건설",
@@ -166,6 +126,33 @@
       "avg_price": 28348.809,
       "strategy": "RSI+MACD(swing)",
       "entry_date": "2026-07-08",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "016360",
+      "stock_name": "삼성증권",
+      "quantity": 4,
+      "avg_price": 106800.0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-07-09",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "008770",
+      "stock_name": "호텔신라",
+      "quantity": 12,
+      "avg_price": 48900.0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-07-09",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "037710",
+      "stock_name": "광주신세계",
+      "quantity": 10,
+      "avg_price": 41450.0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-07-09",
       "status": "보유 중"
     }
   ]
