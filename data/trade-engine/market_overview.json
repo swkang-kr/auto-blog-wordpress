@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-07-09T07:00:01.151995+00:00",
+  "exported_at": "2026-07-10T07:00:01.172713+00:00",
   "market_daily": [
+    {
+      "date": "20260710",
+      "kospi_change": 2.52,
+      "kosdaq_change": 5.47,
+      "foreign_net": -32.26,
+      "institution_net": 113.18,
+      "individual_net": -77.27,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260709",
       "kospi_change": 0.62,
       "kosdaq_change": 1.15,
-      "foreign_net": 13.48,
-      "institution_net": 128.77,
-      "individual_net": -132.76,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": 13.47,
+      "institution_net": 128.79,
+      "individual_net": -132.77,
+      "hot_theme_count": 13,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260708",
@@ -99,29 +110,18 @@
       "hot_theme_count": 3,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260624",
-      "kospi_change": 3.26,
-      "kosdaq_change": 2.0,
-      "foreign_net": -465.46,
-      "institution_net": 190.95,
-      "individual_net": 263.13,
-      "hot_theme_count": 22,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "‘270만닉스’ 미자 “주가 실화?…주가 폭락에 자조적 ‘밈’도",
-    "널뛰기 장세 속 개미 1.3조 ‘투매’에 기관이 ‘줍줍’… 코스피 0.62% 반등 [이런국장 저런주식]",
-    "코스피, 0.62% 상승 마감",
-    "코스피, 4일만에 반등",
-    "4일만에 상승 마감한 코스피",
-    "코스피, 4일만에 상승 마감",
-    "코스피, 0.62% 오른 7291.91 마감",
-    "코스피·코스닥, 4일 만에 반등",
-    "레버리지 예탁금 5천만원, 등락 20% 제한 '규제설' 유포…금융위 \"사실 아냐\"",
-    "[단독]홈플러스 유성점 등 2300억에 매각…메리츠 몫 되나"
+    "미래에셋, 7월 증권사 브랜드평판 1위…한투 '만년 3위'",
+    "합동대응단, 코스닥 알파AI 압수수색… 허위공시·주가조작 혐의",
+    "SK하이닉스 ADR 공모가 149달러 확정",
+    "SK하이닉스 나스닥 데뷔날 코스피 상승 마감",
+    "SK하이닉스 나스닥 데뷔날 코스피 상승 마감",
+    "SK하이닉스 ADR 공모가 149달러 확정",
+    "SK하이닉스 ADR 공모가격 주당 149달러 확정, 종가 약보합",
+    "SK하이닉스 ADR 공모가격 주당 149달러 확정, 종가 약보합",
+    "SK하이닉스 ADR 공모가격 주당 149달러 확정, 종가 약보합",
+    "SK하이닉스 ADR 공모가격 주당 149달러 확정, 종가 약보합"
   ]
 }

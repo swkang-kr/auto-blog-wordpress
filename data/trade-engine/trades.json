@@ -1,6 +1,42 @@
 {
-  "exported_at": "2026-07-09T07:00:00.684276+00:00",
+  "exported_at": "2026-07-10T07:00:00.672765+00:00",
   "trades": [
+    {
+      "stock_code": "008770",
+      "stock_name": "호텔신라",
+      "side": "sell",
+      "quantity": 12,
+      "price": 50000.0,
+      "pnl": 11170.56,
+      "pnl_rate": 1.9036,
+      "strategy": "swing_trailing(peak=5.0%,step=3.0%,trail_sl=2.0%)",
+      "reason": "swing_trailing(peak=5.0%,step=3.0%,trail_sl=2.0%)",
+      "filled_at": "2026-07-10T01:29:12.182246"
+    },
+    {
+      "stock_code": "037710",
+      "stock_name": "광주신세계",
+      "side": "sell",
+      "quantity": 10,
+      "price": 46200.0,
+      "pnl": 45967.2,
+      "pnl_rate": 11.0898,
+      "strategy": "swing_trailing(peak=14.4%,step=3.0%,trail_sl=11.4%)",
+      "reason": "swing_trailing(peak=14.4%,step=3.0%,trail_sl=11.4%)",
+      "filled_at": "2026-07-10T01:18:09.213910"
+    },
+    {
+      "stock_code": "006360",
+      "stock_name": "GS건설",
+      "side": "sell",
+      "quantity": 21,
+      "price": 31100.0,
+      "pnl": 55600.69,
+      "pnl_rate": 9.3396,
+      "strategy": "swing_trailing(peak=13.8%,step=3.0%,trail_sl=10.8%)",
+      "reason": "swing_trailing(peak=13.8%,step=3.0%,trail_sl=10.8%)",
+      "filled_at": "2026-07-10T00:21:05.617790"
+    },
     {
       "stock_code": "016360",
       "stock_name": "삼성증권",
@@ -144,30 +180,6 @@
       "strategy": "swing_trailing(peak=6.7%,step=3.0%,trail_sl=3.7%)",
       "reason": "swing_trailing(peak=6.7%,step=3.0%,trail_sl=3.7%)",
       "filled_at": "2026-07-06T00:16:04.337157"
-    },
-    {
-      "stock_code": "010780",
-      "stock_name": "아이에스동서",
-      "side": "buy",
-      "quantity": 16,
-      "price": 22000.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "이월분(익일종가)",
-      "filled_at": "2026-07-03T06:11:46.078195"
-    },
-    {
-      "stock_code": "037710",
-      "stock_name": "광주신세계",
-      "side": "buy",
-      "quantity": 13,
-      "price": 38900.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "이월분(익일종가)",
-      "filled_at": "2026-07-03T06:11:11.881705"
     }
   ]
 }
