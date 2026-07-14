@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-07-13T07:00:01.068375+00:00",
+  "exported_at": "2026-07-14T07:00:01.105956+00:00",
   "market_daily": [
+    {
+      "date": "20260714",
+      "kospi_change": 0.73,
+      "kosdaq_change": -1.92,
+      "foreign_net": 95.23,
+      "institution_net": 321.59,
+      "individual_net": -414.24,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260713",
       "kospi_change": -8.95,
       "kosdaq_change": -4.55,
-      "foreign_net": -169.16,
+      "foreign_net": -168.5,
       "institution_net": -221.94,
-      "individual_net": 388.89,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "individual_net": 388.22,
+      "hot_theme_count": 4,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260710",
@@ -99,29 +110,18 @@
       "hot_theme_count": 40,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260626",
-      "kospi_change": -5.81,
-      "kosdaq_change": -4.1,
-      "foreign_net": -462.82,
-      "institution_net": -378.43,
-      "individual_net": 819.14,
-      "hot_theme_count": 1,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "코스피 급락 마감 '7000선 붕괴'",
-    "[속보] 코스피 7,000선·코스닥 800선 무너져",
-    "부산 이전 공공기관 예치금 85% 시중은행으로… 부산경실련 “지역 자금 역외 유출”",
-    "[특징주] 국제유가 급등에 정유주 줄줄이 상승(종합)",
-    "외인 1.7조 코스피 순매도에 환율 다시 1500원대로(종합)",
-    "[특징주] 방산주, '미-이란 긴장'에 상승출발했다 하락(종합)",
-    "나스닥 온기에도 15% 추락…SK하닉 폭락에 코스피 7000선 붕괴",
-    "7천피 내준 코스피",
-    "KB증권 '오늘의 콕' 누적 조회수 1000만회 돌파…올해 35%↑",
-    "'검은 월요일'에 8% 급락한 코스피…기관 '팔자'에 7000선 붕괴"
+    "뉴인텍, 30억 규모 3자배정 유증 결정",
+    "원·달러 환율, 10.4원 내린 1493.0원 마감(종합)",
+    "코스피, 0.7% 상승 마감",
+    "코스피, 0.7% 상승 마감",
+    "코스피, 0.7% 상승 마감",
+    "코스피, 0.7% 상승 마감",
+    "코스피 6856.83 반등 마감…삼전닉스 반발매수에 '안도'",
+    "코스피, 0.7% 상승 마감",
+    "코스피, 0.7% 상승 마감",
+    "코스피, 오르락내리락 끝에 0.7% 상승"
   ]
 }

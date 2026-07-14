@@ -1,5 +1,5 @@
 {
-  "exported_at": "2026-07-13T07:00:00.687282+00:00",
+  "exported_at": "2026-07-14T07:00:00.692841+00:00",
   "trades": [
     {
       "stock_code": "008770",
@@ -132,18 +132,6 @@
       "strategy": "RSI+MACD(swing)",
       "reason": "이월분(익일종가)",
       "filled_at": "2026-07-08T06:11:24.172323"
-    },
-    {
-      "stock_code": "028050",
-      "stock_name": "삼성E&A",
-      "side": "sell",
-      "quantity": 27,
-      "price": 47400.0,
-      "pnl": -28670.76,
-      "pnl_rate": -2.1985,
-      "strategy": "swing_gap_down(net=-3.03%,held=17.8h)",
-      "reason": "swing_gap_down(net=-3.03%,held=17.8h)",
-      "filled_at": "2026-07-07T00:00:55.480402"
     }
   ]
 }
