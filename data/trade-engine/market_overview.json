@@ -1,6 +1,17 @@
 {
-  "exported_at": "2026-07-14T07:00:01.105956+00:00",
+  "exported_at": "2026-07-15T07:00:01.843953+00:00",
   "market_daily": [
+    {
+      "date": "20260715",
+      "kospi_change": 6.24,
+      "kosdaq_change": 5.8,
+      "foreign_net": 232.14,
+      "institution_net": 18.23,
+      "individual_net": -246.65,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260714",
       "kospi_change": 0.73,
@@ -8,9 +19,9 @@
       "foreign_net": 95.23,
       "institution_net": 321.59,
       "individual_net": -414.24,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "hot_theme_count": 6,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260713",
@@ -99,29 +110,18 @@
       "hot_theme_count": 2,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260701",
-      "kospi_change": -2.04,
-      "kosdaq_change": 1.44,
-      "foreign_net": -170.28,
-      "institution_net": -7.0,
-      "individual_net": 173.89,
-      "hot_theme_count": 40,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "뉴인텍, 30억 규모 3자배정 유증 결정",
-    "원·달러 환율, 10.4원 내린 1493.0원 마감(종합)",
-    "코스피, 0.7% 상승 마감",
-    "코스피, 0.7% 상승 마감",
-    "코스피, 0.7% 상승 마감",
-    "코스피, 0.7% 상승 마감",
-    "코스피 6856.83 반등 마감…삼전닉스 반발매수에 '안도'",
-    "코스피, 0.7% 상승 마감",
-    "코스피, 0.7% 상승 마감",
-    "코스피, 오르락내리락 끝에 0.7% 상승"
+    "에스티팜, 유럽 제약사와 공급계약…올해 수주 5000억 넘어",
+    "두 달 새 주가 반 토막…모건스탠리, 비츠로셀 저가 매수 나서",
+    "코스피 오르고 환율 떨어지고",
+    "외인·기관 쌍끌이 매수에 코스피 상승 랠리",
+    "코스닥 상승 마감",
+    "코스닥 상승 마감",
+    "코스피, 하루 새 6%대 폭등하며 7200선 안착…‘삼전닉스’ 급등",
+    "코스피, 6%대 반등해 7,280선 회복",
+    "원·달러 환율 소폭 하락",
+    "원·달러 환율 소폭 하락"
   ]
 }

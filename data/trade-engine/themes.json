@@ -1,92 +1,67 @@
 {
-  "exported_at": "2026-07-14T07:00:01.164748+00:00",
-  "date": "20260714",
+  "exported_at": "2026-07-15T07:00:01.906058+00:00",
+  "date": "20260715",
   "hot_themes": [
     {
-      "name": "낙태/피임",
-      "change_rate": 6.61
+      "name": "소캠(SOCAMM)",
+      "change_rate": 12.07
     },
     {
-      "name": "콩/대두",
-      "change_rate": 5.2
+      "name": "반도체 기판(FC-BGA/PCB/MLB 등)",
+      "change_rate": 11.69
     },
     {
-      "name": "해운",
-      "change_rate": 4.98
+      "name": "광통신(광케이블/광섬유 등)",
+      "change_rate": 9.92
     },
     {
-      "name": "수산",
-      "change_rate": 4.39
+      "name": "CXL(컴퓨트익스프레스링크)",
+      "change_rate": 9.14
     },
     {
-      "name": "사료",
-      "change_rate": 4.2
+      "name": "HBM(고대역폭메모리)",
+      "change_rate": 9.13
     },
     {
-      "name": "반도체 대표주(생산)",
-      "change_rate": 3.18
+      "name": "온디바이스 AI",
+      "change_rate": 8.78
     },
     {
-      "name": "테마파크",
-      "change_rate": 2.82
+      "name": "MLCC(적층세라믹콘덴서)",
+      "change_rate": 8.59
+    },
+    {
+      "name": "S7(삼성전자/SK하이닉스 등)",
+      "change_rate": 8.41
+    },
+    {
+      "name": "PCB(FPCB 등)",
+      "change_rate": 8.13
+    },
+    {
+      "name": "반도체 장비",
+      "change_rate": 8.08
+    },
+    {
+      "name": "시스템반도체",
+      "change_rate": 7.97
+    },
+    {
+      "name": "뉴로모픽 반도체",
+      "change_rate": 7.93
+    },
+    {
+      "name": "통신장비",
+      "change_rate": 7.82
     },
     {
       "name": "김밥(냉동김밥 등)",
-      "change_rate": 2.59
+      "change_rate": 7.59
     },
     {
-      "name": "日제품 불매운동(수혜)",
-      "change_rate": 2.52
-    },
-    {
-      "name": "화학섬유",
-      "change_rate": 2.35
-    },
-    {
-      "name": "구제역/광우병 수혜",
-      "change_rate": 2.34
-    },
-    {
-      "name": "마스크",
-      "change_rate": 2.26
-    },
-    {
-      "name": "그래핀",
-      "change_rate": 2.25
-    },
-    {
-      "name": "LED장비",
-      "change_rate": 2.19
-    },
-    {
-      "name": "웹툰",
-      "change_rate": 1.58
+      "name": "정유",
+      "change_rate": 7.31
     }
   ],
-  "cold_themes": [
-    {
-      "name": "도시가스",
-      "change_rate": -0.22
-    },
-    {
-      "name": "CCTV＆DVR",
-      "change_rate": -0.2
-    },
-    {
-      "name": "쿠팡(coupang)",
-      "change_rate": -0.14
-    },
-    {
-      "name": "비료",
-      "change_rate": -0.13
-    },
-    {
-      "name": "철강 중소형",
-      "change_rate": -0.11
-    },
-    {
-      "name": "기업인수목적회사(SPAC)",
-      "change_rate": -0.06
-    }
-  ]
+  "cold_themes": []
 }

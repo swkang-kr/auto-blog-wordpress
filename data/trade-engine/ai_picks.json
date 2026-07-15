@@ -1,172 +1,98 @@
 {
-  "exported_at": "2026-07-14T07:00:01.622616+00:00",
-  "total_candidates": 13,
+  "exported_at": "2026-07-15T07:00:02.368997+00:00",
+  "total_candidates": 7,
   "total_holdings": 0,
   "candidates": [
+    {
+      "stock_code": "000020",
+      "stock_name": "동화약품",
+      "sector": "",
+      "signal_count": 8,
+      "avg_confidence": 0.7999999999999999,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(58) | 거래량3.8x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래",
+      "price_at_signal": 0,
+      "signal_time": "2026-07-15T06:04:04.046170",
+      "status": "매수 시그널"
+    },
     {
       "stock_code": "006660",
       "stock_name": "삼성공조",
       "sector": "",
       "signal_count": 8,
-      "avg_confidence": 0.66,
+      "avg_confidence": 0.7999999999999999,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량4.9x | 거래량3x+ | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+3.4%vsKOSPI+0.7%) | 디커플링모멘텀",
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(54) | 거래량10.8x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래",
       "price_at_signal": 0,
-      "signal_time": "2026-07-14T06:03:13.215422",
+      "signal_time": "2026-07-15T06:04:04.046178",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "000400",
+      "stock_name": "롯데손해보험",
+      "sector": "",
+      "signal_count": 7,
+      "avg_confidence": 0.9166999999999998,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(71) | 거래량2.5x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-07-15T06:05:06.510608",
       "status": "매수 시그널"
     },
     {
       "stock_code": "000660",
       "stock_name": "SK하이닉스",
       "sector": "반도체",
-      "signal_count": 8,
+      "signal_count": 7,
       "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+3.3%vsKOSPI+0.7%)",
+      "reason": "2일연속상승 | EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+12.1%vsKOSPI+7.0%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-07-14T06:03:13.215408",
+      "signal_time": "2026-07-15T06:05:06.510581",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "004090",
-      "stock_name": "한국석유",
-      "sector": "화학",
-      "signal_count": 8,
-      "avg_confidence": 1.0,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(55) | 거래량2.4x | MA정배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(23) | 주봉MA20아래 | 상대강도(+3.1%vsKOSPI+0.7%) | 디커플링모멘텀",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-14T06:03:13.215381",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "024850",
-      "stock_name": "HLB이노베이션",
+      "stock_code": "042700",
+      "stock_name": "한미반도체",
       "sector": "반도체와반도체장비",
-      "signal_count": 5,
-      "avg_confidence": 0.76,
+      "signal_count": 6,
+      "avg_confidence": 0.8338333333333333,
       "strategies": [],
-      "reason": "score=3.70, ranked_score=18.49",
+      "reason": "score=4.17, ranked_score=15.00",
       "price_at_signal": 0,
-      "signal_time": "2026-07-14T15:25:00.102632+09:00",
+      "signal_time": "2026-07-15T15:25:00.004052+09:00",
       "status": "장중 워치리스트"
     },
     {
       "stock_code": "086790",
       "stock_name": "하나금융지주",
       "sector": "은행",
-      "signal_count": 4,
-      "avg_confidence": 0.626,
+      "signal_count": 5,
+      "avg_confidence": 0.7,
       "strategies": [],
-      "reason": "score=8.50, ranked_score=20.40",
+      "reason": "score=7.00, ranked_score=21.00",
       "price_at_signal": 0,
-      "signal_time": "2026-07-14T15:25:00.102632+09:00",
+      "signal_time": "2026-07-15T15:25:00.004052+09:00",
       "status": "장중 워치리스트"
     },
     {
-      "stock_code": "005830",
-      "stock_name": "DB손해보험",
-      "sector": "",
-      "signal_count": 4,
-      "avg_confidence": 0.876,
-      "strategies": [],
-      "reason": "score=5.00, ranked_score=12.00",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-14T15:25:00.102632+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "025860",
-      "stock_name": "남해화학",
-      "sector": "화학",
-      "signal_count": 3,
-      "avg_confidence": 0.5,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MACD히스토그램↑ | 캔들상승장악형(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+4.2%vsKOSPI+0.7%) | 디커플링모멘텀",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-14T06:03:13.215442",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "003240",
-      "stock_name": "태광산업",
-      "sector": "",
-      "signal_count": 3,
-      "avg_confidence": 0.6,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+2.8%vsKOSPI+0.7%) | 디커플링모멘텀",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-14T06:03:13.215433",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "096770",
-      "stock_name": "SK이노베이션",
-      "sector": "석유와가스",
-      "signal_count": 3,
-      "avg_confidence": 0.9,
-      "strategies": [],
-      "reason": "score=6.00, ranked_score=10.80",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-14T15:25:00.102632+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "006110",
-      "stock_name": "삼아알미늄",
-      "sector": "비철금속",
-      "signal_count": 2,
-      "avg_confidence": 1.0,
-      "strategies": [],
-      "reason": "score=6.00, ranked_score=7.20",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-14T15:25:00.102632+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "sector": "반도체",
-      "signal_count": 1,
-      "avg_confidence": 0.73,
-      "strategies": [],
-      "reason": "score=3.78, ranked_score=3.78",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-14T15:25:00.102632+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "003160",
-      "stock_name": "디아이",
+      "stock_code": "024850",
+      "stock_name": "HLB이노베이션",
       "sector": "반도체와반도체장비",
       "signal_count": 1,
-      "avg_confidence": 0.4,
+      "avg_confidence": 0.7171666666666665,
       "strategies": [],
-      "reason": "score=2.67, ranked_score=2.67",
+      "reason": "score=5.04, ranked_score=3.02",
       "price_at_signal": 0,
-      "signal_time": "2026-07-14T15:25:00.102632+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "009830",
-      "stock_name": "한화솔루션",
-      "sector": "에너지장비및서비스",
-      "signal_count": 1,
-      "avg_confidence": 0.5599999999999999,
-      "strategies": [],
-      "reason": "score=1.57, ranked_score=0.94",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-14T15:25:00.102632+09:00",
+      "signal_time": "2026-07-15T15:25:00.004052+09:00",
       "status": "장중 워치리스트"
     }
   ],
