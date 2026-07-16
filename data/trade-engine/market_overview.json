@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-07-15T07:00:01.843953+00:00",
+  "exported_at": "2026-07-16T07:00:01.168217+00:00",
   "market_daily": [
+    {
+      "date": "20260716",
+      "kospi_change": -6.37,
+      "kosdaq_change": -4.53,
+      "foreign_net": -137.88,
+      "institution_net": -236.9,
+      "individual_net": 366.31,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260715",
       "kospi_change": 6.24,
       "kosdaq_change": 5.8,
       "foreign_net": 232.14,
-      "institution_net": 18.23,
-      "individual_net": -246.65,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "institution_net": 18.24,
+      "individual_net": -246.66,
+      "hot_theme_count": 40,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260714",
@@ -99,29 +110,18 @@
       "hot_theme_count": 25,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260702",
-      "kospi_change": -7.89,
-      "kosdaq_change": -6.74,
-      "foreign_net": -437.09,
-      "institution_net": -208.25,
-      "individual_net": 626.64,
-      "hot_theme_count": 2,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "에스티팜, 유럽 제약사와 공급계약…올해 수주 5000억 넘어",
-    "두 달 새 주가 반 토막…모건스탠리, 비츠로셀 저가 매수 나서",
-    "코스피 오르고 환율 떨어지고",
-    "외인·기관 쌍끌이 매수에 코스피 상승 랠리",
-    "코스닥 상승 마감",
-    "코스닥 상승 마감",
-    "코스피, 하루 새 6%대 폭등하며 7200선 안착…‘삼전닉스’ 급등",
-    "코스피, 6%대 반등해 7,280선 회복",
-    "원·달러 환율 소폭 하락",
-    "원·달러 환율 소폭 하락"
+    "연휴 앞두고 하락 마감한 코스피·코스닥",
+    "냉온탕 오가는 코스피",
+    "\"추가 인상\" 시사한 한은…달러·원 1479원까지 하락(종합)",
+    "美반도체 약세에 또 '휘청'…삼전 8% SK하닉 11% 급락 마감[핫스탁](종합)",
+    "알테오젠, 코스피 이전상장 유보…\"주주가치 제고\"",
+    "사모펀드 운용하려면 필수…금투협 전문인력 과정 개설",
+    "삼성전자-SK하이닉스 급락",
+    "코스피 급락 마감",
+    "코스피 급락 마감",
+    "코스피 급락 마감"
   ]
 }

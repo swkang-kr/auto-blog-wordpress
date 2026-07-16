@@ -1,18 +1,24 @@
 {
-  "exported_at": "2026-07-15T07:00:01.995692+00:00",
+  "exported_at": "2026-07-16T07:00:01.346051+00:00",
   "period": "20d",
   "summary": {
-    "foreign_net_total": -2615.0,
-    "institution_net_total": 25.0,
-    "individual_net_total": 2545.0,
+    "foreign_net_total": -2906.0,
+    "institution_net_total": -282.0,
+    "individual_net_total": 3130.0,
     "dominant_buyer": "개인"
   },
   "daily": [
     {
+      "date": "20260716",
+      "foreign_net": -137.88,
+      "institution_net": -236.9,
+      "individual_net": 366.31
+    },
+    {
       "date": "20260715",
       "foreign_net": 232.14,
-      "institution_net": 18.23,
-      "individual_net": -246.65
+      "institution_net": 18.24,
+      "individual_net": -246.66
     },
     {
       "date": "20260714",
@@ -121,12 +127,6 @@
       "foreign_net": -99.99,
       "institution_net": 58.19,
       "individual_net": 54.56
-    },
-    {
-      "date": "20260616",
-      "foreign_net": 153.74,
-      "institution_net": 70.56,
-      "individual_net": -218.47
     }
   ]
 }
