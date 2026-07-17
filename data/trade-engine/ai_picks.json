@@ -1,5 +1,5 @@
 {
-  "exported_at": "2026-07-16T07:00:01.749041+00:00",
+  "exported_at": "2026-07-17T07:00:01.684106+00:00",
   "total_candidates": 6,
   "total_holdings": 0,
   "candidates": [
@@ -7,56 +7,56 @@
       "stock_code": "000660",
       "stock_name": "SK하이닉스",
       "sector": "반도체",
-      "signal_count": 8,
-      "avg_confidence": 0.96875,
+      "signal_count": 10,
+      "avg_confidence": 0.8,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-11.3%)",
+      "reason": "EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-11.5%)",
       "price_at_signal": 0,
-      "signal_time": "2026-07-16T06:04:19.405141",
+      "signal_time": "2026-07-17T05:02:56.449383",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "004310",
+      "stock_name": "현대약품",
+      "sector": "",
+      "signal_count": 9,
+      "avg_confidence": 0.8111000000000002,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(62) | 거래량2.0x | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+13.3%vsKOSPI-6.4%) | 디커플링모멘텀",
+      "price_at_signal": 0,
+      "signal_time": "2026-07-17T05:03:58.097461",
       "status": "매수 시그널"
     },
     {
       "stock_code": "096770",
       "stock_name": "SK이노베이션",
       "sector": "석유와가스",
-      "signal_count": 8,
-      "avg_confidence": 0.984375,
+      "signal_count": 9,
+      "avg_confidence": 0.9416666666666667,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(65) | 거래량2.3x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+5.6%vsKOSPI-6.4%) | 디커플링모멘텀",
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(64) | 거래량3.3x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+3.8%vsKOSPI-6.4%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-07-16T06:04:19.405137",
+      "signal_time": "2026-07-17T05:03:58.097445",
       "status": "매수 시그널"
     },
     {
       "stock_code": "005930",
       "stock_name": "삼성전자",
       "sector": "반도체",
-      "signal_count": 7,
+      "signal_count": 2,
       "avg_confidence": 0.5,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20아래 | 대형주급락(-8.6%)",
+      "reason": "EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20아래 | 대형주급락(-8.8%)",
       "price_at_signal": 0,
-      "signal_time": "2026-07-16T06:05:19.186815",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "071950",
-      "stock_name": "코아스",
-      "sector": "",
-      "signal_count": 7,
-      "avg_confidence": 1.0,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(62) | 거래량2.4x | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+11.5%vsKOSPI-6.4%) | 디커플링모멘텀",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-16T06:05:19.186801",
+      "signal_time": "2026-07-17T06:05:11.301320",
       "status": "매수 시그널"
     },
     {

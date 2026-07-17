@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-07-16T07:00:01.168217+00:00",
+  "exported_at": "2026-07-17T07:00:01.117290+00:00",
   "market_daily": [
+    {
+      "date": "20260717",
+      "kospi_change": -6.37,
+      "kosdaq_change": -4.53,
+      "foreign_net": -136.65,
+      "institution_net": -238.31,
+      "individual_net": 366.47,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260716",
       "kospi_change": -6.37,
       "kosdaq_change": -4.53,
-      "foreign_net": -137.88,
+      "foreign_net": -137.94,
       "institution_net": -236.9,
-      "individual_net": 366.31,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "individual_net": 366.34,
+      "hot_theme_count": 9,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260715",
@@ -99,29 +110,18 @@
       "hot_theme_count": 9,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260703",
-      "kospi_change": 5.76,
-      "kosdaq_change": 0.19,
-      "foreign_net": -221.23,
-      "institution_net": 444.51,
-      "individual_net": -229.42,
-      "hot_theme_count": 25,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "연휴 앞두고 하락 마감한 코스피·코스닥",
-    "냉온탕 오가는 코스피",
-    "\"추가 인상\" 시사한 한은…달러·원 1479원까지 하락(종합)",
-    "美반도체 약세에 또 '휘청'…삼전 8% SK하닉 11% 급락 마감[핫스탁](종합)",
-    "알테오젠, 코스피 이전상장 유보…\"주주가치 제고\"",
-    "사모펀드 운용하려면 필수…금투협 전문인력 과정 개설",
-    "삼성전자-SK하이닉스 급락",
-    "코스피 급락 마감",
-    "코스피 급락 마감",
-    "코스피 급락 마감"
+    "한 달간 7조원 빨아들인 '삼전닉스' 레버리지…당국 대책에 꺾이나",
+    "\"제헌절이 살렸다\" 공포 속 개미, \"갖고 있으라\" 최태원에 \"믿는다\"",
+    "“주가 떨어지는데 6억 성과급? 누구 맘대로” 뿔난 삼전 소액주주들 집단행동",
+    "최태원 “나 복제한 AI 에이전트 10개 만들 것…판단도 대신”",
+    "오세훈 “성실하게 빚 갚는 청년만 바보가 되는 사회”",
+    "[보니하니]'카메라 대신 선뜻 집어 들었다'…샤오미 17T 써보니",
+    "실적 선방했지만 성장 둔화 우려…넷플릭스 시간외 8% 급락",
+    "[GMC] 스페이스X, 상장 한 달 만에 공모가 하회…식어가는 IPO 시장의 AI 낙관론",
+    "주가 20배 올랐다는데…수익성은 '글쎄' [주末머니]",
+    "부산대 ‘BOK구센터’, 한국은행 부산본부 통화정책 대회 최우수상"
   ]
 }
