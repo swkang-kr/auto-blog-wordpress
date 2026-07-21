@@ -1,4 +1,17 @@
 {
-  "exported_at": "2026-07-20T07:00:00.751260+00:00",
-  "trades": []
+  "exported_at": "2026-07-21T07:00:00.691658+00:00",
+  "trades": [
+    {
+      "stock_code": "096770",
+      "stock_name": "SK이노베이션",
+      "side": "buy",
+      "quantity": 9,
+      "price": 116450.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "이월분(익일종가)",
+      "filled_at": "2026-07-21T06:10:42.610931"
+    }
+  ]
 }

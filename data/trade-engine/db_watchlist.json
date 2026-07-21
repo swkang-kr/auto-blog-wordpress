@@ -1,6 +1,6 @@
 {
-  "exported_at": "2026-07-20T07:00:01.826030+00:00",
-  "total": 15,
+  "exported_at": "2026-07-21T07:00:01.662030+00:00",
+  "total": 17,
   "items": [
     {
       "stock_code": "005930",
@@ -29,6 +29,19 @@
       "updated_at": "2026-06-29T15:14:18.961787"
     },
     {
+      "stock_code": "096770",
+      "stock_name": "SK이노베이션",
+      "market": "KRX",
+      "sector": "석유와가스",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 63,
+      "memo": "AI APPROVE | conf=63% | qty_ratio=120% | AI review removed (2026-04-15)",
+      "created_at": "2026-07-21T15:10:00.340142",
+      "updated_at": "2026-07-21T15:10:00.340142"
+    },
+    {
       "stock_code": "006340",
       "stock_name": "대원전선",
       "market": "KRX",
@@ -53,6 +66,19 @@
       "memo": "AI APPROVE | conf=55% | qty_ratio=100% | AI review removed (2026-04-15)",
       "created_at": "2026-07-09T15:10:05.521899",
       "updated_at": "2026-07-09T15:10:05.521899"
+    },
+    {
+      "stock_code": "036530",
+      "stock_name": "SNT홀딩스",
+      "market": "KRX",
+      "sector": "",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 50,
+      "memo": "AI APPROVE | conf=50% | qty_ratio=100% | AI review removed (2026-04-15)",
+      "created_at": "2026-07-21T15:10:00.342705",
+      "updated_at": "2026-07-21T15:12:13.015478"
     },
     {
       "stock_code": "006360",

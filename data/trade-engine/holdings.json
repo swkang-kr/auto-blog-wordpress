@@ -1,4 +1,27 @@
 {
-  "exported_at": "2026-07-20T07:00:00.736411+00:00",
-  "holdings": []
+  "exported_at": "2026-07-21T07:00:00.675457+00:00",
+  "holdings": [
+    {
+      "stock_code": "036530",
+      "stock_name": "SNT홀딩스",
+      "quantity": 4,
+      "avg_price": 51200.0,
+      "current_price": 51200.0,
+      "unrealized_pnl": 0,
+      "unrealized_pnl_rate": 0,
+      "strategy": "",
+      "entry_date": "2026-07-20T15:00:00"
+    },
+    {
+      "stock_code": "096770",
+      "stock_name": "SK이노베이션",
+      "quantity": 9,
+      "avg_price": 116500.0,
+      "current_price": 116300.0,
+      "unrealized_pnl": -5364.9,
+      "unrealized_pnl_rate": -0.6237,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-07-21T06:10:42.596552"
+    }
+  ]
 }
