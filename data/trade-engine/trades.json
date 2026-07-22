@@ -1,6 +1,30 @@
 {
-  "exported_at": "2026-07-21T07:00:00.691658+00:00",
+  "exported_at": "2026-07-22T07:00:00.726141+00:00",
   "trades": [
+    {
+      "stock_code": "004310",
+      "stock_name": "현대약품",
+      "side": "buy",
+      "quantity": 231,
+      "price": 6575.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "",
+      "filled_at": "2026-07-22T06:10:53.403638"
+    },
+    {
+      "stock_code": "096770",
+      "stock_name": "SK이노베이션",
+      "side": "sell",
+      "quantity": 9,
+      "price": 120700.0,
+      "pnl": 34136.82,
+      "pnl_rate": 3.2558,
+      "strategy": "swing_trailing(peak=6.3%,step=3.0%,trail_sl=3.3%)",
+      "reason": "swing_trailing(peak=6.3%,step=3.0%,trail_sl=3.3%)",
+      "filled_at": "2026-07-22T05:07:00.510579"
+    },
     {
       "stock_code": "096770",
       "stock_name": "SK이노베이션",

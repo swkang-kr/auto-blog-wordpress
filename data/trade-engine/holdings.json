@@ -1,27 +1,27 @@
 {
-  "exported_at": "2026-07-21T07:00:00.675457+00:00",
+  "exported_at": "2026-07-22T07:00:00.709272+00:00",
   "holdings": [
+    {
+      "stock_code": "004310",
+      "stock_name": "현대약품",
+      "quantity": 231,
+      "avg_price": 6570.0,
+      "current_price": 6580.0,
+      "unrealized_pnl": -2850.08,
+      "unrealized_pnl_rate": -0.2798,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-07-22T06:10:53.383996"
+    },
     {
       "stock_code": "036530",
       "stock_name": "SNT홀딩스",
       "quantity": 4,
       "avg_price": 51200.0,
-      "current_price": 51200.0,
-      "unrealized_pnl": 0,
-      "unrealized_pnl_rate": 0,
+      "current_price": 49550.0,
+      "unrealized_pnl": -7296.32,
+      "unrealized_pnl_rate": -3.5627,
       "strategy": "",
       "entry_date": "2026-07-20T15:00:00"
-    },
-    {
-      "stock_code": "096770",
-      "stock_name": "SK이노베이션",
-      "quantity": 9,
-      "avg_price": 116500.0,
-      "current_price": 116300.0,
-      "unrealized_pnl": -5364.9,
-      "unrealized_pnl_rate": -0.6237,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-07-21T06:10:42.596552"
     }
   ]
 }

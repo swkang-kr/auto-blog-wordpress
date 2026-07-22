@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-07-21T07:00:01.145060+00:00",
+  "exported_at": "2026-07-22T07:00:01.121160+00:00",
   "market_daily": [
+    {
+      "date": "20260722",
+      "kospi_change": 0.74,
+      "kosdaq_change": -0.3,
+      "foreign_net": 262.11,
+      "institution_net": -139.61,
+      "individual_net": -121.77,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260721",
       "kospi_change": 3.56,
       "kosdaq_change": 0.49,
       "foreign_net": 29.52,
       "institution_net": 137.44,
-      "individual_net": -164.21,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "individual_net": -164.22,
+      "hot_theme_count": 16,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260720",
@@ -99,29 +110,18 @@
       "hot_theme_count": 13,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260708",
-      "kospi_change": -5.35,
-      "kosdaq_change": -5.56,
-      "foreign_net": 33.62,
-      "institution_net": -34.78,
-      "individual_net": -3.57,
-      "hot_theme_count": 0,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "코스피 6,700선 탈환…3%대 급등",
-    "코스피, 3%대 상승하며 6,740선 마감",
-    "코스피, 3%대 상승하며 6,740선 마감",
-    "코스피, 3%대 상승하며 6,740선 마감",
-    "코스피 6,700선 탈환…3%대 급등",
-    "코스피 6,700선 탈환…3%대 급등",
-    "반도체 쌍끌이, 코스피 3.5% 오른 6,747 마감",
-    "코스피, 3%대 상승하며 6,740선 마감",
-    "반도체 쌍끌이, 코스피 3.5% 오른 6,747 마감",
-    "\"크게 내려 조금 올라\"…외인·기관 쌍끌이 매수에 코스피 강세 마감"
+    "유니드, 2분기 매출 3998억원...역대 2분기 최대치",
+    "뒷심 부족 코스피, 소폭 오름세 마감",
+    "[포토]'전강후약' 코스피, 7천피 터치 후 6,797 마감",
+    "'전강후약' 코스피, 0.7% 상승 그쳐…6800선 문턱 마감",
+    "[포토]'7천피' 못 지킨 코스피",
+    "[포토]코스피, 7100선 찍고 상승분 반납 6700선 마감",
+    "뒷심 부족 코스피, 소폭 오름세로 마감",
+    "'뒷심 부족' 코스피, '칠천피' 탈환 실패",
+    "뒷심 부족 코스피, 소폭 오름세 마감",
+    "코스피 6797.70로 0.74% 상승 마감…장중 7100선 터치 후 상승폭 반납"
   ]
 }

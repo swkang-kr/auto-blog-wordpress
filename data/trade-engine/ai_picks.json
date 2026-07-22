@@ -1,79 +1,99 @@
 {
-  "exported_at": "2026-07-21T07:00:01.627227+00:00",
-  "total_candidates": 5,
+  "exported_at": "2026-07-22T07:00:01.686448+00:00",
+  "total_candidates": 6,
   "total_holdings": 2,
   "candidates": [
+    {
+      "stock_code": "005360",
+      "stock_name": "모나미",
+      "sector": "",
+      "signal_count": 7,
+      "avg_confidence": 0.6333000000000001,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "거래량6.0x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-07-22T06:05:09.627010",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "277810",
+      "stock_name": "레인보우로보틱스",
+      "sector": "기계",
+      "signal_count": 7,
+      "avg_confidence": 0.8833000000000001,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD골든크로스 | RSI모멘텀(52) | 거래량3.5x | 거래량3x+ | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+23.2%vsKOSPI+1.4%) | 디커플링모멘텀",
+      "price_at_signal": 0,
+      "signal_time": "2026-07-22T06:05:09.627000",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "059120",
+      "stock_name": "아진엑스텍",
+      "sector": "반도체와반도체장비",
+      "signal_count": 7,
+      "avg_confidence": 0.8833000000000001,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(52) | 거래량9.0x | 거래량3x+ | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+8.7%vsKOSPI+1.4%) | 디커플링모멘텀",
+      "price_at_signal": 0,
+      "signal_time": "2026-07-22T06:05:09.626970",
+      "status": "매수 시그널"
+    },
     {
       "stock_code": "003680",
       "stock_name": "한성기업",
       "sector": "",
-      "signal_count": 30,
-      "avg_confidence": 0.8599999999999997,
+      "signal_count": 6,
+      "avg_confidence": 0.6333000000000001,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "거래량4.6x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "reason": "거래량3.6x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-07-21T05:36:19.529381",
+      "signal_time": "2026-07-22T06:04:03.678391",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "000660",
-      "stock_name": "SK하이닉스",
-      "sector": "반도체",
-      "signal_count": 5,
-      "avg_confidence": 1.0,
-      "strategies": [],
-      "reason": "score=5.50, ranked_score=16.50",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-21T15:25:00.002448+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "036530",
-      "stock_name": "SNT홀딩스",
+      "stock_code": "004310",
+      "stock_name": "현대약품",
       "sector": "",
-      "signal_count": 2,
-      "avg_confidence": 0.5,
+      "signal_count": 6,
+      "avg_confidence": 0.711,
       "strategies": [],
-      "reason": "score=5.00, ranked_score=10.00",
+      "reason": "score=3.84, ranked_score=23.04",
       "price_at_signal": 0,
-      "signal_time": "2026-07-21T15:25:00.002448+09:00",
+      "signal_time": "2026-07-22T15:25:00.004896+09:00",
       "status": "장중 워치리스트"
     },
     {
-      "stock_code": "078930",
-      "stock_name": "GS",
-      "sector": "",
-      "signal_count": 1,
-      "avg_confidence": 0.65,
-      "strategies": [],
-      "reason": "score=5.50, ranked_score=3.30",
+      "stock_code": "002140",
+      "stock_name": "고려산업",
+      "sector": "식품",
+      "signal_count": 3,
+      "avg_confidence": 0.55,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "RSI모멘텀(55) | 거래량15.9x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(27) | 주봉MA20아래 | 상대강도(+2.6%vsKOSPI+1.1%)",
       "price_at_signal": 0,
-      "signal_time": "2026-07-21T15:25:00.002448+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "096770",
-      "stock_name": "SK이노베이션",
-      "sector": "석유와가스",
-      "signal_count": 1,
-      "avg_confidence": 0.63,
-      "strategies": [],
-      "reason": "score=3.20, ranked_score=3.20",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-21T15:25:00.002448+09:00",
-      "status": "장중 워치리스트"
+      "signal_time": "2026-07-22T06:08:02.784953",
+      "status": "매수 시그널"
     }
   ],
   "holdings": [
     {
-      "stock_code": "096770",
-      "stock_name": "SK이노베이션",
-      "quantity": 9,
-      "avg_price": 116500.0,
+      "stock_code": "004310",
+      "stock_name": "현대약품",
+      "quantity": 231,
+      "avg_price": 6570.0,
       "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-07-21",
+      "entry_date": "2026-07-22",
       "status": "보유 중"
     },
     {
