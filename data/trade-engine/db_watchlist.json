@@ -1,6 +1,6 @@
 {
-  "exported_at": "2026-07-22T07:00:01.720212+00:00",
-  "total": 18,
+  "exported_at": "2026-07-23T07:00:01.747845+00:00",
+  "total": 20,
   "items": [
     {
       "stock_code": "005930",
@@ -40,6 +40,19 @@
       "memo": "AI APPROVE | conf=63% | qty_ratio=120% | AI review removed (2026-04-15)",
       "created_at": "2026-07-21T15:10:00.340142",
       "updated_at": "2026-07-21T15:10:00.340142"
+    },
+    {
+      "stock_code": "003280",
+      "stock_name": "흥아해운",
+      "market": "KRX",
+      "sector": "해운사",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 60,
+      "memo": "AI APPROVE | conf=60% | qty_ratio=120% | AI review removed (2026-04-15)",
+      "created_at": "2026-07-23T15:10:21.064927",
+      "updated_at": "2026-07-23T15:10:21.064927"
     },
     {
       "stock_code": "006340",
@@ -92,6 +105,19 @@
       "memo": "AI APPROVE | conf=42% | qty_ratio=100% | AI review removed (2026-04-15)",
       "created_at": "2026-07-08T15:10:00.133599",
       "updated_at": "2026-07-08T15:10:00.133599"
+    },
+    {
+      "stock_code": "002020",
+      "stock_name": "코오롱",
+      "market": "KRX",
+      "sector": "",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 40,
+      "memo": "AI APPROVE | conf=40% | qty_ratio=100% | AI review removed (2026-04-15)",
+      "created_at": "2026-07-23T15:10:21.066788",
+      "updated_at": "2026-07-23T15:10:21.066788"
     },
     {
       "stock_code": "004310",

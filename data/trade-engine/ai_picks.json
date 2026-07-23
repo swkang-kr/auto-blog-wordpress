@@ -1,92 +1,176 @@
 {
-  "exported_at": "2026-07-22T07:00:01.686448+00:00",
-  "total_candidates": 6,
-  "total_holdings": 2,
+  "exported_at": "2026-07-23T07:00:01.713641+00:00",
+  "total_candidates": 11,
+  "total_holdings": 4,
   "candidates": [
-    {
-      "stock_code": "005360",
-      "stock_name": "모나미",
-      "sector": "",
-      "signal_count": 7,
-      "avg_confidence": 0.6333000000000001,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "거래량6.0x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-22T06:05:09.627010",
-      "status": "매수 시그널"
-    },
     {
       "stock_code": "277810",
       "stock_name": "레인보우로보틱스",
       "sector": "기계",
-      "signal_count": 7,
-      "avg_confidence": 0.8833000000000001,
+      "signal_count": 4,
+      "avg_confidence": 0.5167,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | MACD골든크로스 | RSI모멘텀(52) | 거래량3.5x | 거래량3x+ | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+23.2%vsKOSPI+1.4%) | 디커플링모멘텀",
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(51) | 거래량5.0x | 거래량3x+ | MA역배열 | 캔들도지 | 주봉데드크로스(-1.5) | 주봉MA20아래",
       "price_at_signal": 0,
-      "signal_time": "2026-07-22T06:05:09.627000",
+      "signal_time": "2026-07-23T06:07:07.193180",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "059120",
-      "stock_name": "아진엑스텍",
-      "sector": "반도체와반도체장비",
-      "signal_count": 7,
-      "avg_confidence": 0.8833000000000001,
+      "stock_code": "090710",
+      "stock_name": "휴림로봇",
+      "sector": "기계",
+      "signal_count": 4,
+      "avg_confidence": 0.55,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(52) | 거래량9.0x | 거래량3x+ | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+8.7%vsKOSPI+1.4%) | 디커플링모멘텀",
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량3.1x | 거래량3x+ | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+7.2%vsKOSPI+4.0%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-07-22T06:05:09.626970",
+      "signal_time": "2026-07-23T06:07:07.193177",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "003680",
-      "stock_name": "한성기업",
+      "stock_code": "002020",
+      "stock_name": "코오롱",
       "sector": "",
-      "signal_count": 6,
-      "avg_confidence": 0.6333000000000001,
+      "signal_count": 4,
+      "avg_confidence": 0.55,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "거래량3.6x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "reason": "2일연속상승 | RSI반등(25) | BB하단반등(score=0) | 거래량10.7x | 거래량3x+ | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+8.7%vsKOSPI+4.0%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-07-22T06:04:03.678391",
+      "signal_time": "2026-07-23T06:07:07.193175",
       "status": "매수 시그널"
-    },
-    {
-      "stock_code": "004310",
-      "stock_name": "현대약품",
-      "sector": "",
-      "signal_count": 6,
-      "avg_confidence": 0.711,
-      "strategies": [],
-      "reason": "score=3.84, ranked_score=23.04",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-22T15:25:00.004896+09:00",
-      "status": "장중 워치리스트"
     },
     {
       "stock_code": "002140",
       "stock_name": "고려산업",
       "sector": "식품",
-      "signal_count": 3,
-      "avg_confidence": 0.55,
+      "signal_count": 4,
+      "avg_confidence": 0.6333,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "RSI모멘텀(55) | 거래량15.9x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(27) | 주봉MA20아래 | 상대강도(+2.6%vsKOSPI+1.1%)",
+      "reason": "2일연속상승 | RSI모멘텀(55) | 거래량6.5x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래",
       "price_at_signal": 0,
-      "signal_time": "2026-07-22T06:08:02.784953",
+      "signal_time": "2026-07-23T06:07:07.193173",
       "status": "매수 시그널"
+    },
+    {
+      "stock_code": "005090",
+      "stock_name": "SGC에너지",
+      "sector": "",
+      "signal_count": 4,
+      "avg_confidence": 0.9167,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(59) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+15.6%vsKOSPI+4.0%) | 디커플링모멘텀",
+      "price_at_signal": 0,
+      "signal_time": "2026-07-23T06:07:07.193171",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "108860",
+      "stock_name": "셀바스AI",
+      "sector": "건강관리장비와용품",
+      "signal_count": 4,
+      "avg_confidence": 1.0,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(53) | 거래량9.3x | 거래량3x+ | MA역배열 | 캔들상승장악형(강) | 주봉데드크로스(-1.5) | 주봉RSI과매도(17) | 주봉MA20아래 | 상대강도(+21.4%vsKOSPI+4.0%) | 디커플링모멘텀",
+      "price_at_signal": 0,
+      "signal_time": "2026-07-23T06:07:07.193168",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "000500",
+      "stock_name": "가온전선",
+      "sector": "",
+      "signal_count": 4,
+      "avg_confidence": 0.55,
+      "strategies": [],
+      "reason": "score=3.38, ranked_score=8.10",
+      "price_at_signal": 0,
+      "signal_time": "2026-07-23T15:25:00.127263+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "059120",
+      "stock_name": "아진엑스텍",
+      "sector": "반도체와반도체장비",
+      "signal_count": 3,
+      "avg_confidence": 1.0,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(52) | 거래량12.3x | 거래량3x+ | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+7.8%vsKOSPI+3.8%) | 디커플링모멘텀",
+      "price_at_signal": 0,
+      "signal_time": "2026-07-23T06:07:59.004969",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "003280",
+      "stock_name": "흥아해운",
+      "sector": "해운사",
+      "signal_count": 3,
+      "avg_confidence": 1.0,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(67) | 거래량2.5x | MA정배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(25) | 주봉MA20아래 | 상대강도(+5.0%vsKOSPI+3.8%) | 디커플링모멘텀",
+      "price_at_signal": 0,
+      "signal_time": "2026-07-23T06:07:59.004943",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "056080",
+      "stock_name": "유진로봇",
+      "sector": "",
+      "signal_count": 1,
+      "avg_confidence": 0.6435000000000001,
+      "strategies": [],
+      "reason": "score=3.38, ranked_score=2.02",
+      "price_at_signal": 0,
+      "signal_time": "2026-07-23T15:25:00.127263+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "348340",
+      "stock_name": "뉴로메카",
+      "sector": "",
+      "signal_count": 1,
+      "avg_confidence": 0.55,
+      "strategies": [],
+      "reason": "score=3.38, ranked_score=2.02",
+      "price_at_signal": 0,
+      "signal_time": "2026-07-23T15:25:00.127263+09:00",
+      "status": "장중 워치리스트"
     }
   ],
   "holdings": [
+    {
+      "stock_code": "002020",
+      "stock_name": "코오롱",
+      "quantity": 16,
+      "avg_price": 26600.0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-07-23",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "003280",
+      "stock_name": "흥아해운",
+      "quantity": 393,
+      "avg_price": 2027.0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-07-23",
+      "status": "보유 중"
+    },
     {
       "stock_code": "004310",
       "stock_name": "현대약품",

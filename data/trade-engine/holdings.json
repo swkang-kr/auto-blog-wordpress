@@ -1,27 +1,49 @@
 {
-  "exported_at": "2026-07-22T07:00:00.709272+00:00",
+  "exported_at": "2026-07-23T07:00:00.723820+00:00",
   "holdings": [
     {
-      "stock_code": "004310",
-      "stock_name": "현대약품",
-      "quantity": 231,
-      "avg_price": 6570.0,
-      "current_price": 6580.0,
-      "unrealized_pnl": -2850.08,
-      "unrealized_pnl_rate": -0.2798,
+      "stock_code": "003280",
+      "stock_name": "흥아해운",
+      "quantity": 393,
+      "avg_price": 2027.0,
+      "current_price": 2030.0,
+      "unrealized_pnl": -1529.48,
+      "unrealized_pnl_rate": -0.3747,
       "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-07-22T06:10:53.383996"
+      "entry_date": "2026-07-23T06:11:23.411632"
+    },
+    {
+      "stock_code": "002020",
+      "stock_name": "코오롱",
+      "quantity": 16,
+      "avg_price": 26600.0,
+      "current_price": 26600.0,
+      "unrealized_pnl": -1447.04,
+      "unrealized_pnl_rate": -0.468,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-07-23T06:11:20.030795"
     },
     {
       "stock_code": "036530",
       "stock_name": "SNT홀딩스",
       "quantity": 4,
       "avg_price": 51200.0,
-      "current_price": 49550.0,
-      "unrealized_pnl": -7296.32,
-      "unrealized_pnl_rate": -3.5627,
+      "current_price": 49950.0,
+      "unrealized_pnl": -5696.32,
+      "unrealized_pnl_rate": -2.7814,
       "strategy": "",
       "entry_date": "2026-07-20T15:00:00"
+    },
+    {
+      "stock_code": "004310",
+      "stock_name": "현대약품",
+      "quantity": 231,
+      "avg_price": 6570.0,
+      "current_price": 6310.0,
+      "unrealized_pnl": -65220.08,
+      "unrealized_pnl_rate": -4.2974,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-07-22T06:10:53.383996"
     }
   ]
 }

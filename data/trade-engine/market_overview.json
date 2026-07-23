@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-07-22T07:00:01.121160+00:00",
+  "exported_at": "2026-07-23T07:00:01.197863+00:00",
   "market_daily": [
+    {
+      "date": "20260723",
+      "kospi_change": 4.4,
+      "kosdaq_change": 5.22,
+      "foreign_net": 213.58,
+      "institution_net": 9.75,
+      "individual_net": -220.79,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260722",
       "kospi_change": 0.74,
       "kosdaq_change": -0.3,
       "foreign_net": 262.11,
-      "institution_net": -139.61,
-      "individual_net": -121.77,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "institution_net": -139.63,
+      "individual_net": -121.76,
+      "hot_theme_count": 11,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260721",
@@ -99,29 +110,18 @@
       "hot_theme_count": 40,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260709",
-      "kospi_change": 0.62,
-      "kosdaq_change": 1.15,
-      "foreign_net": 13.47,
-      "institution_net": 128.79,
-      "individual_net": -132.77,
-      "hot_theme_count": 13,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "유니드, 2분기 매출 3998억원...역대 2분기 최대치",
-    "뒷심 부족 코스피, 소폭 오름세 마감",
-    "[포토]'전강후약' 코스피, 7천피 터치 후 6,797 마감",
-    "'전강후약' 코스피, 0.7% 상승 그쳐…6800선 문턱 마감",
-    "[포토]'7천피' 못 지킨 코스피",
-    "[포토]코스피, 7100선 찍고 상승분 반납 6700선 마감",
-    "뒷심 부족 코스피, 소폭 오름세로 마감",
-    "'뒷심 부족' 코스피, '칠천피' 탈환 실패",
-    "뒷심 부족 코스피, 소폭 오름세 마감",
-    "코스피 6797.70로 0.74% 상승 마감…장중 7100선 터치 후 상승폭 반납"
+    "KB증권, 상반기 순이익 8010억 ‘사상 최대’…개인고객 자산 200조 돌파",
+    "[컨콜] 현대차 \"유럽 반등은 내년부터…보스턴다이나믹스 지분 신중 검토\"",
+    "SGC에너지 올 상반기 영업이익 806억원…발전·에너지 부문 성장 주도",
+    "7000피 안착한 코스피",
+    "코스피, 5거래일 만에 '7천피' 회복",
+    "코스피·코스닥 동반 급등",
+    "서학개미, 규제 피해 3배 레버리지?…미국 순매수 5개월來 최대",
+    "엔화 가치 40년 만에 최저",
+    "코스피ㆍ코스닥 상승 마감",
+    "코스피 7000 탈환…코스닥도 800선 턱밑까지 급반등"
   ]
 }
