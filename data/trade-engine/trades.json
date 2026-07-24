@@ -1,6 +1,30 @@
 {
-  "exported_at": "2026-07-23T07:00:00.740584+00:00",
+  "exported_at": "2026-07-24T07:00:00.724329+00:00",
   "trades": [
+    {
+      "stock_code": "004310",
+      "stock_name": "현대약품",
+      "side": "sell",
+      "quantity": 231,
+      "price": 6570.0,
+      "pnl": -5160.08,
+      "pnl_rate": -0.34,
+      "strategy": "swing_trailing(peak=3.0%,step=3.0%,trail_sl=0.0%)",
+      "reason": "swing_trailing(peak=3.0%,step=3.0%,trail_sl=0.0%)",
+      "filled_at": "2026-07-24T00:25:07.623115"
+    },
+    {
+      "stock_code": "003280",
+      "stock_name": "흥아해운",
+      "side": "sell",
+      "quantity": 393,
+      "price": 2040.0,
+      "pnl": 2387.24,
+      "pnl_rate": 0.2997,
+      "strategy": "swing_trailing(peak=4.0%,step=3.0%,trail_sl=1.0%)",
+      "reason": "swing_trailing(peak=4.0%,step=3.0%,trail_sl=1.0%)",
+      "filled_at": "2026-07-24T00:10:56.450866"
+    },
     {
       "stock_code": "003280",
       "stock_name": "흥아해운",

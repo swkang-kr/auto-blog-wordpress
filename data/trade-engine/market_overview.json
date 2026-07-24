@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-07-23T07:00:01.197863+00:00",
+  "exported_at": "2026-07-24T07:00:01.182079+00:00",
   "market_daily": [
+    {
+      "date": "20260724",
+      "kospi_change": -5.72,
+      "kosdaq_change": -5.32,
+      "foreign_net": -326.85,
+      "institution_net": -195.14,
+      "individual_net": 517.83,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260723",
       "kospi_change": 4.4,
       "kosdaq_change": 5.22,
-      "foreign_net": 213.58,
-      "institution_net": 9.75,
-      "individual_net": -220.79,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": 213.59,
+      "institution_net": 9.76,
+      "individual_net": -220.78,
+      "hot_theme_count": 40,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260722",
@@ -99,29 +110,18 @@
       "hot_theme_count": 4,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260710",
-      "kospi_change": 2.52,
-      "kosdaq_change": 5.47,
-      "foreign_net": -32.28,
-      "institution_net": 113.14,
-      "individual_net": -77.21,
-      "hot_theme_count": 40,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "KB증권, 상반기 순이익 8010억 ‘사상 최대’…개인고객 자산 200조 돌파",
-    "[컨콜] 현대차 \"유럽 반등은 내년부터…보스턴다이나믹스 지분 신중 검토\"",
-    "SGC에너지 올 상반기 영업이익 806억원…발전·에너지 부문 성장 주도",
-    "7000피 안착한 코스피",
-    "코스피, 5거래일 만에 '7천피' 회복",
-    "코스피·코스닥 동반 급등",
-    "서학개미, 규제 피해 3배 레버리지?…미국 순매수 5개월來 최대",
-    "엔화 가치 40년 만에 최저",
-    "코스피ㆍ코스닥 상승 마감",
-    "코스피 7000 탈환…코스닥도 800선 턱밑까지 급반등"
+    "‘매도 사이드카’ 코스피 5% 하락 마감…삼전·하닉 8% 급락 [마켓시그널]",
+    "현대위아, 2분기 영업이익 504억…전년比 10.6% 감소",
+    "하나증권, 상반기 순이익 2731억원…전년比 155.7%↑",
+    "우리금융 2분기 순이익 1조46억원, 7.4%↑…역대 두 번째(종합)",
+    "7천피 내준 코스피",
+    "'검은 금요일' 코스피 하루 만에 7000선 붕괴",
+    "[오늘증시]6% 밀린 코스피, 삼전닉스 8% 후퇴…올해만 사이드카 41번",
+    "검은 금요일",
+    "증시 마감 시황",
+    "검은 금요일"
   ]
 }
