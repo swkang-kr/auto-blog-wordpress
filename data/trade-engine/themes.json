@@ -1,108 +1,67 @@
 {
-  "exported_at": "2026-07-24T07:00:01.239642+00:00",
-  "date": "20260724",
+  "exported_at": "2026-07-27T07:00:01.205751+00:00",
+  "date": "20260727",
   "hot_themes": [
     {
+      "name": "인터넷 대표주",
+      "change_rate": 5.39
+    },
+    {
+      "name": "AI 챗봇(챗GPT 등)",
+      "change_rate": 4.45
+    },
+    {
+      "name": "온디바이스 AI",
+      "change_rate": 4.43
+    },
+    {
+      "name": "전자결제(전자화폐)",
+      "change_rate": 4.14
+    },
+    {
+      "name": "피지컬 AI/휴머노이드 로봇",
+      "change_rate": 4.14
+    },
+    {
       "name": "제습기",
-      "change_rate": 2.37
+      "change_rate": 4.09
     },
     {
-      "name": "손해보험",
-      "change_rate": 2.11
+      "name": "지능형로봇/인공지능(AI)",
+      "change_rate": 4.05
     },
     {
-      "name": "탈 플라스틱(친환경/생분해성 등)",
-      "change_rate": 2.06
+      "name": "로봇(산업용/협동로봇 등)",
+      "change_rate": 3.96
     },
     {
-      "name": "조선기자재",
-      "change_rate": 2.02
+      "name": "전자파",
+      "change_rate": 3.46
     },
     {
-      "name": "겨울",
-      "change_rate": 1.62
+      "name": "3D 프린터",
+      "change_rate": 3.45
     },
     {
-      "name": "통신",
-      "change_rate": 0.94
+      "name": "시스템반도체",
+      "change_rate": 3.22
     },
     {
-      "name": "편의점",
-      "change_rate": 0.92
+      "name": "마리화나(대마)",
+      "change_rate": 3.12
     },
     {
-      "name": "도시가스",
-      "change_rate": 0.84
+      "name": "스마트팩토리(스마트공장)",
+      "change_rate": 3.03
     },
     {
-      "name": "유심(USIM)",
-      "change_rate": 0.8
+      "name": "모바일솔루션(스마트폰)",
+      "change_rate": 2.9
     },
     {
-      "name": "여름",
-      "change_rate": 0.72
-    },
-    {
-      "name": "사료",
-      "change_rate": 0.64
-    },
-    {
-      "name": "윤활유",
-      "change_rate": 0.62
-    },
-    {
-      "name": "치매",
-      "change_rate": 0.57
-    },
-    {
-      "name": "골판지 제조",
-      "change_rate": 0.54
-    },
-    {
-      "name": "은행",
-      "change_rate": 0.52
+      "name": "음원/음반",
+      "change_rate": 2.82
     }
   ],
-  "cold_themes": [
-    {
-      "name": "콩/대두",
-      "change_rate": -0.36
-    },
-    {
-      "name": "종합 물류",
-      "change_rate": -0.35
-    },
-    {
-      "name": "비만치료제",
-      "change_rate": -0.27
-    },
-    {
-      "name": "강관업체(Steel pipe)",
-      "change_rate": -0.25
-    },
-    {
-      "name": "일자리(취업)",
-      "change_rate": -0.16
-    },
-    {
-      "name": "스마트홈(홈네트워크)",
-      "change_rate": -0.12
-    },
-    {
-      "name": "기업인수목적회사(SPAC)",
-      "change_rate": -0.11
-    },
-    {
-      "name": "바이오시밀러(복제 바이오의약품)",
-      "change_rate": -0.08
-    },
-    {
-      "name": "주유소",
-      "change_rate": -0.07
-    },
-    {
-      "name": "리모델링/인테리어",
-      "change_rate": -0.04
-    }
-  ]
+  "cold_themes": []
 }
