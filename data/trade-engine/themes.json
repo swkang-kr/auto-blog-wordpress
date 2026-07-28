@@ -1,67 +1,52 @@
 {
-  "exported_at": "2026-07-27T07:00:01.205751+00:00",
-  "date": "20260727",
+  "exported_at": "2026-07-28T07:00:01.193688+00:00",
+  "date": "20260728",
   "hot_themes": [
     {
-      "name": "인터넷 대표주",
-      "change_rate": 5.39
+      "name": "CCTV＆DVR",
+      "change_rate": 0.04
+    }
+  ],
+  "cold_themes": [
+    {
+      "name": "김밥(냉동김밥 등)",
+      "change_rate": -3.26
+    },
+    {
+      "name": "퓨리오사AI",
+      "change_rate": -3.23
+    },
+    {
+      "name": "교육/온라인 교육",
+      "change_rate": -3.16
+    },
+    {
+      "name": "엔젤산업",
+      "change_rate": -3.15
+    },
+    {
+      "name": "제약업체",
+      "change_rate": -3.14
     },
     {
       "name": "AI 챗봇(챗GPT 등)",
-      "change_rate": 4.45
+      "change_rate": -3.1
     },
     {
-      "name": "온디바이스 AI",
-      "change_rate": 4.43
+      "name": "비료",
+      "change_rate": -3.1
     },
     {
-      "name": "전자결제(전자화폐)",
-      "change_rate": 4.14
+      "name": "모더나(MODERNA)",
+      "change_rate": -3.06
     },
     {
-      "name": "피지컬 AI/휴머노이드 로봇",
-      "change_rate": 4.14
+      "name": "코로나19(치료제/백신 개발 등)",
+      "change_rate": -3.06
     },
     {
-      "name": "제습기",
-      "change_rate": 4.09
-    },
-    {
-      "name": "지능형로봇/인공지능(AI)",
-      "change_rate": 4.05
-    },
-    {
-      "name": "로봇(산업용/협동로봇 등)",
-      "change_rate": 3.96
-    },
-    {
-      "name": "전자파",
-      "change_rate": 3.46
-    },
-    {
-      "name": "3D 프린터",
-      "change_rate": 3.45
-    },
-    {
-      "name": "시스템반도체",
-      "change_rate": 3.22
-    },
-    {
-      "name": "마리화나(대마)",
-      "change_rate": 3.12
-    },
-    {
-      "name": "스마트팩토리(스마트공장)",
-      "change_rate": 3.03
-    },
-    {
-      "name": "모바일솔루션(스마트폰)",
-      "change_rate": 2.9
-    },
-    {
-      "name": "음원/음반",
-      "change_rate": 2.82
+      "name": "겨울",
+      "change_rate": -3.03
     }
-  ],
-  "cold_themes": []
+  ]
 }

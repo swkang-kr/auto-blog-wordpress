@@ -1,115 +1,16 @@
 {
-  "exported_at": "2026-07-27T07:00:00.699588+00:00",
+  "exported_at": "2026-07-28T07:00:00.685135+00:00",
   "holdings": [
-    {
-      "stock_code": "028050",
-      "stock_name": "삼성E&A",
-      "quantity": 7,
-      "avg_price": 47635.714,
-      "current_price": 47625.0,
-      "unrealized_pnl": 0,
-      "unrealized_pnl_rate": 0,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-07-27T06:13:53.065767"
-    },
     {
       "stock_code": "000100",
       "stock_name": "유한양행",
       "quantity": 5,
       "avg_price": 72200.0,
-      "current_price": 72250.0,
-      "unrealized_pnl": 0,
-      "unrealized_pnl_rate": 0,
+      "current_price": 69800.0,
+      "unrealized_pnl": -13227.4,
+      "unrealized_pnl_rate": -3.6641,
       "strategy": "RSI+MACD(swing)",
       "entry_date": "2026-07-27T06:14:02.243223"
-    },
-    {
-      "stock_code": "030200",
-      "stock_name": "KT",
-      "quantity": 6,
-      "avg_price": 54600.0,
-      "current_price": 54550.0,
-      "unrealized_pnl": 0,
-      "unrealized_pnl_rate": 0,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-07-27T06:13:47.640510"
-    },
-    {
-      "stock_code": "007690",
-      "stock_name": "국도화학",
-      "quantity": 14,
-      "avg_price": 38500.0,
-      "current_price": 38550.0,
-      "unrealized_pnl": 0,
-      "unrealized_pnl_rate": 0,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-07-27T06:14:18.058181"
-    },
-    {
-      "stock_code": "052690",
-      "stock_name": "한전기술",
-      "quantity": 2,
-      "avg_price": 97600.0,
-      "current_price": 97550.0,
-      "unrealized_pnl": 0,
-      "unrealized_pnl_rate": 0,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-07-27T06:14:00.311600"
-    },
-    {
-      "stock_code": "017670",
-      "stock_name": "SK텔레콤",
-      "quantity": 8,
-      "avg_price": 98100.0,
-      "current_price": 98300.0,
-      "unrealized_pnl": -1068.32,
-      "unrealized_pnl_rate": -0.1781,
-      "strategy": "manual_recovery",
-      "entry_date": "2026-07-27T06:11:01.887605"
-    },
-    {
-      "stock_code": "011930",
-      "stock_name": "011930",
-      "quantity": 19,
-      "avg_price": 15210.0,
-      "current_price": 15220.0,
-      "unrealized_pnl": -792.57,
-      "unrealized_pnl_rate": -0.3463,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-07-27T06:11:41.375683"
-    },
-    {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "quantity": 6,
-      "avg_price": 253875.0,
-      "current_price": 253750.0,
-      "unrealized_pnl": -5929.05,
-      "unrealized_pnl_rate": -0.5262,
-      "strategy": "manual_recovery",
-      "entry_date": "2026-07-27T06:11:01.872445"
-    },
-    {
-      "stock_code": "002140",
-      "stock_name": "고려산업",
-      "quantity": 756,
-      "avg_price": 2053.921,
-      "current_price": 2050.0,
-      "unrealized_pnl": -8243.67,
-      "unrealized_pnl_rate": -0.7139,
-      "strategy": "manual_recovery",
-      "entry_date": "2026-07-27T06:11:01.881741"
-    },
-    {
-      "stock_code": "002020",
-      "stock_name": "코오롱",
-      "quantity": 16,
-      "avg_price": 26600.0,
-      "current_price": 25500.0,
-      "unrealized_pnl": -19047.04,
-      "unrealized_pnl_rate": -4.4753,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-07-23T06:11:20.030795"
     }
   ]
 }
