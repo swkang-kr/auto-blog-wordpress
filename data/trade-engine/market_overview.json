@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-07-28T07:00:01.133242+00:00",
+  "exported_at": "2026-07-29T07:00:01.203406+00:00",
   "market_daily": [
+    {
+      "date": "20260729",
+      "kospi_change": -5.98,
+      "kosdaq_change": -6.12,
+      "foreign_net": -123.43,
+      "institution_net": 316.04,
+      "individual_net": -196.95,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260728",
       "kospi_change": -10.84,
       "kosdaq_change": -7.72,
-      "foreign_net": -496.64,
+      "foreign_net": -496.7,
       "institution_net": 63.0,
-      "individual_net": 433.38,
+      "individual_net": 433.44,
       "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260727",
@@ -99,29 +110,18 @@
       "hot_theme_count": 9,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260715",
-      "kospi_change": 6.24,
-      "kosdaq_change": 5.8,
-      "foreign_net": 232.14,
-      "institution_net": 18.24,
-      "individual_net": -246.66,
-      "hot_theme_count": 40,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "공매도 지표 '숨 고르기'…증시 바닥 언제쯤일까",
-    "'검은 화요일' 코스피 급락, 중국 반도체 쇼크에 삼전닉스 하락",
-    "삼전닉스 폭락에 코스피도 휘청",
-    "'대웅제약에 6600억 기술수출' 이노보, 코스닥 상장 도전",
-    "삼전닉스 폭락에 코스피도 휘청",
-    "코스피 10.84% 폭락",
-    "코스피 10.84% 폭락",
-    "코스피 10.84% 폭락",
-    "코스피, 중국 반도체 충격에 10.84% 폭락",
-    "코스피, 중국 반도체 충격에 10.84% 폭락"
+    "LG생활건강, 2분기 영업익 1028억…전년비 87.5% ↑",
+    "단일종목 레버리지, 배율 하향·예탁금 상향할까…與 \"적극 검토해야\"",
+    "끝을 모르는 추락…삼전닉스 레버리지 ETF 이틀 연속 폭락",
+    "크래프톤, PUBG·서브노티카2 성공에 상반기 역대 최고 실적(종합)",
+    "코스피, 이틀 연속 급락",
+    "이틀 연속 폭락에 '6천피' 붕괴",
+    "이틀 연속 사이드카→서킷브레이커…'5000피·600닥' 시대로 회귀",
+    "코스피 이틀 새 16.17% 급락",
+    "삼전닉스 연이틀 폭락",
+    "삼전닉스 연이틀 폭락"
   ]
 }

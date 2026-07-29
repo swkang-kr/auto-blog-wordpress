@@ -1,140 +1,64 @@
 {
-  "exported_at": "2026-07-28T07:00:01.701607+00:00",
-  "total_candidates": 9,
-  "total_holdings": 1,
+  "exported_at": "2026-07-29T07:00:01.767416+00:00",
+  "total_candidates": 4,
+  "total_holdings": 0,
   "candidates": [
     {
       "stock_code": "108860",
       "stock_name": "셀바스AI",
       "sector": "건강관리장비와용품",
-      "signal_count": 5,
-      "avg_confidence": 0.5375,
+      "signal_count": 8,
+      "avg_confidence": 0.5429,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | 거래량35.2x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+17.7%vsKOSPI-6.7%) | 디커플링모멘텀",
+      "reason": "MACD히스토그램↑ | 거래량17.0x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(20) | 주봉MA20아래 | 상대강도(-3.4%vsKOSPI-5.9%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-07-28T00:18:20.221462",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "sector": "반도체",
-      "signal_count": 5,
-      "avg_confidence": 0.5625,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20아래 | 대형주급락(-8.5%) | 상대강도(+1.8%vsKOSPI-6.7%)",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-28T00:18:20.221456",
+      "signal_time": "2026-07-29T05:44:04.797859",
       "status": "매수 시그널"
     },
     {
       "stock_code": "059120",
       "stock_name": "아진엑스텍",
       "sector": "반도체와반도체장비",
-      "signal_count": 5,
-      "avg_confidence": 0.6625,
+      "signal_count": 8,
+      "avg_confidence": 0.5429,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | 거래량8.7x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.3%vsKOSPI-6.7%) | 디커플링모멘텀",
+      "reason": "RSI모멘텀(59) | 거래량4.9x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+1.0%vsKOSPI-5.9%)",
       "price_at_signal": 0,
-      "signal_time": "2026-07-28T00:18:20.221450",
+      "signal_time": "2026-07-29T05:44:04.797857",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "035420",
-      "stock_name": "NAVER",
-      "sector": "IT서비스",
-      "signal_count": 5,
-      "avg_confidence": 0.6625,
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "sector": "반도체",
+      "signal_count": 7,
+      "avg_confidence": 0.7142999999999999,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(60) | 거래량3.1x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+8.4%vsKOSPI-6.7%) | 디커플링모멘텀",
+      "reason": "RSI반등(39) | RSI sweet(39) | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 대형주급락(-6.1%) | 상대강도(+3.4%vsKOSPI-5.9%)",
       "price_at_signal": 0,
-      "signal_time": "2026-07-28T00:18:20.221435",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "028050",
-      "stock_name": "삼성E&A",
-      "sector": "건설",
-      "signal_count": 5,
-      "avg_confidence": 0.875,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(54) | 거래량2.2x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+0.1%vsKOSPI-6.7%) | 디커플링모멘텀",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-28T00:18:20.221426",
+      "signal_time": "2026-07-29T05:45:12.589107",
       "status": "매수 시그널"
     },
     {
       "stock_code": "000660",
       "stock_name": "SK하이닉스",
       "sector": "반도체",
-      "signal_count": 4,
-      "avg_confidence": 0.9375,
+      "signal_count": 7,
+      "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 대형주급락(-9.9%) | 상대강도(+3.2%vsKOSPI-6.8%)",
+      "reason": "RSI sweet(37) | EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20아래 | 대형주급락(-9.6%) | 상대강도(-0.4%vsKOSPI-5.9%)",
       "price_at_signal": 0,
-      "signal_time": "2026-07-28T00:19:10.502334",
+      "signal_time": "2026-07-29T05:45:12.589082",
       "status": "매수 시그널"
-    },
-    {
-      "stock_code": "007690",
-      "stock_name": "국도화학",
-      "sector": "",
-      "signal_count": 1,
-      "avg_confidence": 0.6625,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "거래량4.7x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(-0.4%vsKOSPI-6.7%)",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-28T00:18:20.221443",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "348340",
-      "stock_name": "뉴로메카",
-      "sector": "",
-      "signal_count": 1,
-      "avg_confidence": 0.6,
-      "strategies": [],
-      "reason": "score=2.45, ranked_score=1.47",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-28T15:25:00.117165+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "017670",
-      "stock_name": "SK텔레콤",
-      "sector": "",
-      "signal_count": 1,
-      "avg_confidence": 0.5599999999999999,
-      "strategies": [],
-      "reason": "score=1.57, ranked_score=0.94",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-28T15:25:00.117165+09:00",
-      "status": "장중 워치리스트"
     }
   ],
-  "holdings": [
-    {
-      "stock_code": "000100",
-      "stock_name": "유한양행",
-      "quantity": 5,
-      "avg_price": 72200.0,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-07-27",
-      "status": "보유 중"
-    }
-  ]
+  "holdings": []
 }
