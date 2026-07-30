@@ -1,6 +1,18 @@
 {
-  "exported_at": "2026-07-29T07:00:00.706763+00:00",
+  "exported_at": "2026-07-30T07:00:00.716912+00:00",
   "trades": [
+    {
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "side": "buy",
+      "quantity": 7,
+      "price": 207750.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "이월분(익일종가)",
+      "filled_at": "2026-07-30T06:10:54.939296"
+    },
     {
       "stock_code": "030200",
       "stock_name": "KT",
@@ -240,30 +252,6 @@
       "strategy": "swing_trailing(peak=4.0%,step=3.0%,trail_sl=1.0%)",
       "reason": "swing_trailing(peak=4.0%,step=3.0%,trail_sl=1.0%)",
       "filled_at": "2026-07-24T00:10:56.450866"
-    },
-    {
-      "stock_code": "003280",
-      "stock_name": "흥아해운",
-      "side": "buy",
-      "quantity": 393,
-      "price": 2027.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "",
-      "filled_at": "2026-07-23T06:11:23.420106"
-    },
-    {
-      "stock_code": "002020",
-      "stock_name": "코오롱",
-      "side": "buy",
-      "quantity": 16,
-      "price": 26625.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "",
-      "filled_at": "2026-07-23T06:11:20.041051"
     }
   ]
 }
