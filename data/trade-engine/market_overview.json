@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-07-30T07:00:01.170420+00:00",
+  "exported_at": "2026-07-31T07:00:01.196633+00:00",
   "market_daily": [
+    {
+      "date": "20260731",
+      "kospi_change": 17.91,
+      "kosdaq_change": 11.63,
+      "foreign_net": 724.12,
+      "institution_net": 113.96,
+      "individual_net": -827.37,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260730",
       "kospi_change": -1.23,
       "kosdaq_change": -2.7,
-      "foreign_net": 134.26,
-      "institution_net": 6.63,
-      "individual_net": -143.12,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": 134.27,
+      "institution_net": 6.58,
+      "individual_net": -143.09,
+      "hot_theme_count": 14,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260729",
@@ -99,29 +110,18 @@
       "hot_theme_count": 5,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260717",
-      "kospi_change": -6.37,
-      "kosdaq_change": -4.53,
-      "foreign_net": -136.65,
-      "institution_net": -238.31,
-      "individual_net": 366.47,
-      "hot_theme_count": 9,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "'코스피 하락'",
-    "코스피 1.23% 하락 5593.56 장마감…사흘간 17% 급락",
-    "'뒷목 잡는 증시'",
-    "넷마블 마브렉스, '일곱 개의 대죄: 계명의 부활' NFT 출시",
-    "\"40년 모은 22억 다 날렸다. 손해배상 청구 하고파\"…레버리지 파산자 '주작' 논란 [어떻게 생각하세요]",
-    "삼성증권, 비대면 신규·휴면 고객에 국내주식 거래수수료 1년 우대",
-    "단일종목레버리지, 결국 '2차 보완책'...\"사실상 퇴출 수순\"",
-    "5,600선 내준 코스피",
-    "5,600선 내준 코스피",
-    "[오늘증시]132만닉스까지 털썩…등락 거듭 코스피, 5590선 마감"
+    "SK하이닉스 사상 첫 상한가 마감",
+    "F&F, 2분기 영업익 865억…전년비 2.9% ↑",
+    "단일종목 막자 '전투개미' 어디로...지수 레버리지 풍선효과 우려",
+    "코스피, 하루에만 17.91% 올랐다…사상 최대 상승률 [시황]",
+    "한주에이알티, 40억 규모 유증 추진…\"수익성 개선 속도\"",
+    "HD현대, 2분기 영업익 4조1246억…전년비 262.2% ↑",
+    "코스피 역대 최대 상승",
+    "코스피, 역대 최대 상승폭·상승률 기록…닉스 상한가",
+    "17% 폭등에도 안심하긴 이르다…‘데드캣 바운스’ 가능성 배제할 수 없는 이유",
+    "아센디오, 경남제약 현물출자 법원 인가…\"유상증자 절차 본격화\""
   ]
 }

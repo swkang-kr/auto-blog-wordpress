@@ -1,16 +1,38 @@
 {
-  "exported_at": "2026-07-30T07:00:00.701043+00:00",
+  "exported_at": "2026-07-31T07:00:00.678304+00:00",
   "holdings": [
     {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "quantity": 7,
-      "avg_price": 207750.0,
-      "current_price": 207750.0,
-      "unrealized_pnl": -4944.45,
-      "unrealized_pnl_rate": -0.521,
+      "stock_code": "001450",
+      "stock_name": "현대해상",
+      "quantity": 24,
+      "avg_price": 38400.0,
+      "current_price": 38450.0,
+      "unrealized_pnl": 0,
+      "unrealized_pnl_rate": 0,
       "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-07-30T06:10:54.930177"
+      "entry_date": "2026-07-31T06:13:18.847981"
+    },
+    {
+      "stock_code": "004370",
+      "stock_name": "농심",
+      "quantity": 1,
+      "avg_price": 382500.0,
+      "current_price": 382500.0,
+      "unrealized_pnl": -1300.5,
+      "unrealized_pnl_rate": -0.411,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-07-31T06:11:24.791317"
+    },
+    {
+      "stock_code": "068270",
+      "stock_name": "셀트리온",
+      "quantity": 4,
+      "avg_price": 186500.0,
+      "current_price": 186400.0,
+      "unrealized_pnl": -2936.4,
+      "unrealized_pnl_rate": -0.4406,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-07-31T06:11:39.006169"
     }
   ]
 }

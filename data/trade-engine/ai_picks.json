@@ -1,165 +1,191 @@
 {
-  "exported_at": "2026-07-30T07:00:01.749791+00:00",
-  "total_candidates": 11,
-  "total_holdings": 1,
+  "exported_at": "2026-07-31T07:00:01.755648+00:00",
+  "total_candidates": 12,
+  "total_holdings": 3,
   "candidates": [
-    {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "sector": "반도체",
-      "signal_count": 8,
-      "avg_confidence": 0.5,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "RSI sweet(35) | EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20아래",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-30T06:02:23.839120",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "000660",
-      "stock_name": "SK하이닉스",
-      "sector": "반도체",
-      "signal_count": 7,
-      "avg_confidence": 1.0,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "RSI sweet(33) | EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20아래 | 대형주급락(-5.1%)",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-30T06:04:11.259114",
-      "status": "매수 시그널"
-    },
     {
       "stock_code": "068270",
       "stock_name": "셀트리온",
       "sector": "바이오",
-      "signal_count": 7,
-      "avg_confidence": 1.0,
+      "signal_count": 6,
+      "avg_confidence": 0.6,
+      "strategies": [],
+      "reason": "score=7.00, ranked_score=42.00",
+      "price_at_signal": 0,
+      "signal_time": "2026-07-31T15:25:00.132136+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "402490",
+      "stock_name": "그린리소스",
+      "sector": "반도체와반도체장비",
+      "signal_count": 6,
+      "avg_confidence": 0.5013333333333334,
+      "strategies": [],
+      "reason": "score=2.04, ranked_score=12.25",
+      "price_at_signal": 0,
+      "signal_time": "2026-07-31T15:25:00.132136+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "429270",
+      "stock_name": "시지트로닉스",
+      "sector": "반도체와반도체장비",
+      "signal_count": 5,
+      "avg_confidence": 0.5,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(63) | 거래량2.3x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+5.2%vsKOSPI-1.2%) | 디커플링모멘텀",
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI반등(32) | RSI sweet(32) | BB하단반등(score=0) | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래",
       "price_at_signal": 0,
-      "signal_time": "2026-07-30T06:04:11.259104",
+      "signal_time": "2026-07-31T06:05:24.322239",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "079160",
-      "stock_name": "CJ CGV",
-      "sector": "방송과엔터테인먼트",
-      "signal_count": 7,
-      "avg_confidence": 0.9,
-      "strategies": [],
-      "reason": "score=4.05, ranked_score=17.01",
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "sector": "반도체",
+      "signal_count": 5,
+      "avg_confidence": 0.5,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20아래 | 상대강도(+23.2%vsKOSPI+18.3%)",
       "price_at_signal": 0,
-      "signal_time": "2026-07-30T15:25:00.007318+09:00",
+      "signal_time": "2026-07-31T06:05:24.322231",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "382800",
+      "stock_name": "지앤비에스 에코",
+      "sector": "반도체와반도체장비",
+      "signal_count": 5,
+      "avg_confidence": 0.5833,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI반등(39) | RSI sweet(39) | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(23) | 주봉MA20아래",
+      "price_at_signal": 0,
+      "signal_time": "2026-07-31T06:05:24.322223",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "005935",
+      "stock_name": "삼성전자우",
+      "sector": "반도체와반도체장비",
+      "signal_count": 5,
+      "avg_confidence": 0.6667,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "RSI모멘텀(51) | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+24.4%vsKOSPI+18.3%)",
+      "price_at_signal": 0,
+      "signal_time": "2026-07-31T06:05:24.322215",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "035720",
+      "stock_name": "카카오",
+      "sector": "IT서비스",
+      "signal_count": 5,
+      "avg_confidence": 0.6667,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(52) | MA정배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(24) | 주봉MA20아래",
+      "price_at_signal": 0,
+      "signal_time": "2026-07-31T06:05:24.322204",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "051900",
+      "stock_name": "LG생활건강",
+      "sector": "",
+      "signal_count": 5,
+      "avg_confidence": 0.8833,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MACD히스토그램↑ | 거래량5.2x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-07-31T06:05:24.322178",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "001450",
+      "stock_name": "현대해상",
+      "sector": "",
+      "signal_count": 4,
+      "avg_confidence": 0.8,
+      "strategies": [],
+      "reason": "score=6.50, ranked_score=26.00",
+      "price_at_signal": 0,
+      "signal_time": "2026-07-31T15:25:00.132136+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "090430",
+      "stock_name": "아모레퍼시픽",
+      "sector": "화장품",
+      "signal_count": 3,
+      "avg_confidence": 0.65,
+      "strategies": [],
+      "reason": "score=3.38, ranked_score=6.08",
+      "price_at_signal": 0,
+      "signal_time": "2026-07-31T15:25:00.132136+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "033780",
+      "stock_name": "KT&G",
+      "sector": "",
+      "signal_count": 1,
+      "avg_confidence": 0.55,
+      "strategies": [],
+      "reason": "score=7.00, ranked_score=4.20",
+      "price_at_signal": 0,
+      "signal_time": "2026-07-31T15:25:00.132136+09:00",
       "status": "장중 워치리스트"
     },
     {
       "stock_code": "004370",
       "stock_name": "농심",
       "sector": "",
-      "signal_count": 6,
-      "avg_confidence": 0.7,
+      "signal_count": 1,
+      "avg_confidence": 0.5499999999999999,
       "strategies": [],
-      "reason": "score=7.00, ranked_score=25.20",
+      "reason": "score=4.05, ranked_score=4.05",
       "price_at_signal": 0,
-      "signal_time": "2026-07-30T15:25:00.007318+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "017670",
-      "stock_name": "SK텔레콤",
-      "sector": "무선통신서비스",
-      "signal_count": 2,
-      "avg_confidence": 0.5,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "RSI반등(39) | RSI sweet(39) | MA정배열 | EMA20하방 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+1.8%vsKOSPI-1.3%)",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-30T06:02:23.839128",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "005430",
-      "stock_name": "한국공항",
-      "sector": "운송인프라",
-      "signal_count": 2,
-      "avg_confidence": 0.6,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "RSI모멘텀(55) | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+7.6%vsKOSPI-1.3%)",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-30T06:02:23.839112",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "030200",
-      "stock_name": "KT",
-      "sector": "",
-      "signal_count": 2,
-      "avg_confidence": 0.86,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(50) | MA정배열 | 캔들상승장악형 | 주봉데드크로스(-1.5) | 주봉RSI과매도(29) | 주봉MA20아래 | 상대강도(+0.7%vsKOSPI-1.3%) | 디커플링모멘텀",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-30T06:02:23.839105",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "375500",
-      "stock_name": "DL이앤씨",
-      "sector": "건설",
-      "signal_count": 1,
-      "avg_confidence": 0.2886,
-      "strategies": [
-        "dart_momentum"
-      ],
-      "reason": "공시: 주요사항보고서(자기주식취득신탁계약체결결정) | 감성점수: 0.68 | 거래량급증: True",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-30T06:09:16.176398",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "003230",
-      "stock_name": "삼양식품",
-      "sector": "식품",
-      "signal_count": 1,
-      "avg_confidence": 1.0,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(64) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+5.2%vsKOSPI-1.2%) | 디커플링모멘텀",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-30T06:04:11.259119",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "011200",
-      "stock_name": "HMM",
-      "sector": "해운사",
-      "signal_count": 1,
-      "avg_confidence": 0.8,
-      "strategies": [],
-      "reason": "score=5.50, ranked_score=3.30",
-      "price_at_signal": 0,
-      "signal_time": "2026-07-30T15:25:00.007318+09:00",
+      "signal_time": "2026-07-31T15:25:00.132136+09:00",
       "status": "장중 워치리스트"
     }
   ],
   "holdings": [
     {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "quantity": 7,
-      "avg_price": 207750.0,
+      "stock_code": "004370",
+      "stock_name": "농심",
+      "quantity": 1,
+      "avg_price": 382500.0,
       "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-07-30",
+      "entry_date": "2026-07-31",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "068270",
+      "stock_name": "셀트리온",
+      "quantity": 4,
+      "avg_price": 186500.0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-07-31",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "001450",
+      "stock_name": "현대해상",
+      "quantity": 24,
+      "avg_price": 38400.0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-07-31",
       "status": "보유 중"
     }
   ]
