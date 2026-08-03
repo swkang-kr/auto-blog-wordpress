@@ -1,25 +1,14 @@
 {
-  "exported_at": "2026-07-31T07:00:00.678304+00:00",
+  "exported_at": "2026-08-03T07:00:00.682338+00:00",
   "holdings": [
-    {
-      "stock_code": "001450",
-      "stock_name": "현대해상",
-      "quantity": 24,
-      "avg_price": 38400.0,
-      "current_price": 38450.0,
-      "unrealized_pnl": 0,
-      "unrealized_pnl_rate": 0,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-07-31T06:13:18.847981"
-    },
     {
       "stock_code": "004370",
       "stock_name": "농심",
       "quantity": 1,
       "avg_price": 382500.0,
-      "current_price": 382500.0,
-      "unrealized_pnl": -1300.5,
-      "unrealized_pnl_rate": -0.411,
+      "current_price": 373000.0,
+      "unrealized_pnl": -10800.5,
+      "unrealized_pnl_rate": -2.8237,
       "strategy": "RSI+MACD(swing)",
       "entry_date": "2026-07-31T06:11:24.791317"
     },
@@ -28,11 +17,22 @@
       "stock_name": "셀트리온",
       "quantity": 4,
       "avg_price": 186500.0,
-      "current_price": 186400.0,
-      "unrealized_pnl": -2936.4,
-      "unrealized_pnl_rate": -0.4406,
+      "current_price": 181300.0,
+      "unrealized_pnl": -23336.4,
+      "unrealized_pnl_rate": -3.1282,
       "strategy": "RSI+MACD(swing)",
       "entry_date": "2026-07-31T06:11:39.006169"
+    },
+    {
+      "stock_code": "001450",
+      "stock_name": "현대해상",
+      "quantity": 24,
+      "avg_price": 38400.0,
+      "current_price": 37050.0,
+      "unrealized_pnl": -35533.44,
+      "unrealized_pnl_rate": -3.8556,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-07-31T06:13:18.847981"
     }
   ]
 }
