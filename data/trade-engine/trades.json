@@ -1,6 +1,66 @@
 {
-  "exported_at": "2026-08-03T07:00:00.696256+00:00",
+  "exported_at": "2026-08-04T07:00:00.717463+00:00",
   "trades": [
+    {
+      "stock_code": "108860",
+      "stock_name": "셀바스AI",
+      "side": "buy",
+      "quantity": 42,
+      "price": 10965.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "",
+      "filled_at": "2026-08-04T06:15:17.567988"
+    },
+    {
+      "stock_code": "090430",
+      "stock_name": "아모레퍼시픽",
+      "side": "buy",
+      "quantity": 3,
+      "price": 131750.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "",
+      "filled_at": "2026-08-04T06:15:00.572280"
+    },
+    {
+      "stock_code": "277810",
+      "stock_name": "277810",
+      "side": "buy",
+      "quantity": 1,
+      "price": 464250.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "이월분(익일종가)",
+      "filled_at": "2026-08-04T06:11:43.191105"
+    },
+    {
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "side": "buy",
+      "quantity": 2,
+      "price": 238750.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "이월분(익일종가)",
+      "filled_at": "2026-08-04T06:11:10.941033"
+    },
+    {
+      "stock_code": "001450",
+      "stock_name": "현대해상",
+      "side": "sell",
+      "quantity": 24,
+      "price": 35350.0,
+      "pnl": -76143.12,
+      "pnl_rate": -8.2621,
+      "strategy": "swing_stop_loss(SL=35,374)",
+      "reason": "swing_stop_loss(SL=35,374)",
+      "filled_at": "2026-08-04T04:14:20.840850"
+    },
     {
       "stock_code": "001450",
       "stock_name": "현대해상",
@@ -48,114 +108,6 @@
       "strategy": "RSI+MACD(swing)",
       "reason": "이월분(익일종가)",
       "filled_at": "2026-07-30T06:10:54.939296"
-    },
-    {
-      "stock_code": "030200",
-      "stock_name": "KT",
-      "side": "sell",
-      "quantity": 6,
-      "price": 53200.0,
-      "pnl": -9492.0,
-      "pnl_rate": -2.8974,
-      "strategy": "swing_gap_down(net=-3.09%,held=18.3h)",
-      "reason": "swing_gap_down(net=-3.09%,held=18.3h)",
-      "filled_at": "2026-07-28T00:29:59.077089"
-    },
-    {
-      "stock_code": "007690",
-      "stock_name": "국도화학",
-      "side": "sell",
-      "quantity": 14,
-      "price": 37250.0,
-      "pnl": -19287.1,
-      "pnl_rate": -3.5783,
-      "strategy": "swing_gap_down(net=-3.46%,held=18.1h)",
-      "reason": "swing_gap_down(net=-3.46%,held=18.1h)",
-      "filled_at": "2026-07-28T00:18:58.579024"
-    },
-    {
-      "stock_code": "002140",
-      "stock_name": "고려산업",
-      "side": "sell",
-      "quantity": 756,
-      "price": 1974.0,
-      "pnl": -65542.58,
-      "pnl_rate": -4.221,
-      "strategy": "swing_gap_down(net=-3.16%,held=17.9h)",
-      "reason": "swing_gap_down(net=-3.16%,held=17.9h)",
-      "filled_at": "2026-07-28T00:04:05.034803"
-    },
-    {
-      "stock_code": "002020",
-      "stock_name": "코오롱",
-      "side": "sell",
-      "quantity": 16,
-      "price": 24300.0,
-      "pnl": -38151.36,
-      "pnl_rate": -8.9641,
-      "strategy": "swing_stop_loss(SL=24,495)",
-      "reason": "swing_stop_loss(SL=24,495)",
-      "filled_at": "2026-07-28T00:03:55.398761"
-    },
-    {
-      "stock_code": "011930",
-      "stock_name": "011930",
-      "side": "sell",
-      "quantity": 19,
-      "price": 14560.0,
-      "pnl": -13300.46,
-      "pnl_rate": -4.6024,
-      "strategy": "swing_gap_down(net=-4.61%,held=17.8h)",
-      "reason": "swing_gap_down(net=-4.61%,held=17.8h)",
-      "filled_at": "2026-07-28T00:01:55.691403"
-    },
-    {
-      "stock_code": "052690",
-      "stock_name": "한전기술",
-      "side": "sell",
-      "quantity": 2,
-      "price": 91900.0,
-      "pnl": -12034.04,
-      "pnl_rate": -6.165,
-      "strategy": "swing_gap_down(net=-5.16%,held=17.8h)",
-      "reason": "swing_gap_down(net=-5.16%,held=17.8h)",
-      "filled_at": "2026-07-28T00:01:14.218575"
-    },
-    {
-      "stock_code": "028050",
-      "stock_name": "삼성E&A",
-      "side": "sell",
-      "quantity": 7,
-      "price": 46550.0,
-      "pnl": -8713.97,
-      "pnl_rate": -2.6133,
-      "strategy": "swing_gap_down(net=-3.56%,held=17.8h)",
-      "reason": "swing_gap_down(net=-3.56%,held=17.8h)",
-      "filled_at": "2026-07-28T00:01:05.848952"
-    },
-    {
-      "stock_code": "017670",
-      "stock_name": "SK텔레콤",
-      "side": "sell",
-      "quantity": 8,
-      "price": 91100.0,
-      "pnl": -58522.72,
-      "pnl_rate": -7.457,
-      "strategy": "swing_gap_down(net=-7.27%,held=17.8h)",
-      "reason": "swing_gap_down(net=-7.27%,held=17.8h)",
-      "filled_at": "2026-07-28T00:00:57.283533"
-    },
-    {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "side": "sell",
-      "quantity": 6,
-      "price": 239000.0,
-      "pnl": -94197.0,
-      "pnl_rate": -6.1839,
-      "strategy": "swing_gap_down(net=-6.00%,held=17.8h)",
-      "reason": "swing_gap_down(net=-6.00%,held=17.8h)",
-      "filled_at": "2026-07-28T00:00:47.902083"
     }
   ]
 }

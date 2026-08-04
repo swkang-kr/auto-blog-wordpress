@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-08-03T07:00:01.134137+00:00",
+  "exported_at": "2026-08-04T07:00:01.137932+00:00",
   "market_daily": [
+    {
+      "date": "20260804",
+      "kospi_change": 1.62,
+      "kosdaq_change": 5.88,
+      "foreign_net": -37.06,
+      "institution_net": -53.94,
+      "individual_net": 81.85,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260803",
       "kospi_change": -5.12,
       "kosdaq_change": 2.44,
       "foreign_net": -282.62,
       "institution_net": -194.75,
-      "individual_net": 465.27,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "individual_net": 465.23,
+      "hot_theme_count": 26,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260731",
@@ -99,29 +110,18 @@
       "hot_theme_count": 11,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260721",
-      "kospi_change": 3.56,
-      "kosdaq_change": 0.49,
-      "foreign_net": 29.52,
-      "institution_net": 137.44,
-      "individual_net": -164.22,
-      "hot_theme_count": 16,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "[포토]폭락-폭등 ‘널뛰기’ 증시",
-    "코스피, 5%대 급락",
-    "코스피 5%대 급락 '코스닥은 2%대 상승 마감'",
-    "6200선으로 마감한 코스피",
-    "5.12% 급락 마감한 코스피",
-    "SK TNS, KCA파트너스 품으로...5년 만에 손바뀜",
-    "[포토]코스피 5% 급락·코스닥은 사이드카",
-    "코스피, 5% 급락···코스닥은 2거래일 연속 상승",
-    "코스피 5%대 급락",
-    "코스피, 5%대 하락하며 6200선 마감"
+    "액트, 삼성전자 임시주총 소집 착수…45조원 자사주 매입 요구",
+    "네이버, 크림에 1천300억원 출자…유상증자 참여",
+    "기업거버넌스포럼 \"'주가누르기방지법' 미흡…저PBR기업에 면죄부\"",
+    "에코프로, 흑자 이어가며 체질개선…도시광산·반도체 승부수",
+    "상승 마감한 국내 증시",
+    "코스피-코스닥 상승 마감",
+    "상승 마감한 국내 증시",
+    "상승 마감한 국내 증시",
+    "3거래일 연속 매수 사이드카 발동한 코스닥 5%대 급등",
+    "3거래일 연속 매수 사이드카 발동한 코스닥 5%대 급등"
   ]
 }

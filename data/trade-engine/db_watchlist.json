@@ -1,19 +1,19 @@
 {
-  "exported_at": "2026-08-03T07:00:01.713302+00:00",
-  "total": 29,
+  "exported_at": "2026-08-04T07:00:01.910280+00:00",
+  "total": 32,
   "items": [
     {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
+      "stock_code": "108860",
+      "stock_name": "셀바스AI",
       "market": "KRX",
-      "sector": "반도체",
+      "sector": "건강관리장비와용품",
       "target_buy_price": null,
       "target_price": null,
       "stop_loss": null,
-      "priority": 75,
-      "memo": "AI APPROVE | conf=75% | qty_ratio=120% | AI review removed (2026-04-15)",
-      "created_at": "2026-06-10T13:59:39.285615",
-      "updated_at": "2026-07-30T15:10:01.340397"
+      "priority": 73,
+      "memo": "AI APPROVE | conf=73% | qty_ratio=120% | AI review removed (2026-04-15)",
+      "created_at": "2026-08-04T15:12:18.695816",
+      "updated_at": "2026-08-04T15:12:18.695816"
     },
     {
       "stock_code": "007690",
@@ -40,6 +40,19 @@
       "memo": "AI APPROVE | conf=70% | qty_ratio=120% | AI review removed (2026-04-15)",
       "created_at": "2026-06-29T15:14:18.961787",
       "updated_at": "2026-06-29T15:14:18.961787"
+    },
+    {
+      "stock_code": "090430",
+      "stock_name": "아모레퍼시픽",
+      "market": "KRX",
+      "sector": "화장품",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 65,
+      "memo": "AI APPROVE | conf=65% | qty_ratio=120% | AI review removed (2026-04-15)",
+      "created_at": "2026-07-06T15:11:34.679618",
+      "updated_at": "2026-08-04T15:12:18.696173"
     },
     {
       "stock_code": "002140",
@@ -224,6 +237,45 @@
       "updated_at": "2026-07-08T15:10:00.133599"
     },
     {
+      "stock_code": "079900",
+      "stock_name": "079900",
+      "market": "KRX",
+      "sector": "",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 40,
+      "memo": "AI APPROVE | conf=40% | qty_ratio=100% | AI review removed (2026-04-15)",
+      "created_at": "2026-08-04T15:12:18.700347",
+      "updated_at": "2026-08-04T15:12:18.700347"
+    },
+    {
+      "stock_code": "277810",
+      "stock_name": "277810",
+      "market": "KRX",
+      "sector": "기계",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 40,
+      "memo": "AI APPROVE | conf=40% | qty_ratio=100% | AI review removed (2026-04-15)",
+      "created_at": "2026-08-04T15:10:00.112887",
+      "updated_at": "2026-08-04T15:10:00.112887"
+    },
+    {
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "market": "KRX",
+      "sector": "반도체",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 40,
+      "memo": "AI APPROVE | conf=40% | qty_ratio=100% | AI review removed (2026-04-15)",
+      "created_at": "2026-06-10T13:59:39.285615",
+      "updated_at": "2026-08-04T15:10:00.109549"
+    },
+    {
       "stock_code": "402490",
       "stock_name": "402490",
       "market": "KRX",
@@ -313,19 +365,6 @@
       "memo": "AI APPROVE | conf=40% | qty_ratio=100% | AI review removed (2026-04-15)",
       "created_at": "2026-07-08T15:10:00.133830",
       "updated_at": "2026-07-08T15:10:00.133830"
-    },
-    {
-      "stock_code": "090430",
-      "stock_name": "아모레퍼시픽",
-      "market": "KRX",
-      "sector": "화장품",
-      "target_buy_price": null,
-      "target_price": null,
-      "stop_loss": null,
-      "priority": 40,
-      "memo": "AI APPROVE | conf=40% | qty_ratio=100% | AI review removed (2026-04-15)",
-      "created_at": "2026-07-06T15:11:34.679618",
-      "updated_at": "2026-07-06T15:11:34.679618"
     },
     {
       "stock_code": "010780",
