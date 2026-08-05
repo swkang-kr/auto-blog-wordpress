@@ -1,6 +1,66 @@
 {
-  "exported_at": "2026-08-04T07:00:00.717463+00:00",
+  "exported_at": "2026-08-05T07:00:00.709067+00:00",
   "trades": [
+    {
+      "stock_code": "028670",
+      "stock_name": "팬오션",
+      "side": "buy",
+      "quantity": 172,
+      "price": 5865.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "",
+      "filled_at": "2026-08-05T06:12:27.394418"
+    },
+    {
+      "stock_code": "003160",
+      "stock_name": "003160",
+      "side": "buy",
+      "quantity": 24,
+      "price": 23850.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "",
+      "filled_at": "2026-08-05T06:12:10.962950"
+    },
+    {
+      "stock_code": "035420",
+      "stock_name": "NAVER",
+      "side": "buy",
+      "quantity": 2,
+      "price": 229250.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "",
+      "filled_at": "2026-08-05T06:11:50.176935"
+    },
+    {
+      "stock_code": "108860",
+      "stock_name": "셀바스AI",
+      "side": "sell",
+      "quantity": 42,
+      "price": 11040.0,
+      "pnl": 1504.94,
+      "pnl_rate": 0.3266,
+      "strategy": "swing_trailing(peak=3.2%,step=3.0%,trail_sl=0.2%)",
+      "reason": "swing_trailing(peak=3.2%,step=3.0%,trail_sl=0.2%)",
+      "filled_at": "2026-08-05T04:12:35.018474"
+    },
+    {
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "side": "sell",
+      "quantity": 2,
+      "price": 248000.0,
+      "pnl": 17328.8,
+      "pnl_rate": 3.6329,
+      "strategy": "swing_trailing(peak=6.2%,step=3.0%,trail_sl=3.2%)",
+      "reason": "swing_trailing(peak=6.2%,step=3.0%,trail_sl=3.2%)",
+      "filled_at": "2026-08-05T00:52:31.994185"
+    },
     {
       "stock_code": "108860",
       "stock_name": "셀바스AI",

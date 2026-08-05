@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-08-04T07:00:01.137932+00:00",
+  "exported_at": "2026-08-05T07:00:01.130587+00:00",
   "market_daily": [
+    {
+      "date": "20260805",
+      "kospi_change": 3.76,
+      "kosdaq_change": 2.42,
+      "foreign_net": 144.63,
+      "institution_net": -28.38,
+      "individual_net": -118.32,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260804",
       "kospi_change": 1.62,
       "kosdaq_change": 5.88,
-      "foreign_net": -37.06,
-      "institution_net": -53.94,
-      "individual_net": 81.85,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": -37.05,
+      "institution_net": -53.95,
+      "individual_net": 81.86,
+      "hot_theme_count": 40,
+      "momentum_count": 60,
+      "crash_count": 56
     },
     {
       "date": "20260803",
@@ -99,29 +110,18 @@
       "hot_theme_count": 40,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260722",
-      "kospi_change": 0.74,
-      "kosdaq_change": -0.3,
-      "foreign_net": 262.11,
-      "institution_net": -139.63,
-      "individual_net": -121.76,
-      "hot_theme_count": 11,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "액트, 삼성전자 임시주총 소집 착수…45조원 자사주 매입 요구",
-    "네이버, 크림에 1천300억원 출자…유상증자 참여",
-    "기업거버넌스포럼 \"'주가누르기방지법' 미흡…저PBR기업에 면죄부\"",
-    "에코프로, 흑자 이어가며 체질개선…도시광산·반도체 승부수",
-    "상승 마감한 국내 증시",
-    "코스피-코스닥 상승 마감",
-    "상승 마감한 국내 증시",
-    "상승 마감한 국내 증시",
-    "3거래일 연속 매수 사이드카 발동한 코스닥 5%대 급등",
-    "3거래일 연속 매수 사이드카 발동한 코스닥 5%대 급등"
+    "원·달러 환율, 8원 내린 1424.5원(오후 3시30분)",
+    "코스피·코스닥 동반 상승",
+    "심텍 2분기 영업이익 629억원…작년 동기 대비 1034%↑",
+    "원·달러환율 하락",
+    "코스피·코스닥 상승, 원·달러환율 하락",
+    "코스피, 3.8% 급등 6,500선 회복",
+    "다시 돌아온 외국인 매수세…코스피, 이틀째 상승하며 6500선 마감",
+    "홍콩ELS 사태 재발 막는다…원금손실가능 10%P 근접 땐 투자자알림",
+    "삼전 2.5%, 하이닉스 5.7% 상승…외인은 사고, 기관 팔았다(종합)",
+    "코스피, 3.8% 급등 6,500선 회복"
   ]
 }

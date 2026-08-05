@@ -1,7 +1,20 @@
 {
-  "exported_at": "2026-08-04T07:00:01.910280+00:00",
-  "total": 32,
+  "exported_at": "2026-08-05T07:00:01.904286+00:00",
+  "total": 35,
   "items": [
+    {
+      "stock_code": "028670",
+      "stock_name": "팬오션",
+      "market": "KRX",
+      "sector": "해운사",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 73,
+      "memo": "AI APPROVE | conf=73% | qty_ratio=120% | AI review removed (2026-04-15)",
+      "created_at": "2026-08-05T15:10:18.253671",
+      "updated_at": "2026-08-05T15:10:18.253671"
+    },
     {
       "stock_code": "108860",
       "stock_name": "셀바스AI",
@@ -172,6 +185,19 @@
       "updated_at": "2026-07-31T15:10:02.584545"
     },
     {
+      "stock_code": "003160",
+      "stock_name": "003160",
+      "market": "KRX",
+      "sector": "반도체와반도체장비",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 50,
+      "memo": "AI APPROVE | conf=50% | qty_ratio=100% | AI review removed (2026-04-15)",
+      "created_at": "2026-08-05T15:10:18.252562",
+      "updated_at": "2026-08-05T15:10:18.252562"
+    },
+    {
       "stock_code": "028050",
       "stock_name": "삼성E&A",
       "market": "KRX",
@@ -235,6 +261,19 @@
       "memo": "AI APPROVE | conf=42% | qty_ratio=100% | AI review removed (2026-04-15)",
       "created_at": "2026-07-08T15:10:00.133599",
       "updated_at": "2026-07-08T15:10:00.133599"
+    },
+    {
+      "stock_code": "035420",
+      "stock_name": "NAVER",
+      "market": "KRX",
+      "sector": "IT서비스",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 40,
+      "memo": "AI APPROVE | conf=40% | qty_ratio=100% | AI review removed (2026-04-15)",
+      "created_at": "2026-08-05T15:10:18.252042",
+      "updated_at": "2026-08-05T15:10:18.252042"
     },
     {
       "stock_code": "079900",
