@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-08-05T07:00:01.130587+00:00",
+  "exported_at": "2026-08-06T07:00:01.183608+00:00",
   "market_daily": [
+    {
+      "date": "20260806",
+      "kospi_change": -4.58,
+      "kosdaq_change": 0.26,
+      "foreign_net": -332.73,
+      "institution_net": -12.12,
+      "individual_net": 333.85,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260805",
       "kospi_change": 3.76,
       "kosdaq_change": 2.42,
-      "foreign_net": 144.63,
+      "foreign_net": 144.64,
       "institution_net": -28.38,
-      "individual_net": -118.32,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "individual_net": -118.35,
+      "hot_theme_count": 40,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260804",
@@ -99,29 +110,18 @@
       "hot_theme_count": 0,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260723",
-      "kospi_change": 4.4,
-      "kosdaq_change": 5.22,
-      "foreign_net": 213.59,
-      "institution_net": 9.76,
-      "individual_net": -220.78,
-      "hot_theme_count": 40,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "원·달러 환율, 8원 내린 1424.5원(오후 3시30분)",
-    "코스피·코스닥 동반 상승",
-    "심텍 2분기 영업이익 629억원…작년 동기 대비 1034%↑",
-    "원·달러환율 하락",
-    "코스피·코스닥 상승, 원·달러환율 하락",
-    "코스피, 3.8% 급등 6,500선 회복",
-    "다시 돌아온 외국인 매수세…코스피, 이틀째 상승하며 6500선 마감",
-    "홍콩ELS 사태 재발 막는다…원금손실가능 10%P 근접 땐 투자자알림",
-    "삼전 2.5%, 하이닉스 5.7% 상승…외인은 사고, 기관 팔았다(종합)",
-    "코스피, 3.8% 급등 6,500선 회복"
+    "외국인 3.3조 순매도…코스피 6290선 하락 마감 [시황]",
+    "6200대로 추락한 코스피",
+    "하락 마감한 코스피",
+    "6200대로 추락한 코스피",
+    "코스피 4%대 하락 마감",
+    "코스피 4%대 급락, '삼전닉스'도 하락",
+    "‘삼전 -6%·하닉 -10%’…또 무너진 ‘삼전닉스’에 코스피 4.5% 급락",
+    "레드캡투어, 2분기 영업이익 157억원…역대 2분기 최대 실적 달성",
+    "코스닥 상장하는 니어스랩 \"AI 자율비행으로 글로벌 방산 공략\"[IPO출사표]",
+    "오늘 코스피 종가는"
   ]
 }

@@ -1,6 +1,54 @@
 {
-  "exported_at": "2026-08-05T07:00:00.709067+00:00",
+  "exported_at": "2026-08-06T07:00:00.710027+00:00",
   "trades": [
+    {
+      "stock_code": "079900",
+      "stock_name": "079900",
+      "side": "sell",
+      "quantity": 2,
+      "price": 34350.0,
+      "pnl": 3769.62,
+      "pnl_rate": 5.8263,
+      "strategy": "swing_trailing(peak=8.9%,step=3.0%,trail_sl=5.9%)",
+      "reason": "swing_trailing(peak=8.9%,step=3.0%,trail_sl=5.9%)",
+      "filled_at": "2026-08-06T00:27:05.629490"
+    },
+    {
+      "stock_code": "003160",
+      "stock_name": "003160",
+      "side": "sell",
+      "quantity": 24,
+      "price": 23250.0,
+      "pnl": -17509.68,
+      "pnl_rate": -3.0526,
+      "strategy": "swing_gap_down(net=-3.27%,held=18.0h)",
+      "reason": "swing_gap_down(net=-3.27%,held=18.0h)",
+      "filled_at": "2026-08-06T00:15:08.820169"
+    },
+    {
+      "stock_code": "277810",
+      "stock_name": "277810",
+      "side": "sell",
+      "quantity": 1,
+      "price": 491250.0,
+      "pnl": 25748.92,
+      "pnl_rate": 5.5493,
+      "strategy": "swing_trailing(peak=8.7%,step=3.0%,trail_sl=5.7%)",
+      "reason": "swing_trailing(peak=8.7%,step=3.0%,trail_sl=5.7%)",
+      "filled_at": "2026-08-06T00:08:57.644166"
+    },
+    {
+      "stock_code": "035420",
+      "stock_name": "NAVER",
+      "side": "sell",
+      "quantity": 2,
+      "price": 223000.0,
+      "pnl": -14026.4,
+      "pnl_rate": -3.0592,
+      "strategy": "swing_gap_down(net=-3.28%,held=17.8h)",
+      "reason": "swing_gap_down(net=-3.28%,held=17.8h)",
+      "filled_at": "2026-08-06T00:00:48.877237"
+    },
     {
       "stock_code": "028670",
       "stock_name": "팬오션",
@@ -156,18 +204,6 @@
       "strategy": "RSI+MACD(swing)",
       "reason": "이월분(익일종가)",
       "filled_at": "2026-07-31T06:11:24.804372"
-    },
-    {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "side": "buy",
-      "quantity": 7,
-      "price": 207750.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "이월분(익일종가)",
-      "filled_at": "2026-07-30T06:10:54.939296"
     }
   ]
 }
