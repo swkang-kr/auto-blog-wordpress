@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-08-06T07:00:01.183608+00:00",
+  "exported_at": "2026-08-07T07:00:01.189240+00:00",
   "market_daily": [
+    {
+      "date": "20260807",
+      "kospi_change": -0.6,
+      "kosdaq_change": -0.36,
+      "foreign_net": -85.9,
+      "institution_net": 57.91,
+      "individual_net": 26.77,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260806",
       "kospi_change": -4.58,
       "kosdaq_change": 0.26,
-      "foreign_net": -332.73,
-      "institution_net": -12.12,
-      "individual_net": 333.85,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": -332.72,
+      "institution_net": -12.14,
+      "individual_net": 333.86,
+      "hot_theme_count": 10,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260805",
@@ -99,29 +110,18 @@
       "hot_theme_count": 13,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260724",
-      "kospi_change": -5.72,
-      "kosdaq_change": -5.32,
-      "foreign_net": -326.85,
-      "institution_net": -195.14,
-      "individual_net": 517.84,
-      "hot_theme_count": 0,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "외국인 3.3조 순매도…코스피 6290선 하락 마감 [시황]",
-    "6200대로 추락한 코스피",
-    "하락 마감한 코스피",
-    "6200대로 추락한 코스피",
-    "코스피 4%대 하락 마감",
-    "코스피 4%대 급락, '삼전닉스'도 하락",
-    "‘삼전 -6%·하닉 -10%’…또 무너진 ‘삼전닉스’에 코스피 4.5% 급락",
-    "레드캡투어, 2분기 영업이익 157억원…역대 2분기 최대 실적 달성",
-    "코스닥 상장하는 니어스랩 \"AI 자율비행으로 글로벌 방산 공략\"[IPO출사표]",
-    "오늘 코스피 종가는"
+    "두나무, 경찰 압수코인 지킴이로…수사관 USB 대신 업비트서 맡는다",
+    "프롬바이오, 10일 거래재개…\"재무개선·바이오 성장으로 제2의 도약\"",
+    "K-방산 4사, 2분기 합산 영업이익 1.75조 '역대 최대'…수출이 실적 견인",
+    "‘반등 시도’ 코스피, 소폭 하락한 6250선 마감…코스닥 엿새만에 하락",
+    "CJ CGV, 2분기 영업익 115억 전년 대비 568% 점프(1보)",
+    "하이닉스, 전날 10% 폭락이어 또 4.8% 급락…삼전 0.2%↑(종합)",
+    "코웨이 2분기 영업이익 2천532억원…작년 동기 대비 4.3%↑",
+    "넥스트레이드, 12일부터 프리마켓 ‘상·하한가 주문’ 한시적 금지",
+    "금투협, 챗GPT·파이썬 금융데이터 분석과정 개설…28일까지 접수",
+    "코스피-코스닥 소폭 하락 마감"
   ]
 }
