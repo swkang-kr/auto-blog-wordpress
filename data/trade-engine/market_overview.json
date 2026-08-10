@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-08-07T07:00:01.189240+00:00",
+  "exported_at": "2026-08-10T07:00:01.198870+00:00",
   "market_daily": [
+    {
+      "date": "20260810",
+      "kospi_change": 0.65,
+      "kosdaq_change": 6.97,
+      "foreign_net": -148.87,
+      "institution_net": 56.72,
+      "individual_net": 90.0,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260807",
       "kospi_change": -0.6,
       "kosdaq_change": -0.36,
-      "foreign_net": -85.9,
+      "foreign_net": -85.88,
       "institution_net": 57.91,
-      "individual_net": 26.77,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "individual_net": 26.75,
+      "hot_theme_count": 13,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260806",
@@ -99,29 +110,18 @@
       "hot_theme_count": 0,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260727",
-      "kospi_change": 0.97,
-      "kosdaq_change": 2.22,
-      "foreign_net": -288.08,
-      "institution_net": 85.92,
-      "individual_net": 197.88,
-      "hot_theme_count": 13,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "두나무, 경찰 압수코인 지킴이로…수사관 USB 대신 업비트서 맡는다",
-    "프롬바이오, 10일 거래재개…\"재무개선·바이오 성장으로 제2의 도약\"",
-    "K-방산 4사, 2분기 합산 영업이익 1.75조 '역대 최대'…수출이 실적 견인",
-    "‘반등 시도’ 코스피, 소폭 하락한 6250선 마감…코스닥 엿새만에 하락",
-    "CJ CGV, 2분기 영업익 115억 전년 대비 568% 점프(1보)",
-    "하이닉스, 전날 10% 폭락이어 또 4.8% 급락…삼전 0.2%↑(종합)",
-    "코웨이 2분기 영업이익 2천532억원…작년 동기 대비 4.3%↑",
-    "넥스트레이드, 12일부터 프리마켓 ‘상·하한가 주문’ 한시적 금지",
-    "금투협, 챗GPT·파이썬 금융데이터 분석과정 개설…28일까지 접수",
-    "코스피-코스닥 소폭 하락 마감"
+    "에쓰오일, 보통주·우선주 800원 중간배당…931억원 규모",
+    "코스닥 급등-코스피 찔끔 상승",
+    "코스닥 급등-코스피 찔끔 상승",
+    "코스피·코스닥 상승",
+    "[단독]금융당국, 종투사 건전성 규제 용역…'11년 전 NCR' 재적용 가닥",
+    "에스엠씨지, 상반기 매출 323억…사상 최대 실적",
+    "삼성전자·SK하이닉스, 엇갈린 주가 흐름 이유는…주주환원 '온도차'",
+    "코스닥 6.97% 상승 마감",
+    "급등한 코스닥",
+    "상승 마감한 코스닥"
   ]
 }
