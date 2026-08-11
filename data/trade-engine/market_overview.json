@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-08-10T07:00:01.198870+00:00",
+  "exported_at": "2026-08-11T07:00:01.616760+00:00",
   "market_daily": [
+    {
+      "date": "20260811",
+      "kospi_change": 0.73,
+      "kosdaq_change": 0.39,
+      "foreign_net": 4.44,
+      "institution_net": 3.05,
+      "individual_net": -7.08,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260810",
       "kospi_change": 0.65,
       "kosdaq_change": 6.97,
-      "foreign_net": -148.87,
-      "institution_net": 56.72,
-      "individual_net": 90.0,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": -148.86,
+      "institution_net": 56.69,
+      "individual_net": 90.03,
+      "hot_theme_count": 40,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260807",
@@ -99,29 +110,18 @@
       "hot_theme_count": 1,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260728",
-      "kospi_change": -10.84,
-      "kosdaq_change": -7.72,
-      "foreign_net": -496.7,
-      "institution_net": 63.0,
-      "individual_net": 433.44,
-      "hot_theme_count": 0,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "에쓰오일, 보통주·우선주 800원 중간배당…931억원 규모",
-    "코스닥 급등-코스피 찔끔 상승",
-    "코스닥 급등-코스피 찔끔 상승",
-    "코스피·코스닥 상승",
-    "[단독]금융당국, 종투사 건전성 규제 용역…'11년 전 NCR' 재적용 가닥",
-    "에스엠씨지, 상반기 매출 323억…사상 최대 실적",
-    "삼성전자·SK하이닉스, 엇갈린 주가 흐름 이유는…주주환원 '온도차'",
-    "코스닥 6.97% 상승 마감",
-    "급등한 코스닥",
-    "상승 마감한 코스닥"
+    "[속보] 코스피 0.73% 오른 6,345.53 종료",
+    "코스맥스, 2분기 영업익 737억…전년비 21.3% ↑",
+    "유가 5% 급등에도 달러·원 2.5원 하락…1415.9원 마감(종합)",
+    "[특징주] 화장품주, 수출 호조 지속에 상승(종합)",
+    "[마켓뷰] 삼성전자 4% 올라 코스피 6340선 사수…반도체가 살렸다",
+    "iM증권, 자본 확충 위한 신종자본증권 500억원 추가 발행",
+    "태광, 2분기 영업익 72억…전년비 5.8% ↓",
+    "코스피, 반도체 수출 호조에 이틀 연속 상승…코스닥은 소부장↑",
+    "2달여 만 4400달러선 회복한 '금값'…이제 시선은 美 CPI에",
+    "코스피 상승 마감"
   ]
 }
