@@ -1,7 +1,33 @@
 {
-  "exported_at": "2026-08-11T07:00:02.387078+00:00",
-  "total": 40,
+  "exported_at": "2026-08-12T07:00:02.164235+00:00",
+  "total": 42,
   "items": [
+    {
+      "stock_code": "059120",
+      "stock_name": "아진엑스텍",
+      "market": "KRX",
+      "sector": "반도체와반도체장비",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 80,
+      "memo": "AI APPROVE | conf=80% | qty_ratio=120% | AI review removed (2026-04-15)",
+      "created_at": "2026-08-07T15:10:00.124990",
+      "updated_at": "2026-08-12T15:17:44.414775"
+    },
+    {
+      "stock_code": "382800",
+      "stock_name": "지앤비에스 에코",
+      "market": "KRX",
+      "sector": "반도체와반도체장비",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 78,
+      "memo": "AI APPROVE | conf=78% | qty_ratio=120% | AI review removed (2026-04-15)",
+      "created_at": "2026-08-12T15:17:44.407881",
+      "updated_at": "2026-08-12T15:17:44.407881"
+    },
     {
       "stock_code": "028670",
       "stock_name": "팬오션",
@@ -14,19 +40,6 @@
       "memo": "AI APPROVE | conf=73% | qty_ratio=120% | AI review removed (2026-04-15)",
       "created_at": "2026-08-05T15:10:18.253671",
       "updated_at": "2026-08-05T15:10:18.253671"
-    },
-    {
-      "stock_code": "108860",
-      "stock_name": "셀바스AI",
-      "market": "KRX",
-      "sector": "건강관리장비와용품",
-      "target_buy_price": null,
-      "target_price": null,
-      "stop_loss": null,
-      "priority": 73,
-      "memo": "AI APPROVE | conf=73% | qty_ratio=120% | AI review removed (2026-04-15)",
-      "created_at": "2026-08-04T15:12:18.695816",
-      "updated_at": "2026-08-04T15:12:18.695816"
     },
     {
       "stock_code": "007690",
@@ -133,6 +146,19 @@
       "updated_at": "2026-07-21T15:10:00.340142"
     },
     {
+      "stock_code": "036930",
+      "stock_name": "주성엔지니어링",
+      "market": "KRX",
+      "sector": "반도체와반도체장비",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 60,
+      "memo": "AI APPROVE | conf=60% | qty_ratio=120% | AI review removed (2026-04-15)",
+      "created_at": "2026-08-12T15:17:44.414289",
+      "updated_at": "2026-08-12T15:17:44.414289"
+    },
+    {
       "stock_code": "006360",
       "stock_name": "GS건설",
       "market": "KRX",
@@ -157,19 +183,6 @@
       "memo": "AI APPROVE | conf=60% | qty_ratio=120% | AI review removed (2026-04-15)",
       "created_at": "2026-08-05T15:10:18.252562",
       "updated_at": "2026-08-07T15:10:00.126284"
-    },
-    {
-      "stock_code": "059120",
-      "stock_name": "아진엑스텍",
-      "market": "KRX",
-      "sector": "반도체와반도체장비",
-      "target_buy_price": null,
-      "target_price": null,
-      "stop_loss": null,
-      "priority": 60,
-      "memo": "AI APPROVE | conf=60% | qty_ratio=120% | AI review removed (2026-04-15)",
-      "created_at": "2026-08-07T15:10:00.124990",
-      "updated_at": "2026-08-07T15:10:00.124990"
     },
     {
       "stock_code": "068270",
@@ -300,6 +313,19 @@
       "memo": "AI APPROVE | conf=50% | qty_ratio=100% | AI review removed (2026-04-15)",
       "created_at": "2026-07-21T15:10:00.342705",
       "updated_at": "2026-07-21T15:12:13.015478"
+    },
+    {
+      "stock_code": "108860",
+      "stock_name": "셀바스AI",
+      "market": "KRX",
+      "sector": "건강관리장비와용품",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 40,
+      "memo": "AI APPROVE | conf=40% | qty_ratio=100% | AI review removed (2026-04-15)",
+      "created_at": "2026-08-04T15:12:18.695816",
+      "updated_at": "2026-08-12T15:17:44.410273"
     },
     {
       "stock_code": "017900",

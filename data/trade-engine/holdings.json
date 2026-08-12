@@ -1,47 +1,80 @@
 {
-  "exported_at": "2026-08-11T07:00:01.139736+00:00",
+  "exported_at": "2026-08-12T07:00:00.696642+00:00",
   "holdings": [
-    {
-      "stock_code": "008770",
-      "stock_name": "호텔신라",
-      "quantity": 22,
-      "avg_price": 42527.272,
-      "current_price": 44600.0,
-      "unrealized_pnl": 42418.98,
-      "unrealized_pnl_rate": 4.5339,
-      "strategy": "manual_recovery",
-      "entry_date": "2026-08-11T04:05:57.653714"
-    },
     {
       "stock_code": "005930",
       "stock_name": "삼성전자",
       "quantity": 11,
       "avg_price": 231159.09,
-      "current_price": 239500.0,
-      "unrealized_pnl": 0,
-      "unrealized_pnl_rate": 0,
+      "current_price": 255750.0,
+      "unrealized_pnl": 261854.66,
+      "unrealized_pnl_rate": 10.2981,
       "strategy": "",
       "entry_date": "2026-08-10T15:00:00"
     },
     {
-      "stock_code": "018260",
-      "stock_name": "삼성에스디에스",
-      "quantity": 3,
-      "avg_price": 221666.666,
-      "current_price": 237000.0,
+      "stock_code": "008770",
+      "stock_name": "호텔신라",
+      "quantity": 22,
+      "avg_price": 42527.272,
+      "current_price": 43900.0,
+      "unrealized_pnl": 27018.98,
+      "unrealized_pnl_rate": 2.8879,
+      "strategy": "manual_recovery",
+      "entry_date": "2026-08-11T04:05:57.653714"
+    },
+    {
+      "stock_code": "382800",
+      "stock_name": "지앤비에스 에코",
+      "quantity": 45,
+      "avg_price": 5790.0,
+      "current_price": 5790.0,
       "unrealized_pnl": 0,
       "unrealized_pnl_rate": 0,
-      "strategy": "",
-      "entry_date": "2026-08-10T15:00:00"
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-08-12T06:20:14.388766"
+    },
+    {
+      "stock_code": "108860",
+      "stock_name": "108860",
+      "quantity": 10,
+      "avg_price": 10630.0,
+      "current_price": 10625.0,
+      "unrealized_pnl": 0,
+      "unrealized_pnl_rate": 0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-08-12T06:19:49.532499"
+    },
+    {
+      "stock_code": "036930",
+      "stock_name": "주성엔지니어링",
+      "quantity": 1,
+      "avg_price": 173000.0,
+      "current_price": 172850.0,
+      "unrealized_pnl": 0,
+      "unrealized_pnl_rate": 0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-08-12T06:19:37.732060"
+    },
+    {
+      "stock_code": "059120",
+      "stock_name": "아진엑스텍",
+      "quantity": 36,
+      "avg_price": 7500.0,
+      "current_price": 7490.0,
+      "unrealized_pnl": 0,
+      "unrealized_pnl_rate": 0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-08-12T06:20:06.534768"
     },
     {
       "stock_code": "028670",
       "stock_name": "팬오션",
       "quantity": 172,
       "avg_price": 5861.744,
-      "current_price": 5780.0,
-      "unrealized_pnl": 0,
-      "unrealized_pnl_rate": 0,
+      "current_price": 5800.0,
+      "unrealized_pnl": -14047.92,
+      "unrealized_pnl_rate": -1.3933,
       "strategy": "",
       "entry_date": "2026-08-10T15:00:00"
     }

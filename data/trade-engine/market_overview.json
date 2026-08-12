@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-08-11T07:00:01.616760+00:00",
+  "exported_at": "2026-08-12T07:00:01.181238+00:00",
   "market_daily": [
+    {
+      "date": "20260812",
+      "kospi_change": 3.68,
+      "kosdaq_change": 0.12,
+      "foreign_net": 283.57,
+      "institution_net": 52.77,
+      "individual_net": -319.13,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260811",
       "kospi_change": 0.73,
       "kosdaq_change": 0.39,
-      "foreign_net": 4.44,
+      "foreign_net": 4.43,
       "institution_net": 3.05,
-      "individual_net": -7.08,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "individual_net": -7.07,
+      "hot_theme_count": 9,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260810",
@@ -99,29 +110,18 @@
       "hot_theme_count": 14,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260729",
-      "kospi_change": -5.98,
-      "kosdaq_change": -6.12,
-      "foreign_net": -123.37,
-      "institution_net": 316.04,
-      "individual_net": -197.01,
-      "hot_theme_count": 1,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "[속보] 코스피 0.73% 오른 6,345.53 종료",
-    "코스맥스, 2분기 영업익 737억…전년비 21.3% ↑",
-    "유가 5% 급등에도 달러·원 2.5원 하락…1415.9원 마감(종합)",
-    "[특징주] 화장품주, 수출 호조 지속에 상승(종합)",
-    "[마켓뷰] 삼성전자 4% 올라 코스피 6340선 사수…반도체가 살렸다",
-    "iM증권, 자본 확충 위한 신종자본증권 500억원 추가 발행",
-    "태광, 2분기 영업익 72억…전년비 5.8% ↓",
-    "코스피, 반도체 수출 호조에 이틀 연속 상승…코스닥은 소부장↑",
-    "2달여 만 4400달러선 회복한 '금값'…이제 시선은 美 CPI에",
-    "코스피 상승 마감"
+    "코스피 3.68% 오른 6579.04 마감…삼성전자·하이닉스 동반 급등",
+    "삼성전자-SK하이닉스 반등에 코스피도 반등",
+    "삼전·닉스 강세에 코스피 상승 마감",
+    "삼성전자, SK하이닉스 급등",
+    "삼전·닉스 강세에 코스피 상승 마감",
+    "삼성전자, SK하이닉스 급등",
+    "코스피, 삼전닉스 업고 3%대 상승 마감…외국인·기관 순매수",
+    "코스피 반등, 삼전닉스도 상승 마감",
+    "삼성전자-SK하이닉스 반등에 코스피도 반등",
+    "코스피 반등, 삼전닉스도 상승 마감"
   ]
 }
