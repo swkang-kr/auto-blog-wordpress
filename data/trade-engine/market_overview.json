@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-08-13T07:00:01.128777+00:00",
+  "exported_at": "2026-08-14T07:00:01.501421+00:00",
   "market_daily": [
+    {
+      "date": "20260814",
+      "kospi_change": 2.42,
+      "kosdaq_change": 0.38,
+      "foreign_net": 303.87,
+      "institution_net": -103.0,
+      "individual_net": -198.19,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260813",
       "kospi_change": 3.56,
       "kosdaq_change": 0.29,
-      "foreign_net": 210.65,
-      "institution_net": 68.17,
-      "individual_net": -273.55,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": 210.68,
+      "institution_net": 68.22,
+      "individual_net": -273.64,
+      "hot_theme_count": 11,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260812",
@@ -99,29 +110,18 @@
       "hot_theme_count": 26,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260731",
-      "kospi_change": 17.91,
-      "kosdaq_change": 11.63,
-      "foreign_net": 724.14,
-      "institution_net": 113.97,
-      "individual_net": -827.39,
-      "hot_theme_count": 40,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "양자컴퓨팅 기업 퀀티넘, 2분기 깜짝 실적에 주가 28% 폭등",
-    "코스피 4거래일 연속 상승 마감",
-    "코스피 4거래일 연속 상승 마감",
-    "코스피 4거래일 연속 상승 마감",
-    "코스피 상승 마감",
-    "코스피 4거래일 연속 상승 마감",
-    "코스피 4거래일 연속 상승 마감",
-    "상승 마감한 국내 증시",
-    "코스피 3.56% 오른 6813.34…양 시장 나란히 4거래일 연속↑",
-    "클리오, 2분기 영업익 116억…전년비 230% ↑"
+    "손오공, 반기 매출 818억 '껑충'…장난감 회사서 모빌리티·AI 기업 변신",
+    "BNK금융, 지역 의료산업 생산적 금융 확대",
+    "코스피, 6900 후반대 마감…외국인 4거래일 연속 순매수",
+    "“창피합니다. 최 회장님” 하닉 ‘5단 중복상장’ 규탄",
+    "케이엠제약, 상반기 매출 13% 증가…OEM·ODM 타고 해외 공략 '속도'",
+    "에스디바이오센서, 2분기 연속 순이익 흑자",
+    "원가 부담 못 피했다…오뚜기, 2분기 매출 증가에도 영업익 제자리",
+    "한세실업, 2분기 영업익 361억…전년比 193% 폭증(1보)",
+    "신한證, 금융상품·IB 수익 세자릿수 증가…“자본효율 중심 성장”",
+    "덕우전자, 상반기 매출액 931억…전년比 36%↑"
   ]
 }

@@ -1,60 +1,38 @@
 {
-  "exported_at": "2026-08-13T07:00:00.691956+00:00",
+  "exported_at": "2026-08-14T07:00:00.742015+00:00",
   "holdings": [
     {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "quantity": 11,
-      "avg_price": 231159.09,
-      "current_price": 266000.0,
-      "unrealized_pnl": 374604.66,
-      "unrealized_pnl_rate": 14.7323,
-      "strategy": "",
-      "entry_date": "2026-08-10T15:00:00"
+      "stock_code": "090460",
+      "stock_name": "비에이치",
+      "quantity": 17,
+      "avg_price": 18485.0,
+      "current_price": 18485.0,
+      "unrealized_pnl": 0,
+      "unrealized_pnl_rate": 0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-08-14T06:26:05.918487"
     },
     {
       "stock_code": "008770",
       "stock_name": "호텔신라",
       "quantity": 22,
       "avg_price": 42527.272,
-      "current_price": 43300.0,
-      "unrealized_pnl": 13818.98,
-      "unrealized_pnl_rate": 1.477,
-      "strategy": "manual_recovery",
-      "entry_date": "2026-08-11T04:05:57.653714"
-    },
-    {
-      "stock_code": "062040",
-      "stock_name": "산일전기",
-      "quantity": 2,
-      "avg_price": 187800.0,
-      "current_price": 187800.0,
+      "current_price": 45400.0,
       "unrealized_pnl": 0,
       "unrealized_pnl_rate": 0,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-08-13T06:17:36.038999"
-    },
-    {
-      "stock_code": "017900",
-      "stock_name": "광전자",
-      "quantity": 57,
-      "avg_price": 8790.0,
-      "current_price": 8775.0,
-      "unrealized_pnl": 0,
-      "unrealized_pnl_rate": 0,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-08-13T06:14:34.398534"
+      "strategy": "",
+      "entry_date": "2026-08-13T15:00:00"
     },
     {
       "stock_code": "028670",
       "stock_name": "팬오션",
       "quantity": 172,
       "avg_price": 5861.744,
-      "current_price": 5650.0,
-      "unrealized_pnl": -39847.92,
-      "unrealized_pnl_rate": -3.9523,
+      "current_price": 5790.0,
+      "unrealized_pnl": 0,
+      "unrealized_pnl_rate": 0,
       "strategy": "",
-      "entry_date": "2026-08-10T15:00:00"
+      "entry_date": "2026-08-13T15:00:00"
     }
   ]
 }

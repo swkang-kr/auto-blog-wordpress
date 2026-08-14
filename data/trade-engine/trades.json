@@ -1,6 +1,78 @@
 {
-  "exported_at": "2026-08-13T07:00:00.705345+00:00",
+  "exported_at": "2026-08-14T07:00:00.757784+00:00",
   "trades": [
+    {
+      "stock_code": "009900",
+      "stock_name": "명신산업",
+      "side": "sell",
+      "quantity": 26,
+      "price": 8085.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "reconcile_cleanup",
+      "reason": "DB 유령 포지션 자동 정리 (holdings 미존재)",
+      "filled_at": "2026-08-14T06:35:49.014121"
+    },
+    {
+      "stock_code": "009900",
+      "stock_name": "명신산업",
+      "side": "buy",
+      "quantity": 26,
+      "price": 8085.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "",
+      "filled_at": "2026-08-14T06:26:09.814041"
+    },
+    {
+      "stock_code": "090460",
+      "stock_name": "비에이치",
+      "side": "buy",
+      "quantity": 17,
+      "price": 18485.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "",
+      "filled_at": "2026-08-14T06:26:05.924935"
+    },
+    {
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "side": "sell",
+      "quantity": 11,
+      "price": 267000.0,
+      "pnl": 384579.61,
+      "pnl_rate": 15.1246,
+      "strategy": "swing_trailing(peak=18.2%,step=3.0%,trail_sl=15.2%)",
+      "reason": "swing_trailing(peak=18.2%,step=3.0%,trail_sl=15.2%)",
+      "filled_at": "2026-08-14T01:04:26.320129"
+    },
+    {
+      "stock_code": "062040",
+      "stock_name": "산일전기",
+      "side": "sell",
+      "quantity": 2,
+      "price": 182600.0,
+      "pnl": -11650.0,
+      "pnl_rate": -3.1017,
+      "strategy": "swing_gap_down(net=-3.11%,held=18.0h)",
+      "reason": "swing_gap_down(net=-3.11%,held=18.0h)",
+      "filled_at": "2026-08-14T00:16:33.056581"
+    },
+    {
+      "stock_code": "017900",
+      "stock_name": "광전자",
+      "side": "sell",
+      "quantity": 57,
+      "price": 8810.0,
+      "pnl": -566.47,
+      "pnl_rate": -0.1131,
+      "strategy": "swing_trailing(peak=3.1%,step=3.0%,trail_sl=0.1%)",
+      "reason": "swing_trailing(peak=3.1%,step=3.0%,trail_sl=0.1%)",
+      "filled_at": "2026-08-14T00:06:02.475173"
+    },
     {
       "stock_code": "062040",
       "stock_name": "산일전기",
@@ -216,138 +288,6 @@
       "strategy": "swing_trailing(peak=6.8%,step=3.0%,trail_sl=3.8%)",
       "reason": "swing_trailing(peak=6.8%,step=3.0%,trail_sl=3.8%)",
       "filled_at": "2026-08-10T00:04:56.404864"
-    },
-    {
-      "stock_code": "073240",
-      "stock_name": "금호타이어",
-      "side": "buy",
-      "quantity": 107,
-      "price": 7785.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "",
-      "filled_at": "2026-08-07T06:14:35.871341"
-    },
-    {
-      "stock_code": "017900",
-      "stock_name": "광전자",
-      "side": "buy",
-      "quantity": 50,
-      "price": 7815.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "",
-      "filled_at": "2026-08-07T06:14:24.840138"
-    },
-    {
-      "stock_code": "018260",
-      "stock_name": "삼성에스디에스",
-      "side": "buy",
-      "quantity": 3,
-      "price": 221750.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "",
-      "filled_at": "2026-08-07T06:14:20.643518"
-    },
-    {
-      "stock_code": "018880",
-      "stock_name": "한온시스템",
-      "side": "buy",
-      "quantity": 110,
-      "price": 3602.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "",
-      "filled_at": "2026-08-07T06:14:14.809418"
-    },
-    {
-      "stock_code": "006360",
-      "stock_name": "GS건설",
-      "side": "buy",
-      "quantity": 22,
-      "price": 31575.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "",
-      "filled_at": "2026-08-07T06:14:11.324447"
-    },
-    {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "side": "buy",
-      "quantity": 8,
-      "price": 231250.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "이월분(익일종가)",
-      "filled_at": "2026-08-07T06:12:54.796086"
-    },
-    {
-      "stock_code": "008770",
-      "stock_name": "호텔신라",
-      "side": "buy",
-      "quantity": 22,
-      "price": 42625.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "이월분(익일종가)",
-      "filled_at": "2026-08-07T06:12:34.541722"
-    },
-    {
-      "stock_code": "059120",
-      "stock_name": "아진엑스텍",
-      "side": "buy",
-      "quantity": 254,
-      "price": 6765.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "이월분(익일종가)",
-      "filled_at": "2026-08-07T06:12:34.357519"
-    },
-    {
-      "stock_code": "003160",
-      "stock_name": "003160",
-      "side": "buy",
-      "quantity": 37,
-      "price": 23075.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "이월분(익일종가)",
-      "filled_at": "2026-08-07T06:11:29.333243"
-    },
-    {
-      "stock_code": "068270",
-      "stock_name": "셀트리온",
-      "side": "sell",
-      "quantity": 4,
-      "price": 194600.0,
-      "pnl": 29779.36,
-      "pnl_rate": 3.9919,
-      "strategy": "swing_time_exit(5영업일≥5영업일)",
-      "reason": "swing_time_exit(5영업일≥5영업일)",
-      "filled_at": "2026-08-07T00:00:54.775953"
-    },
-    {
-      "stock_code": "004370",
-      "stock_name": "농심",
-      "side": "sell",
-      "quantity": 1,
-      "price": 387000.0,
-      "pnl": 3187.8,
-      "pnl_rate": 0.8334,
-      "strategy": "swing_time_exit(5영업일≥5영업일)",
-      "reason": "swing_time_exit(5영업일≥5영업일)",
-      "filled_at": "2026-08-07T00:00:45.418723"
     }
   ]
 }
