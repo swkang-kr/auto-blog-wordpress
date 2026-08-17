@@ -1,8 +1,56 @@
 {
-  "exported_at": "2026-08-14T07:00:02.340833+00:00",
-  "total_candidates": 20,
+  "exported_at": "2026-08-17T07:00:01.815385+00:00",
+  "total_candidates": 15,
   "total_holdings": 3,
   "candidates": [
+    {
+      "stock_code": "001820",
+      "stock_name": "삼화콘덴서",
+      "sector": "",
+      "signal_count": 23,
+      "avg_confidence": 1.0,
+      "strategies": [],
+      "reason": "score=7.80, ranked_score=107.64",
+      "price_at_signal": 0,
+      "signal_time": "2026-08-17T15:25:00.006816+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "009900",
+      "stock_name": "명신산업",
+      "sector": "",
+      "signal_count": 22,
+      "avg_confidence": 0.8838333333333332,
+      "strategies": [],
+      "reason": "score=4.68, ranked_score=61.80",
+      "price_at_signal": 0,
+      "signal_time": "2026-08-17T15:25:00.006816+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "382800",
+      "stock_name": "지앤비에스 에코",
+      "sector": "",
+      "signal_count": 20,
+      "avg_confidence": 1.0,
+      "strategies": [],
+      "reason": "score=7.80, ranked_score=93.60",
+      "price_at_signal": 0,
+      "signal_time": "2026-08-17T15:25:00.006816+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "466100",
+      "stock_name": "클로봇",
+      "sector": "",
+      "signal_count": 20,
+      "avg_confidence": 0.7333333333333334,
+      "strategies": [],
+      "reason": "score=4.17, ranked_score=50.00",
+      "price_at_signal": 0,
+      "signal_time": "2026-08-17T15:25:00.006816+09:00",
+      "status": "장중 워치리스트"
+    },
     {
       "stock_code": "005930",
       "stock_name": "삼성전자",
@@ -12,19 +60,31 @@
       "strategies": [],
       "reason": "score=8.50, ranked_score=30.60",
       "price_at_signal": 0,
-      "signal_time": "2026-08-14T15:25:00.006891+09:00",
+      "signal_time": "2026-08-17T15:25:00.006816+09:00",
       "status": "장중 워치리스트"
     },
     {
       "stock_code": "090460",
       "stock_name": "비에이치",
       "sector": "",
-      "signal_count": 5,
+      "signal_count": 6,
       "avg_confidence": 0.8,
       "strategies": [],
-      "reason": "score=6.80, ranked_score=20.40",
+      "reason": "score=6.80, ranked_score=24.48",
       "price_at_signal": 0,
-      "signal_time": "2026-08-14T15:25:00.006891+09:00",
+      "signal_time": "2026-08-17T15:25:00.006816+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "056080",
+      "stock_name": "유진로봇",
+      "sector": "",
+      "signal_count": 6,
+      "avg_confidence": 0.65,
+      "strategies": [],
+      "reason": "score=3.38, ranked_score=12.15",
+      "price_at_signal": 0,
+      "signal_time": "2026-08-17T15:25:00.006816+09:00",
       "status": "장중 워치리스트"
     },
     {
@@ -36,176 +96,92 @@
       "strategies": [],
       "reason": "score=5.04, ranked_score=12.10",
       "price_at_signal": 0,
-      "signal_time": "2026-08-14T15:25:00.006891+09:00",
+      "signal_time": "2026-08-17T15:25:00.006816+09:00",
       "status": "장중 워치리스트"
     },
     {
-      "stock_code": "306620",
-      "stock_name": "지아이에스",
-      "sector": "반도체와반도체장비",
-      "signal_count": 3,
-      "avg_confidence": 0.5777666666666667,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(57) | 거래량4.3x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래",
-      "price_at_signal": 0,
-      "signal_time": "2026-08-14T05:27:54.894715",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "056080",
-      "stock_name": "유진로봇",
+      "stock_code": "066570",
+      "stock_name": "LG전자",
       "sector": "",
       "signal_count": 3,
-      "avg_confidence": 0.6944666666666667,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들슈팅스타(약세) | 주봉데드크로스(-1.5) | 주봉RSI과매도(19) | 주봉MA20아래 | 상대강도(+3.6%vsKOSPI+1.8%) | 디커플링모멘텀",
+      "avg_confidence": 0.8,
+      "strategies": [],
+      "reason": "score=6.00, ranked_score=10.80",
       "price_at_signal": 0,
-      "signal_time": "2026-08-14T05:27:54.894706",
-      "status": "매수 시그널"
+      "signal_time": "2026-08-17T15:25:00.006816+09:00",
+      "status": "장중 워치리스트"
     },
     {
-      "stock_code": "009150",
-      "stock_name": "삼성전기",
-      "sector": "전자장비와기기",
-      "signal_count": 3,
-      "avg_confidence": 0.6944666666666667,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위",
-      "price_at_signal": 0,
-      "signal_time": "2026-08-14T05:27:54.894698",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "466100",
-      "stock_name": "클로봇",
+      "stock_code": "000370",
+      "stock_name": "한화손해보험",
       "sector": "",
-      "signal_count": 3,
-      "avg_confidence": 0.7777666666666666,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(60) | 거래량2.9x | MA정배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(29) | 주봉MA20아래 | 상대강도(+12.3%vsKOSPI+1.8%) | 디커플링모멘텀",
+      "signal_count": 2,
+      "avg_confidence": 0.9,
+      "strategies": [],
+      "reason": "score=7.50, ranked_score=9.00",
       "price_at_signal": 0,
-      "signal_time": "2026-08-14T05:27:54.894680",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "009900",
-      "stock_name": "명신산업",
-      "sector": "",
-      "signal_count": 3,
-      "avg_confidence": 0.8277666666666667,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(64) | 거래량8.5x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(23) | 주봉MA20아래 | 상대강도(+8.4%vsKOSPI+1.8%) | 디커플링모멘텀",
-      "price_at_signal": 0,
-      "signal_time": "2026-08-14T05:27:54.894672",
-      "status": "매수 시그널"
+      "signal_time": "2026-08-17T15:25:00.006816+09:00",
+      "status": "장중 워치리스트"
     },
     {
       "stock_code": "033240",
       "stock_name": "자화전자",
       "sector": "",
       "signal_count": 2,
-      "avg_confidence": 0.875,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(64) | 거래량2.1x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+3.0%vsKOSPI+1.8%) | 디커플링모멘텀",
+      "avg_confidence": 0.8,
+      "strategies": [],
+      "reason": "score=6.00, ranked_score=7.20",
       "price_at_signal": 0,
-      "signal_time": "2026-08-14T05:37:36.426880",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "008490",
-      "stock_name": "서흥",
-      "sector": "",
-      "signal_count": 2,
-      "avg_confidence": 0.7583500000000001,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "거래량2.2x | MA정배열 | 캔들도지 | 주봉골든크로스 | 주봉MA20위",
-      "price_at_signal": 0,
-      "signal_time": "2026-08-14T05:27:54.894690",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "001820",
-      "stock_name": "삼화콘덴서",
-      "sector": "",
-      "signal_count": 2,
-      "avg_confidence": 0.925,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(58) | 거래량3.6x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위",
-      "price_at_signal": 0,
-      "signal_time": "2026-08-14T05:37:36.426901",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "382800",
-      "stock_name": "지앤비에스 에코",
-      "sector": "반도체와반도체장비",
-      "signal_count": 2,
-      "avg_confidence": 0.98335,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(70) | 거래량5.4x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+3.0%vsKOSPI+1.8%) | 디커플링모멘텀",
-      "price_at_signal": 0,
-      "signal_time": "2026-08-14T05:37:36.426854",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "227950",
-      "stock_name": "엔투텍",
-      "sector": "반도체와반도체장비",
-      "signal_count": 2,
-      "avg_confidence": 0.98335,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(59) | 거래량8.4x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(28) | 주봉MA20아래 | 상대강도(+13.2%vsKOSPI+1.8%) | 디커플링모멘텀",
-      "price_at_signal": 0,
-      "signal_time": "2026-08-14T05:37:36.426892",
-      "status": "매수 시그널"
+      "signal_time": "2026-08-17T15:25:00.006816+09:00",
+      "status": "장중 워치리스트"
     },
     {
       "stock_code": "085620",
       "stock_name": "미래에셋생명",
       "sector": "",
-      "signal_count": 1,
-      "avg_confidence": 0.75,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(61) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위",
+      "signal_count": 2,
+      "avg_confidence": 0.55,
+      "strategies": [],
+      "reason": "score=3.38, ranked_score=4.05",
       "price_at_signal": 0,
-      "signal_time": "2026-08-14T05:57:05.145241",
-      "status": "매수 시그널"
+      "signal_time": "2026-08-17T15:25:00.006816+09:00",
+      "status": "장중 워치리스트"
     },
     {
-      "stock_code": "066570",
-      "stock_name": "LG전자",
-      "sector": "전자제품",
+      "stock_code": "088350",
+      "stock_name": "한화생명",
+      "sector": "",
       "signal_count": 1,
-      "avg_confidence": 1.0,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(64) | MA정배열 | 캔들역해머(강) | 주봉데드크로스(-1.5) | 주봉MA20위",
+      "avg_confidence": 0.9,
+      "strategies": [],
+      "reason": "score=7.80, ranked_score=4.68",
       "price_at_signal": 0,
-      "signal_time": "2026-08-14T05:57:05.145225",
-      "status": "매수 시그널"
+      "signal_time": "2026-08-17T15:25:00.006816+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "001450",
+      "stock_name": "현대해상",
+      "sector": "",
+      "signal_count": 1,
+      "avg_confidence": 0.55,
+      "strategies": [],
+      "reason": "score=7.00, ranked_score=4.20",
+      "price_at_signal": 0,
+      "signal_time": "2026-08-17T15:25:00.006816+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "005090",
+      "stock_name": "SGC에너지",
+      "sector": "",
+      "signal_count": 1,
+      "avg_confidence": 0.65,
+      "strategies": [],
+      "reason": "score=6.50, ranked_score=3.90",
+      "price_at_signal": 0,
+      "signal_time": "2026-08-17T15:25:00.006816+09:00",
+      "status": "장중 워치리스트"
     }
   ],
   "holdings": [
