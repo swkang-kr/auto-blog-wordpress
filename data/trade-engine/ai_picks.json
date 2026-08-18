@@ -1,216 +1,200 @@
 {
-  "exported_at": "2026-08-17T07:00:01.815385+00:00",
-  "total_candidates": 15,
-  "total_holdings": 3,
+  "exported_at": "2026-08-18T07:00:02.144617+00:00",
+  "total_candidates": 19,
+  "total_holdings": 0,
   "candidates": [
-    {
-      "stock_code": "001820",
-      "stock_name": "삼화콘덴서",
-      "sector": "",
-      "signal_count": 23,
-      "avg_confidence": 1.0,
-      "strategies": [],
-      "reason": "score=7.80, ranked_score=107.64",
-      "price_at_signal": 0,
-      "signal_time": "2026-08-17T15:25:00.006816+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "009900",
-      "stock_name": "명신산업",
-      "sector": "",
-      "signal_count": 22,
-      "avg_confidence": 0.8838333333333332,
-      "strategies": [],
-      "reason": "score=4.68, ranked_score=61.80",
-      "price_at_signal": 0,
-      "signal_time": "2026-08-17T15:25:00.006816+09:00",
-      "status": "장중 워치리스트"
-    },
     {
       "stock_code": "382800",
       "stock_name": "지앤비에스 에코",
-      "sector": "",
-      "signal_count": 20,
-      "avg_confidence": 1.0,
+      "sector": "반도체와반도체장비",
+      "signal_count": 6,
+      "avg_confidence": 0.9,
       "strategies": [],
-      "reason": "score=7.80, ranked_score=93.60",
+      "reason": "score=7.80, ranked_score=28.08",
       "price_at_signal": 0,
-      "signal_time": "2026-08-17T15:25:00.006816+09:00",
+      "signal_time": "2026-08-18T15:25:00.195085+09:00",
       "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "017670",
+      "stock_name": "SK텔레콤",
+      "sector": "무선통신서비스",
+      "signal_count": 6,
+      "avg_confidence": 0.7,
+      "strategies": [],
+      "reason": "score=6.50, ranked_score=23.40",
+      "price_at_signal": 0,
+      "signal_time": "2026-08-18T15:25:00.195085+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "006200",
+      "stock_name": "한국전자홀딩스",
+      "sector": "반도체와반도체장비",
+      "signal_count": 5,
+      "avg_confidence": 0.5,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "RSI반등(39) | RSI sweet(39) | 거래량2.7x | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(17) | 주봉MA20아래 | 상대강도(+0.4%vsKOSPI-2.2%)",
+      "price_at_signal": 0,
+      "signal_time": "2026-08-18T06:01:57.026059",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "417500",
+      "stock_name": "제이아이테크",
+      "sector": "반도체와반도체장비",
+      "signal_count": 5,
+      "avg_confidence": 0.5833,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "RSI모멘텀(62) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+3.3%vsKOSPI-2.2%)",
+      "price_at_signal": 0,
+      "signal_time": "2026-08-18T06:01:57.026051",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "403870",
+      "stock_name": "HPSP",
+      "sector": "반도체와반도체장비",
+      "signal_count": 5,
+      "avg_confidence": 0.6667,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+9.4%vsKOSPI-2.2%) | 디커플링모멘텀",
+      "price_at_signal": 0,
+      "signal_time": "2026-08-18T06:01:57.026041",
+      "status": "매수 시그널"
     },
     {
       "stock_code": "466100",
       "stock_name": "클로봇",
       "sector": "",
-      "signal_count": 20,
-      "avg_confidence": 0.7333333333333334,
-      "strategies": [],
-      "reason": "score=4.17, ranked_score=50.00",
+      "signal_count": 5,
+      "avg_confidence": 1.0,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(60) | 거래량3.3x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+1.1%vsKOSPI-2.2%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-08-17T15:25:00.006816+09:00",
-      "status": "장중 워치리스트"
+      "signal_time": "2026-08-18T06:01:57.026032",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "227950",
+      "stock_name": "엔투텍",
+      "sector": "반도체와반도체장비",
+      "signal_count": 5,
+      "avg_confidence": 1.0,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(63) | 거래량12.5x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(30) | 주봉MA20아래 | 상대강도(+8.3%vsKOSPI-2.2%) | 디커플링모멘텀",
+      "price_at_signal": 0,
+      "signal_time": "2026-08-18T06:01:57.026019",
+      "status": "매수 시그널"
     },
     {
       "stock_code": "005930",
       "stock_name": "삼성전자",
-      "sector": "",
-      "signal_count": 6,
+      "sector": "반도체",
+      "signal_count": 5,
       "avg_confidence": 1.0,
-      "strategies": [],
-      "reason": "score=8.50, ranked_score=30.60",
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(56) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 대형주급락(-3.1%) | 상대강도(+2.7%vsKOSPI-2.2%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-08-17T15:25:00.006816+09:00",
+      "signal_time": "2026-08-18T06:01:57.025993",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "092200",
+      "stock_name": "디아이씨",
+      "sector": "",
+      "signal_count": 5,
+      "avg_confidence": 0.75,
+      "strategies": [],
+      "reason": "score=6.80, ranked_score=20.40",
+      "price_at_signal": 0,
+      "signal_time": "2026-08-18T15:25:00.195085+09:00",
       "status": "장중 워치리스트"
     },
     {
-      "stock_code": "090460",
-      "stock_name": "비에이치",
-      "sector": "",
-      "signal_count": 6,
-      "avg_confidence": 0.8,
-      "strategies": [],
-      "reason": "score=6.80, ranked_score=24.48",
-      "price_at_signal": 0,
-      "signal_time": "2026-08-17T15:25:00.006816+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "056080",
-      "stock_name": "유진로봇",
-      "sector": "",
-      "signal_count": 6,
-      "avg_confidence": 0.65,
-      "strategies": [],
-      "reason": "score=3.38, ranked_score=12.15",
-      "price_at_signal": 0,
-      "signal_time": "2026-08-17T15:25:00.006816+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "047810",
-      "stock_name": "한국항공우주",
-      "sector": "",
+      "stock_code": "011200",
+      "stock_name": "HMM",
+      "sector": "해운사",
       "signal_count": 4,
-      "avg_confidence": 0.7166666666666666,
+      "avg_confidence": 0.89,
       "strategies": [],
-      "reason": "score=5.04, ranked_score=12.10",
+      "reason": "score=11.00, ranked_score=26.40",
       "price_at_signal": 0,
-      "signal_time": "2026-08-17T15:25:00.006816+09:00",
+      "signal_time": "2026-08-18T15:25:00.195085+09:00",
       "status": "장중 워치리스트"
     },
     {
       "stock_code": "066570",
       "stock_name": "LG전자",
+      "sector": "전자제품",
+      "signal_count": 4,
+      "avg_confidence": 1.0,
+      "strategies": [],
+      "reason": "score=7.50, ranked_score=18.00",
+      "price_at_signal": 0,
+      "signal_time": "2026-08-18T15:25:00.195085+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "093370",
+      "stock_name": "후성",
+      "sector": "",
+      "signal_count": 4,
+      "avg_confidence": 0.89,
+      "strategies": [],
+      "reason": "score=6.50, ranked_score=15.60",
+      "price_at_signal": 0,
+      "signal_time": "2026-08-18T15:25:00.195085+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "077500",
+      "stock_name": "유니퀘스트",
+      "sector": "",
+      "signal_count": 4,
+      "avg_confidence": 0.64,
+      "strategies": [],
+      "reason": "score=6.50, ranked_score=15.60",
+      "price_at_signal": 0,
+      "signal_time": "2026-08-18T15:25:00.195085+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "007810",
+      "stock_name": "코리아써키트",
+      "sector": "",
+      "signal_count": 4,
+      "avg_confidence": 0.8233333333333334,
+      "strategies": [],
+      "reason": "score=4.17, ranked_score=10.00",
+      "price_at_signal": 0,
+      "signal_time": "2026-08-18T15:25:00.195085+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "017960",
+      "stock_name": "한국카본",
       "sector": "",
       "signal_count": 3,
-      "avg_confidence": 0.8,
+      "avg_confidence": 0.6666666666666666,
       "strategies": [],
-      "reason": "score=6.00, ranked_score=10.80",
+      "reason": "score=2.67, ranked_score=4.80",
       "price_at_signal": 0,
-      "signal_time": "2026-08-17T15:25:00.006816+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "000370",
-      "stock_name": "한화손해보험",
-      "sector": "",
-      "signal_count": 2,
-      "avg_confidence": 0.9,
-      "strategies": [],
-      "reason": "score=7.50, ranked_score=9.00",
-      "price_at_signal": 0,
-      "signal_time": "2026-08-17T15:25:00.006816+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "033240",
-      "stock_name": "자화전자",
-      "sector": "",
-      "signal_count": 2,
-      "avg_confidence": 0.8,
-      "strategies": [],
-      "reason": "score=6.00, ranked_score=7.20",
-      "price_at_signal": 0,
-      "signal_time": "2026-08-17T15:25:00.006816+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "085620",
-      "stock_name": "미래에셋생명",
-      "sector": "",
-      "signal_count": 2,
-      "avg_confidence": 0.55,
-      "strategies": [],
-      "reason": "score=3.38, ranked_score=4.05",
-      "price_at_signal": 0,
-      "signal_time": "2026-08-17T15:25:00.006816+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "088350",
-      "stock_name": "한화생명",
-      "sector": "",
-      "signal_count": 1,
-      "avg_confidence": 0.9,
-      "strategies": [],
-      "reason": "score=7.80, ranked_score=4.68",
-      "price_at_signal": 0,
-      "signal_time": "2026-08-17T15:25:00.006816+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "001450",
-      "stock_name": "현대해상",
-      "sector": "",
-      "signal_count": 1,
-      "avg_confidence": 0.55,
-      "strategies": [],
-      "reason": "score=7.00, ranked_score=4.20",
-      "price_at_signal": 0,
-      "signal_time": "2026-08-17T15:25:00.006816+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "005090",
-      "stock_name": "SGC에너지",
-      "sector": "",
-      "signal_count": 1,
-      "avg_confidence": 0.65,
-      "strategies": [],
-      "reason": "score=6.50, ranked_score=3.90",
-      "price_at_signal": 0,
-      "signal_time": "2026-08-17T15:25:00.006816+09:00",
+      "signal_time": "2026-08-18T15:25:00.195085+09:00",
       "status": "장중 워치리스트"
     }
   ],
-  "holdings": [
-    {
-      "stock_code": "090460",
-      "stock_name": "비에이치",
-      "quantity": 17,
-      "avg_price": 18485.0,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-08-14",
-      "status": "보유 중"
-    },
-    {
-      "stock_code": "008770",
-      "stock_name": "호텔신라",
-      "quantity": 22,
-      "avg_price": 42527.272,
-      "strategy": "",
-      "entry_date": "2026-08-13",
-      "status": "보유 중"
-    },
-    {
-      "stock_code": "028670",
-      "stock_name": "팬오션",
-      "quantity": 172,
-      "avg_price": 5861.744,
-      "strategy": "",
-      "entry_date": "2026-08-13",
-      "status": "보유 중"
-    }
-  ]
+  "holdings": []
 }

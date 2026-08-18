@@ -1,38 +1,4 @@
 {
-  "exported_at": "2026-08-17T07:00:00.681899+00:00",
-  "holdings": [
-    {
-      "stock_code": "090460",
-      "stock_name": "비에이치",
-      "quantity": 17,
-      "avg_price": 18485.0,
-      "current_price": 18485.0,
-      "unrealized_pnl": 0,
-      "unrealized_pnl_rate": 0,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-08-14T06:26:05.918487"
-    },
-    {
-      "stock_code": "008770",
-      "stock_name": "호텔신라",
-      "quantity": 22,
-      "avg_price": 42527.272,
-      "current_price": 45400.0,
-      "unrealized_pnl": 0,
-      "unrealized_pnl_rate": 0,
-      "strategy": "",
-      "entry_date": "2026-08-13T15:00:00"
-    },
-    {
-      "stock_code": "028670",
-      "stock_name": "팬오션",
-      "quantity": 172,
-      "avg_price": 5861.744,
-      "current_price": 5790.0,
-      "unrealized_pnl": 0,
-      "unrealized_pnl_rate": 0,
-      "strategy": "",
-      "entry_date": "2026-08-13T15:00:00"
-    }
-  ]
+  "exported_at": "2026-08-18T07:00:00.768323+00:00",
+  "holdings": []
 }

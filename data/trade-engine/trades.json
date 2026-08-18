@@ -1,6 +1,30 @@
 {
-  "exported_at": "2026-08-17T07:00:00.697026+00:00",
+  "exported_at": "2026-08-18T07:00:00.788074+00:00",
   "trades": [
+    {
+      "stock_code": "028670",
+      "stock_name": "팬오션",
+      "side": "sell",
+      "quantity": 172,
+      "price": 5950.0,
+      "pnl": 11712.62,
+      "pnl_rate": 1.1617,
+      "strategy": "swing_trailing(peak=4.1%,step=3.0%,trail_sl=1.1%)",
+      "reason": "swing_trailing(peak=4.1%,step=3.0%,trail_sl=1.1%)",
+      "filled_at": "2026-08-18T02:26:25.725062"
+    },
+    {
+      "stock_code": "090460",
+      "stock_name": "비에이치",
+      "side": "sell",
+      "quantity": 17,
+      "price": 18990.0,
+      "pnl": 8940.4,
+      "pnl_rate": 2.8582,
+      "strategy": "swing_trailing(peak=6.0%,step=3.0%,trail_sl=3.0%)",
+      "reason": "swing_trailing(peak=6.0%,step=3.0%,trail_sl=3.0%)",
+      "filled_at": "2026-08-18T01:36:28.561475"
+    },
     {
       "stock_code": "009900",
       "stock_name": "명신산업",
@@ -204,30 +228,6 @@
       "strategy": "swing_trailing(peak=8.6%,step=3.0%,trail_sl=5.6%)",
       "reason": "swing_trailing(peak=8.6%,step=3.0%,trail_sl=5.6%)",
       "filled_at": "2026-08-12T00:56:06.397514"
-    },
-    {
-      "stock_code": "003160",
-      "stock_name": "디아이",
-      "side": "sell",
-      "quantity": 33,
-      "price": 24900.0,
-      "pnl": 57814.16,
-      "pnl_rate": 7.5957,
-      "strategy": "swing_trailing(peak=10.4%,step=3.0%,trail_sl=7.4%)",
-      "reason": "swing_trailing(peak=10.4%,step=3.0%,trail_sl=7.4%)",
-      "filled_at": "2026-08-11T03:44:32.704966"
-    },
-    {
-      "stock_code": "073240",
-      "stock_name": "금호타이어",
-      "side": "sell",
-      "quantity": 107,
-      "price": 7200.0,
-      "pnl": -65799.86,
-      "pnl_rate": -7.8941,
-      "strategy": "swing_stop_loss(SL=7,162)",
-      "reason": "swing_stop_loss(SL=7,162)",
-      "filled_at": "2026-08-11T00:03:59.463008"
     }
   ]
 }
