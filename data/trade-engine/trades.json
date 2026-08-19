@@ -1,6 +1,18 @@
 {
-  "exported_at": "2026-08-18T07:00:00.788074+00:00",
+  "exported_at": "2026-08-19T07:00:00.826192+00:00",
   "trades": [
+    {
+      "stock_code": "017670",
+      "stock_name": "SK텔레콤",
+      "side": "buy",
+      "quantity": 16,
+      "price": 97250.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "이월분(익일종가)",
+      "filled_at": "2026-08-19T06:11:34.864492"
+    },
     {
       "stock_code": "028670",
       "stock_name": "팬오션",
@@ -168,66 +180,6 @@
       "strategy": "swing_gap_down(net=-3.32%,held=17.8h)",
       "reason": "swing_gap_down(net=-3.32%,held=17.8h)",
       "filled_at": "2026-08-13T00:07:57.384481"
-    },
-    {
-      "stock_code": "382800",
-      "stock_name": "지앤비에스 에코",
-      "side": "buy",
-      "quantity": 45,
-      "price": 5790.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "",
-      "filled_at": "2026-08-12T06:20:14.396327"
-    },
-    {
-      "stock_code": "059120",
-      "stock_name": "아진엑스텍",
-      "side": "buy",
-      "quantity": 36,
-      "price": 7490.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "",
-      "filled_at": "2026-08-12T06:20:06.545656"
-    },
-    {
-      "stock_code": "108860",
-      "stock_name": "108860",
-      "side": "buy",
-      "quantity": 10,
-      "price": 10625.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "",
-      "filled_at": "2026-08-12T06:19:49.539854"
-    },
-    {
-      "stock_code": "036930",
-      "stock_name": "주성엔지니어링",
-      "side": "buy",
-      "quantity": 1,
-      "price": 172850.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "",
-      "filled_at": "2026-08-12T06:19:37.739986"
-    },
-    {
-      "stock_code": "018260",
-      "stock_name": "삼성에스디에스",
-      "side": "sell",
-      "quantity": 3,
-      "price": 234500.0,
-      "pnl": 36138.9,
-      "pnl_rate": 5.4344,
-      "strategy": "swing_trailing(peak=8.6%,step=3.0%,trail_sl=5.6%)",
-      "reason": "swing_trailing(peak=8.6%,step=3.0%,trail_sl=5.6%)",
-      "filled_at": "2026-08-12T00:56:06.397514"
     }
   ]
 }

@@ -1,4 +1,27 @@
 {
-  "exported_at": "2026-08-18T07:00:00.768323+00:00",
-  "holdings": []
+  "exported_at": "2026-08-19T07:00:00.811781+00:00",
+  "holdings": [
+    {
+      "stock_code": "056080",
+      "stock_name": "056080",
+      "quantity": 2,
+      "avg_price": 12520.0,
+      "current_price": 12520.0,
+      "unrealized_pnl": -77.62,
+      "unrealized_pnl_rate": -0.33,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-08-19T06:11:32.908067"
+    },
+    {
+      "stock_code": "017670",
+      "stock_name": "SK텔레콤",
+      "quantity": 16,
+      "avg_price": 97200.0,
+      "current_price": 97200.0,
+      "unrealized_pnl": -5287.68,
+      "unrealized_pnl_rate": -0.383,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-08-19T06:11:34.855246"
+    }
+  ]
 }
