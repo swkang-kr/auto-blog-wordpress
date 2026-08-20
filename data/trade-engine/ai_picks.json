@@ -1,204 +1,178 @@
 {
-  "exported_at": "2026-08-19T07:00:01.856697+00:00",
-  "total_candidates": 15,
-  "total_holdings": 2,
+  "exported_at": "2026-08-20T07:00:01.717604+00:00",
+  "total_candidates": 13,
+  "total_holdings": 3,
   "candidates": [
     {
-      "stock_code": "036930",
-      "stock_name": "주성엔지니어링",
+      "stock_code": "490470",
+      "stock_name": "세미파이브",
       "sector": "반도체와반도체장비",
       "signal_count": 6,
-      "avg_confidence": 0.9666666666666667,
-      "strategies": [],
-      "reason": "score=5.61, ranked_score=20.18",
-      "price_at_signal": 0,
-      "signal_time": "2026-08-19T15:25:00.082640+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "002990",
-      "stock_name": "금호건설",
-      "sector": "",
-      "signal_count": 5,
-      "avg_confidence": 0.9,
-      "strategies": [],
-      "reason": "score=8.30, ranked_score=24.90",
-      "price_at_signal": 0,
-      "signal_time": "2026-08-19T15:25:00.082640+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "005950",
-      "stock_name": "이수화학",
-      "sector": "",
-      "signal_count": 4,
-      "avg_confidence": 0.6250249999999999,
+      "avg_confidence": 0.6,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "거래량2.3x | MA정배열 | EMA20하방 | 주봉골든크로스 | 주봉MA20위 | 상대강도(-2.8%vsKOSPI-6.0%)",
+      "reason": "RSI반등(40) | RSI sweet(40) | MA정배열 | EMA20하방 | 주봉데드크로스(-1.5) | 주봉RSI과매도(19) | 주봉MA20아래",
       "price_at_signal": 0,
-      "signal_time": "2026-08-19T06:03:25.732969",
+      "signal_time": "2026-08-20T05:57:41.114743",
       "status": "매수 시그널"
     },
     {
       "stock_code": "011200",
       "stock_name": "HMM",
       "sector": "해운사",
-      "signal_count": 4,
-      "avg_confidence": 0.7812250000000001,
+      "signal_count": 5,
+      "avg_confidence": 0.8,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "거래량2.2x | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(-3.5%vsKOSPI-6.0%)",
+      "reason": "거래량2.0x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-08-19T06:03:25.732961",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "417500",
-      "stock_name": "제이아이테크",
-      "sector": "반도체와반도체장비",
-      "signal_count": 4,
-      "avg_confidence": 0.9375,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "2일연속상승 | RSI모멘텀(61) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+1.3%vsKOSPI-6.0%) | 디커플링모멘텀",
-      "price_at_signal": 0,
-      "signal_time": "2026-08-19T06:03:25.732953",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "017800",
-      "stock_name": "현대엘리베이터",
-      "sector": "",
-      "signal_count": 4,
-      "avg_confidence": 1.0,
-      "strategies": [],
-      "reason": "score=6.30, ranked_score=15.12",
-      "price_at_signal": 0,
-      "signal_time": "2026-08-19T15:25:00.082640+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "093370",
-      "stock_name": "후성",
-      "sector": "",
-      "signal_count": 4,
-      "avg_confidence": 0.7821666666666667,
-      "strategies": [],
-      "reason": "score=5.04, ranked_score=12.10",
-      "price_at_signal": 0,
-      "signal_time": "2026-08-19T15:25:00.082640+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "033240",
-      "stock_name": "자화전자",
-      "sector": "",
-      "signal_count": 3,
-      "avg_confidence": 0.5,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "RSI모멘텀(59) | 거래량2.0x | MA정배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(21) | 주봉MA20아래 | 상대강도(+3.7%vsKOSPI-6.1%)",
-      "price_at_signal": 0,
-      "signal_time": "2026-08-19T06:05:37.093822",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "001550",
-      "stock_name": "조비",
-      "sector": "화학",
-      "signal_count": 3,
-      "avg_confidence": 0.55,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MACD히스토그램↑ | 거래량6.3x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(-2.3%vsKOSPI-6.1%) | 디커플링모멘텀",
-      "price_at_signal": 0,
-      "signal_time": "2026-08-19T06:05:37.093813",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "sector": "반도체",
-      "signal_count": 3,
-      "avg_confidence": 0.5833,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 대형주급락(-7.6%)",
-      "price_at_signal": 0,
-      "signal_time": "2026-08-19T06:05:37.093805",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "000660",
-      "stock_name": "SK하이닉스",
-      "sector": "반도체",
-      "signal_count": 3,
-      "avg_confidence": 0.5833,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "EMA20하방 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 대형주급락(-10.2%)",
-      "price_at_signal": 0,
-      "signal_time": "2026-08-19T06:05:37.093796",
+      "signal_time": "2026-08-20T05:59:44.547307",
       "status": "매수 시그널"
     },
     {
       "stock_code": "403870",
       "stock_name": "HPSP",
       "sector": "반도체와반도체장비",
-      "signal_count": 3,
+      "signal_count": 5,
       "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(59) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+4.2%vsKOSPI-6.1%) | 디커플링모멘텀",
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(62) | 거래량2.3x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+6.7%vsKOSPI+4.9%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-08-19T06:05:37.093755",
+      "signal_time": "2026-08-20T05:59:44.547261",
       "status": "매수 시그널"
     },
     {
       "stock_code": "005180",
       "stock_name": "빙그레",
       "sector": "",
-      "signal_count": 3,
+      "signal_count": 5,
       "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "RSI모멘텀(64) | 거래량18.0x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+0.4%vsKOSPI-6.1%)",
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(69) | 거래량2.0x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-08-19T06:05:37.093728",
+      "signal_time": "2026-08-20T05:59:44.547288",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "017670",
-      "stock_name": "SK텔레콤",
-      "sector": "무선통신서비스",
-      "signal_count": 1,
-      "avg_confidence": 0.55,
+      "stock_code": "007660",
+      "stock_name": "이수페타시스",
+      "sector": "전자장비와기기",
+      "signal_count": 5,
+      "avg_confidence": 0.72,
       "strategies": [],
-      "reason": "score=6.50, ranked_score=6.50",
+      "reason": "score=4.05, ranked_score=12.15",
       "price_at_signal": 0,
-      "signal_time": "2026-08-19T15:25:00.082640+09:00",
+      "signal_time": "2026-08-20T15:25:00.143464+09:00",
       "status": "장중 워치리스트"
     },
     {
-      "stock_code": "056080",
-      "stock_name": "유진로봇",
+      "stock_code": "001450",
+      "stock_name": "현대해상",
+      "sector": "",
+      "signal_count": 3,
+      "avg_confidence": 0.5,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MA정배열 | 주봉골든크로스 | 주봉RSI과열(71,-0.5) | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-08-20T05:57:41.114751",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "088350",
+      "stock_name": "한화생명",
+      "sector": "생명보험",
+      "signal_count": 3,
+      "avg_confidence": 0.8000000000000002,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "RSI모멘텀(65) | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-08-20T05:57:41.114735",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "005830",
+      "stock_name": "DB손해보험",
+      "sector": "",
+      "signal_count": 3,
+      "avg_confidence": 0.89,
+      "strategies": [],
+      "reason": "score=7.00, ranked_score=12.60",
+      "price_at_signal": 0,
+      "signal_time": "2026-08-20T15:25:00.143464+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "004370",
+      "stock_name": "농심",
+      "sector": "",
+      "signal_count": 2,
+      "avg_confidence": 1.0,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(69) | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-08-20T05:59:44.547298",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "025860",
+      "stock_name": "남해화학",
+      "sector": "",
+      "signal_count": 2,
+      "avg_confidence": 0.8200000000000001,
+      "strategies": [],
+      "reason": "score=5.30, ranked_score=6.36",
+      "price_at_signal": 0,
+      "signal_time": "2026-08-20T15:25:00.143464+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "000720",
+      "stock_name": "현대건설",
+      "sector": "건설",
+      "signal_count": 2,
+      "avg_confidence": 0.59,
+      "strategies": [],
+      "reason": "score=2.45, ranked_score=2.94",
+      "price_at_signal": 0,
+      "signal_time": "2026-08-20T15:25:00.143464+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "005690",
+      "stock_name": "파미셀",
       "sector": "",
       "signal_count": 1,
-      "avg_confidence": 0.4,
-      "strategies": [],
-      "reason": "score=2.67, ranked_score=2.67",
+      "avg_confidence": 0.66,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "RSI모멘텀(55) | 거래량4.5x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+5.9%vsKOSPI+4.9%)",
       "price_at_signal": 0,
-      "signal_time": "2026-08-19T15:25:00.082640+09:00",
+      "signal_time": "2026-08-20T05:59:44.547323",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "017800",
+      "stock_name": "현대엘리베이터",
+      "sector": "",
+      "signal_count": 1,
+      "avg_confidence": 0.53,
+      "strategies": [],
+      "reason": "score=6.30, ranked_score=6.30",
+      "price_at_signal": 0,
+      "signal_time": "2026-08-20T15:25:00.143464+09:00",
       "status": "장중 워치리스트"
     }
   ],
@@ -219,6 +193,15 @@
       "avg_price": 12520.0,
       "strategy": "RSI+MACD(swing)",
       "entry_date": "2026-08-19",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "017800",
+      "stock_name": "현대엘리베이터",
+      "quantity": 11,
+      "avg_price": 72600.0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-08-20",
       "status": "보유 중"
     }
   ]
