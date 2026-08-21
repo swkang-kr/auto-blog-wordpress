@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-08-20T07:00:01.174908+00:00",
+  "exported_at": "2026-08-21T07:00:01.136079+00:00",
   "market_daily": [
+    {
+      "date": "20260821",
+      "kospi_change": 0.88,
+      "kosdaq_change": -4.63,
+      "foreign_net": -17.61,
+      "institution_net": 24.82,
+      "individual_net": -116.53,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260820",
       "kospi_change": 5.89,
       "kosdaq_change": 1.99,
       "foreign_net": 170.79,
-      "institution_net": -49.04,
-      "individual_net": -227.14,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "institution_net": -49.06,
+      "individual_net": -227.13,
+      "hot_theme_count": 27,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260819",
@@ -99,29 +110,18 @@
       "hot_theme_count": 13,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260806",
-      "kospi_change": -4.58,
-      "kosdaq_change": 0.26,
-      "foreign_net": -332.72,
-      "institution_net": -12.14,
-      "individual_net": 333.86,
-      "hot_theme_count": 10,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "코스피 5.89% 급등해 6852.58…삼전 9.49%·닉스 12.73%↑",
-    "코스피 5.9% 급등해 6852",
-    "코스피 5.9% 급등해 6,852…코스닥 1.99% 올라",
-    "반도체 주주환원·美 금리대응...안팎 호재에 코스피 6800선 회복",
-    "코스피, 5%대 상승 마감",
-    "코스피 상승 마감",
-    "코스피, 삼전닉스 급등하며 5%대 상승 마감",
-    "코스피 5.9% 급등해 6,852…코스닥 1.99% 올라",
-    "코스피 5.9% 급등해 6,852",
-    "원·달러, 1392.6원 마감…작년 9월 이후 최저치"
+    "기업 공시 [8월 21일]",
+    "스카이랩스 “해외 파트너십 본격화…2028년 흑자전환 가능”",
+    "'삼전·하닉' 날자 코스피 6900선으로…코스닥은 800선 턱걸이",
+    "6,900선 회복한 코스피",
+    "6,900선 회복한 코스피",
+    "6,900선 회복한 코스피",
+    "코스피, 0.9% 올라 6,900선 회복",
+    "코스피, 0.9% 반등해 6900선 회복…코스닥은 4%대 급락",
+    "1380원대까지 떨어진 원·달러…어디까지 내릴까(종합)",
+    "하닉-삼전 '주주환원 이어달리기'…반도체 투톱 이틀째 강세[핫종목](종합)"
   ]
 }
