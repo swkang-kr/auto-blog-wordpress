@@ -1,25 +1,14 @@
 {
-  "exported_at": "2026-08-21T07:00:00.674800+00:00",
+  "exported_at": "2026-08-24T07:00:00.731402+00:00",
   "holdings": [
-    {
-      "stock_code": "017670",
-      "stock_name": "SK텔레콤",
-      "quantity": 16,
-      "avg_price": 97200.0,
-      "current_price": 102600.0,
-      "unrealized_pnl": 81112.32,
-      "unrealized_pnl_rate": 5.2156,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-08-19T06:11:34.855246"
-    },
     {
       "stock_code": "017800",
       "stock_name": "현대엘리베이터",
       "quantity": 11,
       "avg_price": 72600.0,
-      "current_price": 72200.0,
-      "unrealized_pnl": 0,
-      "unrealized_pnl_rate": 0,
+      "current_price": 73700.0,
+      "unrealized_pnl": 9384.76,
+      "unrealized_pnl_rate": 1.1752,
       "strategy": "",
       "entry_date": "2026-08-20T15:00:00"
     },
@@ -28,9 +17,9 @@
       "stock_name": "유진로봇",
       "quantity": 2,
       "avg_price": 12520.0,
-      "current_price": 11970.0,
-      "unrealized_pnl": -1177.62,
-      "unrealized_pnl_rate": -4.703,
+      "current_price": 11720.0,
+      "unrealized_pnl": -1677.62,
+      "unrealized_pnl_rate": -6.6998,
       "strategy": "manual_recovery",
       "entry_date": "2026-08-21T04:43:34.605799"
     }

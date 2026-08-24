@@ -1,92 +1,66 @@
 {
-  "exported_at": "2026-08-21T07:00:01.633073+00:00",
-  "total_candidates": 5,
-  "total_holdings": 3,
+  "exported_at": "2026-08-24T07:00:01.845747+00:00",
+  "total_candidates": 4,
+  "total_holdings": 2,
   "candidates": [
     {
-      "stock_code": "108860",
-      "stock_name": "셀바스AI",
-      "sector": "건강관리장비와용품",
-      "signal_count": 28,
-      "avg_confidence": 0.5999999999999999,
+      "stock_code": "227950",
+      "stock_name": "엔투텍",
+      "sector": "반도체와반도체장비",
+      "signal_count": 8,
+      "avg_confidence": 0.5499999999999999,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | RSI모멘텀(53) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+3.8%vsKOSPI+0.4%) | 디커플링모멘텀",
+      "reason": "거래량10.7x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(28) | 주봉MA20아래 | 상대강도(-0.6%vsKOSPI-3.2%)",
       "price_at_signal": 0,
-      "signal_time": "2026-08-21T04:29:47.559865",
+      "signal_time": "2026-08-24T05:56:11.871375",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "011200",
-      "stock_name": "HMM",
-      "sector": "",
-      "signal_count": 5,
-      "avg_confidence": 0.5593333333333333,
-      "strategies": [],
-      "reason": "score=2.04, ranked_score=6.13",
-      "price_at_signal": 0,
-      "signal_time": "2026-08-21T15:25:00.110667+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "382800",
-      "stock_name": "지앤비에스 에코",
-      "sector": "",
-      "signal_count": 3,
-      "avg_confidence": 0.6,
-      "strategies": [],
-      "reason": "score=1.80, ranked_score=3.24",
-      "price_at_signal": 0,
-      "signal_time": "2026-08-21T15:25:00.110667+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "001550",
-      "stock_name": "조비",
-      "sector": "화학",
-      "signal_count": 2,
-      "avg_confidence": 0.7167,
+      "stock_code": "005935",
+      "stock_name": "삼성전자우",
+      "sector": "반도체와반도체장비",
+      "signal_count": 8,
+      "avg_confidence": 0.5833000000000002,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(61) | 거래량35.5x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+1.6%vsKOSPI+0.5%) | 디커플링모멘텀",
+      "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-08-21T04:38:23.703260",
+      "signal_time": "2026-08-24T05:56:11.871343",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "007340",
-      "stock_name": "DN오토모티브",
-      "sector": "",
-      "signal_count": 2,
-      "avg_confidence": 0.5333333333333333,
-      "strategies": [],
-      "reason": "score=2.41, ranked_score=2.89",
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "sector": "반도체",
+      "signal_count": 8,
+      "avg_confidence": 0.5833000000000002,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 대형주급락(-8.9%)",
       "price_at_signal": 0,
-      "signal_time": "2026-08-21T15:25:00.110667+09:00",
-      "status": "장중 워치리스트"
+      "signal_time": "2026-08-24T05:56:11.871333",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "000660",
+      "stock_name": "SK하이닉스",
+      "sector": "반도체",
+      "signal_count": 6,
+      "avg_confidence": 1.0,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(52) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 대형주급락(-3.1%) | 상대강도(+1.8%vsKOSPI-3.2%) | 디커플링모멘텀",
+      "price_at_signal": 0,
+      "signal_time": "2026-08-24T05:59:15.273542",
+      "status": "매수 시그널"
     }
   ],
   "holdings": [
-    {
-      "stock_code": "056080",
-      "stock_name": "유진로봇",
-      "quantity": 2,
-      "avg_price": 12520.0,
-      "strategy": "manual_recovery",
-      "entry_date": "2026-08-21",
-      "status": "보유 중"
-    },
-    {
-      "stock_code": "017670",
-      "stock_name": "SK텔레콤",
-      "quantity": 16,
-      "avg_price": 97200.0,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-08-19",
-      "status": "보유 중"
-    },
     {
       "stock_code": "017800",
       "stock_name": "현대엘리베이터",
@@ -94,6 +68,15 @@
       "avg_price": 72600.0,
       "strategy": "",
       "entry_date": "2026-08-20",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "056080",
+      "stock_name": "유진로봇",
+      "quantity": 2,
+      "avg_price": 12520.0,
+      "strategy": "manual_recovery",
+      "entry_date": "2026-08-21",
       "status": "보유 중"
     }
   ]

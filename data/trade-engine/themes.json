@@ -1,108 +1,67 @@
 {
-  "exported_at": "2026-08-21T07:00:01.191165+00:00",
-  "date": "20260821",
+  "exported_at": "2026-08-24T07:00:01.309004+00:00",
+  "date": "20260824",
   "hot_themes": [
     {
-      "name": "지역화폐",
-      "change_rate": 5.62
+      "name": "귀금속(금/은)",
+      "change_rate": 7.93
     },
     {
-      "name": "S7(삼성전자/SK하이닉스 등)",
-      "change_rate": 3.58
+      "name": "mRNA(메신저 리보핵산)",
+      "change_rate": 7.64
     },
     {
-      "name": "통신",
-      "change_rate": 2.6
+      "name": "2차전지(생산)",
+      "change_rate": 5.79
     },
     {
-      "name": "국내 상장 중국기업",
-      "change_rate": 2.51
+      "name": "마이코플라스마 폐렴",
+      "change_rate": 5.37
     },
     {
-      "name": "가상화폐(비트코인 등)",
-      "change_rate": 2.42
+      "name": "코로나19(치료제/백신 개발 등)",
+      "change_rate": 5.16
     },
     {
-      "name": "전자결제(전자화폐)",
-      "change_rate": 1.55
+      "name": "2차전지(나트륨이온)",
+      "change_rate": 4.55
     },
     {
-      "name": "해운",
-      "change_rate": 1.41
+      "name": "코로나19(진단/치료제/백신 개발 등)",
+      "change_rate": 4.44
     },
     {
-      "name": "항공/저가 항공사(LCC)",
-      "change_rate": 1.21
+      "name": "리튬",
+      "change_rate": 4.41
     },
     {
-      "name": "은행",
-      "change_rate": 1.13
+      "name": "백신/진단시약/방역(신종플루, AI 등)",
+      "change_rate": 4.2
     },
     {
-      "name": "요소수",
-      "change_rate": 1.11
+      "name": "코로나19(진단키트)",
+      "change_rate": 4.01
     },
     {
-      "name": "손해보험",
-      "change_rate": 0.86
+      "name": "바이오시밀러(복제 바이오의약품)",
+      "change_rate": 3.95
     },
     {
-      "name": "생명보험",
-      "change_rate": 0.25
+      "name": "애플페이",
+      "change_rate": 3.91
     },
     {
-      "name": "STO(토큰증권 발행)",
-      "change_rate": 0.21
+      "name": "2차전지(소재/부품)",
+      "change_rate": 3.87
     },
     {
-      "name": "광고",
-      "change_rate": 0.17
+      "name": "2차전지(LFP/리튬인산철)",
+      "change_rate": 3.47
     },
     {
-      "name": "웹툰",
-      "change_rate": 0.16
+      "name": "폐배터리",
+      "change_rate": 3.45
     }
   ],
-  "cold_themes": [
-    {
-      "name": "보톡스(보툴리눔톡신)",
-      "change_rate": -0.72
-    },
-    {
-      "name": "윤활유",
-      "change_rate": -0.7
-    },
-    {
-      "name": "폐기물처리",
-      "change_rate": -0.69
-    },
-    {
-      "name": "공기청정기",
-      "change_rate": -0.69
-    },
-    {
-      "name": "삼성페이",
-      "change_rate": -0.68
-    },
-    {
-      "name": "리츠(REITs)",
-      "change_rate": -0.58
-    },
-    {
-      "name": "스포츠행사 수혜(올림픽, 월드컵 등)",
-      "change_rate": -0.56
-    },
-    {
-      "name": "두나무(Dunamu)",
-      "change_rate": -0.53
-    },
-    {
-      "name": "SNS(소셜네트워크서비스)",
-      "change_rate": -0.47
-    },
-    {
-      "name": "마이크로 LED",
-      "change_rate": -0.45
-    }
-  ]
+  "cold_themes": []
 }

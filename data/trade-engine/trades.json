@@ -1,6 +1,18 @@
 {
-  "exported_at": "2026-08-21T07:00:00.688217+00:00",
+  "exported_at": "2026-08-24T07:00:00.745194+00:00",
   "trades": [
+    {
+      "stock_code": "017670",
+      "stock_name": "SK텔레콤",
+      "side": "sell",
+      "quantity": 16,
+      "price": 102700.0,
+      "pnl": 82483.52,
+      "pnl_rate": 5.3037,
+      "strategy": "swing_trailing(peak=8.6%,step=3.0%,trail_sl=5.6%)",
+      "reason": "swing_trailing(peak=8.6%,step=3.0%,trail_sl=5.6%)",
+      "filled_at": "2026-08-24T00:46:14.321985"
+    },
     {
       "stock_code": "017800",
       "stock_name": "현대엘리베이터",
