@@ -1,27 +1,60 @@
 {
-  "exported_at": "2026-08-24T07:00:00.731402+00:00",
+  "exported_at": "2026-08-25T07:00:00.674632+00:00",
   "holdings": [
     {
       "stock_code": "017800",
       "stock_name": "현대엘리베이터",
       "quantity": 11,
       "avg_price": 72600.0,
-      "current_price": 73700.0,
-      "unrealized_pnl": 9384.76,
-      "unrealized_pnl_rate": 1.1752,
+      "current_price": 74300.0,
+      "unrealized_pnl": 15984.76,
+      "unrealized_pnl_rate": 2.0016,
       "strategy": "",
       "entry_date": "2026-08-20T15:00:00"
     },
     {
-      "stock_code": "056080",
-      "stock_name": "유진로봇",
+      "stock_code": "000660",
+      "stock_name": "SK하이닉스",
       "quantity": 2,
-      "avg_price": 12520.0,
-      "current_price": 11720.0,
-      "unrealized_pnl": -1677.62,
-      "unrealized_pnl_rate": -6.6998,
+      "avg_price": 1676000.0,
+      "current_price": 1677500.0,
+      "unrealized_pnl": 0,
+      "unrealized_pnl_rate": 0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-08-25T06:12:45.434527"
+    },
+    {
+      "stock_code": "003670",
+      "stock_name": "포스코퓨처엠",
+      "quantity": 2,
+      "avg_price": 167800.0,
+      "current_price": 167650.0,
+      "unrealized_pnl": 0,
+      "unrealized_pnl_rate": 0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-08-25T06:17:25.260077"
+    },
+    {
+      "stock_code": "009420",
+      "stock_name": "한올바이오파마",
+      "quantity": 7,
+      "avg_price": 60400.0,
+      "current_price": 60350.0,
+      "unrealized_pnl": 0,
+      "unrealized_pnl_rate": 0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-08-25T06:17:06.439891"
+    },
+    {
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "quantity": 6,
+      "avg_price": 257000.0,
+      "current_price": 257250.0,
+      "unrealized_pnl": -3742.8,
+      "unrealized_pnl_rate": -0.3777,
       "strategy": "manual_recovery",
-      "entry_date": "2026-08-21T04:43:34.605799"
+      "entry_date": "2026-08-25T06:11:09.680780"
     }
   ]
 }

@@ -1,7 +1,33 @@
 {
-  "exported_at": "2026-08-24T07:00:01.881735+00:00",
-  "total": 47,
+  "exported_at": "2026-08-25T07:00:01.864573+00:00",
+  "total": 50,
   "items": [
+    {
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "market": "KRX",
+      "sector": "반도체",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 100,
+      "memo": "AI APPROVE | conf=100% | qty_ratio=120% | AI review removed (2026-04-15)",
+      "created_at": "2026-06-10T13:59:39.285615",
+      "updated_at": "2026-08-25T15:10:00.819131"
+    },
+    {
+      "stock_code": "000660",
+      "stock_name": "SK하이닉스",
+      "market": "KRX",
+      "sector": "반도체",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 100,
+      "memo": "AI APPROVE | conf=100% | qty_ratio=120% | AI review removed (2026-04-15)",
+      "created_at": "2026-08-25T15:10:00.817854",
+      "updated_at": "2026-08-25T15:10:00.817854"
+    },
     {
       "stock_code": "059120",
       "stock_name": "아진엑스텍",
@@ -79,19 +105,6 @@
       "memo": "AI APPROVE | conf=70% | qty_ratio=120% | AI review removed (2026-04-15)",
       "created_at": "2026-06-29T15:14:18.961787",
       "updated_at": "2026-06-29T15:14:18.961787"
-    },
-    {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "market": "KRX",
-      "sector": "반도체",
-      "target_buy_price": null,
-      "target_price": null,
-      "stop_loss": null,
-      "priority": 65,
-      "memo": "AI APPROVE | conf=65% | qty_ratio=120% | AI review removed (2026-04-15)",
-      "created_at": "2026-06-10T13:59:39.285615",
-      "updated_at": "2026-08-07T15:13:08.201330"
     },
     {
       "stock_code": "018260",
@@ -365,6 +378,32 @@
       "memo": "AI APPROVE | conf=47% | qty_ratio=100% | AI review removed (2026-04-15)",
       "created_at": "2026-08-14T15:24:06.640616",
       "updated_at": "2026-08-14T15:24:06.640616"
+    },
+    {
+      "stock_code": "009420",
+      "stock_name": "한올바이오파마",
+      "market": "KRX",
+      "sector": "",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 40,
+      "memo": "AI APPROVE | conf=40% | qty_ratio=100% | AI review removed (2026-04-15)",
+      "created_at": "2026-08-25T15:15:57.144881",
+      "updated_at": "2026-08-25T15:15:57.144881"
+    },
+    {
+      "stock_code": "003670",
+      "stock_name": "포스코퓨처엠",
+      "market": "KRX",
+      "sector": "화학",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 40,
+      "memo": "AI APPROVE | conf=40% | qty_ratio=100% | AI review removed (2026-04-15)",
+      "created_at": "2026-08-25T15:15:57.143064",
+      "updated_at": "2026-08-25T15:15:57.143064"
     },
     {
       "stock_code": "056080",

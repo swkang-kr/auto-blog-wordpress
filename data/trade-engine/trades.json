@@ -1,6 +1,54 @@
 {
-  "exported_at": "2026-08-24T07:00:00.745194+00:00",
+  "exported_at": "2026-08-25T07:00:00.689503+00:00",
   "trades": [
+    {
+      "stock_code": "003670",
+      "stock_name": "포스코퓨처엠",
+      "side": "buy",
+      "quantity": 2,
+      "price": 167650.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "",
+      "filled_at": "2026-08-25T06:17:25.265175"
+    },
+    {
+      "stock_code": "009420",
+      "stock_name": "한올바이오파마",
+      "side": "buy",
+      "quantity": 7,
+      "price": 60350.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "",
+      "filled_at": "2026-08-25T06:17:06.448255"
+    },
+    {
+      "stock_code": "000660",
+      "stock_name": "SK하이닉스",
+      "side": "buy",
+      "quantity": 2,
+      "price": 1677500.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "이월분(익일종가)",
+      "filled_at": "2026-08-25T06:12:45.445940"
+    },
+    {
+      "stock_code": "056080",
+      "stock_name": "유진로봇",
+      "side": "sell",
+      "quantity": 2,
+      "price": 11440.0,
+      "pnl": -2232.66,
+      "pnl_rate": -8.9164,
+      "strategy": "swing_stop_loss(SL=11,523)",
+      "reason": "swing_stop_loss(SL=11,523)",
+      "filled_at": "2026-08-25T00:06:01.795776"
+    },
     {
       "stock_code": "017670",
       "stock_name": "SK텔레콤",
@@ -36,30 +84,6 @@
       "strategy": "RSI+MACD(swing)",
       "reason": "이월분(익일종가)",
       "filled_at": "2026-08-19T06:11:34.864492"
-    },
-    {
-      "stock_code": "028670",
-      "stock_name": "팬오션",
-      "side": "sell",
-      "quantity": 172,
-      "price": 5950.0,
-      "pnl": 11712.62,
-      "pnl_rate": 1.1617,
-      "strategy": "swing_trailing(peak=4.1%,step=3.0%,trail_sl=1.1%)",
-      "reason": "swing_trailing(peak=4.1%,step=3.0%,trail_sl=1.1%)",
-      "filled_at": "2026-08-18T02:26:25.725062"
-    },
-    {
-      "stock_code": "090460",
-      "stock_name": "비에이치",
-      "side": "sell",
-      "quantity": 17,
-      "price": 18990.0,
-      "pnl": 8940.4,
-      "pnl_rate": 2.8582,
-      "strategy": "swing_trailing(peak=6.0%,step=3.0%,trail_sl=3.0%)",
-      "reason": "swing_trailing(peak=6.0%,step=3.0%,trail_sl=3.0%)",
-      "filled_at": "2026-08-18T01:36:28.561475"
     }
   ]
 }
