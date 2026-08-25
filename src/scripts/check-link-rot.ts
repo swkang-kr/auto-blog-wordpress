@@ -1,14 +1,12 @@
 /**
  * Link Rot Detection Script
  * Scans published posts for broken external links (4xx/5xx responses).
- * Sends results to Telegram if configured.
  *
  * Usage: npx tsx src/scripts/check-link-rot.ts [--limit=50]
  */
 import axios from 'axios';
 import { loadConfig } from '../config/env.js';
 import { WordPressService } from '../services/wordpress.service.js';
-import { sendTelegramAlert } from '../utils/alerting.js';
 import { logger } from '../utils/logger.js';
 
 interface BrokenLink {
@@ -139,15 +137,6 @@ async function main(): Promise<void> {
       logger.warn(`  in: "${b.postTitle}" — ${b.postUrl}`);
     }
 
-    // Send Telegram alert
-    if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
-      const msg = `🔗 Link Rot Alert: ${broken.length} broken link(s) found\n\n` +
-        broken.slice(0, 10).map(b =>
-          `• [${b.statusCode}] ${b.linkUrl}\n  in: "${b.postTitle}"`,
-        ).join('\n\n');
-      await sendTelegramAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, msg);
-      logger.info('Link rot report sent to Telegram');
-    }
   } else {
     logger.info('No broken links found!');
   }

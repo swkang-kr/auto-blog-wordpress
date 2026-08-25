@@ -61,8 +61,6 @@ jobs:
           IMAGE_FORMAT: ${{ secrets.IMAGE_FORMAT }}
           PUBLISH_STATUS: ${{ secrets.PUBLISH_STATUS }}
           ADSENSE_PUB_ID: ${{ secrets.ADSENSE_PUB_ID }}
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           THREADS_APP_ID: ${{ secrets.THREADS_APP_ID }}
           THREADS_APP_SECRET: ${{ secrets.THREADS_APP_SECRET }}
           THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}

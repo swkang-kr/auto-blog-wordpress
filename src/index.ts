@@ -16,7 +16,6 @@ import { HashnodeService } from './services/hashnode.service.js';
 import { GA4AnalyticsService } from './services/ga4-analytics.service.js';
 import { GSCAnalyticsService } from './services/gsc-analytics.service.js';
 import { PostHistory } from './utils/history.js';
-import { sendBatchSummary, sendQualityAlert, sendDecayAlert, sendHealthCheck, sendTelegramAlert, sendEarlyDecayAlert } from './utils/alerting.js';
 import { DataVisualizationService } from './services/data-visualization.service.js';
 import { costTracker, CostTracker } from './utils/cost-tracker.js';
 import { logger } from './utils/logger.js';
@@ -467,15 +466,6 @@ async function main(): Promise<void> {
   // 2.14b2. Initialize data visualization service for Finance/Tech charts
   const dataVizService = new DataVisualizationService(factCheckService);
 
-  // 2.14c-pre. Send health check notification at batch start
-  if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
-    await sendHealthCheck(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, {
-      totalPosts: history.getAllEntries().length,
-      activeNiches: activeNiches.length,
-      postCount: config.POST_COUNT,
-    });
-  }
-
   // 2.15. Manual review mode: schedule initial posts for delayed auto-publish (AdSense safety)
   const isNewPublisher = config.MANUAL_REVIEW_THRESHOLD > 0 && history.getAllEntries().length < config.MANUAL_REVIEW_THRESHOLD * 2;
   let effectivePublishStatus = config.PUBLISH_STATUS as 'publish' | 'draft';
@@ -613,9 +603,6 @@ async function main(): Promise<void> {
           logger.warn(`  ${page.page} (pos ${page.position.toFixed(1)}, ${page.clicks} clicks/7d, ${page.impressions} imp/7d)`);
         }
         logger.warn(`Consider running: npx tsx src/scripts/refresh-stale-posts.ts`);
-        if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
-          await sendDecayAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, declining.slice(0, 5));
-        }
       }
 
       // Competitive threat monitoring: detect queries where competitors are outranking us
@@ -692,12 +679,11 @@ async function main(): Promise<void> {
   }
 
   // 3.5a2. Weekly ranking digest (Mondays only)
-  if (gscService && new Date().getDay() === 1 && config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
+  if (gscService && new Date().getDay() === 1) {
     try {
       const digest = await gscService.generateWeeklyRankingDigest();
       if (digest) {
-        await sendTelegramAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, digest);
-        logger.info('Weekly ranking digest sent to Telegram');
+        logger.info(`Weekly ranking digest:\n${digest}`);
       }
     } catch (digestError) {
       logger.debug(`Weekly ranking digest failed: ${digestError instanceof Error ? digestError.message : digestError}`);
@@ -713,14 +699,6 @@ async function main(): Promise<void> {
         if (cwvReport.lcp && cwvReport.lcp.rating !== 'good') logger.warn(`  LCP: ${cwvReport.lcp.p75}ms (${cwvReport.lcp.rating})`);
         if (cwvReport.inp && cwvReport.inp.rating !== 'good') logger.warn(`  INP: ${cwvReport.inp.p75}ms (${cwvReport.inp.rating})`);
         if (cwvReport.cls && cwvReport.cls.rating !== 'good') logger.warn(`  CLS: ${cwvReport.cls.p75} (${cwvReport.cls.rating})`);
-        // Send Telegram alert for CWV issues
-        if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
-          await sendTelegramAlert(
-            config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID,
-            `Core Web Vitals: ${cwvReport.overallRating.toUpperCase()}\n` +
-            `LCP: ${cwvReport.lcp?.p75 ?? 'N/A'}ms | INP: ${cwvReport.inp?.p75 ?? 'N/A'}ms | CLS: ${cwvReport.cls?.p75 ?? 'N/A'}`,
-          );
-        }
       }
     } catch (cwvError) {
       logger.debug(`CWV check failed: ${cwvError instanceof Error ? cwvError.message : cwvError}`);
@@ -735,10 +713,9 @@ async function main(): Promise<void> {
       if (psiUrls.length > 0) {
         const psiResults = await seoService.checkPageSpeedBatch(psiUrls);
         const failing = psiResults.filter(r => !r.pass);
-        if (failing.length > 0 && config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
-          const psiMsg = `⚠️ PageSpeed Insights Alert\n${failing.length} URL(s) below threshold:\n` +
-            failing.map(f => `${f.url}\n  Score: ${f.performanceScore} | LCP: ${f.lcp}ms | CLS: ${f.cls}`).join('\n');
-          await sendTelegramAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, psiMsg);
+        if (failing.length > 0) {
+          logger.warn(`PageSpeed Insights Alert: ${failing.length} URL(s) below threshold:\n` +
+            failing.map(f => `${f.url}\n  Score: ${f.performanceScore} | LCP: ${f.lcp}ms | CLS: ${f.cls}`).join('\n'));
         }
       }
     } catch (psiError) {
@@ -1615,13 +1592,6 @@ async function main(): Promise<void> {
           if (factResult.hasCriticalErrors) {
             logger.warn(`Fact-check: Forcing draft status due to ${factResult.criticalCount} critical factual errors`);
             effectivePublishStatus = 'draft';
-            if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
-              await sendQualityAlert(
-                config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, content.title, '',
-                content.qualityScore || 0, config.MIN_QUALITY_SCORE,
-                [`${factResult.criticalCount} critical fact-check errors`, ...factResult.flagged.slice(0, 3)],
-              );
-            }
           }
         }
       } catch (factError) {
@@ -1800,13 +1770,8 @@ async function main(): Promise<void> {
         if (content.qualityScore < minQuality - 15 && effectivePublishStatus === 'publish') {
           logger.warn(`Quality score ${content.qualityScore} is critically below threshold (${minQuality}). Reverting to draft.`);
           await wpService.revertToDraft(post.postId, `Quality score ${content.qualityScore} < ${minQuality - 15}`);
-          if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
-            const issues = content.qualityScore < 40 ? ['Critically low quality score', 'Needs complete rewrite'] : ['Below minimum quality threshold'];
-            await sendQualityAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, content.title, post.url, content.qualityScore, minQuality, issues);
-          }
-        } else if (content.qualityScore < minQuality && config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
-          // Alert but don't rollback for marginal scores
-          await sendQualityAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, content.title, post.url, content.qualityScore, minQuality, ['Marginal quality - review recommended']);
+        } else if (content.qualityScore < minQuality) {
+          logger.warn(`Quality score ${content.qualityScore} is below threshold (${minQuality}) for "${content.title}" — marginal quality, review recommended.`);
         }
       }
 
@@ -2229,11 +2194,6 @@ async function main(): Promise<void> {
         for (const b of brokenLinks) {
           logger.warn(`  [${b.status}] ${b.linkUrl}  ← "${b.postTitle}"`);
         }
-        if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
-          const lrMsg = `🔗 Link Rot: ${brokenLinks.length} broken link(s)\n` +
-            brokenLinks.slice(0, 8).map(b => `[${b.status}] ${b.linkUrl}\n  in: "${b.postTitle}"`).join('\n');
-          await sendTelegramAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, lrMsg);
-        }
       }
     } catch (linkRotError) {
       logger.debug(`Link rot check failed: ${linkRotError instanceof Error ? linkRotError.message : linkRotError}`);
@@ -2288,17 +2248,6 @@ async function main(): Promise<void> {
               const emoji = m.event === 'hit-top1' ? '🥇' : m.event === 'hit-top3' ? '🥈' : m.event === 'hit-top10' ? '📈' : '📉';
               logger.info(`${emoji} Ranking milestone: "${m.keyword}" ${m.event} (pos ${m.previousPosition.toFixed(1)} → ${m.currentPosition.toFixed(1)})`);
             }
-            if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
-              const milestoneMsg = milestones.map(m => {
-                const emoji = m.event === 'hit-top1' ? '🥇' : m.event === 'hit-top3' ? '🥈' : m.event === 'hit-top10' ? '📈' : '📉';
-                return `${emoji} "${m.keyword}": pos ${m.previousPosition.toFixed(1)} → ${m.currentPosition.toFixed(1)}`;
-              }).join('\n');
-              await sendTelegramAlert(
-                config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID,
-                `<b>Ranking Milestones</b>\n${milestoneMsg}`,
-                milestones.some(m => m.event === 'dropped-from-top10') ? 'warning' : 'info',
-              );
-            }
           }
         }
       }
@@ -2351,19 +2300,6 @@ async function main(): Promise<void> {
           }
         }
 
-        // Send Telegram alert for cannibalization issues
-        if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID && (highSeverity.length > 0 || medSeverity.length > 0)) {
-          try {
-            const cannibalSummary = [...highSeverity, ...medSeverity].slice(0, 5)
-              .map(c => `[${c.severity.toUpperCase()}] "${c.query}" → ${c.recommendation} (${c.pages.map(p => `pos ${p.position.toFixed(0)}`).join(' vs ')})`)
-              .join('\n');
-            await sendTelegramAlert(
-              config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID,
-              `<b>Keyword Cannibalization Alert</b>\n${cannibalized.length} competing query(ies) detected:\n${cannibalSummary}`,
-              'warning',
-            );
-          } catch { /* Telegram alert non-fatal */ }
-        }
       }
     } catch (error) {
       logger.debug(`Cannibalization detection failed: ${error instanceof Error ? error.message : error}`);
@@ -2379,11 +2315,7 @@ async function main(): Promise<void> {
         logger.warn(`Redirect chains found: ${chains.length} chain(s) — auto-fixing internal links`);
         // Auto-fix: replace chain links in post content with direct final URLs
         const fixedCount = await wpService.fixRedirectChains(chains);
-        if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
-          const chainMsg = chains.slice(0, 3).map(c => `[${c.hops} hops] ${c.originalUrl} → ${c.finalUrl}`).join('\n  - ');
-          await sendTelegramAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID,
-            `<b>Redirect Chain Alert: ${chains.length} chain(s)</b>\n  - ${chainMsg}\n\n${fixedCount > 0 ? `✅ Auto-fixed links in ${fixedCount} post(s)` : '<i>No fixable links found in recent posts.</i>'}`, 'warning');
-        }
+        logger.info(`Redirect chains: ${fixedCount > 0 ? `auto-fixed links in ${fixedCount} post(s)` : 'no fixable links found in recent posts'}`);
       }
     }
   } catch (error) {
@@ -2686,13 +2618,10 @@ async function main(): Promise<void> {
         for (const item of decayItems.slice(0, 5)) {
           logger.warn(`  ${item.urgency}: "${item.query}" ${item.page} (avg decline: ${item.avgDailyDecline.toFixed(1)} pos/day)`);
         }
-        // Send Telegram alert for critical decays
-        if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
-          const criticalDecays = decayItems.filter(d => d.urgency === 'critical');
-          if (criticalDecays.length > 0) {
-            const decayMsg = criticalDecays.slice(0, 3).map(d => `"${d.query}" on ${d.page} (-${d.avgDailyDecline.toFixed(1)} pos/day)`).join('\n');
-            await sendTelegramAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, `Early Decay Alert: ${criticalDecays.length} critical decline(s)\n${decayMsg}`);
-          }
+        const criticalDecays = decayItems.filter(d => d.urgency === 'critical');
+        if (criticalDecays.length > 0) {
+          const decayMsg = criticalDecays.slice(0, 3).map(d => `"${d.query}" on ${d.page} (-${d.avgDailyDecline.toFixed(1)} pos/day)`).join('\n');
+          logger.warn(`Early Decay Alert: ${criticalDecays.length} critical decline(s)\n${decayMsg}`);
         }
       }
     } catch (error) {
@@ -2710,10 +2639,6 @@ async function main(): Promise<void> {
         logger.warn(`Slope-based decay: ${slopeDecay.length} page(s) with statistically significant decline`);
         for (const item of slopeDecay.slice(0, 5)) {
           logger.warn(`  ${item.urgency}: "${item.query}" slope=${item.slope.toFixed(2)} R²=${item.r2.toFixed(2)} (projected pos: ${item.projectedPosition7d.toFixed(1)} in 7d)`);
-        }
-        // Send enhanced early decay alert with slope data
-        if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
-          await sendEarlyDecayAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, slopeDecay);
         }
       }
     } catch (slopeError) {
@@ -2734,13 +2659,12 @@ async function main(): Promise<void> {
     }
   }
 
-  // 4.11. [#22] Core Web Vitals monitoring — CrUX API check + Telegram alert on degradation
+  // 4.11. [#22] Core Web Vitals monitoring — CrUX API check
   if (config.GOOGLE_API_KEY) {
     try {
       const cwv = await seoService!.checkCoreWebVitals(config.GOOGLE_API_KEY);
-      if (cwv.overall === 'poor' && config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
-        const cwvMsg = `CWV Alert: POOR scores — LCP: ${cwv.lcp?.p75 || 'N/A'}ms, INP: ${cwv.inp?.p75 || 'N/A'}ms, CLS: ${cwv.cls?.p75 || 'N/A'}`;
-        await sendTelegramAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, cwvMsg);
+      if (cwv.overall === 'poor') {
+        logger.warn(`CWV Alert: POOR scores — LCP: ${cwv.lcp?.p75 || 'N/A'}ms, INP: ${cwv.inp?.p75 || 'N/A'}ms, CLS: ${cwv.cls?.p75 || 'N/A'}`);
       }
     } catch (error) {
       logger.debug(`CWV monitoring failed: ${error instanceof Error ? error.message : error}`);
@@ -2962,12 +2886,6 @@ async function main(): Promise<void> {
               // Clear retry meta
               await wpService.updatePostMeta(draft.postId, { _autoblog_factcheck_retry: '', _autoblog_factcheck_category: '' });
               logger.info(`Fact-check retry PASSED: post ${draft.postId} "${draft.title}" scheduled for ${publishAt.toISOString()}`);
-              if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
-                await sendQualityAlert(
-                  config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, draft.title, draft.url,
-                  0, 0, [`Fact-check retry passed — auto-scheduled for ${publishAt.toLocaleString()}`],
-                );
-              }
             }
           } else {
             // Still failing — check if too old (>7 days), then give up
@@ -3020,11 +2938,6 @@ async function main(): Promise<void> {
         for (const [cat, data] of sorted) {
           logger.info(`  ${cat}: $${data.totalRevenue.toFixed(2)} total (${data.postCount} posts, $${data.avgRpm.toFixed(2)} avg RPM)`);
         }
-        if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
-          const reportLines = sorted.map(([cat, d]) => `${cat}: $${d.totalRevenue.toFixed(2)} (${d.postCount} posts, $${d.avgRpm.toFixed(2)} RPM)`);
-          await sendTelegramAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID,
-            `💰 Monthly Niche Revenue Report\n\n${reportLines.join('\n')}`);
-        }
       }
     } catch (revenueReportErr) {
       logger.debug(`Monthly revenue report failed: ${revenueReportErr instanceof Error ? revenueReportErr.message : revenueReportErr}`);
@@ -3038,13 +2951,6 @@ async function main(): Promise<void> {
       const archived = await wpService.archiveExpiredPosts(allEntries);
       if (archived.length > 0) {
         logger.info(`Archived ${archived.length} expired low-traffic post(s) → noindex,nofollow`);
-        if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
-          const archiveList = archived.map(a => `• Post #${a.postId}: "${a.keyword}"`).join('\n');
-          await sendTelegramAlert(
-            config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID,
-            `📦 Monthly Archive: ${archived.length} post(s) set to noindex\n\n${archiveList}`,
-          );
-        }
       }
     } catch (archiveErr) {
       logger.debug(`Expired content archive failed: ${archiveErr instanceof Error ? archiveErr.message : archiveErr}`);
@@ -3093,11 +2999,6 @@ async function main(): Promise<void> {
           for (const r of topRevenue) {
             logger.info(`  $${r.estimatedRevenue.toFixed(2)} — "${r.title}" (${r.pageviews} views, ${r.niche})`);
           }
-          if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
-            const revMsg = '💰 Top Revenue Posts (weekly)\n' +
-              topRevenue.map(r => `$${r.estimatedRevenue.toFixed(2)} — ${r.title} (${r.pageviews} views)`).join('\n');
-            await sendTelegramAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, revMsg);
-          }
         }
 
         // Traffic source revenue attribution (which channels drive revenue?)
@@ -3107,11 +3008,6 @@ async function main(): Promise<void> {
           const topSources = sourceRevenue.slice(0, 8);
           for (const s of topSources) {
             logger.info(`  $${s.estimatedRevenue.toFixed(2)} — ${s.source} (${s.pageviews} views, ${s.sessions} sessions)`);
-          }
-          if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
-            const srcMsg = '📊 Revenue by Traffic Source (weekly)\n' +
-              topSources.map(s => `$${s.estimatedRevenue.toFixed(2)} — ${s.source} (${s.pageviews} views)`).join('\n');
-            await sendTelegramAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, srcMsg);
           }
         }
 
@@ -3138,16 +3034,6 @@ async function main(): Promise<void> {
         const sessDelta = postBatchMetrics.sessions - preBatchMetrics.sessions;
         const engDelta = (postBatchMetrics.engagementRate - preBatchMetrics.engagementRate) * 100;
         logger.info(`Post-batch GA4 delta: pageviews ${pvDelta >= 0 ? '+' : ''}${pvDelta}, sessions ${sessDelta >= 0 ? '+' : ''}${sessDelta}, engagement ${engDelta >= 0 ? '+' : ''}${engDelta.toFixed(1)}pp`);
-        if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
-          const metricsMsg = [
-            '📊 *Batch GA4 Metrics Snapshot*',
-            '',
-            `*Pre-batch (7d):* ${preBatchMetrics.pageviews.toLocaleString()} PV | ${preBatchMetrics.sessions.toLocaleString()} sessions | ${(preBatchMetrics.engagementRate * 100).toFixed(1)}% engagement`,
-            `*Post-batch (7d):* ${postBatchMetrics.pageviews.toLocaleString()} PV | ${postBatchMetrics.sessions.toLocaleString()} sessions | ${(postBatchMetrics.engagementRate * 100).toFixed(1)}% engagement`,
-            `*Delta:* ${pvDelta >= 0 ? '+' : ''}${pvDelta} PV | ${sessDelta >= 0 ? '+' : ''}${sessDelta} sessions | ${engDelta >= 0 ? '+' : ''}${engDelta.toFixed(1)}pp engagement`,
-          ].join('\n');
-          await sendTelegramAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, metricsMsg);
-        }
       }
     } catch (postSnapErr) {
       logger.debug(`Post-batch GA4 snapshot failed: ${postSnapErr instanceof Error ? postSnapErr.message : postSnapErr}`);
@@ -3178,9 +3064,8 @@ async function main(): Promise<void> {
     const recent = slaHistory.slice(-7);
     if (recent.length >= 3) {
       const avgDuration = recent.slice(0, -1).reduce((s, e) => s + e.durationMs, 0) / (recent.length - 1);
-      if (batchDurationMs > avgDuration * 1.5 && config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
-        await sendTelegramAlert(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID,
-          `⏱ *Batch SLA Warning*\nDuration: ${Math.round(batchDurationMs / 60000)}min (avg: ${Math.round(avgDuration / 60000)}min)\nThis batch took ${Math.round((batchDurationMs / avgDuration) * 100)}% of recent average.`);
+      if (batchDurationMs > avgDuration * 1.5) {
+        logger.warn(`Batch SLA Warning: duration ${Math.round(batchDurationMs / 60000)}min (avg: ${Math.round(avgDuration / 60000)}min) — this batch took ${Math.round((batchDurationMs / avgDuration) * 100)}% of recent average.`);
       }
       // Cost per post trend
       const costPerPost = batch.successCount > 0 ? totalCost / batch.successCount : 0;
@@ -3190,23 +3075,6 @@ async function main(): Promise<void> {
     }
   } catch (slaErr) {
     logger.debug(`Batch SLA tracking failed: ${slaErr instanceof Error ? slaErr.message : slaErr}`);
-  }
-
-  // Send Telegram notification
-  if (config.TELEGRAM_BOT_TOKEN && config.TELEGRAM_CHAT_ID) {
-    await sendBatchSummary(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_CHAT_ID, {
-      successCount: batch.successCount,
-      failureCount: batch.failureCount,
-      skippedCount: batch.skippedCount,
-      totalDuration: batchDurationMs,
-      results: results.map(r => ({
-        keyword: r.keyword,
-        niche: r.niche,
-        success: r.success,
-        postUrl: r.postUrl,
-        error: r.error,
-      })),
-    });
   }
 
   // Exit with error code if all posts failed

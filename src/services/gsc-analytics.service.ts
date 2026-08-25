@@ -581,7 +581,7 @@ export class GSCAnalyticsService {
   /**
    * Detect early content decay: 3+ consecutive days of ranking decline.
    * Returns pages with sustained position drops that need immediate attention
-   * before they fall off page 1. Triggers auto-refresh + Telegram alert.
+   * before they fall off page 1. Triggers auto-refresh and logs an alert.
    */
   async detectEarlyDecay(): Promise<Array<{
     page: string;
@@ -1175,7 +1175,7 @@ export class GSCAnalyticsService {
 
   /**
    * Generate weekly ranking digest: compare last 7 days vs previous 7 days.
-   * Returns formatted Telegram message with top gainers, losers, new keywords, CTR changes.
+   * Returns formatted digest text with top gainers, losers, new keywords, CTR changes.
    */
   async generateWeeklyRankingDigest(): Promise<string | null> {
     try {

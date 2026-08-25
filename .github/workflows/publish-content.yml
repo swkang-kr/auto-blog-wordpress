@@ -84,8 +84,6 @@ jobs:
           PUBLISH_TIMEZONE: ${{ secrets.PUBLISH_TIMEZONE }}
           AUTO_REWRITE_COUNT: ${{ secrets.AUTO_REWRITE_COUNT }}
           AUTO_REWRITE_MIN_AGE_DAYS: ${{ secrets.AUTO_REWRITE_MIN_AGE_DAYS }}
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           X_API_KEY: ${{ secrets.X_API_KEY }}
           X_API_SECRET: ${{ secrets.X_API_SECRET }}
           X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}

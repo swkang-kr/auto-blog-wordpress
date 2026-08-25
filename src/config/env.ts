@@ -58,9 +58,6 @@ const envSchema = z.object({
   GA4_PROPERTY_ID: z.string().default(''),
   // Google Search Console for search performance feedback
   GSC_SITE_URL: z.string().default(''),
-  // Telegram bot for batch alerting (replaces Slack)
-  TELEGRAM_BOT_TOKEN: z.string().default(''),
-  TELEGRAM_CHAT_ID: z.string().default(''),
   // Image format: webp (default) or avif (better compression, newer format)
   IMAGE_FORMAT: z.enum(['webp', 'avif']).default('webp'),
   // Auto-rewrite underperforming posts (0 = disabled)

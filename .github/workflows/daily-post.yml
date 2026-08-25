@@ -46,8 +46,6 @@ jobs:
           GA_MEASUREMENT_ID: ${{ secrets.GA_MEASUREMENT_ID }}
           NAVER_SITE_VERIFICATION: ${{ secrets.NAVER_SITE_VERIFICATION }}
           MIN_QUALITY_SCORE: ${{ secrets.MIN_QUALITY_SCORE }}
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           WP_URL: ${{ secrets.WP_URL }}
           WP_USERNAME: ${{ secrets.WP_USERNAME }}
           WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
@@ -90,8 +88,6 @@ jobs:
           PUBLISH_TIMEZONE: ${{ secrets.PUBLISH_TIMEZONE }}
           AUTO_REWRITE_COUNT: ${{ secrets.AUTO_REWRITE_COUNT }}
           AUTO_REWRITE_MIN_AGE_DAYS: ${{ secrets.AUTO_REWRITE_MIN_AGE_DAYS }}
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           X_API_KEY: ${{ secrets.X_API_KEY }}
           X_API_SECRET: ${{ secrets.X_API_SECRET }}
           X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}

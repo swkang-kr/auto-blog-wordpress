@@ -381,7 +381,7 @@ export interface PostHistoryEntry {
   qualityScore?: number;
 }
 
-/** Ranking milestone event for Telegram alerts */
+/** Ranking milestone event (position hit/drop notable thresholds) */
 export interface RankingMilestone {
   keyword: string;
   postUrl: string;
