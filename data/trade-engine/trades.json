@@ -1,6 +1,18 @@
 {
-  "exported_at": "2026-08-25T07:00:00.689503+00:00",
+  "exported_at": "2026-08-26T07:00:01.096173+00:00",
   "trades": [
+    {
+      "stock_code": "009420",
+      "stock_name": "한올바이오파마",
+      "side": "sell",
+      "quantity": 7,
+      "price": 62000.0,
+      "pnl": 9733.36,
+      "pnl_rate": 2.3021,
+      "strategy": "swing_trailing(peak=5.5%,step=3.0%,trail_sl=2.5%)",
+      "reason": "swing_trailing(peak=5.5%,step=3.0%,trail_sl=2.5%)",
+      "filled_at": "2026-08-26T00:10:08.089233"
+    },
     {
       "stock_code": "003670",
       "stock_name": "포스코퓨처엠",
@@ -72,18 +84,6 @@
       "strategy": "RSI+MACD(swing)",
       "reason": "이월분(익일종가)",
       "filled_at": "2026-08-20T06:13:07.658683"
-    },
-    {
-      "stock_code": "017670",
-      "stock_name": "SK텔레콤",
-      "side": "buy",
-      "quantity": 16,
-      "price": 97250.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "이월분(익일종가)",
-      "filled_at": "2026-08-19T06:11:34.864492"
     }
   ]
 }

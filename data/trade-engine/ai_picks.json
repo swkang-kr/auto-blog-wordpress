@@ -1,165 +1,191 @@
 {
-  "exported_at": "2026-08-25T07:00:01.824199+00:00",
-  "total_candidates": 12,
-  "total_holdings": 5,
+  "exported_at": "2026-08-26T07:00:02.134480+00:00",
+  "total_candidates": 14,
+  "total_holdings": 4,
   "candidates": [
-    {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "sector": "반도체",
-      "signal_count": 7,
-      "avg_confidence": 0.6689999999999999,
-      "strategies": [],
-      "reason": "score=2.45, ranked_score=17.15",
-      "price_at_signal": 0,
-      "signal_time": "2026-08-25T15:25:00.008184+09:00",
-      "status": "장중 워치리스트"
-    },
     {
       "stock_code": "005935",
       "stock_name": "삼성전자우",
       "sector": "반도체와반도체장비",
-      "signal_count": 6,
-      "avg_confidence": 0.5,
+      "signal_count": 4,
+      "avg_confidence": 0.5833,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20아래",
+      "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-08-25T05:59:23.050563",
+      "signal_time": "2026-08-26T05:03:30.031524",
       "status": "매수 시그널"
     },
     {
       "stock_code": "008930",
       "stock_name": "한미사이언스",
       "sector": "",
-      "signal_count": 5,
-      "avg_confidence": 0.66,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "거래량9.8x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉RSI과열(71,-0.5) | 주봉MA20위",
-      "price_at_signal": 0,
-      "signal_time": "2026-08-25T06:01:42.726479",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "006220",
-      "stock_name": "제주은행",
-      "sector": "은행",
-      "signal_count": 5,
-      "avg_confidence": 0.96,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(54) | 거래량5.0x | 거래량3x+ | MA정배열 | 캔들슈팅스타(약세) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+2.9%vsKOSPI+0.5%) | 디커플링모멘텀",
-      "price_at_signal": 0,
-      "signal_time": "2026-08-25T06:01:42.726471",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "003530",
-      "stock_name": "한화투자증권",
-      "sector": "증권",
-      "signal_count": 5,
-      "avg_confidence": 0.96,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(61) | 거래량5.0x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(27) | 주봉MA20아래 | 상대강도(+3.9%vsKOSPI+0.5%) | 디커플링모멘텀",
-      "price_at_signal": 0,
-      "signal_time": "2026-08-25T06:01:42.726460",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "000880",
-      "stock_name": "한화",
-      "sector": "",
-      "signal_count": 5,
-      "avg_confidence": 1.0,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(60) | 거래량4.8x | 거래량3x+ | 캔들상승장악형(강) | 주봉데드크로스(-1.5) | 주봉RSI과매도(27) | 주봉MA20아래 | 상대강도(+40.7%vsKOSPI+0.5%) | 디커플링모멘텀",
-      "price_at_signal": 0,
-      "signal_time": "2026-08-25T06:01:42.726432",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "028670",
-      "stock_name": "팬오션",
-      "sector": "해운사",
-      "signal_count": 5,
-      "avg_confidence": 1.0,
-      "strategies": [],
-      "reason": "score=8.50, ranked_score=25.50",
-      "price_at_signal": 0,
-      "signal_time": "2026-08-25T15:25:00.008184+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "011200",
-      "stock_name": "HMM",
-      "sector": "해운사",
       "signal_count": 4,
-      "avg_confidence": 0.9,
-      "strategies": [],
-      "reason": "score=9.50, ranked_score=38.00",
+      "avg_confidence": 0.6333,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "거래량10.2x | 거래량3x+ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-08-25T15:25:00.008184+09:00",
+      "signal_time": "2026-08-26T05:03:30.031516",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "019170",
+      "stock_name": "신풍제약",
+      "sector": "",
+      "signal_count": 4,
+      "avg_confidence": 0.7167,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | 거래량29.6x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+2.8%vsKOSPI+1.6%) | 디커플링모멘텀",
+      "price_at_signal": 0,
+      "signal_time": "2026-08-26T05:03:30.031507",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "051600",
+      "stock_name": "한전KPS",
+      "sector": "",
+      "signal_count": 4,
+      "avg_confidence": 0.8333,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(57) | 거래량2.6x | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+3.1%vsKOSPI+1.6%) | 디커플링모멘텀",
+      "price_at_signal": 0,
+      "signal_time": "2026-08-26T05:03:30.031498",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "015760",
+      "stock_name": "한국전력",
+      "sector": "전기유틸리티",
+      "signal_count": 4,
+      "avg_confidence": 0.8333,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD골든크로스 | RSI모멘텀(55) | 거래량2.0x | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+8.0%vsKOSPI+1.6%) | 디커플링모멘텀",
+      "price_at_signal": 0,
+      "signal_time": "2026-08-26T05:03:30.031489",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "000720",
+      "stock_name": "현대건설",
+      "sector": "건설",
+      "signal_count": 4,
+      "avg_confidence": 1.0,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(63) | 거래량2.4x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+6.3%vsKOSPI+1.6%) | 디커플링모멘텀",
+      "price_at_signal": 0,
+      "signal_time": "2026-08-26T05:03:30.031478",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "052690",
+      "stock_name": "한전기술",
+      "sector": "",
+      "signal_count": 4,
+      "avg_confidence": 1.0,
+      "strategies": [],
+      "reason": "score=6.80, ranked_score=21.76",
+      "price_at_signal": 0,
+      "signal_time": "2026-08-26T15:25:00.076122+09:00",
       "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "004490",
+      "stock_name": "세방전지",
+      "sector": "",
+      "signal_count": 4,
+      "avg_confidence": 0.8166666666666667,
+      "strategies": [],
+      "reason": "score=5.04, ranked_score=16.13",
+      "price_at_signal": 0,
+      "signal_time": "2026-08-26T15:25:00.076122+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "079900",
+      "stock_name": "전진건설로봇",
+      "sector": "",
+      "signal_count": 3,
+      "avg_confidence": 1.0,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(63) | 거래량16.0x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(30) | 주봉MA20아래 | 상대강도(+17.1%vsKOSPI+1.2%) | 디커플링모멘텀",
+      "price_at_signal": 0,
+      "signal_time": "2026-08-26T05:25:33.443513",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "053690",
+      "stock_name": "한미글로벌",
+      "sector": "건설",
+      "signal_count": 3,
+      "avg_confidence": 1.0,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD골든크로스 | RSI모멘텀(63) | 거래량2.2x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+16.4%vsKOSPI+1.2%) | 디커플링모멘텀",
+      "price_at_signal": 0,
+      "signal_time": "2026-08-26T05:25:33.443485",
+      "status": "매수 시그널"
     },
     {
       "stock_code": "034020",
       "stock_name": "두산에너빌리티",
-      "sector": "기계",
-      "signal_count": 3,
-      "avg_confidence": 0.6,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(51) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+5.3%vsKOSPI+0.2%) | 디커플링모멘텀",
-      "price_at_signal": 0,
-      "signal_time": "2026-08-25T05:59:23.050554",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "009420",
-      "stock_name": "한올바이오파마",
       "sector": "",
       "signal_count": 3,
-      "avg_confidence": 0.7142857142857143,
+      "avg_confidence": 0.8166666666666667,
       "strategies": [],
-      "reason": "score=3.57, ranked_score=10.71",
+      "reason": "score=5.04, ranked_score=9.07",
       "price_at_signal": 0,
-      "signal_time": "2026-08-25T15:25:00.008184+09:00",
+      "signal_time": "2026-08-26T15:25:00.076122+09:00",
       "status": "장중 워치리스트"
     },
     {
-      "stock_code": "003670",
-      "stock_name": "포스코퓨처엠",
-      "sector": "화학",
-      "signal_count": 3,
-      "avg_confidence": 0.569,
-      "strategies": [],
-      "reason": "score=2.45, ranked_score=7.35",
-      "price_at_signal": 0,
-      "signal_time": "2026-08-25T15:25:00.008184+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "000660",
-      "stock_name": "SK하이닉스",
-      "sector": "반도체",
+      "stock_code": "003530",
+      "stock_name": "한화투자증권",
+      "sector": "",
       "signal_count": 1,
-      "avg_confidence": 0.9,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MA정배열 | EMA20하방 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 대형주급락(-4.5%)",
+      "avg_confidence": 0.7829999999999999,
+      "strategies": [],
+      "reason": "score=3.84, ranked_score=2.30",
       "price_at_signal": 0,
-      "signal_time": "2026-08-25T06:09:21.594338",
-      "status": "매수 시그널"
+      "signal_time": "2026-08-26T15:25:00.076122+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "490470",
+      "stock_name": "세미파이브",
+      "sector": "",
+      "signal_count": 1,
+      "avg_confidence": 0.5663333333333334,
+      "strategies": [],
+      "reason": "score=2.04, ranked_score=1.23",
+      "price_at_signal": 0,
+      "signal_time": "2026-08-26T15:25:00.076122+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "028670",
+      "stock_name": "팬오션",
+      "sector": "",
+      "signal_count": 1,
+      "avg_confidence": 0.483,
+      "strategies": [],
+      "reason": "score=1.50, ranked_score=0.90",
+      "price_at_signal": 0,
+      "signal_time": "2026-08-26T15:25:00.076122+09:00",
+      "status": "장중 워치리스트"
     }
   ],
   "holdings": [
@@ -168,7 +194,7 @@
       "stock_name": "삼성전자",
       "quantity": 6,
       "avg_price": 257000.0,
-      "strategy": "manual_recovery",
+      "strategy": "",
       "entry_date": "2026-08-25",
       "status": "보유 중"
     },
@@ -178,7 +204,7 @@
       "quantity": 11,
       "avg_price": 72600.0,
       "strategy": "",
-      "entry_date": "2026-08-20",
+      "entry_date": "2026-08-25",
       "status": "보유 중"
     },
     {
@@ -186,7 +212,7 @@
       "stock_name": "SK하이닉스",
       "quantity": 2,
       "avg_price": 1676000.0,
-      "strategy": "RSI+MACD(swing)",
+      "strategy": "",
       "entry_date": "2026-08-25",
       "status": "보유 중"
     },
@@ -195,16 +221,7 @@
       "stock_name": "포스코퓨처엠",
       "quantity": 2,
       "avg_price": 167800.0,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-08-25",
-      "status": "보유 중"
-    },
-    {
-      "stock_code": "009420",
-      "stock_name": "한올바이오파마",
-      "quantity": 7,
-      "avg_price": 60400.0,
-      "strategy": "RSI+MACD(swing)",
+      "strategy": "",
       "entry_date": "2026-08-25",
       "status": "보유 중"
     }

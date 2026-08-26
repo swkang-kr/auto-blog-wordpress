@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-08-25T07:00:01.184886+00:00",
+  "exported_at": "2026-08-26T07:00:01.462290+00:00",
   "market_daily": [
+    {
+      "date": "20260826",
+      "kospi_change": 0.97,
+      "kosdaq_change": -0.03,
+      "foreign_net": -11.62,
+      "institution_net": 75.94,
+      "individual_net": -224.14,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260825",
       "kospi_change": 0.68,
       "kosdaq_change": 1.7,
-      "foreign_net": -381.44,
-      "institution_net": 117.07,
-      "individual_net": 105.17,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": -381.36,
+      "institution_net": 117.08,
+      "individual_net": 105.09,
+      "hot_theme_count": 39,
+      "momentum_count": 40,
+      "crash_count": 30
     },
     {
       "date": "20260824",
@@ -99,29 +110,18 @@
       "hot_theme_count": 14,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260811",
-      "kospi_change": 0.73,
-      "kosdaq_change": 0.39,
-      "foreign_net": 4.43,
-      "institution_net": 3.05,
-      "individual_net": -7.07,
-      "hot_theme_count": 9,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "한화, 인적분할 후 재상장 첫날 17.4% 급등",
-    "'전약후강' 코스피, 상승전환해 0.68% 상승",
+    "스맥, 에이엠솔루션즈와 맞손…\"금속 3D프린팅 하이브리드 장비 시장 진출\"",
+    "[마켓뷰] ‘삼전닉스’ 자사주 매입 효과…코스피, 6800선 회복",
+    "기업 공시 [8월 26일]",
+    "코스피, 기관 '사자'에 6800선 사수…코스닥은 '주춤'",
+    "K-뷰티 돌풍에 재계 부호 지형도 ‘흔들’… 재벌 총수 철옹성 뚫은 에이피알",
+    "'오파칼림' 도입 결정한 SK바이오팜…\"급성장할 것\"",
+    "소폭 상승 마감한 코스피",
+    "상승 마감한 코스피",
     "코스피 상승 마감",
-    "[포토]코스피, 0.68% 상승한 6742.74 마감",
-    "삼전·닉스, 급락 멈추고 반등…'25만전자·160만닉스' 마감(종합)",
-    "4% 급락 딛고 상승 반전…코스피, 6740선 회복[마감]",
-    "[포토]코스피, 0.68% 상승한 6742.74 마감…환율 1386.10원",
-    "스퀘어·핀시커자산운용, 금투협 정회원 가입",
-    "코스피, 순환매 확산·반도체 순매수에 상승…코스닥도 뛰어",
-    "'전약후강' 코스피, 상승전환해 0.68% 상승"
+    "코스피 소폭 상승-코스닥 약보합"
   ]
 }
