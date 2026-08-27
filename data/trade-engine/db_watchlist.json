@@ -1,7 +1,20 @@
 {
-  "exported_at": "2026-08-26T07:00:02.174655+00:00",
-  "total": 50,
+  "exported_at": "2026-08-27T07:00:01.837905+00:00",
+  "total": 54,
   "items": [
+    {
+      "stock_code": "003490",
+      "stock_name": "대한항공",
+      "market": "KRX",
+      "sector": "항공사",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 100,
+      "memo": "AI APPROVE | conf=100% | qty_ratio=120% | AI review removed (2026-04-15)",
+      "created_at": "2026-08-27T15:12:59.354430",
+      "updated_at": "2026-08-27T15:12:59.354430"
+    },
     {
       "stock_code": "005930",
       "stock_name": "삼성전자",
@@ -105,6 +118,19 @@
       "memo": "AI APPROVE | conf=70% | qty_ratio=120% | AI review removed (2026-04-15)",
       "created_at": "2026-06-29T15:14:18.961787",
       "updated_at": "2026-06-29T15:14:18.961787"
+    },
+    {
+      "stock_code": "034020",
+      "stock_name": "두산에너빌리티",
+      "market": "KRX",
+      "sector": "기계",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 65,
+      "memo": "AI APPROVE | conf=65% | qty_ratio=120% | AI review removed (2026-04-15)",
+      "created_at": "2026-08-27T15:12:59.354994",
+      "updated_at": "2026-08-27T15:12:59.354994"
     },
     {
       "stock_code": "018260",
@@ -378,6 +404,32 @@
       "memo": "AI APPROVE | conf=47% | qty_ratio=100% | AI review removed (2026-04-15)",
       "created_at": "2026-08-14T15:24:06.640616",
       "updated_at": "2026-08-14T15:24:06.640616"
+    },
+    {
+      "stock_code": "015760",
+      "stock_name": "한국전력",
+      "market": "KRX",
+      "sector": "전기유틸리티",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 41,
+      "memo": "AI APPROVE | conf=42% | qty_ratio=100% | AI review removed (2026-04-15)",
+      "created_at": "2026-08-27T15:12:59.355297",
+      "updated_at": "2026-08-27T15:12:59.355297"
+    },
+    {
+      "stock_code": "004020",
+      "stock_name": "현대제철",
+      "market": "KRX",
+      "sector": "",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 40,
+      "memo": "AI APPROVE | conf=40% | qty_ratio=100% | AI review removed (2026-04-15)",
+      "created_at": "2026-08-27T15:12:59.355596",
+      "updated_at": "2026-08-27T15:12:59.355596"
     },
     {
       "stock_code": "009420",

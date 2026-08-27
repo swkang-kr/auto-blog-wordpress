@@ -1,6 +1,54 @@
 {
-  "exported_at": "2026-08-26T07:00:01.096173+00:00",
+  "exported_at": "2026-08-27T07:00:00.855011+00:00",
   "trades": [
+    {
+      "stock_code": "003490",
+      "stock_name": "대한항공",
+      "side": "buy",
+      "quantity": 533,
+      "price": 28125.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "",
+      "filled_at": "2026-08-27T06:15:00.665340"
+    },
+    {
+      "stock_code": "034020",
+      "stock_name": "두산에너빌리티",
+      "side": "buy",
+      "quantity": 175,
+      "price": 85750.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "",
+      "filled_at": "2026-08-27T06:14:43.311110"
+    },
+    {
+      "stock_code": "015760",
+      "stock_name": "한국전력",
+      "side": "buy",
+      "quantity": 245,
+      "price": 33925.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "",
+      "filled_at": "2026-08-27T06:14:32.472873"
+    },
+    {
+      "stock_code": "004020",
+      "stock_name": "현대제철",
+      "side": "buy",
+      "quantity": 254,
+      "price": 31425.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "",
+      "filled_at": "2026-08-27T06:14:25.645826"
+    },
     {
       "stock_code": "009420",
       "stock_name": "한올바이오파마",
@@ -72,18 +120,6 @@
       "strategy": "swing_trailing(peak=8.6%,step=3.0%,trail_sl=5.6%)",
       "reason": "swing_trailing(peak=8.6%,step=3.0%,trail_sl=5.6%)",
       "filled_at": "2026-08-24T00:46:14.321985"
-    },
-    {
-      "stock_code": "017800",
-      "stock_name": "현대엘리베이터",
-      "side": "buy",
-      "quantity": 11,
-      "price": 72650.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "이월분(익일종가)",
-      "filled_at": "2026-08-20T06:13:07.658683"
     }
   ]
 }
