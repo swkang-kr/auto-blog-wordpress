@@ -1,6 +1,18 @@
 {
-  "exported_at": "2026-08-27T07:00:00.855011+00:00",
+  "exported_at": "2026-08-28T07:00:00.856104+00:00",
   "trades": [
+    {
+      "stock_code": "015760",
+      "stock_name": "한국전력",
+      "side": "sell",
+      "quantity": 245,
+      "price": 32950.0,
+      "pnl": -260658.66,
+      "pnl_rate": -3.1383,
+      "strategy": "swing_gap_down(net=-3.29%,held=18.0h)",
+      "reason": "swing_gap_down(net=-3.29%,held=18.0h)",
+      "filled_at": "2026-08-28T00:16:49.893579"
+    },
     {
       "stock_code": "003490",
       "stock_name": "대한항공",

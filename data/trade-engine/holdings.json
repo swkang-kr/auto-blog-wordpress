@@ -1,58 +1,14 @@
 {
-  "exported_at": "2026-08-27T07:00:00.826149+00:00",
+  "exported_at": "2026-08-28T07:00:00.840998+00:00",
   "holdings": [
-    {
-      "stock_code": "003670",
-      "stock_name": "포스코퓨처엠",
-      "quantity": 2,
-      "avg_price": 167800.0,
-      "current_price": 183900.0,
-      "unrealized_pnl": 31058.96,
-      "unrealized_pnl_rate": 9.2548,
-      "strategy": "",
-      "entry_date": "2026-08-25T15:00:00"
-    },
-    {
-      "stock_code": "017800",
-      "stock_name": "현대엘리베이터",
-      "quantity": 11,
-      "avg_price": 72600.0,
-      "current_price": 75300.0,
-      "unrealized_pnl": 26984.76,
-      "unrealized_pnl_rate": 3.379,
-      "strategy": "",
-      "entry_date": "2026-08-25T15:00:00"
-    },
-    {
-      "stock_code": "004020",
-      "stock_name": "현대제철",
-      "quantity": 254,
-      "avg_price": 31425.0,
-      "current_price": 31425.0,
-      "unrealized_pnl": 0,
-      "unrealized_pnl_rate": 0,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-08-27T06:14:25.636601"
-    },
-    {
-      "stock_code": "015760",
-      "stock_name": "한국전력",
-      "quantity": 245,
-      "avg_price": 33925.0,
-      "current_price": 33925.0,
-      "unrealized_pnl": 0,
-      "unrealized_pnl_rate": 0,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-08-27T06:14:32.464444"
-    },
     {
       "stock_code": "034020",
       "stock_name": "두산에너빌리티",
       "quantity": 175,
-      "avg_price": 85750.0,
-      "current_price": 85750.0,
-      "unrealized_pnl": 0,
-      "unrealized_pnl_rate": 0,
+      "avg_price": 85784.571,
+      "current_price": 88400.0,
+      "unrealized_pnl": 406658.26,
+      "unrealized_pnl_rate": 2.7088,
       "strategy": "RSI+MACD(swing)",
       "entry_date": "2026-08-27T06:14:43.300991"
     },
@@ -60,12 +16,23 @@
       "stock_code": "003490",
       "stock_name": "대한항공",
       "quantity": 533,
-      "avg_price": 28125.0,
-      "current_price": 28125.0,
-      "unrealized_pnl": 0,
-      "unrealized_pnl_rate": 0,
+      "avg_price": 28143.339,
+      "current_price": 28750.0,
+      "unrealized_pnl": 272348.95,
+      "unrealized_pnl_rate": 1.8156,
       "strategy": "RSI+MACD(swing)",
       "entry_date": "2026-08-27T06:15:00.655094"
+    },
+    {
+      "stock_code": "004020",
+      "stock_name": "현대제철",
+      "quantity": 254,
+      "avg_price": 31439.96,
+      "current_price": 31000.0,
+      "unrealized_pnl": -138901.39,
+      "unrealized_pnl_rate": -1.7394,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-08-27T06:14:25.636601"
     }
   ]
 }
