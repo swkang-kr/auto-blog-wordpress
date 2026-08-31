@@ -1,6 +1,6 @@
 {
-  "exported_at": "2026-08-28T07:00:01.869569+00:00",
-  "total": 54,
+  "exported_at": "2026-08-31T07:00:01.992298+00:00",
+  "total": 56,
   "items": [
     {
       "stock_code": "003490",
@@ -14,19 +14,6 @@
       "memo": "AI APPROVE | conf=100% | qty_ratio=120% | AI review removed (2026-04-15)",
       "created_at": "2026-08-27T15:12:59.354430",
       "updated_at": "2026-08-27T15:12:59.354430"
-    },
-    {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "market": "KRX",
-      "sector": "반도체",
-      "target_buy_price": null,
-      "target_price": null,
-      "stop_loss": null,
-      "priority": 100,
-      "memo": "AI APPROVE | conf=100% | qty_ratio=120% | AI review removed (2026-04-15)",
-      "created_at": "2026-06-10T13:59:39.285615",
-      "updated_at": "2026-08-25T15:10:00.819131"
     },
     {
       "stock_code": "000660",
@@ -183,6 +170,19 @@
       "memo": "AI APPROVE | conf=63% | qty_ratio=120% | AI review removed (2026-04-15)",
       "created_at": "2026-07-21T15:10:00.340142",
       "updated_at": "2026-07-21T15:10:00.340142"
+    },
+    {
+      "stock_code": "062040",
+      "stock_name": "산일전기",
+      "market": "KRX",
+      "sector": "전기장비",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 60,
+      "memo": "AI APPROVE | conf=60% | qty_ratio=120% | AI review removed (2026-04-15)",
+      "created_at": "2026-08-31T15:12:17.031132",
+      "updated_at": "2026-08-31T15:12:17.031132"
     },
     {
       "stock_code": "036930",
@@ -417,6 +417,32 @@
       "memo": "AI APPROVE | conf=42% | qty_ratio=100% | AI review removed (2026-04-15)",
       "created_at": "2026-08-27T15:12:59.355297",
       "updated_at": "2026-08-27T15:12:59.355297"
+    },
+    {
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "market": "KRX",
+      "sector": "반도체",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 40,
+      "memo": "AI APPROVE | conf=40% | qty_ratio=100% | AI review removed (2026-04-15)",
+      "created_at": "2026-06-10T13:59:39.285615",
+      "updated_at": "2026-08-31T15:12:17.032962"
+    },
+    {
+      "stock_code": "000720",
+      "stock_name": "현대건설",
+      "market": "KRX",
+      "sector": "건설",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 40,
+      "memo": "AI APPROVE | conf=40% | qty_ratio=100% | AI review removed (2026-04-15)",
+      "created_at": "2026-08-31T15:12:17.032390",
+      "updated_at": "2026-08-31T15:12:17.032390"
     },
     {
       "stock_code": "004020",

@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-08-28T07:00:01.273172+00:00",
+  "exported_at": "2026-08-31T07:00:01.363533+00:00",
   "market_daily": [
+    {
+      "date": "20260831",
+      "kospi_change": 0.46,
+      "kosdaq_change": -0.49,
+      "foreign_net": -63.99,
+      "institution_net": -79.22,
+      "individual_net": -14.54,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260828",
       "kospi_change": -1.79,
       "kosdaq_change": 0.09,
-      "foreign_net": -175.63,
-      "institution_net": -28.42,
-      "individual_net": 42.42,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": -175.61,
+      "institution_net": -28.39,
+      "individual_net": 42.37,
+      "hot_theme_count": 13,
+      "momentum_count": 60,
+      "crash_count": 58
     },
     {
       "date": "20260827",
@@ -99,29 +110,18 @@
       "hot_theme_count": 4,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260814",
-      "kospi_change": 2.42,
-      "kosdaq_change": 0.38,
-      "foreign_net": 303.87,
-      "institution_net": -102.98,
-      "individual_net": -198.2,
-      "hot_theme_count": 16,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "힘 못 쓰는 삼전닉스…코스피 6700선 후퇴 [시황]",
-    "신협, 포용금융 매년 1조원 공급…500억원대 지원기금도 조성",
-    "외국인 1.7조 ‘팔자’에 코스피 6800선 내줘…잭슨홀 앞두고 반도체 급락",
-    "하락 마감한 코스피",
-    "코스피 하락 마감…코스닥 강보합 마감",
-    "달러·원 환율 1372원대 마감",
-    "\"7천피 찍나 했더니 뚝\" 개미 빼고 던졌다...삼전닉스 파란불",
-    "코스피, 반도체 차익실현에 1%대 하락…6780선 마감",
-    "코스피 1.79% 하락 마감",
-    "코스피 하락 마감"
+    "성과급 받은 반도체맨 지갑 열자…성장률 0.09%p 밀어올린다",
+    "데이터센터 떼는 SKB…'AA' 신용도 영향은 [fn마켓워치]",
+    "6800선 회복한 코스피,원·달러 1360원대로 내려가",
+    "장 막판 상승전환한 코스피",
+    "'마감 시황은?'",
+    "코스피 장 마감 전 상승 전환",
+    "상승 전환해 6820선 마감한 코스피",
+    "6800선 회복한 코스피,원·달러 1360원대로 내려가",
+    "'마감 시황은?'",
+    "상승 전환해 6820선 마감한 코스피"
   ]
 }

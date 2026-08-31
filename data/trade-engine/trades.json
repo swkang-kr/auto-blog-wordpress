@@ -1,6 +1,42 @@
 {
-  "exported_at": "2026-08-28T07:00:00.856104+00:00",
+  "exported_at": "2026-08-31T07:00:00.954206+00:00",
   "trades": [
+    {
+      "stock_code": "000720",
+      "stock_name": "현대건설",
+      "side": "buy",
+      "quantity": 29,
+      "price": 122950.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "",
+      "filled_at": "2026-08-31T06:14:18.739713"
+    },
+    {
+      "stock_code": "062040",
+      "stock_name": "산일전기",
+      "side": "buy",
+      "quantity": 32,
+      "price": 195550.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "",
+      "filled_at": "2026-08-31T06:14:08.498576"
+    },
+    {
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "side": "buy",
+      "quantity": 13,
+      "price": 257250.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "",
+      "filled_at": "2026-08-31T06:13:58.671581"
+    },
     {
       "stock_code": "015760",
       "stock_name": "한국전력",
@@ -120,18 +156,6 @@
       "strategy": "swing_stop_loss(SL=11,523)",
       "reason": "swing_stop_loss(SL=11,523)",
       "filled_at": "2026-08-25T00:06:01.795776"
-    },
-    {
-      "stock_code": "017670",
-      "stock_name": "SK텔레콤",
-      "side": "sell",
-      "quantity": 16,
-      "price": 102700.0,
-      "pnl": 82483.52,
-      "pnl_rate": 5.3037,
-      "strategy": "swing_trailing(peak=8.6%,step=3.0%,trail_sl=5.6%)",
-      "reason": "swing_trailing(peak=8.6%,step=3.0%,trail_sl=5.6%)",
-      "filled_at": "2026-08-24T00:46:14.321985"
     }
   ]
 }

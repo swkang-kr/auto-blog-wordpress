@@ -1,66 +1,66 @@
 {
-  "exported_at": "2026-08-28T07:00:01.340048+00:00",
-  "date": "20260828",
+  "exported_at": "2026-08-31T07:00:01.414904+00:00",
+  "date": "20260831",
   "hot_themes": [
     {
-      "name": "지역화폐",
-      "change_rate": 7.16
+      "name": "2차전지(생산)",
+      "change_rate": 3.52
+    },
+    {
+      "name": "2차전지(나트륨이온)",
+      "change_rate": 2.78
+    },
+    {
+      "name": "카메라모듈/부품",
+      "change_rate": 2.77
+    },
+    {
+      "name": "반도체 기판(FC-BGA/PCB/MLB 등)",
+      "change_rate": 2.6
+    },
+    {
+      "name": "2차전지(전고체)",
+      "change_rate": 2.44
+    },
+    {
+      "name": "그래핀",
+      "change_rate": 2.26
     },
     {
       "name": "정유",
-      "change_rate": 6.13
+      "change_rate": 2.11
     },
     {
-      "name": "전자결제(전자화폐)",
-      "change_rate": 5.03
+      "name": "홈쇼핑",
+      "change_rate": 1.95
     },
     {
-      "name": "스테이블코인",
-      "change_rate": 4.81
+      "name": "웹툰",
+      "change_rate": 1.93
     },
     {
-      "name": "딥페이크(deepfake)",
-      "change_rate": 4.61
+      "name": "PCB(FPCB 등)",
+      "change_rate": 1.91
     },
     {
-      "name": "김밥(냉동김밥 등)",
-      "change_rate": 3.94
+      "name": "폴더블폰",
+      "change_rate": 1.88
     },
     {
-      "name": "마이데이터",
-      "change_rate": 3.87
+      "name": "시멘트/레미콘",
+      "change_rate": 1.86
     },
     {
-      "name": "손해보험",
-      "change_rate": 3.69
+      "name": "LED",
+      "change_rate": 1.8
     },
     {
-      "name": "여름",
-      "change_rate": 3.33
+      "name": "재난/안전(지진/화재 등)",
+      "change_rate": 1.78
     },
     {
-      "name": "클라우드 컴퓨팅",
-      "change_rate": 3.26
-    },
-    {
-      "name": "마리화나(대마)",
-      "change_rate": 3.26
-    },
-    {
-      "name": "윤활유",
-      "change_rate": 3.23
-    },
-    {
-      "name": "타이어",
-      "change_rate": 3.03
-    },
-    {
-      "name": "화장품",
-      "change_rate": 2.99
-    },
-    {
-      "name": "코로나19(진단키트)",
-      "change_rate": 2.9
+      "name": "소캠(SOCAMM)",
+      "change_rate": 1.78
     }
   ],
   "cold_themes": []

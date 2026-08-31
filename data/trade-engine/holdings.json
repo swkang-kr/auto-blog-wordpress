@@ -1,25 +1,47 @@
 {
-  "exported_at": "2026-08-28T07:00:00.840998+00:00",
+  "exported_at": "2026-08-31T07:00:00.936726+00:00",
   "holdings": [
     {
-      "stock_code": "034020",
-      "stock_name": "두산에너빌리티",
-      "quantity": 175,
-      "avg_price": 85784.571,
-      "current_price": 88400.0,
-      "unrealized_pnl": 406658.26,
-      "unrealized_pnl_rate": 2.7088,
+      "stock_code": "000720",
+      "stock_name": "현대건설",
+      "quantity": 29,
+      "avg_price": 122900.0,
+      "current_price": 122950.0,
+      "unrealized_pnl": 0,
+      "unrealized_pnl_rate": 0,
       "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-08-27T06:14:43.300991"
+      "entry_date": "2026-08-31T06:14:18.732185"
+    },
+    {
+      "stock_code": "062040",
+      "stock_name": "산일전기",
+      "quantity": 32,
+      "avg_price": 195500.0,
+      "current_price": 195550.0,
+      "unrealized_pnl": 0,
+      "unrealized_pnl_rate": 0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-08-31T06:14:08.493082"
+    },
+    {
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "quantity": 13,
+      "avg_price": 257000.0,
+      "current_price": 257250.0,
+      "unrealized_pnl": 0,
+      "unrealized_pnl_rate": 0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-08-31T06:13:58.665094"
     },
     {
       "stock_code": "003490",
       "stock_name": "대한항공",
       "quantity": 533,
       "avg_price": 28143.339,
-      "current_price": 28750.0,
-      "unrealized_pnl": 272348.95,
-      "unrealized_pnl_rate": 1.8156,
+      "current_price": 28000.0,
+      "unrealized_pnl": -127401.05,
+      "unrealized_pnl_rate": -0.8493,
       "strategy": "RSI+MACD(swing)",
       "entry_date": "2026-08-27T06:15:00.655094"
     },
@@ -28,11 +50,22 @@
       "stock_name": "현대제철",
       "quantity": 254,
       "avg_price": 31439.96,
-      "current_price": 31000.0,
-      "unrealized_pnl": -138901.39,
-      "unrealized_pnl_rate": -1.7394,
+      "current_price": 30550.0,
+      "unrealized_pnl": -253201.39,
+      "unrealized_pnl_rate": -3.1707,
       "strategy": "RSI+MACD(swing)",
       "entry_date": "2026-08-27T06:14:25.636601"
+    },
+    {
+      "stock_code": "034020",
+      "stock_name": "두산에너빌리티",
+      "quantity": 175,
+      "avg_price": 85784.571,
+      "current_price": 82800.0,
+      "unrealized_pnl": -573341.74,
+      "unrealized_pnl_rate": -3.8191,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-08-27T06:14:43.300991"
     }
   ]
 }
