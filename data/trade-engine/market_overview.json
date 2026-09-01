@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-08-31T07:00:01.363533+00:00",
+  "exported_at": "2026-09-01T07:00:01.230143+00:00",
   "market_daily": [
+    {
+      "date": "20260901",
+      "kospi_change": 0.23,
+      "kosdaq_change": -1.56,
+      "foreign_net": -49.19,
+      "institution_net": -63.4,
+      "individual_net": -53.98,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260831",
       "kospi_change": 0.46,
       "kosdaq_change": -0.49,
-      "foreign_net": -63.99,
+      "foreign_net": -64.04,
       "institution_net": -79.22,
-      "individual_net": -14.54,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "individual_net": -14.64,
+      "hot_theme_count": 1,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260828",
@@ -99,29 +110,18 @@
       "hot_theme_count": 0,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260818",
-      "kospi_change": -1.55,
-      "kosdaq_change": -3.52,
-      "foreign_net": 9.14,
-      "institution_net": -79.51,
-      "individual_net": 74.13,
-      "hot_theme_count": 4,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "성과급 받은 반도체맨 지갑 열자…성장률 0.09%p 밀어올린다",
-    "데이터센터 떼는 SKB…'AA' 신용도 영향은 [fn마켓워치]",
-    "6800선 회복한 코스피,원·달러 1360원대로 내려가",
-    "장 막판 상승전환한 코스피",
-    "'마감 시황은?'",
-    "코스피 장 마감 전 상승 전환",
-    "상승 전환해 6820선 마감한 코스피",
-    "6800선 회복한 코스피,원·달러 1360원대로 내려가",
-    "'마감 시황은?'",
-    "상승 전환해 6820선 마감한 코스피"
+    "우리투자증권, 연금저축 고객 대상 ‘100% 당첨’ 이벤트 진행",
+    "\"냥이 입맛 사로잡을 간식\"…포포몽 밸런스 스틱",
+    "지에프아이, 삼성SDI 해외 ESS 직분사 미주 사이트 설치 계약",
+    "코스피, 6800선 강보합 마감…코스닥은 하락",
+    "삼성전자, 장초반 약세 딛고 소폭 상승 마감…하닉도 1.1%↑(종합)",
+    "현대차증권, 모태펀드 재난안전 운용사 선정…105억원 펀드 결성",
+    "개미도 지쳤나…코스피 하루 거래대금 한달 새 11조 '뚝'",
+    "코스피, 상승 전환해 6,830대 마감",
+    "코스피, 상승 전환해 6,830대 마감..코스닥은 하락",
+    "코스피, 상승 전환해 6,830대 마감..코스닥은 하락"
   ]
 }
