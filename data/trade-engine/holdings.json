@@ -1,14 +1,14 @@
 {
-  "exported_at": "2026-09-01T07:00:00.798941+00:00",
+  "exported_at": "2026-09-02T07:00:00.715221+00:00",
   "holdings": [
     {
       "stock_code": "003490",
       "stock_name": "대한항공",
       "quantity": 533,
       "avg_price": 28143.339,
-      "current_price": 28900.0,
-      "unrealized_pnl": 352298.95,
-      "unrealized_pnl_rate": 2.3486,
+      "current_price": 28850.0,
+      "unrealized_pnl": 325648.95,
+      "unrealized_pnl_rate": 2.1709,
       "strategy": "RSI+MACD(swing)",
       "entry_date": "2026-08-27T06:15:00.655094"
     },
@@ -17,66 +17,33 @@
       "stock_name": "삼성전자",
       "quantity": 13,
       "avg_price": 257000.0,
-      "current_price": 260000.0,
-      "unrealized_pnl": 27640.6,
-      "unrealized_pnl_rate": 0.8273,
+      "current_price": 250500.0,
+      "unrealized_pnl": -95859.4,
+      "unrealized_pnl_rate": -2.8692,
       "strategy": "RSI+MACD(swing)",
       "entry_date": "2026-08-31T06:13:58.665094"
-    },
-    {
-      "stock_code": "009150",
-      "stock_name": "삼성전기",
-      "quantity": 7,
-      "avg_price": 1433857.142,
-      "current_price": 1432500.0,
-      "unrealized_pnl": 0,
-      "unrealized_pnl_rate": 0,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-09-01T06:13:15.720974"
-    },
-    {
-      "stock_code": "047050",
-      "stock_name": "포스코인터내셔널",
-      "quantity": 177,
-      "avg_price": 55301.129,
-      "current_price": 55250.0,
-      "unrealized_pnl": 0,
-      "unrealized_pnl_rate": 0,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-09-01T06:13:36.341454"
-    },
-    {
-      "stock_code": "062040",
-      "stock_name": "산일전기",
-      "quantity": 32,
-      "avg_price": 195500.0,
-      "current_price": 196050.0,
-      "unrealized_pnl": -3670.4,
-      "unrealized_pnl_rate": -0.0587,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-08-31T06:14:08.493082"
     },
     {
       "stock_code": "004020",
       "stock_name": "현대제철",
       "quantity": 254,
       "avg_price": 31439.96,
-      "current_price": 31000.0,
-      "unrealized_pnl": -138901.39,
-      "unrealized_pnl_rate": -1.7394,
+      "current_price": 30000.0,
+      "unrealized_pnl": -392901.39,
+      "unrealized_pnl_rate": -4.92,
       "strategy": "RSI+MACD(swing)",
       "entry_date": "2026-08-27T06:14:25.636601"
     },
     {
-      "stock_code": "034020",
-      "stock_name": "두산에너빌리티",
-      "quantity": 175,
-      "avg_price": 85784.571,
-      "current_price": 81600.0,
-      "unrealized_pnl": -783341.74,
-      "unrealized_pnl_rate": -5.218,
+      "stock_code": "062040",
+      "stock_name": "산일전기",
+      "quantity": 32,
+      "avg_price": 195500.0,
+      "current_price": 185100.0,
+      "unrealized_pnl": -354070.4,
+      "unrealized_pnl_rate": -5.6597,
       "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-08-27T06:14:43.300991"
+      "entry_date": "2026-08-31T06:14:08.493082"
     }
   ]
 }

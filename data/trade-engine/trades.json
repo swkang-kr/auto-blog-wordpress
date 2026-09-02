@@ -1,6 +1,42 @@
 {
-  "exported_at": "2026-09-01T07:00:00.822554+00:00",
+  "exported_at": "2026-09-02T07:00:00.729226+00:00",
   "trades": [
+    {
+      "stock_code": "047050",
+      "stock_name": "포스코인터내셔널",
+      "side": "sell",
+      "quantity": 177,
+      "price": 53900.0,
+      "pnl": -280635.25,
+      "pnl_rate": -2.867,
+      "strategy": "swing_gap_down(net=-3.05%,held=17.8h)",
+      "reason": "swing_gap_down(net=-3.05%,held=17.8h)",
+      "filled_at": "2026-09-02T00:03:40.491801"
+    },
+    {
+      "stock_code": "034020",
+      "stock_name": "두산에너빌리티",
+      "side": "sell",
+      "quantity": 175,
+      "price": 78600.0,
+      "pnl": -1305072.76,
+      "pnl_rate": -8.6934,
+      "strategy": "swing_stop_loss(SL=78,922)",
+      "reason": "swing_stop_loss(SL=78,922)",
+      "filled_at": "2026-09-02T00:02:53.007300"
+    },
+    {
+      "stock_code": "009150",
+      "stock_name": "삼성전기",
+      "side": "sell",
+      "quantity": 7,
+      "price": 1380000.0,
+      "pnl": -410145.59,
+      "pnl_rate": -4.0863,
+      "strategy": "swing_gap_down(net=-4.03%,held=17.8h)",
+      "reason": "swing_gap_down(net=-4.03%,held=17.8h)",
+      "filled_at": "2026-09-02T00:01:27.613408"
+    },
     {
       "stock_code": "047050",
       "stock_name": "포스코인터내셔널",
@@ -144,18 +180,6 @@
       "strategy": "RSI+MACD(swing)",
       "reason": "",
       "filled_at": "2026-08-27T06:14:25.645826"
-    },
-    {
-      "stock_code": "009420",
-      "stock_name": "한올바이오파마",
-      "side": "sell",
-      "quantity": 7,
-      "price": 62000.0,
-      "pnl": 9733.36,
-      "pnl_rate": 2.3021,
-      "strategy": "swing_trailing(peak=5.5%,step=3.0%,trail_sl=2.5%)",
-      "reason": "swing_trailing(peak=5.5%,step=3.0%,trail_sl=2.5%)",
-      "filled_at": "2026-08-26T00:10:08.089233"
     }
   ]
 }

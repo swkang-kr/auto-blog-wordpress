@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-09-01T07:00:01.230143+00:00",
+  "exported_at": "2026-09-02T07:00:01.221044+00:00",
   "market_daily": [
+    {
+      "date": "20260902",
+      "kospi_change": -3.99,
+      "kosdaq_change": -2.1,
+      "foreign_net": -190.96,
+      "institution_net": -204.38,
+      "individual_net": 230.28,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260901",
       "kospi_change": 0.23,
       "kosdaq_change": -1.56,
-      "foreign_net": -49.19,
-      "institution_net": -63.4,
-      "individual_net": -53.98,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": -49.18,
+      "institution_net": -63.39,
+      "individual_net": -53.99,
+      "hot_theme_count": 6,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260831",
@@ -99,29 +110,18 @@
       "hot_theme_count": 27,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260819",
-      "kospi_change": -5.8,
-      "kosdaq_change": -1.17,
-      "foreign_net": -348.84,
-      "institution_net": -132.32,
-      "individual_net": 463.56,
-      "hot_theme_count": 0,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "우리투자증권, 연금저축 고객 대상 ‘100% 당첨’ 이벤트 진행",
-    "\"냥이 입맛 사로잡을 간식\"…포포몽 밸런스 스틱",
-    "지에프아이, 삼성SDI 해외 ESS 직분사 미주 사이트 설치 계약",
-    "코스피, 6800선 강보합 마감…코스닥은 하락",
-    "삼성전자, 장초반 약세 딛고 소폭 상승 마감…하닉도 1.1%↑(종합)",
-    "현대차증권, 모태펀드 재난안전 운용사 선정…105억원 펀드 결성",
-    "개미도 지쳤나…코스피 하루 거래대금 한달 새 11조 '뚝'",
-    "코스피, 상승 전환해 6,830대 마감",
-    "코스피, 상승 전환해 6,830대 마감..코스닥은 하락",
-    "코스피, 상승 전환해 6,830대 마감..코스닥은 하락"
+    "[포토] 코스피 6,562.72 마감",
+    "[포토] 코스피 지수 6,562.72 마감",
+    "[특징주] '자사주 매입'에도 중동 긴장 재고조 속 삼전·닉스 4%대↓(종합)",
+    "코스피 3.99% 내린 6562.72…삼전·닉스 4%대 하락",
+    "코스피, 중동 긴장 고조되자 4% 급락 마감…삼전·하이닉스 4%대↓",
+    "[포토] 하나은행 본점 딜링룸",
+    "[포토] 코스피 273.08 포인트(3.99%) 하락",
+    "[포토] 코스피 273.08 포인트 하락",
+    "[포토] 코스피 273.08 포인트 하락한 6,562.72 마감",
+    "컴투스, 신작 ‘제우스’ 초반 흥행에 실적 개선 기대감 ‘UP’"
   ]
 }
