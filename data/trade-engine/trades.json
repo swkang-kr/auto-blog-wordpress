@@ -1,6 +1,30 @@
 {
-  "exported_at": "2026-09-02T07:00:00.729226+00:00",
+  "exported_at": "2026-09-03T07:00:00.992751+00:00",
   "trades": [
+    {
+      "stock_code": "004020",
+      "stock_name": "현대제철",
+      "side": "sell",
+      "quantity": 254,
+      "price": 30350.0,
+      "pnl": -303281.58,
+      "pnl_rate": -3.7978,
+      "strategy": "swing_time_exit(5영업일≥5영업일)",
+      "reason": "swing_time_exit(5영업일≥5영업일)",
+      "filled_at": "2026-09-03T00:01:39.831276"
+    },
+    {
+      "stock_code": "003490",
+      "stock_name": "대한항공",
+      "side": "sell",
+      "quantity": 533,
+      "price": 29000.0,
+      "pnl": 404411.79,
+      "pnl_rate": 2.696,
+      "strategy": "swing_time_exit(5영업일≥5영업일)",
+      "reason": "swing_time_exit(5영업일≥5영업일)",
+      "filled_at": "2026-09-03T00:01:13.121078"
+    },
     {
       "stock_code": "047050",
       "stock_name": "포스코인터내셔널",
@@ -132,54 +156,6 @@
       "strategy": "swing_gap_down(net=-3.29%,held=18.0h)",
       "reason": "swing_gap_down(net=-3.29%,held=18.0h)",
       "filled_at": "2026-08-28T00:16:49.893579"
-    },
-    {
-      "stock_code": "003490",
-      "stock_name": "대한항공",
-      "side": "buy",
-      "quantity": 533,
-      "price": 28125.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "",
-      "filled_at": "2026-08-27T06:15:00.665340"
-    },
-    {
-      "stock_code": "034020",
-      "stock_name": "두산에너빌리티",
-      "side": "buy",
-      "quantity": 175,
-      "price": 85750.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "",
-      "filled_at": "2026-08-27T06:14:43.311110"
-    },
-    {
-      "stock_code": "015760",
-      "stock_name": "한국전력",
-      "side": "buy",
-      "quantity": 245,
-      "price": 33925.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "",
-      "filled_at": "2026-08-27T06:14:32.472873"
-    },
-    {
-      "stock_code": "004020",
-      "stock_name": "현대제철",
-      "side": "buy",
-      "quantity": 254,
-      "price": 31425.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "",
-      "filled_at": "2026-08-27T06:14:25.645826"
     }
   ]
 }
