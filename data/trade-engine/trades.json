@@ -1,6 +1,66 @@
 {
-  "exported_at": "2026-09-03T07:00:00.992751+00:00",
+  "exported_at": "2026-09-04T07:00:00.973042+00:00",
   "trades": [
+    {
+      "stock_code": "000500",
+      "stock_name": "가온전선",
+      "side": "buy",
+      "quantity": 15,
+      "price": 212166.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "",
+      "filled_at": "2026-09-04T06:17:14.885573"
+    },
+    {
+      "stock_code": "003160",
+      "stock_name": "003160",
+      "side": "buy",
+      "quantity": 170,
+      "price": 31200.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "",
+      "filled_at": "2026-09-04T06:17:03.307512"
+    },
+    {
+      "stock_code": "010140",
+      "stock_name": "삼성중공업",
+      "side": "buy",
+      "quantity": 121,
+      "price": 21325.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "",
+      "filled_at": "2026-09-04T06:16:12.639318"
+    },
+    {
+      "stock_code": "004310",
+      "stock_name": "현대약품",
+      "side": "buy",
+      "quantity": 329,
+      "price": 7900.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "",
+      "filled_at": "2026-09-04T06:15:40.178219"
+    },
+    {
+      "stock_code": "009900",
+      "stock_name": "명신산업",
+      "side": "buy",
+      "quantity": 352,
+      "price": 8645.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "",
+      "filled_at": "2026-09-04T06:15:14.784254"
+    },
     {
       "stock_code": "004020",
       "stock_name": "현대제철",
@@ -144,18 +204,6 @@
       "strategy": "RSI+MACD(swing)",
       "reason": "",
       "filled_at": "2026-08-31T06:13:58.671581"
-    },
-    {
-      "stock_code": "015760",
-      "stock_name": "한국전력",
-      "side": "sell",
-      "quantity": 245,
-      "price": 32950.0,
-      "pnl": -260658.66,
-      "pnl_rate": -3.1383,
-      "strategy": "swing_gap_down(net=-3.29%,held=18.0h)",
-      "reason": "swing_gap_down(net=-3.29%,held=18.0h)",
-      "filled_at": "2026-08-28T00:16:49.893579"
     }
   ]
 }

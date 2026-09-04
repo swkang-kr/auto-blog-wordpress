@@ -1,6 +1,6 @@
 {
-  "exported_at": "2026-09-03T07:00:02.155230+00:00",
-  "total": 58,
+  "exported_at": "2026-09-04T07:00:02.065474+00:00",
+  "total": 61,
   "items": [
     {
       "stock_code": "003490",
@@ -79,6 +79,19 @@
       "memo": "AI APPROVE | conf=71% | qty_ratio=120% | AI review removed (2026-04-15)",
       "created_at": "2026-07-27T15:12:23.818511",
       "updated_at": "2026-07-27T15:12:23.818511"
+    },
+    {
+      "stock_code": "412350",
+      "stock_name": "412350",
+      "market": "KRX",
+      "sector": "반도체와반도체장비",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 70,
+      "memo": "AI APPROVE | conf=70% | qty_ratio=120% | AI review removed (2026-04-15)",
+      "created_at": "2026-09-04T15:13:04.817920",
+      "updated_at": "2026-09-04T15:13:04.817920"
     },
     {
       "stock_code": "073240",
@@ -429,7 +442,7 @@
       "priority": 46,
       "memo": "AI APPROVE | conf=47% | qty_ratio=100% | AI review removed (2026-04-15)",
       "created_at": "2026-08-14T15:24:06.640616",
-      "updated_at": "2026-08-14T15:24:06.640616"
+      "updated_at": "2026-09-04T15:13:04.817861"
     },
     {
       "stock_code": "015760",
@@ -443,6 +456,45 @@
       "memo": "AI APPROVE | conf=42% | qty_ratio=100% | AI review removed (2026-04-15)",
       "created_at": "2026-08-27T15:12:59.355297",
       "updated_at": "2026-08-27T15:12:59.355297"
+    },
+    {
+      "stock_code": "004310",
+      "stock_name": "현대약품",
+      "market": "KRX",
+      "sector": "",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 40,
+      "memo": "AI APPROVE | conf=40% | qty_ratio=100% | AI review removed (2026-04-15)",
+      "created_at": "2026-07-22T15:10:03.021401",
+      "updated_at": "2026-09-04T15:13:04.821132"
+    },
+    {
+      "stock_code": "071090",
+      "stock_name": "하이스틸",
+      "market": "KRX",
+      "sector": "",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 40,
+      "memo": "AI APPROVE | conf=40% | qty_ratio=100% | AI review removed (2026-04-15)",
+      "created_at": "2026-09-04T15:13:04.815761",
+      "updated_at": "2026-09-04T15:13:04.815761"
+    },
+    {
+      "stock_code": "010140",
+      "stock_name": "삼성중공업",
+      "market": "KRX",
+      "sector": "조선",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 40,
+      "memo": "AI APPROVE | conf=40% | qty_ratio=100% | AI review removed (2026-04-15)",
+      "created_at": "2026-09-04T15:13:04.815373",
+      "updated_at": "2026-09-04T15:13:04.815373"
     },
     {
       "stock_code": "005930",
@@ -651,19 +703,6 @@
       "memo": "AI APPROVE | conf=40% | qty_ratio=100% | AI review removed (2026-04-15)",
       "created_at": "2026-07-23T15:10:21.066788",
       "updated_at": "2026-07-23T15:10:21.066788"
-    },
-    {
-      "stock_code": "004310",
-      "stock_name": "현대약품",
-      "market": "KRX",
-      "sector": "",
-      "target_buy_price": null,
-      "target_price": null,
-      "stop_loss": null,
-      "priority": 40,
-      "memo": "AI APPROVE | conf=40% | qty_ratio=100% | AI review removed (2026-04-15)",
-      "created_at": "2026-07-22T15:10:03.021401",
-      "updated_at": "2026-07-22T15:10:03.021401"
     },
     {
       "stock_code": "016360",

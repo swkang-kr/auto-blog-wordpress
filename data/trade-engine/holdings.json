@@ -1,14 +1,91 @@
 {
-  "exported_at": "2026-09-03T07:00:00.979299+00:00",
+  "exported_at": "2026-09-04T07:00:00.949489+00:00",
   "holdings": [
+    {
+      "stock_code": "010140",
+      "stock_name": "삼성중공업",
+      "quantity": 121,
+      "avg_price": 21350.0,
+      "current_price": 21325.0,
+      "unrealized_pnl": 0,
+      "unrealized_pnl_rate": 0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-09-04T06:16:12.629494"
+    },
+    {
+      "stock_code": "009900",
+      "stock_name": "명신산업",
+      "quantity": 352,
+      "avg_price": 8630.198,
+      "current_price": 8645.0,
+      "unrealized_pnl": 0,
+      "unrealized_pnl_rate": 0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-09-04T06:15:14.773976"
+    },
+    {
+      "stock_code": "412350",
+      "stock_name": "412350",
+      "quantity": 261,
+      "avg_price": 5170.0,
+      "current_price": 5175.0,
+      "unrealized_pnl": 0,
+      "unrealized_pnl_rate": 0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-09-04T06:15:00.381105"
+    },
+    {
+      "stock_code": "071090",
+      "stock_name": "하이스틸",
+      "quantity": 182,
+      "avg_price": 3137.0,
+      "current_price": 3137.0,
+      "unrealized_pnl": 0,
+      "unrealized_pnl_rate": 0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-09-04T06:15:13.647216"
+    },
+    {
+      "stock_code": "004310",
+      "stock_name": "현대약품",
+      "quantity": 329,
+      "avg_price": 7900.0,
+      "current_price": 7900.0,
+      "unrealized_pnl": 0,
+      "unrealized_pnl_rate": 0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-09-04T06:15:40.169594"
+    },
+    {
+      "stock_code": "003160",
+      "stock_name": "003160",
+      "quantity": 170,
+      "avg_price": 31200.0,
+      "current_price": 31200.0,
+      "unrealized_pnl": 0,
+      "unrealized_pnl_rate": 0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-09-04T06:17:03.301085"
+    },
+    {
+      "stock_code": "000500",
+      "stock_name": "가온전선",
+      "quantity": 15,
+      "avg_price": 212166.666,
+      "current_price": 212166.666,
+      "unrealized_pnl": 0,
+      "unrealized_pnl_rate": 0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-09-04T06:17:14.878502"
+    },
     {
       "stock_code": "005930",
       "stock_name": "삼성전자",
       "quantity": 13,
       "avg_price": 257000.0,
-      "current_price": 250000.0,
-      "unrealized_pnl": 0,
-      "unrealized_pnl_rate": 0,
+      "current_price": 255500.0,
+      "unrealized_pnl": -30859.4,
+      "unrealized_pnl_rate": -0.9237,
       "strategy": "",
       "entry_date": "2026-09-02T15:00:00"
     },
@@ -17,9 +94,9 @@
       "stock_name": "산일전기",
       "quantity": 32,
       "avg_price": 195500.0,
-      "current_price": 186500.0,
-      "unrealized_pnl": 0,
-      "unrealized_pnl_rate": 0,
+      "current_price": 191400.0,
+      "unrealized_pnl": -152470.4,
+      "unrealized_pnl_rate": -2.4372,
       "strategy": "",
       "entry_date": "2026-09-02T15:00:00"
     }
