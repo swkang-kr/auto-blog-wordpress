@@ -1,5 +1,5 @@
 {
-  "exported_at": "2026-09-08T07:00:00.991422+00:00",
+  "exported_at": "2026-09-09T07:00:01.475938+00:00",
   "trades": [
     {
       "stock_code": "062040",
@@ -72,6 +72,18 @@
       "strategy": "reconcile_cleanup",
       "reason": "DB 유령 포지션 자동 정리 (holdings 미존재)",
       "filled_at": "2026-09-07T10:19:34.601017"
+    },
+    {
+      "stock_code": "003160",
+      "stock_name": "디아이",
+      "side": "buy",
+      "quantity": 170,
+      "price": 31200.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "",
+      "filled_at": "2026-09-04T06:15:44.196420"
     }
   ]
 }

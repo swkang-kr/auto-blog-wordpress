@@ -1,66 +1,66 @@
 {
-  "exported_at": "2026-09-08T07:00:01.493138+00:00",
-  "date": "20260908",
+  "exported_at": "2026-09-09T07:00:01.940431+00:00",
+  "date": "20260909",
   "hot_themes": [
     {
-      "name": "낙태/피임",
-      "change_rate": 8.4
+      "name": "광통신(광케이블/광섬유 등)",
+      "change_rate": 8.97
+    },
+    {
+      "name": "2차전지(생산)",
+      "change_rate": 8.66
+    },
+    {
+      "name": "고체산화물 연료전지(SOFC)",
+      "change_rate": 7.9
+    },
+    {
+      "name": "전선",
+      "change_rate": 7.29
+    },
+    {
+      "name": "2차전지(나트륨이온)",
+      "change_rate": 6.44
+    },
+    {
+      "name": "통신장비",
+      "change_rate": 4.87
+    },
+    {
+      "name": "석유화학",
+      "change_rate": 4.58
+    },
+    {
+      "name": "정유",
+      "change_rate": 4.46
+    },
+    {
+      "name": "반도체 기판(FC-BGA/PCB/MLB 등)",
+      "change_rate": 4.3
+    },
+    {
+      "name": "2차전지(전고체)",
+      "change_rate": 4.2
     },
     {
       "name": "원자력발전소 해체",
-      "change_rate": 4.74
+      "change_rate": 3.95
     },
     {
-      "name": "원자력발전",
-      "change_rate": 3.18
+      "name": "MLCC(적층세라믹콘덴서)",
+      "change_rate": 3.89
     },
     {
-      "name": "항공기부품",
-      "change_rate": 3.05
+      "name": "2차전지(LFP/리튬인산철)",
+      "change_rate": 3.83
     },
     {
-      "name": "광통신(광케이블/광섬유 등)",
-      "change_rate": 2.4
+      "name": "반도체 대표주(생산)",
+      "change_rate": 3.78
     },
     {
-      "name": "2026 상반기 신규상장",
-      "change_rate": 2.15
-    },
-    {
-      "name": "건설 대표주",
-      "change_rate": 2.1
-    },
-    {
-      "name": "재난/안전(지진/화재 등)",
-      "change_rate": 1.68
-    },
-    {
-      "name": "항공/저가 항공사(LCC)",
-      "change_rate": 1.59
-    },
-    {
-      "name": "자전거",
-      "change_rate": 1.53
-    },
-    {
-      "name": "백화점",
-      "change_rate": 1.49
-    },
-    {
-      "name": "탈모 치료",
-      "change_rate": 1.47
-    },
-    {
-      "name": "피팅(관이음쇠)/밸브",
-      "change_rate": 1.36
-    },
-    {
-      "name": "스페이스X(SpaceX)",
-      "change_rate": 1.32
-    },
-    {
-      "name": "LPG(액화석유가스)",
-      "change_rate": 1.13
+      "name": "전력저장장치(ESS)",
+      "change_rate": 3.53
     }
   ],
   "cold_themes": []
