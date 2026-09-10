@@ -1,6 +1,6 @@
 {
-  "exported_at": "2026-09-09T07:00:02.411506+00:00",
-  "total": 132,
+  "exported_at": "2026-09-10T07:00:02.057718+00:00",
+  "total": 135,
   "items": [
     {
       "stock_code": "066570",
@@ -92,19 +92,6 @@
       "memo": "AI APPROVE | conf=92% | qty_ratio=90% | AI skip: 15:15 무조건매수",
       "created_at": "2026-04-10T10:14:41.440579",
       "updated_at": "2026-04-14T15:15:14.243627"
-    },
-    {
-      "stock_code": "011790",
-      "stock_name": "SKC",
-      "market": "KRX",
-      "sector": "",
-      "target_buy_price": null,
-      "target_price": null,
-      "stop_loss": null,
-      "priority": 90,
-      "memo": "AI APPROVE | conf=90% | qty_ratio=120% | AI review removed (2026-04-15)",
-      "created_at": "2026-04-23T15:15:04.625674",
-      "updated_at": "2026-04-23T15:15:04.625674"
     },
     {
       "stock_code": "062040",
@@ -289,16 +276,16 @@
       "updated_at": "2026-04-10T09:41:15.748337"
     },
     {
-      "stock_code": "139990",
-      "stock_name": "아주스틸",
+      "stock_code": "017670",
+      "stock_name": "SK텔레콤",
       "market": "KRX",
-      "sector": "",
+      "sector": "무선통신서비스",
       "target_buy_price": null,
       "target_price": null,
       "stop_loss": null,
       "priority": 85,
       "memo": "AI APPROVE | conf=85% | qty_ratio=120% | AI skip: score≥7 강제매수 (8.0점)",
-      "created_at": "2026-04-09T14:16:33.345151",
+      "created_at": "2026-04-09T10:12:50.457289",
       "updated_at": "2026-04-09T14:16:33.345151"
     },
     {
@@ -328,16 +315,16 @@
       "updated_at": "2026-04-09T14:16:33.345151"
     },
     {
-      "stock_code": "017670",
-      "stock_name": "SK텔레콤",
+      "stock_code": "139990",
+      "stock_name": "아주스틸",
       "market": "KRX",
-      "sector": "무선통신서비스",
+      "sector": "",
       "target_buy_price": null,
       "target_price": null,
       "stop_loss": null,
       "priority": 85,
       "memo": "AI APPROVE | conf=85% | qty_ratio=120% | AI skip: score≥7 강제매수 (8.0점)",
-      "created_at": "2026-04-09T10:12:50.457289",
+      "created_at": "2026-04-09T14:16:33.345151",
       "updated_at": "2026-04-09T14:16:33.345151"
     },
     {
@@ -887,10 +874,10 @@
       "updated_at": "2026-04-09T14:16:33.345151"
     },
     {
-      "stock_code": "001530",
-      "stock_name": "DI동일",
+      "stock_code": "101140",
+      "stock_name": "인바이오젠",
       "market": "KRX",
-      "sector": "섬유,의류,신발,호화품",
+      "sector": "전자장비와기기",
       "target_buy_price": null,
       "target_price": null,
       "stop_loss": null,
@@ -913,10 +900,10 @@
       "updated_at": "2026-04-09T14:16:33.345151"
     },
     {
-      "stock_code": "101140",
-      "stock_name": "인바이오젠",
+      "stock_code": "001530",
+      "stock_name": "DI동일",
       "market": "KRX",
-      "sector": "전자장비와기기",
+      "sector": "섬유,의류,신발,호화품",
       "target_buy_price": null,
       "target_price": null,
       "stop_loss": null,
@@ -1080,6 +1067,19 @@
       "memo": "AI APPROVE | conf=61% | qty_ratio=120% | AI skip: score≥6 강제매수 (8.0점)",
       "created_at": "2026-04-15T10:00:22.013441",
       "updated_at": "2026-04-15T10:00:22.013441"
+    },
+    {
+      "stock_code": "042700",
+      "stock_name": "한미반도체",
+      "market": "KRX",
+      "sector": "반도체와반도체장비",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 60,
+      "memo": "AI APPROVE | conf=60% | qty_ratio=100% | Preserved approved order allocation",
+      "created_at": "2026-09-10T15:17:02.950082",
+      "updated_at": "2026-09-10T15:17:02.950082"
     },
     {
       "stock_code": "016610",
@@ -1589,6 +1589,19 @@
       "updated_at": "2026-04-20T15:15:08.093785"
     },
     {
+      "stock_code": "001780",
+      "stock_name": "알루코",
+      "market": "KRX",
+      "sector": "비철금속",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 55,
+      "memo": "AI APPROVE | conf=55% | qty_ratio=100% | AI review removed (2026-04-15)",
+      "created_at": "2026-04-15T15:00:17.478534",
+      "updated_at": "2026-04-15T15:00:17.478534"
+    },
+    {
       "stock_code": "006800",
       "stock_name": "미래에셋증권",
       "market": "KRX",
@@ -1606,19 +1619,6 @@
       "stock_name": "삼화콘덴서",
       "market": "KRX",
       "sector": "",
-      "target_buy_price": null,
-      "target_price": null,
-      "stop_loss": null,
-      "priority": 55,
-      "memo": "AI APPROVE | conf=55% | qty_ratio=100% | AI review removed (2026-04-15)",
-      "created_at": "2026-04-15T15:00:17.478534",
-      "updated_at": "2026-04-15T15:00:17.478534"
-    },
-    {
-      "stock_code": "001780",
-      "stock_name": "알루코",
-      "market": "KRX",
-      "sector": "비철금속",
       "target_buy_price": null,
       "target_price": null,
       "stop_loss": null,
@@ -1717,6 +1717,45 @@
       "memo": "AI APPROVE | conf=50% | qty_ratio=90% | AI skip: 15:15 무조건매수",
       "created_at": "2026-03-30T15:18:44.329725",
       "updated_at": "2026-04-14T15:15:14.243627"
+    },
+    {
+      "stock_code": "403870",
+      "stock_name": "HPSP",
+      "market": "KRX",
+      "sector": "반도체와반도체장비",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 41,
+      "memo": "AI APPROVE | conf=42% | qty_ratio=100% | Preserved approved order allocation",
+      "created_at": "2026-09-10T15:17:02.950518",
+      "updated_at": "2026-09-10T15:17:02.950518"
+    },
+    {
+      "stock_code": "011790",
+      "stock_name": "SKC",
+      "market": "KRX",
+      "sector": "",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 40,
+      "memo": "AI APPROVE | conf=40% | qty_ratio=100% | Preserved approved order allocation",
+      "created_at": "2026-04-23T15:15:04.625674",
+      "updated_at": "2026-09-10T15:17:02.949290"
+    },
+    {
+      "stock_code": "090710",
+      "stock_name": "휴림로봇",
+      "market": "KRX",
+      "sector": "기계",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 40,
+      "memo": "AI APPROVE | conf=40% | qty_ratio=100% | Preserved approved order allocation",
+      "created_at": "2026-09-10T15:17:02.948188",
+      "updated_at": "2026-09-10T15:17:02.948188"
     }
   ]
 }

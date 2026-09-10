@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-09-09T07:00:01.890682+00:00",
+  "exported_at": "2026-09-10T07:00:01.420219+00:00",
   "market_daily": [
+    {
+      "date": "20260910",
+      "kospi_change": -0.25,
+      "kosdaq_change": 0.79,
+      "foreign_net": -248.07,
+      "institution_net": 43.35,
+      "individual_net": 38.01,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260909",
       "kospi_change": 1.4,
       "kosdaq_change": 2.28,
       "foreign_net": -43.51,
-      "institution_net": 94.21,
-      "individual_net": -228.77,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "institution_net": 94.22,
+      "individual_net": -228.79,
+      "hot_theme_count": 25,
+      "momentum_count": 60,
+      "crash_count": 50
     },
     {
       "date": "20260908",
@@ -99,29 +110,18 @@
       "hot_theme_count": 1,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260526",
-      "kospi_change": 2.55,
-      "kosdaq_change": 0.98,
-      "foreign_net": -18.45,
-      "institution_net": 91.05,
-      "individual_net": -61.58,
-      "hot_theme_count": 22,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "[단독]KORU로 재미 본 서학개미…디렉시온, 한국 2배 ETF 검토",
-    "삼성증권 '발행어음' 인가 획득&#8943;8개 종투사 경쟁구도 완성",
-    "코스피, 기관 9000억 매수에 7050선 마감…코스닥 2.28%↑[fn마감시황]",
-    "코스피, 7000선 탈환 마감…장중 7112까지 뛰었다",
-    "코스피 7,000피 탈환",
-    "코스피 종가 7,000선 탈환",
-    "[속보] 코스피 33거래일 만에 7000선 탈환…1.4% 오른 7051.64 마감",
-    "1% 넘게 오른 코스피, 두 달 만에 7000대 마감",
-    "[올댓차이나] '중국판 엔비디아’ 무어스레드, 홍콩 상장 비공개 신청",
-    "기관 9400억 '사자'…코스피 7050선 마감 [시황]"
+    "원·달러 환율 3.1원 오른 1339.2원 (오후 3시30분)",
+    "\"전통자산 분산효과 흔들려\"…고민 깊어지는 기관투자자들",
+    "슬금슬금 다시 커진 SK하이닉스 본주·ADR 괴리율…19%에서 43%까지 벌어졌다",
+    "[특징주] 국제유가 100달러 돌파에 정유주 줄줄이 급등(종합)",
+    "NH투자증권, 부산서 초고액 자산가 패밀리오피스 세미나",
+    "코스피 7000선 턱걸이",
+    "코스피 7000선 턱걸이",
+    "코스피 7000선 턱걸이",
+    "코스피 7000선 턱걸이",
+    "코스피 7000선 턱걸이"
   ]
 }
