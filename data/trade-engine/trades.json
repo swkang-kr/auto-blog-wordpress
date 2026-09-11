@@ -1,6 +1,138 @@
 {
-  "exported_at": "2026-09-10T07:00:00.998318+00:00",
+  "exported_at": "2026-09-11T07:00:00.916857+00:00",
   "trades": [
+    {
+      "stock_code": "403870",
+      "stock_name": "HPSP",
+      "side": "buy",
+      "quantity": 20,
+      "price": 55600.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "[price_source=holdings_avg,settled_by=holdings]",
+      "filled_at": "2026-09-11T01:04:24.692864"
+    },
+    {
+      "stock_code": "090710",
+      "stock_name": "휴림로봇",
+      "side": "buy",
+      "quantity": 267,
+      "price": 6380.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "[price_source=holdings_avg,settled_by=holdings]",
+      "filled_at": "2026-09-11T01:04:12.557942"
+    },
+    {
+      "stock_code": "011790",
+      "stock_name": "SKC",
+      "side": "buy",
+      "quantity": 12,
+      "price": 92000.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "[price_source=holdings_avg,settled_by=holdings]",
+      "filled_at": "2026-09-11T01:03:58.567159"
+    },
+    {
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "side": "sell",
+      "quantity": 13,
+      "price": 258920.3846,
+      "pnl": 17767.35,
+      "pnl_rate": 0.5318,
+      "strategy": "swing_trailing(peak=4.8%,step=3.0%,trail_sl=1.8%)",
+      "reason": "[recovered=20260911,price_source=quote,reconciled_to_broker_total] 체결가 근사(실체결가 아님): WAL시세 259,000 배분 후 thdt_sll_amt 6,493,290 총액일치. 원가 3,341,000, 제세금 13,885 대금비례배분. pos_id=300. swing_trailing(peak=4.8",
+      "filled_at": "2026-09-11T00:20:42"
+    },
+    {
+      "stock_code": "042700",
+      "stock_name": "한미반도체",
+      "side": "sell",
+      "quantity": 8,
+      "price": 233500.0,
+      "pnl": -168494.46,
+      "pnl_rate": -8.29,
+      "strategy": "swing_stop_loss(SL=233,738)",
+      "reason": "[recovered=20260911,price_source=quote,reconciled_to_broker_total] 체결가 근사(실체결가 아님): WAL시세 233,500 배분 후 thdt_sll_amt 6,493,290 총액일치. 원가 2,032,500.0, 제세금 13,885 대금비례배분. pos_id=None. swing_stop_loss(SL=2",
+      "filled_at": "2026-09-11T00:03:17"
+    },
+    {
+      "stock_code": "412350",
+      "stock_name": "레이저쎌",
+      "side": "sell",
+      "quantity": 261,
+      "price": 4825.0,
+      "pnl": -92737.89,
+      "pnl_rate": -6.8727,
+      "strategy": "swing_time_exit(5영업일≥5영업일)",
+      "reason": "[recovered=20260911,price_source=quote,reconciled_to_broker_total] 체결가 근사(실체결가 아님): WAL시세 4,825 배분 후 thdt_sll_amt 6,493,290 총액일치. 원가 1,349,370, 제세금 13,885 대금비례배분. pos_id=298. swing_time_exit(5영업일≥5영업일",
+      "filled_at": "2026-09-11T00:01:19"
+    },
+    {
+      "stock_code": "OKTA",
+      "stock_name": "OKTA",
+      "side": "sell",
+      "quantity": 292,
+      "price": 173.0116,
+      "pnl": 641.42,
+      "pnl_rate": 1.286,
+      "strategy": "US_SWING",
+      "reason": "us_swing_trailing",
+      "filled_at": "2026-09-10T16:40:44.973203"
+    },
+    {
+      "stock_code": "AMD",
+      "stock_name": "AMD",
+      "side": "sell",
+      "quantity": 35,
+      "price": 512.38,
+      "pnl": 1534.47,
+      "pnl_rate": 9.3572,
+      "strategy": "US_SWING",
+      "reason": "us_swing_trailing",
+      "filled_at": "2026-09-10T13:30:48.194456"
+    },
+    {
+      "stock_code": "INTC",
+      "stock_name": "INTC",
+      "side": "sell",
+      "quantity": 554,
+      "price": 103.4375,
+      "pnl": 7345.76,
+      "pnl_rate": 14.7037,
+      "strategy": "US_SWING",
+      "reason": "us_swing_trailing",
+      "filled_at": "2026-09-10T12:28:14.306191"
+    },
+    {
+      "stock_code": "NVDA",
+      "stock_name": "NVDA",
+      "side": "sell",
+      "quantity": 111,
+      "price": 226.94,
+      "pnl": 335.0,
+      "pnl_rate": 1.3478,
+      "strategy": "US_SWING",
+      "reason": "us_swing_trailing",
+      "filled_at": "2026-09-10T12:27:15.577754"
+    },
+    {
+      "stock_code": "042700",
+      "stock_name": "한미반도체",
+      "side": "buy",
+      "quantity": 8,
+      "price": 254062.5,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "[recovered=20260911,price_source=bfdy_buy_amt_backout] 8주 @254062.5 (=5951960-3919460)/8, 금액정확·시각근사, 9/11 전량매도로 포지션없음",
+      "filled_at": "2026-09-10T06:18:51"
+    },
     {
       "stock_code": "062040",
       "stock_name": "산일전기",
@@ -72,18 +204,6 @@
       "strategy": "reconcile_cleanup",
       "reason": "DB 유령 포지션 자동 정리 (holdings 미존재)",
       "filled_at": "2026-09-07T10:19:34.601017"
-    },
-    {
-      "stock_code": "003160",
-      "stock_name": "디아이",
-      "side": "buy",
-      "quantity": 170,
-      "price": 31200.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "",
-      "filled_at": "2026-09-04T06:15:44.196420"
     }
   ]
 }

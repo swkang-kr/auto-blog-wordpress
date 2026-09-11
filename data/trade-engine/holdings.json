@@ -1,104 +1,71 @@
 {
-  "exported_at": "2026-09-10T07:00:00.973973+00:00",
+  "exported_at": "2026-09-11T07:00:00.900006+00:00",
   "holdings": [
-    {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "quantity": 13,
-      "avg_price": 257000.0,
-      "current_price": 269500.0,
-      "unrealized_pnl": 151140.6,
-      "unrealized_pnl_rate": 4.5238,
-      "strategy": "",
-      "entry_date": "2026-09-07T15:00:00"
-    },
-    {
-      "stock_code": "OKTA",
-      "stock_name": "옥타",
-      "quantity": 292,
-      "avg_price": 170.815,
-      "current_price": 171.07,
-      "unrealized_pnl": 0,
-      "unrealized_pnl_rate": 0,
-      "strategy": "US_SWING_RECOVERY",
-      "entry_date": "2026-09-08T13:30:05.362638"
-    },
-    {
-      "stock_code": "NVDA",
-      "stock_name": "엔비디아",
-      "quantity": 111,
-      "avg_price": 223.922,
-      "current_price": 226.425,
-      "unrealized_pnl": 0,
-      "unrealized_pnl_rate": 0,
-      "strategy": "US_SWING_RECOVERY",
-      "entry_date": "2026-09-08T13:30:05.359408"
-    },
-    {
-      "stock_code": "AMD",
-      "stock_name": "AMD",
-      "quantity": 35,
-      "avg_price": 468.538,
-      "current_price": 519.72,
-      "unrealized_pnl": 0,
-      "unrealized_pnl_rate": 0,
-      "strategy": "US_SWING_RECOVERY",
-      "entry_date": "2026-09-08T13:30:05.341585"
-    },
     {
       "stock_code": "META",
       "stock_name": "메타 플랫폼스(페이스북)",
       "quantity": 28,
       "avg_price": 579.61,
-      "current_price": 655.315,
-      "unrealized_pnl": 0,
-      "unrealized_pnl_rate": 0,
+      "current_price": 643.762,
+      "unrealized_pnl": 1796.26,
+      "unrealized_pnl_rate": 11.0681,
       "strategy": "US_SWING_RECOVERY",
       "entry_date": "2026-09-08T13:30:05.356053"
     },
     {
-      "stock_code": "INTC",
-      "stock_name": "인텔",
-      "quantity": 554,
-      "avg_price": 90.178,
-      "current_price": 101.99,
-      "unrealized_pnl": 0,
-      "unrealized_pnl_rate": 0,
-      "strategy": "US_SWING_RECOVERY",
-      "entry_date": "2026-09-08T13:30:05.352362"
+      "stock_code": "011790",
+      "stock_name": "SKC",
+      "quantity": 12,
+      "avg_price": 92000.0,
+      "current_price": 89700.0,
+      "unrealized_pnl": -31353.6,
+      "unrealized_pnl_rate": -2.84,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-09-11T01:03:58.559753"
+    },
+    {
+      "stock_code": "090710",
+      "stock_name": "휴림로봇",
+      "quantity": 267,
+      "avg_price": 6380.0,
+      "current_price": 6190.0,
+      "unrealized_pnl": -56010.73,
+      "unrealized_pnl_rate": -3.2881,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-09-11T01:04:12.556904"
     },
     {
       "stock_code": "003160",
       "stock_name": "디아이",
       "quantity": 170,
       "avg_price": 31200.0,
-      "current_price": 30500.0,
-      "unrealized_pnl": -137033.6,
-      "unrealized_pnl_rate": -2.5836,
+      "current_price": 30200.0,
+      "unrealized_pnl": -188033.6,
+      "unrealized_pnl_rate": -3.5451,
       "strategy": "",
       "entry_date": "2026-09-07T15:00:00"
+    },
+    {
+      "stock_code": "403870",
+      "stock_name": "HPSP",
+      "quantity": 20,
+      "avg_price": 55600.0,
+      "current_price": 53600.0,
+      "unrealized_pnl": -43447.2,
+      "unrealized_pnl_rate": -3.9071,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-09-11T01:04:24.691221"
     },
     {
       "stock_code": "009900",
       "stock_name": "명신산업",
       "quantity": 352,
       "avg_price": 8630.198,
-      "current_price": 8370.0,
-      "unrealized_pnl": -101918.32,
-      "unrealized_pnl_rate": -3.355,
+      "current_price": 8270.0,
+      "unrealized_pnl": -137118.32,
+      "unrealized_pnl_rate": -4.5137,
       "strategy": "",
       "entry_date": "2026-09-07T15:00:00"
-    },
-    {
-      "stock_code": "412350",
-      "stock_name": "레이저쎌",
-      "quantity": 261,
-      "avg_price": 5170.0,
-      "current_price": 5010.0,
-      "unrealized_pnl": -45943.05,
-      "unrealized_pnl_rate": -3.4048,
-      "strategy": "",
-      "entry_date": "2026-09-06T15:00:00"
     }
   ]
 }

@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-09-10T07:00:01.420219+00:00",
+  "exported_at": "2026-09-11T07:00:01.289075+00:00",
   "market_daily": [
+    {
+      "date": "20260911",
+      "kospi_change": -1.76,
+      "kosdaq_change": -1.95,
+      "foreign_net": -229.15,
+      "institution_net": -122.57,
+      "individual_net": 186.79,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260910",
       "kospi_change": -0.25,
       "kosdaq_change": 0.79,
       "foreign_net": -248.07,
-      "institution_net": 43.35,
-      "individual_net": 38.01,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "institution_net": 43.34,
+      "individual_net": 38.02,
+      "hot_theme_count": 2,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260909",
@@ -99,29 +110,18 @@
       "hot_theme_count": 4,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260527",
-      "kospi_change": 2.25,
-      "kosdaq_change": -3.36,
-      "foreign_net": -44.98,
-      "institution_net": 18.8,
-      "individual_net": 40.65,
-      "hot_theme_count": 1,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "원·달러 환율 3.1원 오른 1339.2원 (오후 3시30분)",
-    "\"전통자산 분산효과 흔들려\"…고민 깊어지는 기관투자자들",
-    "슬금슬금 다시 커진 SK하이닉스 본주·ADR 괴리율…19%에서 43%까지 벌어졌다",
-    "[특징주] 국제유가 100달러 돌파에 정유주 줄줄이 급등(종합)",
-    "NH투자증권, 부산서 초고액 자산가 패밀리오피스 세미나",
-    "코스피 7000선 턱걸이",
-    "코스피 7000선 턱걸이",
-    "코스피 7000선 턱걸이",
-    "코스피 7000선 턱걸이",
-    "코스피 7000선 턱걸이"
+    "코스피, 외인-기관 쌍끌이 매도에 하락마감...6900선[fn마감시황]",
+    "외국인 국채 창구 열자 1740조…예탁원 통합계좌 2년 만에 '쑥'",
+    "나신평, 금호타이어 신용등급 'A+'로 상향",
+    "코스피 6,900선 후퇴…코스닥도 하락",
+    "기업 공시 [9월 11일]",
+    "\"글로벌 기관, 亞주식에 강한 수요…한국·대만에 자금 배분\"",
+    "日 증시, 유가·금리 상승에 하락…닛케이지수, 1.93% ↓",
+    "원·달러 환율, 6.7원 오른 1345.9원 마감(종합)",
+    "코스피 124p 급락…6,909.91 마감",
+    "코스피, 124.01p 하락…6,909.91 마감"
   ]
 }
