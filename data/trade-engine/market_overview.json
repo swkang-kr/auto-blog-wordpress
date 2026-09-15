@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-09-14T07:00:01.331547+00:00",
+  "exported_at": "2026-09-15T07:00:01.146648+00:00",
   "market_daily": [
+    {
+      "date": "20260915",
+      "kospi_change": -0.85,
+      "kosdaq_change": 0.7,
+      "foreign_net": -157.12,
+      "institution_net": -90.49,
+      "individual_net": 83.31,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260914",
       "kospi_change": -3.26,
       "kosdaq_change": -1.69,
-      "foreign_net": -328.75,
-      "institution_net": -117.42,
-      "individual_net": 297.47,
+      "foreign_net": -332.43,
+      "institution_net": -116.63,
+      "individual_net": 300.36,
       "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260911",
@@ -99,29 +110,18 @@
       "hot_theme_count": 6,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260529",
-      "kospi_change": 3.55,
-      "kosdaq_change": -2.68,
-      "foreign_net": -104.2,
-      "institution_net": 236.87,
-      "individual_net": -140.44,
-      "hot_theme_count": 8,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "코스피, 외인·기관 '팔자'에 3%↓…고유가·고금리·AI '삼중고'",
-    "[속보] 코스피, 3.26% 내린 6,684.37 마감",
-    "국제유가 급등",
-    "증시 마감 시황",
-    "국제유가 상승",
-    "코스피 하락 마감",
-    "증시 마감 시황",
-    "코스피-코스닥 하락 마감",
-    "코스피-코스닥 하락 마감",
-    "코스피-코스닥 하락 마감"
+    "K자본시장 매력 전 세계에 알린다…'코리아 프리미엄 위크 2026' 열린다",
+    "코스피, 외인·기관 '팔자' 6600선 약보합…코스닥 상승 전환",
+    "기업공개 시장은 여전히 '부진'…비상장기업 투자는 '활발'",
+    "코스피 하락, 원달러 환율 상승",
+    "코스피, FOMC 앞두고 숨고르기",
+    "한화운용, HBM·AI 소부장 ETF 2종 신규 상장",
+    "올해 첫 ‘코리아 프리미엄 위크’ 열린다…“정례 소통 통해 아시아 대표 시장 도약”",
+    "외국인·기관 매도세에 코스피 하락 마감…0.85%↓",
+    "코스피는 내리고, 코스닥은 오르고",
+    "코스피는 내리고, 코스닥은 오르고"
   ]
 }

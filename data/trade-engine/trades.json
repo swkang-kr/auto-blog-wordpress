@@ -1,6 +1,90 @@
 {
-  "exported_at": "2026-09-14T07:00:00.975542+00:00",
+  "exported_at": "2026-09-15T07:00:00.756276+00:00",
   "trades": [
+    {
+      "stock_code": "036930",
+      "stock_name": "주성엔지니어링",
+      "side": "buy",
+      "quantity": 22,
+      "price": 192000.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "이월분(익일종가) [price_source=holdings_avg,settled_by=holdings]",
+      "filled_at": "2026-09-15T06:13:36.435681"
+    },
+    {
+      "stock_code": "329180",
+      "stock_name": "HD현대중공업",
+      "side": "buy",
+      "quantity": 6,
+      "price": 453000.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "이월분(익일종가) [price_source=holdings_avg,settled_by=holdings]",
+      "filled_at": "2026-09-15T06:13:23.114568"
+    },
+    {
+      "stock_code": "042700",
+      "stock_name": "한미반도체",
+      "side": "buy",
+      "quantity": 12,
+      "price": 222000.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "이월분(익일종가) [price_source=holdings_avg,settled_by=holdings]",
+      "filled_at": "2026-09-15T06:13:08.165451"
+    },
+    {
+      "stock_code": "000500",
+      "stock_name": "가온전선",
+      "side": "buy",
+      "quantity": 17,
+      "price": 239617.647,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "이월분(익일종가) [price_source=holdings_avg,settled_by=holdings]",
+      "filled_at": "2026-09-15T06:12:55.136810"
+    },
+    {
+      "stock_code": "096770",
+      "stock_name": "SK이노베이션",
+      "side": "buy",
+      "quantity": 13,
+      "price": 141700.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "이월분(익일종가) [price_source=holdings_avg,settled_by=holdings]",
+      "filled_at": "2026-09-15T06:12:40.204430"
+    },
+    {
+      "stock_code": "047040",
+      "stock_name": "대우건설",
+      "side": "sell",
+      "quantity": 182,
+      "price": 18150.0,
+      "pnl": -112732.22,
+      "pnl_rate": -3.3111,
+      "strategy": "swing_gap_down(net=-3.32%,held=18.1h)",
+      "reason": "swing_gap_down(net=-3.32%,held=18.1h) [price_source=quote,settled_by=holdings]",
+      "filled_at": "2026-09-15T00:18:46.109248"
+    },
+    {
+      "stock_code": "403870",
+      "stock_name": "HPSP",
+      "side": "sell",
+      "quantity": 20,
+      "price": 51000.0,
+      "pnl": -95235.6,
+      "pnl_rate": -8.5644,
+      "strategy": "swing_stop_loss(SL=51,152)",
+      "reason": "swing_stop_loss(SL=51,152) [price_source=quote,settled_by=holdings]",
+      "filled_at": "2026-09-15T00:05:44.887817"
+    },
     {
       "stock_code": "047040",
       "stock_name": "대우건설",
@@ -180,78 +264,6 @@
       "strategy": "RSI+MACD(swing)",
       "reason": "[recovered=20260911,price_source=bfdy_buy_amt_backout] 8주 @254062.5 (=5951960-3919460)/8, 금액정확·시각근사, 9/11 전량매도로 포지션없음",
       "filled_at": "2026-09-10T06:18:51"
-    },
-    {
-      "stock_code": "062040",
-      "stock_name": "산일전기",
-      "side": "sell",
-      "quantity": 32,
-      "price": 205000.0,
-      "pnl": 281939.2,
-      "pnl_rate": 4.5067,
-      "strategy": "swing_trailing(peak=7.3%,step=3.0%,trail_sl=4.3%)",
-      "reason": "swing_trailing(peak=7.3%,step=3.0%,trail_sl=4.3%)",
-      "filled_at": "2026-09-08T05:11:39.529819"
-    },
-    {
-      "stock_code": "010140",
-      "stock_name": "삼성중공업",
-      "side": "sell",
-      "quantity": 121,
-      "price": 21450.0,
-      "pnl": 3285.15,
-      "pnl_rate": 0.1272,
-      "strategy": "swing_trailing(peak=3.2%,step=3.0%,trail_sl=0.2%)",
-      "reason": "swing_trailing(peak=3.2%,step=3.0%,trail_sl=0.2%)",
-      "filled_at": "2026-09-08T05:06:21.018919"
-    },
-    {
-      "stock_code": "071090",
-      "stock_name": "하이스틸",
-      "side": "sell",
-      "quantity": 182,
-      "price": 3215.0,
-      "pnl": 12372.19,
-      "pnl_rate": 2.1676,
-      "strategy": "swing_trailing(peak=4.9%,step=3.0%,trail_sl=1.9%)",
-      "reason": "swing_trailing(peak=4.9%,step=3.0%,trail_sl=1.9%)",
-      "filled_at": "2026-09-08T03:04:08.823937"
-    },
-    {
-      "stock_code": "000500",
-      "stock_name": "가온전선",
-      "side": "sell",
-      "quantity": 15,
-      "price": 231500.0,
-      "pnl": 278425.51,
-      "pnl_rate": 8.7486,
-      "strategy": "swing_trailing(peak=12.3%,step=3.0%,trail_sl=9.3%)",
-      "reason": "swing_trailing(peak=12.3%,step=3.0%,trail_sl=9.3%)",
-      "filled_at": "2026-09-08T00:14:44.061720"
-    },
-    {
-      "stock_code": "004310",
-      "stock_name": "현대약품",
-      "side": "sell",
-      "quantity": 329,
-      "price": 8330.0,
-      "pnl": 132265.24,
-      "pnl_rate": 5.0889,
-      "strategy": "swing_trailing(peak=9.9%,step=3.0%,trail_sl=6.9%)",
-      "reason": "swing_trailing(peak=9.9%,step=3.0%,trail_sl=6.9%)",
-      "filled_at": "2026-09-08T00:04:48.241720"
-    },
-    {
-      "stock_code": "000660",
-      "stock_name": "SK하이닉스",
-      "side": "sell",
-      "quantity": 7,
-      "price": 2961000.0,
-      "pnl": 6537000.0,
-      "pnl_rate": 46.0677,
-      "strategy": "reconcile_cleanup",
-      "reason": "DB 유령 포지션 자동 정리 (holdings 미존재)",
-      "filled_at": "2026-09-07T10:19:34.601017"
     }
   ]
 }

@@ -1,100 +1,84 @@
 {
-  "exported_at": "2026-09-14T07:00:02.186158+00:00",
-  "total_candidates": 8,
-  "total_holdings": 8,
+  "exported_at": "2026-09-15T07:00:01.981439+00:00",
+  "total_candidates": 9,
+  "total_holdings": 11,
   "candidates": [
-    {
-      "stock_code": "403870",
-      "stock_name": "HPSP",
-      "sector": "반도체와반도체장비",
-      "signal_count": 9,
-      "avg_confidence": 0.6435111111111111,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(-2.3%vsKOSPI-3.5%)",
-      "price_at_signal": 0,
-      "signal_time": "2026-09-14T05:51:46.032579",
-      "status": "매수 시그널"
-    },
     {
       "stock_code": "443060",
       "stock_name": "HD현대마린솔루션",
       "sector": "",
-      "signal_count": 9,
-      "avg_confidence": 0.6041666666666666,
+      "signal_count": 12,
+      "avg_confidence": 0.7000000000000001,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | 거래량2.5x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "reason": "거래량2.0x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-09-14T05:51:46.032590",
+      "signal_time": "2026-09-15T05:40:33.578158",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "052690",
+      "stock_name": "한전기술",
+      "sector": "",
+      "signal_count": 9,
+      "avg_confidence": 0.9333333333333333,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "RSI모멘텀(58) | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+0.4%vsKOSPI-0.7%)",
+      "price_at_signal": 0,
+      "signal_time": "2026-09-15T05:43:21.016026",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "021240",
+      "stock_name": "코웨이",
+      "sector": "",
+      "signal_count": 9,
+      "avg_confidence": 1.0,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD골든크로스 | RSI모멘텀(63) | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+4.1%vsKOSPI-0.7%) | 디커플링모멘텀",
+      "price_at_signal": 0,
+      "signal_time": "2026-09-15T05:43:21.016017",
       "status": "매수 시그널"
     },
     {
       "stock_code": "036930",
       "stock_name": "주성엔지니어링",
-      "sector": "반도체와반도체장비",
-      "signal_count": 8,
-      "avg_confidence": 0.8125,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "거래량2.0x | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(-0.2%vsKOSPI-3.3%)",
+      "sector": "",
+      "signal_count": 5,
+      "avg_confidence": 0.6,
+      "strategies": [],
+      "reason": "score=6.00, ranked_score=30.00",
       "price_at_signal": 0,
-      "signal_time": "2026-09-14T05:54:06.839606",
-      "status": "매수 시그널"
+      "signal_time": "2026-09-15T15:25:00.008125+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "010140",
+      "stock_name": "삼성중공업",
+      "sector": "조선",
+      "signal_count": 5,
+      "avg_confidence": 0.9,
+      "strategies": [],
+      "reason": "score=4.05, ranked_score=12.15",
+      "price_at_signal": 0,
+      "signal_time": "2026-09-15T15:25:00.008125+09:00",
+      "status": "장중 워치리스트"
     },
     {
       "stock_code": "000500",
       "stock_name": "가온전선",
       "sector": "",
-      "signal_count": 5,
-      "avg_confidence": 1.0,
-      "strategies": [],
-      "reason": "score=6.00, ranked_score=18.00",
-      "price_at_signal": 0,
-      "signal_time": "2026-09-14T15:25:00.003272+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "042700",
-      "stock_name": "한미반도체",
-      "sector": "반도체와반도체장비",
-      "signal_count": 2,
-      "avg_confidence": 0.5,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "거래량2.2x | MA정배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(29) | 주봉MA20아래 | 상대강도(-0.9%vsKOSPI-3.3%)",
-      "price_at_signal": 0,
-      "signal_time": "2026-09-14T06:07:06.734493",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "329180",
-      "stock_name": "HD현대중공업",
-      "sector": "조선",
-      "signal_count": 2,
-      "avg_confidence": 0.5833,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MACD히스토그램↑ | 거래량2.4x | MA정배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(28) | 주봉MA20아래 | 상대강도(-0.7%vsKOSPI-3.3%) | 디커플링모멘텀",
-      "price_at_signal": 0,
-      "signal_time": "2026-09-14T06:07:06.734491",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "047040",
-      "stock_name": "대우건설",
-      "sector": "건설",
       "signal_count": 1,
-      "avg_confidence": 0.4,
+      "avg_confidence": 0.6,
       "strategies": [],
-      "reason": "score=2.67, ranked_score=2.67",
+      "reason": "score=6.00, ranked_score=6.00",
       "price_at_signal": 0,
-      "signal_time": "2026-09-14T15:25:00.003272+09:00",
+      "signal_time": "2026-09-15T15:25:00.008125+09:00",
       "status": "장중 워치리스트"
     },
     {
@@ -102,11 +86,35 @@
       "stock_name": "SK이노베이션",
       "sector": "석유와가스",
       "signal_count": 1,
-      "avg_confidence": 0.5463333333333333,
+      "avg_confidence": 0.4,
       "strategies": [],
-      "reason": "score=2.04, ranked_score=1.23",
+      "reason": "score=2.04, ranked_score=2.04",
       "price_at_signal": 0,
-      "signal_time": "2026-09-14T15:25:00.003272+09:00",
+      "signal_time": "2026-09-15T15:25:00.008125+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "329180",
+      "stock_name": "HD현대중공업",
+      "sector": "",
+      "signal_count": 1,
+      "avg_confidence": 0.4,
+      "strategies": [],
+      "reason": "score=2.04, ranked_score=2.04",
+      "price_at_signal": 0,
+      "signal_time": "2026-09-15T15:25:00.008125+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "042700",
+      "stock_name": "한미반도체",
+      "sector": "반도체와반도체장비",
+      "signal_count": 1,
+      "avg_confidence": 0.4,
+      "strategies": [],
+      "reason": "score=1.50, ranked_score=1.50",
+      "price_at_signal": 0,
+      "signal_time": "2026-09-15T15:25:00.008125+09:00",
       "status": "장중 워치리스트"
     }
   ],
@@ -157,15 +165,6 @@
       "status": "보유 중"
     },
     {
-      "stock_code": "047040",
-      "stock_name": "대우건설",
-      "quantity": 182,
-      "avg_price": 18707.252,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-09-14",
-      "status": "보유 중"
-    },
-    {
       "stock_code": "090710",
       "stock_name": "휴림로봇",
       "quantity": 267,
@@ -175,12 +174,48 @@
       "status": "보유 중"
     },
     {
-      "stock_code": "403870",
-      "stock_name": "HPSP",
-      "quantity": 20,
-      "avg_price": 55600.0,
+      "stock_code": "096770",
+      "stock_name": "SK이노베이션",
+      "quantity": 13,
+      "avg_price": 141700.0,
       "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-09-11",
+      "entry_date": "2026-09-15",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "000500",
+      "stock_name": "가온전선",
+      "quantity": 17,
+      "avg_price": 239617.647,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-09-15",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "042700",
+      "stock_name": "한미반도체",
+      "quantity": 12,
+      "avg_price": 222000.0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-09-15",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "329180",
+      "stock_name": "HD현대중공업",
+      "quantity": 6,
+      "avg_price": 453000.0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-09-15",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "036930",
+      "stock_name": "주성엔지니어링",
+      "quantity": 22,
+      "avg_price": 192000.0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-09-15",
       "status": "보유 중"
     }
   ]
