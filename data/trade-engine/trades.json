@@ -1,6 +1,54 @@
 {
-  "exported_at": "2026-09-15T07:00:00.756276+00:00",
+  "exported_at": "2026-09-16T07:00:00.706237+00:00",
   "trades": [
+    {
+      "stock_code": "000500",
+      "stock_name": "가온전선",
+      "side": "sell",
+      "quantity": 17,
+      "price": 248500.0,
+      "pnl": 136757.5,
+      "pnl_rate": 3.3572,
+      "strategy": "swing_trailing(peak=6.5%,step=3.0%,trail_sl=3.5%)",
+      "reason": "swing_trailing(peak=6.5%,step=3.0%,trail_sl=3.5%) [price_source=quote,settled_by=holdings]",
+      "filled_at": "2026-09-16T00:17:46.890043"
+    },
+    {
+      "stock_code": "042700",
+      "stock_name": "한미반도체",
+      "side": "sell",
+      "quantity": 12,
+      "price": 216000.0,
+      "pnl": -80870.4,
+      "pnl_rate": -3.0357,
+      "strategy": "swing_gap_down(net=-3.04%,held=18.0h)",
+      "reason": "swing_gap_down(net=-3.04%,held=18.0h) [price_source=quote,settled_by=holdings]",
+      "filled_at": "2026-09-16T00:12:01.414061"
+    },
+    {
+      "stock_code": "009900",
+      "stock_name": "명신산업",
+      "side": "sell",
+      "quantity": 235,
+      "price": 7900.0,
+      "pnl": -178045.91,
+      "pnl_rate": -8.779,
+      "strategy": "swing_stop_loss(SL=7,940)",
+      "reason": "swing_stop_loss(SL=7,940) [price_source=quote,settled_by=holdings]",
+      "filled_at": "2026-09-16T00:01:01.542632"
+    },
+    {
+      "stock_code": "META",
+      "stock_name": "META",
+      "side": "sell",
+      "quantity": 28,
+      "price": 663.99,
+      "pnl": 2362.64,
+      "pnl_rate": 14.5581,
+      "strategy": "US_SWING",
+      "reason": "us_swing_time_exit",
+      "filled_at": "2026-09-15T13:30:41"
+    },
     {
       "stock_code": "036930",
       "stock_name": "주성엔지니어링",

@@ -1,6 +1,108 @@
 {
-  "exported_at": "2026-09-15T07:00:01.446015+00:00",
-  "date": "20260915",
-  "hot_themes": [],
-  "cold_themes": []
+  "exported_at": "2026-09-16T07:00:01.129298+00:00",
+  "date": "20260916",
+  "hot_themes": [
+    {
+      "name": "광통신(광케이블/광섬유 등)",
+      "change_rate": 6.54
+    },
+    {
+      "name": "LED장비",
+      "change_rate": 5.08
+    },
+    {
+      "name": "통신장비",
+      "change_rate": 4.97
+    },
+    {
+      "name": "고체산화물 연료전지(SOFC)",
+      "change_rate": 4.83
+    },
+    {
+      "name": "반도체 대표주(생산)",
+      "change_rate": 4.4
+    },
+    {
+      "name": "5G(5세대 이동통신)",
+      "change_rate": 4.05
+    },
+    {
+      "name": "MLCC(적층세라믹콘덴서)",
+      "change_rate": 3.8
+    },
+    {
+      "name": "소캠(SOCAMM)",
+      "change_rate": 3.8
+    },
+    {
+      "name": "반도체 기판(FC-BGA/PCB/MLB 등)",
+      "change_rate": 3.66
+    },
+    {
+      "name": "전선",
+      "change_rate": 3.14
+    },
+    {
+      "name": "반도체 재료/부품",
+      "change_rate": 2.81
+    },
+    {
+      "name": "반도체 장비",
+      "change_rate": 2.75
+    },
+    {
+      "name": "스페이스X(SpaceX)",
+      "change_rate": 2.6
+    },
+    {
+      "name": "S7(삼성전자/SK하이닉스 등)",
+      "change_rate": 2.59
+    },
+    {
+      "name": "HBM(고대역폭메모리)",
+      "change_rate": 2.56
+    }
+  ],
+  "cold_themes": [
+    {
+      "name": "지역화폐",
+      "change_rate": -6.37
+    },
+    {
+      "name": "전자결제(전자화폐)",
+      "change_rate": -5.96
+    },
+    {
+      "name": "마리화나(대마)",
+      "change_rate": -3.78
+    },
+    {
+      "name": "귀금속(금/은)",
+      "change_rate": -3.5
+    },
+    {
+      "name": "STO(토큰증권 발행)",
+      "change_rate": -3.23
+    },
+    {
+      "name": "정유",
+      "change_rate": -3.2
+    },
+    {
+      "name": "가상화폐(비트코인 등)",
+      "change_rate": -3.05
+    },
+    {
+      "name": "마이데이터",
+      "change_rate": -2.75
+    },
+    {
+      "name": "LPG(액화석유가스)",
+      "change_rate": -2.7
+    },
+    {
+      "name": "윤활유",
+      "change_rate": -2.58
+    }
+  ]
 }

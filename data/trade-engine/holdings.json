@@ -1,126 +1,82 @@
 {
-  "exported_at": "2026-09-15T07:00:00.742376+00:00",
+  "exported_at": "2026-09-16T07:00:00.692710+00:00",
   "holdings": [
-    {
-      "stock_code": "META",
-      "stock_name": "메타 플랫폼스(페이스북)",
-      "quantity": 28,
-      "avg_price": 579.61,
-      "current_price": 666.73,
-      "unrealized_pnl": 2439.36,
-      "unrealized_pnl_rate": 15.0308,
-      "strategy": "US_SWING_RECOVERY",
-      "entry_date": "2026-09-08T13:30:05.356053"
-    },
-    {
-      "stock_code": "036930",
-      "stock_name": "주성엔지니어링",
-      "quantity": 22,
-      "avg_price": 192000.0,
-      "current_price": 192000.0,
-      "unrealized_pnl": 0,
-      "unrealized_pnl_rate": 0,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-09-15T06:13:36.433147"
-    },
-    {
-      "stock_code": "096770",
-      "stock_name": "SK이노베이션",
-      "quantity": 13,
-      "avg_price": 141700.0,
-      "current_price": 141700.0,
-      "unrealized_pnl": 0,
-      "unrealized_pnl_rate": 0,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-09-15T06:12:40.198229"
-    },
-    {
-      "stock_code": "000500",
-      "stock_name": "가온전선",
-      "quantity": 17,
-      "avg_price": 239617.647,
-      "current_price": 239617.647,
-      "unrealized_pnl": 0,
-      "unrealized_pnl_rate": 0,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-09-15T06:12:55.064192"
-    },
-    {
-      "stock_code": "329180",
-      "stock_name": "HD현대중공업",
-      "quantity": 6,
-      "avg_price": 453000.0,
-      "current_price": 453000.0,
-      "unrealized_pnl": 0,
-      "unrealized_pnl_rate": 0,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-09-15T06:13:23.113270"
-    },
-    {
-      "stock_code": "042700",
-      "stock_name": "한미반도체",
-      "quantity": 12,
-      "avg_price": 222000.0,
-      "current_price": 222000.0,
-      "unrealized_pnl": 0,
-      "unrealized_pnl_rate": 0,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-09-15T06:13:08.163983"
-    },
     {
       "stock_code": "XOM",
       "stock_name": "XOM",
       "quantity": 60,
       "avg_price": 166.01,
-      "current_price": 164.47,
-      "unrealized_pnl": -92.4,
-      "unrealized_pnl_rate": -0.9277,
+      "current_price": 168.91,
+      "unrealized_pnl": 174.0,
+      "unrealized_pnl_rate": 1.7469,
       "strategy": "US_SWING",
       "entry_date": "2026-09-11T13:53:09.891812"
-    },
-    {
-      "stock_code": "090710",
-      "stock_name": "휴림로봇",
-      "quantity": 267,
-      "avg_price": 6380.0,
-      "current_price": 6130.0,
-      "unrealized_pnl": -72030.73,
-      "unrealized_pnl_rate": -4.2285,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-09-11T01:04:12.556904"
-    },
-    {
-      "stock_code": "AVGO",
-      "stock_name": "AVGO",
-      "quantity": 27,
-      "avg_price": 363.96,
-      "current_price": 344.56,
-      "unrealized_pnl": -523.8,
-      "unrealized_pnl_rate": -5.3303,
-      "strategy": "US_SWING",
-      "entry_date": "2026-09-11T13:36:05.096736"
     },
     {
       "stock_code": "011790",
       "stock_name": "SKC",
       "quantity": 12,
       "avg_price": 92000.0,
-      "current_price": 87300.0,
-      "unrealized_pnl": -60153.6,
-      "unrealized_pnl_rate": -5.4487,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-09-11T01:03:58.559753"
+      "current_price": 85700.0,
+      "unrealized_pnl": 0,
+      "unrealized_pnl_rate": 0,
+      "strategy": "",
+      "entry_date": "2026-09-15T15:00:00"
     },
     {
-      "stock_code": "009900",
-      "stock_name": "명신산업",
-      "quantity": 235,
-      "avg_price": 8630.198,
-      "current_price": 7960.0,
-      "unrealized_pnl": -164392.06,
-      "unrealized_pnl_rate": -8.1057,
+      "stock_code": "036930",
+      "stock_name": "주성엔지니어링",
+      "quantity": 22,
+      "avg_price": 192000.0,
+      "current_price": 202000.0,
+      "unrealized_pnl": 0,
+      "unrealized_pnl_rate": 0,
       "strategy": "",
-      "entry_date": "2026-09-07T15:00:00"
+      "entry_date": "2026-09-15T15:00:00"
+    },
+    {
+      "stock_code": "329180",
+      "stock_name": "HD현대중공업",
+      "quantity": 6,
+      "avg_price": 453000.0,
+      "current_price": 440500.0,
+      "unrealized_pnl": 0,
+      "unrealized_pnl_rate": 0,
+      "strategy": "",
+      "entry_date": "2026-09-15T15:00:00"
+    },
+    {
+      "stock_code": "090710",
+      "stock_name": "휴림로봇",
+      "quantity": 267,
+      "avg_price": 6380.0,
+      "current_price": 6090.0,
+      "unrealized_pnl": 0,
+      "unrealized_pnl_rate": 0,
+      "strategy": "",
+      "entry_date": "2026-09-15T15:00:00"
+    },
+    {
+      "stock_code": "096770",
+      "stock_name": "SK이노베이션",
+      "quantity": 13,
+      "avg_price": 141700.0,
+      "current_price": 136300.0,
+      "unrealized_pnl": 0,
+      "unrealized_pnl_rate": 0,
+      "strategy": "",
+      "entry_date": "2026-09-15T15:00:00"
+    },
+    {
+      "stock_code": "AVGO",
+      "stock_name": "AVGO",
+      "quantity": 27,
+      "avg_price": 363.96,
+      "current_price": 339.67,
+      "unrealized_pnl": -655.83,
+      "unrealized_pnl_rate": -6.6738,
+      "strategy": "US_SWING",
+      "entry_date": "2026-09-11T13:36:05.096736"
     }
   ]
 }

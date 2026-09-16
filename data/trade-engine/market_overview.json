@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-09-15T07:00:01.146648+00:00",
+  "exported_at": "2026-09-16T07:00:01.088148+00:00",
   "market_daily": [
+    {
+      "date": "20260916",
+      "kospi_change": 1.37,
+      "kosdaq_change": 0.44,
+      "foreign_net": -168.3,
+      "institution_net": 121.17,
+      "individual_net": -118.6,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260915",
       "kospi_change": -0.85,
       "kosdaq_change": 0.7,
-      "foreign_net": -157.12,
-      "institution_net": -90.49,
-      "individual_net": 83.31,
+      "foreign_net": -156.79,
+      "institution_net": -91.1,
+      "individual_net": 83.5,
       "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260914",
@@ -99,29 +110,18 @@
       "hot_theme_count": 4,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260601",
-      "kospi_change": 3.68,
-      "kosdaq_change": -2.3,
-      "foreign_net": -291.43,
-      "institution_net": 253.51,
-      "individual_net": 37.8,
-      "hot_theme_count": 6,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "K자본시장 매력 전 세계에 알린다…'코리아 프리미엄 위크 2026' 열린다",
-    "코스피, 외인·기관 '팔자' 6600선 약보합…코스닥 상승 전환",
-    "기업공개 시장은 여전히 '부진'…비상장기업 투자는 '활발'",
-    "코스피 하락, 원달러 환율 상승",
-    "코스피, FOMC 앞두고 숨고르기",
-    "한화운용, HBM·AI 소부장 ETF 2종 신규 상장",
-    "올해 첫 ‘코리아 프리미엄 위크’ 열린다…“정례 소통 통해 아시아 대표 시장 도약”",
-    "외국인·기관 매도세에 코스피 하락 마감…0.85%↓",
-    "코스피는 내리고, 코스닥은 오르고",
-    "코스피는 내리고, 코스닥은 오르고"
+    "롯데 덕평 물류센터 우협에 코람코자산신탁",
+    "금투협, '부동산투자 자산운용사' 과정 수강생 모집",
+    "코스피, 外人 1.6조 '팔자'에도 6700선 회복…반도체주 반등",
+    "미국 FOMC 앞둔 코스피와 원달러 환율 상승",
+    "[포토]코스피, 1%대 올라 6,700대 회복…코스닥도 상승",
+    "[포토]코스피·코스닥, 오름세로 장 마감",
+    "한국 반도체 대표 20종목에 투자…KICK 'KCHP ETF' 美 상장",
+    "삼진식품, 100억원 신주인수권부사채 발행…\"성장 투자 확대\"",
+    "‘1승 1패’ 애프터마켓 양대 거래소 경쟁 본격화…급등락은 여전",
+    "[포토]코스피, 1%대 상승 마감"
   ]
 }
