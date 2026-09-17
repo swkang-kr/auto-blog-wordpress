@@ -1,6 +1,30 @@
 {
-  "exported_at": "2026-09-16T07:00:00.706237+00:00",
+  "exported_at": "2026-09-17T07:00:00.701205+00:00",
   "trades": [
+    {
+      "stock_code": "052690",
+      "stock_name": "한전기술",
+      "side": "buy",
+      "quantity": 35,
+      "price": 137200.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "[price_source=holdings_avg,settled_by=holdings]",
+      "filled_at": "2026-09-17T06:11:54.229873"
+    },
+    {
+      "stock_code": "036930",
+      "stock_name": "주성엔지니어링",
+      "side": "sell",
+      "quantity": 22,
+      "price": 202000.0,
+      "pnl": 205066.4,
+      "pnl_rate": 4.8548,
+      "strategy": "swing_trailing(peak=8.0%,step=3.0%,trail_sl=5.0%)",
+      "reason": "swing_trailing(peak=8.0%,step=3.0%,trail_sl=5.0%) [price_source=quote,settled_by=holdings]",
+      "filled_at": "2026-09-17T00:15:57.164971"
+    },
     {
       "stock_code": "000500",
       "stock_name": "가온전선",
@@ -300,18 +324,6 @@
       "strategy": "US_SWING",
       "reason": "us_swing_trailing",
       "filled_at": "2026-09-10T12:27:15.577754"
-    },
-    {
-      "stock_code": "042700",
-      "stock_name": "한미반도체",
-      "side": "buy",
-      "quantity": 8,
-      "price": 254062.5,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "[recovered=20260911,price_source=bfdy_buy_amt_backout] 8주 @254062.5 (=5951960-3919460)/8, 금액정확·시각근사, 9/11 전량매도로 포지션없음",
-      "filled_at": "2026-09-10T06:18:51"
     }
   ]
 }

@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-09-16T07:00:01.088148+00:00",
+  "exported_at": "2026-09-17T07:00:01.059099+00:00",
   "market_daily": [
+    {
+      "date": "20260917",
+      "kospi_change": -0.04,
+      "kosdaq_change": 0.76,
+      "foreign_net": -227.71,
+      "institution_net": 15.87,
+      "individual_net": 41.38,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260916",
       "kospi_change": 1.37,
       "kosdaq_change": 0.44,
-      "foreign_net": -168.3,
-      "institution_net": 121.17,
-      "individual_net": -118.6,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": -168.72,
+      "institution_net": 121.45,
+      "individual_net": -117.83,
+      "hot_theme_count": 8,
+      "momentum_count": 60,
+      "crash_count": 50
     },
     {
       "date": "20260915",
@@ -99,29 +110,18 @@
       "hot_theme_count": 4,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260602",
-      "kospi_change": 0.15,
-      "kosdaq_change": -2.29,
-      "foreign_net": -659.87,
-      "institution_net": 24.09,
-      "individual_net": 635.34,
-      "hot_theme_count": 4,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "롯데 덕평 물류센터 우협에 코람코자산신탁",
-    "금투협, '부동산투자 자산운용사' 과정 수강생 모집",
-    "코스피, 外人 1.6조 '팔자'에도 6700선 회복…반도체주 반등",
-    "미국 FOMC 앞둔 코스피와 원달러 환율 상승",
-    "[포토]코스피, 1%대 올라 6,700대 회복…코스닥도 상승",
-    "[포토]코스피·코스닥, 오름세로 장 마감",
-    "한국 반도체 대표 20종목에 투자…KICK 'KCHP ETF' 美 상장",
-    "삼진식품, 100억원 신주인수권부사채 발행…\"성장 투자 확대\"",
-    "‘1승 1패’ 애프터마켓 양대 거래소 경쟁 본격화…급등락은 여전",
-    "[포토]코스피, 1%대 상승 마감"
+    "[속보]코스피 7000선 회복 언제쯤…0.04%↓ 6715.41 마감",
+    "코스피, 매파적 FOMC에도 충격 제한…6710선 약보합 마감",
+    "삼성증권 첫 발행어음 21일 출시...연 5.5% 최고금리 특판",
+    "코스피, 약보합 마감…외국인 2조원 이상 매도",
+    "네이버, 배달의민족 지분 인수 없던 일로…\"경영환경 변화\"",
+    "코스피 내리고 코스닥 오르고",
+    "코스피 내리고 코스닥 오르고",
+    "코스피 내리고 코스닥 오르고",
+    "코스피 하락마감",
+    "코스피 하락마감"
   ]
 }
