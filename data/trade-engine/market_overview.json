@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-09-17T07:00:01.059099+00:00",
+  "exported_at": "2026-09-18T07:00:00.921443+00:00",
   "market_daily": [
+    {
+      "date": "20260918",
+      "kospi_change": 2.66,
+      "kosdaq_change": 0.6,
+      "foreign_net": 4216.0,
+      "institution_net": 15054.0,
+      "individual_net": -35872.0,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260917",
       "kospi_change": -0.04,
       "kosdaq_change": 0.76,
-      "foreign_net": -227.71,
-      "institution_net": 15.87,
-      "individual_net": 41.38,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": 0,
+      "institution_net": 0,
+      "individual_net": 0,
+      "hot_theme_count": 17,
+      "momentum_count": 60,
+      "crash_count": 42
     },
     {
       "date": "20260916",
@@ -99,29 +110,18 @@
       "hot_theme_count": 19,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260603",
-      "kospi_change": 0.15,
-      "kosdaq_change": -2.29,
-      "foreign_net": -630.35,
-      "institution_net": -5.46,
-      "individual_net": 635.37,
-      "hot_theme_count": 4,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "[속보]코스피 7000선 회복 언제쯤…0.04%↓ 6715.41 마감",
-    "코스피, 매파적 FOMC에도 충격 제한…6710선 약보합 마감",
-    "삼성증권 첫 발행어음 21일 출시...연 5.5% 최고금리 특판",
-    "코스피, 약보합 마감…외국인 2조원 이상 매도",
-    "네이버, 배달의민족 지분 인수 없던 일로…\"경영환경 변화\"",
-    "코스피 내리고 코스닥 오르고",
-    "코스피 내리고 코스닥 오르고",
-    "코스피 내리고 코스닥 오르고",
-    "코스피 하락마감",
-    "코스피 하락마감"
+    "TGS 방문한 방준혁 의장 \"이용자 반응 중요\"",
+    "\"땡큐 젠슨황\"…美 금리인상 충격 이겨낸 코스피, 2%대 상승",
+    "에이치피오, 덴프스 이어 'K-더마' 알린다…美 LA서 전문의 팝업 클리닉",
+    "가비아 상폐 무산에…얼라인 \"지배주주 동의만으론 불가, 공정 조건 마련해야\"",
+    "코스피, 2% 급등하며 6,890선 회복",
+    "코스피-코스닥 동반 상승 마감",
+    "국내 증시 상승 마감 시황은?",
+    "코스피 2.68% 상승해 6,894.23 마감",
+    "국내 증시 상승 마감",
+    "상승 마감한 국내 증시"
   ]
 }

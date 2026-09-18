@@ -1,82 +1,93 @@
 {
-  "exported_at": "2026-09-17T07:00:00.684659+00:00",
+  "exported_at": "2026-09-18T07:00:00.677213+00:00",
   "holdings": [
     {
       "stock_code": "329180",
       "stock_name": "HD현대중공업",
       "quantity": 6,
       "avg_price": 453000.0,
-      "current_price": 467000.0,
-      "unrealized_pnl": 74758.8,
-      "unrealized_pnl_rate": 2.7505,
-      "strategy": "",
-      "entry_date": "2026-09-15T15:00:00"
-    },
-    {
-      "stock_code": "052690",
-      "stock_name": "한전기술",
-      "quantity": 35,
-      "avg_price": 137200.0,
-      "current_price": 137200.0,
-      "unrealized_pnl": -16326.8,
-      "unrealized_pnl_rate": -0.34,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-09-17T06:11:54.224551"
-    },
-    {
-      "stock_code": "XOM",
-      "stock_name": "XOM",
-      "quantity": 60,
-      "avg_price": 166.01,
-      "current_price": 162.92,
-      "unrealized_pnl": -185.4,
-      "unrealized_pnl_rate": -1.8613,
-      "strategy": "US_SWING",
-      "entry_date": "2026-09-11T13:53:09.891812"
-    },
-    {
-      "stock_code": "096770",
-      "stock_name": "SK이노베이션",
-      "quantity": 13,
-      "avg_price": 141700.0,
-      "current_price": 139400.0,
-      "unrealized_pnl": -36163.14,
-      "unrealized_pnl_rate": -1.9631,
-      "strategy": "",
-      "entry_date": "2026-09-15T15:00:00"
+      "current_price": 461000.0,
+      "unrealized_pnl": 38758.8,
+      "unrealized_pnl_rate": 1.426,
+      "strategy": "manual_recovery",
+      "entry_date": "2026-09-18T02:09:22.223599"
     },
     {
       "stock_code": "090710",
       "stock_name": "휴림로봇",
       "quantity": 267,
       "avg_price": 6380.0,
-      "current_price": 6120.0,
-      "unrealized_pnl": -74700.73,
-      "unrealized_pnl_rate": -4.3852,
-      "strategy": "",
-      "entry_date": "2026-09-15T15:00:00"
+      "current_price": 6370.0,
+      "unrealized_pnl": -7950.73,
+      "unrealized_pnl_rate": -0.4667,
+      "strategy": "manual_recovery",
+      "entry_date": "2026-09-18T05:26:58.104567"
     },
     {
-      "stock_code": "011790",
-      "stock_name": "SKC",
-      "quantity": 12,
-      "avg_price": 92000.0,
-      "current_price": 86700.0,
-      "unrealized_pnl": -67353.6,
-      "unrealized_pnl_rate": -6.1009,
-      "strategy": "",
-      "entry_date": "2026-09-15T15:00:00"
+      "stock_code": "TSLA",
+      "stock_name": "TSLA",
+      "quantity": 27,
+      "avg_price": 368.635,
+      "current_price": 366.875,
+      "unrealized_pnl": -47.52,
+      "unrealized_pnl_rate": -0.4774,
+      "strategy": "US_SWING",
+      "entry_date": "2026-09-17T13:35:40.264731"
+    },
+    {
+      "stock_code": "XOM",
+      "stock_name": "XOM",
+      "quantity": 60,
+      "avg_price": 166.01,
+      "current_price": 162.96,
+      "unrealized_pnl": -183.0,
+      "unrealized_pnl_rate": -1.8372,
+      "strategy": "US_SWING",
+      "entry_date": "2026-09-11T13:53:09.891812"
+    },
+    {
+      "stock_code": "052690",
+      "stock_name": "한전기술",
+      "quantity": 35,
+      "avg_price": 137200.0,
+      "current_price": 134400.0,
+      "unrealized_pnl": -114326.8,
+      "unrealized_pnl_rate": -2.3808,
+      "strategy": "manual_recovery",
+      "entry_date": "2026-09-18T04:26:45.469658"
     },
     {
       "stock_code": "AVGO",
       "stock_name": "AVGO",
       "quantity": 27,
       "avg_price": 363.96,
-      "current_price": 338.345,
-      "unrealized_pnl": -691.6,
-      "unrealized_pnl_rate": -7.0379,
+      "current_price": 348.625,
+      "unrealized_pnl": -414.04,
+      "unrealized_pnl_rate": -4.2134,
       "strategy": "US_SWING",
       "entry_date": "2026-09-11T13:36:05.096736"
+    },
+    {
+      "stock_code": "096770",
+      "stock_name": "SK이노베이션",
+      "quantity": 13,
+      "avg_price": 141700.0,
+      "current_price": 136200.0,
+      "unrealized_pnl": -77763.14,
+      "unrealized_pnl_rate": -4.2214,
+      "strategy": "manual_recovery",
+      "entry_date": "2026-09-18T05:13:05.234031"
+    },
+    {
+      "stock_code": "011790",
+      "stock_name": "SKC",
+      "quantity": 12,
+      "avg_price": 92000.0,
+      "current_price": 87300.0,
+      "unrealized_pnl": -60153.6,
+      "unrealized_pnl_rate": -5.4487,
+      "strategy": "manual_recovery",
+      "entry_date": "2026-09-18T04:26:45.483155"
     }
   ]
 }
