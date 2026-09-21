@@ -1,6 +1,102 @@
 {
-  "exported_at": "2026-09-18T07:00:00.691354+00:00",
+  "exported_at": "2026-09-21T07:00:00.693518+00:00",
   "trades": [
+    {
+      "stock_code": "007660",
+      "stock_name": "이수페타시스",
+      "side": "buy",
+      "quantity": 44,
+      "price": 110397.727,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "[price_source=holdings_avg,settled_by=holdings]",
+      "filled_at": "2026-09-21T06:13:01.075474"
+    },
+    {
+      "stock_code": "000660",
+      "stock_name": "SK하이닉스",
+      "side": "buy",
+      "quantity": 3,
+      "price": 1861333.333,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "[price_source=holdings_avg,settled_by=holdings]",
+      "filled_at": "2026-09-21T06:12:51.765818"
+    },
+    {
+      "stock_code": "LLY",
+      "stock_name": "LLY",
+      "side": "buy",
+      "quantity": 8,
+      "price": 1155.77,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "US_SWING",
+      "reason": "RSI적정(48.5) | MACD골든크로스 [us_pre_qty=0]",
+      "filled_at": "2026-09-18T19:05:32"
+    },
+    {
+      "stock_code": "MU",
+      "stock_name": "MU",
+      "side": "buy",
+      "quantity": 9,
+      "price": 1008.06,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "US_SWING",
+      "reason": "RSI적정(57.4) | MACD골든크로스 [us_pre_qty=0]",
+      "filled_at": "2026-09-18T18:50:32"
+    },
+    {
+      "stock_code": "AVGO",
+      "stock_name": "AVGO",
+      "side": "buy",
+      "quantity": 27,
+      "price": 362.715,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "US_SWING",
+      "reason": "RSI적정(48.5) | MACD골든크로스 [us_pre_qty=0]",
+      "filled_at": "2026-09-18T13:52:32"
+    },
+    {
+      "stock_code": "TSM",
+      "stock_name": "TSM",
+      "side": "buy",
+      "quantity": 23,
+      "price": 432.51,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "US_SWING",
+      "reason": "RSI적정(56.1) | MACD골든크로스 [us_pre_qty=0]",
+      "filled_at": "2026-09-18T13:35:34"
+    },
+    {
+      "stock_code": "XOM",
+      "stock_name": "XOM",
+      "side": "sell",
+      "quantity": 60,
+      "price": 163.05,
+      "pnl": -177.6,
+      "pnl_rate": -1.783,
+      "strategy": "US_SWING",
+      "reason": "us_swing_time_exit",
+      "filled_at": "2026-09-18T13:30:38"
+    },
+    {
+      "stock_code": "AVGO",
+      "stock_name": "AVGO",
+      "side": "sell",
+      "quantity": 27,
+      "price": 353.92,
+      "pnl": -271.08,
+      "pnl_rate": -2.7585,
+      "strategy": "US_SWING",
+      "reason": "us_swing_time_exit",
+      "filled_at": "2026-09-18T13:30:34"
+    },
     {
       "stock_code": "TSLA",
       "stock_name": "TSLA",
@@ -168,54 +264,6 @@
       "strategy": "swing_stop_loss(SL=51,152)",
       "reason": "swing_stop_loss(SL=51,152) [price_source=quote,settled_by=holdings]",
       "filled_at": "2026-09-15T00:05:44.887817"
-    },
-    {
-      "stock_code": "047040",
-      "stock_name": "대우건설",
-      "side": "buy",
-      "quantity": 182,
-      "price": 18707.252,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "이월분(익일종가) [price_source=holdings_avg,settled_by=holdings]",
-      "filled_at": "2026-09-14T06:12:07.111109"
-    },
-    {
-      "stock_code": "003160",
-      "stock_name": "디아이",
-      "side": "sell",
-      "quantity": 170,
-      "price": 28900.0,
-      "pnl": -408017.0,
-      "pnl_rate": -7.6926,
-      "strategy": "swing_time_exit(5영업일≥5영업일)",
-      "reason": "swing_time_exit(5영업일≥5영업일) [price_source=quote,settled_by=holdings]",
-      "filled_at": "2026-09-14T00:01:02.604295"
-    },
-    {
-      "stock_code": "XOM",
-      "stock_name": "XOM",
-      "side": "buy",
-      "quantity": 60,
-      "price": 166.01,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "US_SWING",
-      "reason": "RSI적정(60.9) | MACD골든크로스",
-      "filled_at": "2026-09-11T13:53:17.889704"
-    },
-    {
-      "stock_code": "AVGO",
-      "stock_name": "AVGO",
-      "side": "buy",
-      "quantity": 27,
-      "price": 363.96,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "US_SWING",
-      "reason": "RSI적정(43.5) | MACD골든크로스",
-      "filled_at": "2026-09-11T13:36:36.020234"
     }
   ]
 }
