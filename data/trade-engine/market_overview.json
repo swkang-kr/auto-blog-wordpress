@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-09-21T07:00:00.967026+00:00",
+  "exported_at": "2026-09-22T07:00:00.896283+00:00",
   "market_daily": [
+    {
+      "date": "20260922",
+      "kospi_change": 0.15,
+      "kosdaq_change": -0.23,
+      "foreign_net": 765.0,
+      "institution_net": -1222.0,
+      "individual_net": -16068.0,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260921",
       "kospi_change": 1.65,
       "kosdaq_change": 1.11,
-      "foreign_net": -1719.0,
-      "institution_net": 14932.0,
-      "individual_net": -29796.0,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": -39.0,
+      "institution_net": 14978.0,
+      "individual_net": -31518.0,
+      "hot_theme_count": 9,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260918",
@@ -99,29 +110,18 @@
       "hot_theme_count": 25,
       "momentum_count": 60,
       "crash_count": 50
-    },
-    {
-      "date": "20260908",
-      "kospi_change": -0.58,
-      "kosdaq_change": -1.25,
-      "foreign_net": 63.16,
-      "institution_net": 64.27,
-      "individual_net": -303.31,
-      "hot_theme_count": 4,
-      "momentum_count": 48,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "반도체 수출 ‘역대 최대’에 삼전 5%대↑…코스피 7000선 탈환[마켓시그널]",
-    "1380원대서 매수·매도 맞붙어…BOJ 긴축도 변수 [김혜란의 FX]",
-    "[포토] 코스피 7,007.72p 장 마감",
-    "[포토] 코스피 7,007.72 p",
-    "로봇주 고르기 어렵다면? 현대차·LG전자 묶은 ETF 나온다",
-    "계양전기, 유증 직후 공장 매각… 잇단 자금 수혈에도 재무 개선 ‘험로’",
-    "[포토] 코스피, 7,007.72 포인트",
-    "AI 데이터센터·해저케이블 품은 KT…\"주가 재평가 기대”",
-    "7000선 탈환한 코스피",
-    "[여의도 CEO 20년]&#9330; iM증권, 지주 편입 후 짧아진 임기"
+    "삼전닉스 레버리지보다 심하네...원자재 ETP '널뛰기'에 투자주의보",
+    "원·달러 환율 급락",
+    "원·달러 환율, 22.8원 내린 1358.2원 마감",
+    "[게시판] NH투자증권, 퇴직연금 고객에 개인금고 할인 서비스",
+    "코스피, 가까스로 7000선 사수",
+    "[포토]코스피, 개인·기관 팔자세에 상승폭 축소",
+    "7200 눈앞에 뒀는데...개미가 발목 잡은 코스피 [fn마감시황]",
+    "[포토]7000선 가까스로 지킨 코스피",
+    "코스피 오르고, 코스닥 내리고",
+    "KT&G, 3천600억원 규모 자사주 매입·소각 결정"
   ]
 }

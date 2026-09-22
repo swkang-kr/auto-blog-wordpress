@@ -1,6 +1,90 @@
 {
-  "exported_at": "2026-09-21T07:00:00.693518+00:00",
+  "exported_at": "2026-09-22T07:00:00.690220+00:00",
   "trades": [
+    {
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "side": "buy",
+      "quantity": 15,
+      "price": 277933.333,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "[price_source=holdings_avg,settled_by=holdings]",
+      "filled_at": "2026-09-22T06:12:38.443150"
+    },
+    {
+      "stock_code": "000660",
+      "stock_name": "SK하이닉스",
+      "side": "sell",
+      "quantity": 3,
+      "price": 1873500.0,
+      "pnl": 17419.5,
+      "pnl_rate": 0.312,
+      "strategy": "swing_trailing(peak=3.6%,step=3.0%,trail_sl=0.6%)",
+      "reason": "swing_trailing(peak=3.6%,step=3.0%,trail_sl=0.6%) [price_source=quote,settled_by=holdings]",
+      "filled_at": "2026-09-22T04:41:44.707856"
+    },
+    {
+      "stock_code": "090710",
+      "stock_name": "휴림로봇",
+      "side": "sell",
+      "quantity": 267,
+      "price": 6465.0,
+      "pnl": 17362.08,
+      "pnl_rate": 1.0192,
+      "strategy": "swing_trailing(peak=4.1%,step=3.0%,trail_sl=1.1%)",
+      "reason": "swing_trailing(peak=4.1%,step=3.0%,trail_sl=1.1%) [price_source=quote,settled_by=holdings]",
+      "filled_at": "2026-09-22T04:13:21.954113"
+    },
+    {
+      "stock_code": "052690",
+      "stock_name": "한전기술",
+      "side": "sell",
+      "quantity": 35,
+      "price": 126200.0,
+      "pnl": -400325.8,
+      "pnl_rate": -8.3366,
+      "strategy": "swing_stop_loss(SL=126,224)",
+      "reason": "swing_stop_loss(SL=126,224) [price_source=quote,settled_by=holdings]",
+      "filled_at": "2026-09-22T01:16:35.446773"
+    },
+    {
+      "stock_code": "007660",
+      "stock_name": "이수페타시스",
+      "side": "sell",
+      "quantity": 44,
+      "price": 116300.0,
+      "pnl": 242509.29,
+      "pnl_rate": 4.9925,
+      "strategy": "swing_trailing(peak=8.1%,step=3.0%,trail_sl=5.1%)",
+      "reason": "swing_trailing(peak=8.1%,step=3.0%,trail_sl=5.1%) [price_source=quote,settled_by=holdings]",
+      "filled_at": "2026-09-22T00:20:57.421814"
+    },
+    {
+      "stock_code": "ASML",
+      "stock_name": "ASML",
+      "side": "buy",
+      "quantity": 5,
+      "price": 1703.44,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "US_SWING",
+      "reason": "RSI적정(51.1) | MACD골든크로스 [us_pre_qty=0]",
+      "filled_at": "2026-09-21T16:33:32"
+    },
+    {
+      "stock_code": "MU",
+      "stock_name": "MU",
+      "side": "sell",
+      "quantity": 9,
+      "price": 1037.0,
+      "pnl": 260.46,
+      "pnl_rate": 2.8709,
+      "strategy": "US_SWING",
+      "reason": "us_swing_trailing",
+      "filled_at": "2026-09-21T14:30:48"
+    },
     {
       "stock_code": "007660",
       "stock_name": "이수페타시스",
@@ -180,90 +264,6 @@
       "strategy": "US_SWING",
       "reason": "us_swing_time_exit",
       "filled_at": "2026-09-15T13:30:41"
-    },
-    {
-      "stock_code": "036930",
-      "stock_name": "주성엔지니어링",
-      "side": "buy",
-      "quantity": 22,
-      "price": 192000.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "이월분(익일종가) [price_source=holdings_avg,settled_by=holdings]",
-      "filled_at": "2026-09-15T06:13:36.435681"
-    },
-    {
-      "stock_code": "329180",
-      "stock_name": "HD현대중공업",
-      "side": "buy",
-      "quantity": 6,
-      "price": 453000.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "이월분(익일종가) [price_source=holdings_avg,settled_by=holdings]",
-      "filled_at": "2026-09-15T06:13:23.114568"
-    },
-    {
-      "stock_code": "042700",
-      "stock_name": "한미반도체",
-      "side": "buy",
-      "quantity": 12,
-      "price": 222000.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "이월분(익일종가) [price_source=holdings_avg,settled_by=holdings]",
-      "filled_at": "2026-09-15T06:13:08.165451"
-    },
-    {
-      "stock_code": "000500",
-      "stock_name": "가온전선",
-      "side": "buy",
-      "quantity": 17,
-      "price": 239617.647,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "이월분(익일종가) [price_source=holdings_avg,settled_by=holdings]",
-      "filled_at": "2026-09-15T06:12:55.136810"
-    },
-    {
-      "stock_code": "096770",
-      "stock_name": "SK이노베이션",
-      "side": "buy",
-      "quantity": 13,
-      "price": 141700.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "이월분(익일종가) [price_source=holdings_avg,settled_by=holdings]",
-      "filled_at": "2026-09-15T06:12:40.204430"
-    },
-    {
-      "stock_code": "047040",
-      "stock_name": "대우건설",
-      "side": "sell",
-      "quantity": 182,
-      "price": 18150.0,
-      "pnl": -112732.22,
-      "pnl_rate": -3.3111,
-      "strategy": "swing_gap_down(net=-3.32%,held=18.1h)",
-      "reason": "swing_gap_down(net=-3.32%,held=18.1h) [price_source=quote,settled_by=holdings]",
-      "filled_at": "2026-09-15T00:18:46.109248"
-    },
-    {
-      "stock_code": "403870",
-      "stock_name": "HPSP",
-      "side": "sell",
-      "quantity": 20,
-      "price": 51000.0,
-      "pnl": -95235.6,
-      "pnl_rate": -8.5644,
-      "strategy": "swing_stop_loss(SL=51,152)",
-      "reason": "swing_stop_loss(SL=51,152) [price_source=quote,settled_by=holdings]",
-      "filled_at": "2026-09-15T00:05:44.887817"
     }
   ]
 }
