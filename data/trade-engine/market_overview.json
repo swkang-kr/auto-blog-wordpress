@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-09-22T07:00:00.896283+00:00",
+  "exported_at": "2026-09-23T07:00:00.930571+00:00",
   "market_daily": [
+    {
+      "date": "20260923",
+      "kospi_change": 0.9,
+      "kosdaq_change": 1.21,
+      "foreign_net": -5107.0,
+      "institution_net": 3191.0,
+      "individual_net": -14407.0,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260922",
       "kospi_change": 0.15,
       "kosdaq_change": -0.23,
-      "foreign_net": 765.0,
-      "institution_net": -1222.0,
-      "individual_net": -16068.0,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": 673.0,
+      "institution_net": -1299.0,
+      "individual_net": -15824.0,
+      "hot_theme_count": 4,
+      "momentum_count": 60,
+      "crash_count": 42
     },
     {
       "date": "20260921",
@@ -99,29 +110,18 @@
       "hot_theme_count": 2,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260909",
-      "kospi_change": 1.4,
-      "kosdaq_change": 2.28,
-      "foreign_net": -43.51,
-      "institution_net": 94.22,
-      "individual_net": -228.79,
-      "hot_theme_count": 25,
-      "momentum_count": 60,
-      "crash_count": 50
     }
   ],
   "headlines": [
-    "삼전닉스 레버리지보다 심하네...원자재 ETP '널뛰기'에 투자주의보",
-    "원·달러 환율 급락",
-    "원·달러 환율, 22.8원 내린 1358.2원 마감",
-    "[게시판] NH투자증권, 퇴직연금 고객에 개인금고 할인 서비스",
-    "코스피, 가까스로 7000선 사수",
-    "[포토]코스피, 개인·기관 팔자세에 상승폭 축소",
-    "7200 눈앞에 뒀는데...개미가 발목 잡은 코스피 [fn마감시황]",
-    "[포토]7000선 가까스로 지킨 코스피",
-    "코스피 오르고, 코스닥 내리고",
-    "KT&G, 3천600억원 규모 자사주 매입·소각 결정"
+    "[단독] \"외국인 보유 0주\" 믿었다간…넉 달째 틀린 수급 정보",
+    "메리츠증권, 1년 2개월 만에 발행어음 인가…9번째 사업자 합류",
+    "[포토] 코스피 지수, 63.01p 오른 7,080.92",
+    "코스피, 상승 마감",
+    "코스피 상승 마감",
+    "삼성전자 3% 뛰어도…코스피, 또 7100선 못 지켰다",
+    "[포토] 추석 전 63.01 오른 코스피 지수 7,080.92 마감",
+    "셀트리온 \"짐펜트라, 류마티스 美 3상 IND 승인\"",
+    "코스피-코스닥, 상승마감",
+    "코스피-코스닥, 상승마감"
   ]
 }
