@@ -1,17 +1,6 @@
 {
-  "exported_at": "2026-09-23T07:00:00.674152+00:00",
+  "exported_at": "2026-09-24T07:00:00.679586+00:00",
   "holdings": [
-    {
-      "stock_code": "TSM",
-      "stock_name": "TSM",
-      "quantity": 23,
-      "avg_price": 432.51,
-      "current_price": 452.445,
-      "unrealized_pnl": 458.51,
-      "unrealized_pnl_rate": 4.6091,
-      "strategy": "US_SWING",
-      "entry_date": "2026-09-18T13:35:33.656028"
-    },
     {
       "stock_code": "096770",
       "stock_name": "SK이노베이션",
@@ -24,26 +13,26 @@
       "entry_date": "2026-09-18T05:13:05.234031"
     },
     {
+      "stock_code": "TSM",
+      "stock_name": "TSM",
+      "quantity": 23,
+      "avg_price": 432.51,
+      "current_price": 447.53,
+      "unrealized_pnl": 345.46,
+      "unrealized_pnl_rate": 3.4728,
+      "strategy": "US_SWING",
+      "entry_date": "2026-09-18T13:35:33.656028"
+    },
+    {
       "stock_code": "TSLA",
       "stock_name": "TSLA",
       "quantity": 27,
       "avg_price": 368.635,
-      "current_price": 379.8139,
-      "unrealized_pnl": 301.83,
-      "unrealized_pnl_rate": 3.0325,
+      "current_price": 379.745,
+      "unrealized_pnl": 299.97,
+      "unrealized_pnl_rate": 3.0138,
       "strategy": "US_SWING",
       "entry_date": "2026-09-17T13:35:40.264731"
-    },
-    {
-      "stock_code": "ASML",
-      "stock_name": "ASML",
-      "quantity": 5,
-      "avg_price": 1703.44,
-      "current_price": 1748.255,
-      "unrealized_pnl": 224.08,
-      "unrealized_pnl_rate": 2.6309,
-      "strategy": "US_SWING",
-      "entry_date": "2026-09-21T16:33:32.014633"
     },
     {
       "stock_code": "005930",
@@ -57,13 +46,24 @@
       "entry_date": "2026-09-22T06:12:38.441879"
     },
     {
+      "stock_code": "ASML",
+      "stock_name": "ASML",
+      "quantity": 5,
+      "avg_price": 1703.44,
+      "current_price": 1736.125,
+      "unrealized_pnl": 163.42,
+      "unrealized_pnl_rate": 1.9188,
+      "strategy": "US_SWING",
+      "entry_date": "2026-09-21T16:33:32.014633"
+    },
+    {
       "stock_code": "LLY",
       "stock_name": "LLY",
       "quantity": 8,
       "avg_price": 1155.77,
-      "current_price": 1175.0801,
-      "unrealized_pnl": 154.48,
-      "unrealized_pnl_rate": 1.6708,
+      "current_price": 1157.39,
+      "unrealized_pnl": 12.96,
+      "unrealized_pnl_rate": 0.1402,
       "strategy": "US_SWING",
       "entry_date": "2026-09-18T19:05:32.573948"
     },
@@ -72,9 +72,9 @@
       "stock_name": "AVGO",
       "quantity": 27,
       "avg_price": 362.715,
-      "current_price": 365.24,
-      "unrealized_pnl": 68.18,
-      "unrealized_pnl_rate": 0.6961,
+      "current_price": 355.12,
+      "unrealized_pnl": -205.06,
+      "unrealized_pnl_rate": -2.0939,
       "strategy": "US_SWING",
       "entry_date": "2026-09-18T13:52:32.072742"
     },

@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-09-23T07:00:00.930571+00:00",
+  "exported_at": "2026-09-24T07:00:00.897153+00:00",
   "market_daily": [
+    {
+      "date": "20260924",
+      "kospi_change": 0.9,
+      "kosdaq_change": 1.21,
+      "foreign_net": -4942.0,
+      "institution_net": 3189.0,
+      "individual_net": -14649.0,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20260923",
       "kospi_change": 0.9,
       "kosdaq_change": 1.21,
-      "foreign_net": -5107.0,
-      "institution_net": 3191.0,
-      "individual_net": -14407.0,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": -4858.0,
+      "institution_net": 3190.0,
+      "individual_net": -14735.0,
+      "hot_theme_count": 6,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260922",
@@ -99,29 +110,18 @@
       "hot_theme_count": 0,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260910",
-      "kospi_change": -0.25,
-      "kosdaq_change": 0.79,
-      "foreign_net": -248.07,
-      "institution_net": 43.34,
-      "individual_net": 38.02,
-      "hot_theme_count": 2,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "[단독] \"외국인 보유 0주\" 믿었다간…넉 달째 틀린 수급 정보",
-    "메리츠증권, 1년 2개월 만에 발행어음 인가…9번째 사업자 합류",
-    "[포토] 코스피 지수, 63.01p 오른 7,080.92",
-    "코스피, 상승 마감",
-    "코스피 상승 마감",
-    "삼성전자 3% 뛰어도…코스피, 또 7100선 못 지켰다",
-    "[포토] 추석 전 63.01 오른 코스피 지수 7,080.92 마감",
-    "셀트리온 \"짐펜트라, 류마티스 美 3상 IND 승인\"",
-    "코스피-코스닥, 상승마감",
-    "코스피-코스닥, 상승마감"
+    "\"삼전 조정은 매수 기회\"라는데…53만→63만원 vs 35만원 '제각각'",
+    "추석 당일에도 가요…유통가의 배송 경쟁",
+    "'빅쇼트' 버리, 또 반도체 공매도 확대…”2년 내 메모리 공급난 끝난다\"",
+    "성과 입증한 제네시스PE의 10년…다음 ‘블루오션’ 찾아 항해한다 [하우스리뷰]",
+    "[마켓인]홈플러스 인수에 국내외 기업 관심…매각 성사 가능성은",
+    "[AI 슈퍼사이클 나비효과]下 HBM 품귀에 스마트폰도…'프리미엄 쏠림' 심화",
+    "\"보름달 찾아라\"…코인원, '추석 보너스' 이벤트",
+    "\"기술주 다시 최고가 가면 청산\" 마이클 버리, 마이크론 공매도 확대",
+    "[AI 열폭주 잡는 K산업]上 삼성·LG, 불붙은 냉각 패권 전쟁",
+    "불신 털어내고 FDA 허가…HLB, 남은 과제 '이것'"
   ]
 }
