@@ -1,42 +1,6 @@
 {
-  "exported_at": "2026-09-25T07:00:00.684938+00:00",
+  "exported_at": "2026-09-28T07:00:00.713551+00:00",
   "disclosures": [
-    {
-      "corp_name": "케이쓰리아이",
-      "stock_code": "431190",
-      "report_name": "주요사항보고서(유상증자결정)",
-      "disclosure_type": "B",
-      "sentiment": null,
-      "submitted_at": "20260923",
-      "signal_used": false
-    },
-    {
-      "corp_name": "젠큐릭스",
-      "stock_code": "229000",
-      "report_name": "[기재정정]주요사항보고서(회사합병결정)",
-      "disclosure_type": "B",
-      "sentiment": null,
-      "submitted_at": "20260923",
-      "signal_used": false
-    },
-    {
-      "corp_name": "루멘스바이오스",
-      "stock_code": "038060",
-      "report_name": "[기재정정]주요사항보고서(유상증자결정)",
-      "disclosure_type": "B",
-      "sentiment": null,
-      "submitted_at": "20260923",
-      "signal_used": false
-    },
-    {
-      "corp_name": "에스에스알",
-      "stock_code": "275630",
-      "report_name": "주요사항보고서(자기주식취득신탁계약해지결정)",
-      "disclosure_type": "B",
-      "sentiment": null,
-      "submitted_at": "20260923",
-      "signal_used": false
-    },
     {
       "corp_name": "GMI벤처",
       "stock_code": "019570",
@@ -92,8 +56,26 @@
       "signal_used": false
     },
     {
-      "corp_name": "이렘",
-      "stock_code": "009730",
+      "corp_name": "케이쓰리아이",
+      "stock_code": "431190",
+      "report_name": "주요사항보고서(유상증자결정)",
+      "disclosure_type": "B",
+      "sentiment": null,
+      "submitted_at": "20260923",
+      "signal_used": false
+    },
+    {
+      "corp_name": "젠큐릭스",
+      "stock_code": "229000",
+      "report_name": "[기재정정]주요사항보고서(회사합병결정)",
+      "disclosure_type": "B",
+      "sentiment": null,
+      "submitted_at": "20260923",
+      "signal_used": false
+    },
+    {
+      "corp_name": "루멘스바이오스",
+      "stock_code": "038060",
       "report_name": "[기재정정]주요사항보고서(유상증자결정)",
       "disclosure_type": "B",
       "sentiment": null,
@@ -101,9 +83,9 @@
       "signal_used": false
     },
     {
-      "corp_name": "휴림로봇",
-      "stock_code": "090710",
-      "report_name": "주요사항보고서(유상증자결정)",
+      "corp_name": "에스에스알",
+      "stock_code": "275630",
+      "report_name": "주요사항보고서(자기주식취득신탁계약해지결정)",
       "disclosure_type": "B",
       "sentiment": null,
       "submitted_at": "20260923",
@@ -119,9 +101,36 @@
       "signal_used": false
     },
     {
+      "corp_name": "휴림로봇",
+      "stock_code": "090710",
+      "report_name": "주요사항보고서(유상증자결정)",
+      "disclosure_type": "B",
+      "sentiment": null,
+      "submitted_at": "20260923",
+      "signal_used": false
+    },
+    {
+      "corp_name": "이렘",
+      "stock_code": "009730",
+      "report_name": "[기재정정]주요사항보고서(유상증자결정)",
+      "disclosure_type": "B",
+      "sentiment": null,
+      "submitted_at": "20260923",
+      "signal_used": false
+    },
+    {
       "corp_name": "셀리드",
       "stock_code": "299660",
       "report_name": "주요사항보고서(유상증자결정)",
+      "disclosure_type": "B",
+      "sentiment": null,
+      "submitted_at": "20260922",
+      "signal_used": false
+    },
+    {
+      "corp_name": "국일제지",
+      "stock_code": "078130",
+      "report_name": "[첨부정정]주요사항보고서(회사합병결정)",
       "disclosure_type": "B",
       "sentiment": null,
       "submitted_at": "20260922",
@@ -209,15 +218,6 @@
       "signal_used": false
     },
     {
-      "corp_name": "국일제지",
-      "stock_code": "078130",
-      "report_name": "[첨부정정]주요사항보고서(회사합병결정)",
-      "disclosure_type": "B",
-      "sentiment": null,
-      "submitted_at": "20260922",
-      "signal_used": false
-    },
-    {
       "corp_name": "셀리드",
       "stock_code": "299660",
       "report_name": "[기재정정]주요사항보고서(유상증자결정)",
@@ -254,17 +254,17 @@
       "signal_used": false
     },
     {
-      "corp_name": "헝셩그룹",
-      "stock_code": "900270",
-      "report_name": "[첨부정정]주요사항보고서(유상증자결정)",
+      "corp_name": "삼성FN리츠",
+      "stock_code": "448730",
+      "report_name": "[기재정정]주요사항보고서(유상증자결정)",
       "disclosure_type": "B",
       "sentiment": null,
       "submitted_at": "20260921",
       "signal_used": false
     },
     {
-      "corp_name": "모아데이타",
-      "stock_code": "288980",
+      "corp_name": "모아라이프플러스",
+      "stock_code": "142760",
       "report_name": "[기재정정]주요사항보고서(유상증자결정)",
       "disclosure_type": "B",
       "sentiment": null,

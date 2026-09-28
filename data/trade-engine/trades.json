@@ -1,6 +1,42 @@
 {
-  "exported_at": "2026-09-25T07:00:00.678419+00:00",
+  "exported_at": "2026-09-28T07:00:00.705188+00:00",
   "trades": [
+    {
+      "stock_code": "096770",
+      "stock_name": "SK이노베이션",
+      "side": "sell",
+      "quantity": 13,
+      "price": 156700.0,
+      "pnl": 188229.86,
+      "pnl_rate": 10.2182,
+      "strategy": "swing_trailing(peak=13.3%,step=3.0%,trail_sl=10.3%)",
+      "reason": "swing_trailing(peak=13.3%,step=3.0%,trail_sl=10.3%) [price_source=quote,settled_by=holdings]",
+      "filled_at": "2026-09-28T01:54:59.711544"
+    },
+    {
+      "stock_code": "TSM",
+      "stock_name": "TSM",
+      "side": "sell",
+      "quantity": 23,
+      "price": 454.95,
+      "pnl": 516.12,
+      "pnl_rate": 5.1883,
+      "strategy": "US_SWING",
+      "reason": "us_swing_time_exit",
+      "filled_at": "2026-09-25T13:30:49"
+    },
+    {
+      "stock_code": "LLY",
+      "stock_name": "LLY",
+      "side": "sell",
+      "quantity": 8,
+      "price": 1185.185,
+      "pnl": 235.32,
+      "pnl_rate": 2.5451,
+      "strategy": "US_SWING",
+      "reason": "us_swing_time_exit",
+      "filled_at": "2026-09-25T13:30:47"
+    },
     {
       "stock_code": "JPM",
       "stock_name": "JPM",
@@ -108,102 +144,6 @@
       "strategy": "US_SWING",
       "reason": "us_swing_trailing",
       "filled_at": "2026-09-21T14:30:48"
-    },
-    {
-      "stock_code": "007660",
-      "stock_name": "이수페타시스",
-      "side": "buy",
-      "quantity": 44,
-      "price": 110397.727,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "[price_source=holdings_avg,settled_by=holdings]",
-      "filled_at": "2026-09-21T06:13:01.075474"
-    },
-    {
-      "stock_code": "000660",
-      "stock_name": "SK하이닉스",
-      "side": "buy",
-      "quantity": 3,
-      "price": 1861333.333,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "[price_source=holdings_avg,settled_by=holdings]",
-      "filled_at": "2026-09-21T06:12:51.765818"
-    },
-    {
-      "stock_code": "LLY",
-      "stock_name": "LLY",
-      "side": "buy",
-      "quantity": 8,
-      "price": 1155.77,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "US_SWING",
-      "reason": "RSI적정(48.5) | MACD골든크로스 [us_pre_qty=0]",
-      "filled_at": "2026-09-18T19:05:32"
-    },
-    {
-      "stock_code": "MU",
-      "stock_name": "MU",
-      "side": "buy",
-      "quantity": 9,
-      "price": 1008.06,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "US_SWING",
-      "reason": "RSI적정(57.4) | MACD골든크로스 [us_pre_qty=0]",
-      "filled_at": "2026-09-18T18:50:32"
-    },
-    {
-      "stock_code": "AVGO",
-      "stock_name": "AVGO",
-      "side": "buy",
-      "quantity": 27,
-      "price": 362.715,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "US_SWING",
-      "reason": "RSI적정(48.5) | MACD골든크로스 [us_pre_qty=0]",
-      "filled_at": "2026-09-18T13:52:32"
-    },
-    {
-      "stock_code": "TSM",
-      "stock_name": "TSM",
-      "side": "buy",
-      "quantity": 23,
-      "price": 432.51,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "US_SWING",
-      "reason": "RSI적정(56.1) | MACD골든크로스 [us_pre_qty=0]",
-      "filled_at": "2026-09-18T13:35:34"
-    },
-    {
-      "stock_code": "XOM",
-      "stock_name": "XOM",
-      "side": "sell",
-      "quantity": 60,
-      "price": 163.05,
-      "pnl": -177.6,
-      "pnl_rate": -1.783,
-      "strategy": "US_SWING",
-      "reason": "us_swing_time_exit",
-      "filled_at": "2026-09-18T13:30:38"
-    },
-    {
-      "stock_code": "AVGO",
-      "stock_name": "AVGO",
-      "side": "sell",
-      "quantity": 27,
-      "price": 353.92,
-      "pnl": -271.08,
-      "pnl_rate": -2.7585,
-      "strategy": "US_SWING",
-      "reason": "us_swing_time_exit",
-      "filled_at": "2026-09-18T13:30:34"
     }
   ]
 }
