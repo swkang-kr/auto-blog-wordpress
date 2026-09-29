@@ -1,38 +1,60 @@
 {
-  "exported_at": "2026-09-28T07:00:00.689904+00:00",
+  "exported_at": "2026-09-29T07:00:00.666358+00:00",
   "holdings": [
-    {
-      "stock_code": "ASML",
-      "stock_name": "ASML",
-      "quantity": 5,
-      "avg_price": 1703.44,
-      "current_price": 1741.71,
-      "unrealized_pnl": 191.35,
-      "unrealized_pnl_rate": 2.2466,
-      "strategy": "US_SWING",
-      "entry_date": "2026-09-21T16:33:32.014633"
-    },
     {
       "stock_code": "JPM",
       "stock_name": "JPM",
       "quantity": 29,
       "avg_price": 336.35,
-      "current_price": 342.57,
-      "unrealized_pnl": 180.38,
-      "unrealized_pnl_rate": 1.8493,
+      "current_price": 336.7,
+      "unrealized_pnl": 10.15,
+      "unrealized_pnl_rate": 0.1041,
       "strategy": "US_SWING",
       "entry_date": "2026-09-24T13:46:52.267028"
     },
     {
-      "stock_code": "011790",
-      "stock_name": "SKC",
-      "quantity": 12,
-      "avg_price": 92000.0,
-      "current_price": 91500.0,
-      "unrealized_pnl": -9753.6,
-      "unrealized_pnl_rate": -0.8835,
-      "strategy": "manual_recovery",
-      "entry_date": "2026-09-18T04:26:45.483155"
+      "stock_code": "066570",
+      "stock_name": "LG전자",
+      "quantity": 22,
+      "avg_price": 213704.545,
+      "current_price": 213704.545,
+      "unrealized_pnl": 0,
+      "unrealized_pnl_rate": 0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-09-29T06:15:22.044214"
+    },
+    {
+      "stock_code": "009830",
+      "stock_name": "한화솔루션",
+      "quantity": 121,
+      "avg_price": 32515.702,
+      "current_price": 32515.702,
+      "unrealized_pnl": 0,
+      "unrealized_pnl_rate": 0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-09-29T06:15:59.303999"
+    },
+    {
+      "stock_code": "007660",
+      "stock_name": "이수페타시스",
+      "quantity": 67,
+      "avg_price": 117500.0,
+      "current_price": 117600.0,
+      "unrealized_pnl": -20066.5,
+      "unrealized_pnl_rate": -0.2549,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-09-29T06:11:52.121952"
+    },
+    {
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "quantity": 15,
+      "avg_price": 277933.333,
+      "current_price": 273000.0,
+      "unrealized_pnl": -88174.59,
+      "unrealized_pnl_rate": -2.115,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-09-22T06:12:38.441879"
     },
     {
       "stock_code": "AVGO",
@@ -44,28 +66,6 @@
       "unrealized_pnl_rate": -2.2345,
       "strategy": "US_SWING",
       "entry_date": "2026-09-18T13:52:32.072742"
-    },
-    {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "quantity": 15,
-      "avg_price": 277933.333,
-      "current_price": 271500.0,
-      "unrealized_pnl": -110674.59,
-      "unrealized_pnl_rate": -2.6547,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-09-22T06:12:38.441879"
-    },
-    {
-      "stock_code": "329180",
-      "stock_name": "HD현대중공업",
-      "quantity": 6,
-      "avg_price": 453000.0,
-      "current_price": 441000.0,
-      "unrealized_pnl": -81241.2,
-      "unrealized_pnl_rate": -2.989,
-      "strategy": "manual_recovery",
-      "entry_date": "2026-09-18T02:09:22.223599"
     }
   ]
 }

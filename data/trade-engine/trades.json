@@ -1,6 +1,78 @@
 {
-  "exported_at": "2026-09-28T07:00:00.705188+00:00",
+  "exported_at": "2026-09-29T07:00:00.680597+00:00",
   "trades": [
+    {
+      "stock_code": "009830",
+      "stock_name": "한화솔루션",
+      "side": "buy",
+      "quantity": 121,
+      "price": 32515.702,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "[price_source=holdings_avg,settled_by=holdings]",
+      "filled_at": "2026-09-29T06:15:59.309215"
+    },
+    {
+      "stock_code": "066570",
+      "stock_name": "LG전자",
+      "side": "buy",
+      "quantity": 22,
+      "price": 213704.545,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "[price_source=holdings_avg,settled_by=holdings]",
+      "filled_at": "2026-09-29T06:15:22.045849"
+    },
+    {
+      "stock_code": "007660",
+      "stock_name": "이수페타시스",
+      "side": "buy",
+      "quantity": 67,
+      "price": 117500.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "이월분(익일종가) [price_source=holdings_avg,settled_by=holdings]",
+      "filled_at": "2026-09-29T06:11:52.123415"
+    },
+    {
+      "stock_code": "329180",
+      "stock_name": "HD현대중공업",
+      "side": "sell",
+      "quantity": 6,
+      "price": 436500.0,
+      "pnl": -107983.8,
+      "pnl_rate": -3.9729,
+      "strategy": "swing_time_exit(5영업일≥5영업일)",
+      "reason": "swing_time_exit(5영업일≥5영업일) [price_source=quote,settled_by=holdings]",
+      "filled_at": "2026-09-29T00:01:19.808340"
+    },
+    {
+      "stock_code": "011790",
+      "stock_name": "SKC",
+      "side": "sell",
+      "quantity": 12,
+      "price": 89800.0,
+      "pnl": -30084.96,
+      "pnl_rate": -2.7251,
+      "strategy": "swing_time_exit(5영업일≥5영업일)",
+      "reason": "swing_time_exit(5영업일≥5영업일) [price_source=quote,settled_by=holdings]",
+      "filled_at": "2026-09-29T00:00:49.512542"
+    },
+    {
+      "stock_code": "ASML",
+      "stock_name": "ASML",
+      "side": "sell",
+      "quantity": 5,
+      "price": 1744.97,
+      "pnl": 207.65,
+      "pnl_rate": 2.438,
+      "strategy": "US_SWING",
+      "reason": "us_swing_time_exit",
+      "filled_at": "2026-09-28T13:30:47"
+    },
     {
       "stock_code": "096770",
       "stock_name": "SK이노베이션",
@@ -60,90 +132,6 @@
       "strategy": "US_SWING",
       "reason": "us_swing_time_exit",
       "filled_at": "2026-09-24T13:30:30"
-    },
-    {
-      "stock_code": "005930",
-      "stock_name": "삼성전자",
-      "side": "buy",
-      "quantity": 15,
-      "price": 277933.333,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "[price_source=holdings_avg,settled_by=holdings]",
-      "filled_at": "2026-09-22T06:12:38.443150"
-    },
-    {
-      "stock_code": "000660",
-      "stock_name": "SK하이닉스",
-      "side": "sell",
-      "quantity": 3,
-      "price": 1873500.0,
-      "pnl": 17419.5,
-      "pnl_rate": 0.312,
-      "strategy": "swing_trailing(peak=3.6%,step=3.0%,trail_sl=0.6%)",
-      "reason": "swing_trailing(peak=3.6%,step=3.0%,trail_sl=0.6%) [price_source=quote,settled_by=holdings]",
-      "filled_at": "2026-09-22T04:41:44.707856"
-    },
-    {
-      "stock_code": "090710",
-      "stock_name": "휴림로봇",
-      "side": "sell",
-      "quantity": 267,
-      "price": 6465.0,
-      "pnl": 17362.08,
-      "pnl_rate": 1.0192,
-      "strategy": "swing_trailing(peak=4.1%,step=3.0%,trail_sl=1.1%)",
-      "reason": "swing_trailing(peak=4.1%,step=3.0%,trail_sl=1.1%) [price_source=quote,settled_by=holdings]",
-      "filled_at": "2026-09-22T04:13:21.954113"
-    },
-    {
-      "stock_code": "052690",
-      "stock_name": "한전기술",
-      "side": "sell",
-      "quantity": 35,
-      "price": 126200.0,
-      "pnl": -400325.8,
-      "pnl_rate": -8.3366,
-      "strategy": "swing_stop_loss(SL=126,224)",
-      "reason": "swing_stop_loss(SL=126,224) [price_source=quote,settled_by=holdings]",
-      "filled_at": "2026-09-22T01:16:35.446773"
-    },
-    {
-      "stock_code": "007660",
-      "stock_name": "이수페타시스",
-      "side": "sell",
-      "quantity": 44,
-      "price": 116300.0,
-      "pnl": 242509.29,
-      "pnl_rate": 4.9925,
-      "strategy": "swing_trailing(peak=8.1%,step=3.0%,trail_sl=5.1%)",
-      "reason": "swing_trailing(peak=8.1%,step=3.0%,trail_sl=5.1%) [price_source=quote,settled_by=holdings]",
-      "filled_at": "2026-09-22T00:20:57.421814"
-    },
-    {
-      "stock_code": "ASML",
-      "stock_name": "ASML",
-      "side": "buy",
-      "quantity": 5,
-      "price": 1703.44,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "US_SWING",
-      "reason": "RSI적정(51.1) | MACD골든크로스 [us_pre_qty=0]",
-      "filled_at": "2026-09-21T16:33:32"
-    },
-    {
-      "stock_code": "MU",
-      "stock_name": "MU",
-      "side": "sell",
-      "quantity": 9,
-      "price": 1037.0,
-      "pnl": 260.46,
-      "pnl_rate": 2.8709,
-      "strategy": "US_SWING",
-      "reason": "us_swing_trailing",
-      "filled_at": "2026-09-21T14:30:48"
     }
   ]
 }
