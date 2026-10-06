@@ -1,4 +1,89 @@
 {
-  "exported_at": "2026-10-05T07:00:00.880549+00:00",
-  "trades": []
+  "exported_at": "2026-10-06T07:00:00.685514+00:00",
+  "trades": [
+    {
+      "stock_code": "007660",
+      "stock_name": "이수페타시스",
+      "side": "sell",
+      "quantity": 67,
+      "price": 131100.0,
+      "pnl": 882064.38,
+      "pnl_rate": 11.2044,
+      "strategy": "swing_trailing(peak=14.4%,step=3.0%,trail_sl=11.4%)",
+      "reason": "swing_trailing(peak=14.4%,step=3.0%,trail_sl=11.4%) [price_source=quote,settled_by=holdings]",
+      "filled_at": "2026-10-06T01:07:38.833232"
+    },
+    {
+      "stock_code": "066570",
+      "stock_name": "LG전자",
+      "side": "sell",
+      "quantity": 22,
+      "price": 227000.0,
+      "pnl": 275754.41,
+      "pnl_rate": 5.8652,
+      "strategy": "swing_trailing(peak=8.9%,step=3.0%,trail_sl=5.9%)",
+      "reason": "swing_trailing(peak=8.9%,step=3.0%,trail_sl=5.9%) [price_source=quote,settled_by=holdings]",
+      "filled_at": "2026-10-06T00:14:21.482003"
+    },
+    {
+      "stock_code": "009830",
+      "stock_name": "한화솔루션",
+      "side": "sell",
+      "quantity": 121,
+      "price": 35250.0,
+      "pnl": 316612.89,
+      "pnl_rate": 8.0473,
+      "strategy": "swing_trailing(peak=11.3%,step=3.0%,trail_sl=8.3%)",
+      "reason": "swing_trailing(peak=11.3%,step=3.0%,trail_sl=8.3%) [price_source=quote,settled_by=holdings]",
+      "filled_at": "2026-10-06T00:05:23.281561"
+    },
+    {
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "side": "sell",
+      "quantity": 15,
+      "price": 277500.0,
+      "pnl": -20657.69,
+      "pnl_rate": -0.4955,
+      "strategy": "swing_time_exit(21영업일≥5영업일)",
+      "reason": "swing_time_exit(21영업일≥5영업일) [price_source=quote,settled_by=holdings]",
+      "filled_at": "2026-10-06T00:00:49.219002"
+    },
+    {
+      "stock_code": "GOOGL",
+      "stock_name": "GOOGL",
+      "side": "buy",
+      "quantity": 29,
+      "price": 344.5682,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "US_SWING",
+      "reason": "RSI적정(50.9) | MACD골든크로스 [us_pre_qty=0]",
+      "filled_at": "2026-10-05T13:45:49"
+    },
+    {
+      "stock_code": "JNJ",
+      "stock_name": "JNJ",
+      "side": "buy",
+      "quantity": 39,
+      "price": 254.66,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "US_SWING",
+      "reason": "RSI적정(31.1) | RSI과매도 | BB하단근접 [us_pre_qty=0]",
+      "filled_at": "2026-10-05T13:36:03"
+    },
+    {
+      "stock_code": "AMZN",
+      "stock_name": "AMZN",
+      "side": "buy",
+      "quantity": 39,
+      "price": 251.07,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "US_SWING",
+      "reason": "RSI적정(47.9) | MACD골든크로스 [us_pre_qty=0]",
+      "filled_at": "2026-10-05T13:35:55"
+    }
+  ]
 }
