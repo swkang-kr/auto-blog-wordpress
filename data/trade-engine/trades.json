@@ -1,6 +1,30 @@
 {
-  "exported_at": "2026-10-06T07:00:00.685514+00:00",
+  "exported_at": "2026-10-07T07:00:00.680563+00:00",
   "trades": [
+    {
+      "stock_code": "042700",
+      "stock_name": "한미반도체",
+      "side": "buy",
+      "quantity": 29,
+      "price": 264620.689,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "이월분(익일종가) [price_source=holdings_avg,settled_by=holdings]",
+      "filled_at": "2026-10-07T06:11:53.148589"
+    },
+    {
+      "stock_code": "009150",
+      "stock_name": "삼성전기",
+      "side": "buy",
+      "quantity": 3,
+      "price": 1609000.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "이월분(익일종가) [price_source=holdings_avg,settled_by=holdings]",
+      "filled_at": "2026-10-07T06:11:38.091438"
+    },
     {
       "stock_code": "007660",
       "stock_name": "이수페타시스",
