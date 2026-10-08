@@ -1,82 +1,71 @@
 {
-  "exported_at": "2026-10-07T07:00:00.664056+00:00",
+  "exported_at": "2026-10-08T07:00:00.664211+00:00",
   "holdings": [
-    {
-      "stock_code": "AVGO",
-      "stock_name": "브로드컴",
-      "quantity": 27,
-      "avg_price": 362.715,
-      "current_price": 377.5951,
-      "unrealized_pnl": 401.76,
-      "unrealized_pnl_rate": 4.1024,
-      "strategy": "US_SWING_RECOVERY",
-      "entry_date": "2026-10-05T13:30:51.466912"
-    },
     {
       "stock_code": "AMZN",
       "stock_name": "AMZN",
       "quantity": 39,
       "avg_price": 251.07,
-      "current_price": 256.26,
-      "unrealized_pnl": 202.41,
-      "unrealized_pnl_rate": 2.0672,
+      "current_price": 259.41,
+      "unrealized_pnl": 325.26,
+      "unrealized_pnl_rate": 3.3218,
       "strategy": "US_SWING",
       "entry_date": "2026-10-05T13:35:53.757683"
     },
     {
-      "stock_code": "GOOGL",
-      "stock_name": "GOOGL",
-      "quantity": 29,
-      "avg_price": 344.568,
-      "current_price": 348.45,
-      "unrealized_pnl": 112.58,
-      "unrealized_pnl_rate": 1.1266,
-      "strategy": "US_SWING",
-      "entry_date": "2026-10-05T13:45:49.761672"
+      "stock_code": "AVGO",
+      "stock_name": "브로드컴",
+      "quantity": 27,
+      "avg_price": 362.715,
+      "current_price": 369.795,
+      "unrealized_pnl": 191.16,
+      "unrealized_pnl_rate": 1.9519,
+      "strategy": "US_SWING_RECOVERY",
+      "entry_date": "2026-10-05T13:30:51.466912"
     },
     {
       "stock_code": "JNJ",
       "stock_name": "JNJ",
       "quantity": 39,
       "avg_price": 254.66,
-      "current_price": 254.96,
-      "unrealized_pnl": 11.7,
-      "unrealized_pnl_rate": 0.1178,
+      "current_price": 258.63,
+      "unrealized_pnl": 154.83,
+      "unrealized_pnl_rate": 1.5589,
       "strategy": "US_SWING",
       "entry_date": "2026-10-05T13:36:02.185039"
     },
     {
-      "stock_code": "042700",
-      "stock_name": "한미반도체",
+      "stock_code": "GOOGL",
+      "stock_name": "GOOGL",
       "quantity": 29,
-      "avg_price": 264620.689,
-      "current_price": 265000.0,
-      "unrealized_pnl": -15091.58,
-      "unrealized_pnl_rate": -0.1967,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-10-07T06:11:53.143606"
-    },
-    {
-      "stock_code": "009150",
-      "stock_name": "삼성전기",
-      "quantity": 3,
-      "avg_price": 1609000.0,
-      "current_price": 1609000.0,
-      "unrealized_pnl": -16411.8,
-      "unrealized_pnl_rate": -0.34,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-10-07T06:11:38.085866"
+      "avg_price": 344.568,
+      "current_price": 349.7299,
+      "unrealized_pnl": 149.7,
+      "unrealized_pnl_rate": 1.4981,
+      "strategy": "US_SWING",
+      "entry_date": "2026-10-05T13:45:49.761672"
     },
     {
       "stock_code": "JPM",
       "stock_name": "제이피모간 체이스",
       "quantity": 29,
       "avg_price": 336.35,
-      "current_price": 332.09,
-      "unrealized_pnl": -123.54,
-      "unrealized_pnl_rate": -1.2665,
+      "current_price": 329.7,
+      "unrealized_pnl": -192.85,
+      "unrealized_pnl_rate": -1.9771,
       "strategy": "US_SWING_RECOVERY",
       "entry_date": "2026-10-05T13:30:51.488629"
+    },
+    {
+      "stock_code": "009150",
+      "stock_name": "삼성전기",
+      "quantity": 3,
+      "avg_price": 1609000.0,
+      "current_price": 1561000.0,
+      "unrealized_pnl": -160411.8,
+      "unrealized_pnl_rate": -3.3232,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-10-07T06:11:38.085866"
     }
   ]
 }
