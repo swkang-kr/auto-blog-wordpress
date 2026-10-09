@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-10-08T07:00:00.964924+00:00",
+  "exported_at": "2026-10-09T07:00:00.953591+00:00",
   "market_daily": [
+    {
+      "date": "20261009",
+      "kospi_change": -2.62,
+      "kosdaq_change": -0.69,
+      "foreign_net": -20704.0,
+      "institution_net": -16789.0,
+      "individual_net": 29972.0,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20261008",
       "kospi_change": -2.62,
       "kosdaq_change": -0.69,
-      "foreign_net": -19907.0,
-      "institution_net": -16659.0,
-      "individual_net": 29027.0,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": -20490.0,
+      "institution_net": -16522.0,
+      "individual_net": 29465.0,
+      "hot_theme_count": 3,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20261007",
@@ -99,29 +110,18 @@
       "hot_theme_count": 13,
       "momentum_count": 60,
       "crash_count": 58
-    },
-    {
-      "date": "20260827",
-      "kospi_change": 1.53,
-      "kosdaq_change": 1.3,
-      "foreign_net": 13.54,
-      "institution_net": 18.14,
-      "individual_net": -191.21,
-      "hot_theme_count": 14,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "인수자 찾았는데 ‘상폐’ 날벼락…제일M&S 재기할까",
-    "삼전 '107조 실적' 역부족…코스피 2.6% 급락 6620선 마감[시황종합]",
-    "은행 해킹에 증권가도 비상&#8943;의심 IP 차단·보안점검 강화",
-    "6600선으로 떨어진 코스피",
-    "코스피-코스닥지수-원·달러환율 하락 마감",
-    "코스피-코스닥지수-원·달러환율 하락 마감",
-    "코스피-코스닥지수-원·달러환율 하락 마감",
-    "코스피-코스닥지수-원·달러환율 하락 마감",
-    "코스피-코스닥지수 하락 마감",
-    "6600선으로 떨어진 코스피"
+    "지속되는 달러 약세·엔저",
+    "1300원대 안착한 환율",
+    "달러·엔화 가치 하락",
+    "달러·엔화 약세, 원화 강세",
+    "원화는 강세, 달러는 약세, 엔화도 약세",
+    "달러 약세 속 원화 강세, 엔화는 힘 못 써",
+    "'원화 강세'",
+    "1300원대 안착한 환율",
+    "1300원대 안착한 환율",
+    "원·달러 1330원대 안착"
   ]
 }

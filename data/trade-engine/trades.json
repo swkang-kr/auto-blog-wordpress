@@ -1,6 +1,18 @@
 {
-  "exported_at": "2026-10-08T07:00:00.681100+00:00",
+  "exported_at": "2026-10-09T07:00:00.685653+00:00",
   "trades": [
+    {
+      "stock_code": "AVGO",
+      "stock_name": "AVGO",
+      "side": "sell",
+      "quantity": 27,
+      "price": 369.63,
+      "pnl": 186.71,
+      "pnl_rate": 1.9065,
+      "strategy": "US_SWING",
+      "reason": "us_swing_trailing",
+      "filled_at": "2026-10-08T13:51:47"
+    },
     {
       "stock_code": "042700",
       "stock_name": "한미반도체",
