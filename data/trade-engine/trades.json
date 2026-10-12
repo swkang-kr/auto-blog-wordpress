@@ -1,6 +1,18 @@
 {
-  "exported_at": "2026-10-09T07:00:00.685653+00:00",
+  "exported_at": "2026-10-12T07:00:00.672740+00:00",
   "trades": [
+    {
+      "stock_code": "009150",
+      "stock_name": "삼성전기",
+      "side": "sell",
+      "quantity": 3,
+      "price": 1480000.0,
+      "pnl": -402405.6,
+      "pnl_rate": -8.3366,
+      "strategy": "swing_stop_loss(SL=1,480,280)",
+      "reason": "swing_stop_loss(SL=1,480,280) [price_source=quote,settled_by=holdings]",
+      "filled_at": "2026-10-12T05:42:43.763814"
+    },
     {
       "stock_code": "AVGO",
       "stock_name": "AVGO",

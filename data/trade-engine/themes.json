@@ -1,108 +1,80 @@
 {
-  "exported_at": "2026-10-09T07:00:01.015842+00:00",
-  "date": "20261009",
+  "exported_at": "2026-10-12T07:00:00.990744+00:00",
+  "date": "20261012",
   "hot_themes": [
     {
-      "name": "서울고속버스터미널 재개발 수혜",
-      "change_rate": 7.24
+      "name": "해운",
+      "change_rate": 4.21
     },
     {
-      "name": "리비안(RIVIAN)",
-      "change_rate": 3.51
-    },
-    {
-      "name": "반도체 기판(FC-BGA/PCB/MLB 등)",
-      "change_rate": 2.93
-    },
-    {
-      "name": "2차전지(나트륨이온)",
-      "change_rate": 2.5
-    },
-    {
-      "name": "캐릭터상품",
-      "change_rate": 2.28
-    },
-    {
-      "name": "화학섬유",
-      "change_rate": 2.26
-    },
-    {
-      "name": "구제역/광우병 수혜",
-      "change_rate": 2.09
-    },
-    {
-      "name": "PCB(FPCB 등)",
-      "change_rate": 2.06
-    },
-    {
-      "name": "2차전지(소재/부품)",
-      "change_rate": 1.86
-    },
-    {
-      "name": "OLED(유기 발광 다이오드)",
-      "change_rate": 1.72
-    },
-    {
-      "name": "2차전지(생산)",
-      "change_rate": 1.72
+      "name": "시멘트/레미콘",
+      "change_rate": 2.97
     },
     {
       "name": "골프",
-      "change_rate": 1.64
+      "change_rate": 1.43
     },
     {
-      "name": "전기차 화재 방지(배터리 열폭주 등)",
-      "change_rate": 1.54
+      "name": "손해보험",
+      "change_rate": 1.1
     },
     {
-      "name": "반도체 재료/부품",
-      "change_rate": 1.49
+      "name": "아스콘(아스팔트 콘크리트)",
+      "change_rate": 0.4
     },
     {
-      "name": "반도체 장비",
-      "change_rate": 1.42
+      "name": "편의점",
+      "change_rate": 0.34
+    },
+    {
+      "name": "호텔/리조트",
+      "change_rate": 0.2
+    },
+    {
+      "name": "영화",
+      "change_rate": 0.1
     }
   ],
   "cold_themes": [
     {
+      "name": "전선",
+      "change_rate": -8.61
+    },
+    {
       "name": "2026 하반기 신규상장",
-      "change_rate": -7.25
+      "change_rate": -7.11
     },
     {
-      "name": "코로나19(치료제/백신 개발 등)",
-      "change_rate": -4.36
+      "name": "원자력발전소 해체",
+      "change_rate": -6.84
     },
     {
-      "name": "생명보험",
-      "change_rate": -4.3
+      "name": "의료AI",
+      "change_rate": -6.65
     },
     {
-      "name": "제대혈",
-      "change_rate": -4.16
+      "name": "전력설비",
+      "change_rate": -6.55
     },
     {
-      "name": "mRNA(메신저 리보핵산)",
-      "change_rate": -3.91
+      "name": "MLCC(적층세라믹콘덴서)",
+      "change_rate": -6.53
     },
     {
-      "name": "건설 대표주",
-      "change_rate": -3.89
+      "name": "3D 프린터",
+      "change_rate": -6.52
     },
     {
-      "name": "오가노이드",
-      "change_rate": -3.63
+      "name": "로봇(산업용/협동로봇 등)",
+      "change_rate": -6.48
     },
     {
-      "name": "조선",
-      "change_rate": -3.6
+      "name": "광통신(광케이블/광섬유 등)",
+      "change_rate": -6.44
     },
     {
-      "name": "S7(삼성전자/SK하이닉스 등)",
-      "change_rate": -3.53
-    },
-    {
-      "name": "항공기부품",
-      "change_rate": -3.09
+      "name": "피지컬 AI/휴머노이드 로봇",
+      "change_rate": -6.39
     }
   ]
 }
