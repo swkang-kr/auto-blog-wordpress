@@ -1,49 +1,27 @@
 {
-  "exported_at": "2026-10-12T07:00:00.657279+00:00",
+  "exported_at": "2026-10-13T07:00:00.655791+00:00",
   "holdings": [
     {
-      "stock_code": "AMZN",
-      "stock_name": "AMZN",
-      "quantity": 39,
-      "avg_price": 251.07,
-      "current_price": 262.64,
-      "unrealized_pnl": 451.23,
-      "unrealized_pnl_rate": 4.6083,
-      "strategy": "US_SWING",
-      "entry_date": "2026-10-05T13:35:53.757683"
-    },
-    {
-      "stock_code": "JNJ",
-      "stock_name": "JNJ",
-      "quantity": 39,
-      "avg_price": 254.66,
-      "current_price": 260.68,
-      "unrealized_pnl": 234.78,
-      "unrealized_pnl_rate": 2.3639,
-      "strategy": "US_SWING",
-      "entry_date": "2026-10-05T13:36:02.185039"
-    },
-    {
-      "stock_code": "GOOGL",
-      "stock_name": "GOOGL",
-      "quantity": 29,
-      "avg_price": 344.568,
-      "current_price": 352.59,
-      "unrealized_pnl": 232.64,
-      "unrealized_pnl_rate": 2.3281,
-      "strategy": "US_SWING",
-      "entry_date": "2026-10-05T13:45:49.761672"
+      "stock_code": "042700",
+      "stock_name": "한미반도체",
+      "quantity": 22,
+      "avg_price": 227500.0,
+      "current_price": 228500.0,
+      "unrealized_pnl": 4983.0,
+      "unrealized_pnl_rate": 0.0996,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-10-13T06:11:21.688443"
     },
     {
       "stock_code": "JPM",
-      "stock_name": "제이피모간 체이스",
+      "stock_name": "JPM",
       "quantity": 29,
-      "avg_price": 336.35,
-      "current_price": 333.205,
-      "unrealized_pnl": -91.21,
-      "unrealized_pnl_rate": -0.935,
-      "strategy": "US_SWING_RECOVERY",
-      "entry_date": "2026-10-05T13:30:51.488629"
+      "avg_price": 335.32,
+      "current_price": 334.04,
+      "unrealized_pnl": -37.12,
+      "unrealized_pnl_rate": -0.3817,
+      "strategy": "US_SWING",
+      "entry_date": "2026-10-12T13:36:07.142147"
     }
   ]
 }

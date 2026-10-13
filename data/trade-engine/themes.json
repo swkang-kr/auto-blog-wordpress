@@ -1,80 +1,108 @@
 {
-  "exported_at": "2026-10-12T07:00:00.990744+00:00",
-  "date": "20261012",
+  "exported_at": "2026-10-13T07:00:00.961281+00:00",
+  "date": "20261013",
   "hot_themes": [
     {
-      "name": "해운",
-      "change_rate": 4.21
+      "name": "요소수",
+      "change_rate": 2.57
     },
     {
       "name": "시멘트/레미콘",
-      "change_rate": 2.97
+      "change_rate": 2.19
     },
     {
-      "name": "골프",
-      "change_rate": 1.43
+      "name": "2차전지(생산)",
+      "change_rate": 1.82
+    },
+    {
+      "name": "태풍 및 장마",
+      "change_rate": 1.28
+    },
+    {
+      "name": "니켈",
+      "change_rate": 1.25
+    },
+    {
+      "name": "우주태양광(페로브스카이트 등)",
+      "change_rate": 1.22
+    },
+    {
+      "name": "육계",
+      "change_rate": 1.19
+    },
+    {
+      "name": "유심(USIM)",
+      "change_rate": 0.93
+    },
+    {
+      "name": "비철금속",
+      "change_rate": 0.8
+    },
+    {
+      "name": "강관업체(Steel pipe)",
+      "change_rate": 0.8
     },
     {
       "name": "손해보험",
-      "change_rate": 1.1
+      "change_rate": 0.62
+    },
+    {
+      "name": "전자파",
+      "change_rate": 0.57
+    },
+    {
+      "name": "통신",
+      "change_rate": 0.55
+    },
+    {
+      "name": "골프",
+      "change_rate": 0.53
     },
     {
       "name": "아스콘(아스팔트 콘크리트)",
-      "change_rate": 0.4
-    },
-    {
-      "name": "편의점",
-      "change_rate": 0.34
-    },
-    {
-      "name": "호텔/리조트",
-      "change_rate": 0.2
-    },
-    {
-      "name": "영화",
-      "change_rate": 0.1
+      "change_rate": 0.44
     }
   ],
   "cold_themes": [
     {
-      "name": "전선",
-      "change_rate": -8.61
+      "name": "서울고속버스터미널 재개발 수혜",
+      "change_rate": -8.54
+    },
+    {
+      "name": "S7(삼성전자/SK하이닉스 등)",
+      "change_rate": -7.76
+    },
+    {
+      "name": "반도체 대표주(생산)",
+      "change_rate": -7.14
     },
     {
       "name": "2026 하반기 신규상장",
-      "change_rate": -7.11
+      "change_rate": -5.28
     },
     {
-      "name": "원자력발전소 해체",
-      "change_rate": -6.84
-    },
-    {
-      "name": "의료AI",
-      "change_rate": -6.65
-    },
-    {
-      "name": "전력설비",
-      "change_rate": -6.55
-    },
-    {
-      "name": "MLCC(적층세라믹콘덴서)",
-      "change_rate": -6.53
-    },
-    {
-      "name": "3D 프린터",
-      "change_rate": -6.52
-    },
-    {
-      "name": "로봇(산업용/협동로봇 등)",
-      "change_rate": -6.48
+      "name": "뉴로모픽 반도체",
+      "change_rate": -4.59
     },
     {
       "name": "광통신(광케이블/광섬유 등)",
-      "change_rate": -6.44
+      "change_rate": -4.13
     },
     {
-      "name": "피지컬 AI/휴머노이드 로봇",
-      "change_rate": -6.39
+      "name": "마이크로 LED",
+      "change_rate": -3.93
+    },
+    {
+      "name": "국내 상장 중국기업",
+      "change_rate": -3.91
+    },
+    {
+      "name": "mRNA(메신저 리보핵산)",
+      "change_rate": -3.87
+    },
+    {
+      "name": "IT 대표주",
+      "change_rate": -3.84
     }
   ]
 }

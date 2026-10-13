@@ -1,82 +1,78 @@
 {
-  "exported_at": "2026-10-12T07:00:01.231379+00:00",
-  "total_candidates": 3,
-  "total_holdings": 4,
+  "exported_at": "2026-10-13T07:00:01.188336+00:00",
+  "total_candidates": 4,
+  "total_holdings": 2,
   "candidates": [
     {
-      "stock_code": "128940",
-      "stock_name": "한미약품",
-      "sector": "",
-      "signal_count": 30,
-      "avg_confidence": 0.6,
+      "stock_code": "011200",
+      "stock_name": "HMM",
+      "sector": "해운사",
+      "signal_count": 18,
+      "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MA정배열 | EMA20하방 | 주봉골든크로스 | 주봉MA20위 | 상대강도(-1.9%vsKOSPI-2.9%)",
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(61) | 거래량2.5x | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+1.4%vsKOSPI-5.9%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-10-12T03:18:57.800701",
+      "signal_time": "2026-10-13T05:53:59.962595",
       "status": "매수 시그널"
+    },
+    {
+      "stock_code": "373220",
+      "stock_name": "LG에너지솔루션",
+      "sector": "2차전지",
+      "signal_count": 12,
+      "avg_confidence": 0.5713999999999998,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(-1.9%vsKOSPI-5.9%)",
+      "price_at_signal": 0,
+      "signal_time": "2026-10-13T05:53:59.962618",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "006400",
+      "stock_name": "삼성SDI",
+      "sector": "전기전자",
+      "signal_count": 4,
+      "avg_confidence": 0.75,
+      "strategies": [],
+      "reason": "score=8.00, ranked_score=19.20",
+      "price_at_signal": 0,
+      "signal_time": "2026-10-13T15:25:00.005900+09:00",
+      "status": "장중 워치리스트"
     },
     {
       "stock_code": "042700",
       "stock_name": "한미반도체",
       "sector": "반도체와반도체장비",
-      "signal_count": 6,
-      "avg_confidence": 0.75,
+      "signal_count": 2,
+      "avg_confidence": 0.51,
       "strategies": [],
-      "reason": "score=6.00, ranked_score=21.60",
+      "reason": "score=6.00, ranked_score=12.00",
       "price_at_signal": 0,
-      "signal_time": "2026-10-12T15:25:00.006005+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "051910",
-      "stock_name": "LG화학",
-      "sector": "화학",
-      "signal_count": 4,
-      "avg_confidence": 0.5660000000000001,
-      "strategies": [],
-      "reason": "score=3.20, ranked_score=7.68",
-      "price_at_signal": 0,
-      "signal_time": "2026-10-12T15:25:00.006005+09:00",
+      "signal_time": "2026-10-13T15:25:00.005900+09:00",
       "status": "장중 워치리스트"
     }
   ],
   "holdings": [
     {
-      "stock_code": "AMZN",
-      "stock_name": "AMZN",
-      "quantity": 39,
-      "avg_price": 251.07,
-      "strategy": "US_SWING",
-      "entry_date": "2026-10-05",
-      "status": "보유 중"
-    },
-    {
-      "stock_code": "GOOGL",
-      "stock_name": "GOOGL",
-      "quantity": 29,
-      "avg_price": 344.568,
-      "strategy": "US_SWING",
-      "entry_date": "2026-10-05",
-      "status": "보유 중"
-    },
-    {
-      "stock_code": "JNJ",
-      "stock_name": "JNJ",
-      "quantity": 39,
-      "avg_price": 254.66,
-      "strategy": "US_SWING",
-      "entry_date": "2026-10-05",
-      "status": "보유 중"
-    },
-    {
       "stock_code": "JPM",
-      "stock_name": "제이피모간 체이스",
+      "stock_name": "JPM",
       "quantity": 29,
-      "avg_price": 336.35,
-      "strategy": "US_SWING_RECOVERY",
-      "entry_date": "2026-10-05",
+      "avg_price": 335.32,
+      "strategy": "US_SWING",
+      "entry_date": "2026-10-12",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "042700",
+      "stock_name": "한미반도체",
+      "quantity": 22,
+      "avg_price": 227500.0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-10-13",
       "status": "보유 중"
     }
   ]

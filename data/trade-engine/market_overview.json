@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-10-12T07:00:00.939956+00:00",
+  "exported_at": "2026-10-13T07:00:00.909999+00:00",
   "market_daily": [
+    {
+      "date": "20261013",
+      "kospi_change": -5.46,
+      "kosdaq_change": -1.43,
+      "foreign_net": -45200.0,
+      "institution_net": 16885.0,
+      "individual_net": 22361.0,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20261012",
       "kospi_change": -3.65,
       "kosdaq_change": -4.83,
-      "foreign_net": -20154.0,
-      "institution_net": -1216.0,
-      "individual_net": 14749.0,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": -19904.0,
+      "institution_net": -1292.0,
+      "individual_net": 14617.0,
+      "hot_theme_count": 1,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20261008",
@@ -99,29 +110,18 @@
       "hot_theme_count": 1,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260828",
-      "kospi_change": -1.79,
-      "kosdaq_change": 0.09,
-      "foreign_net": -175.61,
-      "institution_net": -28.39,
-      "individual_net": 42.37,
-      "hot_theme_count": 13,
-      "momentum_count": 60,
-      "crash_count": 58
     }
   ],
   "headlines": [
-    "최승재 옴부즈만 “깜깜이 규제, 명확한 이정표로 바뀌어야”",
-    "美 금리 인상에 단기금리 뛰었다…9월 채권 발행·거래 증가",
-    "코스피·코스닥, 급락",
-    "하락 마감한 코스피",
-    "코스피, 삼전 역대급 실적에도 3.7% 급락",
-    "코스피·코스닥, 급락",
-    "[포토] 국방 AX거점 개소식",
-    "하락 마감한 코스피",
-    "하락 마감한 코스피",
-    "6400선 무너진 코스피, 삼전닉스 4%대 하락"
+    "에스에너지·에스프리즘, 日 상장사 EFHD와 AI 데이터센터 연료전지 협력 MOU",
+    "\"AI시대…전략 자산은 현장 실증데이터\"",
+    "코스피 5% 넘게 급락 마감",
+    "반도체주 하락에 코스피 급락",
+    "NH농협은행, 보이스피싱 보상보험 가입자 18만 명 돌파",
+    "코스피, 외인 4조5000억 '매도 폭탄'에 5.46% 급락…6000선 턱걸이",
+    "간신히 '6천피' 사수한 코스피",
+    "간신히 '6천피' 사수한 코스피",
+    "간신히 '6천피' 사수한 코스피",
+    "디지털대성, '2028 대성패스' 특별 판매…대입 개편 수혜 기대↑"
   ]
 }
