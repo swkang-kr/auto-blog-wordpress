@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-10-13T07:00:00.909999+00:00",
+  "exported_at": "2026-10-14T07:00:00.951255+00:00",
   "market_daily": [
+    {
+      "date": "20261014",
+      "kospi_change": -0.44,
+      "kosdaq_change": -1.57,
+      "foreign_net": -11813.0,
+      "institution_net": 8053.0,
+      "individual_net": -3093.0,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20261013",
       "kospi_change": -5.46,
       "kosdaq_change": -1.43,
-      "foreign_net": -45200.0,
-      "institution_net": 16885.0,
-      "individual_net": 22361.0,
+      "foreign_net": -45659.0,
+      "institution_net": 16902.0,
+      "individual_net": 22791.0,
       "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20261012",
@@ -99,29 +110,18 @@
       "hot_theme_count": 6,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260831",
-      "kospi_change": 0.46,
-      "kosdaq_change": -0.49,
-      "foreign_net": -64.04,
-      "institution_net": -79.22,
-      "individual_net": -14.64,
-      "hot_theme_count": 1,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "에스에너지·에스프리즘, 日 상장사 EFHD와 AI 데이터센터 연료전지 협력 MOU",
-    "\"AI시대…전략 자산은 현장 실증데이터\"",
-    "코스피 5% 넘게 급락 마감",
-    "반도체주 하락에 코스피 급락",
-    "NH농협은행, 보이스피싱 보상보험 가입자 18만 명 돌파",
-    "코스피, 외인 4조5000억 '매도 폭탄'에 5.46% 급락…6000선 턱걸이",
-    "간신히 '6천피' 사수한 코스피",
-    "간신히 '6천피' 사수한 코스피",
-    "간신히 '6천피' 사수한 코스피",
-    "디지털대성, '2028 대성패스' 특별 판매…대입 개편 수혜 기대↑"
+    "[포토] 코스피 26.54 하락한 6008.81 마감",
+    "코스피, 6거래일 연속 하락세…반등 실패하고 6000선 '턱걸이'",
+    "코스피, '6천피' 턱걸이로 장종료",
+    "코스피 급락한 '검은 화요일', 반대매매 두달여만에 최대로 증가",
+    "코스피, '6천피' 턱걸이로 장종료",
+    "코스피, '6천피' 턱걸이로 장종료",
+    "코스피, '6천피' 턱걸이로 장종료",
+    "코스피, '6천피' 턱걸이로 장종료",
+    "코스피, '6천피' 턱걸이로 장종료",
+    "코스피, '6천피' 턱걸이로 장종료"
   ]
 }

@@ -1,62 +1,102 @@
 {
-  "exported_at": "2026-10-13T07:00:01.188336+00:00",
-  "total_candidates": 4,
-  "total_holdings": 2,
+  "exported_at": "2026-10-14T07:00:01.237064+00:00",
+  "total_candidates": 6,
+  "total_holdings": 7,
   "candidates": [
     {
-      "stock_code": "011200",
-      "stock_name": "HMM",
-      "sector": "해운사",
-      "signal_count": 18,
+      "stock_code": "006400",
+      "stock_name": "삼성SDI",
+      "sector": "전기전자",
+      "signal_count": 30,
       "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(61) | 거래량2.5x | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+1.4%vsKOSPI-5.9%) | 디커플링모멘텀",
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(63) | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+4.6%vsKOSPI+0.1%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-10-13T05:53:59.962595",
+      "signal_time": "2026-10-14T05:36:20.056844",
       "status": "매수 시그널"
+    },
+    {
+      "stock_code": "036930",
+      "stock_name": "주성엔지니어링",
+      "sector": "반도체와반도체장비",
+      "signal_count": 6,
+      "avg_confidence": 0.6,
+      "strategies": [],
+      "reason": "score=8.00, ranked_score=48.00",
+      "price_at_signal": 0,
+      "signal_time": "2026-10-14T15:25:00.009664+09:00",
+      "status": "장중 워치리스트"
     },
     {
       "stock_code": "373220",
       "stock_name": "LG에너지솔루션",
       "sector": "2차전지",
-      "signal_count": 12,
-      "avg_confidence": 0.5713999999999998,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(-1.9%vsKOSPI-5.9%)",
-      "price_at_signal": 0,
-      "signal_time": "2026-10-13T05:53:59.962618",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "006400",
-      "stock_name": "삼성SDI",
-      "sector": "전기전자",
-      "signal_count": 4,
-      "avg_confidence": 0.75,
+      "signal_count": 5,
+      "avg_confidence": 0.629,
       "strategies": [],
-      "reason": "score=8.00, ranked_score=19.20",
+      "reason": "score=9.00, ranked_score=45.00",
       "price_at_signal": 0,
-      "signal_time": "2026-10-13T15:25:00.005900+09:00",
+      "signal_time": "2026-10-14T15:25:00.009664+09:00",
       "status": "장중 워치리스트"
     },
     {
-      "stock_code": "042700",
-      "stock_name": "한미반도체",
-      "sector": "반도체와반도체장비",
-      "signal_count": 2,
-      "avg_confidence": 0.51,
+      "stock_code": "272210",
+      "stock_name": "한화시스템",
+      "sector": "우주항공과국방",
+      "signal_count": 5,
+      "avg_confidence": 0.829,
       "strategies": [],
-      "reason": "score=6.00, ranked_score=12.00",
+      "reason": "score=7.00, ranked_score=21.00",
       "price_at_signal": 0,
-      "signal_time": "2026-10-13T15:25:00.005900+09:00",
+      "signal_time": "2026-10-14T15:25:00.009664+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "007660",
+      "stock_name": "이수페타시스",
+      "sector": "전자장비와기기",
+      "signal_count": 5,
+      "avg_confidence": 0.544,
+      "strategies": [],
+      "reason": "score=4.05, ranked_score=12.15",
+      "price_at_signal": 0,
+      "signal_time": "2026-10-14T15:25:00.009664+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "011200",
+      "stock_name": "HMM",
+      "sector": "해운사",
+      "signal_count": 2,
+      "avg_confidence": 0.729,
+      "strategies": [],
+      "reason": "score=10.30, ranked_score=20.60",
+      "price_at_signal": 0,
+      "signal_time": "2026-10-14T15:25:00.009664+09:00",
       "status": "장중 워치리스트"
     }
   ],
   "holdings": [
+    {
+      "stock_code": "AAPL",
+      "stock_name": "AAPL",
+      "quantity": 28,
+      "avg_price": 345.78,
+      "strategy": "US_SWING",
+      "entry_date": "2026-10-13",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "JNJ",
+      "stock_name": "JNJ",
+      "quantity": 40,
+      "avg_price": 248.751,
+      "strategy": "US_SWING",
+      "entry_date": "2026-10-13",
+      "status": "보유 중"
+    },
     {
       "stock_code": "JPM",
       "stock_name": "JPM",
@@ -67,12 +107,39 @@
       "status": "보유 중"
     },
     {
-      "stock_code": "042700",
-      "stock_name": "한미반도체",
-      "quantity": 22,
-      "avg_price": 227500.0,
+      "stock_code": "006400",
+      "stock_name": "삼성SDI",
+      "quantity": 10,
+      "avg_price": 590700.0,
       "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-10-13",
+      "entry_date": "2026-10-14",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "011200",
+      "stock_name": "HMM",
+      "quantity": 388,
+      "avg_price": 23185.373,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-10-14",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "036930",
+      "stock_name": "주성엔지니어링",
+      "quantity": 23,
+      "avg_price": 237978.26,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-10-14",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "373220",
+      "stock_name": "LG에너지솔루션",
+      "quantity": 10,
+      "avg_price": 420000.0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-10-14",
       "status": "보유 중"
     }
   ]

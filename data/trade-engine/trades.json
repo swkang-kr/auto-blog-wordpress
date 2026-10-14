@@ -1,6 +1,90 @@
 {
-  "exported_at": "2026-10-13T07:00:00.669309+00:00",
+  "exported_at": "2026-10-14T07:00:00.681598+00:00",
   "trades": [
+    {
+      "stock_code": "042700",
+      "stock_name": "한미반도체",
+      "side": "sell",
+      "quantity": 22,
+      "price": 216500.0,
+      "pnl": -258387.8,
+      "pnl_rate": -5.1626,
+      "strategy": "swing_stop_loss(SL=243,451)",
+      "reason": "swing_stop_loss(SL=243,451) [price_source=quote,settled_by=holdings]",
+      "filled_at": "2026-10-14T06:13:01.217512"
+    },
+    {
+      "stock_code": "006400",
+      "stock_name": "삼성SDI",
+      "side": "buy",
+      "quantity": 10,
+      "price": 590700.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "[price_source=holdings_avg,settled_by=holdings]",
+      "filled_at": "2026-10-14T06:11:54.042705"
+    },
+    {
+      "stock_code": "373220",
+      "stock_name": "LG에너지솔루션",
+      "side": "buy",
+      "quantity": 10,
+      "price": 420000.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "[price_source=holdings_avg,settled_by=holdings]",
+      "filled_at": "2026-10-14T06:11:50.154481"
+    },
+    {
+      "stock_code": "011200",
+      "stock_name": "HMM",
+      "side": "buy",
+      "quantity": 388,
+      "price": 23185.373,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "[price_source=holdings_avg,settled_by=holdings]",
+      "filled_at": "2026-10-14T06:11:46.895527"
+    },
+    {
+      "stock_code": "036930",
+      "stock_name": "주성엔지니어링",
+      "side": "buy",
+      "quantity": 23,
+      "price": 237978.26,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "RSI+MACD(swing)",
+      "reason": "[price_source=holdings_avg,settled_by=holdings]",
+      "filled_at": "2026-10-14T06:11:41.965569"
+    },
+    {
+      "stock_code": "JNJ",
+      "stock_name": "JNJ",
+      "side": "buy",
+      "quantity": 40,
+      "price": 248.751,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "US_SWING",
+      "reason": "RSI적정(34.9) | RSI과매도 | BB하단근접 [us_pre_qty=0]",
+      "filled_at": "2026-10-13T15:16:00"
+    },
+    {
+      "stock_code": "AAPL",
+      "stock_name": "AAPL",
+      "side": "buy",
+      "quantity": 28,
+      "price": 345.78,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "US_SWING",
+      "reason": "RSI적정(64.3) | MACD골든크로스 [us_pre_qty=0]",
+      "filled_at": "2026-10-13T13:36:52"
+    },
     {
       "stock_code": "042700",
       "stock_name": "한미반도체",
@@ -96,30 +180,6 @@
       "strategy": "US_SWING",
       "reason": "us_swing_trailing",
       "filled_at": "2026-10-08T13:51:47"
-    },
-    {
-      "stock_code": "042700",
-      "stock_name": "한미반도체",
-      "side": "buy",
-      "quantity": 29,
-      "price": 264620.689,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "이월분(익일종가) [price_source=holdings_avg,settled_by=holdings]",
-      "filled_at": "2026-10-07T06:11:53.148589"
-    },
-    {
-      "stock_code": "009150",
-      "stock_name": "삼성전기",
-      "side": "buy",
-      "quantity": 3,
-      "price": 1609000.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "이월분(익일종가) [price_source=holdings_avg,settled_by=holdings]",
-      "filled_at": "2026-10-07T06:11:38.091438"
     }
   ]
 }

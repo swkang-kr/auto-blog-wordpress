@@ -1,27 +1,82 @@
 {
-  "exported_at": "2026-10-13T07:00:00.655791+00:00",
+  "exported_at": "2026-10-14T07:00:00.663804+00:00",
   "holdings": [
     {
-      "stock_code": "042700",
-      "stock_name": "한미반도체",
-      "quantity": 22,
-      "avg_price": 227500.0,
-      "current_price": 228500.0,
-      "unrealized_pnl": 4983.0,
-      "unrealized_pnl_rate": 0.0996,
+      "stock_code": "JNJ",
+      "stock_name": "JNJ",
+      "quantity": 40,
+      "avg_price": 248.751,
+      "current_price": 248.78,
+      "unrealized_pnl": 1.16,
+      "unrealized_pnl_rate": 0.0117,
+      "strategy": "US_SWING",
+      "entry_date": "2026-10-13T15:16:00.320185"
+    },
+    {
+      "stock_code": "036930",
+      "stock_name": "주성엔지니어링",
+      "quantity": 23,
+      "avg_price": 237978.26,
+      "current_price": 238500.0,
+      "unrealized_pnl": -6609.88,
+      "unrealized_pnl_rate": -0.1208,
       "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-10-13T06:11:21.688443"
+      "entry_date": "2026-10-14T06:11:41.960442"
     },
     {
       "stock_code": "JPM",
       "stock_name": "JPM",
       "quantity": 29,
       "avg_price": 335.32,
-      "current_price": 334.04,
-      "unrealized_pnl": -37.12,
-      "unrealized_pnl_rate": -0.3817,
+      "current_price": 334.46,
+      "unrealized_pnl": -24.94,
+      "unrealized_pnl_rate": -0.2565,
       "strategy": "US_SWING",
       "entry_date": "2026-10-12T13:36:07.142147"
+    },
+    {
+      "stock_code": "011200",
+      "stock_name": "HMM",
+      "quantity": 388,
+      "avg_price": 23185.373,
+      "current_price": 23200.0,
+      "unrealized_pnl": -24910.87,
+      "unrealized_pnl_rate": -0.2769,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-10-14T06:11:37.964967"
+    },
+    {
+      "stock_code": "373220",
+      "stock_name": "LG에너지솔루션",
+      "quantity": 10,
+      "avg_price": 420000.0,
+      "current_price": 420000.0,
+      "unrealized_pnl": -14280.0,
+      "unrealized_pnl_rate": -0.34,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-10-14T06:11:50.150180"
+    },
+    {
+      "stock_code": "006400",
+      "stock_name": "삼성SDI",
+      "quantity": 10,
+      "avg_price": 590700.0,
+      "current_price": 589000.0,
+      "unrealized_pnl": -37083.8,
+      "unrealized_pnl_rate": -0.6278,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-10-14T06:11:54.041317"
+    },
+    {
+      "stock_code": "AAPL",
+      "stock_name": "AAPL",
+      "quantity": 28,
+      "avg_price": 345.78,
+      "current_price": 341.035,
+      "unrealized_pnl": -132.86,
+      "unrealized_pnl_rate": -1.3723,
+      "strategy": "US_SWING",
+      "entry_date": "2026-10-13T13:36:52.314544"
     }
   ]
 }

@@ -1,6 +1,6 @@
 {
-  "exported_at": "2026-10-13T07:00:01.260365+00:00",
-  "total": 62,
+  "exported_at": "2026-10-14T07:00:01.309357+00:00",
+  "total": 65,
   "items": [
     {
       "stock_code": "003490",
@@ -27,6 +27,19 @@
       "memo": "AI APPROVE | conf=100% | qty_ratio=120% | AI review removed (2026-04-15)",
       "created_at": "2026-08-25T15:10:00.817854",
       "updated_at": "2026-08-25T15:10:00.817854"
+    },
+    {
+      "stock_code": "011200",
+      "stock_name": "HMM",
+      "market": "KRX",
+      "sector": "해운사",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 85,
+      "memo": "AI APPROVE | conf=85% | qty_ratio=100% | Preserved approved order allocation",
+      "created_at": "2026-10-14T15:10:54.669074",
+      "updated_at": "2026-10-14T15:10:54.669074"
     },
     {
       "stock_code": "059120",
@@ -66,6 +79,19 @@
       "memo": "AI APPROVE | conf=73% | qty_ratio=120% | AI review removed (2026-04-15)",
       "created_at": "2026-08-05T15:10:18.253671",
       "updated_at": "2026-08-05T15:10:18.253671"
+    },
+    {
+      "stock_code": "006400",
+      "stock_name": "삼성SDI",
+      "market": "KRX",
+      "sector": "전기전자",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 72,
+      "memo": "AI APPROVE | conf=72% | qty_ratio=100% | Preserved approved order allocation",
+      "created_at": "2026-10-14T15:10:54.669827",
+      "updated_at": "2026-10-14T15:10:54.669827"
     },
     {
       "stock_code": "007690",
@@ -118,6 +144,32 @@
       "memo": "AI APPROVE | conf=70% | qty_ratio=120% | AI review removed (2026-04-15)",
       "created_at": "2026-06-29T15:14:18.961787",
       "updated_at": "2026-06-29T15:14:18.961787"
+    },
+    {
+      "stock_code": "036930",
+      "stock_name": "주성엔지니어링",
+      "market": "KRX",
+      "sector": "반도체와반도체장비",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 68,
+      "memo": "AI APPROVE | conf=68% | qty_ratio=100% | Preserved approved order allocation",
+      "created_at": "2026-08-12T15:17:44.414289",
+      "updated_at": "2026-10-14T15:10:54.670094"
+    },
+    {
+      "stock_code": "373220",
+      "stock_name": "LG에너지솔루션",
+      "market": "KRX",
+      "sector": "2차전지",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 66,
+      "memo": "AI APPROVE | conf=66% | qty_ratio=100% | Preserved approved order allocation",
+      "created_at": "2026-10-14T15:10:54.669333",
+      "updated_at": "2026-10-14T15:10:54.669333"
     },
     {
       "stock_code": "034020",
@@ -196,19 +248,6 @@
       "memo": "AI APPROVE | conf=60% | qty_ratio=120% | AI review removed (2026-04-15)",
       "created_at": "2026-08-31T15:12:17.031132",
       "updated_at": "2026-08-31T15:12:17.031132"
-    },
-    {
-      "stock_code": "036930",
-      "stock_name": "주성엔지니어링",
-      "market": "KRX",
-      "sector": "반도체와반도체장비",
-      "target_buy_price": null,
-      "target_price": null,
-      "stop_loss": null,
-      "priority": 60,
-      "memo": "AI APPROVE | conf=60% | qty_ratio=120% | AI review removed (2026-04-15)",
-      "created_at": "2026-08-12T15:17:44.414289",
-      "updated_at": "2026-08-12T15:17:44.414289"
     },
     {
       "stock_code": "006360",
