@@ -1,6 +1,42 @@
 {
-  "exported_at": "2026-10-14T07:00:00.681598+00:00",
+  "exported_at": "2026-10-15T07:00:00.674843+00:00",
   "trades": [
+    {
+      "stock_code": "373220",
+      "stock_name": "LG에너지솔루션",
+      "side": "sell",
+      "quantity": 10,
+      "price": 400000.0,
+      "pnl": -213760.0,
+      "pnl_rate": -5.0895,
+      "strategy": "swing_gap_down(net=-5.10%,held=17.8h)",
+      "reason": "swing_gap_down(net=-5.10%,held=17.8h) [price_source=quote,settled_by=holdings]",
+      "filled_at": "2026-10-15T00:01:39.925292"
+    },
+    {
+      "stock_code": "036930",
+      "stock_name": "주성엔지니어링",
+      "side": "sell",
+      "quantity": 23,
+      "price": 221500.0,
+      "pnl": -396624.48,
+      "pnl_rate": -7.2463,
+      "strategy": "swing_gap_down(net=-7.26%,held=17.8h)",
+      "reason": "swing_gap_down(net=-7.26%,held=17.8h) [price_source=quote,settled_by=holdings]",
+      "filled_at": "2026-10-15T00:01:17.808306"
+    },
+    {
+      "stock_code": "006400",
+      "stock_name": "삼성SDI",
+      "side": "sell",
+      "quantity": 10,
+      "price": 564000.0,
+      "pnl": -286389.6,
+      "pnl_rate": -4.8483,
+      "strategy": "swing_gap_down(net=-4.86%,held=17.8h)",
+      "reason": "swing_gap_down(net=-4.86%,held=17.8h) [price_source=quote,settled_by=holdings]",
+      "filled_at": "2026-10-15T00:00:54.471460"
+    },
     {
       "stock_code": "042700",
       "stock_name": "한미반도체",

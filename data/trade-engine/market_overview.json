@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-10-14T07:00:00.951255+00:00",
+  "exported_at": "2026-10-15T07:00:00.913192+00:00",
   "market_daily": [
+    {
+      "date": "20261015",
+      "kospi_change": -7.57,
+      "kosdaq_change": -7.65,
+      "foreign_net": -36254.0,
+      "institution_net": 16907.0,
+      "individual_net": 12923.0,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20261014",
       "kospi_change": -0.44,
       "kosdaq_change": -1.57,
-      "foreign_net": -11813.0,
-      "institution_net": 8053.0,
-      "individual_net": -3093.0,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": -11723.0,
+      "institution_net": 7939.0,
+      "individual_net": -3098.0,
+      "hot_theme_count": 10,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20261013",
@@ -99,29 +110,18 @@
       "hot_theme_count": 1,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260901",
-      "kospi_change": 0.23,
-      "kosdaq_change": -1.56,
-      "foreign_net": -49.18,
-      "institution_net": -63.39,
-      "individual_net": -53.99,
-      "hot_theme_count": 6,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "[포토] 코스피 26.54 하락한 6008.81 마감",
-    "코스피, 6거래일 연속 하락세…반등 실패하고 6000선 '턱걸이'",
-    "코스피, '6천피' 턱걸이로 장종료",
-    "코스피 급락한 '검은 화요일', 반대매매 두달여만에 최대로 증가",
-    "코스피, '6천피' 턱걸이로 장종료",
-    "코스피, '6천피' 턱걸이로 장종료",
-    "코스피, '6천피' 턱걸이로 장종료",
-    "코스피, '6천피' 턱걸이로 장종료",
-    "코스피, '6천피' 턱걸이로 장종료",
-    "코스피, '6천피' 턱걸이로 장종료"
+    "토스증권, 대만 AI 반도체 공급망 분석 리포트 발간",
+    "'반도체 쇼크'에 코스피 추락",
+    "코스피 '검은 목요일'",
+    "코스피 폭락 마감",
+    "코스피·코스닥 지수 급락",
+    "만기까지 들고 있으면 연 4.8%…불안한 증시에 자금 몰린 상품은?",
+    "삼전·닉스 '검은 목요일'…다시 21만전자·120만닉스[핫스탁](종합)",
+    "코스피 폭락 마감",
+    "넥스트증권, 신논현 거점 오피스 개설…기술 인재 협업",
+    "'반도체 쇼크' 코스피 검은 목요일"
   ]
 }
