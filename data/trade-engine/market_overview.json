@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-10-15T07:00:00.913192+00:00",
+  "exported_at": "2026-10-16T07:00:00.945808+00:00",
   "market_daily": [
+    {
+      "date": "20261016",
+      "kospi_change": 2.05,
+      "kosdaq_change": 4.46,
+      "foreign_net": 3414.0,
+      "institution_net": -6824.0,
+      "individual_net": -4860.0,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20261015",
       "kospi_change": -7.57,
       "kosdaq_change": -7.65,
-      "foreign_net": -36254.0,
-      "institution_net": 16907.0,
-      "individual_net": 12923.0,
+      "foreign_net": -37786.0,
+      "institution_net": 16665.0,
+      "individual_net": 14679.0,
       "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20261014",
@@ -99,29 +110,18 @@
       "hot_theme_count": 5,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260902",
-      "kospi_change": -3.99,
-      "kosdaq_change": -2.1,
-      "foreign_net": -190.95,
-      "institution_net": -204.38,
-      "individual_net": 230.29,
-      "hot_theme_count": 1,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "토스증권, 대만 AI 반도체 공급망 분석 리포트 발간",
-    "'반도체 쇼크'에 코스피 추락",
-    "코스피 '검은 목요일'",
-    "코스피 폭락 마감",
-    "코스피·코스닥 지수 급락",
-    "만기까지 들고 있으면 연 4.8%…불안한 증시에 자금 몰린 상품은?",
-    "삼전·닉스 '검은 목요일'…다시 21만전자·120만닉스[핫스탁](종합)",
-    "코스피 폭락 마감",
-    "넥스트증권, 신논현 거점 오피스 개설…기술 인재 협업",
-    "'반도체 쇼크' 코스피 검은 목요일"
+    "AI 투매 진정에 日·대만 증시 반등…닛케이 1.39% 상승",
+    "당국 “韓주식 200배 레버리지 선물은 투자자보호 대상 아냐…주의 필요”",
+    "원·달러 환율, 1331.4원 마감…2년여 만의 최저 수준",
+    "반등 성공한 코스피와 급등한 코스닥",
+    "外人 9거래일 만에 '사자'…'검은 목요일' 딛고 코스피 2% 반등",
+    "우진엔텍, 신한울 1·2호기 노외중성자속감시계통 정비용역 수주",
+    "코스닥 상승 마감",
+    "코스피 반등·코스닥 4.4% 폭등",
+    "코스피 2%·코스닥 4%대 상승 마감",
+    "코스피·코스닥, 나란히 상승 마감…급락 충격 딛고 반등"
   ]
 }

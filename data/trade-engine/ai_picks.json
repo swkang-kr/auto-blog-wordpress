@@ -1,106 +1,100 @@
 {
-  "exported_at": "2026-10-15T07:00:01.201023+00:00",
-  "total_candidates": 6,
-  "total_holdings": 4,
+  "exported_at": "2026-10-16T07:00:01.264295+00:00",
+  "total_candidates": 7,
+  "total_holdings": 6,
   "candidates": [
     {
       "stock_code": "042700",
       "stock_name": "한미반도체",
       "sector": "반도체와반도체장비",
-      "signal_count": 17,
-      "avg_confidence": 0.5,
+      "signal_count": 14,
+      "avg_confidence": 0.8,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "RSI sweet(37) | MA정배열 | EMA20하방 | 주봉골든크로스 | 주봉MA20아래 | 상대강도(-5.4%vsKOSPI-6.5%)",
+      "reason": "RSI반등(37) | RSI sweet(37) | BB하단반등(score=0) | EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20아래 | 상대강도(+7.1%vsKOSPI+3.3%)",
       "price_at_signal": 0,
-      "signal_time": "2026-10-15T00:19:49.555928",
+      "signal_time": "2026-10-16T05:56:02.460317",
       "status": "매수 시그널"
+    },
+    {
+      "stock_code": "128940",
+      "stock_name": "한미약품",
+      "sector": "",
+      "signal_count": 8,
+      "avg_confidence": 0.5999999999999999,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "RSI반등(35) | RSI sweet(35) | BB하단반등(score=0) | EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20아래 | 상대강도(+5.3%vsKOSPI+3.3%)",
+      "price_at_signal": 0,
+      "signal_time": "2026-10-16T05:56:02.460327",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "068270",
+      "stock_name": "셀트리온",
+      "sector": "바이오",
+      "signal_count": 8,
+      "avg_confidence": 1.0,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(64) | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+5.5%vsKOSPI+3.3%) | 디커플링모멘텀",
+      "price_at_signal": 0,
+      "signal_time": "2026-10-16T05:56:02.460293",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "373220",
+      "stock_name": "LG에너지솔루션",
+      "sector": "2차전지",
+      "signal_count": 2,
+      "avg_confidence": 0.595,
+      "strategies": [],
+      "reason": "score=2.45, ranked_score=2.94",
+      "price_at_signal": 0,
+      "signal_time": "2026-10-16T15:25:00.009021+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "272210",
+      "stock_name": "한화시스템",
+      "sector": "우주항공과국방",
+      "signal_count": 1,
+      "avg_confidence": 0.7075,
+      "strategies": [],
+      "reason": "score=9.50, ranked_score=9.50",
+      "price_at_signal": 0,
+      "signal_time": "2026-10-16T15:25:00.009021+09:00",
+      "status": "장중 워치리스트"
     },
     {
       "stock_code": "006400",
       "stock_name": "삼성SDI",
       "sector": "전기전자",
-      "signal_count": 11,
-      "avg_confidence": 1.0,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(63) | 거래량2.6x | MA정배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+4.6%vsKOSPI-4.6%) | 디커플링모멘텀",
-      "price_at_signal": 0,
-      "signal_time": "2026-10-15T00:09:52.059312",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "036930",
-      "stock_name": "주성엔지니어링",
-      "sector": "반도체와반도체장비",
-      "signal_count": 2,
-      "avg_confidence": 0.5833,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위",
-      "price_at_signal": 0,
-      "signal_time": "2026-10-15T00:08:50.617548",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "272210",
-      "stock_name": "한화시스템",
-      "sector": "",
       "signal_count": 1,
-      "avg_confidence": 0.75,
+      "avg_confidence": 0.425,
       "strategies": [],
-      "reason": "score=9.50, ranked_score=5.70",
+      "reason": "score=1.25, ranked_score=0.75",
       "price_at_signal": 0,
-      "signal_time": "2026-10-15T15:25:00.009744+09:00",
+      "signal_time": "2026-10-16T15:25:00.009021+09:00",
       "status": "장중 워치리스트"
     },
     {
-      "stock_code": "003670",
-      "stock_name": "포스코퓨처엠",
+      "stock_code": "005830",
+      "stock_name": "DB손해보험",
       "sector": "",
       "signal_count": 1,
-      "avg_confidence": 0.85,
+      "avg_confidence": 0.40049999999999997,
       "strategies": [],
-      "reason": "score=6.50, ranked_score=3.90",
+      "reason": "score=1.25, ranked_score=0.75",
       "price_at_signal": 0,
-      "signal_time": "2026-10-15T15:25:00.009744+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "086520",
-      "stock_name": "에코프로",
-      "sector": "",
-      "signal_count": 1,
-      "avg_confidence": 0.68,
-      "strategies": [],
-      "reason": "score=3.20, ranked_score=1.92",
-      "price_at_signal": 0,
-      "signal_time": "2026-10-15T15:25:00.009744+09:00",
+      "signal_time": "2026-10-16T15:25:00.009021+09:00",
       "status": "장중 워치리스트"
     }
   ],
   "holdings": [
-    {
-      "stock_code": "AAPL",
-      "stock_name": "AAPL",
-      "quantity": 28,
-      "avg_price": 345.78,
-      "strategy": "US_SWING",
-      "entry_date": "2026-10-13",
-      "status": "보유 중"
-    },
-    {
-      "stock_code": "JNJ",
-      "stock_name": "JNJ",
-      "quantity": 40,
-      "avg_price": 248.751,
-      "strategy": "US_SWING",
-      "entry_date": "2026-10-13",
-      "status": "보유 중"
-    },
     {
       "stock_code": "JPM",
       "stock_name": "JPM",
@@ -111,12 +105,48 @@
       "status": "보유 중"
     },
     {
-      "stock_code": "011200",
-      "stock_name": "HMM",
-      "quantity": 388,
-      "avg_price": 23185.373,
+      "stock_code": "068270",
+      "stock_name": "셀트리온",
+      "quantity": 43,
+      "avg_price": 193400.0,
       "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-10-14",
+      "entry_date": "2026-10-16",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "272210",
+      "stock_name": "한화시스템",
+      "quantity": 68,
+      "avg_price": 79145.588,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-10-16",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "AAPL",
+      "stock_name": "AAPL",
+      "quantity": 28,
+      "avg_price": 345.78,
+      "strategy": "US_SWING",
+      "entry_date": "2026-10-13",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "ASML",
+      "stock_name": "ASML",
+      "quantity": 6,
+      "avg_price": 1594.92,
+      "strategy": "US_SWING",
+      "entry_date": "2026-10-15",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "INTC",
+      "stock_name": "INTC",
+      "quantity": 108,
+      "avg_price": 92.52,
+      "strategy": "US_SWING",
+      "entry_date": "2026-10-15",
       "status": "보유 중"
     }
   ]

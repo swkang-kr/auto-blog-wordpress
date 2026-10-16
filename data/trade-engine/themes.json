@@ -1,47 +1,92 @@
 {
-  "exported_at": "2026-10-15T07:00:00.983203+00:00",
-  "date": "20261015",
-  "hot_themes": [],
-  "cold_themes": [
+  "exported_at": "2026-10-16T07:00:00.998740+00:00",
+  "date": "20261016",
+  "hot_themes": [
     {
-      "name": "반도체 기판(FC-BGA/PCB/MLB 등)",
-      "change_rate": -12.67
-    },
-    {
-      "name": "소캠(SOCAMM)",
-      "change_rate": -11.77
-    },
-    {
-      "name": "LED장비",
-      "change_rate": -11.38
-    },
-    {
-      "name": "반도체 대표주(생산)",
-      "change_rate": -11.07
+      "name": "탈모 치료",
+      "change_rate": 5.9
     },
     {
       "name": "HBM(고대역폭메모리)",
-      "change_rate": -10.99
+      "change_rate": 5.78
     },
     {
-      "name": "고체산화물 연료전지(SOFC)",
-      "change_rate": -10.33
-    },
-    {
-      "name": "CXL(컴퓨트익스프레스링크)",
-      "change_rate": -10.17
+      "name": "LED장비",
+      "change_rate": 5.72
     },
     {
       "name": "뉴로모픽 반도체",
-      "change_rate": -10.15
+      "change_rate": 5.72
     },
     {
-      "name": "온디바이스 AI",
-      "change_rate": -10.14
+      "name": "CXL(컴퓨트익스프레스링크)",
+      "change_rate": 5.67
+    },
+    {
+      "name": "면역항암제",
+      "change_rate": 5.57
+    },
+    {
+      "name": "오가노이드",
+      "change_rate": 5.43
+    },
+    {
+      "name": "피팅(관이음쇠)/밸브",
+      "change_rate": 5.38
+    },
+    {
+      "name": "반도체 재료/부품",
+      "change_rate": 5.27
     },
     {
       "name": "반도체 장비",
-      "change_rate": -10.04
+      "change_rate": 5.21
+    },
+    {
+      "name": "유전자 치료제/분석",
+      "change_rate": 5.12
+    },
+    {
+      "name": "고체산화물 연료전지(SOFC)",
+      "change_rate": 5.07
+    },
+    {
+      "name": "mRNA(메신저 리보핵산)",
+      "change_rate": 5.03
+    },
+    {
+      "name": "미용기기",
+      "change_rate": 4.99
+    },
+    {
+      "name": "의료기기",
+      "change_rate": 4.92
+    }
+  ],
+  "cold_themes": [
+    {
+      "name": "항공/저가 항공사(LCC)",
+      "change_rate": -3.24
+    },
+    {
+      "name": "정유",
+      "change_rate": -2.33
+    },
+    {
+      "name": "2차전지(생산)",
+      "change_rate": -1.22
+    },
+    {
+      "name": "화학섬유",
+      "change_rate": -0.9
+    },
+    {
+      "name": "서울고속버스터미널 재개발 수혜",
+      "change_rate": -0.29
+    },
+    {
+      "name": "윤활유",
+      "change_rate": -0.1
     }
   ]
 }

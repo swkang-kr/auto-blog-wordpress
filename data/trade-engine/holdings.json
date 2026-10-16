@@ -1,47 +1,69 @@
 {
-  "exported_at": "2026-10-15T07:00:00.661463+00:00",
+  "exported_at": "2026-10-16T07:00:00.654602+00:00",
   "holdings": [
     {
-      "stock_code": "JNJ",
-      "stock_name": "JNJ",
-      "quantity": 40,
-      "avg_price": 248.751,
-      "current_price": 252.91,
-      "unrealized_pnl": 166.36,
-      "unrealized_pnl_rate": 1.672,
+      "stock_code": "INTC",
+      "stock_name": "INTC",
+      "quantity": 108,
+      "avg_price": 92.52,
+      "current_price": 96.74,
+      "unrealized_pnl": 455.76,
+      "unrealized_pnl_rate": 4.5612,
       "strategy": "US_SWING",
-      "entry_date": "2026-10-13T15:16:00.320185"
+      "entry_date": "2026-10-15T13:35:56.286960"
+    },
+    {
+      "stock_code": "ASML",
+      "stock_name": "ASML",
+      "quantity": 6,
+      "avg_price": 1594.92,
+      "current_price": 1658.05,
+      "unrealized_pnl": 378.78,
+      "unrealized_pnl_rate": 3.9582,
+      "strategy": "US_SWING",
+      "entry_date": "2026-10-15T13:35:51.763581"
     },
     {
       "stock_code": "JPM",
       "stock_name": "JPM",
       "quantity": 29,
       "avg_price": 335.32,
-      "current_price": 334.17,
-      "unrealized_pnl": -33.35,
-      "unrealized_pnl_rate": -0.343,
+      "current_price": 335.14,
+      "unrealized_pnl": -5.22,
+      "unrealized_pnl_rate": -0.0537,
       "strategy": "US_SWING",
       "entry_date": "2026-10-12T13:36:07.142147"
     },
     {
-      "stock_code": "011200",
-      "stock_name": "HMM",
-      "quantity": 388,
-      "avg_price": 23185.373,
-      "current_price": 23150.0,
-      "unrealized_pnl": -44310.87,
-      "unrealized_pnl_rate": -0.4926,
+      "stock_code": "068270",
+      "stock_name": "셀트리온",
+      "quantity": 43,
+      "avg_price": 193400.0,
+      "current_price": 193600.0,
+      "unrealized_pnl": -19675.08,
+      "unrealized_pnl_rate": -0.2366,
       "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-10-14T06:11:37.964967"
+      "entry_date": "2026-10-16T06:12:53.264916"
+    },
+    {
+      "stock_code": "272210",
+      "stock_name": "한화시스템",
+      "quantity": 68,
+      "avg_price": 79145.588,
+      "current_price": 79200.0,
+      "unrealized_pnl": -14598.44,
+      "unrealized_pnl_rate": -0.2713,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-10-16T06:10:51.335401"
     },
     {
       "stock_code": "AAPL",
       "stock_name": "AAPL",
       "quantity": 28,
       "avg_price": 345.78,
-      "current_price": 343.88,
-      "unrealized_pnl": -53.2,
-      "unrealized_pnl_rate": -0.5495,
+      "current_price": 342.18,
+      "unrealized_pnl": -100.8,
+      "unrealized_pnl_rate": -1.0411,
       "strategy": "US_SWING",
       "entry_date": "2026-10-13T13:36:52.314544"
     }

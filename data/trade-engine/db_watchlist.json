@@ -1,6 +1,6 @@
 {
-  "exported_at": "2026-10-15T07:00:01.273636+00:00",
-  "total": 65,
+  "exported_at": "2026-10-16T07:00:01.334543+00:00",
+  "total": 66,
   "items": [
     {
       "stock_code": "003490",
@@ -68,6 +68,19 @@
       "updated_at": "2026-08-12T15:17:44.407881"
     },
     {
+      "stock_code": "068270",
+      "stock_name": "셀트리온",
+      "market": "KRX",
+      "sector": "바이오",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 76,
+      "memo": "AI APPROVE | conf=76% | qty_ratio=100% | Preserved approved order allocation",
+      "created_at": "2026-07-31T15:10:02.583583",
+      "updated_at": "2026-10-16T15:12:02.393462"
+    },
+    {
       "stock_code": "028670",
       "stock_name": "팬오션",
       "market": "KRX",
@@ -105,6 +118,19 @@
       "memo": "AI APPROVE | conf=71% | qty_ratio=120% | AI review removed (2026-04-15)",
       "created_at": "2026-07-27T15:12:23.818511",
       "updated_at": "2026-07-27T15:12:23.818511"
+    },
+    {
+      "stock_code": "272210",
+      "stock_name": "한화시스템",
+      "market": "KRX",
+      "sector": "우주항공과국방",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 70,
+      "memo": "AI APPROVE | conf=71% | qty_ratio=100% | Preserved approved order allocation",
+      "created_at": "2026-10-16T15:10:02.143596",
+      "updated_at": "2026-10-16T15:10:02.143596"
     },
     {
       "stock_code": "412350",
@@ -274,19 +300,6 @@
       "memo": "AI APPROVE | conf=60% | qty_ratio=120% | AI review removed (2026-04-15)",
       "created_at": "2026-08-05T15:10:18.252562",
       "updated_at": "2026-08-07T15:10:00.126284"
-    },
-    {
-      "stock_code": "068270",
-      "stock_name": "셀트리온",
-      "market": "KRX",
-      "sector": "바이오",
-      "target_buy_price": null,
-      "target_price": null,
-      "stop_loss": null,
-      "priority": 60,
-      "memo": "AI APPROVE | conf=60% | qty_ratio=120% | AI review removed (2026-04-15)",
-      "created_at": "2026-07-31T15:10:02.583583",
-      "updated_at": "2026-07-31T15:10:02.583583"
     },
     {
       "stock_code": "003280",
