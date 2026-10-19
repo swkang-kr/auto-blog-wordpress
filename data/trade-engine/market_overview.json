@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-10-16T07:00:00.945808+00:00",
+  "exported_at": "2026-10-19T07:00:00.919188+00:00",
   "market_daily": [
+    {
+      "date": "20261019",
+      "kospi_change": 1.76,
+      "kosdaq_change": 1.78,
+      "foreign_net": -378.0,
+      "institution_net": 5782.0,
+      "individual_net": -10896.0,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20261016",
       "kospi_change": 2.05,
       "kosdaq_change": 4.46,
-      "foreign_net": 3414.0,
-      "institution_net": -6824.0,
-      "individual_net": -4860.0,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": 3610.0,
+      "institution_net": -6813.0,
+      "individual_net": -5085.0,
+      "hot_theme_count": 107,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20261015",
@@ -99,29 +110,18 @@
       "hot_theme_count": 21,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260903",
-      "kospi_change": 0.26,
-      "kosdaq_change": -1.71,
-      "foreign_net": -42.32,
-      "institution_net": -21.53,
-      "individual_net": -95.51,
-      "hot_theme_count": 5,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "AI 투매 진정에 日·대만 증시 반등…닛케이 1.39% 상승",
-    "당국 “韓주식 200배 레버리지 선물은 투자자보호 대상 아냐…주의 필요”",
-    "원·달러 환율, 1331.4원 마감…2년여 만의 최저 수준",
-    "반등 성공한 코스피와 급등한 코스닥",
-    "外人 9거래일 만에 '사자'…'검은 목요일' 딛고 코스피 2% 반등",
-    "우진엔텍, 신한울 1·2호기 노외중성자속감시계통 정비용역 수주",
+    "‘상승전환’ 코스피, 1.8% 오른 5768 마감…코스닥도 올라",
+    "[포토]코스피, 장 초반 급락 딛고 1.76% 상승마감",
+    "외국인 삼전 순매수…2% 상승 코스피, 5700선 회복 [시황]",
+    "국장 피해 미장 갔는데…서학개미 美주식 보관액 일주일 새 16조 증발",
+    "코스피·코스닥 동반 상승 마감",
     "코스닥 상승 마감",
-    "코스피 반등·코스닥 4.4% 폭등",
-    "코스피 2%·코스닥 4%대 상승 마감",
-    "코스피·코스닥, 나란히 상승 마감…급락 충격 딛고 반등"
+    "코스피·코스닥 동반 상승 마감",
+    "원·달러 환율 소폭 하락",
+    "코스피·코스닥 동반 상승 마감",
+    "코스피 상승 마감"
   ]
 }

@@ -1,6 +1,54 @@
 {
-  "exported_at": "2026-10-16T07:00:00.671912+00:00",
+  "exported_at": "2026-10-19T07:00:00.683321+00:00",
   "trades": [
+    {
+      "stock_code": "272210",
+      "stock_name": "한화시스템",
+      "side": "sell",
+      "quantity": 68,
+      "price": 79900.0,
+      "pnl": 32868.18,
+      "pnl_rate": 0.6107,
+      "strategy": "swing_trailing(peak=3.8%,step=3.0%,trail_sl=0.8%)",
+      "reason": "swing_trailing(peak=3.8%,step=3.0%,trail_sl=0.8%) [price_source=quote,settled_by=holdings]",
+      "filled_at": "2026-10-19T04:40:47.251103"
+    },
+    {
+      "stock_code": "TSM",
+      "stock_name": "TSM",
+      "side": "buy",
+      "quantity": 24,
+      "price": 414.61,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "US_SWING",
+      "reason": "RSI적정(34.9) | RSI과매도 | BB하단근접 [us_pre_qty=0]",
+      "filled_at": "2026-10-16T14:11:09"
+    },
+    {
+      "stock_code": "INTC",
+      "stock_name": "INTC",
+      "side": "buy",
+      "quantity": 106,
+      "price": 93.85,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "US_SWING",
+      "reason": "RSI적정(34.0) | RSI과매도 | BB하단근접 [us_pre_qty=0]",
+      "filled_at": "2026-10-16T13:43:54"
+    },
+    {
+      "stock_code": "INTC",
+      "stock_name": "INTC",
+      "side": "sell",
+      "quantity": 108,
+      "price": 93.8,
+      "pnl": 138.24,
+      "pnl_rate": 1.3835,
+      "strategy": "US_SWING",
+      "reason": "us_swing_trailing",
+      "filled_at": "2026-10-16T13:42:50"
+    },
     {
       "stock_code": "068270",
       "stock_name": "셀트리온",
@@ -264,18 +312,6 @@
       "strategy": "US_SWING",
       "reason": "us_swing_time_exit",
       "filled_at": "2026-10-12T13:30:53"
-    },
-    {
-      "stock_code": "009150",
-      "stock_name": "삼성전기",
-      "side": "sell",
-      "quantity": 3,
-      "price": 1480000.0,
-      "pnl": -402405.6,
-      "pnl_rate": -8.3366,
-      "strategy": "swing_stop_loss(SL=1,480,280)",
-      "reason": "swing_stop_loss(SL=1,480,280) [price_source=quote,settled_by=holdings]",
-      "filled_at": "2026-10-12T05:42:43.763814"
     }
   ]
 }
