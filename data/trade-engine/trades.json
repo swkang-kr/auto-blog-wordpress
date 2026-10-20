@@ -1,6 +1,30 @@
 {
-  "exported_at": "2026-10-19T07:00:00.683321+00:00",
+  "exported_at": "2026-10-20T07:00:00.781163+00:00",
   "trades": [
+    {
+      "stock_code": "068270",
+      "stock_name": "셀트리온",
+      "side": "sell",
+      "quantity": 43,
+      "price": 195500.0,
+      "pnl": 61790.14,
+      "pnl_rate": 0.743,
+      "strategy": "swing_trailing(peak=3.8%,step=3.0%,trail_sl=0.8%)",
+      "reason": "swing_trailing(peak=3.8%,step=3.0%,trail_sl=0.8%) [price_source=quote,settled_by=holdings]",
+      "filled_at": "2026-10-20T02:12:59.562330"
+    },
+    {
+      "stock_code": "JPM",
+      "stock_name": "JPM",
+      "side": "sell",
+      "quantity": 29,
+      "price": 338.7775,
+      "pnl": 100.27,
+      "pnl_rate": 1.0311,
+      "strategy": "US_SWING",
+      "reason": "us_swing_time_exit",
+      "filled_at": "2026-10-19T13:30:46"
+    },
     {
       "stock_code": "272210",
       "stock_name": "한화시스템",
@@ -240,78 +264,6 @@
       "strategy": "US_SWING",
       "reason": "RSI적정(64.3) | MACD골든크로스 [us_pre_qty=0]",
       "filled_at": "2026-10-13T13:36:52"
-    },
-    {
-      "stock_code": "042700",
-      "stock_name": "한미반도체",
-      "side": "buy",
-      "quantity": 22,
-      "price": 227500.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "이월분(익일종가) [price_source=holdings_avg,settled_by=holdings]",
-      "filled_at": "2026-10-13T06:11:21.694177"
-    },
-    {
-      "stock_code": "JPM",
-      "stock_name": "JPM",
-      "side": "buy",
-      "quantity": 29,
-      "price": 335.32,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "US_SWING",
-      "reason": "RSI적정(42.7) | MACD골든크로스 [us_pre_qty=0]",
-      "filled_at": "2026-10-12T13:36:07"
-    },
-    {
-      "stock_code": "JPM",
-      "stock_name": "JPM",
-      "side": "sell",
-      "quantity": 29,
-      "price": 335.3129,
-      "pnl": -30.08,
-      "pnl_rate": -0.3083,
-      "strategy": "US_SWING",
-      "reason": "us_swing_time_exit",
-      "filled_at": "2026-10-12T13:31:04"
-    },
-    {
-      "stock_code": "JNJ",
-      "stock_name": "JNJ",
-      "side": "sell",
-      "quantity": 39,
-      "price": 261.68,
-      "pnl": 273.78,
-      "pnl_rate": 2.7566,
-      "strategy": "US_SWING",
-      "reason": "us_swing_time_exit",
-      "filled_at": "2026-10-12T13:30:59"
-    },
-    {
-      "stock_code": "GOOGL",
-      "stock_name": "GOOGL",
-      "side": "sell",
-      "quantity": 29,
-      "price": 351.99,
-      "pnl": 215.24,
-      "pnl_rate": 2.154,
-      "strategy": "US_SWING",
-      "reason": "us_swing_time_exit",
-      "filled_at": "2026-10-12T13:30:56"
-    },
-    {
-      "stock_code": "AMZN",
-      "stock_name": "AMZN",
-      "side": "sell",
-      "quantity": 39,
-      "price": 263.19,
-      "pnl": 472.68,
-      "pnl_rate": 4.8273,
-      "strategy": "US_SWING",
-      "reason": "us_swing_time_exit",
-      "filled_at": "2026-10-12T13:30:53"
     }
   ]
 }

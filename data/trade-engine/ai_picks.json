@@ -1,70 +1,56 @@
 {
-  "exported_at": "2026-10-19T07:00:01.247144+00:00",
-  "total_candidates": 5,
-  "total_holdings": 6,
+  "exported_at": "2026-10-20T07:00:01.312178+00:00",
+  "total_candidates": 4,
+  "total_holdings": 4,
   "candidates": [
-    {
-      "stock_code": "068270",
-      "stock_name": "셀트리온",
-      "sector": "바이오",
-      "signal_count": 15,
-      "avg_confidence": 0.75,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MACD히스토그램↑ | 거래량2.0x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
-      "price_at_signal": 0,
-      "signal_time": "2026-10-19T05:55:27.465294",
-      "status": "매수 시그널"
-    },
     {
       "stock_code": "207940",
       "stock_name": "삼성바이오로직스",
       "sector": "바이오",
-      "signal_count": 15,
-      "avg_confidence": 0.8332999999999999,
+      "signal_count": 30,
+      "avg_confidence": 0.6874899999999999,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | MACD골든크로스 | RSI모멘텀(52) | 거래량2.5x | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+5.7%vsKOSPI+0.8%) | 디커플링모멘텀",
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(58) | 거래량2.2x | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+2.4%vsKOSPI-3.3%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-10-19T05:55:27.465268",
+      "signal_time": "2026-10-20T02:09:51.340997",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "036930",
-      "stock_name": "주성엔지니어링",
-      "sector": "반도체와반도체장비",
-      "signal_count": 3,
+      "stock_code": "006400",
+      "stock_name": "삼성SDI",
+      "sector": "전기전자",
+      "signal_count": 4,
+      "avg_confidence": 0.85,
+      "strategies": [],
+      "reason": "score=12.00, ranked_score=28.80",
+      "price_at_signal": 0,
+      "signal_time": "2026-10-20T15:25:00.004840+09:00",
+      "status": "장중 워치리스트"
+    },
+    {
+      "stock_code": "003490",
+      "stock_name": "대한항공",
+      "sector": "항공사",
+      "signal_count": 4,
       "avg_confidence": 0.5666666666666667,
       "strategies": [],
-      "reason": "score=2.67, ranked_score=4.80",
+      "reason": "score=2.67, ranked_score=6.40",
       "price_at_signal": 0,
-      "signal_time": "2026-10-19T15:25:00.010204+09:00",
+      "signal_time": "2026-10-20T15:25:00.004840+09:00",
       "status": "장중 워치리스트"
     },
     {
-      "stock_code": "000100",
-      "stock_name": "유한양행",
-      "sector": "",
-      "signal_count": 2,
-      "avg_confidence": 0.6499999999999999,
+      "stock_code": "005930",
+      "stock_name": "삼성전자",
+      "sector": "반도체",
+      "signal_count": 1,
+      "avg_confidence": 0.425,
       "strategies": [],
-      "reason": "score=9.50, ranked_score=11.40",
+      "reason": "score=1.50, ranked_score=0.90",
       "price_at_signal": 0,
-      "signal_time": "2026-10-19T15:25:00.010204+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "352820",
-      "stock_name": "하이브",
-      "sector": "방송과엔터테인먼트",
-      "signal_count": 2,
-      "avg_confidence": 0.6499999999999999,
-      "strategies": [],
-      "reason": "score=6.00, ranked_score=7.20",
-      "price_at_signal": 0,
-      "signal_time": "2026-10-19T15:25:00.010204+09:00",
+      "signal_time": "2026-10-20T15:25:00.004840+09:00",
       "status": "장중 워치리스트"
     }
   ],
@@ -88,15 +74,6 @@
       "status": "보유 중"
     },
     {
-      "stock_code": "JPM",
-      "stock_name": "JPM",
-      "quantity": 29,
-      "avg_price": 335.32,
-      "strategy": "US_SWING",
-      "entry_date": "2026-10-12",
-      "status": "보유 중"
-    },
-    {
       "stock_code": "INTC",
       "stock_name": "INTC",
       "quantity": 106,
@@ -111,15 +88,6 @@
       "quantity": 24,
       "avg_price": 414.61,
       "strategy": "US_SWING",
-      "entry_date": "2026-10-16",
-      "status": "보유 중"
-    },
-    {
-      "stock_code": "068270",
-      "stock_name": "셀트리온",
-      "quantity": 43,
-      "avg_price": 193400.0,
-      "strategy": "RSI+MACD(swing)",
       "entry_date": "2026-10-16",
       "status": "보유 중"
     }

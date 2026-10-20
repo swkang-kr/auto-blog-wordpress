@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-10-19T07:00:00.919188+00:00",
+  "exported_at": "2026-10-20T07:00:01.015000+00:00",
   "market_daily": [
+    {
+      "date": "20261020",
+      "kospi_change": -3.73,
+      "kosdaq_change": -3.33,
+      "foreign_net": -5389.0,
+      "institution_net": -9981.0,
+      "individual_net": 9013.0,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20261019",
       "kospi_change": 1.76,
       "kosdaq_change": 1.78,
-      "foreign_net": -378.0,
-      "institution_net": 5782.0,
-      "individual_net": -10896.0,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": 1061.0,
+      "institution_net": 5766.0,
+      "individual_net": -12386.0,
+      "hot_theme_count": 40,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20261016",
@@ -99,29 +110,18 @@
       "hot_theme_count": 27,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260904",
-      "kospi_change": 1.64,
-      "kosdaq_change": 2.95,
-      "foreign_net": 47.98,
-      "institution_net": 166.92,
-      "individual_net": -372.32,
-      "hot_theme_count": 21,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "‘상승전환’ 코스피, 1.8% 오른 5768 마감…코스닥도 올라",
-    "[포토]코스피, 장 초반 급락 딛고 1.76% 상승마감",
-    "외국인 삼전 순매수…2% 상승 코스피, 5700선 회복 [시황]",
-    "국장 피해 미장 갔는데…서학개미 美주식 보관액 일주일 새 16조 증발",
-    "코스피·코스닥 동반 상승 마감",
-    "코스닥 상승 마감",
-    "코스피·코스닥 동반 상승 마감",
-    "원·달러 환율 소폭 하락",
-    "코스피·코스닥 동반 상승 마감",
-    "코스피 상승 마감"
+    "다시 급락한 코스피",
+    "[사진]우리투자증권 'MTS 어워드' 금융상품 우수상 수상",
+    "다시 급락한 코스피",
+    "다시 급락한 코스피",
+    "다시 급락한 코스피",
+    "하루 오르더니 다시 와르르…코스피 5550선으로 밀렸다",
+    "다시 급락한 코스피",
+    "다시 급락한 코스피",
+    "다시 급락한 코스피",
+    "[속보] \"훈풍도 비껴갔다\" 상승분 고스란히 반납…삼전 3%·하이닉스 4% ↓"
   ]
 }
