@@ -1,64 +1,108 @@
 {
-  "exported_at": "2026-10-20T07:00:01.064904+00:00",
-  "date": "20261020",
+  "exported_at": "2026-10-21T07:00:00.944513+00:00",
+  "date": "20261021",
   "hot_themes": [
     {
-      "name": "자전거",
-      "change_rate": 4.52
+      "name": "2026 하반기 신규상장",
+      "change_rate": 6.27
     },
     {
-      "name": "엔터테인먼트",
-      "change_rate": 0.99
+      "name": "반도체 대표주(생산)",
+      "change_rate": 4.89
     },
     {
-      "name": "골프",
-      "change_rate": 0.91
+      "name": "폐기물처리",
+      "change_rate": 4.7
     },
     {
-      "name": "영상콘텐츠",
-      "change_rate": 0.86
+      "name": "S7(삼성전자/SK하이닉스 등)",
+      "change_rate": 4.34
+    },
+    {
+      "name": "건설기계",
+      "change_rate": 3.42
+    },
+    {
+      "name": "전선",
+      "change_rate": 3.24
+    },
+    {
+      "name": "무선충전기술",
+      "change_rate": 3.06
+    },
+    {
+      "name": "정유",
+      "change_rate": 3.05
+    },
+    {
+      "name": "GTX(수도권 광역급행철도)",
+      "change_rate": 2.98
+    },
+    {
+      "name": "HBM(고대역폭메모리)",
+      "change_rate": 2.92
+    },
+    {
+      "name": "건설 대표주",
+      "change_rate": 2.86
+    },
+    {
+      "name": "전후 재건(우크라/중동 전쟁 등)",
+      "change_rate": 2.82
+    },
+    {
+      "name": "LED장비",
+      "change_rate": 2.75
+    },
+    {
+      "name": "우주태양광(페로브스카이트 등)",
+      "change_rate": 2.63
+    },
+    {
+      "name": "반도체 장비",
+      "change_rate": 2.57
     }
   ],
   "cold_themes": [
     {
-      "name": "전선",
-      "change_rate": -7.51
+      "name": "서울고속버스터미널 재개발 수혜",
+      "change_rate": -3.07
     },
     {
-      "name": "정유",
-      "change_rate": -7.36
+      "name": "영화",
+      "change_rate": -2.99
+    },
+    {
+      "name": "통신",
+      "change_rate": -2.12
     },
     {
       "name": "2차전지(나트륨이온)",
-      "change_rate": -6.6
+      "change_rate": -1.37
     },
     {
-      "name": "2차전지(생산)",
-      "change_rate": -6.46
+      "name": "손해보험",
+      "change_rate": -1.25
     },
     {
-      "name": "조선",
-      "change_rate": -6.36
+      "name": "홈쇼핑",
+      "change_rate": -1.23
     },
     {
-      "name": "백화점",
-      "change_rate": -5.57
+      "name": "생명보험",
+      "change_rate": -1.21
     },
     {
-      "name": "귀금속(금/은)",
-      "change_rate": -5.46
+      "name": "비료",
+      "change_rate": -1.14
     },
     {
-      "name": "우주항공산업(누리호/인공위성 등)",
-      "change_rate": -5.37
+      "name": "마이코플라스마 폐렴",
+      "change_rate": -1.12
     },
     {
-      "name": "석유화학",
-      "change_rate": -5.36
-    },
-    {
-      "name": "우주태양광(페로브스카이트 등)",
-      "change_rate": -5.26
+      "name": "보톡스(보툴리눔톡신)",
+      "change_rate": -1.1
     }
   ]
 }

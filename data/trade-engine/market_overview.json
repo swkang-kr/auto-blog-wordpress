@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-10-20T07:00:01.015000+00:00",
+  "exported_at": "2026-10-21T07:00:00.890590+00:00",
   "market_daily": [
+    {
+      "date": "20261021",
+      "kospi_change": 3.29,
+      "kosdaq_change": 1.38,
+      "foreign_net": 6603.0,
+      "institution_net": -714.0,
+      "individual_net": -11319.0,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20261020",
       "kospi_change": -3.73,
       "kosdaq_change": -3.33,
-      "foreign_net": -5389.0,
-      "institution_net": -9981.0,
-      "individual_net": 9013.0,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": -5218.0,
+      "institution_net": -9988.0,
+      "individual_net": 8901.0,
+      "hot_theme_count": 1,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20261019",
@@ -99,29 +110,18 @@
       "hot_theme_count": 4,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20261006",
-      "kospi_change": -0.89,
-      "kosdaq_change": 2.98,
-      "foreign_net": -17651.0,
-      "institution_net": -34.0,
-      "individual_net": 7529.0,
-      "hot_theme_count": 27,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "다시 급락한 코스피",
-    "[사진]우리투자증권 'MTS 어워드' 금융상품 우수상 수상",
-    "다시 급락한 코스피",
-    "다시 급락한 코스피",
-    "다시 급락한 코스피",
-    "하루 오르더니 다시 와르르…코스피 5550선으로 밀렸다",
-    "다시 급락한 코스피",
-    "다시 급락한 코스피",
-    "다시 급락한 코스피",
-    "[속보] \"훈풍도 비껴갔다\" 상승분 고스란히 반납…삼전 3%·하이닉스 4% ↓"
+    "코스피, 반도체 급등에 5700선 회복…매수 사이드카 발동",
+    "기업 공시 [10월 21일]",
+    "인도 최대 은행도 해킹 의혹…고객 개인정보 유출",
+    "오름테라퓨틱 이승주 대표, 주가 하락 속 1.7억 자사주 매입",
+    "\"단일종목 레버리지 섣불렀다\"…20대가 바라본 '격변의 코스피 1년'",
+    "환율 4거래일째 연저점",
+    "'국대 종목'만 모았다더니 이달에만 -18%, 뭐냐면...",
+    "엘리스, 상한가 마감...상장 첫날 급락서 '대반전'",
+    "美 대체거래소 블루오션 전산장애…국내 증권사 해외 시세 먹통",
+    "韓 증시 급락할 때 대만은 신고가… ‘희비’ 가른건 AI·주주환원 정책"
   ]
 }

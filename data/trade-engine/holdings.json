@@ -1,49 +1,49 @@
 {
-  "exported_at": "2026-10-20T07:00:00.765585+00:00",
+  "exported_at": "2026-10-21T07:00:00.663242+00:00",
   "holdings": [
-    {
-      "stock_code": "ASML",
-      "stock_name": "ASML",
-      "quantity": 6,
-      "avg_price": 1594.92,
-      "current_price": 1661.44,
-      "unrealized_pnl": 399.12,
-      "unrealized_pnl_rate": 4.1707,
-      "strategy": "US_SWING",
-      "entry_date": "2026-10-15T13:35:51.763581"
-    },
     {
       "stock_code": "TSM",
       "stock_name": "TSM",
       "quantity": 24,
       "avg_price": 414.61,
-      "current_price": 423.41,
-      "unrealized_pnl": 211.2,
-      "unrealized_pnl_rate": 2.1225,
+      "current_price": 424.7,
+      "unrealized_pnl": 242.16,
+      "unrealized_pnl_rate": 2.4336,
       "strategy": "US_SWING",
       "entry_date": "2026-10-16T14:11:08.550759"
+    },
+    {
+      "stock_code": "068270",
+      "stock_name": "셀트리온",
+      "quantity": 46,
+      "avg_price": 197047.826,
+      "current_price": 197100.0,
+      "unrealized_pnl": -28418.28,
+      "unrealized_pnl_rate": -0.3135,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-10-21T06:11:57.013569"
+    },
+    {
+      "stock_code": "000100",
+      "stock_name": "유한양행",
+      "quantity": 90,
+      "avg_price": 86530.0,
+      "current_price": 86500.0,
+      "unrealized_pnl": -29178.18,
+      "unrealized_pnl_rate": -0.3747,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-10-21T06:11:44.979936"
     },
     {
       "stock_code": "INTC",
       "stock_name": "INTC",
       "quantity": 106,
       "avg_price": 93.85,
-      "current_price": 93.22,
-      "unrealized_pnl": -66.78,
-      "unrealized_pnl_rate": -0.6713,
+      "current_price": 92.1101,
+      "unrealized_pnl": -184.43,
+      "unrealized_pnl_rate": -1.8539,
       "strategy": "US_SWING",
       "entry_date": "2026-10-16T13:43:54.346372"
-    },
-    {
-      "stock_code": "AAPL",
-      "stock_name": "AAPL",
-      "quantity": 28,
-      "avg_price": 345.78,
-      "current_price": 342.65,
-      "unrealized_pnl": -87.64,
-      "unrealized_pnl_rate": -0.9052,
-      "strategy": "US_SWING",
-      "entry_date": "2026-10-13T13:36:52.314544"
     }
   ]
 }

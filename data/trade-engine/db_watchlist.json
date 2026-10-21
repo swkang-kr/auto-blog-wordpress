@@ -1,5 +1,5 @@
 {
-  "exported_at": "2026-10-20T07:00:01.384816+00:00",
+  "exported_at": "2026-10-21T07:00:01.318269+00:00",
   "total": 66,
   "items": [
     {
@@ -66,19 +66,6 @@
       "memo": "AI APPROVE | conf=78% | qty_ratio=120% | AI review removed (2026-04-15)",
       "created_at": "2026-08-12T15:17:44.407881",
       "updated_at": "2026-08-12T15:17:44.407881"
-    },
-    {
-      "stock_code": "068270",
-      "stock_name": "셀트리온",
-      "market": "KRX",
-      "sector": "바이오",
-      "target_buy_price": null,
-      "target_price": null,
-      "stop_loss": null,
-      "priority": 76,
-      "memo": "AI APPROVE | conf=76% | qty_ratio=100% | Preserved approved order allocation",
-      "created_at": "2026-07-31T15:10:02.583583",
-      "updated_at": "2026-10-16T15:12:02.393462"
     },
     {
       "stock_code": "028670",
@@ -185,6 +172,19 @@
       "updated_at": "2026-10-14T15:10:54.670094"
     },
     {
+      "stock_code": "000100",
+      "stock_name": "유한양행",
+      "market": "KRX",
+      "sector": "",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 66,
+      "memo": "AI APPROVE | conf=67% | qty_ratio=100% | Preserved approved order allocation",
+      "created_at": "2026-07-27T15:12:23.816816",
+      "updated_at": "2026-10-21T15:10:40.357638"
+    },
+    {
       "stock_code": "373220",
       "stock_name": "LG에너지솔루션",
       "market": "KRX",
@@ -261,6 +261,19 @@
       "memo": "AI APPROVE | conf=63% | qty_ratio=120% | AI review removed (2026-04-15)",
       "created_at": "2026-07-21T15:10:00.340142",
       "updated_at": "2026-07-21T15:10:00.340142"
+    },
+    {
+      "stock_code": "068270",
+      "stock_name": "셀트리온",
+      "market": "KRX",
+      "sector": "바이오",
+      "target_buy_price": null,
+      "target_price": null,
+      "stop_loss": null,
+      "priority": 60,
+      "memo": "AI APPROVE | conf=60% | qty_ratio=100% | Preserved approved order allocation",
+      "created_at": "2026-07-31T15:10:02.583583",
+      "updated_at": "2026-10-21T15:10:40.357909"
     },
     {
       "stock_code": "062040",
@@ -365,19 +378,6 @@
       "memo": "AI APPROVE | conf=55% | qty_ratio=120% | AI review removed (2026-04-15)",
       "created_at": "2026-07-31T15:11:57.057698",
       "updated_at": "2026-07-31T15:11:57.057698"
-    },
-    {
-      "stock_code": "000100",
-      "stock_name": "유한양행",
-      "market": "KRX",
-      "sector": "",
-      "target_buy_price": null,
-      "target_price": null,
-      "stop_loss": null,
-      "priority": 55,
-      "memo": "AI APPROVE | conf=55% | qty_ratio=100% | AI review removed (2026-04-15)",
-      "created_at": "2026-07-27T15:12:23.816816",
-      "updated_at": "2026-07-27T15:12:23.816816"
     },
     {
       "stock_code": "004370",
