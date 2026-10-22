@@ -1,49 +1,71 @@
 {
-  "exported_at": "2026-10-21T07:00:00.663242+00:00",
+  "exported_at": "2026-10-22T07:00:00.686321+00:00",
   "holdings": [
     {
       "stock_code": "TSM",
       "stock_name": "TSM",
       "quantity": 24,
       "avg_price": 414.61,
-      "current_price": 424.7,
-      "unrealized_pnl": 242.16,
-      "unrealized_pnl_rate": 2.4336,
+      "current_price": 430.805,
+      "unrealized_pnl": 388.68,
+      "unrealized_pnl_rate": 3.9061,
       "strategy": "US_SWING",
       "entry_date": "2026-10-16T14:11:08.550759"
     },
     {
-      "stock_code": "068270",
-      "stock_name": "셀트리온",
-      "quantity": 46,
-      "avg_price": 197047.826,
-      "current_price": 197100.0,
-      "unrealized_pnl": -28418.28,
-      "unrealized_pnl_rate": -0.3135,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-10-21T06:11:57.013569"
+      "stock_code": "TSLA",
+      "stock_name": "TSLA",
+      "quantity": 26,
+      "avg_price": 384.5,
+      "current_price": 386.46,
+      "unrealized_pnl": 50.96,
+      "unrealized_pnl_rate": 0.5098,
+      "strategy": "US_SWING",
+      "entry_date": "2026-10-21T13:44:50.840012"
     },
     {
-      "stock_code": "000100",
-      "stock_name": "유한양행",
-      "quantity": 90,
-      "avg_price": 86530.0,
-      "current_price": 86500.0,
-      "unrealized_pnl": -29178.18,
-      "unrealized_pnl_rate": -0.3747,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-10-21T06:11:44.979936"
+      "stock_code": "JNJ",
+      "stock_name": "JNJ",
+      "quantity": 38,
+      "avg_price": 256.5,
+      "current_price": 256.965,
+      "unrealized_pnl": 17.67,
+      "unrealized_pnl_rate": 0.1813,
+      "strategy": "US_SWING",
+      "entry_date": "2026-10-21T13:35:53.054052"
+    },
+    {
+      "stock_code": "AAPL",
+      "stock_name": "AAPL",
+      "quantity": 28,
+      "avg_price": 345.0,
+      "current_price": 343.9,
+      "unrealized_pnl": -30.8,
+      "unrealized_pnl_rate": -0.3188,
+      "strategy": "US_SWING",
+      "entry_date": "2026-10-21T15:32:50.671346"
     },
     {
       "stock_code": "INTC",
       "stock_name": "INTC",
       "quantity": 106,
       "avg_price": 93.85,
-      "current_price": 92.1101,
-      "unrealized_pnl": -184.43,
-      "unrealized_pnl_rate": -1.8539,
+      "current_price": 92.735,
+      "unrealized_pnl": -118.19,
+      "unrealized_pnl_rate": -1.1881,
       "strategy": "US_SWING",
       "entry_date": "2026-10-16T13:43:54.346372"
+    },
+    {
+      "stock_code": "000100",
+      "stock_name": "유한양행",
+      "quantity": 80,
+      "avg_price": 86530.0,
+      "current_price": 83700.0,
+      "unrealized_pnl": -249936.16,
+      "unrealized_pnl_rate": -3.6105,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-10-21T06:11:44.979936"
     }
   ]
 }

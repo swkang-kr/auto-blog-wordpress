@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-10-21T07:00:00.890590+00:00",
+  "exported_at": "2026-10-22T07:00:00.927407+00:00",
   "market_daily": [
+    {
+      "date": "20261022",
+      "kospi_change": -3.52,
+      "kosdaq_change": -3.62,
+      "foreign_net": 614.0,
+      "institution_net": -4627.0,
+      "individual_net": 3808.0,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20261021",
       "kospi_change": 3.29,
       "kosdaq_change": 1.38,
-      "foreign_net": 6603.0,
-      "institution_net": -714.0,
-      "individual_net": -11319.0,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": 6428.0,
+      "institution_net": -733.0,
+      "individual_net": -11135.0,
+      "hot_theme_count": 8,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20261020",
@@ -99,29 +110,18 @@
       "hot_theme_count": 3,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20261007",
-      "kospi_change": -1.98,
-      "kosdaq_change": -2.34,
-      "foreign_net": -26062.0,
-      "institution_net": -6811.0,
-      "individual_net": 25795.0,
-      "hot_theme_count": 4,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "코스피, 반도체 급등에 5700선 회복…매수 사이드카 발동",
-    "기업 공시 [10월 21일]",
-    "인도 최대 은행도 해킹 의혹…고객 개인정보 유출",
-    "오름테라퓨틱 이승주 대표, 주가 하락 속 1.7억 자사주 매입",
-    "\"단일종목 레버리지 섣불렀다\"…20대가 바라본 '격변의 코스피 1년'",
-    "환율 4거래일째 연저점",
-    "'국대 종목'만 모았다더니 이달에만 -18%, 뭐냐면...",
-    "엘리스, 상한가 마감...상장 첫날 급락서 '대반전'",
-    "美 대체거래소 블루오션 전산장애…국내 증권사 해외 시세 먹통",
-    "韓 증시 급락할 때 대만은 신고가… ‘희비’ 가른건 AI·주주환원 정책"
+    "[특징주] 상장 첫날 32% 급락 엘리스, 17% 치솟으며 이틀째 반등(종합)",
+    "단일종목 레버리지 ETF 손실 6.3조…금융당국 수장들 사과",
+    "기업공시 [10월 22일]",
+    "강덕현 알에스오토메이션 대표, 국회포럼서 로봇부품 정책 전환 제안",
+    "이형일 \"내년까지 공적주택 10만호 수도권 입주…시장 안정될 것\"",
+    "증시 급락에 넥스트레이드도 '거래 절벽'…6주 새 거래대금 70% 급감",
+    "한화에어로, 사천에어쇼서 미래 우주항공 기술 선보여",
+    "美 훈풍·금리 동결에도 삼전닉스 급락… 코스피도 ‘와르르’",
+    "연말 IPO 대어는 어디…SFC 등판·무신사 심사에 쏠린 눈",
+    "코스피, 기관 매도세에 3%대 하락…5530선 마감"
   ]
 }

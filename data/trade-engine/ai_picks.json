@@ -1,7 +1,7 @@
 {
-  "exported_at": "2026-10-21T07:00:01.280644+00:00",
+  "exported_at": "2026-10-22T07:00:01.348241+00:00",
   "total_candidates": 4,
-  "total_holdings": 4,
+  "total_holdings": 6,
   "candidates": [
     {
       "stock_code": "000100",
@@ -32,29 +32,31 @@
       "status": "매수 시그널"
     },
     {
-      "stock_code": "068270",
-      "stock_name": "셀트리온",
-      "sector": "바이오",
-      "signal_count": 6,
-      "avg_confidence": 0.6499999999999999,
-      "strategies": [],
-      "reason": "score=8.00, ranked_score=48.00",
-      "price_at_signal": 0,
-      "signal_time": "2026-10-21T15:25:00.009813+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
       "stock_code": "006400",
       "stock_name": "삼성SDI",
       "sector": "전기전자",
-      "signal_count": 3,
-      "avg_confidence": 0.8000000000000002,
+      "signal_count": 2,
+      "avg_confidence": 0.8,
       "strategies": [
         "RSI+MACD(swing)"
       ],
       "reason": "RSI모멘텀(51) | MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-10-21T05:53:06.214105",
+      "signal_time": "2026-10-21T05:54:09.194130",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "207940",
+      "stock_name": "삼성바이오로직스",
+      "sector": "바이오",
+      "signal_count": 1,
+      "avg_confidence": 0.8,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MACD히스토그램↑ | RSI모멘텀(60) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+2.3%vsKOSPI-0.6%) | 디커플링모멘텀",
+      "price_at_signal": 0,
+      "signal_time": "2026-10-22T00:06:30.787459",
       "status": "매수 시그널"
     }
   ],
@@ -62,18 +64,18 @@
     {
       "stock_code": "000100",
       "stock_name": "유한양행",
-      "quantity": 90,
+      "quantity": 80,
       "avg_price": 86530.0,
       "strategy": "RSI+MACD(swing)",
       "entry_date": "2026-10-21",
       "status": "보유 중"
     },
     {
-      "stock_code": "068270",
-      "stock_name": "셀트리온",
-      "quantity": 46,
-      "avg_price": 197047.826,
-      "strategy": "RSI+MACD(swing)",
+      "stock_code": "AAPL",
+      "stock_name": "AAPL",
+      "quantity": 28,
+      "avg_price": 345.0,
+      "strategy": "US_SWING",
       "entry_date": "2026-10-21",
       "status": "보유 중"
     },
@@ -84,6 +86,24 @@
       "avg_price": 93.85,
       "strategy": "US_SWING",
       "entry_date": "2026-10-16",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "JNJ",
+      "stock_name": "JNJ",
+      "quantity": 38,
+      "avg_price": 256.5,
+      "strategy": "US_SWING",
+      "entry_date": "2026-10-21",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "TSLA",
+      "stock_name": "TSLA",
+      "quantity": 26,
+      "avg_price": 384.5,
+      "strategy": "US_SWING",
+      "entry_date": "2026-10-21",
       "status": "보유 중"
     },
     {

@@ -1,108 +1,92 @@
 {
-  "exported_at": "2026-10-21T07:00:00.944513+00:00",
-  "date": "20261021",
+  "exported_at": "2026-10-22T07:00:00.995503+00:00",
+  "date": "20261022",
   "hot_themes": [
     {
-      "name": "2026 하반기 신규상장",
-      "change_rate": 6.27
+      "name": "자전거",
+      "change_rate": 5.65
     },
     {
-      "name": "반도체 대표주(생산)",
-      "change_rate": 4.89
+      "name": "고체산화물 연료전지(SOFC)",
+      "change_rate": 1.57
     },
     {
-      "name": "폐기물처리",
-      "change_rate": 4.7
-    },
-    {
-      "name": "S7(삼성전자/SK하이닉스 등)",
-      "change_rate": 4.34
-    },
-    {
-      "name": "건설기계",
-      "change_rate": 3.42
-    },
-    {
-      "name": "전선",
-      "change_rate": 3.24
-    },
-    {
-      "name": "무선충전기술",
-      "change_rate": 3.06
-    },
-    {
-      "name": "정유",
-      "change_rate": 3.05
-    },
-    {
-      "name": "GTX(수도권 광역급행철도)",
-      "change_rate": 2.98
-    },
-    {
-      "name": "HBM(고대역폭메모리)",
-      "change_rate": 2.92
-    },
-    {
-      "name": "건설 대표주",
-      "change_rate": 2.86
+      "name": "영화",
+      "change_rate": 1.24
     },
     {
       "name": "전후 재건(우크라/중동 전쟁 등)",
-      "change_rate": 2.82
+      "change_rate": 0.99
     },
     {
-      "name": "LED장비",
-      "change_rate": 2.75
+      "name": "AI 챗봇(챗GPT 등)",
+      "change_rate": 0.92
     },
     {
-      "name": "우주태양광(페로브스카이트 등)",
-      "change_rate": 2.63
+      "name": "건설기계",
+      "change_rate": 0.57
     },
     {
-      "name": "반도체 장비",
-      "change_rate": 2.57
+      "name": "아스콘(아스팔트 콘크리트)",
+      "change_rate": 0.42
+    },
+    {
+      "name": "건설 대표주",
+      "change_rate": 0.07
+    },
+    {
+      "name": "2026 하반기 신규상장",
+      "change_rate": 0.02
+    },
+    {
+      "name": "카지노",
+      "change_rate": 0.02
+    },
+    {
+      "name": "테마파크",
+      "change_rate": 0.02
     }
   ],
   "cold_themes": [
     {
-      "name": "서울고속버스터미널 재개발 수혜",
-      "change_rate": -3.07
-    },
-    {
-      "name": "영화",
-      "change_rate": -2.99
-    },
-    {
-      "name": "통신",
-      "change_rate": -2.12
+      "name": "2차전지(생산)",
+      "change_rate": -6.99
     },
     {
       "name": "2차전지(나트륨이온)",
-      "change_rate": -1.37
+      "change_rate": -6.96
     },
     {
-      "name": "손해보험",
-      "change_rate": -1.25
+      "name": "뉴로모픽 반도체",
+      "change_rate": -5.88
     },
     {
-      "name": "홈쇼핑",
-      "change_rate": -1.23
+      "name": "정유",
+      "change_rate": -5.61
     },
     {
-      "name": "생명보험",
-      "change_rate": -1.21
+      "name": "광통신(광케이블/광섬유 등)",
+      "change_rate": -5.29
     },
     {
-      "name": "비료",
-      "change_rate": -1.14
+      "name": "MLCC(적층세라믹콘덴서)",
+      "change_rate": -5.18
     },
     {
-      "name": "마이코플라스마 폐렴",
-      "change_rate": -1.12
+      "name": "스페이스X(SpaceX)",
+      "change_rate": -5.07
     },
     {
-      "name": "보톡스(보툴리눔톡신)",
-      "change_rate": -1.1
+      "name": "LED장비",
+      "change_rate": -4.84
+    },
+    {
+      "name": "리튬",
+      "change_rate": -4.81
+    },
+    {
+      "name": "HBM(고대역폭메모리)",
+      "change_rate": -4.76
     }
   ]
 }

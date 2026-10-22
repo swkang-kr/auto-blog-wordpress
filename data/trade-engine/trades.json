@@ -1,6 +1,54 @@
 {
-  "exported_at": "2026-10-21T07:00:00.680143+00:00",
+  "exported_at": "2026-10-22T07:00:00.704560+00:00",
   "trades": [
+    {
+      "stock_code": "068270",
+      "stock_name": "셀트리온",
+      "side": "sell",
+      "quantity": 46,
+      "price": 191800.0,
+      "pnl": -271590.64,
+      "pnl_rate": -2.9963,
+      "strategy": "swing_gap_down(net=-3.00%,held=17.9h)",
+      "reason": "swing_gap_down(net=-3.00%,held=17.9h) [price_source=quote,settled_by=holdings]",
+      "filled_at": "2026-10-22T00:06:09.083292"
+    },
+    {
+      "stock_code": "AAPL",
+      "stock_name": "AAPL",
+      "side": "buy",
+      "quantity": 28,
+      "price": 345.0,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "US_SWING",
+      "reason": "RSI적정(61.9) | MACD골든크로스 [us_pre_qty=0]",
+      "filled_at": "2026-10-21T15:32:51"
+    },
+    {
+      "stock_code": "TSLA",
+      "stock_name": "TSLA",
+      "side": "buy",
+      "quantity": 26,
+      "price": 384.5,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "US_SWING",
+      "reason": "RSI적정(59.1) | MACD골든크로스 [us_pre_qty=0]",
+      "filled_at": "2026-10-21T13:44:51"
+    },
+    {
+      "stock_code": "JNJ",
+      "stock_name": "JNJ",
+      "side": "buy",
+      "quantity": 38,
+      "price": 256.5,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "US_SWING",
+      "reason": "RSI적정(45.8) | MACD골든크로스 [us_pre_qty=0]",
+      "filled_at": "2026-10-21T13:35:53"
+    },
     {
       "stock_code": "068270",
       "stock_name": "셀트리온",
@@ -192,42 +240,6 @@
       "strategy": "US_SWING",
       "reason": "RSI적정(34.2) | RSI과매도 | BB하단근접 [us_pre_qty=0]",
       "filled_at": "2026-10-15T13:35:52"
-    },
-    {
-      "stock_code": "373220",
-      "stock_name": "LG에너지솔루션",
-      "side": "sell",
-      "quantity": 10,
-      "price": 400000.0,
-      "pnl": -213760.0,
-      "pnl_rate": -5.0895,
-      "strategy": "swing_gap_down(net=-5.10%,held=17.8h)",
-      "reason": "swing_gap_down(net=-5.10%,held=17.8h) [price_source=quote,settled_by=holdings]",
-      "filled_at": "2026-10-15T00:01:39.925292"
-    },
-    {
-      "stock_code": "036930",
-      "stock_name": "주성엔지니어링",
-      "side": "sell",
-      "quantity": 23,
-      "price": 221500.0,
-      "pnl": -396624.48,
-      "pnl_rate": -7.2463,
-      "strategy": "swing_gap_down(net=-7.26%,held=17.8h)",
-      "reason": "swing_gap_down(net=-7.26%,held=17.8h) [price_source=quote,settled_by=holdings]",
-      "filled_at": "2026-10-15T00:01:17.808306"
-    },
-    {
-      "stock_code": "006400",
-      "stock_name": "삼성SDI",
-      "side": "sell",
-      "quantity": 10,
-      "price": 564000.0,
-      "pnl": -286389.6,
-      "pnl_rate": -4.8483,
-      "strategy": "swing_gap_down(net=-4.86%,held=17.8h)",
-      "reason": "swing_gap_down(net=-4.86%,held=17.8h) [price_source=quote,settled_by=holdings]",
-      "filled_at": "2026-10-15T00:00:54.471460"
     }
   ]
 }
