@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-10-22T07:00:00.927407+00:00",
+  "exported_at": "2026-10-23T07:00:00.913453+00:00",
   "market_daily": [
+    {
+      "date": "20261023",
+      "kospi_change": 0.3,
+      "kosdaq_change": -1.62,
+      "foreign_net": -9826.0,
+      "institution_net": 8687.0,
+      "individual_net": 448.0,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20261022",
       "kospi_change": -3.52,
       "kosdaq_change": -3.62,
-      "foreign_net": 614.0,
-      "institution_net": -4627.0,
-      "individual_net": 3808.0,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": 667.0,
+      "institution_net": -4601.0,
+      "individual_net": 3690.0,
+      "hot_theme_count": 1,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20261021",
@@ -99,29 +110,18 @@
       "hot_theme_count": 1,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20261008",
-      "kospi_change": -2.62,
-      "kosdaq_change": -0.69,
-      "foreign_net": -20490.0,
-      "institution_net": -16522.0,
-      "individual_net": 29465.0,
-      "hot_theme_count": 3,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "[특징주] 상장 첫날 32% 급락 엘리스, 17% 치솟으며 이틀째 반등(종합)",
-    "단일종목 레버리지 ETF 손실 6.3조…금융당국 수장들 사과",
-    "기업공시 [10월 22일]",
-    "강덕현 알에스오토메이션 대표, 국회포럼서 로봇부품 정책 전환 제안",
-    "이형일 \"내년까지 공적주택 10만호 수도권 입주…시장 안정될 것\"",
-    "증시 급락에 넥스트레이드도 '거래 절벽'…6주 새 거래대금 70% 급감",
-    "한화에어로, 사천에어쇼서 미래 우주항공 기술 선보여",
-    "美 훈풍·금리 동결에도 삼전닉스 급락… 코스피도 ‘와르르’",
-    "연말 IPO 대어는 어디…SFC 등판·무신사 심사에 쏠린 눈",
-    "코스피, 기관 매도세에 3%대 하락…5530선 마감"
+    "[속보] 코스피 4% 하락 딛고 상승 마감 SK하이닉스 4%대 강세",
+    "하나증권, 3분기 누적 순익 2834억원…전년比 67.1%↑",
+    "“골프·요트에 1.4억 선불카드까지”…월 거래액 1000억 VVIP 마케팅, 어디길래",
+    "[속보] 사흘 새 33% 껑충 뛰었다…어느덧 6만원 넘보는 삼성E&A",
+    "코스피, 삼전·닉스 반등에 5550선 강보합 마감",
+    "네오클라우드서 빅테크로 옮겨붙은 AI 신용위험…코스피 '흔들'(종합)",
+    "하나증권, 3분기 누적 영업익 98.9%↑…증시 정체에 수수료 수익은 감소",
+    "낙폭 줄인 코스피, 5,500선 회복 마감",
+    "코스피 소폭 상승 마감",
+    "낙폭 줄인 코스피, 5,500선 회복 마감"
   ]
 }

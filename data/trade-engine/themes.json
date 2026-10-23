@@ -1,92 +1,104 @@
 {
-  "exported_at": "2026-10-22T07:00:00.995503+00:00",
-  "date": "20261022",
+  "exported_at": "2026-10-23T07:00:00.961329+00:00",
+  "date": "20261023",
   "hot_themes": [
     {
-      "name": "자전거",
-      "change_rate": 5.65
-    },
-    {
-      "name": "고체산화물 연료전지(SOFC)",
-      "change_rate": 1.57
-    },
-    {
-      "name": "영화",
-      "change_rate": 1.24
-    },
-    {
-      "name": "전후 재건(우크라/중동 전쟁 등)",
-      "change_rate": 0.99
-    },
-    {
-      "name": "AI 챗봇(챗GPT 등)",
-      "change_rate": 0.92
-    },
-    {
-      "name": "건설기계",
-      "change_rate": 0.57
-    },
-    {
       "name": "아스콘(아스팔트 콘크리트)",
-      "change_rate": 0.42
+      "change_rate": 2.19
+    },
+    {
+      "name": "반도체 대표주(생산)",
+      "change_rate": 1.65
     },
     {
       "name": "건설 대표주",
-      "change_rate": 0.07
+      "change_rate": 1.29
     },
     {
-      "name": "2026 하반기 신규상장",
-      "change_rate": 0.02
+      "name": "S7(삼성전자/SK하이닉스 등)",
+      "change_rate": 1.23
     },
     {
-      "name": "카지노",
-      "change_rate": 0.02
+      "name": "화학섬유",
+      "change_rate": 0.58
     },
     {
-      "name": "테마파크",
-      "change_rate": 0.02
+      "name": "주류업(주정, 에탄올 등)",
+      "change_rate": 0.56
+    },
+    {
+      "name": "모더나(MODERNA)",
+      "change_rate": 0.53
+    },
+    {
+      "name": "오가노이드",
+      "change_rate": 0.44
+    },
+    {
+      "name": "자전거",
+      "change_rate": 0.23
+    },
+    {
+      "name": "SNS(소셜네트워크서비스)",
+      "change_rate": 0.2
+    },
+    {
+      "name": "폴더블폰",
+      "change_rate": 0.17
+    },
+    {
+      "name": "리츠(REITs)",
+      "change_rate": 0.14
+    },
+    {
+      "name": "IT 대표주",
+      "change_rate": 0.09
+    },
+    {
+      "name": "모듈러주택",
+      "change_rate": 0.05
     }
   ],
   "cold_themes": [
     {
-      "name": "2차전지(생산)",
-      "change_rate": -6.99
+      "name": "야놀자(Yanolja)",
+      "change_rate": -5.25
     },
     {
       "name": "2차전지(나트륨이온)",
-      "change_rate": -6.96
-    },
-    {
-      "name": "뉴로모픽 반도체",
-      "change_rate": -5.88
+      "change_rate": -3.96
     },
     {
       "name": "정유",
-      "change_rate": -5.61
+      "change_rate": -3.56
     },
     {
-      "name": "광통신(광케이블/광섬유 등)",
-      "change_rate": -5.29
+      "name": "2차전지(LFP/리튬인산철)",
+      "change_rate": -3.47
     },
     {
-      "name": "MLCC(적층세라믹콘덴서)",
-      "change_rate": -5.18
+      "name": "2차전지(전고체)",
+      "change_rate": -3.27
     },
     {
-      "name": "스페이스X(SpaceX)",
-      "change_rate": -5.07
+      "name": "리비안(RIVIAN)",
+      "change_rate": -3.23
     },
     {
-      "name": "LED장비",
-      "change_rate": -4.84
+      "name": "웹툰",
+      "change_rate": -3.15
     },
     {
-      "name": "리튬",
-      "change_rate": -4.81
+      "name": "2차전지(소재/부품)",
+      "change_rate": -3.14
     },
     {
-      "name": "HBM(고대역폭메모리)",
-      "change_rate": -4.76
+      "name": "2차전지",
+      "change_rate": -2.89
+    },
+    {
+      "name": "백화점",
+      "change_rate": -2.88
     }
   ]
 }

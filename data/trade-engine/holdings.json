@@ -1,36 +1,14 @@
 {
-  "exported_at": "2026-10-22T07:00:00.686321+00:00",
+  "exported_at": "2026-10-23T07:00:00.665957+00:00",
   "holdings": [
-    {
-      "stock_code": "TSM",
-      "stock_name": "TSM",
-      "quantity": 24,
-      "avg_price": 414.61,
-      "current_price": 430.805,
-      "unrealized_pnl": 388.68,
-      "unrealized_pnl_rate": 3.9061,
-      "strategy": "US_SWING",
-      "entry_date": "2026-10-16T14:11:08.550759"
-    },
-    {
-      "stock_code": "TSLA",
-      "stock_name": "TSLA",
-      "quantity": 26,
-      "avg_price": 384.5,
-      "current_price": 386.46,
-      "unrealized_pnl": 50.96,
-      "unrealized_pnl_rate": 0.5098,
-      "strategy": "US_SWING",
-      "entry_date": "2026-10-21T13:44:50.840012"
-    },
     {
       "stock_code": "JNJ",
       "stock_name": "JNJ",
       "quantity": 38,
       "avg_price": 256.5,
-      "current_price": 256.965,
-      "unrealized_pnl": 17.67,
-      "unrealized_pnl_rate": 0.1813,
+      "current_price": 268.97,
+      "unrealized_pnl": 473.86,
+      "unrealized_pnl_rate": 4.8616,
       "strategy": "US_SWING",
       "entry_date": "2026-10-21T13:35:53.054052"
     },
@@ -39,31 +17,53 @@
       "stock_name": "AAPL",
       "quantity": 28,
       "avg_price": 345.0,
-      "current_price": 343.9,
-      "unrealized_pnl": -30.8,
-      "unrealized_pnl_rate": -0.3188,
+      "current_price": 347.185,
+      "unrealized_pnl": 61.18,
+      "unrealized_pnl_rate": 0.6333,
       "strategy": "US_SWING",
       "entry_date": "2026-10-21T15:32:50.671346"
     },
     {
-      "stock_code": "INTC",
-      "stock_name": "INTC",
-      "quantity": 106,
-      "avg_price": 93.85,
-      "current_price": 92.735,
-      "unrealized_pnl": -118.19,
-      "unrealized_pnl_rate": -1.1881,
+      "stock_code": "GOOGL",
+      "stock_name": "GOOGL",
+      "quantity": 30,
+      "avg_price": 327.11,
+      "current_price": 322.76,
+      "unrealized_pnl": -130.5,
+      "unrealized_pnl_rate": -1.3298,
       "strategy": "US_SWING",
-      "entry_date": "2026-10-16T13:43:54.346372"
+      "entry_date": "2026-10-22T14:29:50.405690"
+    },
+    {
+      "stock_code": "ASML",
+      "stock_name": "ASML",
+      "quantity": 6,
+      "avg_price": 1580.03,
+      "current_price": 1558.47,
+      "unrealized_pnl": -129.36,
+      "unrealized_pnl_rate": -1.3645,
+      "strategy": "US_SWING",
+      "entry_date": "2026-10-22T17:22:53.171931"
+    },
+    {
+      "stock_code": "TSLA",
+      "stock_name": "TSLA",
+      "quantity": 26,
+      "avg_price": 384.5,
+      "current_price": 376.88,
+      "unrealized_pnl": -198.12,
+      "unrealized_pnl_rate": -1.9818,
+      "strategy": "US_SWING",
+      "entry_date": "2026-10-21T13:44:50.840012"
     },
     {
       "stock_code": "000100",
       "stock_name": "유한양행",
       "quantity": 80,
       "avg_price": 86530.0,
-      "current_price": 83700.0,
-      "unrealized_pnl": -249936.16,
-      "unrealized_pnl_rate": -3.6105,
+      "current_price": 84600.0,
+      "unrealized_pnl": -177936.16,
+      "unrealized_pnl_rate": -2.5704,
       "strategy": "RSI+MACD(swing)",
       "entry_date": "2026-10-21T06:11:44.979936"
     }
