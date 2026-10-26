@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-10-23T07:00:00.913453+00:00",
+  "exported_at": "2026-10-26T07:00:00.892590+00:00",
   "market_daily": [
+    {
+      "date": "20261026",
+      "kospi_change": -1.46,
+      "kosdaq_change": -3.26,
+      "foreign_net": -6968.0,
+      "institution_net": 6047.0,
+      "individual_net": 551.0,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20261023",
       "kospi_change": 0.3,
       "kosdaq_change": -1.62,
-      "foreign_net": -9826.0,
-      "institution_net": 8687.0,
-      "individual_net": 448.0,
+      "foreign_net": -9683.0,
+      "institution_net": 8677.0,
+      "individual_net": 289.0,
       "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20261022",
@@ -99,29 +110,18 @@
       "hot_theme_count": 0,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20261012",
-      "kospi_change": -3.65,
-      "kosdaq_change": -4.83,
-      "foreign_net": -19904.0,
-      "institution_net": -1292.0,
-      "individual_net": 14617.0,
-      "hot_theme_count": 1,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "[속보] 코스피 4% 하락 딛고 상승 마감 SK하이닉스 4%대 강세",
-    "하나증권, 3분기 누적 순익 2834억원…전년比 67.1%↑",
-    "“골프·요트에 1.4억 선불카드까지”…월 거래액 1000억 VVIP 마케팅, 어디길래",
-    "[속보] 사흘 새 33% 껑충 뛰었다…어느덧 6만원 넘보는 삼성E&A",
-    "코스피, 삼전·닉스 반등에 5550선 강보합 마감",
-    "네오클라우드서 빅테크로 옮겨붙은 AI 신용위험…코스피 '흔들'(종합)",
-    "하나증권, 3분기 누적 영업익 98.9%↑…증시 정체에 수수료 수익은 감소",
-    "낙폭 줄인 코스피, 5,500선 회복 마감",
-    "코스피 소폭 상승 마감",
-    "낙폭 줄인 코스피, 5,500선 회복 마감"
+    "KODEX 코스피200 커버드콜 2종, 개인 순매수 4조 돌파",
+    "'빅 이벤트' 앞두고 짙어진 경계감…코스피, 6개월 만에 5500선 깨졌다",
+    "외인 '팔자'에 코스피 5500선 반납…코스닥은 3.2%↓",
+    "[부고]박창수(연합뉴스 부산취재본부 부장) 씨 모친상",
+    "외국인 7000억 '팔자'…코스피 5460선 추락 [시황]",
+    "코스피, 5500선 아래로",
+    "휘청이는 코스피",
+    "코스피·코스닥 동반 하락 마감",
+    "코스피 '하락 마감'",
+    "코스피, 5500선 아래로, '슈퍼위크' 앞두고 관망세"
   ]
 }

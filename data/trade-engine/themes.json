@@ -1,104 +1,84 @@
 {
-  "exported_at": "2026-10-23T07:00:00.961329+00:00",
-  "date": "20261023",
+  "exported_at": "2026-10-26T07:00:00.937127+00:00",
+  "date": "20261026",
   "hot_themes": [
     {
-      "name": "아스콘(아스팔트 콘크리트)",
-      "change_rate": 2.19
+      "name": "의료AI",
+      "change_rate": 4.72
     },
     {
-      "name": "반도체 대표주(생산)",
-      "change_rate": 1.65
+      "name": "2026 하반기 신규상장",
+      "change_rate": 2.74
     },
     {
-      "name": "건설 대표주",
-      "change_rate": 1.29
+      "name": "원격진료/비대면진료(U-Healthcare)",
+      "change_rate": 1.73
     },
     {
-      "name": "S7(삼성전자/SK하이닉스 등)",
-      "change_rate": 1.23
+      "name": "피지컬 AI/휴머노이드 로봇",
+      "change_rate": 1.43
     },
     {
-      "name": "화학섬유",
-      "change_rate": 0.58
+      "name": "로봇(산업용/협동로봇 등)",
+      "change_rate": 1.28
     },
     {
-      "name": "주류업(주정, 에탄올 등)",
-      "change_rate": 0.56
+      "name": "딥페이크(deepfake)",
+      "change_rate": 0.81
     },
     {
-      "name": "모더나(MODERNA)",
-      "change_rate": 0.53
+      "name": "전자파",
+      "change_rate": 0.28
     },
     {
-      "name": "오가노이드",
-      "change_rate": 0.44
+      "name": "의료기기",
+      "change_rate": 0.27
     },
     {
-      "name": "자전거",
-      "change_rate": 0.23
-    },
-    {
-      "name": "SNS(소셜네트워크서비스)",
-      "change_rate": 0.2
-    },
-    {
-      "name": "폴더블폰",
-      "change_rate": 0.17
-    },
-    {
-      "name": "리츠(REITs)",
-      "change_rate": 0.14
-    },
-    {
-      "name": "IT 대표주",
-      "change_rate": 0.09
-    },
-    {
-      "name": "모듈러주택",
-      "change_rate": 0.05
+      "name": "마이데이터",
+      "change_rate": 0.02
     }
   ],
   "cold_themes": [
     {
-      "name": "야놀자(Yanolja)",
-      "change_rate": -5.25
+      "name": "고체산화물 연료전지(SOFC)",
+      "change_rate": -7.84
     },
     {
-      "name": "2차전지(나트륨이온)",
-      "change_rate": -3.96
+      "name": "자전거",
+      "change_rate": -7.28
     },
     {
-      "name": "정유",
-      "change_rate": -3.56
+      "name": "피팅(관이음쇠)/밸브",
+      "change_rate": -5.39
     },
     {
-      "name": "2차전지(LFP/리튬인산철)",
-      "change_rate": -3.47
+      "name": "반도체 기판(FC-BGA/PCB/MLB 등)",
+      "change_rate": -4.9
     },
     {
-      "name": "2차전지(전고체)",
-      "change_rate": -3.27
+      "name": "반도체 재료/부품",
+      "change_rate": -4.87
     },
     {
-      "name": "리비안(RIVIAN)",
-      "change_rate": -3.23
+      "name": "마이크로 LED",
+      "change_rate": -4.66
     },
     {
-      "name": "웹툰",
-      "change_rate": -3.15
+      "name": "우주태양광(페로브스카이트 등)",
+      "change_rate": -4.6
     },
     {
-      "name": "2차전지(소재/부품)",
-      "change_rate": -3.14
+      "name": "HBM(고대역폭메모리)",
+      "change_rate": -4.49
     },
     {
-      "name": "2차전지",
-      "change_rate": -2.89
+      "name": "건설기계",
+      "change_rate": -4.48
     },
     {
-      "name": "백화점",
-      "change_rate": -2.88
+      "name": "반도체 장비",
+      "change_rate": -4.41
     }
   ]
 }

@@ -1,66 +1,42 @@
 {
-  "exported_at": "2026-10-23T07:00:01.250933+00:00",
-  "total_candidates": 4,
+  "exported_at": "2026-10-26T07:00:01.189155+00:00",
+  "total_candidates": 1,
   "total_holdings": 6,
   "candidates": [
     {
-      "stock_code": "000100",
-      "stock_name": "유한양행",
+      "stock_code": "018260",
+      "stock_name": "삼성에스디에스",
       "sector": "",
-      "signal_count": 16,
-      "avg_confidence": 1.0,
+      "signal_count": 30,
+      "avg_confidence": 0.8333000000000003,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(70) | 거래량2.4x | MA정배열 | 캔들상승장악형 | 주봉골든크로스 | 주봉MA20위",
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(52) | 거래량2.1x | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+0.7%vsKOSPI-0.6%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-10-21T05:54:09.194105",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "011200",
-      "stock_name": "HMM",
-      "sector": "해운사",
-      "signal_count": 11,
-      "avg_confidence": 0.5999999999999998,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MA정배열 | 주봉골든크로스 | 주봉MA20위",
-      "price_at_signal": 0,
-      "signal_time": "2026-10-21T05:53:06.214118",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "006400",
-      "stock_name": "삼성SDI",
-      "sector": "전기전자",
-      "signal_count": 2,
-      "avg_confidence": 0.8,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "RSI모멘텀(51) | MA정배열 | 주봉골든크로스 | 주봉MA20위",
-      "price_at_signal": 0,
-      "signal_time": "2026-10-21T05:54:09.194130",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "207940",
-      "stock_name": "삼성바이오로직스",
-      "sector": "바이오",
-      "signal_count": 1,
-      "avg_confidence": 0.8,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(60) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+2.3%vsKOSPI-0.6%) | 디커플링모멘텀",
-      "price_at_signal": 0,
-      "signal_time": "2026-10-22T00:06:30.787459",
+      "signal_time": "2026-10-26T05:40:52.289681",
       "status": "매수 시그널"
     }
   ],
   "holdings": [
+    {
+      "stock_code": "TSLA",
+      "stock_name": "TSLA",
+      "quantity": 26,
+      "avg_price": 384.5,
+      "strategy": "US_SWING",
+      "entry_date": "2026-10-21",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "000100",
+      "stock_name": "유한양행",
+      "quantity": 80,
+      "avg_price": 86530.0,
+      "strategy": "RSI+MACD(swing)",
+      "entry_date": "2026-10-21",
+      "status": "보유 중"
+    },
     {
       "stock_code": "AAPL",
       "stock_name": "AAPL",
@@ -94,24 +70,6 @@
       "quantity": 38,
       "avg_price": 256.5,
       "strategy": "US_SWING",
-      "entry_date": "2026-10-21",
-      "status": "보유 중"
-    },
-    {
-      "stock_code": "TSLA",
-      "stock_name": "TSLA",
-      "quantity": 26,
-      "avg_price": 384.5,
-      "strategy": "US_SWING",
-      "entry_date": "2026-10-21",
-      "status": "보유 중"
-    },
-    {
-      "stock_code": "000100",
-      "stock_name": "유한양행",
-      "quantity": 80,
-      "avg_price": 86530.0,
-      "strategy": "RSI+MACD(swing)",
       "entry_date": "2026-10-21",
       "status": "보유 중"
     }

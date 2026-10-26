@@ -1,7 +1,16 @@
 {
-  "exported_at": "2026-10-23T07:00:00.622760+00:00",
+  "exported_at": "2026-10-26T07:00:00.616758+00:00",
   "period": "30d",
   "daily_performance": [
+    {
+      "date": "20261026",
+      "pnl": -240000.0,
+      "pnl_rate": -0.2465,
+      "trade_count": 0,
+      "win_count": 0,
+      "sharpe": 3.578817,
+      "mdd": -1.4377
+    },
     {
       "date": "20261023",
       "pnl": 56000.0,
@@ -262,22 +271,13 @@
       "win_count": 1,
       "sharpe": 0.746993,
       "mdd": -5.5639
-    },
-    {
-      "date": "20260813",
-      "pnl": -23600.0,
-      "pnl_rate": -0.221,
-      "trade_count": 4,
-      "win_count": 3,
-      "sharpe": 0.572366,
-      "mdd": -5.5639
     }
   ],
   "summary": {
-    "total_pnl": 66974.0,
-    "total_trades": 33,
-    "win_rate": 45.5,
-    "avg_daily_pnl": 2232.0,
+    "total_pnl": -149426.0,
+    "total_trades": 29,
+    "win_rate": 41.4,
+    "avg_daily_pnl": -4981.0,
     "best_day": 764338.0,
     "worst_day": -1401750.0
   }

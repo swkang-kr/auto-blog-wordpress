@@ -1,5 +1,5 @@
 {
-  "exported_at": "2026-10-23T07:00:00.680268+00:00",
+  "exported_at": "2026-10-26T07:00:00.677373+00:00",
   "trades": [
     {
       "stock_code": "ASML",
@@ -168,54 +168,6 @@
       "strategy": "US_SWING",
       "reason": "us_swing_time_exit",
       "filled_at": "2026-10-19T13:30:46"
-    },
-    {
-      "stock_code": "272210",
-      "stock_name": "한화시스템",
-      "side": "sell",
-      "quantity": 68,
-      "price": 79900.0,
-      "pnl": 32868.18,
-      "pnl_rate": 0.6107,
-      "strategy": "swing_trailing(peak=3.8%,step=3.0%,trail_sl=0.8%)",
-      "reason": "swing_trailing(peak=3.8%,step=3.0%,trail_sl=0.8%) [price_source=quote,settled_by=holdings]",
-      "filled_at": "2026-10-19T04:40:47.251103"
-    },
-    {
-      "stock_code": "TSM",
-      "stock_name": "TSM",
-      "side": "buy",
-      "quantity": 24,
-      "price": 414.61,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "US_SWING",
-      "reason": "RSI적정(34.9) | RSI과매도 | BB하단근접 [us_pre_qty=0]",
-      "filled_at": "2026-10-16T14:11:09"
-    },
-    {
-      "stock_code": "INTC",
-      "stock_name": "INTC",
-      "side": "buy",
-      "quantity": 106,
-      "price": 93.85,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "US_SWING",
-      "reason": "RSI적정(34.0) | RSI과매도 | BB하단근접 [us_pre_qty=0]",
-      "filled_at": "2026-10-16T13:43:54"
-    },
-    {
-      "stock_code": "INTC",
-      "stock_name": "INTC",
-      "side": "sell",
-      "quantity": 108,
-      "price": 93.8,
-      "pnl": 138.24,
-      "pnl_rate": 1.3835,
-      "strategy": "US_SWING",
-      "reason": "us_swing_trailing",
-      "filled_at": "2026-10-16T13:42:50"
     }
   ]
 }
