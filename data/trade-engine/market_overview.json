@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-10-26T07:00:00.892590+00:00",
+  "exported_at": "2026-10-27T07:00:00.890812+00:00",
   "market_daily": [
+    {
+      "date": "20261027",
+      "kospi_change": 3.09,
+      "kosdaq_change": 2.29,
+      "foreign_net": 5927.0,
+      "institution_net": 2821.0,
+      "individual_net": -9492.0,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20261026",
       "kospi_change": -1.46,
       "kosdaq_change": -3.26,
-      "foreign_net": -6968.0,
-      "institution_net": 6047.0,
-      "individual_net": 551.0,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": -6933.0,
+      "institution_net": 5959.0,
+      "individual_net": 605.0,
+      "hot_theme_count": 1,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20261023",
@@ -99,29 +110,18 @@
       "hot_theme_count": 10,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20261013",
-      "kospi_change": -5.46,
-      "kosdaq_change": -1.43,
-      "foreign_net": -45659.0,
-      "institution_net": 16902.0,
-      "individual_net": 22791.0,
-      "hot_theme_count": 0,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "KODEX 코스피200 커버드콜 2종, 개인 순매수 4조 돌파",
-    "'빅 이벤트' 앞두고 짙어진 경계감…코스피, 6개월 만에 5500선 깨졌다",
-    "외인 '팔자'에 코스피 5500선 반납…코스닥은 3.2%↓",
-    "[부고]박창수(연합뉴스 부산취재본부 부장) 씨 모친상",
-    "외국인 7000억 '팔자'…코스피 5460선 추락 [시황]",
-    "코스피, 5500선 아래로",
-    "휘청이는 코스피",
-    "코스피·코스닥 동반 하락 마감",
-    "코스피 '하락 마감'",
-    "코스피, 5500선 아래로, '슈퍼위크' 앞두고 관망세"
+    "3%오르며 반등한 코스피",
+    "코스피, 3% 반등...코스닥도 2.3% 올라",
+    "반도체 훈풍에 코스피 급등",
+    "-20%인데 5000억 몰렸다…소부장 ETF, 앤트로픽 IPO에 '꿈틀'",
+    "코스피 '방긋'",
+    "3%오르며 반등한 코스피",
+    "코스피 '방긋'",
+    "앤트로픽 훈풍에 코스피 반등",
+    "코스피, 3%대 반등하며 5,600선 회복",
+    "'앤트로픽'발 AI 훈풍에...코스피·코스닥 급등"
   ]
 }
