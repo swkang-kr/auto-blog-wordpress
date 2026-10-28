@@ -1,20 +1,34 @@
 {
-  "exported_at": "2026-10-27T07:00:01.158571+00:00",
-  "total_candidates": 1,
-  "total_holdings": 6,
+  "exported_at": "2026-10-28T07:00:01.187445+00:00",
+  "total_candidates": 2,
+  "total_holdings": 5,
   "candidates": [
+    {
+      "stock_code": "277810",
+      "stock_name": "레인보우로보틱스",
+      "sector": "기계",
+      "signal_count": 16,
+      "avg_confidence": 0.6667,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD골든크로스 | RSI모멘텀(53) | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+11.9%vsKOSPI+6.5%) | 디커플링모멘텀",
+      "price_at_signal": 0,
+      "signal_time": "2026-10-28T05:55:17.141851",
+      "status": "매수 시그널"
+    },
     {
       "stock_code": "018260",
       "stock_name": "삼성에스디에스",
       "sector": "",
-      "signal_count": 30,
-      "avg_confidence": 0.9166999999999995,
+      "signal_count": 14,
+      "avg_confidence": 0.75,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(56) | 거래량2.1x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위",
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위",
       "price_at_signal": 0,
-      "signal_time": "2026-10-27T05:41:00.436012",
+      "signal_time": "2026-10-28T05:55:17.141826",
       "status": "매수 시그널"
     }
   ],
@@ -35,15 +49,6 @@
       "avg_price": 1580.03,
       "strategy": "US_SWING",
       "entry_date": "2026-10-22",
-      "status": "보유 중"
-    },
-    {
-      "stock_code": "000100",
-      "stock_name": "유한양행",
-      "quantity": 80,
-      "avg_price": 86530.0,
-      "strategy": "RSI+MACD(swing)",
-      "entry_date": "2026-10-21",
       "status": "보유 중"
     },
     {

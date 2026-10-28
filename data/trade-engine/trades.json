@@ -1,6 +1,18 @@
 {
-  "exported_at": "2026-10-27T07:00:00.676115+00:00",
+  "exported_at": "2026-10-28T07:00:00.686919+00:00",
   "trades": [
+    {
+      "stock_code": "000100",
+      "stock_name": "유한양행",
+      "side": "sell",
+      "quantity": 80,
+      "price": 80100.0,
+      "pnl": -536598.72,
+      "pnl_rate": -7.7516,
+      "strategy": "swing_time_exit(5영업일≥5영업일)",
+      "reason": "swing_time_exit(5영업일≥5영업일) [price_source=quote,settled_by=holdings]",
+      "filled_at": "2026-10-28T00:00:36.293611"
+    },
     {
       "stock_code": "ASML",
       "stock_name": "ASML",
@@ -96,54 +108,6 @@
       "strategy": "US_SWING",
       "reason": "RSI적정(45.8) | MACD골든크로스 [us_pre_qty=0]",
       "filled_at": "2026-10-21T13:35:53"
-    },
-    {
-      "stock_code": "068270",
-      "stock_name": "셀트리온",
-      "side": "buy",
-      "quantity": 46,
-      "price": 197047.826,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "[price_source=holdings_avg,settled_by=holdings]",
-      "filled_at": "2026-10-21T06:11:57.015420"
-    },
-    {
-      "stock_code": "000100",
-      "stock_name": "유한양행",
-      "side": "buy",
-      "quantity": 90,
-      "price": 86530.0,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "RSI+MACD(swing)",
-      "reason": "[price_source=holdings_avg,settled_by=holdings]",
-      "filled_at": "2026-10-21T06:11:44.983550"
-    },
-    {
-      "stock_code": "ASML",
-      "stock_name": "ASML",
-      "side": "sell",
-      "quantity": 6,
-      "price": 1635.91,
-      "pnl": 245.94,
-      "pnl_rate": 2.57,
-      "strategy": "US_SWING",
-      "reason": "us_swing_trailing",
-      "filled_at": "2026-10-20T13:30:52"
-    },
-    {
-      "stock_code": "AAPL",
-      "stock_name": "AAPL",
-      "side": "sell",
-      "quantity": 28,
-      "price": 340.65,
-      "pnl": -143.64,
-      "pnl_rate": -1.4836,
-      "strategy": "US_SWING",
-      "reason": "us_swing_time_exit",
-      "filled_at": "2026-10-20T13:30:50"
     }
   ]
 }

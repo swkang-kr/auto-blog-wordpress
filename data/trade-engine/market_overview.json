@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-10-27T07:00:00.890812+00:00",
+  "exported_at": "2026-10-28T07:00:00.930479+00:00",
   "market_daily": [
+    {
+      "date": "20261028",
+      "kospi_change": 6.63,
+      "kosdaq_change": 3.69,
+      "foreign_net": 8162.0,
+      "institution_net": 9602.0,
+      "individual_net": -18017.0,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20261027",
       "kospi_change": 3.09,
       "kosdaq_change": 2.29,
-      "foreign_net": 5927.0,
-      "institution_net": 2821.0,
-      "individual_net": -9492.0,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": 5960.0,
+      "institution_net": 2876.0,
+      "individual_net": -9565.0,
+      "hot_theme_count": 36,
+      "momentum_count": 60,
+      "crash_count": 48
     },
     {
       "date": "20261026",
@@ -99,29 +110,18 @@
       "hot_theme_count": 0,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20261014",
-      "kospi_change": -0.44,
-      "kosdaq_change": -1.57,
-      "foreign_net": -11723.0,
-      "institution_net": 7939.0,
-      "individual_net": -3098.0,
-      "hot_theme_count": 10,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "3%오르며 반등한 코스피",
-    "코스피, 3% 반등...코스닥도 2.3% 올라",
-    "반도체 훈풍에 코스피 급등",
-    "-20%인데 5000억 몰렸다…소부장 ETF, 앤트로픽 IPO에 '꿈틀'",
-    "코스피 '방긋'",
-    "3%오르며 반등한 코스피",
-    "코스피 '방긋'",
-    "앤트로픽 훈풍에 코스피 반등",
-    "코스피, 3%대 반등하며 5,600선 회복",
-    "'앤트로픽'발 AI 훈풍에...코스피·코스닥 급등"
+    "[포토]'삼전닉스'가 끌어올린 코스피, 6000선 회복",
+    "[오늘의증시] 삼전 9%, SK하닉 10%대 폭등, '이런 불기둥 얼마만인가'",
+    "삼전닉스가 끌어올린 코스피…10거래일 만에 6000선 회복",
+    "SK하이닉스 호실적에 코스피 6.63% 급등",
+    "내년부터 경품·현금 통한 해외주식 판촉 금지",
+    "코스피 10거래일 만에 6000선 탈환…6.63% 오른 6012.44",
+    "[포토]'삼전닉스'가 끌어올린 코스피",
+    "'매파적 동결 경계' 달러·원 환율 14원 급등…1337.7원 마감(종합)",
+    "'삼전닉스' 불붙자 이틀 연속 매수 사이드카…'6000피' 되찾았다",
+    "코스피, 반도체 날개 달고 6000선 안착…삼전·닉스 10% 안팎 급등"
   ]
 }
