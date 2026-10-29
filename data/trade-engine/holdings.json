@@ -1,60 +1,60 @@
 {
-  "exported_at": "2026-10-28T07:00:00.670466+00:00",
+  "exported_at": "2026-10-29T07:00:00.668723+00:00",
   "holdings": [
     {
       "stock_code": "TSLA",
       "stock_name": "TSLA",
       "quantity": 26,
       "avg_price": 384.5,
-      "current_price": 408.0597,
-      "unrealized_pnl": 612.55,
-      "unrealized_pnl_rate": 6.1274,
+      "current_price": 410.4,
+      "unrealized_pnl": 673.4,
+      "unrealized_pnl_rate": 6.736,
       "strategy": "US_SWING",
       "entry_date": "2026-10-21T13:44:50.840012"
-    },
-    {
-      "stock_code": "JNJ",
-      "stock_name": "JNJ",
-      "quantity": 38,
-      "avg_price": 256.5,
-      "current_price": 268.66,
-      "unrealized_pnl": 462.08,
-      "unrealized_pnl_rate": 4.7407,
-      "strategy": "US_SWING",
-      "entry_date": "2026-10-21T13:35:53.054052"
     },
     {
       "stock_code": "ASML",
       "stock_name": "ASML",
       "quantity": 6,
       "avg_price": 1580.03,
-      "current_price": 1641.83,
-      "unrealized_pnl": 370.8,
-      "unrealized_pnl_rate": 3.9113,
+      "current_price": 1662.74,
+      "unrealized_pnl": 496.26,
+      "unrealized_pnl_rate": 5.2347,
       "strategy": "US_SWING",
       "entry_date": "2026-10-22T17:22:53.171931"
     },
     {
-      "stock_code": "AAPL",
-      "stock_name": "AAPL",
+      "stock_code": "AVGO",
+      "stock_name": "AVGO",
       "quantity": 28,
-      "avg_price": 345.0,
-      "current_price": 347.01,
-      "unrealized_pnl": 56.28,
-      "unrealized_pnl_rate": 0.5826,
+      "avg_price": 349.62,
+      "current_price": 350.395,
+      "unrealized_pnl": 21.7,
+      "unrealized_pnl_rate": 0.2217,
       "strategy": "US_SWING",
-      "entry_date": "2026-10-21T15:32:50.671346"
+      "entry_date": "2026-10-28T13:35:55.058419"
     },
     {
       "stock_code": "GOOGL",
       "stock_name": "GOOGL",
       "quantity": 30,
       "avg_price": 327.11,
-      "current_price": 323.2399,
-      "unrealized_pnl": -116.1,
-      "unrealized_pnl_rate": -1.1831,
+      "current_price": 324.25,
+      "unrealized_pnl": -85.8,
+      "unrealized_pnl_rate": -0.8743,
       "strategy": "US_SWING",
       "entry_date": "2026-10-22T14:29:50.405690"
+    },
+    {
+      "stock_code": "META",
+      "stock_name": "META",
+      "quantity": 16,
+      "avg_price": 621.15,
+      "current_price": 610.83,
+      "unrealized_pnl": -165.12,
+      "unrealized_pnl_rate": -1.6614,
+      "strategy": "US_SWING",
+      "entry_date": "2026-10-28T13:36:06.422176"
     }
   ]
 }
