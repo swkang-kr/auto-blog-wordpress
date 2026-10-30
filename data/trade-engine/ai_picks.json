@@ -1,59 +1,31 @@
 {
-  "exported_at": "2026-10-29T07:00:01.190810+00:00",
-  "total_candidates": 3,
+  "exported_at": "2026-10-30T07:00:01.236030+00:00",
+  "total_candidates": 1,
   "total_holdings": 5,
   "candidates": [
     {
-      "stock_code": "402340",
-      "stock_name": "SK스퀘어",
-      "sector": "복합기업",
-      "signal_count": 11,
-      "avg_confidence": 0.6666999999999997,
+      "stock_code": "006400",
+      "stock_name": "삼성SDI",
+      "sector": "전기전자",
+      "signal_count": 30,
+      "avg_confidence": 0.6875,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | MACD골든크로스 | RSI모멘텀(53) | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+7.6%vsKOSPI+1.1%) | 디커플링모멘텀",
+      "reason": "2일연속상승 | RSI모멘텀(51) | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+0.9%vsKOSPI-3.6%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-10-29T00:48:51.017397",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "277810",
-      "stock_name": "레인보우로보틱스",
-      "sector": "기계",
-      "signal_count": 10,
-      "avg_confidence": 0.6666999999999998,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "2일연속상승 | MACD골든크로스 | RSI모멘텀(54) | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+13.3%vsKOSPI+1.1%) | 디커플링모멘텀",
-      "price_at_signal": 0,
-      "signal_time": "2026-10-29T00:48:51.017407",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "000660",
-      "stock_name": "SK하이닉스",
-      "sector": "반도체",
-      "signal_count": 9,
-      "avg_confidence": 0.6666999999999998,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "2일연속상승 | MACD골든크로스 | RSI모멘텀(53) | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+8.2%vsKOSPI+1.1%) | 디커플링모멘텀",
-      "price_at_signal": 0,
-      "signal_time": "2026-10-29T00:49:52.144597",
+      "signal_time": "2026-10-30T00:30:51.667547",
       "status": "매수 시그널"
     }
   ],
   "holdings": [
     {
-      "stock_code": "ASML",
-      "stock_name": "ASML",
-      "quantity": 6,
-      "avg_price": 1580.03,
+      "stock_code": "AAPL",
+      "stock_name": "AAPL",
+      "quantity": 28,
+      "avg_price": 350.144,
       "strategy": "US_SWING",
-      "entry_date": "2026-10-22",
+      "entry_date": "2026-10-29",
       "status": "보유 중"
     },
     {
@@ -66,21 +38,21 @@
       "status": "보유 중"
     },
     {
-      "stock_code": "GOOGL",
-      "stock_name": "GOOGL",
-      "quantity": 30,
-      "avg_price": 327.11,
-      "strategy": "US_SWING",
-      "entry_date": "2026-10-22",
-      "status": "보유 중"
-    },
-    {
       "stock_code": "META",
       "stock_name": "META",
       "quantity": 16,
       "avg_price": 621.15,
       "strategy": "US_SWING",
       "entry_date": "2026-10-28",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "MU",
+      "stock_name": "MU",
+      "quantity": 10,
+      "avg_price": 949.72,
+      "strategy": "US_SWING",
+      "entry_date": "2026-10-29",
       "status": "보유 중"
     },
     {

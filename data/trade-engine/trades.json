@@ -1,6 +1,54 @@
 {
-  "exported_at": "2026-10-29T07:00:00.690413+00:00",
+  "exported_at": "2026-10-30T07:00:00.706800+00:00",
   "trades": [
+    {
+      "stock_code": "MU",
+      "stock_name": "MU",
+      "side": "buy",
+      "quantity": 10,
+      "price": 949.72,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "US_SWING",
+      "reason": "RSI적정(48.9) | MACD골든크로스 [us_pre_qty=0]",
+      "filled_at": "2026-10-29T15:39:16"
+    },
+    {
+      "stock_code": "AAPL",
+      "stock_name": "AAPL",
+      "side": "buy",
+      "quantity": 28,
+      "price": 350.1443,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "US_SWING",
+      "reason": "RSI적정(62.3) | MACD골든크로스 [us_pre_qty=0]",
+      "filled_at": "2026-10-29T13:53:09"
+    },
+    {
+      "stock_code": "ASML",
+      "stock_name": "ASML",
+      "side": "sell",
+      "quantity": 6,
+      "price": 1657.7,
+      "pnl": 466.02,
+      "pnl_rate": 4.9157,
+      "strategy": "US_SWING",
+      "reason": "us_swing_time_exit",
+      "filled_at": "2026-10-29T13:46:52"
+    },
+    {
+      "stock_code": "GOOGL",
+      "stock_name": "GOOGL",
+      "side": "sell",
+      "quantity": 30,
+      "price": 287.74,
+      "pnl": -1181.1,
+      "pnl_rate": -12.0357,
+      "strategy": "US_SWING",
+      "reason": "us_swing_stop_loss",
+      "filled_at": "2026-10-29T13:30:47"
+    },
     {
       "stock_code": "META",
       "stock_name": "META",
@@ -60,54 +108,6 @@
       "strategy": "swing_time_exit(5영업일≥5영업일)",
       "reason": "swing_time_exit(5영업일≥5영업일) [price_source=quote,settled_by=holdings]",
       "filled_at": "2026-10-28T00:00:36.293611"
-    },
-    {
-      "stock_code": "ASML",
-      "stock_name": "ASML",
-      "side": "buy",
-      "quantity": 6,
-      "price": 1580.03,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "US_SWING",
-      "reason": "RSI적정(34.7) | RSI과매도 | BB하단근접 [us_pre_qty=0]",
-      "filled_at": "2026-10-22T17:22:53"
-    },
-    {
-      "stock_code": "INTC",
-      "stock_name": "INTC",
-      "side": "sell",
-      "quantity": 106,
-      "price": 86.2406,
-      "pnl": -806.6,
-      "pnl_rate": -8.1081,
-      "strategy": "US_SWING",
-      "reason": "us_swing_stop_loss",
-      "filled_at": "2026-10-22T17:08:45"
-    },
-    {
-      "stock_code": "GOOGL",
-      "stock_name": "GOOGL",
-      "side": "buy",
-      "quantity": 30,
-      "price": 327.11,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "US_SWING",
-      "reason": "RSI적정(35.0) | RSI과매도 | BB하단근접 [us_pre_qty=0]",
-      "filled_at": "2026-10-22T14:29:50"
-    },
-    {
-      "stock_code": "TSM",
-      "stock_name": "TSM",
-      "side": "sell",
-      "quantity": 24,
-      "price": 421.215,
-      "pnl": 158.52,
-      "pnl_rate": 1.5931,
-      "strategy": "US_SWING",
-      "reason": "us_swing_trailing",
-      "filled_at": "2026-10-22T13:30:48"
     }
   ]
 }
