@@ -1,6 +1,42 @@
 {
-  "exported_at": "2026-10-30T07:00:00.706800+00:00",
+  "exported_at": "2026-11-02T07:00:00.678387+00:00",
   "trades": [
+    {
+      "stock_code": "NVDA",
+      "stock_name": "NVDA",
+      "side": "buy",
+      "quantity": 49,
+      "price": 201.9099,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "US_SWING",
+      "reason": "RSI적정(33.3) | RSI과매도 | BB하단근접 [us_pre_qty=0]",
+      "filled_at": "2026-10-30T19:00:31"
+    },
+    {
+      "stock_code": "AVGO",
+      "stock_name": "AVGO",
+      "side": "sell",
+      "quantity": 28,
+      "price": 321.64,
+      "pnl": -783.44,
+      "pnl_rate": -8.003,
+      "strategy": "US_SWING",
+      "reason": "us_swing_stop_loss",
+      "filled_at": "2026-10-30T18:29:56"
+    },
+    {
+      "stock_code": "MU",
+      "stock_name": "MU",
+      "side": "sell",
+      "quantity": 10,
+      "price": 872.69,
+      "pnl": -770.3,
+      "pnl_rate": -8.1108,
+      "strategy": "US_SWING",
+      "reason": "us_swing_stop_loss",
+      "filled_at": "2026-10-30T17:57:52"
+    },
     {
       "stock_code": "MU",
       "stock_name": "MU",
