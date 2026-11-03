@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-11-02T07:00:00.953132+00:00",
+  "exported_at": "2026-11-03T07:00:00.968770+00:00",
   "market_daily": [
+    {
+      "date": "20261103",
+      "kospi_change": -3.59,
+      "kosdaq_change": -4.08,
+      "foreign_net": -15151.0,
+      "institution_net": -5113.0,
+      "individual_net": 16606.0,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20261102",
       "kospi_change": 2.24,
       "kosdaq_change": 1.38,
-      "foreign_net": -3743.0,
-      "institution_net": 12331.0,
-      "individual_net": -13466.0,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": -3846.0,
+      "institution_net": 12299.0,
+      "individual_net": -13328.0,
+      "hot_theme_count": 23,
+      "momentum_count": 60,
+      "crash_count": 48
     },
     {
       "date": "20261030",
@@ -99,29 +110,18 @@
       "hot_theme_count": 8,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20261020",
-      "kospi_change": -3.73,
-      "kosdaq_change": -3.33,
-      "foreign_net": -5218.0,
-      "institution_net": -9988.0,
-      "individual_net": 8901.0,
-      "hot_theme_count": 1,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "코스피, 3거래일 만에 상승 마감…기관 '사자' 2%대 반등",
-    "키움증권 \"퇴직연금 사업 5개월만 적립금 2천억원 돌파\"",
-    "원·달러 환율, 9.5원 오른 1343.8원 마감",
-    "삼전 1.8%·하이닉스 3.8%↑…장중 출렁하다 상승 마감(종합)",
-    "'검은 월요일' 없었다…코스피 상승 전환해 5800선 탈환",
-    "\"기본법도 없는데 과세부터? 염치없다\"…가상자산 과세 재검토 촉구",
-    "모건스탠리 \"美주식, 지금이 좋은 기회…일시적 하락 노려야\"",
-    "공모주 시장 살아나나…이달 15곳 출격·최대 7600억 ‘청약 러시’",
-    "바이낸스 해킹에…금융위, 국내 거래소에 준비금 추가 등 당부",
-    "코스피, 2.24% 오른 5,859.08에 마감"
+    "현대차·포스코퓨처엠 '배터리 동맹'…베트남에 1천억 투자 추진",
+    "삼전닉스 주가 하락",
+    "이찬진 금감원장 \"해킹 사고 금융사 CEO 책임 엄중히 물을 것\"",
+    "코스피 3% 하락 마감",
+    "유통 주식수 10%대 ‘품절주’ 한진칼... “지분경쟁할 물량도 없다”",
+    "코스피, 3% 넘게 급락해 5,648 마감",
+    "\"취약계층 어르신 위해\"…팜젠사이언스, 김장봉사",
+    "모두 다 하락",
+    "AI우려·美중간선거에 위축된 투심…코스피, 3.59% 하락 마감",
+    "SK하이닉스 주가 하락 마감"
   ]
 }

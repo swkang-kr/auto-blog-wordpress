@@ -1,100 +1,46 @@
 {
-  "exported_at": "2026-11-02T07:00:01.266025+00:00",
-  "total_candidates": 7,
-  "total_holdings": 4,
+  "exported_at": "2026-11-03T07:00:01.328743+00:00",
+  "total_candidates": 3,
+  "total_holdings": 5,
   "candidates": [
     {
-      "stock_code": "047040",
-      "stock_name": "대우건설",
-      "sector": "건설",
-      "signal_count": 10,
-      "avg_confidence": 0.5199999999999999,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "RSI반등(32) | RSI sweet(32) | BB하단반등(score=0) | 거래량3.8x | 거래량3x+ | EMA20하방 | MA역배열 | 캔들상승장악형 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+7.1%vsKOSPI+2.8%)",
-      "price_at_signal": 0,
-      "signal_time": "2026-11-02T06:01:09.944503",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "006400",
-      "stock_name": "삼성SDI",
-      "sector": "전기전자",
-      "signal_count": 5,
-      "avg_confidence": 0.5,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "RSI모멘텀(51) | 주봉골든크로스 | 주봉MA20위",
-      "price_at_signal": 0,
-      "signal_time": "2026-11-02T06:01:09.944506",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "064400",
-      "stock_name": "LG씨엔에스",
-      "sector": "IT서비스",
-      "signal_count": 5,
-      "avg_confidence": 0.9,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(60) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+10.3%vsKOSPI+2.8%) | 디커플링모멘텀",
-      "price_at_signal": 0,
-      "signal_time": "2026-11-02T06:01:09.944500",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "090430",
-      "stock_name": "아모레퍼시픽",
-      "sector": "화장품",
-      "signal_count": 5,
+      "stock_code": "180640",
+      "stock_name": "한진칼",
+      "sector": "",
+      "signal_count": 15,
       "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | RSI모멘텀(53) | MA역배열 | 주봉골든크로스 | 주봉MA20위 | 상대강도(+5.2%vsKOSPI+2.8%) | 디커플링모멘텀",
+      "reason": "MACD히스토그램↑ | RSI모멘텀(61) | 거래량2.6x | MA정배열 | 캔들상승장악형(강) | 주봉골든크로스 | 주봉MA20위 | 상대강도(+9.7%vsKOSPI-3.4%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-11-02T06:01:09.944497",
+      "signal_time": "2026-11-03T00:46:49.672423",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "086280",
-      "stock_name": "현대글로비스",
-      "sector": "",
-      "signal_count": 5,
-      "avg_confidence": 1.0,
+      "stock_code": "034730",
+      "stock_name": "SK",
+      "sector": "석유와가스",
+      "signal_count": 15,
+      "avg_confidence": 0.6374999999999998,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들상승장악형(강) | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+9.2%vsKOSPI+2.8%) | 디커플링모멘텀",
+      "reason": "MACD히스토그램↑ | RSI모멘텀(52) | 거래량4.1x | 거래량3x+ | MA정배열 | 캔들상승장악형 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+5.6%vsKOSPI-3.6%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-11-02T06:01:09.944486",
+      "signal_time": "2026-11-03T00:45:50.383083",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "000810",
-      "stock_name": "삼성화재",
-      "sector": "",
-      "signal_count": 4,
-      "avg_confidence": 0.836,
-      "strategies": [],
-      "reason": "score=7.50, ranked_score=18.00",
-      "price_at_signal": 0,
-      "signal_time": "2026-11-02T15:25:00.010065+09:00",
-      "status": "장중 워치리스트"
-    },
-    {
-      "stock_code": "128940",
-      "stock_name": "한미약품",
-      "sector": "",
+      "stock_code": "000660",
+      "stock_name": "SK하이닉스",
+      "sector": "반도체",
       "signal_count": 1,
-      "avg_confidence": 0.51,
+      "avg_confidence": 0.595,
       "strategies": [],
-      "reason": "score=1.80, ranked_score=1.08",
+      "reason": "score=2.45, ranked_score=1.47",
       "price_at_signal": 0,
-      "signal_time": "2026-11-02T15:25:00.010065+09:00",
+      "signal_time": "2026-11-03T15:25:00.009124+09:00",
       "status": "장중 워치리스트"
     }
   ],
@@ -106,6 +52,15 @@
       "avg_price": 350.144,
       "strategy": "US_SWING",
       "entry_date": "2026-10-29",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "GOOGL",
+      "stock_name": "GOOGL",
+      "quantity": 35,
+      "avg_price": 284.5,
+      "strategy": "US_SWING",
+      "entry_date": "2026-11-02",
       "status": "보유 중"
     },
     {
@@ -121,9 +76,9 @@
       "stock_code": "NVDA",
       "stock_name": "NVDA",
       "quantity": 49,
-      "avg_price": 201.909,
+      "avg_price": 203.948,
       "strategy": "US_SWING",
-      "entry_date": "2026-10-30",
+      "entry_date": "2026-11-02",
       "status": "보유 중"
     },
     {

@@ -1,6 +1,42 @@
 {
-  "exported_at": "2026-11-02T07:00:00.678387+00:00",
+  "exported_at": "2026-11-03T07:00:00.672951+00:00",
   "trades": [
+    {
+      "stock_code": "NVDA",
+      "stock_name": "NVDA",
+      "side": "buy",
+      "quantity": 49,
+      "price": 203.948,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "US_SWING",
+      "reason": "RSI적정(34.9) | RSI과매도 | BB하단근접 [us_pre_qty=0]",
+      "filled_at": "2026-11-02T20:11:52"
+    },
+    {
+      "stock_code": "NVDA",
+      "stock_name": "NVDA",
+      "side": "sell",
+      "quantity": 49,
+      "price": 204.1399,
+      "pnl": 109.31,
+      "pnl_rate": 1.1049,
+      "strategy": "US_SWING",
+      "reason": "us_swing_trailing",
+      "filled_at": "2026-11-02T20:09:51"
+    },
+    {
+      "stock_code": "GOOGL",
+      "stock_name": "GOOGL",
+      "side": "buy",
+      "quantity": 35,
+      "price": 284.5,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "US_SWING",
+      "reason": "RSI적정(26.0) | RSI과매도 | BB하단근접 [us_pre_qty=0]",
+      "filled_at": "2026-11-02T14:35:59"
+    },
     {
       "stock_code": "NVDA",
       "stock_name": "NVDA",
