@@ -1,5 +1,5 @@
 {
-  "exported_at": "2026-11-03T07:00:00.656518+00:00",
+  "exported_at": "2026-11-04T07:00:00.672270+00:00",
   "holdings": [
     {
       "stock_code": "TSLA",
@@ -17,42 +17,42 @@
       "stock_name": "NVDA",
       "quantity": 49,
       "avg_price": 203.948,
-      "current_price": 203.948,
-      "unrealized_pnl": 0,
-      "unrealized_pnl_rate": 0,
+      "current_price": 207.2248,
+      "unrealized_pnl": 160.56,
+      "unrealized_pnl_rate": 1.6067,
       "strategy": "US_SWING",
       "entry_date": "2026-11-02T20:11:52.047864"
-    },
-    {
-      "stock_code": "GOOGL",
-      "stock_name": "GOOGL",
-      "quantity": 35,
-      "avg_price": 284.5,
-      "current_price": 280.8254,
-      "unrealized_pnl": -128.61,
-      "unrealized_pnl_rate": -1.2916,
-      "strategy": "US_SWING",
-      "entry_date": "2026-11-02T14:35:59.084530"
     },
     {
       "stock_code": "META",
       "stock_name": "META",
       "quantity": 16,
       "avg_price": 621.15,
-      "current_price": 608.59,
-      "unrealized_pnl": -200.96,
-      "unrealized_pnl_rate": -2.0221,
+      "current_price": 619.095,
+      "unrealized_pnl": -32.88,
+      "unrealized_pnl_rate": -0.3308,
       "strategy": "US_SWING",
       "entry_date": "2026-10-28T13:36:06.422176"
+    },
+    {
+      "stock_code": "GOOGL",
+      "stock_name": "GOOGL",
+      "quantity": 35,
+      "avg_price": 284.5,
+      "current_price": 279.2799,
+      "unrealized_pnl": -182.7,
+      "unrealized_pnl_rate": -1.8348,
+      "strategy": "US_SWING",
+      "entry_date": "2026-11-02T14:35:59.084530"
     },
     {
       "stock_code": "AAPL",
       "stock_name": "AAPL",
       "quantity": 28,
       "avg_price": 350.144,
-      "current_price": 338.23,
-      "unrealized_pnl": -333.59,
-      "unrealized_pnl_rate": -3.4026,
+      "current_price": 330.79,
+      "unrealized_pnl": -541.91,
+      "unrealized_pnl_rate": -5.5274,
       "strategy": "US_SWING",
       "entry_date": "2026-10-29T13:53:09.438593"
     }

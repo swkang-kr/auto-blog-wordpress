@@ -1,5 +1,5 @@
 {
-  "exported_at": "2026-11-03T07:00:00.672951+00:00",
+  "exported_at": "2026-11-04T07:00:00.685705+00:00",
   "trades": [
     {
       "stock_code": "NVDA",
@@ -168,18 +168,6 @@
       "strategy": "US_SWING",
       "reason": "us_swing_time_exit",
       "filled_at": "2026-10-28T13:30:48"
-    },
-    {
-      "stock_code": "000100",
-      "stock_name": "유한양행",
-      "side": "sell",
-      "quantity": 80,
-      "price": 80100.0,
-      "pnl": -536598.72,
-      "pnl_rate": -7.7516,
-      "strategy": "swing_time_exit(5영업일≥5영업일)",
-      "reason": "swing_time_exit(5영업일≥5영업일) [price_source=quote,settled_by=holdings]",
-      "filled_at": "2026-10-28T00:00:36.293611"
     }
   ]
 }

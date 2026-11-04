@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-11-03T07:00:00.968770+00:00",
+  "exported_at": "2026-11-04T07:00:00.945123+00:00",
   "market_daily": [
+    {
+      "date": "20261104",
+      "kospi_change": 0.62,
+      "kosdaq_change": 1.5,
+      "foreign_net": -25094.0,
+      "institution_net": 10136.0,
+      "individual_net": 11465.0,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20261103",
       "kospi_change": -3.59,
       "kosdaq_change": -4.08,
-      "foreign_net": -15151.0,
-      "institution_net": -5113.0,
-      "individual_net": 16606.0,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": -15265.0,
+      "institution_net": -5074.0,
+      "individual_net": 16678.0,
+      "hot_theme_count": 1,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20261102",
@@ -99,29 +110,18 @@
       "hot_theme_count": 1,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20261021",
-      "kospi_change": 3.29,
-      "kosdaq_change": 1.38,
-      "foreign_net": 6428.0,
-      "institution_net": -733.0,
-      "individual_net": -11135.0,
-      "hot_theme_count": 8,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "현대차·포스코퓨처엠 '배터리 동맹'…베트남에 1천억 투자 추진",
-    "삼전닉스 주가 하락",
-    "이찬진 금감원장 \"해킹 사고 금융사 CEO 책임 엄중히 물을 것\"",
-    "코스피 3% 하락 마감",
-    "유통 주식수 10%대 ‘품절주’ 한진칼... “지분경쟁할 물량도 없다”",
-    "코스피, 3% 넘게 급락해 5,648 마감",
-    "\"취약계층 어르신 위해\"…팜젠사이언스, 김장봉사",
-    "모두 다 하락",
-    "AI우려·美중간선거에 위축된 투심…코스피, 3.59% 하락 마감",
-    "SK하이닉스 주가 하락 마감"
+    "은행·증권사 홍콩 ELS 과징금 약 3700억 확정…금융위 부과 최대규모",
+    "금융위, 홍콩 ELS 은행·증권사에 과징금 3712억 확정…역대 최대 금전 제재",
+    "“16년 차 증권맨의 하루가 뭐길래”…조회수 34만 찍은 한양증권 유튜브",
+    "미 중간선거 결과에 나스닥선물·亞증시 출렁(종합)",
+    "장중 급등락하며 '출렁'…삼전닉스, 약보합 마감(종합)",
+    "내년 '슈퍼주총 위크' 사라질까…예탁원, 전자주총 플랫폼 '이봅' 출범",
+    "[포토]美 중간선거 경계에 막판 반등...코스피 강보합 마감",
+    "[포토]코스피·코스닥 동반 상승 마감",
+    "[포토]美 중간선거 개표에 코스피 406p 출렁",
+    "[포토]하루종일 요동친 코스피"
   ]
 }
