@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-11-05T07:00:01.116173+00:00",
+  "exported_at": "2026-11-06T07:00:00.937586+00:00",
   "market_daily": [
+    {
+      "date": "20261106",
+      "kospi_change": -6.02,
+      "kosdaq_change": -5.03,
+      "foreign_net": -27686.0,
+      "institution_net": 17000.0,
+      "individual_net": 6045.0,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20261105",
       "kospi_change": -5.28,
       "kosdaq_change": -5.11,
-      "foreign_net": -33934.0,
-      "institution_net": 8417.0,
-      "individual_net": 22768.0,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": -34165.0,
+      "institution_net": 8484.0,
+      "individual_net": 22890.0,
+      "hot_theme_count": 2,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20260929",
@@ -99,29 +110,18 @@
       "hot_theme_count": 8,
       "momentum_count": 60,
       "crash_count": 50
-    },
-    {
-      "date": "20260915",
-      "kospi_change": -0.85,
-      "kosdaq_change": 0.7,
-      "foreign_net": -156.79,
-      "institution_net": -91.1,
-      "individual_net": 83.5,
-      "hot_theme_count": 0,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "“코스피 폭락에도 구조대 기다릴 만…美중간선거 후 반등 기대”",
-    "“한전이 키우고 글로벌 자본이 투자”…에너지 유니콘 육성 시동",
-    "골프존과 틀어진 MBK 8년 동행&#8943;영풍 경영협력계약도 화약고?",
-    "삼전닉스, 美데이터센터 규제 우려에 7∼9%대 급락 마감(종합)",
-    "SK바이오사이언스 3분기 영업손실 112억원…적자 축소",
-    "지배구조보고서 가이드라인 개정…주주 위한 정보 투명성 높인다",
-    "미 블루웨이브 쇼크에 코스피·코스닥, 5%대 급락 마감",
-    "[특징주] 유가 급락에 항공주 줄상승…정유주는 약세(종합)",
-    "미 블루웨이브 쇼크에 코스피·코스닥, 5%대 급락 마감",
-    "미 블루웨이브 쇼크에 코스피·코스닥, 5%대 급락 마감"
+    "“코스피 5000선 가까스로 지켰다”…이틀 새 11% 폭락, 외국인 6조원 투매",
+    "코스피, 6%대 급락 '검은 금요일'",
+    "美 중간선거 후폭풍에 6% 이상 급락한 코스피",
+    "'검은 금요일' 증시 하락 마감",
+    "코스피·코스닥 하락 마감",
+    "코스피·코스닥 하락 마감",
+    "5000도 위태로운 코스피…\"수급불안·불확실성↑ 추가하락 열어둬야\"",
+    "코스메카코리아, 3분기 영업익 272억…전년비 0.1% ↑",
+    "바디텍메드, 3분기 영업이익 전년 동기 대비 35% 증가",
+    "LIG D&A, 3분기 영업익 676억원…전년 대비 24.6%↓"
   ]
 }

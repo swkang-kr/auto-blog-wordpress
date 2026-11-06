@@ -1,207 +1,153 @@
 {
-  "exported_at": "2026-11-05T07:00:00.692536+00:00",
+  "exported_at": "2026-11-06T07:00:00.672397+00:00",
   "period": "30d",
   "daily_performance": [
+    {
+      "date": "20261106",
+      "pnl": 0,
+      "pnl_rate": 0,
+      "trade_count": 0,
+      "win_count": 0,
+      "sharpe": 2.777096,
+      "mdd": -4.9839
+    },
     {
       "date": "20261105",
       "pnl": 0,
       "pnl_rate": 0,
       "trade_count": 0,
       "win_count": 0,
-      "sharpe": 2.610985,
-      "mdd": -1.4377
+      "sharpe": 2.777096,
+      "mdd": -4.9839
     },
     {
-      "date": "20261104",
-      "pnl": 0,
-      "pnl_rate": 0,
-      "trade_count": 0,
+      "date": "20260929",
+      "pnl": 64726.0,
+      "pnl_rate": 0.0663,
+      "trade_count": 2,
       "win_count": 0,
-      "sharpe": 2.610985,
-      "mdd": -1.4377
+      "sharpe": 2.777103,
+      "mdd": -4.9839
     },
     {
-      "date": "20261103",
-      "pnl": 0,
-      "pnl_rate": 0,
-      "trade_count": 0,
-      "win_count": 0,
-      "sharpe": 2.610985,
-      "mdd": -1.4377
-    },
-    {
-      "date": "20261102",
-      "pnl": 0,
-      "pnl_rate": 0,
-      "trade_count": 0,
-      "win_count": 0,
-      "sharpe": 3.013244,
-      "mdd": -1.4377
-    },
-    {
-      "date": "20261030",
-      "pnl": 0,
-      "pnl_rate": 0,
-      "trade_count": 0,
-      "win_count": 0,
-      "sharpe": 2.936108,
-      "mdd": -1.4377
-    },
-    {
-      "date": "20261029",
-      "pnl": 0,
-      "pnl_rate": 0,
-      "trade_count": 0,
-      "win_count": 0,
-      "sharpe": 2.955117,
-      "mdd": -1.4377
-    },
-    {
-      "date": "20261028",
-      "pnl": -21716.0,
-      "pnl_rate": -0.0224,
-      "trade_count": 1,
-      "win_count": 0,
-      "sharpe": 3.176479,
-      "mdd": -1.4377
-    },
-    {
-      "date": "20261027",
-      "pnl": -136000.0,
-      "pnl_rate": -0.1401,
-      "trade_count": 0,
-      "win_count": 0,
-      "sharpe": 3.5232,
-      "mdd": -1.4377
-    },
-    {
-      "date": "20261026",
-      "pnl": -240000.0,
-      "pnl_rate": -0.2465,
-      "trade_count": 0,
-      "win_count": 0,
-      "sharpe": 3.578817,
-      "mdd": -1.4377
-    },
-    {
-      "date": "20261023",
-      "pnl": 56000.0,
-      "pnl_rate": 0.0576,
-      "trade_count": 0,
-      "win_count": 0,
-      "sharpe": 3.36416,
-      "mdd": -1.4377
-    },
-    {
-      "date": "20261022",
-      "pnl": -254886.0,
-      "pnl_rate": -0.2613,
-      "trade_count": 1,
-      "win_count": 0,
-      "sharpe": 3.34086,
-      "mdd": -1.4377
-    },
-    {
-      "date": "20261021",
-      "pnl": 29320.0,
-      "pnl_rate": 0.03,
-      "trade_count": 0,
-      "win_count": 0,
-      "sharpe": 3.467854,
-      "mdd": -1.4377
-    },
-    {
-      "date": "20261020",
-      "pnl": -99702.0,
-      "pnl_rate": -0.1019,
+      "date": "20260928",
+      "pnl": -106953.0,
+      "pnl_rate": -0.1094,
       "trade_count": 1,
       "win_count": 1,
-      "sharpe": 3.45397,
-      "mdd": -1.4377
+      "sharpe": 2.764277,
+      "mdd": -4.9839
     },
     {
-      "date": "20261019",
-      "pnl": 412377.0,
-      "pnl_rate": 0.4229,
-      "trade_count": 1,
-      "win_count": 1,
-      "sharpe": 3.160791,
-      "mdd": -1.4377
-    },
-    {
-      "date": "20261016",
-      "pnl": 83889.0,
-      "pnl_rate": 0.0859,
-      "trade_count": 1,
-      "win_count": 1,
-      "sharpe": 2.925466,
-      "mdd": -1.4377
-    },
-    {
-      "date": "20261015",
-      "pnl": -58237.0,
-      "pnl_rate": -0.0596,
-      "trade_count": 3,
-      "win_count": 0,
-      "sharpe": 2.927463,
-      "mdd": -1.4399
-    },
-    {
-      "date": "20261014",
-      "pnl": -87783.0,
-      "pnl_rate": -0.0889,
-      "trade_count": 1,
-      "win_count": 0,
-      "sharpe": 2.023686,
-      "mdd": -1.4399
-    },
-    {
-      "date": "20261013",
-      "pnl": 32290.0,
-      "pnl_rate": 0.0327,
+      "date": "20260923",
+      "pnl": 10800.0,
+      "pnl_rate": 0.0111,
       "trade_count": 0,
       "win_count": 0,
-      "sharpe": 1.838744,
-      "mdd": -3.092
+      "sharpe": 2.785654,
+      "mdd": -4.9839
     },
     {
-      "date": "20261012",
-      "pnl": -273488.0,
-      "pnl_rate": -0.2762,
-      "trade_count": 1,
-      "win_count": 0,
-      "sharpe": 1.456294,
-      "mdd": -3.5912
-    },
-    {
-      "date": "20261008",
-      "pnl": -186420.0,
-      "pnl_rate": -0.188,
-      "trade_count": 0,
-      "win_count": 0,
-      "sharpe": 1.088187,
-      "mdd": -4.4165
-    },
-    {
-      "date": "20261007",
-      "pnl": -20260.0,
-      "pnl_rate": -0.0204,
-      "trade_count": 0,
-      "win_count": 0,
-      "sharpe": 1.161871,
-      "mdd": -5.5042
-    },
-    {
-      "date": "20261006",
-      "pnl": 764338.0,
-      "pnl_rate": 0.7768,
+      "date": "20260922",
+      "pnl": -225556.0,
+      "pnl_rate": -0.2306,
       "trade_count": 4,
       "win_count": 3,
-      "sharpe": 1.169822,
-      "mdd": -5.5042
+      "sharpe": 2.783506,
+      "mdd": -4.9839
+    },
+    {
+      "date": "20260921",
+      "pnl": -81870.0,
+      "pnl_rate": -0.0839,
+      "trade_count": 0,
+      "win_count": 0,
+      "sharpe": 2.828972,
+      "mdd": -4.9839
+    },
+    {
+      "date": "20260918",
+      "pnl": -170520.0,
+      "pnl_rate": -0.1745,
+      "trade_count": 0,
+      "win_count": 0,
+      "sharpe": 2.710621,
+      "mdd": -4.9839
+    },
+    {
+      "date": "20260917",
+      "pnl": 158002.0,
+      "pnl_rate": 0.162,
+      "trade_count": 1,
+      "win_count": 1,
+      "sharpe": 2.752715,
+      "mdd": -4.9839
+    },
+    {
+      "date": "20260916",
+      "pnl": -163244.0,
+      "pnl_rate": -0.1672,
+      "trade_count": 3,
+      "win_count": 1,
+      "sharpe": 2.698518,
+      "mdd": -4.9839
+    },
+    {
+      "date": "20260915",
+      "pnl": -80496.0,
+      "pnl_rate": -0.0826,
+      "trade_count": 2,
+      "win_count": 0,
+      "sharpe": 2.736942,
+      "mdd": -4.9839
+    },
+    {
+      "date": "20260914",
+      "pnl": -331256.0,
+      "pnl_rate": -0.3385,
+      "trade_count": 1,
+      "win_count": 0,
+      "sharpe": 2.753008,
+      "mdd": -4.9839
+    },
+    {
+      "date": "20260911",
+      "pnl": -656945.0,
+      "pnl_rate": -0.6669,
+      "trade_count": 3,
+      "win_count": 1,
+      "sharpe": 2.662044,
+      "mdd": -4.9839
+    },
+    {
+      "date": "20260910",
+      "pnl": 86325.0,
+      "pnl_rate": 0.0877,
+      "trade_count": 0,
+      "win_count": 0,
+      "sharpe": 2.786682,
+      "mdd": -4.9839
+    },
+    {
+      "date": "20260909",
+      "pnl": 209700.0,
+      "pnl_rate": 0.2132,
+      "trade_count": 0,
+      "win_count": 0,
+      "sharpe": 2.765216,
+      "mdd": -4.9839
     },
     {
       "date": "20260908",
+      "pnl": -213659.0,
+      "pnl_rate": -0.2168,
+      "trade_count": 5,
+      "win_count": 5,
+      "sharpe": 2.608589,
+      "mdd": -4.9839
+    },
+    {
+      "date": "20260907",
       "pnl": 0,
       "pnl_rate": 0,
       "trade_count": 0,
@@ -210,75 +156,129 @@
       "mdd": null
     },
     {
-      "date": "20260904",
-      "pnl": 210960.0,
-      "pnl_rate": 0.2164,
+      "date": "20260625",
+      "pnl": 0,
+      "pnl_rate": 0,
       "trade_count": 0,
       "win_count": 0,
-      "sharpe": 0.989281,
-      "mdd": -5.5042
+      "sharpe": null,
+      "mdd": null
     },
     {
-      "date": "20260903",
-      "pnl": -73319.0,
-      "pnl_rate": -0.0752,
-      "trade_count": 2,
-      "win_count": 1,
-      "sharpe": 0.767287,
-      "mdd": -5.5042
-    },
-    {
-      "date": "20260902",
-      "pnl": -59839.0,
-      "pnl_rate": -0.0615,
-      "trade_count": 3,
-      "win_count": 0,
-      "sharpe": 0.880038,
-      "mdd": -5.5639
-    },
-    {
-      "date": "20260901",
-      "pnl": 94420.0,
-      "pnl_rate": 0.0954,
-      "trade_count": 2,
-      "win_count": 0,
-      "sharpe": 0.904093,
-      "mdd": -5.5639
-    },
-    {
-      "date": "20260831",
-      "pnl": -1401750.0,
-      "pnl_rate": -1.3969,
+      "date": "20260611",
+      "pnl": 0,
+      "pnl_rate": 0,
       "trade_count": 0,
       "win_count": 0,
-      "sharpe": 0.879596,
-      "mdd": -5.5639
+      "sharpe": null,
+      "mdd": null
     },
     {
-      "date": "20260828",
-      "pnl": 666820.0,
-      "pnl_rate": 0.669,
-      "trade_count": 1,
-      "win_count": 0,
-      "sharpe": 1.504311,
-      "mdd": -5.5639
-    },
-    {
-      "date": "20260827",
-      "pnl": 58365.0,
-      "pnl_rate": 0.0584,
+      "date": "20260609",
+      "pnl": 0,
+      "pnl_rate": 0,
       "trade_count": 0,
       "win_count": 0,
-      "sharpe": 1.254411,
-      "mdd": -5.5639
+      "sharpe": null,
+      "mdd": null
+    },
+    {
+      "date": "20260605",
+      "pnl": 0,
+      "pnl_rate": 0,
+      "trade_count": 0,
+      "win_count": 0,
+      "sharpe": null,
+      "mdd": null
+    },
+    {
+      "date": "20260604",
+      "pnl": 189000.0,
+      "pnl_rate": 1.1852,
+      "trade_count": 0,
+      "win_count": 0,
+      "sharpe": 2.701442,
+      "mdd": -4.9839
+    },
+    {
+      "date": "20260603",
+      "pnl": 0,
+      "pnl_rate": 0,
+      "trade_count": 0,
+      "win_count": 0,
+      "sharpe": 2.508867,
+      "mdd": -4.9839
+    },
+    {
+      "date": "20260602",
+      "pnl": -21000.0,
+      "pnl_rate": -0.1266,
+      "trade_count": 0,
+      "win_count": 0,
+      "sharpe": 2.533732,
+      "mdd": -4.9839
+    },
+    {
+      "date": "20260601",
+      "pnl": 357000.0,
+      "pnl_rate": 2.1991,
+      "trade_count": 0,
+      "win_count": 0,
+      "sharpe": 2.584963,
+      "mdd": -4.9839
+    },
+    {
+      "date": "20260529",
+      "pnl": 308000.0,
+      "pnl_rate": 1.9163,
+      "trade_count": 0,
+      "win_count": 0,
+      "sharpe": 2.21285,
+      "mdd": -4.9839
+    },
+    {
+      "date": "20260528",
+      "pnl": 322000.0,
+      "pnl_rate": 2.0443,
+      "trade_count": 0,
+      "win_count": 0,
+      "sharpe": 1.871245,
+      "mdd": -4.9839
+    },
+    {
+      "date": "20260527",
+      "pnl": 1337000.0,
+      "pnl_rate": 9.2758,
+      "trade_count": 0,
+      "win_count": 0,
+      "sharpe": 1.490886,
+      "mdd": -4.9839
+    },
+    {
+      "date": "20260526",
+      "pnl": 251500.0,
+      "pnl_rate": 1.7758,
+      "trade_count": 0,
+      "win_count": 0,
+      "sharpe": -1.093672,
+      "mdd": -4.9839
+    },
+    {
+      "date": "20260520",
+      "pnl": 92000.0,
+      "pnl_rate": 0.6554,
+      "trade_count": 0,
+      "win_count": 0,
+      "sharpe": -2.179254,
+      "mdd": -4.9839
     }
   ],
   "summary": {
-    "total_pnl": -504621.0,
+    "total_pnl": 1334554.0,
     "total_trades": 22,
-    "win_rate": 31.8,
-    "avg_daily_pnl": -16821.0,
-    "best_day": 764338.0,
-    "worst_day": -1401750.0
+    "win_rate": 54.5,
+    "avg_daily_pnl": 44485.0,
+    "best_day": 1337000.0,
+    "worst_day": -656945.0
   }
 }

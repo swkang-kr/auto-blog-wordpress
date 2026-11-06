@@ -1,100 +1,78 @@
 {
-  "exported_at": "2026-11-05T07:00:01.441610+00:00",
-  "total_candidates": 2,
-  "total_holdings": 7,
+  "exported_at": "2026-11-06T07:00:01.186710+00:00",
+  "total_candidates": 5,
+  "total_holdings": 0,
   "candidates": [
     {
       "stock_code": "042700",
       "stock_name": "한미반도체",
       "sector": "반도체와반도체장비",
-      "signal_count": 18,
+      "signal_count": 9,
       "avg_confidence": 0.8125,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(56) | MA정배열 | 캔들상승장악형(강) | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+8.2%vsKOSPI-3.3%) | 디커플링모멘텀",
+      "reason": "MACD히스토그램↑ | RSI모멘텀(56) | MA정배열 | 캔들상승장악형(강) | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+8.2%vsKOSPI-3.2%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-11-05T00:42:52.481000",
+      "signal_time": "2026-11-05T00:51:51.047116",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "377300",
+      "stock_name": "카카오페이",
+      "sector": "IT서비스",
+      "signal_count": 6,
+      "avg_confidence": 0.61805,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MACD골든크로스 | RSI반등(40) | RSI sweet(40) | 거래량2.2x | EMA20하방 | MA역배열 | 캔들상승장악형(강) | 주봉데드크로스(-1.5) | 주봉MA20아래",
+      "price_at_signal": 0,
+      "signal_time": "2026-11-06T05:39:58.874506",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "015760",
+      "stock_name": "한국전력",
+      "sector": "전기유틸리티",
+      "signal_count": 6,
+      "avg_confidence": 0.7361166666666666,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(62) | 거래량2.5x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래",
+      "price_at_signal": 0,
+      "signal_time": "2026-11-06T05:39:58.874497",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "010130",
+      "stock_name": "고려아연",
+      "sector": "",
+      "signal_count": 5,
+      "avg_confidence": 0.5,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(56) | 거래량2.1x | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+8.9%vsKOSPI-4.3%) | 디커플링모멘텀",
+      "price_at_signal": 0,
+      "signal_time": "2026-11-06T05:40:59.576760",
       "status": "매수 시그널"
     },
     {
       "stock_code": "009150",
       "stock_name": "삼성전기",
       "sector": "전자장비와기기",
-      "signal_count": 12,
+      "signal_count": 4,
       "avg_confidence": 0.5,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(62) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+2.5%vsKOSPI-3.3%) | 디커플링모멘텀",
+      "reason": "MACD히스토그램↑ | RSI모멘텀(62) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+2.5%vsKOSPI-3.2%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-11-05T00:42:52.481012",
+      "signal_time": "2026-11-05T00:50:50.945887",
       "status": "매수 시그널"
     }
   ],
-  "holdings": [
-    {
-      "stock_code": "META",
-      "stock_name": "메타 플랫폼스(페이스북)",
-      "quantity": 16,
-      "avg_price": 621.15,
-      "strategy": "US_SWING_RECOVERY",
-      "entry_date": "2026-11-04",
-      "status": "보유 중"
-    },
-    {
-      "stock_code": "AAPL",
-      "stock_name": "애플",
-      "quantity": 28,
-      "avg_price": 350.144,
-      "strategy": "US_SWING_RECOVERY",
-      "entry_date": "2026-11-04",
-      "status": "보유 중"
-    },
-    {
-      "stock_code": "AMZN",
-      "stock_name": "아마존닷컴",
-      "quantity": 37,
-      "avg_price": 270.0,
-      "strategy": "US_SWING_RECOVERY",
-      "entry_date": "2026-11-04",
-      "status": "보유 중"
-    },
-    {
-      "stock_code": "GOOGL",
-      "stock_name": "알파벳 A",
-      "quantity": 35,
-      "avg_price": 284.5,
-      "strategy": "US_SWING_RECOVERY",
-      "entry_date": "2026-11-04",
-      "status": "보유 중"
-    },
-    {
-      "stock_code": "AVGO",
-      "stock_name": "AVGO",
-      "quantity": 27,
-      "avg_price": 362.715,
-      "strategy": "US_SWING",
-      "entry_date": "2026-09-18",
-      "status": "보유 중"
-    },
-    {
-      "stock_code": "NVDA",
-      "stock_name": "엔비디아",
-      "quantity": 49,
-      "avg_price": 203.948,
-      "strategy": "US_SWING_RECOVERY",
-      "entry_date": "2026-11-04",
-      "status": "보유 중"
-    },
-    {
-      "stock_code": "JPM",
-      "stock_name": "JPM",
-      "quantity": 29,
-      "avg_price": 336.35,
-      "strategy": "US_SWING",
-      "entry_date": "2026-09-24",
-      "status": "보유 중"
-    }
-  ]
+  "holdings": []
 }

@@ -1,6 +1,42 @@
 {
-  "exported_at": "2026-11-05T07:00:00.928413+00:00",
+  "exported_at": "2026-11-06T07:00:00.734973+00:00",
   "trades": [
+    {
+      "stock_code": "MU",
+      "stock_name": "MU",
+      "side": "sell",
+      "quantity": 14,
+      "price": 692.1929,
+      "pnl": 114.7,
+      "pnl_rate": 1.1978,
+      "strategy": "US_SWING",
+      "reason": "us_swing_time_exit",
+      "filled_at": "2026-11-05T17:47:49"
+    },
+    {
+      "stock_code": "NVDA",
+      "stock_name": "NVDA",
+      "side": "sell",
+      "quantity": 49,
+      "price": 187.11,
+      "pnl": -825.06,
+      "pnl_rate": -8.256,
+      "strategy": "US_SWING",
+      "reason": "us_swing_stop_loss",
+      "filled_at": "2026-11-05T15:31:58"
+    },
+    {
+      "stock_code": "GOOGL",
+      "stock_name": "GOOGL",
+      "side": "sell",
+      "quantity": 35,
+      "price": 286.68,
+      "pnl": 76.3,
+      "pnl_rate": 0.7663,
+      "strategy": "US_SWING",
+      "reason": "us_swing_trailing",
+      "filled_at": "2026-11-05T15:17:56"
+    },
     {
       "stock_code": "TSLA",
       "stock_name": "TSLA",
