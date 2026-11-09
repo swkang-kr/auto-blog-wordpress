@@ -1,64 +1,108 @@
 {
-  "exported_at": "2026-11-06T07:00:00.978199+00:00",
-  "date": "20261106",
+  "exported_at": "2026-11-09T07:00:00.950927+00:00",
+  "date": "20261109",
   "hot_themes": [
     {
-      "name": "렌터카",
+      "name": "광통신(광케이블/광섬유 등)",
+      "change_rate": 5.39
+    },
+    {
+      "name": "딥페이크(deepfake)",
+      "change_rate": 4.52
+    },
+    {
+      "name": "국내 상장 중국기업",
+      "change_rate": 4.19
+    },
+    {
+      "name": "LED장비",
+      "change_rate": 3.75
+    },
+    {
+      "name": "소캠(SOCAMM)",
+      "change_rate": 3.75
+    },
+    {
+      "name": "양자암호/양자컴퓨팅",
+      "change_rate": 3.58
+    },
+    {
+      "name": "통신장비",
+      "change_rate": 3.41
+    },
+    {
+      "name": "항공/저가 항공사(LCC)",
       "change_rate": 3.24
     },
     {
-      "name": "통신",
-      "change_rate": 2.79
+      "name": "반도체 기판(FC-BGA/PCB/MLB 등)",
+      "change_rate": 2.35
     },
     {
-      "name": "인터넷 대표주",
-      "change_rate": 1.59
+      "name": "자전거",
+      "change_rate": 2.33
     },
     {
-      "name": "건설기계",
-      "change_rate": 0.28
+      "name": "5G(5세대 이동통신)",
+      "change_rate": 2.3
+    },
+    {
+      "name": "CXL(컴퓨트익스프레스링크)",
+      "change_rate": 2.22
+    },
+    {
+      "name": "보안주(정보)",
+      "change_rate": 2.19
+    },
+    {
+      "name": "반도체 장비",
+      "change_rate": 2.11
+    },
+    {
+      "name": "시스템반도체",
+      "change_rate": 2.1
     }
   ],
   "cold_themes": [
     {
-      "name": "소캠(SOCAMM)",
-      "change_rate": -9.69
+      "name": "2차전지(생산)",
+      "change_rate": -6.52
     },
     {
-      "name": "피팅(관이음쇠)/밸브",
-      "change_rate": -8.62
+      "name": "2차전지(나트륨이온)",
+      "change_rate": -4.84
     },
     {
-      "name": "반도체 기판(FC-BGA/PCB/MLB 등)",
-      "change_rate": -7.86
+      "name": "조선",
+      "change_rate": -3.58
     },
     {
-      "name": "CXL(컴퓨트익스프레스링크)",
-      "change_rate": -7.85
+      "name": "리튬",
+      "change_rate": -2.91
     },
     {
-      "name": "전선",
-      "change_rate": -7.84
+      "name": "홈쇼핑",
+      "change_rate": -2.9
     },
     {
-      "name": "HBM(고대역폭메모리)",
-      "change_rate": -7.72
+      "name": "김밥(냉동김밥 등)",
+      "change_rate": -2.69
     },
     {
-      "name": "LED장비",
-      "change_rate": -7.55
+      "name": "자동차 대표주",
+      "change_rate": -2.56
     },
     {
-      "name": "반도체 재료/부품",
-      "change_rate": -7.41
+      "name": "2차전지(전고체)",
+      "change_rate": -2.53
     },
     {
-      "name": "뉴로모픽 반도체",
-      "change_rate": -7.4
+      "name": "IT 대표주",
+      "change_rate": -2.49
     },
     {
-      "name": "S7(삼성전자/SK하이닉스 등)",
-      "change_rate": -7.34
+      "name": "전력저장장치(ESS)",
+      "change_rate": -2.41
     }
   ]
 }

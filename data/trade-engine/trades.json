@@ -1,6 +1,54 @@
 {
-  "exported_at": "2026-11-06T07:00:00.734973+00:00",
+  "exported_at": "2026-11-09T07:00:00.710942+00:00",
   "trades": [
+    {
+      "stock_code": "TSM",
+      "stock_name": "TSM",
+      "side": "buy",
+      "quantity": 1,
+      "price": 371.63,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "US_SWING",
+      "reason": "RSI적정(34.8) | RSI과매도 | BB하단근접 [us_pre_qty=0]",
+      "filled_at": "2026-11-06T15:29:21"
+    },
+    {
+      "stock_code": "NVDA",
+      "stock_name": "NVDA",
+      "side": "buy",
+      "quantity": 1,
+      "price": 190.67,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "US_SWING",
+      "reason": "RSI적정(34.5) | RSI과매도 | BB하단근접 [us_pre_qty=0]",
+      "filled_at": "2026-11-06T15:28:21"
+    },
+    {
+      "stock_code": "AVGO",
+      "stock_name": "AVGO",
+      "side": "buy",
+      "quantity": 1,
+      "price": 298.16,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "US_SWING",
+      "reason": "RSI적정(35.0) | RSI과매도 | BB하단근접 [us_pre_qty=0]",
+      "filled_at": "2026-11-06T15:28:20"
+    },
+    {
+      "stock_code": "MU",
+      "stock_name": "MU",
+      "side": "buy",
+      "quantity": 1,
+      "price": 697.665,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "US_SWING",
+      "reason": "RSI적정(32.3) | RSI과매도 | BB하단근접 [us_pre_qty=0]",
+      "filled_at": "2026-11-06T15:26:20"
+    },
     {
       "stock_code": "MU",
       "stock_name": "MU",
