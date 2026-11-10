@@ -1,34 +1,48 @@
 {
-  "exported_at": "2026-11-09T07:00:01.150509+00:00",
-  "total_candidates": 3,
+  "exported_at": "2026-11-10T07:00:01.233768+00:00",
+  "total_candidates": 4,
   "total_holdings": 4,
   "candidates": [
     {
-      "stock_code": "035720",
-      "stock_name": "카카오",
-      "sector": "IT서비스",
-      "signal_count": 15,
-      "avg_confidence": 0.75,
+      "stock_code": "017670",
+      "stock_name": "SK텔레콤",
+      "sector": "무선통신서비스",
+      "signal_count": 10,
+      "avg_confidence": 0.5833000000000002,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(55) | 거래량2.3x | MA정배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(26) | 주봉MA20아래 | 상대강도(+1.4%vsKOSPI-0.6%) | 디커플링모멘텀",
+      "reason": "MACD히스토그램↑ | RSI모멘텀(56) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+6.2%vsKOSPI+4.6%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-11-09T05:56:24.393578",
+      "signal_time": "2026-11-10T06:01:25.905155",
       "status": "매수 시그널"
     },
     {
-      "stock_code": "035420",
-      "stock_name": "NAVER",
-      "sector": "IT서비스",
-      "signal_count": 15,
+      "stock_code": "032640",
+      "stock_name": "LG유플러스",
+      "sector": "무선통신서비스",
+      "signal_count": 10,
+      "avg_confidence": 0.6666999999999998,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MACD히스토그램↑ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
+      "price_at_signal": 0,
+      "signal_time": "2026-11-10T06:01:25.905145",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "018260",
+      "stock_name": "삼성에스디에스",
+      "sector": "",
+      "signal_count": 10,
       "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(57) | 거래량2.2x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+0.6%vsKOSPI-0.6%) | 디커플링모멘텀",
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(63) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+6.7%vsKOSPI+4.6%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-11-09T05:56:24.393553",
+      "signal_time": "2026-11-10T06:01:25.905119",
       "status": "매수 시그널"
     },
     {
@@ -66,10 +80,10 @@
     {
       "stock_code": "NVDA",
       "stock_name": "NVDA",
-      "quantity": 1,
-      "avg_price": 190.67,
+      "quantity": 2,
+      "avg_price": 174.845,
       "strategy": "US_SWING",
-      "entry_date": "2026-11-06",
+      "entry_date": "2026-11-09",
       "status": "보유 중"
     },
     {
