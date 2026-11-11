@@ -1,47 +1,25 @@
 {
-  "exported_at": "2026-11-10T07:00:00.707550+00:00",
+  "exported_at": "2026-11-11T07:00:00.733691+00:00",
   "holdings": [
     {
-      "stock_code": "AVGO",
-      "stock_name": "AVGO",
+      "stock_code": "XOM",
+      "stock_name": "XOM",
       "quantity": 1,
-      "avg_price": 298.16,
-      "current_price": 319.72,
-      "unrealized_pnl": 21.56,
-      "unrealized_pnl_rate": 7.231,
+      "avg_price": 160.19,
+      "current_price": 164.38,
+      "unrealized_pnl": 4.19,
+      "unrealized_pnl_rate": 2.6156,
       "strategy": "US_SWING",
-      "entry_date": "2026-11-06T15:28:20.706399"
-    },
-    {
-      "stock_code": "MU",
-      "stock_name": "MU",
-      "quantity": 1,
-      "avg_price": 697.665,
-      "current_price": 734.03,
-      "unrealized_pnl": 36.37,
-      "unrealized_pnl_rate": 5.2124,
-      "strategy": "US_SWING",
-      "entry_date": "2026-11-06T15:26:20.711584"
-    },
-    {
-      "stock_code": "TSM",
-      "stock_name": "TSM",
-      "quantity": 1,
-      "avg_price": 371.63,
-      "current_price": 388.93,
-      "unrealized_pnl": 17.3,
-      "unrealized_pnl_rate": 4.6552,
-      "strategy": "US_SWING",
-      "entry_date": "2026-11-06T15:29:21.592771"
+      "entry_date": "2026-11-10T14:35:21.016048"
     },
     {
       "stock_code": "NVDA",
       "stock_name": "NVDA",
       "quantity": 2,
       "avg_price": 174.845,
-      "current_price": 178.79,
-      "unrealized_pnl": 7.89,
-      "unrealized_pnl_rate": 2.2563,
+      "current_price": 168.965,
+      "unrealized_pnl": -11.76,
+      "unrealized_pnl_rate": -3.363,
       "strategy": "US_SWING",
       "entry_date": "2026-11-09T14:35:20.701339"
     }

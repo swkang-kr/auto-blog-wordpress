@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-11-10T07:00:00.926104+00:00",
+  "exported_at": "2026-11-11T07:00:00.948312+00:00",
   "market_daily": [
+    {
+      "date": "20261111",
+      "kospi_change": 2.6,
+      "kosdaq_change": 5.62,
+      "foreign_net": 6553.0,
+      "institution_net": -4823.0,
+      "individual_net": -7156.0,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20261110",
       "kospi_change": 4.39,
       "kosdaq_change": 4.48,
-      "foreign_net": 3913.0,
-      "institution_net": 4733.0,
-      "individual_net": -13530.0,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": 4226.0,
+      "institution_net": 4780.0,
+      "individual_net": -13883.0,
+      "hot_theme_count": 128,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20261109",
@@ -99,29 +110,18 @@
       "hot_theme_count": 9,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260918",
-      "kospi_change": 2.66,
-      "kosdaq_change": 0.6,
-      "foreign_net": 4462.0,
-      "institution_net": 15103.0,
-      "individual_net": -36155.0,
-      "hot_theme_count": 13,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "코스피 상승 마감…4거래일만 반등",
-    "코스피 5,239.13 마감",
-    "[오늘의증시] \"지금이 제일 쌀걸?\" 저가 매수세에 코스피 '활짝'",
-    "코스피·코스닥 4%대 급등 마감",
-    "코스피 상승 마감…4거래일만 반등",
-    "4%대 급등 마감한 코스피ㆍ코스닥",
-    "4%대 급등 마감한 코스피ㆍ코스닥",
-    "4%대 급등 마감한 코스피ㆍ코스닥",
-    "4%대 급등 마감한 코스피ㆍ코스닥",
-    "4%대 급등 마감한 코스피ㆍ코스닥"
+    "[오늘의증시] 미국발 냉풍에도 반도체주 굳건, 에코프로·한진 10%대 강세",
+    "\"증시 저평가 기업, '비상장 전환'도 선택지\"",
+    "코스피-코스닥, 상승 마감",
+    "코스피-코스닥, 상승 마감",
+    "코스닥 상승 마감",
+    "코스피 상승에 5370선",
+    "코스피-코스닥, 상승 마감",
+    "코스피 상승에 5370선",
+    "코스피 상승에 5370선",
+    "코스피 5370선 상승 마감"
   ]
 }

@@ -1,48 +1,20 @@
 {
-  "exported_at": "2026-11-10T07:00:01.233768+00:00",
-  "total_candidates": 4,
-  "total_holdings": 4,
+  "exported_at": "2026-11-11T07:00:01.269245+00:00",
+  "total_candidates": 2,
+  "total_holdings": 2,
   "candidates": [
     {
-      "stock_code": "017670",
-      "stock_name": "SK텔레콤",
-      "sector": "무선통신서비스",
-      "signal_count": 10,
-      "avg_confidence": 0.5833000000000002,
+      "stock_code": "196170",
+      "stock_name": "알테오젠",
+      "sector": "생물공학",
+      "signal_count": 30,
+      "avg_confidence": 0.8000000000000005,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(56) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+6.2%vsKOSPI+4.6%) | 디커플링모멘텀",
+      "reason": "2일연속상승 | RSI반등(34) | RSI sweet(34) | 거래량3.9x | 거래량3x+ | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(14) | 주봉MA20아래 | 상대강도(+4.1%vsKOSPI+0.9%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-11-10T06:01:25.905155",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "032640",
-      "stock_name": "LG유플러스",
-      "sector": "무선통신서비스",
-      "signal_count": 10,
-      "avg_confidence": 0.6666999999999998,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "MACD히스토그램↑ | MA정배열 | 주봉골든크로스 | 주봉MA20위",
-      "price_at_signal": 0,
-      "signal_time": "2026-11-10T06:01:25.905145",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "018260",
-      "stock_name": "삼성에스디에스",
-      "sector": "",
-      "signal_count": 10,
-      "avg_confidence": 1.0,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(63) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+6.7%vsKOSPI+4.6%) | 디커플링모멘텀",
-      "price_at_signal": 0,
-      "signal_time": "2026-11-10T06:01:25.905119",
+      "signal_time": "2026-11-11T02:02:24.826741",
       "status": "매수 시그널"
     },
     {
@@ -60,24 +32,6 @@
   ],
   "holdings": [
     {
-      "stock_code": "AVGO",
-      "stock_name": "AVGO",
-      "quantity": 1,
-      "avg_price": 298.16,
-      "strategy": "US_SWING",
-      "entry_date": "2026-11-06",
-      "status": "보유 중"
-    },
-    {
-      "stock_code": "MU",
-      "stock_name": "MU",
-      "quantity": 1,
-      "avg_price": 697.665,
-      "strategy": "US_SWING",
-      "entry_date": "2026-11-06",
-      "status": "보유 중"
-    },
-    {
       "stock_code": "NVDA",
       "stock_name": "NVDA",
       "quantity": 2,
@@ -87,12 +41,12 @@
       "status": "보유 중"
     },
     {
-      "stock_code": "TSM",
-      "stock_name": "TSM",
+      "stock_code": "XOM",
+      "stock_name": "XOM",
       "quantity": 1,
-      "avg_price": 371.63,
+      "avg_price": 160.19,
       "strategy": "US_SWING",
-      "entry_date": "2026-11-06",
+      "entry_date": "2026-11-10",
       "status": "보유 중"
     }
   ]
