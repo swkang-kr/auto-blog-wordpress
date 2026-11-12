@@ -1,7 +1,7 @@
 {
-  "exported_at": "2026-11-11T07:00:01.269245+00:00",
+  "exported_at": "2026-11-12T07:00:01.208326+00:00",
   "total_candidates": 2,
-  "total_holdings": 2,
+  "total_holdings": 5,
   "candidates": [
     {
       "stock_code": "196170",
@@ -12,9 +12,9 @@
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | RSI반등(34) | RSI sweet(34) | 거래량3.9x | 거래량3x+ | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(14) | 주봉MA20아래 | 상대강도(+4.1%vsKOSPI+0.9%) | 디커플링모멘텀",
+      "reason": "2일연속상승 | RSI반등(35) | RSI sweet(35) | 거래량4.4x | 거래량3x+ | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(14) | 주봉MA20아래 | 상대강도(+4.9%vsKOSPI+0.2%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-11-11T02:02:24.826741",
+      "signal_time": "2026-11-12T00:31:09.310501",
       "status": "매수 시그널"
     },
     {
@@ -47,6 +47,33 @@
       "avg_price": 160.19,
       "strategy": "US_SWING",
       "entry_date": "2026-11-10",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "AAPL",
+      "stock_name": "AAPL",
+      "quantity": 1,
+      "avg_price": 351.53,
+      "strategy": "US_SWING",
+      "entry_date": "2026-11-11",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "AMD",
+      "stock_name": "AMD",
+      "quantity": 1,
+      "avg_price": 531.95,
+      "strategy": "US_SWING",
+      "entry_date": "2026-11-11",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "AVGO",
+      "stock_name": "AVGO",
+      "quantity": 1,
+      "avg_price": 350.1,
+      "strategy": "US_SWING",
+      "entry_date": "2026-11-11",
       "status": "보유 중"
     }
   ]

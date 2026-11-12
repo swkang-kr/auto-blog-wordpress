@@ -1,6 +1,42 @@
 {
-  "exported_at": "2026-11-11T07:00:00.748787+00:00",
+  "exported_at": "2026-11-12T07:00:00.741258+00:00",
   "trades": [
+    {
+      "stock_code": "AVGO",
+      "stock_name": "AVGO",
+      "side": "buy",
+      "quantity": 1,
+      "price": 350.1,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "US_SWING",
+      "reason": "RSI적정(55.4) | MACD골든크로스 [us_pre_qty=0]",
+      "filled_at": "2026-11-11T14:35:31"
+    },
+    {
+      "stock_code": "AMD",
+      "stock_name": "AMD",
+      "side": "buy",
+      "quantity": 1,
+      "price": 531.95,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "US_SWING",
+      "reason": "RSI적정(50.9) | MACD골든크로스 [us_pre_qty=0]",
+      "filled_at": "2026-11-11T14:35:31"
+    },
+    {
+      "stock_code": "AAPL",
+      "stock_name": "AAPL",
+      "side": "buy",
+      "quantity": 1,
+      "price": 351.53,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "US_SWING",
+      "reason": "RSI적정(57.6) | MACD골든크로스 [us_pre_qty=0]",
+      "filled_at": "2026-11-11T14:35:30"
+    },
     {
       "stock_code": "TSM",
       "stock_name": "TSM",
@@ -156,18 +192,6 @@
       "strategy": "US_SWING",
       "reason": "us_swing_trailing",
       "filled_at": "2026-11-05T15:17:56"
-    },
-    {
-      "stock_code": "TSLA",
-      "stock_name": "TSLA",
-      "side": "sell",
-      "quantity": 26,
-      "price": 388.78,
-      "pnl": 111.28,
-      "pnl_rate": 1.1131,
-      "strategy": "US_SWING",
-      "reason": "us_swing_time_exit",
-      "filled_at": "2026-11-04T15:21:24"
     }
   ]
 }

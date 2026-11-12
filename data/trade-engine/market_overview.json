@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-11-11T07:00:00.948312+00:00",
+  "exported_at": "2026-11-12T07:00:00.933238+00:00",
   "market_daily": [
+    {
+      "date": "20261112",
+      "kospi_change": -0.61,
+      "kosdaq_change": -1.22,
+      "foreign_net": 3699.0,
+      "institution_net": -6889.0,
+      "individual_net": -2053.0,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20261111",
       "kospi_change": 2.6,
       "kosdaq_change": 5.62,
-      "foreign_net": 6553.0,
-      "institution_net": -4823.0,
-      "individual_net": -7156.0,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": 6589.0,
+      "institution_net": -4824.0,
+      "individual_net": -7171.0,
+      "hot_theme_count": 69,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20261110",
@@ -99,29 +110,18 @@
       "hot_theme_count": 4,
       "momentum_count": 60,
       "crash_count": 42
-    },
-    {
-      "date": "20260921",
-      "kospi_change": 1.65,
-      "kosdaq_change": 1.11,
-      "foreign_net": -39.0,
-      "institution_net": 14978.0,
-      "individual_net": -31518.0,
-      "hot_theme_count": 9,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "[오늘의증시] 미국발 냉풍에도 반도체주 굳건, 에코프로·한진 10%대 강세",
-    "\"증시 저평가 기업, '비상장 전환'도 선택지\"",
-    "코스피-코스닥, 상승 마감",
-    "코스피-코스닥, 상승 마감",
-    "코스닥 상승 마감",
-    "코스피 상승에 5370선",
-    "코스피-코스닥, 상승 마감",
-    "코스피 상승에 5370선",
-    "코스피 상승에 5370선",
-    "코스피 5370선 상승 마감"
+    "젠슨 황 해임설에 코스피 사흘 만에 하락…삼전닉스 엇갈려",
+    "삼성증권 3Q 당기순익 3528억, 전년동기比 14.1%↑",
+    "젠슨 황 퇴진 위기에 아시아 증시 동반 하락…대만 2.6% 급락",
+    "VIP운용 \"TPG의 롯데렌탈 공개매수 환영… 일반주주 매각기회 보장해야\"",
+    "엔화 환율 830원대 초반까지 하락",
+    "원·엔 환율 하락세…100엔당 830원대",
+    "엔화 환율 830원대 초반까지 하락",
+    "엔화 약세 지속…100엔당 830원대 초반",
+    "엔화 약세 지속…100엔당 830원대 초반",
+    "원·엔 환율 하락세…100엔당 830원대"
   ]
 }
