@@ -1,6 +1,54 @@
 {
-  "exported_at": "2026-11-12T07:00:00.741258+00:00",
+  "exported_at": "2026-11-13T07:00:00.731728+00:00",
   "trades": [
+    {
+      "stock_code": "TSM",
+      "stock_name": "TSM",
+      "side": "buy",
+      "quantity": 1,
+      "price": 402.04,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "US_SWING",
+      "reason": "RSI적정(46.2) | MACD골든크로스 [us_pre_qty=0]",
+      "filled_at": "2026-11-12T15:09:32"
+    },
+    {
+      "stock_code": "AMD",
+      "stock_name": "AMD",
+      "side": "sell",
+      "quantity": 1,
+      "price": 560.63,
+      "pnl": 28.68,
+      "pnl_rate": 5.3915,
+      "strategy": "US_SWING",
+      "reason": "us_swing_trailing",
+      "filled_at": "2026-11-12T15:09:29"
+    },
+    {
+      "stock_code": "GOOGL",
+      "stock_name": "GOOGL",
+      "side": "buy",
+      "quantity": 1,
+      "price": 295.14,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "US_SWING",
+      "reason": "RSI적정(39.5) | MACD골든크로스 [us_pre_qty=0]",
+      "filled_at": "2026-11-12T14:35:30"
+    },
+    {
+      "stock_code": "NVDA",
+      "stock_name": "NVDA",
+      "side": "sell",
+      "quantity": 2,
+      "price": 151.22,
+      "pnl": -47.25,
+      "pnl_rate": -13.512,
+      "strategy": "US_SWING",
+      "reason": "us_swing_stop_loss",
+      "filled_at": "2026-11-12T14:30:29"
+    },
     {
       "stock_code": "AVGO",
       "stock_name": "AVGO",
@@ -156,42 +204,6 @@
       "strategy": "US_SWING",
       "reason": "RSI적정(32.3) | RSI과매도 | BB하단근접 [us_pre_qty=0]",
       "filled_at": "2026-11-06T15:26:20"
-    },
-    {
-      "stock_code": "MU",
-      "stock_name": "MU",
-      "side": "sell",
-      "quantity": 14,
-      "price": 692.1929,
-      "pnl": 114.7,
-      "pnl_rate": 1.1978,
-      "strategy": "US_SWING",
-      "reason": "us_swing_time_exit",
-      "filled_at": "2026-11-05T17:47:49"
-    },
-    {
-      "stock_code": "NVDA",
-      "stock_name": "NVDA",
-      "side": "sell",
-      "quantity": 49,
-      "price": 187.11,
-      "pnl": -825.06,
-      "pnl_rate": -8.256,
-      "strategy": "US_SWING",
-      "reason": "us_swing_stop_loss",
-      "filled_at": "2026-11-05T15:31:58"
-    },
-    {
-      "stock_code": "GOOGL",
-      "stock_name": "GOOGL",
-      "side": "sell",
-      "quantity": 35,
-      "price": 286.68,
-      "pnl": 76.3,
-      "pnl_rate": 0.7663,
-      "strategy": "US_SWING",
-      "reason": "us_swing_trailing",
-      "filled_at": "2026-11-05T15:17:56"
     }
   ]
 }

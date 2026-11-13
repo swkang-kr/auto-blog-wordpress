@@ -1,5 +1,5 @@
 {
-  "exported_at": "2026-11-12T07:00:01.164836+00:00",
+  "exported_at": "2026-11-13T07:00:01.159326+00:00",
   "total_stocks": 17,
   "watchlist_all": [
     {
@@ -7,16 +7,16 @@
       "stock_name": "한진칼",
       "market": "KOSPI",
       "sector": "",
-      "signal_count": 885,
+      "signal_count": 879,
       "buy_count": 0,
-      "sell_count": 885,
-      "avg_confidence": 0.8559387570621398,
+      "sell_count": 879,
+      "avg_confidence": 0.8560182025028372,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "latest_reason": "RSI과매수(84)",
+      "latest_reason": "RSI과매수(82)",
       "latest_price": 0,
-      "latest_at": "2026-11-06T05:39:58.874512"
+      "latest_at": "2026-11-09T00:05:35.508538"
     },
     {
       "stock_code": "035420",
@@ -83,6 +83,22 @@
       "latest_at": "2026-11-10T01:00:25.111665"
     },
     {
+      "stock_code": "007660",
+      "stock_name": "이수페타시스",
+      "market": "KOSPI",
+      "sector": "전자장비와기기",
+      "signal_count": 311,
+      "buy_count": 311,
+      "sell_count": 0,
+      "avg_confidence": 0.6666999999999981,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(52) | 거래량2.7x | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+8.4%vsKOSPI+2.0%) | 디커플링모멘텀",
+      "latest_price": 0,
+      "latest_at": "2026-11-13T01:00:31.476384"
+    },
+    {
       "stock_code": "196170",
       "stock_name": "알테오젠",
       "market": "KOSPI",
@@ -135,64 +151,48 @@
       "stock_name": "셀트리온",
       "market": "KOSPI",
       "sector": "바이오",
-      "signal_count": 67,
+      "signal_count": 61,
       "buy_count": 61,
-      "sell_count": 6,
-      "avg_confidence": 0.979385074626866,
+      "sell_count": 0,
+      "avg_confidence": 1.0,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "latest_reason": "RSI과매수(77)",
+      "latest_reason": "MACD히스토그램↑ | RSI모멘텀(68) | 거래량2.1x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
       "latest_price": 0,
-      "latest_at": "2026-11-06T05:39:58.874509"
+      "latest_at": "2026-11-09T02:34:21.524751"
+    },
+    {
+      "stock_code": "138040",
+      "stock_name": "메리츠금융지주",
+      "market": "KOSPI",
+      "sector": "",
+      "signal_count": 57,
+      "buy_count": 57,
+      "sell_count": 0,
+      "avg_confidence": 0.5,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "RSI반등(39) | RSI sweet(39) | BB하단반등(score=0) | EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20아래 | 상대강도(+5.4%vsKOSPI+2.0%)",
+      "latest_price": 0,
+      "latest_at": "2026-11-13T01:07:32.347527"
     },
     {
       "stock_code": "326030",
       "stock_name": "SK바이오팜",
       "market": "KOSPI",
       "sector": "제약",
-      "signal_count": 11,
+      "signal_count": 5,
       "buy_count": 5,
-      "sell_count": 6,
-      "avg_confidence": 0.7035545454545455,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "latest_reason": "RSI과매수(76)",
-      "latest_price": 0,
-      "latest_at": "2026-11-06T05:39:58.874514"
-    },
-    {
-      "stock_code": "377300",
-      "stock_name": "카카오페이",
-      "market": "KOSPI",
-      "sector": "IT서비스",
-      "signal_count": 6,
-      "buy_count": 6,
       "sell_count": 0,
-      "avg_confidence": 0.61805,
+      "avg_confidence": 0.6333,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "latest_reason": "MACD골든크로스 | RSI반등(40) | RSI sweet(40) | 거래량2.2x | EMA20하방 | MA역배열 | 캔들상승장악형(강) | 주봉데드크로스(-1.5) | 주봉MA20아래",
+      "latest_reason": "MACD히스토그램↑ | RSI모멘텀(71) | 거래량3.5x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위",
       "latest_price": 0,
-      "latest_at": "2026-11-06T05:39:58.874506"
-    },
-    {
-      "stock_code": "015760",
-      "stock_name": "한국전력",
-      "market": "KOSPI",
-      "sector": "전기유틸리티",
-      "signal_count": 6,
-      "buy_count": 6,
-      "sell_count": 0,
-      "avg_confidence": 0.7361166666666666,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(62) | 거래량2.5x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래",
-      "latest_price": 0,
-      "latest_at": "2026-11-06T05:39:58.874497"
+      "latest_at": "2026-11-09T02:34:21.524783"
     },
     {
       "stock_code": "259960",
@@ -227,20 +227,20 @@
       "latest_at": "2026-11-09T02:34:21.524767"
     },
     {
-      "stock_code": "010130",
-      "stock_name": "고려아연",
+      "stock_code": "003570",
+      "stock_name": "SNT다이내믹스",
       "market": "KOSPI",
       "sector": "",
-      "signal_count": 5,
-      "buy_count": 5,
+      "signal_count": 1,
+      "buy_count": 1,
       "sell_count": 0,
-      "avg_confidence": 0.5,
+      "avg_confidence": 0.2886,
       "strategies": [
-        "RSI+MACD(swing)"
+        "dart_momentum"
       ],
-      "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(56) | 거래량2.1x | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+8.9%vsKOSPI-4.3%) | 디커플링모멘텀",
+      "latest_reason": "공시: 주요사항보고서(자기주식취득신탁계약체결결정) | 감성점수: 0.68 | 거래량급증: True",
       "latest_price": 0,
-      "latest_at": "2026-11-06T05:40:59.576760"
+      "latest_at": "2026-11-13T00:05:41.050355"
     },
     {
       "stock_code": "281820",
@@ -346,32 +346,16 @@
         "stock_name": "셀트리온",
         "market": "KOSPI",
         "sector": "바이오",
-        "signal_count": 67,
+        "signal_count": 61,
         "buy_count": 61,
-        "sell_count": 6,
-        "avg_confidence": 0.979385074626866,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "RSI과매수(77)",
-        "latest_price": 0,
-        "latest_at": "2026-11-06T05:39:58.874509"
-      },
-      {
-        "stock_code": "015760",
-        "stock_name": "한국전력",
-        "market": "KOSPI",
-        "sector": "전기유틸리티",
-        "signal_count": 6,
-        "buy_count": 6,
         "sell_count": 0,
-        "avg_confidence": 0.7361166666666666,
+        "avg_confidence": 1.0,
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(62) | 거래량2.5x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래",
+        "latest_reason": "MACD히스토그램↑ | RSI모멘텀(68) | 거래량2.1x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
         "latest_price": 0,
-        "latest_at": "2026-11-06T05:39:58.874497"
+        "latest_at": "2026-11-09T02:34:21.524751"
       }
     ],
     "업종분석": [
@@ -380,16 +364,16 @@
         "stock_name": "한진칼",
         "market": "KOSPI",
         "sector": "",
-        "signal_count": 885,
+        "signal_count": 879,
         "buy_count": 0,
-        "sell_count": 885,
-        "avg_confidence": 0.8559387570621398,
+        "sell_count": 879,
+        "avg_confidence": 0.8560182025028372,
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "RSI과매수(84)",
+        "latest_reason": "RSI과매수(82)",
         "latest_price": 0,
-        "latest_at": "2026-11-06T05:39:58.874512"
+        "latest_at": "2026-11-09T00:05:35.508538"
       },
       {
         "stock_code": "032640",
@@ -406,6 +390,22 @@
         "latest_reason": "RSI과매수(75)",
         "latest_price": 0,
         "latest_at": "2026-11-09T00:05:35.508540"
+      },
+      {
+        "stock_code": "007660",
+        "stock_name": "이수페타시스",
+        "market": "KOSPI",
+        "sector": "전자장비와기기",
+        "signal_count": 311,
+        "buy_count": 311,
+        "sell_count": 0,
+        "avg_confidence": 0.6666999999999981,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(52) | 거래량2.7x | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+8.4%vsKOSPI+2.0%) | 디커플링모멘텀",
+        "latest_price": 0,
+        "latest_at": "2026-11-13T01:00:31.476384"
       },
       {
         "stock_code": "196170",
@@ -440,36 +440,36 @@
         "latest_at": "2026-11-09T00:05:35.508535"
       },
       {
+        "stock_code": "138040",
+        "stock_name": "메리츠금융지주",
+        "market": "KOSPI",
+        "sector": "",
+        "signal_count": 57,
+        "buy_count": 57,
+        "sell_count": 0,
+        "avg_confidence": 0.5,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "RSI반등(39) | RSI sweet(39) | BB하단반등(score=0) | EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20아래 | 상대강도(+5.4%vsKOSPI+2.0%)",
+        "latest_price": 0,
+        "latest_at": "2026-11-13T01:07:32.347527"
+      },
+      {
         "stock_code": "326030",
         "stock_name": "SK바이오팜",
         "market": "KOSPI",
         "sector": "제약",
-        "signal_count": 11,
+        "signal_count": 5,
         "buy_count": 5,
-        "sell_count": 6,
-        "avg_confidence": 0.7035545454545455,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "RSI과매수(76)",
-        "latest_price": 0,
-        "latest_at": "2026-11-06T05:39:58.874514"
-      },
-      {
-        "stock_code": "377300",
-        "stock_name": "카카오페이",
-        "market": "KOSPI",
-        "sector": "IT서비스",
-        "signal_count": 6,
-        "buy_count": 6,
         "sell_count": 0,
-        "avg_confidence": 0.61805,
+        "avg_confidence": 0.6333,
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "MACD골든크로스 | RSI반등(40) | RSI sweet(40) | 거래량2.2x | EMA20하방 | MA역배열 | 캔들상승장악형(강) | 주봉데드크로스(-1.5) | 주봉MA20아래",
+        "latest_reason": "MACD히스토그램↑ | RSI모멘텀(71) | 거래량3.5x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위",
         "latest_price": 0,
-        "latest_at": "2026-11-06T05:39:58.874506"
+        "latest_at": "2026-11-09T02:34:21.524783"
       },
       {
         "stock_code": "259960",
@@ -502,22 +502,6 @@
         "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(64) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위",
         "latest_price": 0,
         "latest_at": "2026-11-09T02:34:21.524767"
-      },
-      {
-        "stock_code": "010130",
-        "stock_name": "고려아연",
-        "market": "KOSPI",
-        "sector": "",
-        "signal_count": 5,
-        "buy_count": 5,
-        "sell_count": 0,
-        "avg_confidence": 0.5,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(56) | 거래량2.1x | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+8.9%vsKOSPI-4.3%) | 디커플링모멘텀",
-        "latest_price": 0,
-        "latest_at": "2026-11-06T05:40:59.576760"
       }
     ],
     "테마분석": [
@@ -526,16 +510,16 @@
         "stock_name": "한진칼",
         "market": "KOSPI",
         "sector": "",
-        "signal_count": 885,
+        "signal_count": 879,
         "buy_count": 0,
-        "sell_count": 885,
-        "avg_confidence": 0.8559387570621398,
+        "sell_count": 879,
+        "avg_confidence": 0.8560182025028372,
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "RSI과매수(84)",
+        "latest_reason": "RSI과매수(82)",
         "latest_price": 0,
-        "latest_at": "2026-11-06T05:39:58.874512"
+        "latest_at": "2026-11-09T00:05:35.508538"
       },
       {
         "stock_code": "035420",
@@ -602,6 +586,22 @@
         "latest_at": "2026-11-10T01:00:25.111665"
       },
       {
+        "stock_code": "007660",
+        "stock_name": "이수페타시스",
+        "market": "KOSPI",
+        "sector": "전자장비와기기",
+        "signal_count": 311,
+        "buy_count": 311,
+        "sell_count": 0,
+        "avg_confidence": 0.6666999999999981,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(52) | 거래량2.7x | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+8.4%vsKOSPI+2.0%) | 디커플링모멘텀",
+        "latest_price": 0,
+        "latest_at": "2026-11-13T01:00:31.476384"
+      },
+      {
         "stock_code": "196170",
         "stock_name": "알테오젠",
         "market": "KOSPI",
@@ -654,32 +654,16 @@
         "stock_name": "셀트리온",
         "market": "KOSPI",
         "sector": "바이오",
-        "signal_count": 67,
+        "signal_count": 61,
         "buy_count": 61,
-        "sell_count": 6,
-        "avg_confidence": 0.979385074626866,
+        "sell_count": 0,
+        "avg_confidence": 1.0,
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "RSI과매수(77)",
+        "latest_reason": "MACD히스토그램↑ | RSI모멘텀(68) | 거래량2.1x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
         "latest_price": 0,
-        "latest_at": "2026-11-06T05:39:58.874509"
-      },
-      {
-        "stock_code": "326030",
-        "stock_name": "SK바이오팜",
-        "market": "KOSPI",
-        "sector": "제약",
-        "signal_count": 11,
-        "buy_count": 5,
-        "sell_count": 6,
-        "avg_confidence": 0.7035545454545455,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "RSI과매수(76)",
-        "latest_price": 0,
-        "latest_at": "2026-11-06T05:39:58.874514"
+        "latest_at": "2026-11-09T02:34:21.524751"
       }
     ],
     "수급분석": [
@@ -688,16 +672,16 @@
         "stock_name": "한진칼",
         "market": "KOSPI",
         "sector": "",
-        "signal_count": 885,
+        "signal_count": 879,
         "buy_count": 0,
-        "sell_count": 885,
-        "avg_confidence": 0.8559387570621398,
+        "sell_count": 879,
+        "avg_confidence": 0.8560182025028372,
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "RSI과매수(84)",
+        "latest_reason": "RSI과매수(82)",
         "latest_price": 0,
-        "latest_at": "2026-11-06T05:39:58.874512"
+        "latest_at": "2026-11-09T00:05:35.508538"
       },
       {
         "stock_code": "035420",
@@ -764,6 +748,22 @@
         "latest_at": "2026-11-10T01:00:25.111665"
       },
       {
+        "stock_code": "007660",
+        "stock_name": "이수페타시스",
+        "market": "KOSPI",
+        "sector": "전자장비와기기",
+        "signal_count": 311,
+        "buy_count": 311,
+        "sell_count": 0,
+        "avg_confidence": 0.6666999999999981,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(52) | 거래량2.7x | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+8.4%vsKOSPI+2.0%) | 디커플링모멘텀",
+        "latest_price": 0,
+        "latest_at": "2026-11-13T01:00:31.476384"
+      },
+      {
         "stock_code": "196170",
         "stock_name": "알테오젠",
         "market": "KOSPI",
@@ -816,32 +816,16 @@
         "stock_name": "셀트리온",
         "market": "KOSPI",
         "sector": "바이오",
-        "signal_count": 67,
+        "signal_count": 61,
         "buy_count": 61,
-        "sell_count": 6,
-        "avg_confidence": 0.979385074626866,
+        "sell_count": 0,
+        "avg_confidence": 1.0,
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "RSI과매수(77)",
+        "latest_reason": "MACD히스토그램↑ | RSI모멘텀(68) | 거래량2.1x | MA정배열 | 주봉골든크로스 | 주봉MA20위",
         "latest_price": 0,
-        "latest_at": "2026-11-06T05:39:58.874509"
-      },
-      {
-        "stock_code": "326030",
-        "stock_name": "SK바이오팜",
-        "market": "KOSPI",
-        "sector": "제약",
-        "signal_count": 11,
-        "buy_count": 5,
-        "sell_count": 6,
-        "avg_confidence": 0.7035545454545455,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "RSI과매수(76)",
-        "latest_price": 0,
-        "latest_at": "2026-11-06T05:39:58.874514"
+        "latest_at": "2026-11-09T02:34:21.524751"
       }
     ]
   }

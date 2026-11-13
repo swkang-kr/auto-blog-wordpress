@@ -1,60 +1,60 @@
 {
-  "exported_at": "2026-11-12T07:00:00.727111+00:00",
+  "exported_at": "2026-11-13T07:00:00.718409+00:00",
   "holdings": [
-    {
-      "stock_code": "AMD",
-      "stock_name": "AMD",
-      "quantity": 1,
-      "avg_price": 531.95,
-      "current_price": 553.26,
-      "unrealized_pnl": 21.31,
-      "unrealized_pnl_rate": 4.006,
-      "strategy": "US_SWING",
-      "entry_date": "2026-11-11T14:35:30.974967"
-    },
     {
       "stock_code": "XOM",
       "stock_name": "XOM",
       "quantity": 1,
       "avg_price": 160.19,
-      "current_price": 166.565,
-      "unrealized_pnl": 6.38,
-      "unrealized_pnl_rate": 3.9796,
+      "current_price": 169.78,
+      "unrealized_pnl": 9.59,
+      "unrealized_pnl_rate": 5.9866,
       "strategy": "US_SWING",
       "entry_date": "2026-11-10T14:35:21.016048"
-    },
-    {
-      "stock_code": "AAPL",
-      "stock_name": "AAPL",
-      "quantity": 1,
-      "avg_price": 351.53,
-      "current_price": 355.71,
-      "unrealized_pnl": 4.18,
-      "unrealized_pnl_rate": 1.1891,
-      "strategy": "US_SWING",
-      "entry_date": "2026-11-11T14:35:30.415260"
-    },
-    {
-      "stock_code": "NVDA",
-      "stock_name": "NVDA",
-      "quantity": 2,
-      "avg_price": 174.845,
-      "current_price": 173.8,
-      "unrealized_pnl": -2.09,
-      "unrealized_pnl_rate": -0.5977,
-      "strategy": "US_SWING",
-      "entry_date": "2026-11-09T14:35:20.701339"
     },
     {
       "stock_code": "AVGO",
       "stock_name": "AVGO",
       "quantity": 1,
       "avg_price": 350.1,
-      "current_price": 345.215,
-      "unrealized_pnl": -4.89,
-      "unrealized_pnl_rate": -1.3953,
+      "current_price": 364.1,
+      "unrealized_pnl": 14.0,
+      "unrealized_pnl_rate": 3.9989,
       "strategy": "US_SWING",
       "entry_date": "2026-11-11T14:35:31.448284"
+    },
+    {
+      "stock_code": "GOOGL",
+      "stock_name": "GOOGL",
+      "quantity": 1,
+      "avg_price": 295.14,
+      "current_price": 298.76,
+      "unrealized_pnl": 3.62,
+      "unrealized_pnl_rate": 1.2265,
+      "strategy": "US_SWING",
+      "entry_date": "2026-11-12T14:35:30.133315"
+    },
+    {
+      "stock_code": "TSM",
+      "stock_name": "TSM",
+      "quantity": 1,
+      "avg_price": 402.04,
+      "current_price": 405.96,
+      "unrealized_pnl": 3.92,
+      "unrealized_pnl_rate": 0.975,
+      "strategy": "US_SWING",
+      "entry_date": "2026-11-12T15:09:32.177942"
+    },
+    {
+      "stock_code": "AAPL",
+      "stock_name": "AAPL",
+      "quantity": 1,
+      "avg_price": 351.53,
+      "current_price": 354.655,
+      "unrealized_pnl": 3.13,
+      "unrealized_pnl_rate": 0.889,
+      "strategy": "US_SWING",
+      "entry_date": "2026-11-11T14:35:30.415260"
     }
   ]
 }

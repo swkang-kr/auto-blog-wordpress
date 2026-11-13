@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-11-12T07:00:00.933238+00:00",
+  "exported_at": "2026-11-13T07:00:00.931367+00:00",
   "market_daily": [
+    {
+      "date": "20261113",
+      "kospi_change": -0.98,
+      "kosdaq_change": 0.45,
+      "foreign_net": -5505.0,
+      "institution_net": 20.0,
+      "individual_net": 175.0,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20261112",
       "kospi_change": -0.61,
       "kosdaq_change": -1.22,
-      "foreign_net": 3699.0,
-      "institution_net": -6889.0,
-      "individual_net": -2053.0,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": 3702.0,
+      "institution_net": -6771.0,
+      "individual_net": -2161.0,
+      "hot_theme_count": 2,
+      "momentum_count": 52,
+      "crash_count": 60
     },
     {
       "date": "20261111",
@@ -99,29 +110,18 @@
       "hot_theme_count": 6,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260922",
-      "kospi_change": 0.15,
-      "kosdaq_change": -0.23,
-      "foreign_net": 673.0,
-      "institution_net": -1299.0,
-      "individual_net": -15824.0,
-      "hot_theme_count": 4,
-      "momentum_count": 60,
-      "crash_count": 42
     }
   ],
   "headlines": [
-    "젠슨 황 해임설에 코스피 사흘 만에 하락…삼전닉스 엇갈려",
-    "삼성증권 3Q 당기순익 3528억, 전년동기比 14.1%↑",
-    "젠슨 황 퇴진 위기에 아시아 증시 동반 하락…대만 2.6% 급락",
-    "VIP운용 \"TPG의 롯데렌탈 공개매수 환영… 일반주주 매각기회 보장해야\"",
-    "엔화 환율 830원대 초반까지 하락",
-    "원·엔 환율 하락세…100엔당 830원대",
-    "엔화 환율 830원대 초반까지 하락",
-    "엔화 약세 지속…100엔당 830원대 초반",
-    "엔화 약세 지속…100엔당 830원대 초반",
-    "원·엔 환율 하락세…100엔당 830원대"
+    "교보증권, 3분기 순이익 85억원…전년比 72.4% 감소",
+    "MBK, 한차례 무산됐던 '넥스플렉스 매각' 부산EP와 계약",
+    "피터앤파트너스, 코스닥 상장사 맞춤형 ‘IR 지원 사업’ 본격화",
+    "티쓰리, 주당 40원 분기배당 결정",
+    "휴마시스, 361억 규모 자사주 소각…발행주식 8.33% 규모",
+    "'젠슨황 사임' 여파 지속?…하이닉스, 3% 급락…삼전도 0.96%↓(종합)",
+    "\"인력 김축\"…빅파마 구조조정에 韓법인도 '들썩'",
+    "[매크로 인사이트]  이춘광 대표 “미 증시 극단적 변동성 통과…앤트로픽 상장·엔비디아·브로드컴 실적이 투심 해빙 열쇠”",
+    "[속보] 코스피, 장중 5500 넘었다가 0.98% 하락…5290.53 마감",
+    "법원 판결에 최윤범 ‘이사회 과반’ 변수…영풍·MBK 반격 나서나"
   ]
 }
