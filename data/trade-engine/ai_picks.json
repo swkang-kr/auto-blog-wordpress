@@ -1,20 +1,20 @@
 {
-  "exported_at": "2026-11-13T07:00:01.201644+00:00",
+  "exported_at": "2026-11-16T07:00:01.365978+00:00",
   "total_candidates": 2,
-  "total_holdings": 5,
+  "total_holdings": 4,
   "candidates": [
     {
       "stock_code": "007660",
       "stock_name": "이수페타시스",
       "sector": "전자장비와기기",
       "signal_count": 30,
-      "avg_confidence": 0.6667,
+      "avg_confidence": 0.8000000000000005,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(52) | 거래량2.7x | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+8.4%vsKOSPI-0.9%) | 디커플링모멘텀",
+      "reason": "2일연속상승 | MACD히스토그램↑ | 거래량3.6x | 거래량3x+ | MA역배열 | 캔들역해머(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+4.7%vsKOSPI-0.2%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-11-13T05:41:38.055074",
+      "signal_time": "2026-11-16T00:30:32.477630",
       "status": "매수 시그널"
     },
     {
@@ -41,21 +41,12 @@
       "status": "보유 중"
     },
     {
-      "stock_code": "AVGO",
-      "stock_name": "AVGO",
+      "stock_code": "TSLA",
+      "stock_name": "TSLA",
       "quantity": 1,
-      "avg_price": 350.1,
+      "avg_price": 398.1,
       "strategy": "US_SWING",
-      "entry_date": "2026-11-11",
-      "status": "보유 중"
-    },
-    {
-      "stock_code": "GOOGL",
-      "stock_name": "GOOGL",
-      "quantity": 1,
-      "avg_price": 295.14,
-      "strategy": "US_SWING",
-      "entry_date": "2026-11-12",
+      "entry_date": "2026-11-13",
       "status": "보유 중"
     },
     {

@@ -1,6 +1,42 @@
 {
-  "exported_at": "2026-11-13T07:00:00.731728+00:00",
+  "exported_at": "2026-11-16T07:00:00.715535+00:00",
   "trades": [
+    {
+      "stock_code": "GOOGL",
+      "stock_name": "GOOGL",
+      "side": "sell",
+      "quantity": 1,
+      "price": 295.54,
+      "pnl": 0.4,
+      "pnl_rate": 0.1355,
+      "strategy": "US_SWING",
+      "reason": "us_swing_trailing",
+      "filled_at": "2026-11-13T15:21:29"
+    },
+    {
+      "stock_code": "TSLA",
+      "stock_name": "TSLA",
+      "side": "buy",
+      "quantity": 1,
+      "price": 398.1,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "US_SWING",
+      "reason": "RSI적정(56.8) | MACD골든크로스 [us_pre_qty=0]",
+      "filled_at": "2026-11-13T14:35:31"
+    },
+    {
+      "stock_code": "AVGO",
+      "stock_name": "AVGO",
+      "side": "sell",
+      "quantity": 1,
+      "price": 356.22,
+      "pnl": 6.12,
+      "pnl_rate": 1.7481,
+      "strategy": "US_SWING",
+      "reason": "us_swing_trailing",
+      "filled_at": "2026-11-13T14:30:29"
+    },
     {
       "stock_code": "TSM",
       "stock_name": "TSM",
@@ -156,54 +192,6 @@
       "strategy": "US_SWING",
       "reason": "us_swing_stop_loss",
       "filled_at": "2026-11-09T14:30:18"
-    },
-    {
-      "stock_code": "TSM",
-      "stock_name": "TSM",
-      "side": "buy",
-      "quantity": 1,
-      "price": 371.63,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "US_SWING",
-      "reason": "RSI적정(34.8) | RSI과매도 | BB하단근접 [us_pre_qty=0]",
-      "filled_at": "2026-11-06T15:29:21"
-    },
-    {
-      "stock_code": "NVDA",
-      "stock_name": "NVDA",
-      "side": "buy",
-      "quantity": 1,
-      "price": 190.67,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "US_SWING",
-      "reason": "RSI적정(34.5) | RSI과매도 | BB하단근접 [us_pre_qty=0]",
-      "filled_at": "2026-11-06T15:28:21"
-    },
-    {
-      "stock_code": "AVGO",
-      "stock_name": "AVGO",
-      "side": "buy",
-      "quantity": 1,
-      "price": 298.16,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "US_SWING",
-      "reason": "RSI적정(35.0) | RSI과매도 | BB하단근접 [us_pre_qty=0]",
-      "filled_at": "2026-11-06T15:28:20"
-    },
-    {
-      "stock_code": "MU",
-      "stock_name": "MU",
-      "side": "buy",
-      "quantity": 1,
-      "price": 697.665,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "US_SWING",
-      "reason": "RSI적정(32.3) | RSI과매도 | BB하단근접 [us_pre_qty=0]",
-      "filled_at": "2026-11-06T15:26:20"
     }
   ]
 }
