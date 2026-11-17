@@ -1,13 +1,67 @@
 {
-  "exported_at": "2026-11-16T07:00:00.722448+00:00",
+  "exported_at": "2026-11-17T07:00:00.714328+00:00",
   "disclosures": [
+    {
+      "corp_name": "동아지질",
+      "stock_code": "028100",
+      "report_name": "주요사항보고서(자기주식취득신탁계약해지결정)",
+      "disclosure_type": "B",
+      "sentiment": null,
+      "submitted_at": "20261116",
+      "signal_used": false
+    },
+    {
+      "corp_name": "와이즈넛",
+      "stock_code": "096250",
+      "report_name": "주요사항보고서(자기주식취득신탁계약체결결정)",
+      "disclosure_type": "B",
+      "sentiment": null,
+      "submitted_at": "20261116",
+      "signal_used": false
+    },
+    {
+      "corp_name": "율촌",
+      "stock_code": "146060",
+      "report_name": "주요사항보고서(자기주식취득신탁계약체결결정)",
+      "disclosure_type": "B",
+      "sentiment": null,
+      "submitted_at": "20261116",
+      "signal_used": false
+    },
+    {
+      "corp_name": "동아지질",
+      "stock_code": "028100",
+      "report_name": "주요사항보고서(자기주식취득신탁계약체결결정)",
+      "disclosure_type": "B",
+      "sentiment": null,
+      "submitted_at": "20261116",
+      "signal_used": false
+    },
     {
       "corp_name": "진에어",
       "stock_code": "272450",
       "report_name": "[기재정정]주요사항보고서(회사합병결정)",
       "disclosure_type": "B",
       "sentiment": null,
-      "submitted_at": "20261113",
+      "submitted_at": "20261116",
+      "signal_used": false
+    },
+    {
+      "corp_name": "사람인",
+      "stock_code": "143240",
+      "report_name": "주요사항보고서(자기주식취득신탁계약해지결정)",
+      "disclosure_type": "B",
+      "sentiment": null,
+      "submitted_at": "20261116",
+      "signal_used": false
+    },
+    {
+      "corp_name": "슈프리마에이치큐",
+      "stock_code": "094840",
+      "report_name": "주요사항보고서(자기주식취득신탁계약해지결정)",
+      "disclosure_type": "B",
+      "sentiment": null,
+      "submitted_at": "20261116",
       "signal_used": false
     },
     {
@@ -16,48 +70,30 @@
       "report_name": "[기재정정]주요사항보고서(회사합병결정)",
       "disclosure_type": "B",
       "sentiment": null,
-      "submitted_at": "20261113",
+      "submitted_at": "20261116",
       "signal_used": false
     },
     {
-      "corp_name": "실리콘투",
-      "stock_code": "257720",
-      "report_name": "주요사항보고서(자기주식취득신탁계약해지결정)",
-      "disclosure_type": "B",
-      "sentiment": null,
-      "submitted_at": "20261113",
-      "signal_used": false
-    },
-    {
-      "corp_name": "탑선",
-      "stock_code": "180060",
+      "corp_name": "미투온",
+      "stock_code": "201490",
       "report_name": "[기재정정]주요사항보고서(유상증자결정)",
       "disclosure_type": "B",
       "sentiment": null,
-      "submitted_at": "20261113",
+      "submitted_at": "20261116",
       "signal_used": false
     },
     {
-      "corp_name": "바이브컴퍼니",
-      "stock_code": "301300",
-      "report_name": "[기재정정]주요사항보고서(유상증자결정)",
+      "corp_name": "한세엠케이",
+      "stock_code": "069640",
+      "report_name": "주요사항보고서(유상증자결정)",
       "disclosure_type": "B",
       "sentiment": null,
-      "submitted_at": "20261113",
+      "submitted_at": "20261116",
       "signal_used": false
     },
     {
-      "corp_name": "파이온엑스",
-      "stock_code": "900100",
-      "report_name": "[기재정정]주요사항보고서(유상증자결정)",
-      "disclosure_type": "B",
-      "sentiment": null,
-      "submitted_at": "20261113",
-      "signal_used": false
-    },
-    {
-      "corp_name": "금호전기",
-      "stock_code": "001210",
+      "corp_name": "우성머티리얼스",
+      "stock_code": "011300",
       "report_name": "[기재정정]주요사항보고서(유상증자결정)",
       "disclosure_type": "B",
       "sentiment": null,
@@ -74,9 +110,63 @@
       "signal_used": false
     },
     {
-      "corp_name": "우성머티리얼스",
-      "stock_code": "011300",
+      "corp_name": "금호전기",
+      "stock_code": "001210",
       "report_name": "[기재정정]주요사항보고서(유상증자결정)",
+      "disclosure_type": "B",
+      "sentiment": null,
+      "submitted_at": "20261113",
+      "signal_used": false
+    },
+    {
+      "corp_name": "파이온엑스",
+      "stock_code": "900100",
+      "report_name": "[기재정정]주요사항보고서(유상증자결정)",
+      "disclosure_type": "B",
+      "sentiment": null,
+      "submitted_at": "20261113",
+      "signal_used": false
+    },
+    {
+      "corp_name": "바이브컴퍼니",
+      "stock_code": "301300",
+      "report_name": "[기재정정]주요사항보고서(유상증자결정)",
+      "disclosure_type": "B",
+      "sentiment": null,
+      "submitted_at": "20261113",
+      "signal_used": false
+    },
+    {
+      "corp_name": "탑선",
+      "stock_code": "180060",
+      "report_name": "[기재정정]주요사항보고서(유상증자결정)",
+      "disclosure_type": "B",
+      "sentiment": null,
+      "submitted_at": "20261113",
+      "signal_used": false
+    },
+    {
+      "corp_name": "실리콘투",
+      "stock_code": "257720",
+      "report_name": "주요사항보고서(자기주식취득신탁계약해지결정)",
+      "disclosure_type": "B",
+      "sentiment": null,
+      "submitted_at": "20261113",
+      "signal_used": false
+    },
+    {
+      "corp_name": "에어부산",
+      "stock_code": "298690",
+      "report_name": "[기재정정]주요사항보고서(회사합병결정)",
+      "disclosure_type": "B",
+      "sentiment": null,
+      "submitted_at": "20261113",
+      "signal_used": false
+    },
+    {
+      "corp_name": "진에어",
+      "stock_code": "272450",
+      "report_name": "[기재정정]주요사항보고서(회사합병결정)",
       "disclosure_type": "B",
       "sentiment": null,
       "submitted_at": "20261113",
@@ -179,96 +269,6 @@
       "disclosure_type": "B",
       "sentiment": null,
       "submitted_at": "20261112",
-      "signal_used": false
-    },
-    {
-      "corp_name": "SNT다이내믹스",
-      "stock_code": "003570",
-      "report_name": "주요사항보고서(자기주식취득신탁계약체결결정)",
-      "disclosure_type": "B",
-      "sentiment": null,
-      "submitted_at": "20261112",
-      "signal_used": false
-    },
-    {
-      "corp_name": "한국전자인증",
-      "stock_code": "041460",
-      "report_name": "주요사항보고서(자기주식취득신탁계약해지결정)",
-      "disclosure_type": "B",
-      "sentiment": null,
-      "submitted_at": "20261111",
-      "signal_used": false
-    },
-    {
-      "corp_name": "삼보산업",
-      "stock_code": "009620",
-      "report_name": "[기재정정]주요사항보고서(유상증자결정)",
-      "disclosure_type": "B",
-      "sentiment": null,
-      "submitted_at": "20261111",
-      "signal_used": false
-    },
-    {
-      "corp_name": "하이퍼코퍼레이션",
-      "stock_code": "065650",
-      "report_name": "[기재정정]주요사항보고서(유상증자결정)",
-      "disclosure_type": "B",
-      "sentiment": null,
-      "submitted_at": "20261111",
-      "signal_used": false
-    },
-    {
-      "corp_name": "케이씨텍",
-      "stock_code": "281820",
-      "report_name": "주요사항보고서(자기주식취득신탁계약체결결정)",
-      "disclosure_type": "B",
-      "sentiment": null,
-      "submitted_at": "20261111",
-      "signal_used": false
-    },
-    {
-      "corp_name": "뷰노",
-      "stock_code": "338220",
-      "report_name": "[기재정정]주요사항보고서(유상증자결정)",
-      "disclosure_type": "B",
-      "sentiment": null,
-      "submitted_at": "20261111",
-      "signal_used": false
-    },
-    {
-      "corp_name": "더코디",
-      "stock_code": "224060",
-      "report_name": "[기재정정]주요사항보고서(유상증자결정)",
-      "disclosure_type": "B",
-      "sentiment": null,
-      "submitted_at": "20261111",
-      "signal_used": false
-    },
-    {
-      "corp_name": "더코디",
-      "stock_code": "224060",
-      "report_name": "[기재정정]주요사항보고서(유상증자결정)",
-      "disclosure_type": "B",
-      "sentiment": null,
-      "submitted_at": "20261111",
-      "signal_used": false
-    },
-    {
-      "corp_name": "제일엠앤에스",
-      "stock_code": "412540",
-      "report_name": "[기재정정]주요사항보고서(유상증자결정)",
-      "disclosure_type": "B",
-      "sentiment": null,
-      "submitted_at": "20261111",
-      "signal_used": false
-    },
-    {
-      "corp_name": "제일엠앤에스",
-      "stock_code": "412540",
-      "report_name": "[기재정정]주요사항보고서(유상증자결정)",
-      "disclosure_type": "B",
-      "sentiment": null,
-      "submitted_at": "20261111",
       "signal_used": false
     }
   ]
