@@ -1,6 +1,30 @@
 {
-  "exported_at": "2026-11-17T07:00:00.707075+00:00",
+  "exported_at": "2026-11-18T07:00:00.704663+00:00",
   "trades": [
+    {
+      "stock_code": "TSM",
+      "stock_name": "TSM",
+      "side": "buy",
+      "quantity": 1,
+      "price": 356.91,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "US_SWING",
+      "reason": "RSI적정(34.9) | RSI과매도 | BB하단근접 [us_pre_qty=0]",
+      "filled_at": "2026-11-17T15:46:31"
+    },
+    {
+      "stock_code": "TSM",
+      "stock_name": "TSM",
+      "side": "sell",
+      "quantity": 1,
+      "price": 369.75,
+      "pnl": -32.29,
+      "pnl_rate": -8.0315,
+      "strategy": "US_SWING",
+      "reason": "us_swing_stop_loss",
+      "filled_at": "2026-11-17T14:35:29"
+    },
     {
       "stock_code": "XOM",
       "stock_name": "XOM",
@@ -132,54 +156,6 @@
       "strategy": "US_SWING",
       "reason": "RSI적정(57.6) | MACD골든크로스 [us_pre_qty=0]",
       "filled_at": "2026-11-11T14:35:30"
-    },
-    {
-      "stock_code": "TSM",
-      "stock_name": "TSM",
-      "side": "sell",
-      "quantity": 1,
-      "price": 388.43,
-      "pnl": 16.8,
-      "pnl_rate": 4.5206,
-      "strategy": "US_SWING",
-      "reason": "us_swing_trailing",
-      "filled_at": "2026-11-10T16:56:18"
-    },
-    {
-      "stock_code": "AVGO",
-      "stock_name": "AVGO",
-      "side": "sell",
-      "quantity": 1,
-      "price": 324.93,
-      "pnl": 26.77,
-      "pnl_rate": 8.9784,
-      "strategy": "US_SWING",
-      "reason": "us_swing_trailing",
-      "filled_at": "2026-11-10T16:48:18"
-    },
-    {
-      "stock_code": "XOM",
-      "stock_name": "XOM",
-      "side": "buy",
-      "quantity": 1,
-      "price": 160.19,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "US_SWING",
-      "reason": "RSI적정(33.9) | RSI과매도 | BB하단근접 [us_pre_qty=0]",
-      "filled_at": "2026-11-10T14:35:21"
-    },
-    {
-      "stock_code": "MU",
-      "stock_name": "MU",
-      "side": "sell",
-      "quantity": 1,
-      "price": 715.3204,
-      "pnl": 17.66,
-      "pnl_rate": 2.5306,
-      "strategy": "US_SWING",
-      "reason": "us_swing_trailing",
-      "filled_at": "2026-11-10T14:30:18"
     }
   ]
 }

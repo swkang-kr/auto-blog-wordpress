@@ -1,14 +1,25 @@
 {
-  "exported_at": "2026-11-17T07:00:00.693408+00:00",
+  "exported_at": "2026-11-18T07:00:00.689922+00:00",
   "holdings": [
+    {
+      "stock_code": "TSM",
+      "stock_name": "TSM",
+      "quantity": 1,
+      "avg_price": 356.91,
+      "current_price": 361.51,
+      "unrealized_pnl": 4.6,
+      "unrealized_pnl_rate": 1.2888,
+      "strategy": "US_SWING",
+      "entry_date": "2026-11-17T15:46:31.279406"
+    },
     {
       "stock_code": "AAPL",
       "stock_name": "AAPL",
       "quantity": 1,
       "avg_price": 351.53,
-      "current_price": 352.37,
-      "unrealized_pnl": 0.84,
-      "unrealized_pnl_rate": 0.239,
+      "current_price": 351.535,
+      "unrealized_pnl": 0.01,
+      "unrealized_pnl_rate": 0.0014,
       "strategy": "US_SWING",
       "entry_date": "2026-11-11T14:35:30.415260"
     },
@@ -17,22 +28,11 @@
       "stock_name": "TSLA",
       "quantity": 1,
       "avg_price": 398.1,
-      "current_price": 379.38,
-      "unrealized_pnl": -18.72,
-      "unrealized_pnl_rate": -4.7023,
+      "current_price": 379.725,
+      "unrealized_pnl": -18.38,
+      "unrealized_pnl_rate": -4.6157,
       "strategy": "US_SWING",
       "entry_date": "2026-11-13T14:35:31.236570"
-    },
-    {
-      "stock_code": "TSM",
-      "stock_name": "TSM",
-      "quantity": 1,
-      "avg_price": 402.04,
-      "current_price": 373.085,
-      "unrealized_pnl": -28.96,
-      "unrealized_pnl_rate": -7.202,
-      "strategy": "US_SWING",
-      "entry_date": "2026-11-12T15:09:32.177942"
     }
   ]
 }

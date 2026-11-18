@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-11-17T07:00:00.903484+00:00",
+  "exported_at": "2026-11-18T07:00:00.892864+00:00",
   "market_daily": [
+    {
+      "date": "20261118",
+      "kospi_change": 1.99,
+      "kosdaq_change": 1.96,
+      "foreign_net": -3340.0,
+      "institution_net": 5047.0,
+      "individual_net": -6309.0,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20261117",
       "kospi_change": -2.59,
       "kosdaq_change": -2.34,
-      "foreign_net": -14459.0,
-      "institution_net": 5361.0,
-      "individual_net": 4291.0,
+      "foreign_net": -14080.0,
+      "institution_net": 5292.0,
+      "individual_net": 4030.0,
       "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20261116",
@@ -99,29 +110,18 @@
       "hot_theme_count": 2,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20260929",
-      "kospi_change": -0.27,
-      "kosdaq_change": 0.38,
-      "foreign_net": -29625.0,
-      "institution_net": 1250.0,
-      "individual_net": 11938.0,
-      "hot_theme_count": 7,
-      "momentum_count": 58,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "WSJ \"앨리스 황 남편, 중국 정부 지원받아 데이터센터 추진\"",
-    "코스피, 9개월 만에 5000선 붕괴",
-    "“한국 기업, 세계적 경쟁력 있는데”…美 투자자가 콕 집은 약점은",
-    "금감원, 회계부정 신고자 보복땐 직접 조사…이찬진 “긴급보호 땐 핫라인”",
-    "코스피, '5천피' 붕괴",
-    "코스피, '5천피' 붕괴",
-    "삼전닉스 하락세에 코스피 5000 붕괴",
-    "5000피 깨졌는데…모건스탠리 “코스피 1만 간다” 언제?",
-    "코스피, 결국 5000선도 무너졌다…종가 기준 9개월 만(종합)",
-    "한국 노인 2050년 39.7%...MBK \"고령화사회 필요섹터에 투자하겠다\""
+    "연말 배당 시즌 다가온다…배당 더 주는 기업 늘었다",
+    "“젠슨 황 때문에 밤잠 설칩니다”…내 반도체 ETF, 안전할까?",
+    "코스피 '5천피' 회복",
+    "코스피 '5천피' 회복",
+    "상승 마감한 코스피-코스닥",
+    "'5천피' 회복한 코스피",
+    "'5천피' 탈환한 코스피, 5067 마감",
+    "코스피 5,067 마감…'5천피' 탈환",
+    "'5천피' 탈환한 코스피, 5067 마감",
+    "상승 마감한 코스피-코스닥"
   ]
 }

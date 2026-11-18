@@ -1,6 +1,6 @@
 {
-  "exported_at": "2026-11-17T07:00:01.092302+00:00",
-  "total_stocks": 10,
+  "exported_at": "2026-11-18T07:00:01.099225+00:00",
+  "total_stocks": 6,
   "watchlist_all": [
     {
       "stock_code": "007660",
@@ -19,36 +19,20 @@
       "latest_at": "2026-11-13T01:00:31.476384"
     },
     {
-      "stock_code": "180640",
-      "stock_name": "한진칼",
+      "stock_code": "277810",
+      "stock_name": "레인보우로보틱스",
       "market": "KOSPI",
-      "sector": "",
-      "signal_count": 147,
-      "buy_count": 0,
-      "sell_count": 147,
-      "avg_confidence": 0.843209523809525,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "latest_reason": "RSI과매수(88)",
-      "latest_price": 0,
-      "latest_at": "2026-11-11T00:05:39.822159"
-    },
-    {
-      "stock_code": "196170",
-      "stock_name": "알테오젠",
-      "market": "KOSPI",
-      "sector": "생물공학",
-      "signal_count": 146,
-      "buy_count": 146,
+      "sector": "기계",
+      "signal_count": 310,
+      "buy_count": 310,
       "sell_count": 0,
-      "avg_confidence": 0.7999999999999978,
+      "avg_confidence": 0.5550893548387097,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "latest_reason": "2일연속상승 | RSI반등(34) | RSI sweet(34) | 거래량3.9x | 거래량3x+ | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(14) | 주봉MA20아래 | 상대강도(+4.1%vsKOSPI+0.5%) | 디커플링모멘텀",
+      "latest_reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(25) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+2.9%) | 디커플링모멘텀",
       "latest_price": 0,
-      "latest_at": "2026-11-11T01:01:23.767475"
+      "latest_at": "2026-11-18T01:01:35.809858"
     },
     {
       "stock_code": "138040",
@@ -67,52 +51,20 @@
       "latest_at": "2026-11-13T01:07:32.347527"
     },
     {
-      "stock_code": "035420",
-      "stock_name": "NAVER",
+      "stock_code": "196170",
+      "stock_name": "알테오젠",
       "market": "KOSPI",
-      "sector": "IT서비스",
-      "signal_count": 56,
-      "buy_count": 56,
-      "sell_count": 0,
-      "avg_confidence": 0.6666999999999994,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "latest_reason": "MACD히스토그램↑ | RSI모멘텀(59) | 거래량2.3x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+4.5%vsKOSPI-0.1%) | 디커플링모멘텀",
-      "latest_price": 0,
-      "latest_at": "2026-11-11T00:05:39.822133"
-    },
-    {
-      "stock_code": "017670",
-      "stock_name": "SK텔레콤",
-      "market": "KOSPI",
-      "sector": "무선통신서비스",
+      "sector": "생물공학",
       "signal_count": 55,
       "buy_count": 55,
       "sell_count": 0,
-      "avg_confidence": 0.6666999999999994,
+      "avg_confidence": 0.7999999999999996,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "latest_reason": "MACD히스토그램↑ | RSI모멘텀(55) | 거래량2.1x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+5.7%vsKOSPI-0.1%) | 디커플링모멘텀",
+      "latest_reason": "2일연속상승 | RSI반등(35) | RSI sweet(35) | 거래량4.4x | 거래량3x+ | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(14) | 주봉MA20아래 | 상대강도(+4.9%vsKOSPI+0.7%) | 디커플링모멘텀",
       "latest_price": 0,
-      "latest_at": "2026-11-11T00:05:39.822143"
-    },
-    {
-      "stock_code": "018260",
-      "stock_name": "삼성에스디에스",
-      "market": "KOSPI",
-      "sector": "",
-      "signal_count": 55,
-      "buy_count": 55,
-      "sell_count": 0,
-      "avg_confidence": 1.0,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(63) | 거래량2.4x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+6.7%vsKOSPI-0.1%) | 디커플링모멘텀",
-      "latest_price": 0,
-      "latest_at": "2026-11-11T00:05:39.822107"
+      "latest_at": "2026-11-12T00:05:40.703134"
     },
     {
       "stock_code": "003570",
@@ -145,75 +97,10 @@
       "latest_reason": "공시: 주요사항보고서(자기주식취득신탁계약체결결정) | 감성점수: 0.68 | 거래량급증: True",
       "latest_price": 0,
       "latest_at": "2026-11-12T00:05:40.703144"
-    },
-    {
-      "stock_code": "030530",
-      "stock_name": "원익홀딩스",
-      "market": "KOSDAQ",
-      "sector": "",
-      "signal_count": 1,
-      "buy_count": 1,
-      "sell_count": 0,
-      "avg_confidence": 0.2886,
-      "strategies": [
-        "dart_momentum"
-      ],
-      "latest_reason": "공시: [기재정정]주요사항보고서(풋백옵션등계약체결결정) | 감성점수: 0.68 | 거래량급증: True",
-      "latest_price": 0,
-      "latest_at": "2026-11-11T00:05:39.822151"
     }
   ],
   "by_niche": {
-    "시장분석": [
-      {
-        "stock_code": "035420",
-        "stock_name": "NAVER",
-        "market": "KOSPI",
-        "sector": "IT서비스",
-        "signal_count": 56,
-        "buy_count": 56,
-        "sell_count": 0,
-        "avg_confidence": 0.6666999999999994,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "MACD히스토그램↑ | RSI모멘텀(59) | 거래량2.3x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+4.5%vsKOSPI-0.1%) | 디커플링모멘텀",
-        "latest_price": 0,
-        "latest_at": "2026-11-11T00:05:39.822133"
-      },
-      {
-        "stock_code": "017670",
-        "stock_name": "SK텔레콤",
-        "market": "KOSPI",
-        "sector": "무선통신서비스",
-        "signal_count": 55,
-        "buy_count": 55,
-        "sell_count": 0,
-        "avg_confidence": 0.6666999999999994,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "MACD히스토그램↑ | RSI모멘텀(55) | 거래량2.1x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+5.7%vsKOSPI-0.1%) | 디커플링모멘텀",
-        "latest_price": 0,
-        "latest_at": "2026-11-11T00:05:39.822143"
-      },
-      {
-        "stock_code": "018260",
-        "stock_name": "삼성에스디에스",
-        "market": "KOSPI",
-        "sector": "",
-        "signal_count": 55,
-        "buy_count": 55,
-        "sell_count": 0,
-        "avg_confidence": 1.0,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(63) | 거래량2.4x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+6.7%vsKOSPI-0.1%) | 디커플링모멘텀",
-        "latest_price": 0,
-        "latest_at": "2026-11-11T00:05:39.822107"
-      }
-    ],
+    "시장분석": [],
     "업종분석": [
       {
         "stock_code": "007660",
@@ -232,36 +119,20 @@
         "latest_at": "2026-11-13T01:00:31.476384"
       },
       {
-        "stock_code": "180640",
-        "stock_name": "한진칼",
+        "stock_code": "277810",
+        "stock_name": "레인보우로보틱스",
         "market": "KOSPI",
-        "sector": "",
-        "signal_count": 147,
-        "buy_count": 0,
-        "sell_count": 147,
-        "avg_confidence": 0.843209523809525,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "RSI과매수(88)",
-        "latest_price": 0,
-        "latest_at": "2026-11-11T00:05:39.822159"
-      },
-      {
-        "stock_code": "196170",
-        "stock_name": "알테오젠",
-        "market": "KOSPI",
-        "sector": "생물공학",
-        "signal_count": 146,
-        "buy_count": 146,
+        "sector": "기계",
+        "signal_count": 310,
+        "buy_count": 310,
         "sell_count": 0,
-        "avg_confidence": 0.7999999999999978,
+        "avg_confidence": 0.5550893548387097,
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "2일연속상승 | RSI반등(34) | RSI sweet(34) | 거래량3.9x | 거래량3x+ | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(14) | 주봉MA20아래 | 상대강도(+4.1%vsKOSPI+0.5%) | 디커플링모멘텀",
+        "latest_reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(25) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+2.9%) | 디커플링모멘텀",
         "latest_price": 0,
-        "latest_at": "2026-11-11T01:01:23.767475"
+        "latest_at": "2026-11-18T01:01:35.809858"
       },
       {
         "stock_code": "138040",
@@ -278,6 +149,22 @@
         "latest_reason": "RSI반등(39) | RSI sweet(39) | BB하단반등(score=0) | EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20아래 | 상대강도(+5.4%vsKOSPI+2.0%)",
         "latest_price": 0,
         "latest_at": "2026-11-13T01:07:32.347527"
+      },
+      {
+        "stock_code": "196170",
+        "stock_name": "알테오젠",
+        "market": "KOSPI",
+        "sector": "생물공학",
+        "signal_count": 55,
+        "buy_count": 55,
+        "sell_count": 0,
+        "avg_confidence": 0.7999999999999996,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "2일연속상승 | RSI반등(35) | RSI sweet(35) | 거래량4.4x | 거래량3x+ | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(14) | 주봉MA20아래 | 상대강도(+4.9%vsKOSPI+0.7%) | 디커플링모멘텀",
+        "latest_price": 0,
+        "latest_at": "2026-11-12T00:05:40.703134"
       }
     ],
     "테마분석": [
@@ -298,36 +185,20 @@
         "latest_at": "2026-11-13T01:00:31.476384"
       },
       {
-        "stock_code": "180640",
-        "stock_name": "한진칼",
+        "stock_code": "277810",
+        "stock_name": "레인보우로보틱스",
         "market": "KOSPI",
-        "sector": "",
-        "signal_count": 147,
-        "buy_count": 0,
-        "sell_count": 147,
-        "avg_confidence": 0.843209523809525,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "RSI과매수(88)",
-        "latest_price": 0,
-        "latest_at": "2026-11-11T00:05:39.822159"
-      },
-      {
-        "stock_code": "196170",
-        "stock_name": "알테오젠",
-        "market": "KOSPI",
-        "sector": "생물공학",
-        "signal_count": 146,
-        "buy_count": 146,
+        "sector": "기계",
+        "signal_count": 310,
+        "buy_count": 310,
         "sell_count": 0,
-        "avg_confidence": 0.7999999999999978,
+        "avg_confidence": 0.5550893548387097,
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "2일연속상승 | RSI반등(34) | RSI sweet(34) | 거래량3.9x | 거래량3x+ | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(14) | 주봉MA20아래 | 상대강도(+4.1%vsKOSPI+0.5%) | 디커플링모멘텀",
+        "latest_reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(25) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+2.9%) | 디커플링모멘텀",
         "latest_price": 0,
-        "latest_at": "2026-11-11T01:01:23.767475"
+        "latest_at": "2026-11-18T01:01:35.809858"
       },
       {
         "stock_code": "138040",
@@ -346,52 +217,20 @@
         "latest_at": "2026-11-13T01:07:32.347527"
       },
       {
-        "stock_code": "035420",
-        "stock_name": "NAVER",
+        "stock_code": "196170",
+        "stock_name": "알테오젠",
         "market": "KOSPI",
-        "sector": "IT서비스",
-        "signal_count": 56,
-        "buy_count": 56,
-        "sell_count": 0,
-        "avg_confidence": 0.6666999999999994,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "MACD히스토그램↑ | RSI모멘텀(59) | 거래량2.3x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+4.5%vsKOSPI-0.1%) | 디커플링모멘텀",
-        "latest_price": 0,
-        "latest_at": "2026-11-11T00:05:39.822133"
-      },
-      {
-        "stock_code": "017670",
-        "stock_name": "SK텔레콤",
-        "market": "KOSPI",
-        "sector": "무선통신서비스",
+        "sector": "생물공학",
         "signal_count": 55,
         "buy_count": 55,
         "sell_count": 0,
-        "avg_confidence": 0.6666999999999994,
+        "avg_confidence": 0.7999999999999996,
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "MACD히스토그램↑ | RSI모멘텀(55) | 거래량2.1x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+5.7%vsKOSPI-0.1%) | 디커플링모멘텀",
+        "latest_reason": "2일연속상승 | RSI반등(35) | RSI sweet(35) | 거래량4.4x | 거래량3x+ | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(14) | 주봉MA20아래 | 상대강도(+4.9%vsKOSPI+0.7%) | 디커플링모멘텀",
         "latest_price": 0,
-        "latest_at": "2026-11-11T00:05:39.822143"
-      },
-      {
-        "stock_code": "018260",
-        "stock_name": "삼성에스디에스",
-        "market": "KOSPI",
-        "sector": "",
-        "signal_count": 55,
-        "buy_count": 55,
-        "sell_count": 0,
-        "avg_confidence": 1.0,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(63) | 거래량2.4x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+6.7%vsKOSPI-0.1%) | 디커플링모멘텀",
-        "latest_price": 0,
-        "latest_at": "2026-11-11T00:05:39.822107"
+        "latest_at": "2026-11-12T00:05:40.703134"
       }
     ],
     "수급분석": [
@@ -412,36 +251,20 @@
         "latest_at": "2026-11-13T01:00:31.476384"
       },
       {
-        "stock_code": "180640",
-        "stock_name": "한진칼",
+        "stock_code": "277810",
+        "stock_name": "레인보우로보틱스",
         "market": "KOSPI",
-        "sector": "",
-        "signal_count": 147,
-        "buy_count": 0,
-        "sell_count": 147,
-        "avg_confidence": 0.843209523809525,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "RSI과매수(88)",
-        "latest_price": 0,
-        "latest_at": "2026-11-11T00:05:39.822159"
-      },
-      {
-        "stock_code": "196170",
-        "stock_name": "알테오젠",
-        "market": "KOSPI",
-        "sector": "생물공학",
-        "signal_count": 146,
-        "buy_count": 146,
+        "sector": "기계",
+        "signal_count": 310,
+        "buy_count": 310,
         "sell_count": 0,
-        "avg_confidence": 0.7999999999999978,
+        "avg_confidence": 0.5550893548387097,
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "2일연속상승 | RSI반등(34) | RSI sweet(34) | 거래량3.9x | 거래량3x+ | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(14) | 주봉MA20아래 | 상대강도(+4.1%vsKOSPI+0.5%) | 디커플링모멘텀",
+        "latest_reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(25) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+2.9%) | 디커플링모멘텀",
         "latest_price": 0,
-        "latest_at": "2026-11-11T01:01:23.767475"
+        "latest_at": "2026-11-18T01:01:35.809858"
       },
       {
         "stock_code": "138040",
@@ -460,52 +283,20 @@
         "latest_at": "2026-11-13T01:07:32.347527"
       },
       {
-        "stock_code": "035420",
-        "stock_name": "NAVER",
+        "stock_code": "196170",
+        "stock_name": "알테오젠",
         "market": "KOSPI",
-        "sector": "IT서비스",
-        "signal_count": 56,
-        "buy_count": 56,
-        "sell_count": 0,
-        "avg_confidence": 0.6666999999999994,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "MACD히스토그램↑ | RSI모멘텀(59) | 거래량2.3x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+4.5%vsKOSPI-0.1%) | 디커플링모멘텀",
-        "latest_price": 0,
-        "latest_at": "2026-11-11T00:05:39.822133"
-      },
-      {
-        "stock_code": "017670",
-        "stock_name": "SK텔레콤",
-        "market": "KOSPI",
-        "sector": "무선통신서비스",
+        "sector": "생물공학",
         "signal_count": 55,
         "buy_count": 55,
         "sell_count": 0,
-        "avg_confidence": 0.6666999999999994,
+        "avg_confidence": 0.7999999999999996,
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "MACD히스토그램↑ | RSI모멘텀(55) | 거래량2.1x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+5.7%vsKOSPI-0.1%) | 디커플링모멘텀",
+        "latest_reason": "2일연속상승 | RSI반등(35) | RSI sweet(35) | 거래량4.4x | 거래량3x+ | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(14) | 주봉MA20아래 | 상대강도(+4.9%vsKOSPI+0.7%) | 디커플링모멘텀",
         "latest_price": 0,
-        "latest_at": "2026-11-11T00:05:39.822143"
-      },
-      {
-        "stock_code": "018260",
-        "stock_name": "삼성에스디에스",
-        "market": "KOSPI",
-        "sector": "",
-        "signal_count": 55,
-        "buy_count": 55,
-        "sell_count": 0,
-        "avg_confidence": 1.0,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(63) | 거래량2.4x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+6.7%vsKOSPI-0.1%) | 디커플링모멘텀",
-        "latest_price": 0,
-        "latest_at": "2026-11-11T00:05:39.822107"
+        "latest_at": "2026-11-12T00:05:40.703134"
       },
       {
         "stock_code": "003570",
@@ -538,22 +329,6 @@
         "latest_reason": "공시: 주요사항보고서(자기주식취득신탁계약체결결정) | 감성점수: 0.68 | 거래량급증: True",
         "latest_price": 0,
         "latest_at": "2026-11-12T00:05:40.703144"
-      },
-      {
-        "stock_code": "030530",
-        "stock_name": "원익홀딩스",
-        "market": "KOSDAQ",
-        "sector": "",
-        "signal_count": 1,
-        "buy_count": 1,
-        "sell_count": 0,
-        "avg_confidence": 0.2886,
-        "strategies": [
-          "dart_momentum"
-        ],
-        "latest_reason": "공시: [기재정정]주요사항보고서(풋백옵션등계약체결결정) | 감성점수: 0.68 | 거래량급증: True",
-        "latest_price": 0,
-        "latest_at": "2026-11-11T00:05:39.822151"
       }
     ]
   }
