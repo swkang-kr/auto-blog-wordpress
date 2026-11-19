@@ -1,6 +1,42 @@
 {
-  "exported_at": "2026-11-18T07:00:00.704663+00:00",
+  "exported_at": "2026-11-19T07:00:00.705947+00:00",
   "trades": [
+    {
+      "stock_code": "TSM",
+      "stock_name": "TSM",
+      "side": "sell",
+      "quantity": 1,
+      "price": 356.83,
+      "pnl": -0.08,
+      "pnl_rate": -0.0224,
+      "strategy": "US_SWING",
+      "reason": "us_swing_trailing",
+      "filled_at": "2026-11-18T14:51:29"
+    },
+    {
+      "stock_code": "INTC",
+      "stock_name": "INTC",
+      "side": "buy",
+      "quantity": 6,
+      "price": 54.6599,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "US_SWING",
+      "reason": "RSI적정(30.0) | RSI과매도 | MACD골든크로스 [us_pre_qty=0]",
+      "filled_at": "2026-11-18T14:35:31"
+    },
+    {
+      "stock_code": "AAPL",
+      "stock_name": "AAPL",
+      "side": "sell",
+      "quantity": 1,
+      "price": 353.1,
+      "pnl": 1.57,
+      "pnl_rate": 0.4466,
+      "strategy": "US_SWING",
+      "reason": "us_swing_time_exit",
+      "filled_at": "2026-11-18T14:30:29"
+    },
     {
       "stock_code": "TSM",
       "stock_name": "TSM",
@@ -120,42 +156,6 @@
       "strategy": "US_SWING",
       "reason": "us_swing_stop_loss",
       "filled_at": "2026-11-12T14:30:29"
-    },
-    {
-      "stock_code": "AVGO",
-      "stock_name": "AVGO",
-      "side": "buy",
-      "quantity": 1,
-      "price": 350.1,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "US_SWING",
-      "reason": "RSI적정(55.4) | MACD골든크로스 [us_pre_qty=0]",
-      "filled_at": "2026-11-11T14:35:31"
-    },
-    {
-      "stock_code": "AMD",
-      "stock_name": "AMD",
-      "side": "buy",
-      "quantity": 1,
-      "price": 531.95,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "US_SWING",
-      "reason": "RSI적정(50.9) | MACD골든크로스 [us_pre_qty=0]",
-      "filled_at": "2026-11-11T14:35:31"
-    },
-    {
-      "stock_code": "AAPL",
-      "stock_name": "AAPL",
-      "side": "buy",
-      "quantity": 1,
-      "price": 351.53,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "US_SWING",
-      "reason": "RSI적정(57.6) | MACD골든크로스 [us_pre_qty=0]",
-      "filled_at": "2026-11-11T14:35:30"
     }
   ]
 }

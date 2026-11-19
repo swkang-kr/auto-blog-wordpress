@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-11-18T07:00:00.892864+00:00",
+  "exported_at": "2026-11-19T07:00:01.100894+00:00",
   "market_daily": [
+    {
+      "date": "20261119",
+      "kospi_change": 0.74,
+      "kosdaq_change": 2.33,
+      "foreign_net": -4375.0,
+      "institution_net": 4.0,
+      "individual_net": -136.0,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20261118",
       "kospi_change": 1.99,
       "kosdaq_change": 1.96,
-      "foreign_net": -3340.0,
-      "institution_net": 5047.0,
-      "individual_net": -6309.0,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": -3398.0,
+      "institution_net": 4969.0,
+      "individual_net": -6201.0,
+      "hot_theme_count": 29,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20261117",
@@ -99,29 +110,18 @@
       "hot_theme_count": 0,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20261105",
-      "kospi_change": -5.28,
-      "kosdaq_change": -5.11,
-      "foreign_net": -34165.0,
-      "institution_net": 8484.0,
-      "individual_net": 22890.0,
-      "hot_theme_count": 2,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "연말 배당 시즌 다가온다…배당 더 주는 기업 늘었다",
-    "“젠슨 황 때문에 밤잠 설칩니다”…내 반도체 ETF, 안전할까?",
-    "코스피 '5천피' 회복",
-    "코스피 '5천피' 회복",
-    "상승 마감한 코스피-코스닥",
-    "'5천피' 회복한 코스피",
-    "'5천피' 탈환한 코스피, 5067 마감",
-    "코스피 5,067 마감…'5천피' 탈환",
-    "'5천피' 탈환한 코스피, 5067 마감",
-    "상승 마감한 코스피-코스닥"
+    "발행어음 후발주자 고금리 공세&#8943;NH투자·KB증권 '고전'",
+    "달러 또 최고치 경신인데…환율 4일 연속 하락해 1,330원선",
+    "한국만의 독특한 감사인 지정제…감사품질 높였나",
+    "수출 1조달러 달성에도 웃는 건 반도체뿐…증시 온기 확산이 과제",
+    "파라택시스이더리움, 10억원 규모 자사주 취득 신탁계약 체결",
+    "증시 대기자금, 85조원 밑으로…다시 연중최저 수준으로 감소",
+    "회사채 희망금리 산정 '2곳 이상'에서 '전체 채평사'로…금투협 기준 강화 [fn마켓워치]",
+    "연준 금리 인상 기대에도…원·달러, 3.0원 내린 1330.0원 마감",
+    "원·달러 환율, 3.0원 내린 1330.0원 (오후 3시30분)",
+    "비아이매트릭스, AI 인허가 사전진단 서비스 1차 개발 완료…내년 1월 시범운영"
   ]
 }

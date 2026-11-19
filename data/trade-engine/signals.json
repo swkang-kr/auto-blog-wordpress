@@ -1,505 +1,505 @@
 {
-  "exported_at": "2026-11-18T07:00:00.666932+00:00",
+  "exported_at": "2026-11-19T07:00:00.670490+00:00",
   "signals": [
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.9%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI+0.5%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T06:10:48.037252"
+      "created_at": "2026-11-19T06:10:27.540724"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.9%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI+0.5%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T06:09:47.313492"
+      "created_at": "2026-11-19T06:09:28.137971"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.9%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI+0.6%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T06:08:45.390777"
+      "created_at": "2026-11-19T06:08:27.011582"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.9%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI+0.6%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T06:07:49.659295"
+      "created_at": "2026-11-19T06:07:28.745376"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.7%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI+0.6%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T06:06:50.471713"
+      "created_at": "2026-11-19T06:06:27.817005"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.7%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI+0.7%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T06:05:50.981666"
+      "created_at": "2026-11-19T06:05:27.606905"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.7%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI+0.7%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T06:04:44.321435"
+      "created_at": "2026-11-19T06:04:26.479718"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.6%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI+0.7%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T06:03:32.847890"
+      "created_at": "2026-11-19T06:03:26.570498"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.6%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI+0.5%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T06:02:50.048393"
+      "created_at": "2026-11-19T06:02:27.795533"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.7%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI+0.5%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T06:01:36.428868"
+      "created_at": "2026-11-19T06:01:26.561468"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.9%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI+0.3%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T06:00:52.090157"
+      "created_at": "2026-11-19T06:00:28.598145"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.9%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI+0.3%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:59:45.128407"
+      "created_at": "2026-11-19T05:59:26.442658"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5833,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+2.0%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI+0.4%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:58:38.672254"
+      "created_at": "2026-11-19T05:58:27.584514"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5833,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+2.0%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI+0.3%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:57:41.742212"
+      "created_at": "2026-11-19T05:57:28.579698"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5833,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+2.0%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI+0.3%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:56:50.136820"
+      "created_at": "2026-11-19T05:56:27.242217"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5833,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+2.0%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI+0.2%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:55:52.183957"
+      "created_at": "2026-11-19T05:55:26.511031"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+2.0%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI+0.2%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:54:38.864153"
+      "created_at": "2026-11-19T05:54:26.717783"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+2.0%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI-0.1%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:53:52.581280"
+      "created_at": "2026-11-19T05:53:28.763520"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+2.0%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI-0.1%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:52:43.970567"
+      "created_at": "2026-11-19T05:52:28.350119"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+2.0%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI-0.1%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:51:41.609687"
+      "created_at": "2026-11-19T05:51:27.823237"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.8%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI+0.1%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:50:51.740644"
+      "created_at": "2026-11-19T05:50:28.125671"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.8%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI+0.1%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:49:47.330300"
+      "created_at": "2026-11-19T05:49:27.605003"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.8%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI+0.1%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:48:37.294357"
+      "created_at": "2026-11-19T05:48:26.577114"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.9%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI+0.2%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:47:34.545503"
+      "created_at": "2026-11-19T05:47:26.551453"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.9%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI+0.3%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:46:47.208032"
+      "created_at": "2026-11-19T05:46:26.869456"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.9%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI+0.3%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:45:41.772040"
+      "created_at": "2026-11-19T05:45:27.784612"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.9%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI+0.1%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:44:41.252837"
+      "created_at": "2026-11-19T05:44:26.437732"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.9%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI+0.1%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:43:37.664044"
+      "created_at": "2026-11-19T05:43:26.445957"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.8%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI+0.1%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:42:40.114837"
+      "created_at": "2026-11-19T05:42:26.742432"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.8%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI+0.0%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:41:38.266251"
+      "created_at": "2026-11-19T05:41:26.632564"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.7%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI+0.0%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:40:33.015572"
+      "created_at": "2026-11-19T05:40:27.649445"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.7%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI-0.0%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:39:40.299194"
+      "created_at": "2026-11-19T05:39:27.335843"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.5%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI-0.0%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:38:39.677970"
+      "created_at": "2026-11-19T05:38:27.738613"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.5%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI-0.0%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:37:47.454040"
+      "created_at": "2026-11-19T05:37:27.935581"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.5%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI-0.1%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:36:41.096874"
+      "created_at": "2026-11-19T05:36:26.905772"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.8%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI-0.1%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:35:38.529927"
+      "created_at": "2026-11-19T05:35:27.614804"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.8%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI-0.2%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:34:52.551557"
+      "created_at": "2026-11-19T05:34:26.689764"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+2.0%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI-0.1%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:33:34.317854"
+      "created_at": "2026-11-19T05:33:26.577313"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+2.0%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI-0.0%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:32:47.216976"
+      "created_at": "2026-11-19T05:32:29.538854"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+2.0%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI-0.0%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:31:36.149046"
+      "created_at": "2026-11-19T05:31:26.668006"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.5%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI-0.0%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:30:40.340636"
+      "created_at": "2026-11-19T05:30:28.298307"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.5%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI-0.1%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:29:39.003552"
+      "created_at": "2026-11-19T05:29:26.095714"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.7%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI-0.1%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:28:32.954607"
+      "created_at": "2026-11-19T05:28:27.671273"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.7%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI-0.1%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:27:57.530458"
+      "created_at": "2026-11-19T05:27:26.540640"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.7%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI-0.1%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:26:48.746472"
+      "created_at": "2026-11-19T05:26:26.737206"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.6%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI-0.1%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:25:33.036846"
+      "created_at": "2026-11-19T05:25:26.525366"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.6%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI-0.3%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:24:33.030556"
+      "created_at": "2026-11-19T05:24:26.620595"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.7%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI-0.4%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:23:40.192452"
+      "created_at": "2026-11-19T05:23:26.308083"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.7%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI-0.4%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:22:32.914940"
+      "created_at": "2026-11-19T05:22:28.249480"
     },
     {
       "stock_code": "277810",
       "stock_name": "",
       "strategy": "RSI+MACD(swing)",
       "signal_type": "buy",
-      "confidence": 0.5,
-      "reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+1.7%) | 디커플링모멘텀",
+      "confidence": 0.75,
+      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI-0.4%) | 디커플링모멘텀",
       "price": 0,
-      "created_at": "2026-11-18T05:21:35.060279"
+      "created_at": "2026-11-19T05:21:26.585772"
     }
   ]
 }
