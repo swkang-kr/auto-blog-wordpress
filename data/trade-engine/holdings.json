@@ -1,25 +1,25 @@
 {
-  "exported_at": "2026-11-19T07:00:00.692469+00:00",
+  "exported_at": "2026-11-20T07:00:00.694259+00:00",
   "holdings": [
     {
-      "stock_code": "INTC",
-      "stock_name": "INTC",
-      "quantity": 6,
-      "avg_price": 54.6599,
-      "current_price": 54.635,
-      "unrealized_pnl": -0.15,
-      "unrealized_pnl_rate": -0.0456,
+      "stock_code": "JPM",
+      "stock_name": "JPM",
+      "quantity": 1,
+      "avg_price": 318.9,
+      "current_price": 320.5299,
+      "unrealized_pnl": 1.63,
+      "unrealized_pnl_rate": 0.5111,
       "strategy": "US_SWING",
-      "entry_date": "2026-11-18T14:35:31.172967"
+      "entry_date": "2026-11-19T17:02:24.752863"
     },
     {
       "stock_code": "TSLA",
       "stock_name": "TSLA",
       "quantity": 1,
       "avg_price": 398.1,
-      "current_price": 383.83,
-      "unrealized_pnl": -14.27,
-      "unrealized_pnl_rate": -3.5845,
+      "current_price": 374.05,
+      "unrealized_pnl": -24.05,
+      "unrealized_pnl_rate": -6.0412,
       "strategy": "US_SWING",
       "entry_date": "2026-11-13T14:35:31.236570"
     }

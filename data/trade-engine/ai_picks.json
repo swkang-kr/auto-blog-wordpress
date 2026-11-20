@@ -1,5 +1,5 @@
 {
-  "exported_at": "2026-11-19T07:00:01.369538+00:00",
+  "exported_at": "2026-11-20T07:00:01.415371+00:00",
   "total_candidates": 2,
   "total_holdings": 2,
   "candidates": [
@@ -8,13 +8,13 @@
       "stock_name": "레인보우로보틱스",
       "sector": "기계",
       "signal_count": 30,
-      "avg_confidence": 0.75,
+      "avg_confidence": 0.5333399999999998,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.8%vsKOSPI+0.0%) | 디커플링모멘텀",
+      "reason": "MACD히스토그램↑ | 거래량2.7x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(-0.6%vsKOSPI-5.8%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-11-19T05:41:26.632564",
+      "signal_time": "2026-11-20T05:41:25.703658",
       "status": "매수 시그널"
     },
     {
@@ -32,12 +32,12 @@
   ],
   "holdings": [
     {
-      "stock_code": "INTC",
-      "stock_name": "INTC",
-      "quantity": 6,
-      "avg_price": 54.6599,
+      "stock_code": "JPM",
+      "stock_name": "JPM",
+      "quantity": 1,
+      "avg_price": 318.9,
       "strategy": "US_SWING",
-      "entry_date": "2026-11-18",
+      "entry_date": "2026-11-19",
       "status": "보유 중"
     },
     {

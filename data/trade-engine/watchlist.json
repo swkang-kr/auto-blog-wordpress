@@ -1,16 +1,16 @@
 {
-  "exported_at": "2026-11-19T07:00:01.324784+00:00",
-  "total_stocks": 4,
+  "exported_at": "2026-11-20T07:00:01.366341+00:00",
+  "total_stocks": 3,
   "watchlist_all": [
     {
       "stock_code": "277810",
       "stock_name": "레인보우로보틱스",
       "market": "KOSPI",
       "sector": "기계",
-      "signal_count": 676,
-      "buy_count": 676,
+      "signal_count": 1042,
+      "buy_count": 1042,
       "sell_count": 0,
-      "avg_confidence": 0.6688800295858,
+      "avg_confidence": 0.6311145873320548,
       "strategies": [
         "RSI+MACD(swing)"
       ],
@@ -23,48 +23,32 @@
       "stock_name": "이수페타시스",
       "market": "KOSPI",
       "sector": "전자장비와기기",
-      "signal_count": 366,
-      "buy_count": 366,
+      "signal_count": 55,
+      "buy_count": 55,
       "sell_count": 0,
-      "avg_confidence": 0.686731420765025,
+      "avg_confidence": 0.7999999999999996,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(52) | 거래량2.7x | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+8.4%vsKOSPI+2.0%) | 디커플링모멘텀",
+      "latest_reason": "2일연속상승 | MACD히스토그램↑ | 거래량3.6x | 거래량3x+ | MA역배열 | 캔들역해머(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+4.7%vsKOSPI+0.5%) | 디커플링모멘텀",
       "latest_price": 0,
-      "latest_at": "2026-11-13T01:00:31.476384"
+      "latest_at": "2026-11-16T00:05:47.133401"
     },
     {
       "stock_code": "138040",
       "stock_name": "메리츠금융지주",
       "market": "KOSPI",
       "sector": "",
-      "signal_count": 102,
-      "buy_count": 102,
+      "signal_count": 45,
+      "buy_count": 45,
       "sell_count": 0,
-      "avg_confidence": 0.5367500000000004,
+      "avg_confidence": 0.5833000000000005,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "latest_reason": "RSI반등(39) | RSI sweet(39) | BB하단반등(score=0) | EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20아래 | 상대강도(+5.4%vsKOSPI+2.0%)",
+      "latest_reason": "2일연속상승 | 거래량2.0x | EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20아래 | 상대강도(+2.4%vsKOSPI-2.2%) | 디커플링모멘텀",
       "latest_price": 0,
-      "latest_at": "2026-11-13T01:07:32.347527"
-    },
-    {
-      "stock_code": "003570",
-      "stock_name": "SNT다이내믹스",
-      "market": "KOSPI",
-      "sector": "",
-      "signal_count": 1,
-      "buy_count": 1,
-      "sell_count": 0,
-      "avg_confidence": 0.2886,
-      "strategies": [
-        "dart_momentum"
-      ],
-      "latest_reason": "공시: 주요사항보고서(자기주식취득신탁계약체결결정) | 감성점수: 0.68 | 거래량급증: True",
-      "latest_price": 0,
-      "latest_at": "2026-11-13T00:05:41.050355"
+      "latest_at": "2026-11-17T00:06:36.205513"
     }
   ],
   "by_niche": {
@@ -75,10 +59,10 @@
         "stock_name": "레인보우로보틱스",
         "market": "KOSPI",
         "sector": "기계",
-        "signal_count": 676,
-        "buy_count": 676,
+        "signal_count": 1042,
+        "buy_count": 1042,
         "sell_count": 0,
-        "avg_confidence": 0.6688800295858,
+        "avg_confidence": 0.6311145873320548,
         "strategies": [
           "RSI+MACD(swing)"
         ],
@@ -91,32 +75,32 @@
         "stock_name": "이수페타시스",
         "market": "KOSPI",
         "sector": "전자장비와기기",
-        "signal_count": 366,
-        "buy_count": 366,
+        "signal_count": 55,
+        "buy_count": 55,
         "sell_count": 0,
-        "avg_confidence": 0.686731420765025,
+        "avg_confidence": 0.7999999999999996,
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(52) | 거래량2.7x | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+8.4%vsKOSPI+2.0%) | 디커플링모멘텀",
+        "latest_reason": "2일연속상승 | MACD히스토그램↑ | 거래량3.6x | 거래량3x+ | MA역배열 | 캔들역해머(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+4.7%vsKOSPI+0.5%) | 디커플링모멘텀",
         "latest_price": 0,
-        "latest_at": "2026-11-13T01:00:31.476384"
+        "latest_at": "2026-11-16T00:05:47.133401"
       },
       {
         "stock_code": "138040",
         "stock_name": "메리츠금융지주",
         "market": "KOSPI",
         "sector": "",
-        "signal_count": 102,
-        "buy_count": 102,
+        "signal_count": 45,
+        "buy_count": 45,
         "sell_count": 0,
-        "avg_confidence": 0.5367500000000004,
+        "avg_confidence": 0.5833000000000005,
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "RSI반등(39) | RSI sweet(39) | BB하단반등(score=0) | EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20아래 | 상대강도(+5.4%vsKOSPI+2.0%)",
+        "latest_reason": "2일연속상승 | 거래량2.0x | EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20아래 | 상대강도(+2.4%vsKOSPI-2.2%) | 디커플링모멘텀",
         "latest_price": 0,
-        "latest_at": "2026-11-13T01:07:32.347527"
+        "latest_at": "2026-11-17T00:06:36.205513"
       }
     ],
     "테마분석": [
@@ -125,10 +109,10 @@
         "stock_name": "레인보우로보틱스",
         "market": "KOSPI",
         "sector": "기계",
-        "signal_count": 676,
-        "buy_count": 676,
+        "signal_count": 1042,
+        "buy_count": 1042,
         "sell_count": 0,
-        "avg_confidence": 0.6688800295858,
+        "avg_confidence": 0.6311145873320548,
         "strategies": [
           "RSI+MACD(swing)"
         ],
@@ -141,32 +125,32 @@
         "stock_name": "이수페타시스",
         "market": "KOSPI",
         "sector": "전자장비와기기",
-        "signal_count": 366,
-        "buy_count": 366,
+        "signal_count": 55,
+        "buy_count": 55,
         "sell_count": 0,
-        "avg_confidence": 0.686731420765025,
+        "avg_confidence": 0.7999999999999996,
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(52) | 거래량2.7x | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+8.4%vsKOSPI+2.0%) | 디커플링모멘텀",
+        "latest_reason": "2일연속상승 | MACD히스토그램↑ | 거래량3.6x | 거래량3x+ | MA역배열 | 캔들역해머(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+4.7%vsKOSPI+0.5%) | 디커플링모멘텀",
         "latest_price": 0,
-        "latest_at": "2026-11-13T01:00:31.476384"
+        "latest_at": "2026-11-16T00:05:47.133401"
       },
       {
         "stock_code": "138040",
         "stock_name": "메리츠금융지주",
         "market": "KOSPI",
         "sector": "",
-        "signal_count": 102,
-        "buy_count": 102,
+        "signal_count": 45,
+        "buy_count": 45,
         "sell_count": 0,
-        "avg_confidence": 0.5367500000000004,
+        "avg_confidence": 0.5833000000000005,
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "RSI반등(39) | RSI sweet(39) | BB하단반등(score=0) | EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20아래 | 상대강도(+5.4%vsKOSPI+2.0%)",
+        "latest_reason": "2일연속상승 | 거래량2.0x | EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20아래 | 상대강도(+2.4%vsKOSPI-2.2%) | 디커플링모멘텀",
         "latest_price": 0,
-        "latest_at": "2026-11-13T01:07:32.347527"
+        "latest_at": "2026-11-17T00:06:36.205513"
       }
     ],
     "수급분석": [
@@ -175,10 +159,10 @@
         "stock_name": "레인보우로보틱스",
         "market": "KOSPI",
         "sector": "기계",
-        "signal_count": 676,
-        "buy_count": 676,
+        "signal_count": 1042,
+        "buy_count": 1042,
         "sell_count": 0,
-        "avg_confidence": 0.6688800295858,
+        "avg_confidence": 0.6311145873320548,
         "strategies": [
           "RSI+MACD(swing)"
         ],
@@ -191,48 +175,32 @@
         "stock_name": "이수페타시스",
         "market": "KOSPI",
         "sector": "전자장비와기기",
-        "signal_count": 366,
-        "buy_count": 366,
+        "signal_count": 55,
+        "buy_count": 55,
         "sell_count": 0,
-        "avg_confidence": 0.686731420765025,
+        "avg_confidence": 0.7999999999999996,
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(52) | 거래량2.7x | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+8.4%vsKOSPI+2.0%) | 디커플링모멘텀",
+        "latest_reason": "2일연속상승 | MACD히스토그램↑ | 거래량3.6x | 거래량3x+ | MA역배열 | 캔들역해머(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+4.7%vsKOSPI+0.5%) | 디커플링모멘텀",
         "latest_price": 0,
-        "latest_at": "2026-11-13T01:00:31.476384"
+        "latest_at": "2026-11-16T00:05:47.133401"
       },
       {
         "stock_code": "138040",
         "stock_name": "메리츠금융지주",
         "market": "KOSPI",
         "sector": "",
-        "signal_count": 102,
-        "buy_count": 102,
+        "signal_count": 45,
+        "buy_count": 45,
         "sell_count": 0,
-        "avg_confidence": 0.5367500000000004,
+        "avg_confidence": 0.5833000000000005,
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "RSI반등(39) | RSI sweet(39) | BB하단반등(score=0) | EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20아래 | 상대강도(+5.4%vsKOSPI+2.0%)",
+        "latest_reason": "2일연속상승 | 거래량2.0x | EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20아래 | 상대강도(+2.4%vsKOSPI-2.2%) | 디커플링모멘텀",
         "latest_price": 0,
-        "latest_at": "2026-11-13T01:07:32.347527"
-      },
-      {
-        "stock_code": "003570",
-        "stock_name": "SNT다이내믹스",
-        "market": "KOSPI",
-        "sector": "",
-        "signal_count": 1,
-        "buy_count": 1,
-        "sell_count": 0,
-        "avg_confidence": 0.2886,
-        "strategies": [
-          "dart_momentum"
-        ],
-        "latest_reason": "공시: 주요사항보고서(자기주식취득신탁계약체결결정) | 감성점수: 0.68 | 거래량급증: True",
-        "latest_price": 0,
-        "latest_at": "2026-11-13T00:05:41.050355"
+        "latest_at": "2026-11-17T00:06:36.205513"
       }
     ]
   }
