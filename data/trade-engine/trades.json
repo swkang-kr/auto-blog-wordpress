@@ -1,6 +1,30 @@
 {
-  "exported_at": "2026-11-20T07:00:00.709779+00:00",
+  "exported_at": "2026-11-23T07:00:00.713372+00:00",
   "trades": [
+    {
+      "stock_code": "TSM",
+      "stock_name": "TSM",
+      "side": "buy",
+      "quantity": 1,
+      "price": 336.15,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "US_SWING",
+      "reason": "RSI적정(31.1) | RSI과매도 | BB하단근접 [us_pre_qty=0]",
+      "filled_at": "2026-11-20T14:35:22"
+    },
+    {
+      "stock_code": "TSLA",
+      "stock_name": "TSLA",
+      "side": "sell",
+      "quantity": 1,
+      "price": 367.8,
+      "pnl": -30.3,
+      "pnl_rate": -7.6112,
+      "strategy": "US_SWING",
+      "reason": "us_swing_time_exit",
+      "filled_at": "2026-11-20T14:30:20"
+    },
     {
       "stock_code": "MU",
       "stock_name": "MU",
@@ -120,42 +144,6 @@
       "strategy": "US_SWING",
       "reason": "us_swing_trailing",
       "filled_at": "2026-11-16T19:33:29"
-    },
-    {
-      "stock_code": "GOOGL",
-      "stock_name": "GOOGL",
-      "side": "sell",
-      "quantity": 1,
-      "price": 295.54,
-      "pnl": 0.4,
-      "pnl_rate": 0.1355,
-      "strategy": "US_SWING",
-      "reason": "us_swing_trailing",
-      "filled_at": "2026-11-13T15:21:29"
-    },
-    {
-      "stock_code": "TSLA",
-      "stock_name": "TSLA",
-      "side": "buy",
-      "quantity": 1,
-      "price": 398.1,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "US_SWING",
-      "reason": "RSI적정(56.8) | MACD골든크로스 [us_pre_qty=0]",
-      "filled_at": "2026-11-13T14:35:31"
-    },
-    {
-      "stock_code": "AVGO",
-      "stock_name": "AVGO",
-      "side": "sell",
-      "quantity": 1,
-      "price": 356.22,
-      "pnl": 6.12,
-      "pnl_rate": 1.7481,
-      "strategy": "US_SWING",
-      "reason": "us_swing_trailing",
-      "filled_at": "2026-11-13T14:30:29"
     }
   ]
 }

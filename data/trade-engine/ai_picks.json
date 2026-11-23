@@ -1,20 +1,34 @@
 {
-  "exported_at": "2026-11-20T07:00:01.415371+00:00",
-  "total_candidates": 2,
+  "exported_at": "2026-11-23T07:00:01.167441+00:00",
+  "total_candidates": 3,
   "total_holdings": 2,
   "candidates": [
     {
-      "stock_code": "277810",
-      "stock_name": "레인보우로보틱스",
-      "sector": "기계",
-      "signal_count": 30,
-      "avg_confidence": 0.5333399999999998,
+      "stock_code": "090430",
+      "stock_name": "아모레퍼시픽",
+      "sector": "화장품",
+      "signal_count": 15,
+      "avg_confidence": 0.5,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "MACD히스토그램↑ | 거래량2.7x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(-0.6%vsKOSPI-5.8%) | 디커플링모멘텀",
+      "reason": "MACD히스토그램↑ | 거래량2.1x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(-1.1%vsKOSPI-3.4%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-11-20T05:41:25.703658",
+      "signal_time": "2026-11-23T00:46:23.081639",
+      "status": "매수 시그널"
+    },
+    {
+      "stock_code": "352820",
+      "stock_name": "하이브",
+      "sector": "방송과엔터테인먼트",
+      "signal_count": 15,
+      "avg_confidence": 0.5374999999999998,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MACD히스토그램↑ | 거래량3.1x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(-1.9%vsKOSPI-3.4%) | 디커플링모멘텀",
+      "price_at_signal": 0,
+      "signal_time": "2026-11-23T00:46:23.081614",
       "status": "매수 시그널"
     },
     {
@@ -41,12 +55,12 @@
       "status": "보유 중"
     },
     {
-      "stock_code": "TSLA",
-      "stock_name": "TSLA",
+      "stock_code": "TSM",
+      "stock_name": "TSM",
       "quantity": 1,
-      "avg_price": 398.1,
+      "avg_price": 336.15,
       "strategy": "US_SWING",
-      "entry_date": "2026-11-13",
+      "entry_date": "2026-11-20",
       "status": "보유 중"
     }
   ]

@@ -1,6 +1,6 @@
 {
-  "exported_at": "2026-11-20T07:00:01.366341+00:00",
-  "total_stocks": 3,
+  "exported_at": "2026-11-23T07:00:01.126350+00:00",
+  "total_stocks": 4,
   "watchlist_all": [
     {
       "stock_code": "277810",
@@ -19,20 +19,20 @@
       "latest_at": "2026-11-18T01:01:35.809858"
     },
     {
-      "stock_code": "007660",
-      "stock_name": "이수페타시스",
+      "stock_code": "090430",
+      "stock_name": "아모레퍼시픽",
       "market": "KOSPI",
-      "sector": "전자장비와기기",
-      "signal_count": 55,
-      "buy_count": 55,
+      "sector": "화장품",
+      "signal_count": 56,
+      "buy_count": 56,
       "sell_count": 0,
-      "avg_confidence": 0.7999999999999996,
+      "avg_confidence": 0.5148839285714284,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "latest_reason": "2일연속상승 | MACD히스토그램↑ | 거래량3.6x | 거래량3x+ | MA역배열 | 캔들역해머(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+4.7%vsKOSPI+0.5%) | 디커플링모멘텀",
+      "latest_reason": "MACD히스토그램↑ | 거래량2.1x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(-1.1%vsKOSPI-2.6%) | 디커플링모멘텀",
       "latest_price": 0,
-      "latest_at": "2026-11-16T00:05:47.133401"
+      "latest_at": "2026-11-23T00:05:29.705927"
     },
     {
       "stock_code": "138040",
@@ -49,6 +49,22 @@
       "latest_reason": "2일연속상승 | 거래량2.0x | EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20아래 | 상대강도(+2.4%vsKOSPI-2.2%) | 디커플링모멘텀",
       "latest_price": 0,
       "latest_at": "2026-11-17T00:06:36.205513"
+    },
+    {
+      "stock_code": "352820",
+      "stock_name": "하이브",
+      "market": "KOSPI",
+      "sector": "방송과엔터테인먼트",
+      "signal_count": 36,
+      "buy_count": 36,
+      "sell_count": 0,
+      "avg_confidence": 0.5375000000000001,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "MACD히스토그램↑ | 거래량3.1x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(-1.9%vsKOSPI-2.9%) | 디커플링모멘텀",
+      "latest_price": 0,
+      "latest_at": "2026-11-23T00:17:23.159383"
     }
   ],
   "by_niche": {
@@ -71,20 +87,20 @@
         "latest_at": "2026-11-18T01:01:35.809858"
       },
       {
-        "stock_code": "007660",
-        "stock_name": "이수페타시스",
+        "stock_code": "090430",
+        "stock_name": "아모레퍼시픽",
         "market": "KOSPI",
-        "sector": "전자장비와기기",
-        "signal_count": 55,
-        "buy_count": 55,
+        "sector": "화장품",
+        "signal_count": 56,
+        "buy_count": 56,
         "sell_count": 0,
-        "avg_confidence": 0.7999999999999996,
+        "avg_confidence": 0.5148839285714284,
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "2일연속상승 | MACD히스토그램↑ | 거래량3.6x | 거래량3x+ | MA역배열 | 캔들역해머(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+4.7%vsKOSPI+0.5%) | 디커플링모멘텀",
+        "latest_reason": "MACD히스토그램↑ | 거래량2.1x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(-1.1%vsKOSPI-2.6%) | 디커플링모멘텀",
         "latest_price": 0,
-        "latest_at": "2026-11-16T00:05:47.133401"
+        "latest_at": "2026-11-23T00:05:29.705927"
       },
       {
         "stock_code": "138040",
@@ -101,6 +117,22 @@
         "latest_reason": "2일연속상승 | 거래량2.0x | EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20아래 | 상대강도(+2.4%vsKOSPI-2.2%) | 디커플링모멘텀",
         "latest_price": 0,
         "latest_at": "2026-11-17T00:06:36.205513"
+      },
+      {
+        "stock_code": "352820",
+        "stock_name": "하이브",
+        "market": "KOSPI",
+        "sector": "방송과엔터테인먼트",
+        "signal_count": 36,
+        "buy_count": 36,
+        "sell_count": 0,
+        "avg_confidence": 0.5375000000000001,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "MACD히스토그램↑ | 거래량3.1x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(-1.9%vsKOSPI-2.9%) | 디커플링모멘텀",
+        "latest_price": 0,
+        "latest_at": "2026-11-23T00:17:23.159383"
       }
     ],
     "테마분석": [
@@ -121,20 +153,20 @@
         "latest_at": "2026-11-18T01:01:35.809858"
       },
       {
-        "stock_code": "007660",
-        "stock_name": "이수페타시스",
+        "stock_code": "090430",
+        "stock_name": "아모레퍼시픽",
         "market": "KOSPI",
-        "sector": "전자장비와기기",
-        "signal_count": 55,
-        "buy_count": 55,
+        "sector": "화장품",
+        "signal_count": 56,
+        "buy_count": 56,
         "sell_count": 0,
-        "avg_confidence": 0.7999999999999996,
+        "avg_confidence": 0.5148839285714284,
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "2일연속상승 | MACD히스토그램↑ | 거래량3.6x | 거래량3x+ | MA역배열 | 캔들역해머(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+4.7%vsKOSPI+0.5%) | 디커플링모멘텀",
+        "latest_reason": "MACD히스토그램↑ | 거래량2.1x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(-1.1%vsKOSPI-2.6%) | 디커플링모멘텀",
         "latest_price": 0,
-        "latest_at": "2026-11-16T00:05:47.133401"
+        "latest_at": "2026-11-23T00:05:29.705927"
       },
       {
         "stock_code": "138040",
@@ -151,6 +183,22 @@
         "latest_reason": "2일연속상승 | 거래량2.0x | EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20아래 | 상대강도(+2.4%vsKOSPI-2.2%) | 디커플링모멘텀",
         "latest_price": 0,
         "latest_at": "2026-11-17T00:06:36.205513"
+      },
+      {
+        "stock_code": "352820",
+        "stock_name": "하이브",
+        "market": "KOSPI",
+        "sector": "방송과엔터테인먼트",
+        "signal_count": 36,
+        "buy_count": 36,
+        "sell_count": 0,
+        "avg_confidence": 0.5375000000000001,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "MACD히스토그램↑ | 거래량3.1x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(-1.9%vsKOSPI-2.9%) | 디커플링모멘텀",
+        "latest_price": 0,
+        "latest_at": "2026-11-23T00:17:23.159383"
       }
     ],
     "수급분석": [
@@ -171,20 +219,20 @@
         "latest_at": "2026-11-18T01:01:35.809858"
       },
       {
-        "stock_code": "007660",
-        "stock_name": "이수페타시스",
+        "stock_code": "090430",
+        "stock_name": "아모레퍼시픽",
         "market": "KOSPI",
-        "sector": "전자장비와기기",
-        "signal_count": 55,
-        "buy_count": 55,
+        "sector": "화장품",
+        "signal_count": 56,
+        "buy_count": 56,
         "sell_count": 0,
-        "avg_confidence": 0.7999999999999996,
+        "avg_confidence": 0.5148839285714284,
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "2일연속상승 | MACD히스토그램↑ | 거래량3.6x | 거래량3x+ | MA역배열 | 캔들역해머(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+4.7%vsKOSPI+0.5%) | 디커플링모멘텀",
+        "latest_reason": "MACD히스토그램↑ | 거래량2.1x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(-1.1%vsKOSPI-2.6%) | 디커플링모멘텀",
         "latest_price": 0,
-        "latest_at": "2026-11-16T00:05:47.133401"
+        "latest_at": "2026-11-23T00:05:29.705927"
       },
       {
         "stock_code": "138040",
@@ -201,6 +249,22 @@
         "latest_reason": "2일연속상승 | 거래량2.0x | EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20아래 | 상대강도(+2.4%vsKOSPI-2.2%) | 디커플링모멘텀",
         "latest_price": 0,
         "latest_at": "2026-11-17T00:06:36.205513"
+      },
+      {
+        "stock_code": "352820",
+        "stock_name": "하이브",
+        "market": "KOSPI",
+        "sector": "방송과엔터테인먼트",
+        "signal_count": 36,
+        "buy_count": 36,
+        "sell_count": 0,
+        "avg_confidence": 0.5375000000000001,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "MACD히스토그램↑ | 거래량3.1x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(-1.9%vsKOSPI-2.9%) | 디커플링모멘텀",
+        "latest_price": 0,
+        "latest_at": "2026-11-23T00:17:23.159383"
       }
     ]
   }

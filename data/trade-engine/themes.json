@@ -1,52 +1,72 @@
 {
-  "exported_at": "2026-11-20T07:00:01.178972+00:00",
-  "date": "20261120",
+  "exported_at": "2026-11-23T07:00:00.967263+00:00",
+  "date": "20261123",
   "hot_themes": [
     {
-      "name": "면세점",
-      "change_rate": 0.76
+      "name": "3D 프린터",
+      "change_rate": 1.31
+    },
+    {
+      "name": "로봇(산업용/협동로봇 등)",
+      "change_rate": 0.99
+    },
+    {
+      "name": "김밥(냉동김밥 등)",
+      "change_rate": 0.99
+    },
+    {
+      "name": "자전거",
+      "change_rate": 0.72
+    },
+    {
+      "name": "2026 상반기 신규상장",
+      "change_rate": 0.09
+    },
+    {
+      "name": "고체산화물 연료전지(SOFC)",
+      "change_rate": 0.01
     }
   ],
   "cold_themes": [
     {
-      "name": "반도체 기판(FC-BGA/PCB/MLB 등)",
-      "change_rate": -9.89
+      "name": "건설 대표주",
+      "change_rate": -7.23
     },
     {
-      "name": "소캠(SOCAMM)",
-      "change_rate": -9.39
+      "name": "인터넷 대표주",
+      "change_rate": -6.9
     },
     {
-      "name": "온디바이스 AI",
-      "change_rate": -8.97
+      "name": "항공/저가 항공사(LCC)",
+      "change_rate": -6.69
     },
     {
-      "name": "HBM(고대역폭메모리)",
-      "change_rate": -8.53
+      "name": "데이터센터",
+      "change_rate": -6.36
     },
     {
-      "name": "LED장비",
-      "change_rate": -8.41
+      "name": "IT 대표주",
+      "change_rate": -5.54
     },
     {
-      "name": "MLCC(적층세라믹콘덴서)",
-      "change_rate": -8.26
+      "name": "딥페이크(deepfake)",
+      "change_rate": -5.52
     },
     {
-      "name": "뉴로모픽 반도체",
-      "change_rate": -7.93
+      "name": "정유",
+      "change_rate": -5.35
     },
     {
-      "name": "반도체 장비",
-      "change_rate": -7.89
+      "name": "건설기계",
+      "change_rate": -4.96
     },
     {
-      "name": "시스템반도체",
-      "change_rate": -7.84
+      "name": "해운",
+      "change_rate": -4.93
     },
     {
-      "name": "S7(삼성전자/SK하이닉스 등)",
-      "change_rate": -7.72
+      "name": "면세점",
+      "change_rate": -4.87
     }
   ]
 }

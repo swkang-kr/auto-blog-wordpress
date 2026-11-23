@@ -1,27 +1,27 @@
 {
-  "exported_at": "2026-11-20T07:00:00.694259+00:00",
+  "exported_at": "2026-11-23T07:00:00.697266+00:00",
   "holdings": [
     {
       "stock_code": "JPM",
       "stock_name": "JPM",
       "quantity": 1,
       "avg_price": 318.9,
-      "current_price": 320.5299,
-      "unrealized_pnl": 1.63,
-      "unrealized_pnl_rate": 0.5111,
+      "current_price": 309.82,
+      "unrealized_pnl": -9.08,
+      "unrealized_pnl_rate": -2.8473,
       "strategy": "US_SWING",
       "entry_date": "2026-11-19T17:02:24.752863"
     },
     {
-      "stock_code": "TSLA",
-      "stock_name": "TSLA",
+      "stock_code": "TSM",
+      "stock_name": "TSM",
       "quantity": 1,
-      "avg_price": 398.1,
-      "current_price": 374.05,
-      "unrealized_pnl": -24.05,
-      "unrealized_pnl_rate": -6.0412,
+      "avg_price": 336.15,
+      "current_price": 319.24,
+      "unrealized_pnl": -16.91,
+      "unrealized_pnl_rate": -5.0305,
       "strategy": "US_SWING",
-      "entry_date": "2026-11-13T14:35:31.236570"
+      "entry_date": "2026-11-20T14:35:22.324845"
     }
   ]
 }
