@@ -1,22 +1,38 @@
 {
-  "exported_at": "2026-11-23T07:00:01.126350+00:00",
-  "total_stocks": 4,
+  "exported_at": "2026-11-24T07:00:01.140788+00:00",
+  "total_stocks": 5,
   "watchlist_all": [
     {
       "stock_code": "277810",
       "stock_name": "레인보우로보틱스",
       "market": "KOSPI",
       "sector": "기계",
-      "signal_count": 1042,
-      "buy_count": 1042,
+      "signal_count": 1352,
+      "buy_count": 1352,
       "sell_count": 0,
-      "avg_confidence": 0.6311145873320548,
+      "avg_confidence": 0.7156963017751495,
       "strategies": [
         "RSI+MACD(swing)"
       ],
       "latest_reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(25) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+2.9%) | 디커플링모멘텀",
       "latest_price": 0,
       "latest_at": "2026-11-18T01:01:35.809858"
+    },
+    {
+      "stock_code": "307950",
+      "stock_name": "현대오토에버",
+      "market": "KOSPI",
+      "sector": "",
+      "signal_count": 161,
+      "buy_count": 161,
+      "sell_count": 0,
+      "avg_confidence": 0.6667000000000022,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(21) | 주봉MA20아래 | 상대강도(+22.2%vsKOSPI+6.7%) | 디커플링모멘텀",
+      "latest_price": 0,
+      "latest_at": "2026-11-24T01:01:21.037068"
     },
     {
       "stock_code": "090430",
@@ -35,22 +51,6 @@
       "latest_at": "2026-11-23T00:05:29.705927"
     },
     {
-      "stock_code": "138040",
-      "stock_name": "메리츠금융지주",
-      "market": "KOSPI",
-      "sector": "",
-      "signal_count": 45,
-      "buy_count": 45,
-      "sell_count": 0,
-      "avg_confidence": 0.5833000000000005,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "latest_reason": "2일연속상승 | 거래량2.0x | EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20아래 | 상대강도(+2.4%vsKOSPI-2.2%) | 디커플링모멘텀",
-      "latest_price": 0,
-      "latest_at": "2026-11-17T00:06:36.205513"
-    },
-    {
       "stock_code": "352820",
       "stock_name": "하이브",
       "market": "KOSPI",
@@ -65,6 +65,22 @@
       "latest_reason": "MACD히스토그램↑ | 거래량3.1x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(-1.9%vsKOSPI-2.9%) | 디커플링모멘텀",
       "latest_price": 0,
       "latest_at": "2026-11-23T00:17:23.159383"
+    },
+    {
+      "stock_code": "042700",
+      "stock_name": "한미반도체",
+      "market": "KOSPI",
+      "sector": "반도체와반도체장비",
+      "signal_count": 28,
+      "buy_count": 28,
+      "sell_count": 0,
+      "avg_confidence": 0.5,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "2일연속상승 | MACD골든크로스 | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+7.5%vsKOSPI+6.4%) | 디커플링모멘텀",
+      "latest_price": 0,
+      "latest_at": "2026-11-24T01:57:18.863451"
     }
   ],
   "by_niche": {
@@ -75,16 +91,32 @@
         "stock_name": "레인보우로보틱스",
         "market": "KOSPI",
         "sector": "기계",
-        "signal_count": 1042,
-        "buy_count": 1042,
+        "signal_count": 1352,
+        "buy_count": 1352,
         "sell_count": 0,
-        "avg_confidence": 0.6311145873320548,
+        "avg_confidence": 0.7156963017751495,
         "strategies": [
           "RSI+MACD(swing)"
         ],
         "latest_reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(25) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+2.9%) | 디커플링모멘텀",
         "latest_price": 0,
         "latest_at": "2026-11-18T01:01:35.809858"
+      },
+      {
+        "stock_code": "307950",
+        "stock_name": "현대오토에버",
+        "market": "KOSPI",
+        "sector": "",
+        "signal_count": 161,
+        "buy_count": 161,
+        "sell_count": 0,
+        "avg_confidence": 0.6667000000000022,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(21) | 주봉MA20아래 | 상대강도(+22.2%vsKOSPI+6.7%) | 디커플링모멘텀",
+        "latest_price": 0,
+        "latest_at": "2026-11-24T01:01:21.037068"
       },
       {
         "stock_code": "090430",
@@ -103,22 +135,6 @@
         "latest_at": "2026-11-23T00:05:29.705927"
       },
       {
-        "stock_code": "138040",
-        "stock_name": "메리츠금융지주",
-        "market": "KOSPI",
-        "sector": "",
-        "signal_count": 45,
-        "buy_count": 45,
-        "sell_count": 0,
-        "avg_confidence": 0.5833000000000005,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "2일연속상승 | 거래량2.0x | EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20아래 | 상대강도(+2.4%vsKOSPI-2.2%) | 디커플링모멘텀",
-        "latest_price": 0,
-        "latest_at": "2026-11-17T00:06:36.205513"
-      },
-      {
         "stock_code": "352820",
         "stock_name": "하이브",
         "market": "KOSPI",
@@ -133,6 +149,22 @@
         "latest_reason": "MACD히스토그램↑ | 거래량3.1x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(-1.9%vsKOSPI-2.9%) | 디커플링모멘텀",
         "latest_price": 0,
         "latest_at": "2026-11-23T00:17:23.159383"
+      },
+      {
+        "stock_code": "042700",
+        "stock_name": "한미반도체",
+        "market": "KOSPI",
+        "sector": "반도체와반도체장비",
+        "signal_count": 28,
+        "buy_count": 28,
+        "sell_count": 0,
+        "avg_confidence": 0.5,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "2일연속상승 | MACD골든크로스 | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+7.5%vsKOSPI+6.4%) | 디커플링모멘텀",
+        "latest_price": 0,
+        "latest_at": "2026-11-24T01:57:18.863451"
       }
     ],
     "테마분석": [
@@ -141,16 +173,32 @@
         "stock_name": "레인보우로보틱스",
         "market": "KOSPI",
         "sector": "기계",
-        "signal_count": 1042,
-        "buy_count": 1042,
+        "signal_count": 1352,
+        "buy_count": 1352,
         "sell_count": 0,
-        "avg_confidence": 0.6311145873320548,
+        "avg_confidence": 0.7156963017751495,
         "strategies": [
           "RSI+MACD(swing)"
         ],
         "latest_reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(25) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+2.9%) | 디커플링모멘텀",
         "latest_price": 0,
         "latest_at": "2026-11-18T01:01:35.809858"
+      },
+      {
+        "stock_code": "307950",
+        "stock_name": "현대오토에버",
+        "market": "KOSPI",
+        "sector": "",
+        "signal_count": 161,
+        "buy_count": 161,
+        "sell_count": 0,
+        "avg_confidence": 0.6667000000000022,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(21) | 주봉MA20아래 | 상대강도(+22.2%vsKOSPI+6.7%) | 디커플링모멘텀",
+        "latest_price": 0,
+        "latest_at": "2026-11-24T01:01:21.037068"
       },
       {
         "stock_code": "090430",
@@ -169,22 +217,6 @@
         "latest_at": "2026-11-23T00:05:29.705927"
       },
       {
-        "stock_code": "138040",
-        "stock_name": "메리츠금융지주",
-        "market": "KOSPI",
-        "sector": "",
-        "signal_count": 45,
-        "buy_count": 45,
-        "sell_count": 0,
-        "avg_confidence": 0.5833000000000005,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "2일연속상승 | 거래량2.0x | EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20아래 | 상대강도(+2.4%vsKOSPI-2.2%) | 디커플링모멘텀",
-        "latest_price": 0,
-        "latest_at": "2026-11-17T00:06:36.205513"
-      },
-      {
         "stock_code": "352820",
         "stock_name": "하이브",
         "market": "KOSPI",
@@ -199,6 +231,22 @@
         "latest_reason": "MACD히스토그램↑ | 거래량3.1x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(-1.9%vsKOSPI-2.9%) | 디커플링모멘텀",
         "latest_price": 0,
         "latest_at": "2026-11-23T00:17:23.159383"
+      },
+      {
+        "stock_code": "042700",
+        "stock_name": "한미반도체",
+        "market": "KOSPI",
+        "sector": "반도체와반도체장비",
+        "signal_count": 28,
+        "buy_count": 28,
+        "sell_count": 0,
+        "avg_confidence": 0.5,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "2일연속상승 | MACD골든크로스 | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+7.5%vsKOSPI+6.4%) | 디커플링모멘텀",
+        "latest_price": 0,
+        "latest_at": "2026-11-24T01:57:18.863451"
       }
     ],
     "수급분석": [
@@ -207,16 +255,32 @@
         "stock_name": "레인보우로보틱스",
         "market": "KOSPI",
         "sector": "기계",
-        "signal_count": 1042,
-        "buy_count": 1042,
+        "signal_count": 1352,
+        "buy_count": 1352,
         "sell_count": 0,
-        "avg_confidence": 0.6311145873320548,
+        "avg_confidence": 0.7156963017751495,
         "strategies": [
           "RSI+MACD(swing)"
         ],
         "latest_reason": "MACD히스토그램↑ | RSI모멘텀(54) | MA정배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(25) | 주봉MA20아래 | 상대강도(+12.9%vsKOSPI+2.9%) | 디커플링모멘텀",
         "latest_price": 0,
         "latest_at": "2026-11-18T01:01:35.809858"
+      },
+      {
+        "stock_code": "307950",
+        "stock_name": "현대오토에버",
+        "market": "KOSPI",
+        "sector": "",
+        "signal_count": 161,
+        "buy_count": 161,
+        "sell_count": 0,
+        "avg_confidence": 0.6667000000000022,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(21) | 주봉MA20아래 | 상대강도(+22.2%vsKOSPI+6.7%) | 디커플링모멘텀",
+        "latest_price": 0,
+        "latest_at": "2026-11-24T01:01:21.037068"
       },
       {
         "stock_code": "090430",
@@ -235,22 +299,6 @@
         "latest_at": "2026-11-23T00:05:29.705927"
       },
       {
-        "stock_code": "138040",
-        "stock_name": "메리츠금융지주",
-        "market": "KOSPI",
-        "sector": "",
-        "signal_count": 45,
-        "buy_count": 45,
-        "sell_count": 0,
-        "avg_confidence": 0.5833000000000005,
-        "strategies": [
-          "RSI+MACD(swing)"
-        ],
-        "latest_reason": "2일연속상승 | 거래량2.0x | EMA20하방 | MA역배열 | 주봉골든크로스 | 주봉MA20아래 | 상대강도(+2.4%vsKOSPI-2.2%) | 디커플링모멘텀",
-        "latest_price": 0,
-        "latest_at": "2026-11-17T00:06:36.205513"
-      },
-      {
         "stock_code": "352820",
         "stock_name": "하이브",
         "market": "KOSPI",
@@ -265,6 +313,22 @@
         "latest_reason": "MACD히스토그램↑ | 거래량3.1x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(-1.9%vsKOSPI-2.9%) | 디커플링모멘텀",
         "latest_price": 0,
         "latest_at": "2026-11-23T00:17:23.159383"
+      },
+      {
+        "stock_code": "042700",
+        "stock_name": "한미반도체",
+        "market": "KOSPI",
+        "sector": "반도체와반도체장비",
+        "signal_count": 28,
+        "buy_count": 28,
+        "sell_count": 0,
+        "avg_confidence": 0.5,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "2일연속상승 | MACD골든크로스 | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+7.5%vsKOSPI+6.4%) | 디커플링모멘텀",
+        "latest_price": 0,
+        "latest_at": "2026-11-24T01:57:18.863451"
       }
     ]
   }

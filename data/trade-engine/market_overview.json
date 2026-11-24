@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-11-23T07:00:00.925074+00:00",
+  "exported_at": "2026-11-24T07:00:00.927603+00:00",
   "market_daily": [
+    {
+      "date": "20261124",
+      "kospi_change": 6.32,
+      "kosdaq_change": 4.79,
+      "foreign_net": 7257.0,
+      "institution_net": 8691.0,
+      "individual_net": -20431.0,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20261123",
       "kospi_change": -3.31,
       "kosdaq_change": -1.58,
-      "foreign_net": -2472.0,
-      "institution_net": 1872.0,
-      "individual_net": -3668.0,
+      "foreign_net": -2364.0,
+      "institution_net": 1854.0,
+      "individual_net": -3764.0,
       "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "momentum_count": 58,
+      "crash_count": 60
     },
     {
       "date": "20261120",
@@ -99,29 +110,18 @@
       "hot_theme_count": 69,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20261110",
-      "kospi_change": 4.39,
-      "kosdaq_change": 4.48,
-      "foreign_net": 4226.0,
-      "institution_net": 4780.0,
-      "individual_net": -13883.0,
-      "hot_theme_count": 128,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "우리운용 \"한국부동산TOP3플러스 ETF 11월 특별분배\"",
-    "‘증안펀드 카드’에 최악 투매 피한 코스피…4700선 사수",
-    "[포토]AI 투자 부담에 코스피 흔들",
-    "\"3600조원이 증발했다\"…코스피 시총 5개월 만에 반토막(종합)",
-    "[포토]코스피, 美 AI주 급락 충격에 4700선 턱걸이",
-    "자금세탁 의심거래 보고, 작년 133만 건… 피싱·가상자산에 커지는 FIU",
-    "[포토]코스피 4,700선 턱걸이",
-    "공매도 단속 강화·자사주 매입 한도 푼 정부…“주가 방어 효과는 제한적”",
-    "“증안펀드 예고에도 매도 사이드카”…코스피 3.3% 급락, 4700선 턱걸이",
-    "코스피·코스닥 동반 하락…힘 빠진 국내 증시"
+    "젠슨황과 함께 돌아온 외국인 매수…코스피 3거래일 만에 5000 회복",
+    "상승 마감한 코스피",
+    "상승 마감한 코스피",
+    "오늘의 마감 시황",
+    "상승 마감한 코스피",
+    "상승 마감한 코스피",
+    "코스피, 간만에 상승 마감",
+    "간만에 오른 증시",
+    "코스피, 간만에 상승 마감",
+    "간만에 오른 증시"
   ]
 }

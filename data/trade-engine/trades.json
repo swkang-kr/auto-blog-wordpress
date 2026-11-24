@@ -1,6 +1,30 @@
 {
-  "exported_at": "2026-11-23T07:00:00.713372+00:00",
+  "exported_at": "2026-11-24T07:00:00.714581+00:00",
   "trades": [
+    {
+      "stock_code": "GOOGL",
+      "stock_name": "GOOGL",
+      "side": "buy",
+      "quantity": 1,
+      "price": 280.58,
+      "pnl": null,
+      "pnl_rate": null,
+      "strategy": "US_SWING",
+      "reason": "RSI적정(40.0) | MACD골든크로스 [us_pre_qty=0]",
+      "filled_at": "2026-11-23T14:58:20"
+    },
+    {
+      "stock_code": "TSM",
+      "stock_name": "TSM",
+      "side": "sell",
+      "quantity": 1,
+      "price": 365.93,
+      "pnl": 29.78,
+      "pnl_rate": 8.8591,
+      "strategy": "US_SWING",
+      "reason": "us_swing_trailing",
+      "filled_at": "2026-11-23T14:45:22"
+    },
     {
       "stock_code": "TSM",
       "stock_name": "TSM",
@@ -132,18 +156,6 @@
       "strategy": "US_SWING",
       "reason": "us_swing_stop_loss",
       "filled_at": "2026-11-17T14:35:29"
-    },
-    {
-      "stock_code": "XOM",
-      "stock_name": "XOM",
-      "side": "sell",
-      "quantity": 1,
-      "price": 166.85,
-      "pnl": 6.66,
-      "pnl_rate": 4.1576,
-      "strategy": "US_SWING",
-      "reason": "us_swing_trailing",
-      "filled_at": "2026-11-16T19:33:29"
     }
   ]
 }

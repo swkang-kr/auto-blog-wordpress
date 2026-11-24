@@ -1,72 +1,80 @@
 {
-  "exported_at": "2026-11-23T07:00:00.967263+00:00",
-  "date": "20261123",
+  "exported_at": "2026-11-24T07:00:00.969954+00:00",
+  "date": "20261124",
   "hot_themes": [
     {
-      "name": "3D 프린터",
-      "change_rate": 1.31
+      "name": "피지컬 AI/휴머노이드 로봇",
+      "change_rate": 10.24
     },
     {
       "name": "로봇(산업용/협동로봇 등)",
-      "change_rate": 0.99
+      "change_rate": 9.91
     },
     {
-      "name": "김밥(냉동김밥 등)",
-      "change_rate": 0.99
+      "name": "자동차 대표주",
+      "change_rate": 9.7
     },
     {
-      "name": "자전거",
-      "change_rate": 0.72
+      "name": "MLCC(적층세라믹콘덴서)",
+      "change_rate": 9.37
     },
     {
-      "name": "2026 상반기 신규상장",
-      "change_rate": 0.09
+      "name": "IT 대표주",
+      "change_rate": 8.85
+    },
+    {
+      "name": "2차전지(나트륨이온)",
+      "change_rate": 8.6
+    },
+    {
+      "name": "3D 프린터",
+      "change_rate": 8.08
+    },
+    {
+      "name": "아이폰",
+      "change_rate": 7.85
+    },
+    {
+      "name": "2차전지(생산)",
+      "change_rate": 7.65
+    },
+    {
+      "name": "S7(삼성전자/SK하이닉스 등)",
+      "change_rate": 7.55
     },
     {
       "name": "고체산화물 연료전지(SOFC)",
-      "change_rate": 0.01
+      "change_rate": 7.14
+    },
+    {
+      "name": "제습기",
+      "change_rate": 7.12
+    },
+    {
+      "name": "폴더블폰",
+      "change_rate": 6.98
+    },
+    {
+      "name": "전력저장장치(ESS)",
+      "change_rate": 6.85
+    },
+    {
+      "name": "온디바이스 AI",
+      "change_rate": 6.76
     }
   ],
   "cold_themes": [
     {
-      "name": "건설 대표주",
-      "change_rate": -7.23
+      "name": "유심(USIM)",
+      "change_rate": -0.79
     },
     {
-      "name": "인터넷 대표주",
-      "change_rate": -6.9
+      "name": "영화",
+      "change_rate": -0.19
     },
     {
-      "name": "항공/저가 항공사(LCC)",
-      "change_rate": -6.69
-    },
-    {
-      "name": "데이터센터",
-      "change_rate": -6.36
-    },
-    {
-      "name": "IT 대표주",
-      "change_rate": -5.54
-    },
-    {
-      "name": "딥페이크(deepfake)",
-      "change_rate": -5.52
-    },
-    {
-      "name": "정유",
-      "change_rate": -5.35
-    },
-    {
-      "name": "건설기계",
-      "change_rate": -4.96
-    },
-    {
-      "name": "해운",
-      "change_rate": -4.93
-    },
-    {
-      "name": "면세점",
-      "change_rate": -4.87
+      "name": "조림사업",
+      "change_rate": -0.15
     }
   ]
 }

@@ -1,27 +1,27 @@
 {
-  "exported_at": "2026-11-23T07:00:00.697266+00:00",
+  "exported_at": "2026-11-24T07:00:00.701503+00:00",
   "holdings": [
+    {
+      "stock_code": "GOOGL",
+      "stock_name": "GOOGL",
+      "quantity": 1,
+      "avg_price": 280.58,
+      "current_price": 282.31,
+      "unrealized_pnl": 1.73,
+      "unrealized_pnl_rate": 0.6166,
+      "strategy": "US_SWING",
+      "entry_date": "2026-11-23T14:58:17.125911"
+    },
     {
       "stock_code": "JPM",
       "stock_name": "JPM",
       "quantity": 1,
       "avg_price": 318.9,
-      "current_price": 309.82,
-      "unrealized_pnl": -9.08,
-      "unrealized_pnl_rate": -2.8473,
+      "current_price": 316.82,
+      "unrealized_pnl": -2.08,
+      "unrealized_pnl_rate": -0.6522,
       "strategy": "US_SWING",
       "entry_date": "2026-11-19T17:02:24.752863"
-    },
-    {
-      "stock_code": "TSM",
-      "stock_name": "TSM",
-      "quantity": 1,
-      "avg_price": 336.15,
-      "current_price": 319.24,
-      "unrealized_pnl": -16.91,
-      "unrealized_pnl_rate": -5.0305,
-      "strategy": "US_SWING",
-      "entry_date": "2026-11-20T14:35:22.324845"
     }
   ]
 }
