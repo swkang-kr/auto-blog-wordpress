@@ -1,5 +1,5 @@
 {
-  "exported_at": "2026-11-24T07:00:00.714581+00:00",
+  "exported_at": "2026-11-25T07:00:00.713547+00:00",
   "trades": [
     {
       "stock_code": "GOOGL",
@@ -132,30 +132,6 @@
       "strategy": "US_SWING",
       "reason": "us_swing_time_exit",
       "filled_at": "2026-11-18T14:30:29"
-    },
-    {
-      "stock_code": "TSM",
-      "stock_name": "TSM",
-      "side": "buy",
-      "quantity": 1,
-      "price": 356.91,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "US_SWING",
-      "reason": "RSI적정(34.9) | RSI과매도 | BB하단근접 [us_pre_qty=0]",
-      "filled_at": "2026-11-17T15:46:31"
-    },
-    {
-      "stock_code": "TSM",
-      "stock_name": "TSM",
-      "side": "sell",
-      "quantity": 1,
-      "price": 369.75,
-      "pnl": -32.29,
-      "pnl_rate": -8.0315,
-      "strategy": "US_SWING",
-      "reason": "us_swing_stop_loss",
-      "filled_at": "2026-11-17T14:35:29"
     }
   ]
 }

@@ -1,18 +1,24 @@
 {
-  "exported_at": "2026-11-24T07:00:00.984341+00:00",
+  "exported_at": "2026-11-25T07:00:00.970203+00:00",
   "period": "20d",
   "summary": {
-    "foreign_net_total": -162206.0,
-    "institution_net_total": 55555.0,
-    "individual_net_total": -57538.0,
+    "foreign_net_total": -185103.0,
+    "institution_net_total": 40429.0,
+    "individual_net_total": -7708.0,
     "dominant_buyer": "기관"
   },
   "daily": [
     {
+      "date": "20261125",
+      "foreign_net": -18994.0,
+      "institution_net": -8.0,
+      "individual_net": 14232.0
+    },
+    {
       "date": "20261124",
-      "foreign_net": 7257.0,
-      "institution_net": 8691.0,
-      "individual_net": -20431.0
+      "foreign_net": 7816.0,
+      "institution_net": 8676.0,
+      "individual_net": -20988.0
     },
     {
       "date": "20261123",
@@ -121,12 +127,6 @@
       "foreign_net": -39.0,
       "institution_net": 14978.0,
       "individual_net": -31518.0
-    },
-    {
-      "date": "20260918",
-      "foreign_net": 4462.0,
-      "institution_net": 15103.0,
-      "individual_net": -36155.0
     }
   ]
 }

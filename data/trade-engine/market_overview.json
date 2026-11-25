@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-11-24T07:00:00.927603+00:00",
+  "exported_at": "2026-11-25T07:00:00.907321+00:00",
   "market_daily": [
+    {
+      "date": "20261125",
+      "kospi_change": -6.16,
+      "kosdaq_change": -2.29,
+      "foreign_net": -18994.0,
+      "institution_net": -8.0,
+      "individual_net": 14232.0,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20261124",
       "kospi_change": 6.32,
       "kosdaq_change": 4.79,
-      "foreign_net": 7257.0,
-      "institution_net": 8691.0,
-      "individual_net": -20431.0,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": 7816.0,
+      "institution_net": 8676.0,
+      "individual_net": -20988.0,
+      "hot_theme_count": 130,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20261123",
@@ -99,29 +110,18 @@
       "hot_theme_count": 2,
       "momentum_count": 52,
       "crash_count": 60
-    },
-    {
-      "date": "20261111",
-      "kospi_change": 2.6,
-      "kosdaq_change": 5.62,
-      "foreign_net": 6589.0,
-      "institution_net": -4824.0,
-      "individual_net": -7171.0,
-      "hot_theme_count": 69,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "젠슨황과 함께 돌아온 외국인 매수…코스피 3거래일 만에 5000 회복",
-    "상승 마감한 코스피",
-    "상승 마감한 코스피",
-    "오늘의 마감 시황",
-    "상승 마감한 코스피",
-    "상승 마감한 코스피",
-    "코스피, 간만에 상승 마감",
-    "간만에 오른 증시",
-    "코스피, 간만에 상승 마감",
-    "간만에 오른 증시"
+    "삼성증권, 내년 1월 말까지'IRP·연금저축 절세 FESTA' 이벤트",
+    "'젠슨 황 랠리' 하루 만에 끝났다…코스피 6.16% 급락",
+    "국내 증시 동반 급락",
+    "[오늘의증시] \"말짱 황\" 하루 만에 삼전닉스 10%대 급락...4600선 후퇴",
+    "짓눌려진 증시",
+    "한 달 주가 흐름·주요 변동 원인 한눈에…토스증권, ‘AI 시그널’ 고도화",
+    "코스피 급락에 코스닥도 2.29% 하락",
+    "환율, 미국 기술주 조정·외국인 순매도에 소폭 상승…1,343.2원",
+    "코스피 4697.51…4700선 아래로 추락",
+    "하루 만에 6% 반등분 모두 토해냈다…코스피 4700선도 못지켜[fn마감시황]"
   ]
 }

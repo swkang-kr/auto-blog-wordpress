@@ -1,47 +1,50 @@
 {
-  "exported_at": "2026-11-24T07:00:01.182818+00:00",
-  "total_candidates": 2,
+  "exported_at": "2026-11-25T07:00:01.163194+00:00",
+  "total_candidates": 3,
   "total_holdings": 2,
   "candidates": [
+    {
+      "stock_code": "307950",
+      "stock_name": "현대오토에버",
+      "sector": "",
+      "signal_count": 15,
+      "avg_confidence": 0.8724999999999998,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(62) | 거래량4.1x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+4.9%vsKOSPI-6.2%) | 디커플링모멘텀",
+      "price_at_signal": 0,
+      "signal_time": "2026-11-25T05:56:17.467313",
+      "status": "매수 시그널"
+    },
     {
       "stock_code": "277810",
       "stock_name": "레인보우로보틱스",
       "sector": "기계",
-      "signal_count": 29,
-      "avg_confidence": 1.0,
+      "signal_count": 15,
+      "avg_confidence": 0.925,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(63) | 거래량2.0x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+11.5%vsKOSPI+7.3%) | 디커플링모멘텀",
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(64) | 거래량2.3x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+1.4%vsKOSPI-6.2%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-11-24T05:42:18.187550",
+      "signal_time": "2026-11-25T05:56:17.467288",
       "status": "매수 시그널"
     },
     {
       "stock_code": "042700",
       "stock_name": "한미반도체",
       "sector": "반도체와반도체장비",
-      "signal_count": 1,
-      "avg_confidence": 0.5,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "2일연속상승 | MACD골든크로스 | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+7.5%vsKOSPI+6.4%) | 디커플링모멘텀",
+      "signal_count": 4,
+      "avg_confidence": 1.0,
+      "strategies": [],
+      "reason": "score=6.50, ranked_score=15.60",
       "price_at_signal": 0,
-      "signal_time": "2026-11-24T06:10:20.267016",
-      "status": "매수 시그널"
+      "signal_time": "2026-11-05T15:25:00.007767+09:00",
+      "status": "장중 워치리스트"
     }
   ],
   "holdings": [
-    {
-      "stock_code": "JPM",
-      "stock_name": "JPM",
-      "quantity": 1,
-      "avg_price": 318.9,
-      "strategy": "US_SWING",
-      "entry_date": "2026-11-19",
-      "status": "보유 중"
-    },
     {
       "stock_code": "GOOGL",
       "stock_name": "GOOGL",
@@ -49,6 +52,15 @@
       "avg_price": 280.58,
       "strategy": "US_SWING",
       "entry_date": "2026-11-23",
+      "status": "보유 중"
+    },
+    {
+      "stock_code": "JPM",
+      "stock_name": "JPM",
+      "quantity": 1,
+      "avg_price": 318.9,
+      "strategy": "US_SWING",
+      "entry_date": "2026-11-19",
       "status": "보유 중"
     }
   ]
