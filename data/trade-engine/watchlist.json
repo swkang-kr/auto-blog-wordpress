@@ -1,6 +1,6 @@
 {
-  "exported_at": "2026-11-25T07:00:01.123626+00:00",
-  "total_stocks": 5,
+  "exported_at": "2026-11-26T07:00:01.133056+00:00",
+  "total_stocks": 9,
   "watchlist_all": [
     {
       "stock_code": "277810",
@@ -10,23 +10,23 @@
       "signal_count": 1408,
       "buy_count": 1408,
       "sell_count": 0,
-      "avg_confidence": 0.8027654119318189,
+      "avg_confidence": 0.860351633522728,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "latest_reason": "MACD히스토그램↑ | RSI모멘텀(57) | 거래량2.9x | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.5%vsKOSPI+0.0%) | 디커플링모멘텀",
+      "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(60) | 거래량2.8x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위",
       "latest_price": 0,
-      "latest_at": "2026-11-19T00:05:31.482692"
+      "latest_at": "2026-11-20T00:05:30.633438"
     },
     {
       "stock_code": "307950",
       "stock_name": "현대오토에버",
       "market": "KOSPI",
       "sector": "",
-      "signal_count": 527,
-      "buy_count": 527,
+      "signal_count": 893,
+      "buy_count": 893,
       "sell_count": 0,
-      "avg_confidence": 0.7643764705882331,
+      "avg_confidence": 0.8314513997760409,
       "strategies": [
         "RSI+MACD(swing)"
       ],
@@ -39,10 +39,10 @@
       "stock_name": "아모레퍼시픽",
       "market": "KOSPI",
       "sector": "화장품",
-      "signal_count": 56,
-      "buy_count": 56,
+      "signal_count": 74,
+      "buy_count": 74,
       "sell_count": 0,
-      "avg_confidence": 0.5148839285714284,
+      "avg_confidence": 0.632885135135135,
       "strategies": [
         "RSI+MACD(swing)"
       ],
@@ -67,6 +67,22 @@
       "latest_at": "2026-11-23T00:17:23.159383"
     },
     {
+      "stock_code": "196170",
+      "stock_name": "알테오젠",
+      "market": "KOSPI",
+      "sector": "생물공학",
+      "signal_count": 31,
+      "buy_count": 31,
+      "sell_count": 0,
+      "avg_confidence": 0.6048387096774194,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "MACD골든크로스 | RSI반등(36) | RSI sweet(36) | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(6) | 주봉MA20아래 | 상대강도(+7.2%vsKOSPI+2.2%)",
+      "latest_price": 0,
+      "latest_at": "2026-11-26T00:26:17.771258"
+    },
+    {
       "stock_code": "042700",
       "stock_name": "한미반도체",
       "market": "KOSPI",
@@ -81,6 +97,54 @@
       "latest_reason": "2일연속상승 | MACD골든크로스 | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+7.5%vsKOSPI+6.4%) | 디커플링모멘텀",
       "latest_price": 0,
       "latest_at": "2026-11-24T01:57:18.863451"
+    },
+    {
+      "stock_code": "377300",
+      "stock_name": "카카오페이",
+      "market": "KOSPI",
+      "sector": "IT서비스",
+      "signal_count": 18,
+      "buy_count": 18,
+      "sell_count": 0,
+      "avg_confidence": 0.5833,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(52) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래",
+      "latest_price": 0,
+      "latest_at": "2026-11-26T00:26:17.771249"
+    },
+    {
+      "stock_code": "278470",
+      "stock_name": "에이피알",
+      "market": "KOSPI",
+      "sector": "화장품",
+      "signal_count": 18,
+      "buy_count": 18,
+      "sell_count": 0,
+      "avg_confidence": 0.9167000000000001,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+11.9%vsKOSPI+2.2%) | 디커플링모멘텀",
+      "latest_price": 0,
+      "latest_at": "2026-11-26T00:26:17.771230"
+    },
+    {
+      "stock_code": "089030",
+      "stock_name": "테크윙",
+      "market": "KOSDAQ",
+      "sector": "",
+      "signal_count": 1,
+      "buy_count": 1,
+      "sell_count": 0,
+      "avg_confidence": 0.2971,
+      "strategies": [
+        "dart_momentum"
+      ],
+      "latest_reason": "공시: 주요사항보고서(자기주식취득신탁계약체결결정) | 감성점수: 0.90 | 거래량급증: True",
+      "latest_price": 0,
+      "latest_at": "2026-11-26T00:05:32.746480"
     }
   ],
   "by_niche": {
@@ -94,23 +158,23 @@
         "signal_count": 1408,
         "buy_count": 1408,
         "sell_count": 0,
-        "avg_confidence": 0.8027654119318189,
+        "avg_confidence": 0.860351633522728,
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "MACD히스토그램↑ | RSI모멘텀(57) | 거래량2.9x | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.5%vsKOSPI+0.0%) | 디커플링모멘텀",
+        "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(60) | 거래량2.8x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위",
         "latest_price": 0,
-        "latest_at": "2026-11-19T00:05:31.482692"
+        "latest_at": "2026-11-20T00:05:30.633438"
       },
       {
         "stock_code": "307950",
         "stock_name": "현대오토에버",
         "market": "KOSPI",
         "sector": "",
-        "signal_count": 527,
-        "buy_count": 527,
+        "signal_count": 893,
+        "buy_count": 893,
         "sell_count": 0,
-        "avg_confidence": 0.7643764705882331,
+        "avg_confidence": 0.8314513997760409,
         "strategies": [
           "RSI+MACD(swing)"
         ],
@@ -123,10 +187,10 @@
         "stock_name": "아모레퍼시픽",
         "market": "KOSPI",
         "sector": "화장품",
-        "signal_count": 56,
-        "buy_count": 56,
+        "signal_count": 74,
+        "buy_count": 74,
         "sell_count": 0,
-        "avg_confidence": 0.5148839285714284,
+        "avg_confidence": 0.632885135135135,
         "strategies": [
           "RSI+MACD(swing)"
         ],
@@ -151,6 +215,22 @@
         "latest_at": "2026-11-23T00:17:23.159383"
       },
       {
+        "stock_code": "196170",
+        "stock_name": "알테오젠",
+        "market": "KOSPI",
+        "sector": "생물공학",
+        "signal_count": 31,
+        "buy_count": 31,
+        "sell_count": 0,
+        "avg_confidence": 0.6048387096774194,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "MACD골든크로스 | RSI반등(36) | RSI sweet(36) | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(6) | 주봉MA20아래 | 상대강도(+7.2%vsKOSPI+2.2%)",
+        "latest_price": 0,
+        "latest_at": "2026-11-26T00:26:17.771258"
+      },
+      {
         "stock_code": "042700",
         "stock_name": "한미반도체",
         "market": "KOSPI",
@@ -165,6 +245,38 @@
         "latest_reason": "2일연속상승 | MACD골든크로스 | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+7.5%vsKOSPI+6.4%) | 디커플링모멘텀",
         "latest_price": 0,
         "latest_at": "2026-11-24T01:57:18.863451"
+      },
+      {
+        "stock_code": "377300",
+        "stock_name": "카카오페이",
+        "market": "KOSPI",
+        "sector": "IT서비스",
+        "signal_count": 18,
+        "buy_count": 18,
+        "sell_count": 0,
+        "avg_confidence": 0.5833,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(52) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래",
+        "latest_price": 0,
+        "latest_at": "2026-11-26T00:26:17.771249"
+      },
+      {
+        "stock_code": "278470",
+        "stock_name": "에이피알",
+        "market": "KOSPI",
+        "sector": "화장품",
+        "signal_count": 18,
+        "buy_count": 18,
+        "sell_count": 0,
+        "avg_confidence": 0.9167000000000001,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+11.9%vsKOSPI+2.2%) | 디커플링모멘텀",
+        "latest_price": 0,
+        "latest_at": "2026-11-26T00:26:17.771230"
       }
     ],
     "테마분석": [
@@ -176,23 +288,23 @@
         "signal_count": 1408,
         "buy_count": 1408,
         "sell_count": 0,
-        "avg_confidence": 0.8027654119318189,
+        "avg_confidence": 0.860351633522728,
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "MACD히스토그램↑ | RSI모멘텀(57) | 거래량2.9x | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.5%vsKOSPI+0.0%) | 디커플링모멘텀",
+        "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(60) | 거래량2.8x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위",
         "latest_price": 0,
-        "latest_at": "2026-11-19T00:05:31.482692"
+        "latest_at": "2026-11-20T00:05:30.633438"
       },
       {
         "stock_code": "307950",
         "stock_name": "현대오토에버",
         "market": "KOSPI",
         "sector": "",
-        "signal_count": 527,
-        "buy_count": 527,
+        "signal_count": 893,
+        "buy_count": 893,
         "sell_count": 0,
-        "avg_confidence": 0.7643764705882331,
+        "avg_confidence": 0.8314513997760409,
         "strategies": [
           "RSI+MACD(swing)"
         ],
@@ -205,10 +317,10 @@
         "stock_name": "아모레퍼시픽",
         "market": "KOSPI",
         "sector": "화장품",
-        "signal_count": 56,
-        "buy_count": 56,
+        "signal_count": 74,
+        "buy_count": 74,
         "sell_count": 0,
-        "avg_confidence": 0.5148839285714284,
+        "avg_confidence": 0.632885135135135,
         "strategies": [
           "RSI+MACD(swing)"
         ],
@@ -233,6 +345,22 @@
         "latest_at": "2026-11-23T00:17:23.159383"
       },
       {
+        "stock_code": "196170",
+        "stock_name": "알테오젠",
+        "market": "KOSPI",
+        "sector": "생물공학",
+        "signal_count": 31,
+        "buy_count": 31,
+        "sell_count": 0,
+        "avg_confidence": 0.6048387096774194,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "MACD골든크로스 | RSI반등(36) | RSI sweet(36) | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(6) | 주봉MA20아래 | 상대강도(+7.2%vsKOSPI+2.2%)",
+        "latest_price": 0,
+        "latest_at": "2026-11-26T00:26:17.771258"
+      },
+      {
         "stock_code": "042700",
         "stock_name": "한미반도체",
         "market": "KOSPI",
@@ -247,6 +375,38 @@
         "latest_reason": "2일연속상승 | MACD골든크로스 | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+7.5%vsKOSPI+6.4%) | 디커플링모멘텀",
         "latest_price": 0,
         "latest_at": "2026-11-24T01:57:18.863451"
+      },
+      {
+        "stock_code": "377300",
+        "stock_name": "카카오페이",
+        "market": "KOSPI",
+        "sector": "IT서비스",
+        "signal_count": 18,
+        "buy_count": 18,
+        "sell_count": 0,
+        "avg_confidence": 0.5833,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(52) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래",
+        "latest_price": 0,
+        "latest_at": "2026-11-26T00:26:17.771249"
+      },
+      {
+        "stock_code": "278470",
+        "stock_name": "에이피알",
+        "market": "KOSPI",
+        "sector": "화장품",
+        "signal_count": 18,
+        "buy_count": 18,
+        "sell_count": 0,
+        "avg_confidence": 0.9167000000000001,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+11.9%vsKOSPI+2.2%) | 디커플링모멘텀",
+        "latest_price": 0,
+        "latest_at": "2026-11-26T00:26:17.771230"
       }
     ],
     "수급분석": [
@@ -258,23 +418,23 @@
         "signal_count": 1408,
         "buy_count": 1408,
         "sell_count": 0,
-        "avg_confidence": 0.8027654119318189,
+        "avg_confidence": 0.860351633522728,
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "MACD히스토그램↑ | RSI모멘텀(57) | 거래량2.9x | MA정배열 | 캔들모닝스타(강) | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+19.5%vsKOSPI+0.0%) | 디커플링모멘텀",
+        "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(60) | 거래량2.8x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위",
         "latest_price": 0,
-        "latest_at": "2026-11-19T00:05:31.482692"
+        "latest_at": "2026-11-20T00:05:30.633438"
       },
       {
         "stock_code": "307950",
         "stock_name": "현대오토에버",
         "market": "KOSPI",
         "sector": "",
-        "signal_count": 527,
-        "buy_count": 527,
+        "signal_count": 893,
+        "buy_count": 893,
         "sell_count": 0,
-        "avg_confidence": 0.7643764705882331,
+        "avg_confidence": 0.8314513997760409,
         "strategies": [
           "RSI+MACD(swing)"
         ],
@@ -287,10 +447,10 @@
         "stock_name": "아모레퍼시픽",
         "market": "KOSPI",
         "sector": "화장품",
-        "signal_count": 56,
-        "buy_count": 56,
+        "signal_count": 74,
+        "buy_count": 74,
         "sell_count": 0,
-        "avg_confidence": 0.5148839285714284,
+        "avg_confidence": 0.632885135135135,
         "strategies": [
           "RSI+MACD(swing)"
         ],
@@ -315,6 +475,22 @@
         "latest_at": "2026-11-23T00:17:23.159383"
       },
       {
+        "stock_code": "196170",
+        "stock_name": "알테오젠",
+        "market": "KOSPI",
+        "sector": "생물공학",
+        "signal_count": 31,
+        "buy_count": 31,
+        "sell_count": 0,
+        "avg_confidence": 0.6048387096774194,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "MACD골든크로스 | RSI반등(36) | RSI sweet(36) | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉RSI과매도(6) | 주봉MA20아래 | 상대강도(+7.2%vsKOSPI+2.2%)",
+        "latest_price": 0,
+        "latest_at": "2026-11-26T00:26:17.771258"
+      },
+      {
         "stock_code": "042700",
         "stock_name": "한미반도체",
         "market": "KOSPI",
@@ -329,6 +505,54 @@
         "latest_reason": "2일연속상승 | MACD골든크로스 | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+7.5%vsKOSPI+6.4%) | 디커플링모멘텀",
         "latest_price": 0,
         "latest_at": "2026-11-24T01:57:18.863451"
+      },
+      {
+        "stock_code": "377300",
+        "stock_name": "카카오페이",
+        "market": "KOSPI",
+        "sector": "IT서비스",
+        "signal_count": 18,
+        "buy_count": 18,
+        "sell_count": 0,
+        "avg_confidence": 0.5833,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(52) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래",
+        "latest_price": 0,
+        "latest_at": "2026-11-26T00:26:17.771249"
+      },
+      {
+        "stock_code": "278470",
+        "stock_name": "에이피알",
+        "market": "KOSPI",
+        "sector": "화장품",
+        "signal_count": 18,
+        "buy_count": 18,
+        "sell_count": 0,
+        "avg_confidence": 0.9167000000000001,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+11.9%vsKOSPI+2.2%) | 디커플링모멘텀",
+        "latest_price": 0,
+        "latest_at": "2026-11-26T00:26:17.771230"
+      },
+      {
+        "stock_code": "089030",
+        "stock_name": "테크윙",
+        "market": "KOSDAQ",
+        "sector": "",
+        "signal_count": 1,
+        "buy_count": 1,
+        "sell_count": 0,
+        "avg_confidence": 0.2971,
+        "strategies": [
+          "dart_momentum"
+        ],
+        "latest_reason": "공시: 주요사항보고서(자기주식취득신탁계약체결결정) | 감성점수: 0.90 | 거래량급증: True",
+        "latest_price": 0,
+        "latest_at": "2026-11-26T00:05:32.746480"
       }
     ]
   }

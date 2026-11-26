@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-11-25T07:00:00.907321+00:00",
+  "exported_at": "2026-11-26T07:00:00.919626+00:00",
   "market_daily": [
+    {
+      "date": "20261126",
+      "kospi_change": 0.29,
+      "kosdaq_change": 0.78,
+      "foreign_net": -1161.0,
+      "institution_net": 7529.0,
+      "individual_net": -10435.0,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20261125",
       "kospi_change": -6.16,
       "kosdaq_change": -2.29,
-      "foreign_net": -18994.0,
-      "institution_net": -8.0,
-      "individual_net": 14232.0,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": -18614.0,
+      "institution_net": -40.0,
+      "individual_net": 13891.0,
+      "hot_theme_count": 3,
+      "momentum_count": 60,
+      "crash_count": 60
     },
     {
       "date": "20261124",
@@ -99,29 +110,18 @@
       "hot_theme_count": 13,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20261112",
-      "kospi_change": -0.61,
-      "kosdaq_change": -1.22,
-      "foreign_net": 3702.0,
-      "institution_net": -6771.0,
-      "individual_net": -2161.0,
-      "hot_theme_count": 2,
-      "momentum_count": 52,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "삼성증권, 내년 1월 말까지'IRP·연금저축 절세 FESTA' 이벤트",
-    "'젠슨 황 랠리' 하루 만에 끝났다…코스피 6.16% 급락",
-    "국내 증시 동반 급락",
-    "[오늘의증시] \"말짱 황\" 하루 만에 삼전닉스 10%대 급락...4600선 후퇴",
-    "짓눌려진 증시",
-    "한 달 주가 흐름·주요 변동 원인 한눈에…토스증권, ‘AI 시그널’ 고도화",
-    "코스피 급락에 코스닥도 2.29% 하락",
-    "환율, 미국 기술주 조정·외국인 순매도에 소폭 상승…1,343.2원",
-    "코스피 4697.51…4700선 아래로 추락",
-    "하루 만에 6% 반등분 모두 토해냈다…코스피 4700선도 못지켜[fn마감시황]"
+    "[사진]'ETF 투자왕' 연금형 우수상 수상한 정진우씨",
+    "[사진]'ETF 투자왕' 글로벌형 우수상 수상한 유훤씨",
+    "에코앤드림, 243.6억 규모 전구체 공급계약 체결",
+    "키움운용, 코스닥150커버드콜 ETF 11월 분배율 2.52% 기록",
+    "[사진]'ETF 투자왕' 자율형 우수상 수상한 구준영씨",
+    "연준 의장 딜레마…인플레 억제냐 시장안정 속도조절이냐",
+    "전날 9~11% 폭락했던 삼전닉스, 0.4%·2% 찔끔 반등(종합)",
+    "[사진]'ETF 투자왕' 최우수상 수상한 지동률씨",
+    "[사진]'ETF 투자왕' 대상 수상한 정정룡씨",
+    "전날 6% 급락 딛고 한숨 돌린 코스피…4711.21에 강보합 마감"
   ]
 }
