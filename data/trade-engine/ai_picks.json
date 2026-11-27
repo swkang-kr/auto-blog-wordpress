@@ -1,8 +1,22 @@
 {
-  "exported_at": "2026-11-26T07:00:01.173537+00:00",
+  "exported_at": "2026-11-27T07:00:02.264972+00:00",
   "total_candidates": 3,
   "total_holdings": 3,
   "candidates": [
+    {
+      "stock_code": "307950",
+      "stock_name": "현대오토에버",
+      "sector": "",
+      "signal_count": 15,
+      "avg_confidence": 0.9167000000000002,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "reason": "MACD히스토그램↑ | RSI모멘텀(62) | 거래량2.9x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+5.8%vsKOSPI+4.2%) | 디커플링모멘텀",
+      "price_at_signal": 0,
+      "signal_time": "2026-11-27T05:56:18.041647",
+      "status": "매수 시그널"
+    },
     {
       "stock_code": "277810",
       "stock_name": "레인보우로보틱스",
@@ -12,23 +26,9 @@
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(67) | 거래량2.4x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+6.8%vsKOSPI+1.1%) | 디커플링모멘텀",
+      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(71) | 거래량2.2x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+9.6%vsKOSPI+4.2%) | 디커플링모멘텀",
       "price_at_signal": 0,
-      "signal_time": "2026-11-26T05:56:17.425814",
-      "status": "매수 시그널"
-    },
-    {
-      "stock_code": "307950",
-      "stock_name": "현대오토에버",
-      "sector": "",
-      "signal_count": 15,
-      "avg_confidence": 0.99222,
-      "strategies": [
-        "RSI+MACD(swing)"
-      ],
-      "reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(61) | 거래량4.2x | 거래량3x+ | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위",
-      "price_at_signal": 0,
-      "signal_time": "2026-11-26T05:56:17.425841",
+      "signal_time": "2026-11-27T05:56:18.041635",
       "status": "매수 시그널"
     },
     {

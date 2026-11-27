@@ -1,6 +1,6 @@
 {
-  "exported_at": "2026-11-26T07:00:01.133056+00:00",
-  "total_stocks": 9,
+  "exported_at": "2026-11-27T07:00:02.191893+00:00",
+  "total_stocks": 10,
   "watchlist_all": [
     {
       "stock_code": "277810",
@@ -10,23 +10,23 @@
       "signal_count": 1408,
       "buy_count": 1408,
       "sell_count": 0,
-      "avg_confidence": 0.860351633522728,
+      "avg_confidence": 0.9743725852272707,
       "strategies": [
         "RSI+MACD(swing)"
       ],
-      "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(60) | 거래량2.8x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위",
+      "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(63) | 거래량2.0x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+11.5%vsKOSPI+6.7%) | 디커플링모멘텀",
       "latest_price": 0,
-      "latest_at": "2026-11-20T00:05:30.633438"
+      "latest_at": "2026-11-24T01:01:21.037057"
     },
     {
       "stock_code": "307950",
       "stock_name": "현대오토에버",
       "market": "KOSPI",
       "sector": "",
-      "signal_count": 893,
-      "buy_count": 893,
+      "signal_count": 1203,
+      "buy_count": 1203,
       "sell_count": 0,
-      "avg_confidence": 0.8314513997760409,
+      "avg_confidence": 0.8493980881130552,
       "strategies": [
         "RSI+MACD(swing)"
       ],
@@ -131,6 +131,22 @@
       "latest_at": "2026-11-26T00:26:17.771230"
     },
     {
+      "stock_code": "373220",
+      "stock_name": "LG에너지솔루션",
+      "market": "KOSPI",
+      "sector": "2차전지",
+      "signal_count": 10,
+      "buy_count": 10,
+      "sell_count": 0,
+      "avg_confidence": 0.6333000000000001,
+      "strategies": [
+        "RSI+MACD(swing)"
+      ],
+      "latest_reason": "MACD골든크로스 | RSI반등(39) | RSI sweet(39) | 거래량7.0x | 거래량3x+ | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+2.1%vsKOSPI+0.5%)",
+      "latest_price": 0,
+      "latest_at": "2026-11-27T01:01:19.776818"
+    },
+    {
       "stock_code": "089030",
       "stock_name": "테크윙",
       "market": "KOSDAQ",
@@ -148,7 +164,24 @@
     }
   ],
   "by_niche": {
-    "시장분석": [],
+    "시장분석": [
+      {
+        "stock_code": "373220",
+        "stock_name": "LG에너지솔루션",
+        "market": "KOSPI",
+        "sector": "2차전지",
+        "signal_count": 10,
+        "buy_count": 10,
+        "sell_count": 0,
+        "avg_confidence": 0.6333000000000001,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "MACD골든크로스 | RSI반등(39) | RSI sweet(39) | 거래량7.0x | 거래량3x+ | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+2.1%vsKOSPI+0.5%)",
+        "latest_price": 0,
+        "latest_at": "2026-11-27T01:01:19.776818"
+      }
+    ],
     "업종분석": [
       {
         "stock_code": "277810",
@@ -158,23 +191,23 @@
         "signal_count": 1408,
         "buy_count": 1408,
         "sell_count": 0,
-        "avg_confidence": 0.860351633522728,
+        "avg_confidence": 0.9743725852272707,
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(60) | 거래량2.8x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위",
+        "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(63) | 거래량2.0x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+11.5%vsKOSPI+6.7%) | 디커플링모멘텀",
         "latest_price": 0,
-        "latest_at": "2026-11-20T00:05:30.633438"
+        "latest_at": "2026-11-24T01:01:21.037057"
       },
       {
         "stock_code": "307950",
         "stock_name": "현대오토에버",
         "market": "KOSPI",
         "sector": "",
-        "signal_count": 893,
-        "buy_count": 893,
+        "signal_count": 1203,
+        "buy_count": 1203,
         "sell_count": 0,
-        "avg_confidence": 0.8314513997760409,
+        "avg_confidence": 0.8493980881130552,
         "strategies": [
           "RSI+MACD(swing)"
         ],
@@ -288,23 +321,23 @@
         "signal_count": 1408,
         "buy_count": 1408,
         "sell_count": 0,
-        "avg_confidence": 0.860351633522728,
+        "avg_confidence": 0.9743725852272707,
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(60) | 거래량2.8x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위",
+        "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(63) | 거래량2.0x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+11.5%vsKOSPI+6.7%) | 디커플링모멘텀",
         "latest_price": 0,
-        "latest_at": "2026-11-20T00:05:30.633438"
+        "latest_at": "2026-11-24T01:01:21.037057"
       },
       {
         "stock_code": "307950",
         "stock_name": "현대오토에버",
         "market": "KOSPI",
         "sector": "",
-        "signal_count": 893,
-        "buy_count": 893,
+        "signal_count": 1203,
+        "buy_count": 1203,
         "sell_count": 0,
-        "avg_confidence": 0.8314513997760409,
+        "avg_confidence": 0.8493980881130552,
         "strategies": [
           "RSI+MACD(swing)"
         ],
@@ -407,6 +440,22 @@
         "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+11.9%vsKOSPI+2.2%) | 디커플링모멘텀",
         "latest_price": 0,
         "latest_at": "2026-11-26T00:26:17.771230"
+      },
+      {
+        "stock_code": "373220",
+        "stock_name": "LG에너지솔루션",
+        "market": "KOSPI",
+        "sector": "2차전지",
+        "signal_count": 10,
+        "buy_count": 10,
+        "sell_count": 0,
+        "avg_confidence": 0.6333000000000001,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "MACD골든크로스 | RSI반등(39) | RSI sweet(39) | 거래량7.0x | 거래량3x+ | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+2.1%vsKOSPI+0.5%)",
+        "latest_price": 0,
+        "latest_at": "2026-11-27T01:01:19.776818"
       }
     ],
     "수급분석": [
@@ -418,23 +467,23 @@
         "signal_count": 1408,
         "buy_count": 1408,
         "sell_count": 0,
-        "avg_confidence": 0.860351633522728,
+        "avg_confidence": 0.9743725852272707,
         "strategies": [
           "RSI+MACD(swing)"
         ],
-        "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(60) | 거래량2.8x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위",
+        "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(63) | 거래량2.0x | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20위 | 상대강도(+11.5%vsKOSPI+6.7%) | 디커플링모멘텀",
         "latest_price": 0,
-        "latest_at": "2026-11-20T00:05:30.633438"
+        "latest_at": "2026-11-24T01:01:21.037057"
       },
       {
         "stock_code": "307950",
         "stock_name": "현대오토에버",
         "market": "KOSPI",
         "sector": "",
-        "signal_count": 893,
-        "buy_count": 893,
+        "signal_count": 1203,
+        "buy_count": 1203,
         "sell_count": 0,
-        "avg_confidence": 0.8314513997760409,
+        "avg_confidence": 0.8493980881130552,
         "strategies": [
           "RSI+MACD(swing)"
         ],
@@ -537,6 +586,22 @@
         "latest_reason": "2일연속상승 | MACD히스토그램↑ | RSI모멘텀(58) | MA정배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+11.9%vsKOSPI+2.2%) | 디커플링모멘텀",
         "latest_price": 0,
         "latest_at": "2026-11-26T00:26:17.771230"
+      },
+      {
+        "stock_code": "373220",
+        "stock_name": "LG에너지솔루션",
+        "market": "KOSPI",
+        "sector": "2차전지",
+        "signal_count": 10,
+        "buy_count": 10,
+        "sell_count": 0,
+        "avg_confidence": 0.6333000000000001,
+        "strategies": [
+          "RSI+MACD(swing)"
+        ],
+        "latest_reason": "MACD골든크로스 | RSI반등(39) | RSI sweet(39) | 거래량7.0x | 거래량3x+ | EMA20하방 | MA역배열 | 주봉데드크로스(-1.5) | 주봉MA20아래 | 상대강도(+2.1%vsKOSPI+0.5%)",
+        "latest_price": 0,
+        "latest_at": "2026-11-27T01:01:19.776818"
       },
       {
         "stock_code": "089030",

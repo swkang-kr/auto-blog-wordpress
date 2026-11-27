@@ -1,5 +1,5 @@
 {
-  "exported_at": "2026-11-26T07:00:00.729806+00:00",
+  "exported_at": "2026-11-27T07:00:00.739783+00:00",
   "trades": [
     {
       "stock_code": "MU",
@@ -60,54 +60,6 @@
       "strategy": "US_SWING",
       "reason": "us_swing_time_exit",
       "filled_at": "2026-11-20T14:30:20"
-    },
-    {
-      "stock_code": "MU",
-      "stock_name": "MU",
-      "side": "sell",
-      "quantity": 1,
-      "price": 694.29,
-      "pnl": -63.12,
-      "pnl_rate": -8.3337,
-      "strategy": "US_SWING",
-      "reason": "us_swing_stop_loss",
-      "filled_at": "2026-11-19T17:06:22"
-    },
-    {
-      "stock_code": "JPM",
-      "stock_name": "JPM",
-      "side": "buy",
-      "quantity": 1,
-      "price": 318.9,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "US_SWING",
-      "reason": "RSI적정(35.0) | RSI과매도 | BB하단근접 [us_pre_qty=0]",
-      "filled_at": "2026-11-19T17:02:24"
-    },
-    {
-      "stock_code": "INTC",
-      "stock_name": "INTC",
-      "side": "sell",
-      "quantity": 6,
-      "price": 57.6201,
-      "pnl": 17.76,
-      "pnl_rate": 5.4157,
-      "strategy": "US_SWING",
-      "reason": "us_swing_trailing",
-      "filled_at": "2026-11-19T15:20:22"
-    },
-    {
-      "stock_code": "MU",
-      "stock_name": "MU",
-      "side": "buy",
-      "quantity": 1,
-      "price": 757.41,
-      "pnl": null,
-      "pnl_rate": null,
-      "strategy": "US_SWING",
-      "reason": "RSI적정(43.2) | MACD골든크로스 [us_pre_qty=0]",
-      "filled_at": "2026-11-19T15:05:25"
     }
   ]
 }

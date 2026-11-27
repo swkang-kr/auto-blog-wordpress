@@ -1,16 +1,27 @@
 {
-  "exported_at": "2026-11-26T07:00:00.919626+00:00",
+  "exported_at": "2026-11-27T07:00:01.978844+00:00",
   "market_daily": [
+    {
+      "date": "20261127",
+      "kospi_change": 4.34,
+      "kosdaq_change": 8.13,
+      "foreign_net": 11317.0,
+      "institution_net": 2365.0,
+      "individual_net": -17788.0,
+      "hot_theme_count": 0,
+      "momentum_count": 0,
+      "crash_count": 0
+    },
     {
       "date": "20261126",
       "kospi_change": 0.29,
       "kosdaq_change": 0.78,
-      "foreign_net": -1161.0,
-      "institution_net": 7529.0,
-      "individual_net": -10435.0,
-      "hot_theme_count": 0,
-      "momentum_count": 0,
-      "crash_count": 0
+      "foreign_net": -1003.0,
+      "institution_net": 7542.0,
+      "individual_net": -10620.0,
+      "hot_theme_count": 8,
+      "momentum_count": 60,
+      "crash_count": 56
     },
     {
       "date": "20261125",
@@ -99,29 +110,18 @@
       "hot_theme_count": 1,
       "momentum_count": 60,
       "crash_count": 60
-    },
-    {
-      "date": "20261113",
-      "kospi_change": -0.98,
-      "kosdaq_change": 0.45,
-      "foreign_net": -5464.0,
-      "institution_net": 23.0,
-      "individual_net": 134.0,
-      "hot_theme_count": 13,
-      "momentum_count": 60,
-      "crash_count": 60
     }
   ],
   "headlines": [
-    "[사진]'ETF 투자왕' 연금형 우수상 수상한 정진우씨",
-    "[사진]'ETF 투자왕' 글로벌형 우수상 수상한 유훤씨",
-    "에코앤드림, 243.6억 규모 전구체 공급계약 체결",
-    "키움운용, 코스닥150커버드콜 ETF 11월 분배율 2.52% 기록",
-    "[사진]'ETF 투자왕' 자율형 우수상 수상한 구준영씨",
-    "연준 의장 딜레마…인플레 억제냐 시장안정 속도조절이냐",
-    "전날 9~11% 폭락했던 삼전닉스, 0.4%·2% 찔끔 반등(종합)",
-    "[사진]'ETF 투자왕' 최우수상 수상한 지동률씨",
-    "[사진]'ETF 투자왕' 대상 수상한 정정룡씨",
-    "전날 6% 급락 딛고 한숨 돌린 코스피…4711.21에 강보합 마감"
+    "코스피 4.34% 급등해 4900선 회복…코스닥 8%대 폭등",
+    "'오늘 증시'",
+    "코스피 4.3% 상승 4,900선 회복",
+    "'오늘 증시'",
+    "'오늘 증시'",
+    "코스피-코스닥, 상승 마감",
+    "외국인 순매수에 국내 증시 훈풍",
+    "코스피-코스닥, 상승 마감",
+    "증안펀드 기대감에 코스피 4%↑…코스닥 8% 뛰며 700 회복",
+    "외국인 순매수에 상승 마감한 코스피·코스닥"
   ]
 }
